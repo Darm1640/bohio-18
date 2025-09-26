@@ -375,4 +375,311 @@
             </div>
         </t>
     </template>
+
+    <template id="portal_my_contracts" name="Mis Contratos">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Mis Contratos</t>
+            </t>
+
+            <div class="container mt-4">
+                <div class="row">
+                    <div class="col-12">
+                        <h2 class="mb-4 text-bohio-red">Mis Contratos</h2>
+
+                        <t t-if="contracts">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Número</th>
+                                            <th>Propiedad</th>
+                                            <th>Tipo</th>
+                                            <th>Estado</th>
+                                            <th>Fecha Inicio</th>
+                                            <th>Fecha Fin</th>
+                                            <th>Renta Mensual</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-foreach="contracts" t-as="contract">
+                                            <tr>
+                                                <td><span t-field="contract.name"/></td>
+                                                <td>
+                                                    <strong><span t-field="contract.property_id.name"/></strong><br/>
+                                                    <small class="text-muted"><span t-field="contract.property_id.default_code"/></small>
+                                                </td>
+                                                <td>
+                                                    <span t-if="contract.contract_type == 'is_rental'" class="badge bg-info">Arrendamiento</span>
+                                                    <span t-if="contract.contract_type == 'is_ownership'" class="badge bg-success">Propiedad</span>
+                                                </td>
+                                                <td>
+                                                    <span t-if="contract.state == 'draft'" class="badge bg-secondary">Borrador</span>
+                                                    <span t-if="contract.state == 'confirmed'" class="badge bg-success">Confirmado</span>
+                                                    <span t-if="contract.state == 'renew'" class="badge bg-warning">Renovado</span>
+                                                    <span t-if="contract.state == 'cancel'" class="badge bg-danger">Cancelado</span>
+                                                </td>
+                                                <td>
+                                                    <span t-field="contract.date_from" t-options="{'widget': 'date'}"/>
+                                                </td>
+                                                <td>
+                                                    <span t-if="contract.date_to" t-field="contract.date_to" t-options="{'widget': 'date'}"/>
+                                                    <span t-else="" class="text-muted">-</span>
+                                                </td>
+                                                <td>
+                                                    <span t-field="contract.rental_fee"
+                                                          t-options="{'widget': 'monetary', 'display_currency': contract.company_id.currency_id}"/>
+                                                </td>
+                                                <td class="text-end">
+                                                    <a t-attf-href="/my/contract/{{contract.id}}" class="btn btn-sm btn-bohio-primary">
+                                                        Ver Detalles
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </t>
+                        <t t-else="">
+                            <div class="alert alert-info text-center">
+                                <p class="lead">No tienes contratos activos en este momento.</p>
+                                <a href="/properties" class="btn btn-bohio-primary mt-3">
+                                    <i class="fa fa-search"/> Buscar Propiedades
+                                </a>
+                            </div>
+                        </t>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="portal_contract_detail" name="Detalle de Contrato">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Contrato</t>
+            </t>
+
+            <div class="container mt-4">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h2 class="text-bohio-red mb-0">
+                                Contrato <span t-field="contract.name"/>
+                            </h2>
+                            <a href="/my/contracts" class="btn btn-bohio-outline">
+                                <i class="fa fa-arrow-left"/> Volver
+                            </a>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="card border-0 shadow-sm mb-4">
+                                    <div class="card-header bg-bohio-red text-white">
+                                        <h5 class="mb-0">Información del Contrato</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <strong>Número:</strong>
+                                                <p><span t-field="contract.name"/></p>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <strong>Tipo:</strong>
+                                                <p>
+                                                    <span t-if="contract.contract_type == 'is_rental'" class="badge bg-info">Arrendamiento</span>
+                                                    <span t-if="contract.contract_type == 'is_ownership'" class="badge bg-success">Propiedad</span>
+                                                </p>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <strong>Estado:</strong>
+                                                <p>
+                                                    <span t-if="contract.state == 'draft'" class="badge bg-secondary">Borrador</span>
+                                                    <span t-if="contract.state == 'confirmed'" class="badge bg-success">Confirmado</span>
+                                                    <span t-if="contract.state == 'renew'" class="badge bg-warning">Renovado</span>
+                                                    <span t-if="contract.state == 'cancel'" class="badge bg-danger">Cancelado</span>
+                                                </p>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <strong>Periodicidad:</strong>
+                                                <p>
+                                                    <span t-if="contract.periodicity == '1'">Mensual</span>
+                                                    <span t-if="contract.periodicity == '3'">Trimestral</span>
+                                                    <span t-if="contract.periodicity == '6'">Semestral</span>
+                                                    <span t-if="contract.periodicity == '12'">Anual</span>
+                                                </p>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <strong>Fecha de Inicio:</strong>
+                                                <p><span t-field="contract.date_from" t-options="{'widget': 'date'}"/></p>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <strong>Fecha de Fin:</strong>
+                                                <p>
+                                                    <span t-if="contract.date_to" t-field="contract.date_to" t-options="{'widget': 'date'}"/>
+                                                    <span t-else="" class="text-muted">No definida</span>
+                                                </p>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <strong>Renta Mensual:</strong>
+                                                <h4 class="text-bohio-red">
+                                                    <span t-field="contract.rental_fee"
+                                                          t-options="{'widget': 'monetary', 'display_currency': contract.company_id.currency_id}"/>
+                                                </h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="card border-0 shadow-sm mb-4">
+                                    <div class="card-header bg-bohio-red text-white">
+                                        <h5 class="mb-0">Información de la Propiedad</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-12 mb-3">
+                                                <strong>Nombre:</strong>
+                                                <p><span t-field="contract.property_id.name"/></p>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <strong>Código:</strong>
+                                                <p><span t-field="contract.property_code"/></p>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <strong>Área:</strong>
+                                                <p><span t-field="contract.property_area"/> m²</p>
+                                            </div>
+                                            <div class="col-12 mb-3">
+                                                <strong>Dirección:</strong>
+                                                <p><span t-field="contract.address"/></p>
+                                            </div>
+                                            <div class="col-12 text-center">
+                                                <a t-attf-href="/property/{{contract.property_id.id}}" class="btn btn-bohio-primary">
+                                                    <i class="fa fa-home"/> Ver Propiedad Completa
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <t t-if="contract.property_id.image_1920">
+                                    <div class="card border-0 shadow-sm mb-4">
+                                        <img t-attf-src="/web/image/product.template/{{contract.property_id.id}}/image_1920"
+                                             class="card-img-top"
+                                             alt="Imagen de propiedad"/>
+                                    </div>
+                                </t>
+
+                                <div class="card border-0 shadow-sm">
+                                    <div class="card-body">
+                                        <h5 class="card-title text-bohio-red">Resumen Financiero</h5>
+                                        <hr/>
+                                        <div class="d-flex justify-content-between mb-2">
+                                            <span>Total:</span>
+                                            <strong>
+                                                <span t-field="contract.amount_total"
+                                                      t-options="{'widget': 'monetary', 'display_currency': contract.company_id.currency_id}"/>
+                                            </strong>
+                                        </div>
+                                        <div class="d-flex justify-content-between mb-2">
+                                            <span>Pagado:</span>
+                                            <strong class="text-success">
+                                                <span t-field="contract.paid"
+                                                      t-options="{'widget': 'monetary', 'display_currency': contract.company_id.currency_id}"/>
+                                            </strong>
+                                        </div>
+                                        <div class="d-flex justify-content-between">
+                                            <span>Saldo:</span>
+                                            <strong class="text-danger">
+                                                <span t-field="contract.balance"
+                                                      t-options="{'widget': 'monetary', 'display_currency': contract.company_id.currency_id}"/>
+                                            </strong>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="portal_my_payments" name="Mis Pagos">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Mis Pagos</t>
+            </t>
+
+            <div class="container mt-4">
+                <div class="row">
+                    <div class="col-12">
+                        <h2 class="mb-4 text-bohio-red">Mis Pagos y Recaudos</h2>
+
+                        <t t-if="payments">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Fecha</th>
+                                            <th>Contrato</th>
+                                            <th>Tipo Documento</th>
+                                            <th>Destinatario</th>
+                                            <th>Monto</th>
+                                            <th>Estado</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-foreach="payments" t-as="payment">
+                                            <tr>
+                                                <td>
+                                                    <span t-field="payment.create_date" t-options="{'widget': 'date'}"/>
+                                                </td>
+                                                <td>
+                                                    <span t-if="payment.contract_id" t-field="payment.contract_id.name"/>
+                                                    <span t-else="" class="text-muted">-</span>
+                                                </td>
+                                                <td>
+                                                    <span t-field="payment.document_type"/>
+                                                </td>
+                                                <td>
+                                                    <span t-if="payment.destinatario == 'propietario'" class="badge bg-success">Propietario</span>
+                                                    <span t-if="payment.destinatario == 'arrendatario'" class="badge bg-info">Arrendatario</span>
+                                                </td>
+                                                <td>
+                                                    <span t-field="payment.total"
+                                                          t-options="{'widget': 'monetary', 'display_currency': payment.currency_id}"/>
+                                                </td>
+                                                <td>
+                                                    <span t-if="payment.state == 'draft'" class="badge bg-secondary">Borrador</span>
+                                                    <span t-if="payment.state == 'open'" class="badge bg-warning">Abierto</span>
+                                                    <span t-if="payment.state == 'paid'" class="badge bg-success">Pagado</span>
+                                                    <span t-if="payment.state == 'cancel'" class="badge bg-danger">Cancelado</span>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </t>
+                        <t t-else="">
+                            <div class="alert alert-info text-center">
+                                <p class="lead">No tienes pagos registrados en este momento.</p>
+                            </div>
+                        </t>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
 </odoo>

@@ -313,10 +313,9 @@
                             <page string="Intereses">
                                 <field name="debit_line_ids">
                                     <list editable="bottom">
+                                        <field name="name"/>
                                         <field name="value_amount"/>
-                                        <field name="value" nolabel="1"/>
-                                        <field name="nb_days" />
-                                        <field name="delay_type" nolabel="1"/>
+                                        <field name="nb_days"/>
                                     </list>
                                 </field>
                                 <group string="Muestra">

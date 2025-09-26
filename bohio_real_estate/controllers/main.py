@@ -440,11 +440,60 @@ class BohioRealEstateController(http.Controller):
         properties = request.env['product.template'].sudo().search([
             ('is_property', '=', True),
             '|',
-            ('property_owner_id', '=', partner.id),
-            ('property_tenant_id', '=', partner.id)
+            ('partner_id', '=', partner.id),
+            ('owners_lines.partner_id', '=', partner.id)
         ], order='create_date desc')
+
+        contracts = request.env['property.contract'].search([
+            ('partner_id', '=', partner.id),
+            ('state', '!=', 'cancel')
+        ], order='date_from desc')
+
+        tenant_properties = contracts.mapped('property_id')
 
         return request.render('bohio_real_estate.portal_my_properties', {
             'properties': properties,
+            'tenant_properties': tenant_properties,
             'page_name': 'my_properties',
+        })
+
+    @http.route('/my/contracts', type='http', auth='user', website=True)
+    def portal_my_contracts(self, **kw):
+        partner = request.env.user.partner_id
+
+        contracts = request.env['property.contract'].search([
+            ('partner_id', '=', partner.id)
+        ], order='date_from desc')
+
+        return request.render('bohio_real_estate.portal_my_contracts', {
+            'contracts': contracts,
+            'page_name': 'contracts',
+        })
+
+    @http.route('/my/contract/<int:contract_id>', type='http', auth='user', website=True)
+    def portal_contract_detail(self, contract_id, **kw):
+        contract = request.env['property.contract'].search([
+            ('id', '=', contract_id),
+            ('partner_id', '=', request.env.user.partner_id.id)
+        ], limit=1)
+
+        if not contract:
+            return request.redirect('/my/contracts')
+
+        return request.render('bohio_real_estate.portal_contract_detail', {
+            'contract': contract,
+            'page_name': 'contract_detail',
+        })
+
+    @http.route('/my/payments', type='http', auth='user', website=True)
+    def portal_my_payments(self, **kw):
+        partner = request.env.user.partner_id
+
+        payments = request.env['recaudo.news.payment'].search([
+            ('partner_id', '=', partner.id)
+        ], order='create_date desc')
+
+        return request.render('bohio_real_estate.portal_my_payments', {
+            'payments': payments,
+            'page_name': 'payments',
         })
