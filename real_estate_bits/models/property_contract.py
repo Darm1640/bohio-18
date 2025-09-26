@@ -87,9 +87,6 @@ class Contract(models.Model):
     def _default_security_deposit_account(self):
         return self.env["ir.config_parameter"].sudo().get_param("real_estate_bits.security_deposit_account")
 
-    def _default_example_date(self):
-        return self._context.get('example_date') or fields.Date.today()
-    
     def _default_income_account(self):
         return self.env["ir.config_parameter"].sudo().get_param("real_estate_bits.income_account")
 

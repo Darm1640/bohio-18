@@ -318,17 +318,6 @@
                                         <field name="nb_days"/>
                                     </list>
                                 </field>
-                                <group string="Muestra">
-                                    <div class="d-flex gap-2" colspan="2" col="4">
-                                        Ejemplo:
-                                        <field name="example_amount" class="oe_inline"/>
-                                        de
-                                        <field name="example_date" class="fw-bold border-bottom o_example_date"/>
-                                    </div>
-                                    <div colspan="2" class="py-1 bg-secondary">
-                                        <field name="example_preview" class="ps-2" />
-                                    </div>
-                                </group>
                             </page>
                             <page string="Documents">
                                 <field name="attachment_line_ids">
