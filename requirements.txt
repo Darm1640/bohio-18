@@ -1,0 +1,10 @@
+validators
+pyopenssl
+xades
+lxml
+pycountry
+qrcode
+xmltodict
+openpyxl
+requests_html
+pandas
