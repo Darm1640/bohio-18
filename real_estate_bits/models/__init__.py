@@ -8,7 +8,6 @@ from . import repair_order
 from . import property_extra
 from . import account_payment
 from . import account_invoice
-from . import property_attachments
 from . import project_worksite
 from . import sales_commission
 from . import property_contract
@@ -21,3 +20,4 @@ from . import news_contracts
 from . import recaudo_news_payment
 from . import master
 from . import property_dashboard
+from . import property_attachments
