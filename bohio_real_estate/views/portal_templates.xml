@@ -1,0 +1,378 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="portal_my_opportunities" name="Mis Oportunidades">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Mis Oportunidades</t>
+            </t>
+
+            <div class="container mt-4">
+                <div class="row">
+                    <div class="col-12">
+                        <h2 class="mb-4 text-bohio-red">Mis Oportunidades</h2>
+
+                        <t t-if="opportunities">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Referencia</th>
+                                            <th>Nombre</th>
+                                            <th>Etapa</th>
+                                            <th>Propiedades</th>
+                                            <th>Valor Esperado</th>
+                                            <th>Fecha Creación</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-foreach="opportunities" t-as="opp">
+                                            <tr>
+                                                <td><span t-field="opp.id"/></td>
+                                                <td><span t-field="opp.name"/></td>
+                                                <td>
+                                                    <span t-if="opp.portal_stage_name" t-field="opp.portal_stage_name" class="badge badge-bohio"/>
+                                                    <span t-else="" t-field="opp.stage_id.name" class="badge badge-bohio"/>
+                                                </td>
+                                                <td>
+                                                    <span t-esc="len(opp.property_ids)"/> propiedades
+                                                </td>
+                                                <td>
+                                                    <span t-field="opp.expected_revenue"
+                                                          t-options="{'widget': 'monetary', 'display_currency': opp.company_currency}"/>
+                                                </td>
+                                                <td>
+                                                    <span t-field="opp.create_date" t-options="{'widget': 'date'}"/>
+                                                </td>
+                                                <td class="text-end">
+                                                    <a t-attf-href="/my/opportunity/{{opp.id}}" class="btn btn-sm btn-bohio-primary">
+                                                        Ver Detalles
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </t>
+                        <t t-else="">
+                            <div class="alert alert-info text-center">
+                                <p class="lead">No tienes oportunidades activas en este momento.</p>
+                                <a href="/properties" class="btn btn-bohio-primary mt-3">
+                                    <i class="fa fa-search"/> Buscar Propiedades
+                                </a>
+                            </div>
+                        </t>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="portal_opportunity_detail" name="Detalle de Oportunidad">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Oportunidad</t>
+            </t>
+
+            <div class="container mt-4">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h2 class="text-bohio-red mb-0">
+                                <span t-field="opportunity.name"/>
+                            </h2>
+                            <a href="/my/opportunities" class="btn btn-bohio-outline">
+                                <i class="fa fa-arrow-left"/> Volver
+                            </a>
+                        </div>
+
+                        <div class="card border-0 shadow-sm mb-4">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <strong>Referencia:</strong>
+                                        <p><span t-field="opportunity.id"/></p>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <strong>Etapa:</strong>
+                                        <p>
+                                            <span t-if="opportunity.portal_stage_name"
+                                                  t-field="opportunity.portal_stage_name"
+                                                  class="badge badge-bohio"/>
+                                            <span t-else=""
+                                                  t-field="opportunity.stage_id.name"
+                                                  class="badge badge-bohio"/>
+                                        </p>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <strong>Fecha de Creación:</strong>
+                                        <p><span t-field="opportunity.create_date" t-options="{'widget': 'datetime'}"/></p>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <strong>Valor Esperado:</strong>
+                                        <p>
+                                            <span t-field="opportunity.expected_revenue"
+                                                  t-options="{'widget': 'monetary', 'display_currency': opportunity.company_currency}"/>
+                                        </p>
+                                    </div>
+                                    <div t-if="opportunity.description" class="col-12 mb-3">
+                                        <strong>Descripción:</strong>
+                                        <p><span t-field="opportunity.description"/></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <t t-if="opportunity.property_ids">
+                            <h4 class="mb-3">Propiedades Asociadas</h4>
+                            <div class="row">
+                                <t t-foreach="opportunity.property_ids" t-as="prop">
+                                    <div class="col-md-6 col-lg-4 mb-4">
+                                        <div class="card property-card h-100">
+                                            <img t-if="prop.image_1920"
+                                                 t-attf-src="/web/image/product.template/{{prop.id}}/image_1920"
+                                                 class="card-img-top"
+                                                 alt="Imagen de propiedad"/>
+                                            <div class="card-body">
+                                                <h5 class="card-title">
+                                                    <span t-field="prop.name"/>
+                                                </h5>
+                                                <p class="card-text">
+                                                    <strong>Código:</strong> <span t-field="prop.default_code"/><br/>
+                                                    <strong>Precio:</strong>
+                                                    <span t-field="prop.list_price"
+                                                          t-options="{'widget': 'monetary', 'display_currency': prop.currency_id}"/><br/>
+                                                    <t t-if="prop.num_bedrooms">
+                                                        <i class="fa fa-bed"/> <span t-field="prop.num_bedrooms"/> hab.
+                                                    </t>
+                                                    <t t-if="prop.num_bathrooms">
+                                                        <i class="fa fa-bath"/> <span t-field="prop.num_bathrooms"/> baños
+                                                    </t>
+                                                </p>
+                                                <a t-attf-href="/property/{{prop.id}}" class="btn btn-bohio-primary btn-sm w-100">
+                                                    Ver Propiedad
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </t>
+                            </div>
+                        </t>
+                        <t t-else="">
+                            <div class="alert alert-info">
+                                No hay propiedades asociadas a esta oportunidad.
+                            </div>
+                        </t>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="portal_my_properties" name="Mis Propiedades">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Mis Propiedades</t>
+            </t>
+
+            <div class="container mt-4">
+                <div class="row">
+                    <div class="col-12">
+                        <h2 class="mb-4 text-bohio-red">Mis Propiedades</h2>
+
+                        <t t-if="properties">
+                            <div class="row">
+                                <t t-foreach="properties" t-as="prop">
+                                    <div class="col-md-6 col-lg-4 mb-4">
+                                        <div class="card property-card h-100">
+                                            <div class="position-relative">
+                                                <img t-if="prop.image_1920"
+                                                     t-attf-src="/web/image/product.template/{{prop.id}}/image_1920"
+                                                     class="card-img-top"
+                                                     alt="Imagen de propiedad"/>
+                                                <span class="badge badge-bohio position-absolute top-0 end-0 m-2">
+                                                    <span t-field="prop.state"/>
+                                                </span>
+                                            </div>
+                                            <div class="card-body">
+                                                <h5 class="card-title">
+                                                    <span t-field="prop.name"/>
+                                                </h5>
+                                                <p class="text-muted mb-2">
+                                                    <strong>Código:</strong> <span t-field="prop.default_code"/>
+                                                </p>
+                                                <h4 class="text-bohio-red mb-3">
+                                                    <span t-field="prop.list_price"
+                                                          t-options="{'widget': 'monetary', 'display_currency': prop.currency_id}"/>
+                                                </h4>
+                                                <div class="mb-3">
+                                                    <span t-if="prop.type_service == 'sale'" class="badge bg-success">Venta</span>
+                                                    <span t-if="prop.type_service == 'rent'" class="badge bg-info">Arriendo</span>
+                                                    <span t-if="prop.type_service == 'consign'" class="badge bg-warning">Consignar</span>
+                                                </div>
+                                                <p class="card-text">
+                                                    <t t-if="prop.num_bedrooms">
+                                                        <i class="fa fa-bed"/> <span t-field="prop.num_bedrooms"/> habitaciones
+                                                    </t>
+                                                    <t t-if="prop.num_bathrooms">
+                                                        | <i class="fa fa-bath"/> <span t-field="prop.num_bathrooms"/> baños
+                                                    </t>
+                                                    <br/>
+                                                    <t t-if="prop.property_area">
+                                                        <i class="fa fa-arrows-alt"/> <span t-field="prop.property_area"/> m²
+                                                    </t>
+                                                </p>
+                                                <a t-attf-href="/property/{{prop.id}}" class="btn btn-bohio-primary btn-sm w-100">
+                                                    Ver Detalles
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </t>
+                            </div>
+                        </t>
+                        <t t-else="">
+                            <div class="alert alert-info text-center">
+                                <p class="lead">No tienes propiedades asociadas en este momento.</p>
+                                <a href="/properties" class="btn btn-bohio-primary mt-3">
+                                    <i class="fa fa-search"/> Buscar Propiedades
+                                </a>
+                            </div>
+                        </t>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="contact_thanks" name="Gracias por Contactarnos">
+        <t t-call="website.layout">
+            <div id="wrap" class="oe_structure">
+                <section class="py-5 bg-light text-center">
+                    <div class="container">
+                        <i class="fa fa-check-circle text-bohio-red" style="font-size: 80px;"/>
+                        <h1 class="mt-4 mb-3">¡Gracias por tu Interés!</h1>
+                        <p class="lead">Hemos recibido tu consulta sobre:</p>
+                        <h3 class="text-bohio-red my-4">
+                            <span t-field="property.name"/>
+                        </h3>
+                        <p class="mb-4">Uno de nuestros asesores se pondrá en contacto contigo muy pronto.</p>
+                        <div class="mt-5">
+                            <a t-attf-href="/property/{{property.id}}" class="btn btn-bohio-outline me-2">
+                                <i class="fa fa-arrow-left"/> Volver a la Propiedad
+                            </a>
+                            <a href="/properties" class="btn btn-bohio-primary">
+                                <i class="fa fa-search"/> Ver Más Propiedades
+                            </a>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </t>
+    </template>
+
+    <template id="pqrs_form" name="Formulario PQRS">
+        <t t-call="website.layout">
+            <div id="wrap">
+                <section class="bg-bohio-black text-white py-5">
+                    <div class="container text-center">
+                        <h1 class="display-3" style="font-family: 'Arista Pro Bold', sans-serif;">PQRS</h1>
+                        <p class="lead">Peticiones, Quejas, Reclamos y Sugerencias</p>
+                    </div>
+                </section>
+
+                <section class="py-5">
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-8">
+                                <div class="card border-0 shadow-sm p-4">
+                                    <form action="/pqrs/submit" method="POST">
+                                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+
+                                        <div class="mb-3">
+                                            <label for="pqrs_type" class="form-label">Tipo de Solicitud *</label>
+                                            <select name="pqrs_type" id="pqrs_type" class="form-select" required="required">
+                                                <option value="">Seleccione...</option>
+                                                <option value="petition">Petición</option>
+                                                <option value="complaint">Queja</option>
+                                                <option value="claim">Reclamo</option>
+                                                <option value="suggestion">Sugerencia</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="name" class="form-label">Nombre Completo *</label>
+                                            <input type="text" name="name" id="name" class="form-control" required="required"/>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <label for="email" class="form-label">Correo Electrónico *</label>
+                                                <input type="email" name="email" id="email" class="form-control" required="required"/>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label for="phone" class="form-label">Teléfono</label>
+                                                <input type="text" name="phone" id="phone" class="form-control"/>
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="client_type" class="form-label">Tipo de Cliente</label>
+                                            <select name="client_type" id="client_type" class="form-select">
+                                                <option value="">Seleccione...</option>
+                                                <option value="owner">Propietario</option>
+                                                <option value="tenant">Arrendatario</option>
+                                                <option value="buyer">Comprador</option>
+                                                <option value="seller">Vendedor</option>
+                                                <option value="investor">Inversionista</option>
+                                                <option value="other">Otro</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="message" class="form-label">Mensaje *</label>
+                                            <textarea name="message" id="message" class="form-control" rows="5" required="required"/>
+                                        </div>
+
+                                        <button type="submit" class="btn btn-bohio-primary w-100 py-3">
+                                            <i class="fa fa-send"/> Enviar PQRS
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </t>
+    </template>
+
+    <template id="pqrs_thanks" name="PQRS Enviado">
+        <t t-call="website.layout">
+            <div id="wrap" class="oe_structure">
+                <section class="py-5 bg-light text-center">
+                    <div class="container">
+                        <i class="fa fa-check-circle text-bohio-red" style="font-size: 80px;"/>
+                        <h1 class="mt-4 mb-3">¡PQRS Recibido!</h1>
+                        <p class="lead mb-4">Hemos recibido tu solicitud. Le daremos respuesta dentro de los términos legales establecidos.</p>
+                        <div class="mt-5">
+                            <a href="/contacto" class="btn btn-bohio-outline me-2">
+                                <i class="fa fa-arrow-left"/> Volver al Contacto
+                            </a>
+                            <a href="/" class="btn btn-bohio-primary">
+                                <i class="fa fa-home"/> Ir al Inicio
+                            </a>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </t>
+    </template>
+</odoo>

@@ -1,0 +1,409 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Template para vista de mapa con OpenStreetMap -->
+    <template id="property_map_view_osm" name="Properties Map View OpenStreetMap">
+        <t t-call="website.layout">
+            <div id="wrap" class="bohio-properties-map">
+                <div class="container-fluid p-0">
+                    <div class="row g-0">
+                        <!-- Sidebar con filtros y lista de propiedades -->
+                        <div class="col-lg-4 col-md-5">
+                            <div class="properties-sidebar h-100 overflow-auto" style="max-height: 100vh;">
+                                <!-- Filtros -->
+                                <div class="filters-section p-3 bg-light border-bottom">
+                                    <h5><i class="fa fa-filter"/> Filtros de Búsqueda</h5>
+                                    <form id="property-filters" class="mt-3">
+                                        <div class="mb-3">
+                                            <label class="form-label small">Tipo de Servicio</label>
+                                            <select name="type_service" class="form-select form-select-sm">
+                                                <option value="">Todos</option>
+                                                <option value="sale">Venta</option>
+                                                <option value="rent">Arriendo</option>
+                                                <option value="sale_rent">Venta y Arriendo</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label class="form-label small">Tipo de Inmueble</label>
+                                            <select name="property_type" class="form-select form-select-sm">
+                                                <option value="">Todos</option>
+                                                <option value="apartment">Apartamento</option>
+                                                <option value="house">Casa</option>
+                                                <option value="office">Oficina</option>
+                                                <option value="commercial">Comercial</option>
+                                                <option value="lot">Lote</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label class="form-label small">Rango de Precio (COP)</label>
+                                            <div class="row g-2">
+                                                <div class="col-6">
+                                                    <input type="number" name="price_min" class="form-control form-control-sm" placeholder="Mínimo"/>
+                                                </div>
+                                                <div class="col-6">
+                                                    <input type="number" name="price_max" class="form-control form-control-sm" placeholder="Máximo"/>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row g-2">
+                                            <div class="col-6">
+                                                <div class="mb-3">
+                                                    <label class="form-label small">Habitaciones</label>
+                                                    <select name="bedrooms" class="form-select form-select-sm">
+                                                        <option value="">Cualquiera</option>
+                                                        <option value="1">1+</option>
+                                                        <option value="2">2+</option>
+                                                        <option value="3">3+</option>
+                                                        <option value="4">4+</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="mb-3">
+                                                    <label class="form-label small">Baños</label>
+                                                    <select name="bathrooms" class="form-select form-select-sm">
+                                                        <option value="">Cualquiera</option>
+                                                        <option value="1">1+</option>
+                                                        <option value="2">2+</option>
+                                                        <option value="3">3+</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label class="form-label small">Área (m²)</label>
+                                            <div class="row g-2">
+                                                <div class="col-6">
+                                                    <input type="number" name="area_min" class="form-control form-control-sm" placeholder="Mín m²"/>
+                                                </div>
+                                                <div class="col-6">
+                                                    <input type="number" name="area_max" class="form-control form-control-sm" placeholder="Máx m²"/>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <button type="submit" class="btn btn-primary w-100">
+                                            <i class="fa fa-search"/> Buscar
+                                        </button>
+                                        <button type="button" class="btn btn-secondary w-100 mt-2" onclick="clearFilters()">
+                                            <i class="fa fa-refresh"/> Limpiar Filtros
+                                        </button>
+                                    </form>
+                                </div>
+
+                                <!-- Lista de propiedades -->
+                                <div class="properties-list p-3">
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <h6 class="mb-0">Propiedades Encontradas</h6>
+                                        <span class="badge bg-primary" id="property-count">0</span>
+                                    </div>
+                                    <div id="property-list-container">
+                                        <!-- Se cargarán las propiedades dinámicamente -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Mapa OpenStreetMap -->
+                        <div class="col-lg-8 col-md-7">
+                            <div id="property-map" style="height: 100vh; width: 100%;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Barra de comparación -->
+                <div class="compare-bar position-fixed bottom-0 start-0 w-100 bg-dark text-white p-3"
+                     id="compare-bar" style="display: none; z-index: 1000;">
+                    <div class="container">
+                        <div class="row align-items-center">
+                            <div class="col-md-8">
+                                <span>Has seleccionado <span id="compare-count">0</span> propiedades para comparar (máx. 4)</span>
+                                <div id="compare-properties" class="d-inline-block ms-3"></div>
+                            </div>
+                            <div class="col-md-4 text-end">
+                                <button class="btn btn-warning" onclick="compareProperties()">
+                                    <i class="fa fa-balance-scale"/> Comparar
+                                </button>
+                                <button class="btn btn-secondary" onclick="clearComparison()">
+                                    <i class="fa fa-times"/> Limpiar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Scripts para OpenStreetMap con Leaflet -->
+            <script>
+                var map;
+                var markers = [];
+                var markerGroup;
+                var compareList = [];
+                var properties = [];
+
+                // Inicializar mapa cuando el DOM esté listo
+                $(document).ready(function() {
+                    initOpenStreetMap();
+                    loadProperties();
+                });
+
+                function initOpenStreetMap() {
+                    // Inicializar mapa centrado en Bogotá
+                    map = L.map('property-map').setView([4.7110, -74.0721], 12);
+
+                    // Añadir capa de OpenStreetMap
+                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                        maxZoom: 19,
+                        attribution: '© OpenStreetMap contributors'
+                    }).addTo(map);
+
+                    // Crear grupo de marcadores
+                    markerGroup = L.layerGroup().addTo(map);
+                }
+
+                function loadProperties() {
+                    // Hacer llamada AJAX para cargar propiedades
+                    $.ajax({
+                        url: '/api/properties/map',
+                        method: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify({
+                            'jsonrpc': '2.0',
+                            'method': 'call',
+                            'params': $('#property-filters').serializeObject(),
+                            'id': Math.floor(Math.random() * 1000000)
+                        }),
+                        success: function(data) {
+                            if (data.result) {
+                                properties = data.result.properties;
+                                displayProperties(properties);
+                                addMarkers(properties);
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('Error loading properties:', error);
+                        }
+                    });
+                }
+
+                function displayProperties(properties) {
+                    $('#property-count').text(properties.length);
+                    var html = '';
+
+                    properties.forEach(function(property) {
+                        var badgeClass = property.type_service === 'sale' ? 'badge-primary' : 'badge-info';
+                        var badgeText = property.type_service === 'sale' ? 'Venta' : 'Arriendo';
+
+                        html += `
+                            <div class="property-card mb-3 p-3 bg-white rounded shadow-sm" data-property-id="${property.id}">
+                                <div class="row g-2">
+                                    <div class="col-4">
+                                        <img src="${property.image}" class="img-fluid rounded" alt="${property.name}"
+                                             style="height: 100px; object-fit: cover;"/>
+                                    </div>
+                                    <div class="col-8">
+                                        <h6 class="mb-1">${property.default_code} - ${property.name}</h6>
+                                        <p class="mb-1 text-muted small">
+                                            <i class="fa fa-map-marker"></i> ${property.address}
+                                        </p>
+                                        <p class="mb-1">
+                                            <span class="badge ${badgeClass}">${badgeText}</span>
+                                            <strong class="ms-2">$${property.price.toLocaleString('es-CO')}</strong>
+                                        </p>
+                                        <p class="mb-2 small">
+                                            <i class="fa fa-bed"></i> ${property.bedrooms || 0} |
+                                            <i class="fa fa-bath"></i> ${property.bathrooms || 0} |
+                                            <i class="fa fa-expand"></i> ${property.area || 0} m²
+                                        </p>
+                                        <div class="btn-group btn-group-sm w-100">
+                                            <button class="btn btn-outline-primary" onclick="viewProperty(${property.id})">
+                                                <i class="fa fa-eye"></i> Ver
+                                            </button>
+                                            <button class="btn btn-outline-secondary" onclick="addToCompare(${property.id})">
+                                                <i class="fa fa-balance-scale"></i> Comparar
+                                            </button>
+                                            <button class="btn btn-outline-success" onclick="centerMap(${property.latitude}, ${property.longitude})">
+                                                <i class="fa fa-map"></i> Mapa
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    });
+
+                    $('#property-list-container').html(html || '<p class="text-muted">No se encontraron propiedades</p>');
+                }
+
+                function addMarkers(properties) {
+                    // Limpiar marcadores existentes
+                    markerGroup.clearLayers();
+                    markers = [];
+
+                    // Crear iconos personalizados
+                    var saleIcon = L.divIcon({
+                        html: '<div class="custom-marker sale-marker"><i class="fa fa-home"></i></div>',
+                        iconSize: [30, 30],
+                        className: 'custom-div-icon'
+                    });
+
+                    var rentIcon = L.divIcon({
+                        html: '<div class="custom-marker rent-marker"><i class="fa fa-key"></i></div>',
+                        iconSize: [30, 30],
+                        className: 'custom-div-icon'
+                    });
+
+                    // Añadir nuevos marcadores
+                    properties.forEach(function(property) {
+                        if (property.latitude &amp;&amp; property.longitude) {
+                            var icon = property.type_service === 'sale' ? saleIcon : rentIcon;
+
+                            var marker = L.marker([property.latitude, property.longitude], {icon: icon});
+
+                            // Popup con información de la propiedad
+                            var popupContent = `
+                                <div style="width: 250px;">
+                                    <img src="${property.image}" class="img-fluid mb-2 rounded" alt="${property.name}"/>
+                                    <h6>${property.default_code} - ${property.name}</h6>
+                                    <p class="mb-1 small">${property.address}</p>
+                                    <p class="mb-1"><strong>$${property.price.toLocaleString('es-CO')}</strong></p>
+                                    <p class="small">
+                                        <i class="fa fa-bed"></i> ${property.bedrooms || 0} |
+                                        <i class="fa fa-bath"></i> ${property.bathrooms || 0} |
+                                        <i class="fa fa-expand"></i> ${property.area || 0} m²
+                                    </p>
+                                    <a href="/property/${property.id}" class="btn btn-sm btn-primary w-100">Ver Detalles</a>
+                                </div>
+                            `;
+
+                            marker.bindPopup(popupContent);
+                            markerGroup.addLayer(marker);
+                            markers.push(marker);
+                        }
+                    });
+
+                    // Ajustar zoom para mostrar todos los marcadores
+                    if (markers.length &gt; 0) {
+                        var group = new L.featureGroup(markers);
+                        map.fitBounds(group.getBounds().pad(0.1));
+                    }
+                }
+
+                function centerMap(lat, lng) {
+                    if (lat &amp;&amp; lng) {
+                        map.setView([lat, lng], 16);
+                        // Buscar y abrir el popup del marcador correspondiente
+                        markers.forEach(function(marker) {
+                            var pos = marker.getLatLng();
+                            if (Math.abs(pos.lat - lat) &lt; 0.0001 &amp;&amp; Math.abs(pos.lng - lng) &lt; 0.0001) {
+                                marker.openPopup();
+                            }
+                        });
+                    }
+                }
+
+                function viewProperty(propertyId) {
+                    window.open('/property/' + propertyId, '_blank');
+                }
+
+                function addToCompare(propertyId) {
+                    if (compareList.length &gt;= 4) {
+                        alert('Puedes comparar máximo 4 propiedades');
+                        return;
+                    }
+
+                    if (!compareList.includes(propertyId)) {
+                        compareList.push(propertyId);
+                        updateCompareBar();
+                    }
+                }
+
+                function updateCompareBar() {
+                    if (compareList.length &gt; 0) {
+                        $('#compare-bar').show();
+                        $('#compare-count').text(compareList.length);
+                    } else {
+                        $('#compare-bar').hide();
+                    }
+                }
+
+                function compareProperties() {
+                    if (compareList.length &lt; 2) {
+                        alert('Selecciona al menos 2 propiedades para comparar');
+                        return;
+                    }
+                    window.location.href = '/properties/compare?ids=' + compareList.join(',');
+                }
+
+                function clearComparison() {
+                    compareList = [];
+                    updateCompareBar();
+                }
+
+                function clearFilters() {
+                    $('#property-filters')[0].reset();
+                    loadProperties();
+                }
+
+                // Serializar formulario a objeto
+                $.fn.serializeObject = function() {
+                    var o = {};
+                    var a = this.serializeArray();
+                    $.each(a, function() {
+                        if (o[this.name]) {
+                            if (!o[this.name].push) {
+                                o[this.name] = [o[this.name]];
+                            }
+                            o[this.name].push(this.value || '');
+                        } else {
+                            o[this.name] = this.value || '';
+                        }
+                    });
+                    return o;
+                };
+
+                // Filtros en tiempo real
+                $('#property-filters').on('submit', function(e) {
+                    e.preventDefault();
+                    loadProperties();
+                });
+            </script>
+
+            <!-- Estilos para los marcadores personalizados -->
+            <style>
+                .custom-marker {
+                    width: 30px;
+                    height: 30px;
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    color: white;
+                    font-size: 16px;
+                    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+                }
+
+                .sale-marker {
+                    background-color: #007bff;
+                }
+
+                .rent-marker {
+                    background-color: #17a2b8;
+                }
+
+                .property-card:hover {
+                    box-shadow: 0 4px 8px rgba(0,0,0,0.1) !important;
+                    cursor: pointer;
+                }
+
+                .properties-sidebar {
+                    background-color: #f8f9fa;
+                    border-right: 1px solid #dee2e6;
+                }
+            </style>
+        </t>
+    </template>
+</odoo>

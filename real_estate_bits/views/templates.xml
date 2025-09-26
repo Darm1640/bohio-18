@@ -1,0 +1,1072 @@
+<odoo>
+    <data>
+        <template id="search_property" name="Search Properties">
+            <t t-call="website.layout">
+                <div class="search_property" t-attf-style="background-image:url(/web/image/website/#{website.id}/property_wall_image)">
+                    <form action="/properties-results" method="GET" class="search_property_form">
+                        <div class="container">
+                            <div class="row justify-content-center">
+                                <div class="col-lg-8 col-md-12">
+                                    <div class="form_data_block p-4">
+                                        <div class="mb-3">
+                                            <div class="btn-group" role="group">
+                                                <input type="radio" class="btn-check" name="property_for" id="property_for_sale" value="sale" checked="checked"/>
+                                                <label class="btn btn-outline-primary" for="property_for_sale">Sale</label>
+        
+                                                <input type="radio" class="btn-check" name="property_for" id="property_for_rent" value="rent"/>
+                                                <label class="btn btn-outline-primary" for="property_for_rent">Rent</label>
+                                            </div>
+                                        </div>
+                                        <div class="row g-2">
+                                            <div class="col-md-4">
+                                                <select class="form-select" id="city" name="city">
+                                                    <option value="">Select City</option>
+                                                    <t t-foreach="cities" t-as="city">
+                                                        <option t-att-value="city"><t t-esc="city"/></option>
+                                                    </t>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <select class="form-select" id="property_type_id" name="property_type_id">
+                                                    <option value="">Select Property Type</option>
+                                                    <t t-foreach="property_type_ids" t-as="property_type">
+                                                        <option t-att-value="property_type"><t t-esc="property_type"/></option>
+                                                    </t>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <input type="text" class="form-control" id="property_name" name="property_name" placeholder="Search Properties"/>
+                                            </div>
+                                        </div>
+                                        <div class="row g-2 mt-2">
+                                            <div class="col-md-6">
+                                                <div class="input-group">
+                                                    <span class="input-group-text" t-if="position == 'before'" t-esc="symbol"/>
+                                                    <input type="text" class="form-control" placeholder="Amount From" id="amount_from" name="amount_from"/>
+                                                    <span class="input-group-text" t-if="position == 'after'" t-esc="symbol"/>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="input-group">
+                                                    <span class="input-group-text" t-if="position == 'before'" t-esc="symbol"/>
+                                                    <input type="text" class="form-control" placeholder="Amount To" id="amount_to" name="amount_to"/>
+                                                    <span class="input-group-text" t-if="position == 'after'" t-esc="symbol"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="collapse mt-3" id="advance_searching_block">
+                                            <!-- Advanced search fields -->
+                                            <div class="row g-2">
+                                                <div class="col-md-6">
+                                                    <select class="form-select" id="furnishing" name="furnishing">
+                                                        <option value="">Select Furnishing</option>
+                                                        <option value="unfurnished">Unfurnished</option>
+                                                        <option value="semi_furnished">Semi Furnished</option>
+                                                        <option value="fully_furnished">Fully Furnished</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <input type="number" class="form-control" placeholder="Number of Bedrooms" id="num_bedrooms" name="num_bedrooms"/>
+                                                </div>
+                                            </div>
+                                            <!-- More advanced fields... -->
+                                        </div>
+                                        <div class="text-end mt-2">
+                                            <button class="btn btn-link text-light" type="button" data-bs-toggle="collapse" data-bs-target="#advance_searching_block" id="advance_searching">
+                                                Advanced Search
+                                            </button>
+                                        </div>
+                                        <div class="text-center mt-3">
+                                            <button type="submit" class="btn btn-primary w-50">
+                                                <i class="fa fa-search"/> Search
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+        
+                <div class="container mt-4">
+                    <t t-if="with_offer_property_ids">
+                        <h2 class="font-weight-bold mb-3">Offers</h2>
+                        <div class="owl-carousel owl-theme">
+                            <t t-foreach="with_offer_property_ids" t-as="property">
+                                <div class="item">
+                                    <form action="/property-details" method="GET" class="property_item">
+                                        <input type="hidden" name="search_url" t-att-value="offer_search_url"/>
+                                        <input type="hidden" name="property_id" t-att-value="property.id"/>
+                                        <div t-attf-class="badge #{property.property_type == 'rent' ? 'bg-info' : 'bg-primary'}">
+                                            <t t-esc="property.property_type"/>
+                                        </div>
+                                        <img t-att-src="'/web/image/product.template/%s/image_1920' % property.id" class="img-fluid" alt="Property Image"/>
+                                        <div class="p-2">
+                                            <h5 class="mb-1" t-field="property.name"/>
+                                            <p class="mb-0" t-field="property.list_price" t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
+                                        </div>
+                                    </form>
+                                </div>
+                            </t>
+                        </div>
+                    </t>
+        
+                    <t t-if="cities_data">
+                        <h2 class="font-weight-bold mt-5 mb-3">Cities</h2>
+                        <div class="owl-carousel owl-theme">
+                            <t t-foreach="cities_data" t-as="city_data">
+                                <div class="item">
+                                    <a t-attf-href="{{cities_search_url}}{{city_data[0]}}" class="text-decoration-none">
+                                        <div class="position-relative">
+                                            <img t-att-src="city_data[1]" class="img-fluid" alt="City Image"/>
+                                            <div class="position-absolute top-0 start-0 p-3 text-white">
+                                                <h5 t-esc="city_data[0]"/>
+                                                <div>Sale: <t t-esc="city_data[7]"/> / <t t-esc="city_data[6]"/></div>
+                                                <div>Rent: <t t-esc="city_data[4]"/> / <t t-esc="city_data[3]"/></div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </t>
+                        </div>
+                    </t>
+        
+                    <t t-if="recent_updated_properties_ids">
+                        <h2 class="font-weight-bold mt-5 mb-3">Recently Updated</h2>
+                        <div class="owl-carousel owl-theme">
+                            <t t-foreach="recent_updated_properties_ids" t-as="property">
+                                <div class="item">
+                                    <form action="/property-details" method="GET" class="property_item">
+                                        <input type="hidden" name="search_url" t-att-value="recently_updated_search_url"/>
+                                        <input type="hidden" name="property_id" t-att-value="property.id"/>
+                                        <div t-attf-class="badge #{property.property_type == 'rent' ? 'bg-info' : 'bg-primary'}">
+                                            <t t-esc="property.property_type"/>
+                                        </div>
+                                        <img t-att-src="'/web/image/product.template/%s/image_1920' % property.id" class="img-fluid" alt="Property Image"/>
+                                        <div class="p-2">
+                                            <h5 class="mb-1" t-field="property.name"/>
+                                            <p class="mb-0" t-field="property.list_price" t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
+                                        </div>
+                                    </form>
+                                </div>
+                            </t>
+                        </div>
+                    </t>
+                </div>
+            </t>
+        </template>
+        <template id="properties_results" name="Searched Properties">
+            <t t-call="website.layout">
+                <div class="container mt-3">
+                    <t t-call="real_estate_bits.navigate_breadcrumb"/>
+                    
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <t t-call="portal.pager"/>
+                        </div>
+                    </div>
+        
+                    <div class="row">
+                        <t t-foreach="property_ids" t-as="property">
+                            <div class="col-12 mb-4">
+                                <div class="card">
+                                    <div class="row g-0">
+                                        <div class="col-md-4">
+                                            <img t-att-src="'/web/image/product.template/%s/image_1920' % property.id" class="img-fluid rounded-start" alt="Property Image"/>
+                                            <t t-if="property.offer_available() and not need_label">
+                                                <span class="badge bg-success position-absolute top-0 start-0 m-2">Offer</span>
+                                            </t>
+                                            <t t-if="need_label">
+                                                <span t-attf-class="badge position-absolute top-0 start-0 m-2 #{property.property_type == 'rent' ? 'bg-info' : 'bg-primary'}">
+                                                    <t t-esc="property.property_type.capitalize()"/>
+                                                </span>
+                                            </t>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="card-body">
+                                                <h5 class="card-title">
+                                                    <a t-att-href="'/property-details?property_id=%s&amp;search_url=%s' % (property.id, search_url)" class="text-decoration-none">
+                                                        <t t-esc="property.name"/>
+                                                    </a>
+                                                </h5>
+                                                <p class="card-text">
+                                                    <t t-if="property.property_type == 'sale'">
+                                                        <span class="h5" t-field="property.list_price" t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
+                                                    </t>
+                                                    <t t-else="">
+                                                        <span class="h5" t-field="property.list_price" t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/> / Month
+                                                    </t>
+                                                </p>
+                                                <p class="card-text text-muted">
+                                                    <t t-esc="property.street"/> <t t-esc="property.street2"/>, 
+                                                    <t t-esc="property.city"/>, <t t-esc="property.state_id.name"/>, <t t-esc="property.country_id.name"/>
+                                                </p>
+                                                <div class="row g-3 mb-3">
+                                                    <div class="col-auto" title="Floor">
+                                                        <i class="fa fa-building"></i> <t t-esc="property.floor_number"/> Floor
+                                                    </div>
+                                                    <div class="col-auto" title="Bedrooms">
+                                                        <i class="fa fa-bed"></i> <t t-esc="property.num_bedrooms"/> Bedrooms
+                                                    </div>
+                                                    <div class="col-auto" title="Bathrooms">
+                                                        <i class="fa fa-bath"></i> <t t-esc="property.num_bathrooms"/> Bathrooms
+                                                    </div>
+                                                    <div class="col-auto" title="Living Area">
+                                                        <i class="fa fa-expand"></i> <t t-esc="property.property_area"/> m²
+                                                    </div>
+                                                </div>
+                                                <div class="row g-3">
+                                                    <div class="col-auto" t-if="property.air_conditioning">
+                                                        <span class="badge bg-light text-dark">Air Conditioning</span>
+                                                    </div>
+                                                    <div class="col-auto" t-if="property.furnished">
+                                                        <span class="badge bg-light text-dark">Furnished</span>
+                                                    </div>
+                                                    <div class="col-auto" t-if="property.garage">
+                                                        <span class="badge bg-light text-dark">Garage</span>
+                                                    </div>
+                                                    <div class="col-auto" t-if="property.garden">
+                                                        <span class="badge bg-light text-dark">Garden</span>
+                                                    </div>
+                                                </div>
+                                                <a t-att-href="'/property-details?property_id=%s&amp;search_url=%s' % (property.id, search_url)" class="btn btn-primary mt-3">View Details</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                        <t t-if="not property_ids">
+                            <div class="col-12">
+                                <div class="alert alert-info text-center">
+                                    <strong>No properties found for the provided criteria</strong>
+                                    <br/>
+                                    <a href="/search-property" class="btn btn-link">
+                                        <i class="fa fa-search"></i> Search Again
+                                    </a>
+                                </div>
+                            </div>
+                        </t>
+                    </div>
+        
+                    <div class="row mt-3">
+                        <div class="col-12">
+                            <t t-call="portal.pager"/>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+        <template id="property_details" name="Property Details">
+            <t t-call="website.layout">
+                <div class="property_details container-fluid">
+                    <div class="mt-3">
+                        <t t-call="real_estate_bits.navigate_breadcrumb"/>
+                    </div>
+
+
+                    <div id="property_carousal" class="carousel slide" data-ride="carousel"
+                         t-if="property_id.product_template_image_ids">
+                        <ol class="carousel-indicators">
+                            <t t-set="index" t-value="0"/>
+                            <t t-foreach="property_id.product_template_image_ids" t-as="image_id">
+                                <li data-target="#property_carousal" t-att-data-slide-to="index or '0'"
+                                    t-att-class="'active' if index==0 else ''"/>
+                                <t t-set="index" t-value="index+1"/>
+                            </t>
+                        </ol>
+                        <div class="carousel-inner">
+                            <t t-set="index" t-value="0"/>
+                            <t t-foreach="property_id.product_template_image_ids" t-as="image_id">
+                                <div t-attf-class="carousel-item {{'active' if index==0 else ''}}">
+                                    <img t-attf-src="/web/image/property.document/{{ image_id.id }}/image_file_data"
+                                         class="d-block carousel_image"/>
+                                    <t t-set="index" t-value="index+1"/>
+                                </div>
+                            </t>
+
+
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-target="#property_carousal"
+                                data-slide="prev">
+                            <span class="carousel-control-prev-icon"/>
+                            <span class="sr-only">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-target="#property_carousal"
+                                data-slide="next">
+                            <span class="carousel-control-next-icon"/>
+                            <span class="sr-only">Next</span>
+                        </button>
+                    </div>
+                    <div class="oe_structure"/>
+                    <div class="row my-3 py-3 border-top">
+                        <div class="col-lg-9 col-md-12 col-sm-12">
+                            <div class="property_title px-2">
+                                <h1 style="font-weight: bold;">
+                                    <span t-esc="property_id.name"/>
+                                    <span style="font-weight: bold;" class=" float-right"
+                                          t-if="property_id.property_for=='sale'"
+                                          t-field="property_id.expected_price"
+                                          t-options="{'widget': 'monetary', 'label_price': True}"/>
+                                    <span style="font-weight: bold;" class=" float-right text-muted" t-else="">
+                                        <span class="text-dark" t-field="property_id.rent_price"
+                                              t-options="{'widget': 'monetary', 'label_price': True}"/>
+                                        <small class="h4">/ Month</small>
+                                    </span>
+
+                                </h1>
+                                <h4>
+                                    <span t-attf-class="badge badge-pill tag_color_{{property_id.property_type_id.color}}"
+                                          t-field="property_id.property_type_id"/>
+
+                                </h4>
+                                <h5 class="text-muted">
+                                    <span t-field="property_id."/>
+                                    <span t-field="property_id.street"/>
+                                    <span t-field="property_id.street2"/>
+                                    <span t-field="property_id.city"/>
+                                    <span t-field="property_id.state_id"/>
+                                    <span t-field="property_id.country_id"/>
+                                    <span t-field="property_id.zip"/>
+                                </h5>
+                            </div>
+                            <div>
+                                <t t-foreach="property_id.image_gallery_doc_ids" t-as="i_id">
+                                    <a class="car_itm"
+                                       t-attf-href="/web/image/property.document/{{ i_id.id }}/image_file_data"
+                                       t-att-title="i_id.name" t-att-data-lcl-txt="i_id.doc_description"
+                                       t-attf-data-lcl-thumb="/web/image/property.document/{{ i_id.id }}/image_file_data">
+                                        View more Images...
+                                        <!--                                        <span t-attf-style="background-image: url(/web/image/property.document/{{ i_id.id }}/image_file_data);display: block;width: 40px;height: 40px;"/>-->
+                                    </a>
+                                </t>
+                                <t t-foreach="property_id.image_gallery_doc_ids" t-as="i_id">
+                                    <a class="car_itm"
+                                       t-attf-href="/web/image/property.document/{{ i_id.id }}/image_file_data"
+                                       t-att-title="i_id.name" t-att-data-lcl-txt="i_id.doc_description"
+                                       t-attf-data-lcl-thumb="/web/image/property.document/{{ i_id.id }}/image_file_data">
+                                        View more Images...
+                                        <!--                                        <span t-attf-style="background-image: url(/web/image/property.document/{{ i_id.id }}/image_file_data);display: block;width: 40px;height: 40px;"/>-->
+                                    </a>
+                                </t>
+                            </div>
+                            <div class="detail_block">
+                                <div class="property_specification">
+
+                                    <span class="info_container_detail" title="Bedrooms">
+                                        <div class="info_block">
+                                            <div class="font-weight-bold ">
+                                                <span t-field="property_id.bedrooms"/>
+                                                <img class="info_icon"
+                                                     src="/real_estate_bits/static/assets/icons/bad.png"/>
+                                            </div>
+                                            <div t-esc="'Bedrooms'"
+                                                 class=" text-muted"/>
+                                        </div>
+                                    </span>
+                                    <span class="info_container_detail" title="Facing">
+                                        <div class="info_block">
+                                            <div class="font-weight-bold ">
+                                                <span t-field="property_id.facing_direction"/>
+                                                <img class="info_icon"
+                                                     src="/real_estate_bits/static/assets/icons/facing.png"/>
+                                            </div>
+
+                                            <div t-esc="'Facing'"
+                                                 class=" text-muted"/>
+                                        </div>
+                                    </span>
+                                    <span class="info_container_detail" title="Floor">
+                                        <div class="info_block">
+                                            <div class="font-weight-bold ">
+                                                <span t-field="property_id.floor"/>
+                                                <img class="info_icon"
+                                                     src="/real_estate_bits/static/assets/icons/floor.png"/>
+                                            </div>
+                                            <div t-esc="'Floor'"
+                                                 class=" text-muted"/>
+                                        </div>
+                                    </span>
+                                    <span class="info_container_detail" title="Garage"
+                                          t-if="property_id.garage">
+                                        <div class="info_block"
+                                             t-if="property_id.garage">
+                                            <div class="font-weight-bold">1
+                                                <img class="info_icon"
+                                                     src="/real_estate_bits/static/assets/icons/garage.png"/>
+                                            </div>
+                                            <div t-esc="'Garage'"
+                                                 class=" text-muted"/>
+                                        </div>
+                                    </span>
+                                    <span class="info_container_detail" title="Garden" t-if="property_id.garden">
+                                        <div class="info_block">
+                                            <div class="font-weight-bold ">
+                                                <span t-esc="property_id.garden_type.capitalize()"/>
+                                                <img class="info_icon"
+                                                     src="/real_estate_bits/static/assets/icons/garden.png"/>
+                                            </div>
+                                            <div t-esc="'Garden'"
+                                                 class=" text-muted"/>
+                                        </div>
+                                    </span>
+                                    <span class="info_container_detail" title="Reception">
+                                        <div class="info_block">
+                                            <div class="font-weight-bold ">
+                                                <span t-field="property_id.reception"/>
+                                                <img class="info_icon"
+                                                     src="/real_estate_bits/static/assets/icons/reception.png"/>
+                                            </div>
+                                            <div t-esc="'Reception'"
+                                                 class=" text-muted"/>
+                                        </div>
+                                    </span>
+                                    <span class="info_container_detail" title="Furnishing">
+                                        <div class="info_block">
+                                            <div class="font-weight-bold ">
+                                                <span t-field="property_id.furnishing"/>
+                                                <img class="info_icon"
+                                                     src="/real_estate_bits/static/assets/icons/furnish.png"/>
+                                            </div>
+                                            <div t-esc="'Furnishing'"
+                                                 class=" text-muted"/>
+
+                                        </div>
+                                    </span>
+                                    <span class="info_container_detail" title="Security deposit"
+                                          t-if="property_id.property_for=='rent'">
+                                        <div class="info_block">
+                                            <div class="font-weight-bold ">
+                                                <span t-field="property_id.security_deposit_amount"/>
+                                                <img class="info_icon"
+                                                     src="/real_estate_bits/static/assets/icons/deposit.png"/>
+                                            </div>
+                                            <div t-esc="'Security'"
+                                                 class=" text-muted"/>
+                                        </div>
+                                    </span>
+                                    <span class="info_container_detail " title="Transaction">
+                                        <div class="info_block">
+                                            <div class="font-weight-bold ">
+                                                <span t-field="property_id.transaction"/>
+                                                <img class="info_icon"
+                                                     src="/real_estate_bits/static/assets/icons/tran.png"/>
+                                            </div>
+                                            <div t-esc="'Transaction'"
+                                                 class=" text-muted"/>
+                                        </div>
+                                    </span>
+                                    <span class="info_container_detail" title="Pet" t-if="property_id.pet_allowed">
+                                        <div class="info_block">
+                                            <div class="font-weight-bold ">
+                                                <!--                                                <span t-field="property_id.pet_allowed"/>-->
+                                                <span t-esc="'Allow'"/>
+                                                <img class="info_icon"
+                                                     src="/real_estate_bits/static/assets/icons/pet.png"/>
+                                            </div>
+                                            <div t-esc="'Pets'"
+                                                 class=" text-muted"/>
+                                        </div>
+                                    </span>
+
+                                    <span class="info_container_detail" title="Availability">
+                                        <div class="info_block">
+                                            <div class="font-weight-bold ">
+                                                <span t-field="property_id.availability"/>
+                                                <img class="info_icon"
+                                                     src="/real_estate_bits/static/assets/icons/avai.png"/>
+                                            </div>
+                                            <div t-esc="'Availability'"
+                                                 class=" text-muted"/>
+                                        </div>
+                                    </span>
+                                    <span class="info_container_detail" title="Balconies">
+                                        <div class="info_block">
+                                            <div class="font-weight-bold ">
+                                                <span t-field="property_id.balconies"/>
+                                                <img class="info_icon"
+                                                     src="/real_estate_bits/static/assets/icons/balc.png"/>
+                                            </div>
+                                            <div t-esc="'Balconies'"
+                                                 class=" text-muted"/>
+                                        </div>
+                                    </span>
+                                    <span class="info_container_detail" title="Living Area">
+                                        <div class="info_block">
+                                            <div>
+                                                <span class="font-weight-bold uom_txt"
+                                                      t-field="property_id.living_area"/>
+                                                <select class="form-control d-inline-block p-0 h-auto font-weight-bold border-0 w-auto uom_id"
+                                                        t-att-data-property_uom="property_id.area_uom_id.id"
+                                                        t-att-data-property_area="property_id.living_area"
+                                                        id="living_uom_id" name="uom_id">
+                                                    <t t-foreach="uom_ids" t-as="uom_id">
+                                                        <option t-att-value="uom_id.id" t-field="uom_id.name"
+                                                                t-att-selected="uom_id.id==property_id.area_uom_id.id"/>
+                                                    </t>
+                                                </select>
+                                                <!--                                                <span class="font-weight-bold"-->
+                                                <!--                                                      t-field="property_id.area_uom_id"/>-->
+                                                <img class="info_icon"
+                                                     src="/real_estate_bits/static/assets/icons/larea.png"/>
+                                            </div>
+
+                                            <div t-esc="'Living Area'"
+                                                 class=" text-muted"/>
+                                        </div>
+                                    </span>
+                                    <span class="info_container_detail" title="Super Area">
+                                        <span class="info_block">
+                                            <div>
+                                                <span class="font-weight-bold uom_txt"
+                                                      t-field="property_id.super_area"/>
+                                                <select class="form-control d-inline-block p-0 h-auto font-weight-bold border-0 w-auto uom_id"
+                                                        t-att-data-property_uom="property_id.area_uom_id.id"
+                                                        t-att-data-property_area="property_id.super_area"
+                                                        id="super_uom_id" name="uom_id">
+                                                    <t t-foreach="uom_ids" t-as="uom_id">
+                                                        <option t-att-value="uom_id.id" t-field="uom_id.name"
+                                                                t-att-selected="uom_id.id==property_id.area_uom_id.id"/>
+                                                    </t>
+                                                </select>
+                                                <!--                                                <span class="font-weight-bold"-->
+                                                <!--                                                      t-field="property_id.area_uom_id"/>-->
+                                                <img class="info_icon"
+                                                     src="/real_estate_bits/static/assets/icons/sarea.png"/>
+                                            </div>
+                                            <div t-esc="'Super Area'"
+                                                 class=" text-muted"/>
+                                        </span>
+                                    </span>
+
+                                </div>
+
+                            </div>
+                            <div class="detail_block">
+                                <t t-if="property_id.description">
+                                    <h2 class="font-weight-bold ">Overview</h2>
+                                    <span class="text-justify readable_block"
+                                          t-field="property_id.description"/>
+                                    <button class="read_btn btn  btn-link" onclick="myFunction(this)">Read More</button>
+                                </t>
+                            </div>
+                            <div class="detail_block">
+                                <t t-set="usp_ids" t-value="property_id.property_usp_ids"/>
+                                <h2 t-if="usp_ids" class="font-weight-bold ">Unique Points</h2>
+
+                                <t t-foreach="usp_ids" t-as="usp_id">
+                                    <div class="row my-1  border-top py-2">
+                                        <div class="col-lg-2 col-md-2 col-sm-12">
+                                            <b t-field="usp_id.name" class="h6 text-muted"/>
+                                        </div>
+                                        <div class="col lg-10 col-md-10 col-sm-12">
+                                            <span class="text-justify" t-field="usp_id.description"/>
+                                        </div>
+                                    </div>
+                                </t>
+
+
+                                <div class="alert alert-info">
+                                    <button type="button" class="border-0 btn btn-primary  " data-toggle="modal"
+
+                                            data-target="#download_file_form">
+                                        <i class="fa fa-download"/>
+                                        Download
+                                    </button>
+                                    property brochure as PDF from here
+
+                                    <div class="modal" id="download_file_form" tabindex="-1" role="dialog">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <form action="/request-for-property" method="GET"
+                                                      class="request_for_property_form p-0">
+
+
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title">
+                                                            <t t-esc="property_id.name"/>
+                                                        </h5>
+                                                        <button type="button" class="close" data-dismiss="modal"
+                                                                aria-label="Close">
+                                                            <span>&amp;times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <input type="hidden" class="search_url" name="search_url"
+                                                               t-att-value="search_url"/>
+                                                        <input type="hidden" class="form-control  my-2" id="property_id"
+                                                               name="property_id" t-att-value="property_id.id"/>
+                                                        <input type="hidden" class="form-control  my-2" id="user_id"
+                                                               name="user_id" t-att-value="request.env.user.id"/>
+                                                        <input type="text" class="form-control  my-2" id="client_name"
+                                                               name="client_name" placeholder="Name"
+                                                               required="required"/>
+                                                        <input type="text" class="form-control  my-2" id="client_email"
+                                                               name="client_email" placeholder="Email"
+                                                               required="required"/>
+                                                        <input type="text" class="form-control  my-2" id="client_mobile"
+                                                               name="client_mobile" placeholder="Mobile"
+                                                               required="required"/>
+                                                        <input type="radio" class="form-control d-none  my-2"
+                                                               id="download_pdf"
+                                                               name="download_pdf" checked="checked"/>
+                                                        <textarea id="client_text" name="client_text"
+                                                                  required="required"
+                                                                  class="form-control  my-2"
+                                                                  placeholder="Explain your note"/>
+
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="submit" value="submit" id="submit_download"
+                                                                class="btn btn-primary "
+
+                                                        >Download
+                                                        </button>
+                                                        <button type="button" class="btn btn-secondary"
+                                                                data-dismiss="modal">Close
+                                                        </button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <t t-set="sale_offer" t-value="property_id.sale_offer_ids.filtered(lambda p:(p.start_date or p.end_date) and p.state in ['active','inactive'])"/>
+                            <t t-set="rent_offer" t-value="property_id.rent_offer_ids.filtered(lambda p:(p.start_date or p.end_date) and p.state in ['active','inactive'])"/>
+
+                            <div class="detail_block" t-if="sale_offer or rent_offer">
+
+                                <h2 class="font-weight-bold ">Offers</h2>
+                                <div class="row no-gutters">
+                                    <t t-foreach="sale_offer"
+                                       t-as="offer_id">
+                                        <t t-if="offer_id.state!= 'expired' and (not offer_id.partner_id or offer_id.partner_id.id == request.env.user.partner_id.id)">
+                                            <div class="col-lg-6 col-md-6 col-md-12">
+                                                <div class="card text-white  m-2">
+                                                    <div class="card-header border-0 text-dark"
+                                                         style="background-color: #f7f7f700 !important;">
+                                                        <b style="font-size:1.3em;" t-field="offer_id.name"/>
+                                                        <i t-attf-class="float-right badge badge-pill badge-success {{'' if offer_id.state== 'active' else 'd-none'}}"
+                                                           t-esc="'Active'"/>
+                                                        <i t-attf-class="float-right badge badge-pill badge-info {{'d-none' if offer_id.state== 'active' else ''}}"
+                                                           t-esc="'Upcoming'"/>
+                                                    </div>
+                                                    <div class="card-body" style="padding-top:0;">
+                                                        <div class="mb-1">
+                                                            Price:
+                                                            <span>
+                                                                <i t-field="offer_id.offer_price"
+                                                                   class="font-weight-bold "/>
+                                                            </span>
+                                                        </div>
+                                                        <div class="mb-1">Offer Period:
+                                                            <span >
+                                                                <i t-field="offer_id.start_date" class="h5 font-weight-bold"/>
+                                                                <span class="font-weight-bold ">to</span>
+                                                                <i t-field="offer_id.end_date" class="h5  font-weight-bold"/>
+                                                            </span>
+                                                        </div>
+<!--                                                        </h5>-->
+                                                        <p class="card-text  text-muted" style="font-size: 15px;">
+                                                            <t t-if="offer_id.description">
+                                                                <span class="text-justify readable_block"
+                                                                      t-field="offer_id.description"/>
+                                                                <button class="read_btn btn btn-sm btn-link"
+                                                                        onclick="myFunction(this)">Read More
+                                                                </button>
+
+                                                            </t>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </t>
+                                    </t>
+                                    <t t-foreach="rent_offer" t-as="rent_offer_id">
+                                        <t t-if="rent_offer_id.state!= 'expired' and (not rent_offer_id.partner_id or rent_offer_id.partner_id.id == request.env.user.partner_id.id)">
+                                            <div class="col-lg-6 col-md-6 col-md-12">
+                                                <div class="card text-white  m-2">
+                                                    <div class="card-header border-0 text-dark"
+                                                         style="background-color: #f7f7f700 !important;">
+                                                        <b style="font-size:1.3em;" t-field="rent_offer_id.name"/>
+                                                        <i t-attf-class="float-right badge badge-pill badge-success {{'' if rent_offer_id.state== 'active' else 'd-none'}}"
+                                                           t-esc="'Active'"/>
+                                                        <i t-attf-class="float-right badge badge-pill badge-light {{'d-none' if rent_offer_id.state== 'active' else ''}}"
+                                                           t-esc="'Upcoming'"/>
+                                                    </div>
+                                                    <div class="card-body" style="padding-top:0;">
+                                                        <!--                                                        <h6 class="card-title">-->
+                                                        <div class="mb-1">
+                                                            Rent:
+
+                                                            <span>
+                                                                <i t-field="rent_offer_id.offer_price"
+                                                                   class="font-weight-bold"/>
+                                                                / Month
+                                                            </span>
+                                                        </div>
+                                                        <div class="mb-1">Minimum Rent Duration:
+                                                            <span>
+                                                                <i t-field="rent_offer_id.duration"
+                                                                   class="font-weight-bold"/>
+                                                                <i t-field="rent_offer_id.duration_unit"
+                                                                   class="font-weight-bold"/>
+                                                            </span>
+                                                        </div>
+                                                        <div class="mb-1">Offer Period:
+                                                            <span>
+                                                                <i t-field="rent_offer_id.start_date"
+                                                                   class="h5  font-weight-bold"/>
+                                                                <span class="font-weight-bold ">to</span>
+                                                                <i t-field="rent_offer_id.end_date"
+                                                                   class="h5  font-weight-bold"/>
+                                                            </span>
+                                                        </div>
+                                                        <!--                                                        </h6>-->
+                                                        <p class="card-text text-muted" style="font-size: 15px;">
+                                                            <t t-if="rent_offer_id.description">
+                                                                <span class="text-justify readable_block"
+                                                                      t-field="rent_offer_id.description"/>
+                                                                <button class="read_btn btn btn-sm btn-link"
+                                                                        onclick="myFunction(this)">Read More
+                                                                </button>
+
+                                                            </t>
+
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                            <!--                                        <div t-attf-class="row mx-2 mb-1 {{'bg-info' if offer_id.state== 'inactive' else 'bg-success'}}">-->
+                                            <!--                                            <div class="col-lg-3 col-md-3 col-sm-12">-->
+                                            <!--                                                <i t-field="offer_id.name" class="h5 "/>-->
+
+                                            <!--                                            </div>-->
+
+                                            <!--                                            <div class="col-lg-3 col-md-3 col-sm-12">-->
+                                            <!--                                                <i t-field="offer_id.start_date" class="h5 "/>-->
+
+                                            <!--                                            </div>-->
+                                            <!--                                            <div class="col-lg-3 col-md-3 col-sm-12">-->
+                                            <!--                                                <i t-field="offer_id.end_date" class="h5 "/>-->
+
+                                            <!--                                            </div>-->
+                                            <!--                                            <div class="col-lg-3 col-md-3 col-sm-12">-->
+                                            <!--                                                <i t-field="offer_id.offer_price" class="h5 "/>-->
+
+                                            <!--                                            </div>-->
+                                            <!--                                            <div class=" col-12">-->
+                                            <!--                                                <span class="text-justify" t-field="offer_id.description"/>-->
+                                            <!--                                            </div>-->
+
+                                            <!--                                        </div>-->
+                                        </t>
+                                    </t>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-lg-3 col-md-12 col-sm-12 p-0">
+                            <div class="contact_form border p-2 mx-3">
+                                <div>
+                                    <img t-attf-src="data:image/*;base64,{{property_id.responsible_person_id.image_1920}}"
+                                         class="img img-fluid" alt="" style="border-radius: 30px"/>
+
+                                    <div class="font-weight-bold h4 m-0" t-field="property_id.responsible_person_id"/>
+                                    <a t-attf-href="tel:{{property_id.responsible_person_id.phone}}">
+                                        <div class="fa fa-phone d-block pt-2">
+
+                                            <span t-field="property_id.responsible_person_id.phone"/>
+                                        </div>
+                                    </a>
+                                    <a t-attf-href="mailto:{{ property_id.responsible_person_id.email }}">
+                                        <div class="fa fa-envelope d-block pt-2">
+                                            <span t-field="property_id.responsible_person_id.email"/>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <hr/>
+                                <div class="font-weight-bold text-center alert alert-info">Connect with Dealer
+                                </div>
+                                <form action="/request-for-property" method="GET" id="property_request_from"
+                                      class="request_for_property_form p-0 text-center">
+                                    <input type="hidden" class="search_url" name="search_url" t-att-value="search_url"/>
+                                    <input type="hidden" class="form-control  my-2" id="property_id"
+                                           name="property_id" t-att-value="property_id.id"/>
+                                    <input type="hidden" class="form-control  my-2" id="contact_me"
+                                           name="contact_me" t-att-value="1"/>
+                                    <input type="hidden" class="form-control  my-2" id="user_id" required="required"
+                                           name="user_id" t-att-value="property_id.user_id.id"/>
+
+                                    <input type="hidden" class="form-control  my-2" id="customer_id" required="required"
+                                           name="customer_id" t-att-value="request.env.user.id"/>
+                                    <input type="text" class="form-control  my-2" id="client_name" required="required"
+                                           name="client_name" placeholder="Name"/>
+                                    <input type="text" class="form-control  my-2" id="client_email" required="required"
+                                           name="client_email" placeholder="Email"/>
+                                    <input type="text" class="form-control  my-2" id="client_mobile" required="required"
+                                           name="client_mobile" placeholder="Mobile"/>
+
+                                    <textarea id="client_text" name="client_text" class="form-control  my-2"
+                                              required="required"
+                                              placeholder="Explain your note"/>
+
+                                    <div id="submit_success_response" class="alert alert-success" style="display:none;">
+                                        Your request submitted successfully, Dealer will contact you.
+                                    </div>
+                                    <button type="submit" value="submit" id="submit_request" class="btn btn-primary w-50 my-2"
+                                    >Request
+                                    </button>
+                                </form>
+                            </div>
+                            <div class="oe_structure"/>
+                        </div>
+                    </div>
+                    <div class="oe_structure"/>
+                    <div class="detail_block" t-if="similar_property_ids">
+                        <div>
+                            <h2 class="font-weight-bold ">Similar Properties</h2>
+
+                        </div>
+                        <div class=" owl-carousel-similar owl-carousel owl-theme  owl-drag">
+                            <t t-foreach="similar_property_ids" t-as="similar_property_id">
+                                <div t-attf-class="col-lg-3_col-md-4_col-sm-12  "
+                                     t-if="similar_property_id!=property_id">
+                                    <form action="/property-details" method="GET" class="property_item">
+                                        <input type="hidden" class="search_url" name="search_url"
+                                               t-att-value="search_url"/>
+                                        <input type="hidden" class="similar_property_id" name="property_id"
+                                               t-att-value="similar_property_id.id"/>
+
+                                        <button type="submit" value="submit" style="background:#fff;"
+                                                class="p-0 m-0 w-100 no-outline border-0">
+
+                                            <span t-field="similar_property_id.image" class="property_image"
+                                                  t-options='{"widget": "image", "class": "offer_carousel_image", }'
+                                                  role="img"/>
+
+                                            <div class=" px-2  py-2  row no-gutters">
+
+                                                <span class="col-7 text-left font-weight-bold"
+                                                      t-field="similar_property_id.name"/>
+                                                <span class="col-5 text-right font-weight-bold"
+                                                      t-if="similar_property_id.property_for =='sale'"
+                                                      t-field="similar_property_id.expected_price"
+                                                      t-options="{'widget': 'monetary', 'label_price': True}"/>
+                                                <span class="col-5 text-right text-muted" t-else=""><span
+                                                        class="text-dark font-weight-bold"
+                                                        t-field="similar_property_id.rent_price"
+                                                        t-options="{'widget': 'monetary', 'label_price': True}"/>/Month
+                                                </span>
+                                            </div>
+                                            <div class="property_specification text-left">
+                                                <span class="info_container" title="Floor"
+                                                      t-if="property_id.floor == similar_property_id.floor">
+                                                    <div class="info_block">
+                                                        <div class="font-weight-bold ">
+                                                            <span t-field="similar_property_id.floor"/>
+                                                            <img class="info_icon"
+                                                                 src="/real_estate_bits/static/assets/icons/floor.png"/>
+                                                        </div>
+                                                        <div t-esc="'Floor'"
+                                                             class=" text-muted d-xs-none d-sm-none d-md-none d-lg-inline-block"/>
+                                                    </div>
+                                                </span>
+                                                <span class="info_container" title="Bedrooms"
+                                                      t-if="property_id.bedrooms == similar_property_id.bedrooms">
+                                                    <div class="info_block">
+                                                        <div class="font-weight-bold ">
+                                                            <span t-field="similar_property_id.bedrooms"/>
+                                                            <img class="info_icon"
+                                                                 src="/real_estate_bits/static/assets/icons/bad.png"/>
+                                                        </div>
+                                                        <div t-esc="'Bedrooms'"
+                                                             class=" text-muted d-xs-none d-sm-none d-md-none d-lg-inline-block"/>
+                                                    </div>
+                                                </span>
+
+                                                <span class="info_container d-xs-none d-sm-none d-md-inline-block"
+                                                      t-if="property_id.facing_direction == similar_property_id.facing_direction"
+                                                      title="Facing">
+                                                    <div class="info_block">
+                                                        <div class="font-weight-bold ">
+                                                            <span t-field="similar_property_id.facing_direction"/>
+                                                            <img class="info_icon"
+                                                                 src="/real_estate_bits/static/assets/icons/facing.png"/>
+                                                        </div>
+
+                                                        <div t-esc="'Facing'"
+                                                             class=" text-muted d-xs-none d-sm-none d-md-none d-lg-inline-block"/>
+                                                    </div>
+                                                </span>
+                                                <span class="info_container d-xs-none d-sm-none d-md-inline-block"
+                                                      t-if="property_id.garage == similar_property_id.garage"
+                                                      title="Garage">
+                                                    <div class="info_block">
+                                                        <div class="font-weight-bold">1
+                                                            <img class="info_icon"
+                                                                 src="/real_estate_bits/static/assets/icons/garage.png"/>
+                                                        </div>
+                                                        <div t-esc="'Garage'"
+                                                             class=" text-muted d-xs-none d-sm-none d-md-none d-lg-inline-block"/>
+                                                    </div>
+                                                </span>
+                                                <span class="info_container" title="Furnishing"
+                                                      t-if="property_id.furnishing == similar_property_id.furnishing">
+                                                    <div class="info_block">
+                                                        <div class="font-weight-bold ">
+                                                            <span t-field="similar_property_id.furnishing"/>
+                                                            <img class="info_icon"
+                                                                 src="/real_estate_bits/static/assets/icons/furnish.png"/>
+                                                        </div>
+                                                        <div t-esc="'Furnishing'"
+                                                             class=" text-muted d-xs-none d-sm-none d-md-none d-lg-inline-block"/>
+
+                                                    </div>
+                                                </span>
+                                                <span class="info_container d-xs-none d-sm-none d-md-inline-block"
+                                                      t-if="property_id.transaction == similar_property_id.transaction"
+                                                      title="Transaction">
+                                                    <div class="info_block">
+                                                        <div class="font-weight-bold ">
+                                                            <span t-field="similar_property_id.transaction"/>
+                                                            <img class="info_icon"
+                                                                 src="/real_estate_bits/static/assets/icons/tran.png"/>
+                                                        </div>
+                                                        <div t-esc="'Transaction'"
+                                                             class=" text-muted d-xs-none d-sm-none d-md-none d-lg-inline-block"/>
+                                                    </div>
+                                                </span>
+                                                <span class="info_container"
+                                                      t-if="property_id.availability == similar_property_id.availability"
+                                                      title="Availability">
+                                                    <div class="info_block">
+                                                        <div class="font-weight-bold ">
+                                                            <span t-field="similar_property_id.availability"/>
+                                                            <img class="info_icon"
+                                                                 src="/real_estate_bits/static/assets/icons/avai.png"/>
+                                                        </div>
+                                                        <div t-esc="'Availability'"
+                                                             class=" text-muted d-xs-none d-sm-none d-md-none d-lg-inline-block"/>
+                                                    </div>
+                                                </span>
+                                                <span class="info_container d-xs-none d-sm-none d-md-inline-block"
+                                                      t-if="property_id.balconies == similar_property_id.balconies"
+                                                      title="Balconies">
+                                                    <div class="info_block">
+                                                        <div class="font-weight-bold ">
+                                                            <span t-field="similar_property_id.balconies"/>
+                                                            <img class="info_icon"
+                                                                 src="/real_estate_bits/static/assets/icons/balc.png"/>
+                                                        </div>
+                                                        <div t-esc="'Balconies'"
+                                                             class=" text-muted d-xs-none d-sm-none d-md-none d-lg-inline-block"/>
+                                                    </div>
+                                                </span>
+                                                <span class="info_container" title="Living Area"
+                                                      t-if="property_id.living_area == similar_property_id.living_area">
+                                                    <div class="info_block">
+                                                        <div>
+                                                            <span class="font-weight-bold uom_txt"
+                                                                  t-field="similar_property_id.living_area"/>
+                                                            <span class="font-weight-bold uom_txt"
+                                                                  t-field="similar_property_id.area_uom_id"/>
+
+                                                            <!--                                                            <span class="font-weight-bold"-->
+                                                            <!--                                                                  t-field="similar_property_id.area_uom_id"/>-->
+                                                            <img class="info_icon"
+                                                                 src="/real_estate_bits/static/assets/icons/larea.png"/>
+                                                        </div>
+
+                                                        <div t-esc="'Living Area'"
+                                                             class=" text-muted d-xs-none d-sm-none d-md-none d-lg-inline-block"/>
+                                                    </div>
+                                                </span>
+
+                                                <span class="info_container d-xs-none d-sm-none d-md-inline-block"
+                                                      t-if="property_id.super_area == similar_property_id.super_area"
+                                                      title="Super Area">
+                                                    <span class="info_block">
+                                                        <div>
+                                                            <span class="font-weight-bold uom_txt"
+                                                                  t-field="similar_property_id.super_area"/>
+                                                            <span class="font-weight-bold uom_txt"
+                                                                  t-field="similar_property_id.area_uom_id"/>
+
+                                                            <!--                                                            <span class="font-weight-bold"-->
+                                                            <!--                                                                  t-field="similar_property_id.area_uom_id"/>-->
+                                                            <img class="info_icon"
+                                                                 src="/real_estate_bits/static/assets/icons/sarea.png"/>
+                                                        </div>
+                                                        <div t-esc="'Super Area'"
+                                                             class=" text-muted d-xs-none d-sm-none d-md-none d-lg-inline-block"/>
+                                                    </span>
+                                                </span>
+
+                                            </div>
+
+                                        </button>
+
+
+                                    </form>
+                                </div>
+                            </t>
+
+
+                        </div>
+
+                    </div>
+                    <div class="oe_structure"/>
+                </div>
+                <script>
+                    function myFunction(e) {
+
+                    if (e.innerHTML=='Read Less'){
+                    e.innerHTML='Read More'
+                    e.previousElementSibling.style.maxHeight='75px';
+                    }
+                    else{
+                    e.innerHTML='Read Less'
+                    e.previousElementSibling.style.maxHeight='100%';
+                    }
+                    }
+                </script>
+            </t>
+        </template>
+
+        <template name="breadcrumb" id="navigate_breadcrumb">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb" style="width: fit-content;">
+                    <li class="breadcrumb-item">
+                        <a href="/search-property">
+                            <i class="fa fa-home"/>
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item active">
+                        <a t-if="property_id"
+                           t-att-href="search_url">
+                            <span t-field="property_id.property_for"/>
+                        </a>
+                        <t t-else="" t-esc="property_for"/>
+                    </li>
+                    <li t-if="property_id" class="breadcrumb-item active">
+                        <!--                        <a t-if="vb_id"-->
+                        <!--                           t-att-href="booking_obj.create_breadcrumb_url(model_id=model_id,search_url=search_url,)">-->
+                        <!--                            <t t-esc="model_id.brand_id.name"/>-->
+                        <!--                        </a>-->
+                        <!--                        <t t-else="">-->
+                        <t t-esc="property_id.name"/>
+                        <!--                        </t>-->
+                    </li>
+                    <!--                    <li t-if="vb_id" class="breadcrumb-item active">Booking Overview &amp; Payment</li>-->
+                </ol>
+            </nav>
+        </template>
+
+    </data>
+</odoo>

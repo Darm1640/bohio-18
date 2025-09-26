@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Form View -->
+    <record id="view_property_contract_novedad_form" model="ir.ui.view">
+        <field name="name">property.contract.novedad.form</field>
+        <field name="model">property.contract.novedad</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_confirm" string="Confirmar" type="object" invisible="state != 'draft'" class="oe_highlight"/>
+                    <button name="action_process" string="Procesar" type="object" invisible="state != 'confirmed'" class="oe_highlight"/>
+                    <button name="action_cancel" string="Cancelar" type="object" invisible="state not in ('draft', 'confirmed')"/>
+                    <button name="action_unify_quotas" string="Unificar Cuotas Seleccionadas" type="object" invisible="state != 'done' or tipo != 'cuotas'" class="btn-primary"/>
+                    <button name="action_postpone_quotas" string="Trasladar Cuotas" type="object" invisible="state != 'done' or tipo != 'cuotas'" class="btn-secondary"/>
+                    <field name="state" widget="statusbar" options="{'clickable': '1'}"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="contract_id"/>
+                            <field name="partner_id"/>
+                            <field name="partner_is_owner_id" />
+                            <field name="is_multi_propietario" string="Multi-propietarios"/>
+                            <field name="owners_lines"  invisible="not is_multi_propietario">
+                                <list>
+                                    <field name="partner_id" options="{'no_create': True}"/>
+                                    <field name="ownership_percentage"/>
+                                </list>  
+                            </field>
+                            <field name="category_id"/>
+                            <field name="tipo"/>
+                            <field name="aplicacion"/>
+                            <field name="destinatario"/>
+                            <field name="percentage_propietario" invisible="destinatario != 'all'"/>
+                            <field name="percentage_arrendatario" invisible="destinatario != 'all'"/>
+                        </group>
+                        <group>
+                            <field name="valor_total"/>
+                            <field name="numero_cuotas" invisible="tipo != 'cuotas'"/>
+                            <field name="fecha_inicio"/>
+                            <field name="pay_date"/>
+                            <field name="fecha_cobro" invisible="tipo == 'cuotas'"/>
+                            <field name="journal_bank_id"/>
+                            <field name="invoice_id" invisible="aplicacion != 'factura'"/>
+                            <field name="payment_id" invisible="aplicacion != 'pago'"/>
+                        </group>
+                    </group>
+                    <notebook>
+       
+                        <page string="Cuotas" invisible="tipo != 'cuotas'">
+                            <field name="cuota_ids">
+                                <list editable="bottom">
+                                    <field name="numero_cuota"/>
+                                    <field name="valor"/>
+                                    <field name="fecha_vencimiento"/>
+                                    <field name="estado"/>
+                                    <field name="unificar"/>
+                                    <field name="valor_arrendatario" 
+                                           column_invisible="parent.destinatario not in ['arrendatario', 'all']"/>
+                                    <field name="valor_propietario" 
+                                           column_invisible="parent.destinatario not in ['propietario', 'all']"/>
+                                    <field name="owner_ids" widget="many2many_tags" 
+                                           column_invisible="not parent.is_multi_propietario and parent.destinatario not in ['propietario', 'all']"/>
+                                </list>
+                                <form>
+                                    <group>
+                                        <field name="numero_cuota"/>
+                                        <field name="valor"/>
+                                        <field name="fecha_vencimiento"/>
+                                        <field name="estado"/>
+                                        <field name="unificar" invisible="estado != 'pendiente'"/>
+                                        <field name="valor_arrendatario" 
+                                               invisible="parent.destinatario not in ['arrendatario', 'all']"/>
+                                        <field name="valor_propietario" 
+                                               invisible="parent.destinatario not in ['propietario', 'all']"/>
+                                    </group>
+                                    <field name="owner_ids" 
+                                           invisible="not parent.is_multi_propietario or parent.destinatario == 'arrendatario'">
+                                        <list editable="bottom">
+                                            <field name="partner_id"/>
+                                            <field name="percentage"/>
+                                            <field name="valor"/>
+                                        </list>
+                                    </field>
+                                </form>
+                            </field>
+                        </page>                 
+                        <page string="Descripción">
+                            <field name="descripcion"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- Tree View -->
+    <record id="view_property_contract_novedad_tree" model="ir.ui.view">
+        <field name="name">property.contract.novedad.</field>
+        <field name="model">property.contract.novedad</field>
+        <field name="arch" type="xml">
+            <list decoration-info="state == 'draft'" decoration-muted="state == 'cancelled'" decoration-success="state == 'done'">
+                <field name="name"/>
+                <field name="contract_id"/>
+                <field name="partner_id"/>
+                <field name="category_id"/>
+                <field name="tipo"/>
+                <field name="aplicacion"/>
+                <field name="valor_total"/>
+                <field name="fecha_inicio"/>
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Kanban View -->
+    <record id="view_property_contract_novedad_kanban" model="ir.ui.view">
+        <field name="name">property.contract.novedad.kanban</field>
+        <field name="model">property.contract.novedad</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="state" class="o_kanban_small_column">
+                <field name="name"/>
+                <field name="contract_id"/>
+                <field name="partner_id"/>
+                <field name="category_id"/>
+                <field name="valor_total"/>
+                <field name="state"/>
+                <templates>
+                    <t t-name="card">
+                        <div class="oe_kanban_global_click">
+                            <div class="oe_kanban_details">
+                                <strong class="o_kanban_record_title">
+                                    <field name="name"/>
+                                </strong>
+                                <div class="o_kanban_record_subtitle">
+                                    <field name="contract_id"/>
+                                </div>
+                                <div>
+                                    <field name="partner_id"/>
+                                </div>
+                                <div>
+                                    <field name="category_id"/>
+                                </div>
+                                <div>
+                                    <strong>Valor: </strong>
+                                    <field name="valor_total" widget="monetary"/>
+                                </div>
+                                <div>
+                                    <field name="state" widget="label_selection" options="{'classes': {'draft': 'default', 'confirmed': 'primary', 'done': 'success', 'cancelled': 'danger'}}"/>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_property_contract_novedad_search" model="ir.ui.view">
+        <field name="name">property.contract.novedad.search</field>
+        <field name="model">property.contract.novedad</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="contract_id"/>
+                <field name="partner_id"/>
+                <field name="category_id"/>
+                <filter string="Borrador" name="draft" domain="[('state','=','draft')]"/>
+                <filter string="Confirmado" name="confirmed" domain="[('state','=','confirmed')]"/>
+                <filter string="Procesado" name="done" domain="[('state','=','done')]"/>
+                <filter string="Cancelado" name="cancelled" domain="[('state','=','cancelled')]"/>
+                <separator/>
+                <filter string="Pago Único" name="unico" domain="[('tipo','=','unico')]"/>
+                <filter string="Por Cuotas" name="cuotas" domain="[('tipo','=','cuotas')]"/>
+                <separator/>
+                <filter string="En Factura" name="factura" domain="[('aplicacion','=','factura')]"/>
+                <filter string="En Pago" name="pago" domain="[('aplicacion','=','pago')]"/>
+                <group expand="0" string="Agrupar Por">
+                    <filter string="Contrato" name="group_by_contract" context="{'group_by':'contract_id'}"/>
+                    <filter string="Categoría" name="group_by_category" context="{'group_by':'category_id'}"/>
+                    <filter string="Estado" name="group_by_state" context="{'group_by':'state'}"/>
+                    <filter string="Tipo" name="group_by_tipo" context="{'group_by':'tipo'}"/>
+                    <filter string="Aplicación" name="group_by_aplicacion" context="{'group_by':'aplicacion'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_property_contract_novedad" model="ir.actions.act_window">
+        <field name="name">Novedades de Contrato</field>
+        <field name="res_model">property.contract.novedad</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="search_view_id" ref="view_property_contract_novedad_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Crear una nueva novedad de contrato
+            </p>
+        </field>
+    </record>
+    <record id="view_contract_scenery_form" model="ir.ui.view">
+        <field name="name">contract.scenery.form</field>
+        <field name="model">contract_scenery.contract_scenery</field>
+        <field name="arch" type="xml">
+            <form string="Escenario de Contrato">
+                <sheet>
+                    <!-- Información básica en la parte superior -->
+                    <group>
+                        <field name="code"/>
+                        <field name="name"/>
+                        <field name="company_id" groups="base.group_multi_company"/>
+                        <field name="credit_limit"/>
+                        <field name="company_id" invisible="1"/>
+                    </group>
+
+                    <!-- Layout de dos columnas -->
+                    <div class="row">
+                        <!-- COLUMNA IZQUIERDA: CONFIGURACIÓN -->
+                        <div class="col-md-6" string="Configuracion Contable">
+                        
+                                <group string="Cuentas Inquilino" col="2">
+                                    <field name="income_account_inq"/>
+                                    <field name="account_receivable_inq"/>
+                                    <field name="inq_tax_ids" widget="many2many_tags"/>
+                                </group>
+                                <group string="Cuentas Propietario" col="2">
+                                    <field name="income_account_own"/>
+                                    <field name="account_receivable_own"/>
+                                    <field name="account_payment_own"/>
+                                    <field name="prop_tax_ids" widget="many2many_tags"/>
+                                </group>
+                        
+                        </div>
+
+                        <!-- COLUMNA DERECHA: EXPLICACIÓN -->
+                        <div class="col-md-6" invisible="id == False">
+                            <div style="background:#e7f2ff;border:1px solid #c5dcff;border-radius:8px;padding:16px;">
+                                <strong>Ejemplo contable (canon 1 000 000 COP, comisión 10 %)</strong><br/><br/>
+                        
+                                <em>Ingreso Inquilino</em><br/>
+                                <span style="display:inline-block;width:190px;white-space:pre;">1305 CxC Arrendatario</span>
+                                DEBITO  1 000 000<br/>
+                                <span style="display:inline-block;width:190px;white-space:pre;">28 Ingresos Arrendamiento</span>
+                                CREDITO -1 000 000<br/><br/>
+                            
+                                <em>Comisión 10 %</em><br/>
+                                <span style="display:inline-block;width:190px;white-space:pre;">41   Comisión Admón.</span>
+                                CREDITO -100 000<br/>
+                                <span style="display:inline-block;width:190px;white-space:pre;">1305 CxC Propietario</span>
+                                DEBITO  100 000<br/><br/>
+                        
+                                <em>Egreso Propietario</em><br/>
+                                <span style="display:inline-block;width:190px;white-space:pre;">28   Egreso Propietario</span>
+                                DEBITO  1 000 000<br/>
+                                <span style="display:inline-block;width:190px;white-space:pre;">1305 CxC Arrendatario</span>
+                                CREDITO -900 000<br/>
+                                <span style="display:inline-block;width:190px;white-space:pre;">1305 CxC Propietario</span>
+                                CREDITO -100 000<br/><br/>
+                                
+                                <small>
+                                    • Se cobra al arrendatario: <strong>1 000 000</strong>.<br/>
+                                    • Se descuenta la comisión: <strong>100 000</strong>.<br/>
+                                    • Se gira al propietario: <strong>900 000</strong>.<br/><br/>
+                                    <u>Nota:</u> Costos o valores adicionales (p. ej  mantenimiento, seguros, Impuesto, tasa, multas y sanciones)<br/>
+                
+                                    usando la cuenta y el grupo que correspondan.<br/>
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <notebook>
+                        <page string="Descripción">
+                            <field colspan="2" name="description" type="html" options="{'collaborative': true, 'resizable': false}" placeholder="Describe cuándo se usa este escenario, condiciones, etc."/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="form_action_id" model="ir.actions.act_window">
+        <field name="name">Escenarios de Contratacion</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">contract_scenery.contract_scenery</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+
+
+</odoo>

@@ -1,0 +1,498 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ============================================================= -->
+    <!--   TEMPLATE PRINCIPAL - LLAMADA MODULAR                     -->
+    <!-- ============================================================= -->
+    <template id="inherit_website_sale_products_real_estate" inherit_id="website_sale.products">
+        <xpath expr="//div[@id='wrap']" position="inside">
+            <t t-call="real_estate_bits.filters_sidebar"/>
+        </xpath>
+    </template>
+
+    <template id="filters_sidebar" name="Real Estate Filters Sidebar">
+        <form action="/shop" method="get" id="real_estate_filters_form">
+            <!-- Preservar parámetros de búsqueda existentes -->
+            <input type="hidden" name="search" t-att-value="search or ''"/>
+            <input type="hidden" name="category" t-att-value="category.id if category else ''"/>
+            
+            <div id="real_estate_sidebar"
+                 class="bg-white border rounded shadow-sm px-3 py-3"
+                 style="
+                     position: fixed;
+                     top: 100px;
+                     right: 20px;
+                     width: 320px;
+                     max-height: calc(100vh - 120px);
+                     overflow-y: auto;
+                     z-index: 1050;
+                 ">
+                
+                <h5 class="text-center mb-3 text-primary">
+                    <i class="fa fa-filter"></i> Filtros Inmobiliarios
+                </h5>
+
+                <div class="text-center mb-2">
+                    <small class="text-muted active-filters-count" style="display:none;"></small>
+                </div>
+
+                <t t-call="real_estate_bits.location_search"/>
+                <t t-call="real_estate_bits.property_types"/>
+                <t t-call="real_estate_bits.price_range_slider"/>
+                <t t-call="real_estate_bits.area_range_slider"/>
+                <t t-call="real_estate_bits.bedrooms_range_slider"/>
+                <t t-call="real_estate_bits.bathrooms_range_slider"/>
+                <t t-call="real_estate_bits.floor_range_slider"/>
+                <t t-call="real_estate_bits.property_features"/>
+                <t t-call="real_estate_bits.action_buttons"/>
+                
+            </div>
+        </form>
+    </template>
+
+    <!-- ============================================================= -->
+    <!--   BÚSQUEDA DE UBICACIÓN                                    -->
+    <!-- ============================================================= -->
+    <template id="location_search" name="Location Search">
+        <div class="mb-4">
+            <label class="form-label small fw-bold">
+                <i class="fa fa-map-marker"></i> Ubicación
+            </label>
+            <input type="text" 
+                   name="location"
+                   class="form-control form-control-sm"
+                   placeholder="Ciudad, departamento o barrio"
+                   t-att-value="current_filters.get('location', '') if current_filters else ''"/>
+            <small class="text-muted">Ej: Bogotá, Cundinamarca, Chapinero</small>
+        </div>
+    </template>
+
+    <!-- ============================================================= -->
+    <!--   TIPOS DE PROPIEDAD Y SERVICIO                           -->
+    <!-- ============================================================= -->
+    <template id="property_types" name="Property Types">
+        
+        <div class="mb-4">
+            <label class="form-label small fw-bold">
+                <i class="fa fa-tag"></i> Tipo de Servicio
+            </label>
+            <select name="type_service" class="form-select form-select-sm">
+                <option value="">Todos los servicios</option>
+                <option value="sale" 
+                        t-att-selected="'selected' if (current_filters and current_filters.get('type_service')=='sale') else None">
+                    Venta
+                </option>
+                <option value="rent" 
+                        t-att-selected="'selected' if (current_filters and current_filters.get('type_service')=='rent') else None">
+                    Arriendo
+                </option>
+                <option value="sale_rent" 
+                        t-att-selected="'selected' if (current_filters and current_filters.get('type_service')=='sale_rent') else None">
+                    Venta y Arriendo
+                </option>
+                <option value="vacation_rent" 
+                        t-att-selected="'selected' if (current_filters and current_filters.get('type_service')=='vacation_rent') else None">
+                    Arriendo Vacacional
+                </option>
+            </select>
+        </div>
+
+        <!-- CORREGIDO: Tipo de Propiedad usando filter_options del controlador -->
+        <div class="mb-4">
+            <label class="form-label small fw-bold">
+                <i class="fa fa-home"></i> Tipo de Propiedad
+            </label>
+            <select name="property_type_id" class="form-select form-select-sm">
+                <option value="">Todos los tipos</option>
+                <t t-if="filter_options and filter_options.get('property_types')">
+                    <t t-foreach="filter_options['property_types']" t-as="ptype">
+                        <option t-att-value="ptype.id" 
+                                t-att-selected="'selected' if (current_filters and str(ptype.id) == str(current_filters.get('property_type_id'))) else None">
+                            <t t-esc="ptype.name"/>
+                        </option>
+                    </t>
+                </t>
+                <!-- Fallback si filter_options no está disponible -->
+                <t t-if="not filter_options or not filter_options.get('property_types')">
+                    <t t-foreach="request.env['property.type'].sudo().search([])" t-as="ptype">
+                        <option t-att-value="ptype.id" 
+                                t-att-selected="'selected' if (current_filters and str(ptype.id) == str(current_filters.get('property_type_id'))) else None">
+                            <t t-esc="ptype.name"/>
+                        </option>
+                    </t>
+                </t>
+            </select>
+        </div>
+    </template>
+
+    <!-- ============================================================= -->
+    <!--   SLIDER DE PRECIO                                         -->
+    <!-- ============================================================= -->
+    <template id="price_range_slider" name="Price Range Slider">
+        <div class="mb-4">
+            <label class="form-label small fw-bold">
+                <i class="fa fa-money"></i> Rango de Precio
+            </label>
+            <div class="price-range-container">
+                <div class="range-slider" data-type="price">
+                    <input type="range" 
+                           name="min_price" 
+                           class="range-input range-min"
+                           min="0"
+                           max="10000000000"
+                           t-att-value="current_filters.get('min_price', '0') if current_filters else '0'"
+                           step="1000000"/>
+                    <input type="range" 
+                           name="max_price" 
+                           class="range-input range-max"
+                           min="0"
+                           max="10000000000"
+                           t-att-value="current_filters.get('max_price', '10000000000') if current_filters else '10000000000'"
+                           step="1000000"/>
+                </div>
+                <div class="range-values mt-2">
+                    <span class="badge bg-primary range-value-min">
+                        $<span class="min-val">0</span>
+                    </span>
+                    <span class="mx-2">-</span>
+                    <span class="badge bg-primary range-value-max">
+                        $<span class="max-val">10,000,000,000</span>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- ============================================================= -->
+    <!--   SLIDER DE ÁREA                                           -->
+    <!-- ============================================================= -->
+    <template id="area_range_slider" name="Area Range Slider">
+        <div class="mb-4">
+            <label class="form-label small fw-bold">
+                <i class="fa fa-expand"></i> Área (m²)
+            </label>
+            <div class="range-slider" data-type="area">
+                <input type="range" 
+                       name="area_min" 
+                       class="range-input range-min"
+                       min="0"
+                       max="1000"
+                       t-att-value="current_filters.get('area_min', '0') if current_filters else '0'"
+                       step="5"/>
+                <input type="range" 
+                       name="area_max" 
+                       class="range-input range-max"
+                       min="0"
+                       max="1000"
+                       t-att-value="current_filters.get('area_max', '1000') if current_filters else '1000'"
+                       step="5"/>
+            </div>
+            <div class="range-values mt-2">
+                <span class="badge bg-info range-value-min">
+                    <span class="min-val">0</span>m²
+                </span>
+                <span class="mx-2">-</span>
+                <span class="badge bg-info range-value-max">
+                    <span class="max-val">1000</span>m²
+                </span>
+            </div>
+        </div>
+    </template>
+
+    <!-- ============================================================= -->
+    <!--   SLIDER DE HABITACIONES                                   -->
+    <!-- ============================================================= -->
+    <template id="bedrooms_range_slider" name="Bedrooms Range Slider">
+        <div class="mb-4">
+            <label class="form-label small fw-bold">
+                <i class="fa fa-bed"></i> Habitaciones
+            </label>
+            <div class="range-slider" data-type="number">
+                <input type="range" 
+                       name="bedrooms_min" 
+                       class="range-input range-min"
+                       min="0"
+                       max="10"
+                       t-att-value="current_filters.get('bedrooms_min', '0') if current_filters else '0'"
+                       step="1"/>
+                <input type="range" 
+                       name="bedrooms_max" 
+                       class="range-input range-max"
+                       min="0"
+                       max="10"
+                       t-att-value="current_filters.get('bedrooms_max', '10') if current_filters else '10'"
+                       step="1"/>
+            </div>
+            <div class="range-values mt-2">
+                <span class="badge bg-success range-value-min">
+                    <span class="min-val">0</span>
+                </span>
+                <span class="mx-2">-</span>
+                <span class="badge bg-success range-value-max">
+                    <span class="max-val">10</span>
+                </span>
+            </div>
+        </div>
+    </template>
+
+    <!-- ============================================================= -->
+    <!--   SLIDER DE BAÑOS                                          -->
+    <!-- ============================================================= -->
+    <template id="bathrooms_range_slider" name="Bathrooms Range Slider">
+        <div class="mb-4">
+            <label class="form-label small fw-bold">
+                <i class="fa fa-bath"></i> Baños
+            </label>
+            <div class="range-slider" data-type="number">
+                <input type="range" 
+                       name="bathrooms_min" 
+                       class="range-input range-min"
+                       min="0"
+                       max="8"
+                       t-att-value="current_filters.get('bathrooms_min', '0') if current_filters else '0'"
+                       step="1"/>
+                <input type="range" 
+                       name="bathrooms_max" 
+                       class="range-input range-max"
+                       min="0"
+                       max="8"
+                       t-att-value="current_filters.get('bathrooms_max', '8') if current_filters else '8'"
+                       step="1"/>
+            </div>
+            <div class="range-values mt-2">
+                <span class="badge bg-warning range-value-min">
+                    <span class="min-val">0</span>
+                </span>
+                <span class="mx-2">-</span>
+                <span class="badge bg-warning range-value-max">
+                    <span class="max-val">8</span>
+                </span>
+            </div>
+        </div>
+    </template>
+
+    <!-- ============================================================= -->
+    <!--   SLIDER DE PISO                                           -->
+    <!-- ============================================================= -->
+    <template id="floor_range_slider" name="Floor Range Slider">
+        <div class="mb-4">
+            <label class="form-label small fw-bold">
+                <i class="fa fa-building"></i> Piso
+            </label>
+            <div class="range-slider" data-type="floor">
+                <input type="range" 
+                       name="floor_min" 
+                       class="range-input range-min"
+                       min="0"
+                       max="50"
+                       t-att-value="current_filters.get('floor_min', '0') if current_filters else '0'"
+                       step="1"/>
+                <input type="range" 
+                       name="floor_max" 
+                       class="range-input range-max"
+                       min="0"
+                       max="50"
+                       t-att-value="current_filters.get('floor_max', '50') if current_filters else '50'"
+                       step="1"/>
+            </div>
+            <div class="range-values mt-2">
+                <span class="badge bg-secondary range-value-min">
+                    Piso <span class="min-val">0</span>
+                </span>
+                <span class="mx-2">-</span>
+                <span class="badge bg-secondary range-value-max">
+                    Piso <span class="max-val">50</span>
+                </span>
+            </div>
+        </div>
+    </template>
+
+    <!-- ============================================================= -->
+    <!--   CARACTERÍSTICAS                                          -->
+    <!-- ============================================================= -->
+    <template id="property_features" name="Property Features">
+        <div class="mb-4">
+            <label class="form-label small fw-bold">
+                <i class="fa fa-star"></i> Características
+            </label>
+            <div class="row g-2">
+                <!-- Primera columna -->
+                <div class="col-6">
+                    <div class="form-check form-check-sm">
+                        <input class="form-check-input" type="checkbox" name="pools" value="1" id="flt_pools"
+                               t-att-checked="'checked' if (current_filters and current_filters.get('pools')) else None"/>
+                        <label class="form-check-label small" for="flt_pools">
+                            <i class="fa fa-tint"></i> Piscina
+                        </label>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-check form-check-sm">
+                        <input class="form-check-input" type="checkbox" name="gym" value="1" id="flt_gym"
+                               t-att-checked="'checked' if (current_filters and current_filters.get('gym')) else None"/>
+                        <label class="form-check-label small" for="flt_gym">
+                            <i class="fa fa-dumbbell"></i> Gimnasio
+                        </label>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-check form-check-sm">
+                        <input class="form-check-input" type="checkbox" name="elevator" value="1" id="flt_elevator"
+                               t-att-checked="'checked' if (current_filters and current_filters.get('elevator')) else None"/>
+                        <label class="form-check-label small" for="flt_elevator">
+                            <i class="fa fa-sort"></i> Ascensor
+                        </label>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-check form-check-sm">
+                        <input class="form-check-input" type="checkbox" name="furnished" value="1" id="flt_furnished"
+                               t-att-checked="'checked' if (current_filters and current_filters.get('furnished')) else None"/>
+                        <label class="form-check-label small" for="flt_furnished">
+                            <i class="fa fa-couch"></i> Amueblado
+                        </label>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-check form-check-sm">
+                        <input class="form-check-input" type="checkbox" name="garden" value="1" id="flt_garden"
+                               t-att-checked="'checked' if (current_filters and current_filters.get('garden')) else None"/>
+                        <label class="form-check-label small" for="flt_garden">
+                            <i class="fa fa-leaf"></i> Jardín
+                        </label>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-check form-check-sm">
+                        <input class="form-check-input" type="checkbox" name="terrace" value="1" id="flt_terrace"
+                               t-att-checked="'checked' if (current_filters and current_filters.get('terrace')) else None"/>
+                        <label class="form-check-label small" for="flt_terrace">
+                            <i class="fa fa-square"></i> Terraza
+                        </label>
+                    </div>
+                </div>
+                <!-- Segunda columna - Nuevas características -->
+                <div class="col-6">
+                    <div class="form-check form-check-sm">
+                        <input class="form-check-input" type="checkbox" name="social_room" value="1" id="flt_social_room"
+                               t-att-checked="'checked' if (current_filters and current_filters.get('social_room')) else None"/>
+                        <label class="form-check-label small" for="flt_social_room">
+                            <i class="fa fa-users"></i> Salón Social
+                        </label>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-check form-check-sm">
+                        <input class="form-check-input" type="checkbox" name="sauna" value="1" id="flt_sauna"
+                               t-att-checked="'checked' if (current_filters and current_filters.get('sauna')) else None"/>
+                        <label class="form-check-label small" for="flt_sauna">
+                            <i class="fa fa-fire"></i> Sauna
+                        </label>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-check form-check-sm">
+                        <input class="form-check-input" type="checkbox" name="turkish_bath" value="1" id="flt_turkish_bath"
+                               t-att-checked="'checked' if (current_filters and current_filters.get('turkish_bath')) else None"/>
+                        <label class="form-check-label small" for="flt_turkish_bath">
+                            <i class="fa fa-steam"></i> Turco
+                        </label>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-check form-check-sm">
+                        <input class="form-check-input" type="checkbox" name="jacuzzi" value="1" id="flt_jacuzzi"
+                               t-att-checked="'checked' if (current_filters and current_filters.get('jacuzzi')) else None"/>
+                        <label class="form-check-label small" for="flt_jacuzzi">
+                            <i class="fa fa-hot-tub"></i> Jacuzzi
+                        </label>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-check form-check-sm">
+                        <input class="form-check-input" type="checkbox" name="playground" value="1" id="flt_playground"
+                               t-att-checked="'checked' if (current_filters and current_filters.get('playground')) else None"/>
+                        <label class="form-check-label small" for="flt_playground">
+                            <i class="fa fa-child"></i> Juegos Infantiles
+                        </label>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-check form-check-sm">
+                        <input class="form-check-input" type="checkbox" name="green_areas" value="1" id="flt_green_areas"
+                               t-att-checked="'checked' if (current_filters and current_filters.get('green_areas')) else None"/>
+                        <label class="form-check-label small" for="flt_green_areas">
+                            <i class="fa fa-tree"></i> Zonas Verdes
+                        </label>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-check form-check-sm">
+                        <input class="form-check-input" type="checkbox" name="sports_area" value="1" id="flt_sports_area"
+                               t-att-checked="'checked' if (current_filters and current_filters.get('sports_area')) else None"/>
+                        <label class="form-check-label small" for="flt_sports_area">
+                            <i class="fa fa-futbol"></i> Placa Deportiva
+                        </label>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-check form-check-sm">
+                        <input class="form-check-input" type="checkbox" name="court" value="1" id="flt_court"
+                               t-att-checked="'checked' if (current_filters and current_filters.get('court')) else None"/>
+                        <label class="form-check-label small" for="flt_court">
+                            <i class="fa fa-basketball-ball"></i> Cancha
+                        </label>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-check form-check-sm">
+                        <input class="form-check-input" type="checkbox" name="bar" value="1" id="flt_bar"
+                               t-att-checked="'checked' if (current_filters and current_filters.get('bar')) else None"/>
+                        <label class="form-check-label small" for="flt_bar">
+                            <i class="fa fa-glass-martini"></i> Bar
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- ============================================================= -->
+    <!--   BOTONES DE ACCIÓN                                        -->
+    <!-- ============================================================= -->
+    <template id="action_buttons" name="Action Buttons">
+        <hr class="my-3"/>
+        <div class="d-grid gap-2">
+            <button type="submit" class="btn btn-primary btn-sm fw-bold">
+                <i class="fa fa-search"></i> Buscar Propiedades
+                <span class="active-count-badge" style="display:none;"></span>
+            </button>
+            <a href="/shop" class="btn btn-outline-secondary btn-sm">
+                <i class="fa fa-trash"></i> Limpiar Filtros
+            </a>
+        </div>
+        
+        <!-- Mostrar contador de filtros activos -->
+        <div class="text-center mt-2" t-if="active_filters_count and active_filters_count > 0">
+            <small class="text-muted">
+                <i class="fa fa-filter"></i> 
+                <t t-esc="active_filters_count"/> filtro<t t-if="active_filters_count > 1">s</t> activo<t t-if="active_filters_count > 1">s</t>
+            </small>
+        </div>
+    </template>
+
+    <!-- ============================================================= -->
+    <!--   ASSETS CSS Y JAVASCRIPT SEPARADOS                       -->
+    <!-- ============================================================= -->
+    <template id="real_estate_filters_assets" name="Real Estate Filters Assets" inherit_id="website.layout">
+        <xpath expr="//head" position="inside">
+            <link rel="stylesheet" href="/real_estate_bits/static/src/css/filters.css"/>
+        </xpath>
+    </template>
+
+    <template id="real_estate_filters_js" name="Real Estate Filters JS" inherit_id="website.layout">
+        <xpath expr="//body" position="inside">
+            <script src="/real_estate_bits/static/src/js/filters.js"></script>
+        </xpath>
+    </template>
+
+</odoo>

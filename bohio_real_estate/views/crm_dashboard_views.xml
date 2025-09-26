@@ -1,0 +1,463 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Vista Kanban para CRM Dashboard -->
+    <record id="view_bohio_crm_dashboard_kanban" model="ir.ui.view">
+        <field name="name">bohio.crm.dashboard.kanban</field>
+        <field name="model">crm.lead</field>
+        <field name="priority">32</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="stage_id" class="o_kanban_mobile bohio_crm_kanban"
+                    quick_create="false" sample="1" js_class="crm_kanban">
+                <field name="stage_id" options='{"group_by_tooltip": {"requirements": "Requisitos"}}'/>
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="user_id"/>
+                <field name="expected_revenue"/>
+                <field name="company_currency"/>
+                <field name="probability"/>
+                <field name="date_deadline"/>
+                <field name="priority"/>
+                <field name="tag_ids"/>
+                <field name="color"/>
+                <field name="type"/>
+                <field name="activity_ids"/>
+                <field name="activity_state"/>
+                <field name="activity_date_deadline"/>
+                <field name="property_ids"/>
+                <field name="properties_won_count"/>
+                <field name="properties_lost_count"/>
+                <field name="total_invoiced"/>
+                <field name="total_paid"/>
+                <field name="total_pending"/>
+                <field name="days_open"/>
+                <field name="monthly_target"/>
+                <field name="monthly_revenue"/>
+                <field name="monthly_progress"/>
+                <field name="campaign_id"/>
+                <field name="source_id"/>
+                <field name="medium_id"/>
+                <progressbar field="activity_state" colors='{"planned": "success", "today": "warning", "overdue": "danger"}'/>
+                <templates>
+                    <div t-name="kanban-dashboard" class="o_crm_bohio_dashboard">
+                        <div class="bohio-metrics-scroll-container">
+                            <div class="dashboard-card bohio-won" data-card="won">
+                                <div class="card-header-icon">
+                                    <i class="fa fa-check-circle"/>
+                                </div>
+                                <div class="card-body-content">
+                                    <p class="card-label">Propiedades Ganadas</p>
+                                    <h3 class="card-value">
+                                        <t t-esc="kanban_dashboard.properties_won || 0"/>
+                                    </h3>
+                                    <div class="card-footer-info" t-if="kanban_dashboard.properties_won > 0">
+                                        <span class="badge badge-success">
+                                            <i class="fa fa-arrow-up"/> Activas
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="dashboard-card bohio-lost" data-card="lost">
+                                <div class="card-header-icon">
+                                    <i class="fa fa-times-circle"/>
+                                </div>
+                                <div class="card-body-content">
+                                    <p class="card-label">Propiedades Perdidas</p>
+                                    <h3 class="card-value">
+                                        <t t-esc="kanban_dashboard.properties_lost || 0"/>
+                                    </h3>
+                                    <div class="card-footer-info" t-if="kanban_dashboard.properties_lost > 0">
+                                        <span class="badge badge-danger">
+                                            <i class="fa fa-arrow-down"/> Cerradas
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="dashboard-card bohio-invoiced" data-card="invoiced">
+                                <div class="card-header-icon">
+                                    <i class="fa fa-file-text-o"/>
+                                </div>
+                                <div class="card-body-content">
+                                    <p class="card-label">Total Facturado</p>
+                                    <h3 class="card-value">
+                                        $<t t-esc="(kanban_dashboard.total_invoiced || 0).toLocaleString('es-CO', {maximumFractionDigits: 0})"/>
+                                    </h3>
+                                    <div class="card-footer-info">
+                                        <span class="text-muted">
+                                            <i class="fa fa-building"/> Clientes
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="dashboard-card bohio-paid" data-card="paid">
+                                <div class="card-header-icon">
+                                    <i class="fa fa-money"/>
+                                </div>
+                                <div class="card-body-content">
+                                    <p class="card-label">Total Recaudado</p>
+                                    <h3 class="card-value">
+                                        $<t t-esc="(kanban_dashboard.total_paid || 0).toLocaleString('es-CO', {maximumFractionDigits: 0})"/>
+                                    </h3>
+                                    <div class="card-footer-info">
+                                        <div class="progress" style="height: 4px; background: rgba(139,69,19,0.1);">
+                                            <div class="progress-bar bg-success"
+                                                 t-attf-style="width: {{kanban_dashboard.total_invoiced > 0 ? Math.min((kanban_dashboard.total_paid / kanban_dashboard.total_invoiced * 100), 100) : 0}}%"/>
+                                        </div>
+                                        <small class="text-muted mt-1 d-block">
+                                            <t t-esc="kanban_dashboard.total_invoiced > 0 ? Math.round((kanban_dashboard.total_paid / kanban_dashboard.total_invoiced * 100)) : 0"/>% recaudado
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bohio-monthly-goal-wrapper" t-if="kanban_dashboard.monthly_target">
+                            <div class="bohio-monthly-goal-card">
+                                <div class="goal-header">
+                                    <div class="goal-icon">
+                                        <i class="fa fa-bullseye fa-2x"/>
+                                    </div>
+                                    <div class="goal-info">
+                                        <h4>Meta Mensual</h4>
+                                        <div class="goal-values">
+                                            <span class="current-value">$<t t-esc="(kanban_dashboard.monthly_revenue || 0).toLocaleString('es-CO', {maximumFractionDigits: 0})"/></span>
+                                            <span class="separator">/</span>
+                                            <span class="target-value">$<t t-esc="(kanban_dashboard.monthly_target || 0).toLocaleString('es-CO', {maximumFractionDigits: 0})"/></span>
+                                        </div>
+                                    </div>
+                                    <div class="goal-percentage">
+                                        <t t-esc="Math.round(kanban_dashboard.monthly_progress || 0)"/>%
+                                    </div>
+                                </div>
+                                <div class="progress" style="height: 14px; margin-top: 20px;">
+                                    <div class="progress-bar"
+                                         t-attf-class="progress-bar {{ kanban_dashboard.monthly_progress >= 100 ? 'bg-success' : (kanban_dashboard.monthly_progress >= 70 ? 'bg-warning' : 'bg-danger') }}"
+                                         t-attf-style="width: {{Math.min(kanban_dashboard.monthly_progress || 0, 100)}}%"/>
+                                </div>
+                                <div class="goal-stats mt-3">
+                                    <div class="stat-item-inline">
+                                        <i class="fa fa-calendar-check-o text-success"/>
+                                        <span class="stat-label-inline">Mes actual</span>
+                                    </div>
+                                    <div class="stat-item-inline">
+                                        <i class="fa fa-trophy text-warning"/>
+                                        <span class="stat-label-inline">
+                                            <t t-if="kanban_dashboard.monthly_progress >= 100">Meta Alcanzada</t>
+                                            <t t-else="">En Progreso</t>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <t t-name="card">
+                        <main>
+                            <div class="o_kanban_record_top mb-0">
+                                <div class="o_kanban_record_headings">
+                                    <strong class="o_kanban_record_title">
+                                        <field name="name" placeholder="Oportunidad"/>
+                                    </strong>
+                                </div>
+                                <field name="priority" widget="priority" readonly="1"/>
+                            </div>
+
+                            <div class="o_kanban_record_body">
+                                <div t-if="partner_id" class="bohio_client_info mb-1">
+                                    <i class="fa fa-user-o"/>
+                                    <field name="partner_id"/>
+                                </div>
+
+                                <div class="bohio_property_info mb-1" t-if="record.property_ids.raw_value.length">
+                                    <i class="fa fa-home"/>
+                                    <span class="badge rounded-pill text-bg-primary">
+                                        <t t-esc="record.property_ids.raw_value.length"/> propiedades
+                                    </span>
+                                </div>
+
+                                <div class="bohio_revenue_info mb-1">
+                                    <i class="fa fa-usd text-primary"/>
+                                    <strong>$<t t-esc="Math.round(record.expected_revenue.value)"/></strong>
+                                    <span class="text-muted" t-if="record.probability.raw_value">
+                                        (<t t-esc="Math.round(record.probability.value)"/>%)
+                                    </span>
+                                </div>
+
+                                <div class="bohio_time_info mb-1">
+                                    <i class="fa fa-clock-o text-info"/>
+                                    <t t-esc="record.days_open.value"/> días abierto
+                                </div>
+
+                                <div t-if="record.source_id.raw_value" class="bohio_source_info mb-1">
+                                    <i class="fa fa-flag-o text-warning"/>
+                                    <field name="source_id"/>
+                                </div>
+
+                                <div t-if="date_deadline" class="bohio_deadline_info mb-1">
+                                    <i class="fa fa-calendar text-muted"/>
+                                    <field name="date_deadline" widget="date"/>
+                                </div>
+
+                                <div class="bohio_details_toggle mt-2">
+                                    <a href="#" class="btn btn-sm btn-link p-0"
+                                       t-attf-onclick="event.preventDefault(); document.getElementById('details_{{record.id.value}}').classList.toggle('d-none');">
+                                        <i class="fa fa-info-circle"/> Detalles
+                                    </a>
+                                </div>
+
+                                <div t-attf-id="details_{{record.id.value}}" class="d-none bohio_extra_details mt-2 p-2" style="background: #f8f9fa; border-radius: 4px; font-size: 12px;">
+                                    <div class="mb-1" t-if="record.properties_won_count.value || record.properties_lost_count.value">
+                                        <i class="fa fa-building-o"/>
+                                        Ganadas: <strong class="text-success" t-esc="record.properties_won_count.value"/>
+                                        / Perdidas: <strong class="text-danger" t-esc="record.properties_lost_count.value"/>
+                                    </div>
+                                    <div class="mb-1" t-if="record.total_invoiced.value">
+                                        <i class="fa fa-file-text-o"/>
+                                        Facturado: <strong>$<t t-esc="Math.round(record.total_invoiced.value)"/></strong>
+                                    </div>
+                                    <div class="mb-1" t-if="record.total_paid.value">
+                                        <i class="fa fa-check-square-o text-success"/>
+                                        Recaudado: <strong class="text-success">$<t t-esc="Math.round(record.total_paid.value)"/></strong>
+                                    </div>
+                                    <div class="mb-1" t-if="record.total_pending.value">
+                                        <i class="fa fa-exclamation-triangle text-warning"/>
+                                        Pendiente: <strong class="text-warning">$<t t-esc="Math.round(record.total_pending.value)"/></strong>
+                                    </div>
+                                    <div class="mb-1" t-if="record.campaign_id.raw_value">
+                                        <i class="fa fa-bullhorn"/>
+                                        Campaña: <field name="campaign_id"/>
+                                    </div>
+                                    <div class="mb-1" t-if="record.medium_id.raw_value">
+                                        <i class="fa fa-arrows-h"/>
+                                        Medio: <field name="medium_id"/>
+                                    </div>
+                                    <div class="mt-2" t-if="record.monthly_target.value">
+                                        <div class="d-flex justify-content-between mb-1">
+                                            <span><i class="fa fa-bullseye"/> Meta Mensual</span>
+                                            <span><strong>$<t t-esc="Math.round(record.monthly_revenue.value)"/></strong> / $<t t-esc="Math.round(record.monthly_target.value)"/></span>
+                                        </div>
+                                        <div class="progress" style="height: 6px;">
+                                            <div class="progress-bar bg-success" t-attf-style="width: {{Math.min(record.monthly_progress.value || 0, 100)}}%"/>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="o_kanban_tags_section mt-2">
+                                    <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                                </div>
+                            </div>
+
+                            <div class="o_kanban_record_bottom">
+                                <div class="oe_kanban_bottom_left">
+                                    <field name="activity_ids" widget="kanban_activity"/>
+                                </div>
+                                <div class="oe_kanban_bottom_right">
+                                    <field name="user_id" widget="many2one_avatar_user"/>
+                                </div>
+                            </div>
+                        </main>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Vista Dashboard principal -->
+    <record id="view_bohio_crm_dashboard" model="ir.ui.view">
+        <field name="name">CRM Bohio Dashboard</field>
+        <field name="model">crm.lead</field>
+        <field name="mode">primary</field>
+        <field name="priority">64</field>
+        <field name="arch" type="xml">
+            <form string="CRM Bohio Dashboard" create="false" edit="false" delete="false">
+                <sheet>
+                    <div class="bohio_dashboard_container venture-style">
+                        <!-- Métricas principales -->
+                        <div class="row bohio_metrics_row">
+                            <div class="col-lg-3 col-md-6">
+                                <div class="bohio_metric_card bohio_card_leads">
+                                    <div class="metric_icon">
+                                        <i class="fa fa-users fa-2x"/>
+                                    </div>
+                                    <div class="metric_content">
+                                        <h3 class="metric_value" id="total_leads">0</h3>
+                                        <p class="metric_label">Leads Activos</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6">
+                                <div class="bohio_metric_card bohio_card_revenue">
+                                    <div class="metric_icon">
+                                        <i class="fa fa-dollar fa-2x"/>
+                                    </div>
+                                    <div class="metric_content">
+                                        <h3 class="metric_value" id="expected_revenue">$0</h3>
+                                        <p class="metric_label">Ingreso Esperado</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6">
+                                <div class="bohio_metric_card bohio_card_properties">
+                                    <div class="metric_icon">
+                                        <i class="fa fa-building fa-2x"/>
+                                    </div>
+                                    <div class="metric_content">
+                                        <h3 class="metric_value" id="active_properties">0</h3>
+                                        <p class="metric_label">Propiedades Activas</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6">
+                                <div class="bohio_metric_card bohio_card_conversion">
+                                    <div class="metric_icon">
+                                        <i class="fa fa-line-chart fa-2x"/>
+                                    </div>
+                                    <div class="metric_content">
+                                        <h3 class="metric_value" id="conversion_rate">0%</h3>
+                                        <p class="metric_label">Tasa Conversión</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Pipeline de ventas -->
+                        <div class="row mt-4">
+                            <div class="col-12">
+                                <div class="bohio_pipeline_section">
+                                    <h4 class="section_title">
+                                        <i class="fa fa-filter"/> Pipeline de Ventas
+                                    </h4>
+                                    <div class="pipeline_stages" id="pipeline_container">
+                                        <!-- Se llenará dinámicamente con JS -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sección de actividades y top vendedores -->
+                        <div class="row mt-4">
+                            <!-- Actividades próximas -->
+                            <div class="col-lg-6">
+                                <div class="bohio_activities_section">
+                                    <h4 class="section_title">
+                                        <i class="fa fa-calendar-check-o"/> Actividades Próximas
+                                    </h4>
+                                    <div class="activities_list" id="activities_container">
+                                        <!-- Se llenará dinámicamente con JS -->
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Top vendedores -->
+                            <div class="col-lg-6">
+                                <div class="bohio_sellers_section">
+                                    <h4 class="section_title">
+                                        <i class="fa fa-trophy"/> Top Vendedores
+                                    </h4>
+                                    <div class="sellers_list" id="sellers_container">
+                                        <!-- Se llenará dinámicamente con JS -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Propiedades destacadas -->
+                        <div class="row mt-4">
+                            <div class="col-12">
+                                <div class="bohio_properties_section">
+                                    <h4 class="section_title">
+                                        <i class="fa fa-star"/> Propiedades Más Vistas
+                                    </h4>
+                                    <div class="properties_grid" id="properties_container">
+                                        <!-- Se llenará dinámicamente con JS -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Vista Lista para CRM -->
+    <record id="view_bohio_crm_list" model="ir.ui.view">
+        <field name="name">bohio.crm.list</field>
+        <field name="model">crm.lead</field>
+        <field name="priority">32</field>
+        <field name="arch" type="xml">
+            <list string="Oportunidades CRM" multi_edit="1" sample="1">
+                <field name="name" string="Oportunidad"/>
+                <field name="partner_id" string="Cliente"/>
+                <field name="stage_id" string="Etapa"/>
+                <field name="user_id" string="Vendedor"/>
+                <field name="expected_revenue" string="Ingreso Esperado" widget="monetary"/>
+                <field name="probability" string="Probabilidad" widget="percentage"/>
+                <field name="date_deadline" string="Fecha Cierre"/>
+                <field name="priority" widget="priority" string="Prioridad" optional="show"/>
+                <field name="activity_ids" widget="list_activity" string="Actividades" optional="show"/>
+                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" string="Etiquetas" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Vista Gráfico -->
+    <record id="view_bohio_crm_graph" model="ir.ui.view">
+        <field name="name">bohio.crm.graph</field>
+        <field name="model">crm.lead</field>
+        <field name="arch" type="xml">
+            <graph string="Análisis CRM" type="bar" stacked="1" sample="1">
+                <field name="stage_id" type="col"/>
+                <field name="expected_revenue" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <!-- Vista Pivote -->
+    <record id="view_bohio_crm_pivot" model="ir.ui.view">
+        <field name="name">bohio.crm.pivot</field>
+        <field name="model">crm.lead</field>
+        <field name="arch" type="xml">
+            <pivot string="Análisis CRM" sample="1">
+                <field name="user_id" type="row"/>
+                <field name="stage_id" type="col"/>
+                <field name="expected_revenue" type="measure"/>
+                <field name="probability" type="measure" widget="percentage"/>
+            </pivot>
+        </field>
+    </record>
+
+    <!-- Acción principal -->
+    <record id="action_bohio_crm_dashboard" model="ir.actions.act_window">
+        <field name="name">CRM Bohio</field>
+        <field name="res_model">crm.lead</field>
+        <field name="view_mode">kanban,list,form,graph,pivot</field>
+        <field name="domain">[('type', '=', 'opportunity')]</field>
+        <field name="context">{'default_type': 'opportunity'}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Crear nueva oportunidad
+            </p>
+            <p>
+                Gestione sus oportunidades de venta y haga seguimiento a sus propiedades inmobiliarias
+            </p>
+        </field>
+    </record>
+
+    <!-- Vista kanban específica para el action -->
+    <record id="action_bohio_crm_dashboard_view_kanban" model="ir.actions.act_window.view">
+        <field name="sequence" eval="1"/>
+        <field name="view_mode">kanban</field>
+        <field name="view_id" ref="view_bohio_crm_dashboard_kanban"/>
+        <field name="act_window_id" ref="action_bohio_crm_dashboard"/>
+    </record>
+
+    <record id="action_bohio_crm_dashboard_view_list" model="ir.actions.act_window.view">
+        <field name="sequence" eval="2"/>
+        <field name="view_mode">list</field>
+        <field name="view_id" ref="view_bohio_crm_list"/>
+        <field name="act_window_id" ref="action_bohio_crm_dashboard"/>
+    </record>
+</odoo>

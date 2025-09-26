@@ -1,0 +1,271 @@
+<!-- views/templates/property_compare.xml -->
+<template id="property_compare" name="Property Compare">
+    <t t-call="website.layout">
+        <div id="wrap" class="property-compare-page">
+            <div class="container my-5">
+                <h1 class="text-center mb-5">Comparar Propiedades</h1>
+                
+                <t t-if="not properties">
+                    <div class="alert alert-info text-center">
+                        No hay propiedades para comparar. 
+                        <a href="/properties" class="alert-link">Buscar propiedades</a>
+                    </div>
+                </t>
+                
+                <t t-if="properties">
+                    <div class="comparison-table-wrapper">
+                        <table class="table comparison-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 200px;">Característica</th>
+                                    <t t-foreach="properties" t-as="prop">
+                                        <th class="text-center">
+                                            <div class="property-header">
+                                                <img t-att-src="'/web/image/product.template/%s/image_128' % prop.id" 
+                                                     t-att-alt="prop.name" class="img-fluid mb-2"/>
+                                                <h5 t-esc="prop.name"/>
+                                                <p class="text-muted mb-1" t-esc="prop.default_code"/>
+                                                <p class="price text-danger fw-bold">
+                                                    <t t-esc="prop.net_price" 
+                                                       t-options='{"widget": "monetary", "display_currency": prop.currency_id}'/>
+                                                </p>
+                                            </div>
+                                        </th>
+                                    </t>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Ubicación -->
+                                <tr class="section-header">
+                                    <td colspan="5"><strong>Ubicación</strong></td>
+                                </tr>
+                                <tr>
+                                    <td>Ciudad</td>
+                                    <t t-foreach="comparison_data" t-as="data">
+                                        <td class="text-center">
+                                            <t t-esc="data['location']['city'] or '-'"/>
+                                        </td>
+                                    </t>
+                                </tr>
+                                <tr>
+                                    <td>Departamento</td>
+                                    <t t-foreach="comparison_data" t-as="data">
+                                        <td class="text-center">
+                                            <t t-esc="data['location']['department'] or '-'"/>
+                                        </td>
+                                    </t>
+                                </tr>
+                                <tr>
+                                    <td>Barrio</td>
+                                    <t t-foreach="comparison_data" t-as="data">
+                                        <td class="text-center">
+                                            <t t-esc="data['location']['neighborhood'] or '-'"/>
+                                        </td>
+                                    </t>
+                                </tr>
+                                
+                                <!-- Características Básicas -->
+                                <tr class="section-header">
+                                    <td colspan="5"><strong>Características Básicas</strong></td>
+                                </tr>
+                                <tr>
+                                    <td>Habitaciones</td>
+                                    <t t-foreach="comparison_data" t-as="data">
+                                        <td class="text-center">
+                                            <t t-if="data['basic_features']['bedrooms'] == best_values.get('bedrooms', 0)">
+                                                <span class="badge bg-success">
+                                                    <t t-esc="data['basic_features']['bedrooms']"/>
+                                                </span>
+                                            </t>
+                                            <t t-else="">
+                                                <t t-esc="data['basic_features']['bedrooms'] or '-'"/>
+                                            </t>
+                                        </td>
+                                    </t>
+                                </tr>
+                                <tr>
+                                    <td>Baños</td>
+                                    <t t-foreach="comparison_data" t-as="data">
+                                        <td class="text-center">
+                                            <t t-if="data['basic_features']['bathrooms'] == best_values.get('bathrooms', 0)">
+                                                <span class="badge bg-success">
+                                                    <t t-esc="data['basic_features']['bathrooms']"/>
+                                                </span>
+                                            </t>
+                                            <t t-else="">
+                                                <t t-esc="data['basic_features']['bathrooms'] or '-'"/>
+                                            </t>
+                                        </td>
+                                    </t>
+                                </tr>
+                                <tr>
+                                    <td>Área (m²)</td>
+                                    <t t-foreach="comparison_data" t-as="data">
+                                        <td class="text-center">
+                                            <t t-if="data['basic_features']['area'] == best_values.get('area', 0)">
+                                                <span class="badge bg-success">
+                                                    <t t-esc="data['basic_features']['area']"/> m²
+                                                </span>
+                                            </t>
+                                            <t t-else="">
+                                                <t t-if="data['basic_features']['area']">
+                                                    <t t-esc="data['basic_features']['area']"/> m²
+                                                </t>
+                                                <t t-else="">-</t>
+                                            </t>
+                                        </td>
+                                    </t>
+                                </tr>
+                                
+                                <!-- Amenidades -->
+                                <tr class="section-header">
+                                    <td colspan="5"><strong>Amenidades</strong></td>
+                                </tr>
+                                <tr>
+                                    <td>Piscina</td>
+                                    <t t-foreach="comparison_data" t-as="data">
+                                        <td class="text-center">
+                                            <t t-if="data['amenities'].get('pool')">
+                                                <i class="fa fa-check text-success"></i>
+                                            </t>
+                                            <t t-else="">
+                                                <i class="fa fa-times text-danger"></i>
+                                            </t>
+                                        </td>
+                                    </t>
+                                </tr>
+                                <tr>
+                                    <td>Gimnasio</td>
+                                    <t t-foreach="comparison_data" t-as="data">
+                                        <td class="text-center">
+                                            <t t-if="data['amenities'].get('gym')">
+                                                <i class="fa fa-check text-success"></i>
+                                            </t>
+                                            <t t-else="">
+                                                <i class="fa fa-times text-danger"></i>
+                                            </t>
+                                        </td>
+                                    </t>
+                                </tr>
+                                <tr>
+                                    <td>Jardín</td>
+                                    <t t-foreach="comparison_data" t-as="data">
+                                        <td class="text-center">
+                                            <t t-if="data['amenities'].get('garden')">
+                                                <i class="fa fa-check text-success"></i>
+                                            </t>
+                                            <t t-else="">
+                                                <i class="fa fa-times text-danger"></i>
+                                            </t>
+                                        </td>
+                                    </t>
+                                </tr>
+                                <tr>
+                                    <td>Aire Acondicionado</td>
+                                    <t t-foreach="comparison_data" t-as="data">
+                                        <td class="text-center">
+                                            <t t-if="data['amenities'].get('air_conditioning')">
+                                                <i class="fa fa-check text-success"></i>
+                                            </t>
+                                            <t t-else="">
+                                                <i class="fa fa-times text-danger"></i>
+                                            </t>
+                                        </td>
+                                    </t>
+                                </tr>
+                                
+                                <!-- Servicios -->
+                                <tr class="section-header">
+                                    <td colspan="5"><strong>Servicios</strong></td>
+                                </tr>
+                                <tr>
+                                    <td>Red de Gas</td>
+                                    <t t-foreach="comparison_data" t-as="data">
+                                        <td class="text-center">
+                                            <t t-if="data['services'].get('gas')">
+                                                <i class="fa fa-check text-success"></i>
+                                            </t>
+                                            <t t-else="">
+                                                <i class="fa fa-times text-danger"></i>
+                                            </t>
+                                        </td>
+                                    </t>
+                                </tr>
+                                <tr>
+                                    <td>Agua Caliente</td>
+                                    <t t-foreach="comparison_data" t-as="data">
+                                        <td class="text-center">
+                                            <t t-if="data['services'].get('hot_water')">
+                                                <i class="fa fa-check text-success"></i>
+                                            </t>
+                                            <t t-else="">
+                                                <i class="fa fa-times text-danger"></i>
+                                            </t>
+                                        </td>
+                                    </t>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td></td>
+                                    <t t-foreach="properties" t-as="prop">
+                                        <td class="text-center">
+                                            <a t-att-href="'/property/%s' % prop.id" 
+                                               class="btn btn-danger">
+                                                Ver Detalles
+                                            </a>
+                                        </td>
+                                    </t>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </t>
+            </div>
+        </div>
+        
+        <style>
+            .property-compare-page {
+                min-height: 500px;
+            }
+            
+            .comparison-table-wrapper {
+                overflow-x: auto;
+            }
+            
+            .comparison-table {
+                min-width: 800px;
+            }
+            
+            .comparison-table th {
+                position: sticky;
+                top: 0;
+                background: white;
+                z-index: 10;
+                vertical-align: top;
+            }
+            
+            .property-header img {
+                width: 100px;
+                height: 100px;
+                object-fit: cover;
+                border-radius: 8px;
+            }
+            
+            .section-header td {
+                background: #f8f9fa;
+                padding: 15px 10px;
+                font-weight: bold;
+            }
+            
+            .comparison-table td {
+                vertical-align: middle;
+                padding: 12px;
+            }
+            
+            .price {
+                font-size: 18px;
+            }
+        </style>
+    </t>
+</template>

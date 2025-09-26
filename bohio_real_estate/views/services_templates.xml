@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="servicio_venta" name="Servicio de Venta">
+        <t t-call="website.layout">
+            <div id="wrap">
+                <section class="position-relative" style="height: 400px; overflow: hidden;">
+                    <img src="/bohio_real_estate/static/src/img/servicio-venta.jpg" alt="Venta" class="w-100 h-100" style="object-fit: cover;"/>
+                    <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center" style="background: linear-gradient(to right, rgba(0,0,0,0.7), transparent);">
+                        <div class="container">
+                            <h1 class="text-white display-3" style="font-family: 'Arista Pro Bold', sans-serif;">Servicio de Venta</h1>
+                            <p class="text-white lead">Asesoría completa en compra y venta de inmuebles</p>
+                        </div>
+                    </div>
+                </section>
+                <section class="py-5">
+                    <div class="container text-center">
+                        <a href="/contacto" class="btn btn-bohio-primary btn-lg px-5 me-2"><i class="fa fa-envelope"/> Solicitar Información</a>
+                        <a href="/properties?type_service=sale" class="btn btn-bohio-outline btn-lg px-5"><i class="fa fa-search"/> Ver Propiedades en Venta</a>
+                    </div>
+                </section>
+            </div>
+        </t>
+    </template>
+
+    <template id="servicio_arriendo" name="Servicio de Arriendo">
+        <t t-call="website.layout">
+            <div id="wrap">
+                <section class="bg-bohio-black text-white py-5">
+                    <div class="container text-center">
+                        <h1 class="display-3" style="font-family: 'Arista Pro Bold', sans-serif;">Servicio de Arriendo</h1>
+                        <p class="lead">Administración profesional de propiedades</p>
+                    </div>
+                </section>
+                <section class="py-5">
+                    <div class="container text-center">
+                        <a href="/contacto" class="btn btn-bohio-primary btn-lg px-5 me-2"><i class="fa fa-envelope"/> Contactar</a>
+                        <a href="/properties?type_service=rent" class="btn btn-bohio-outline btn-lg px-5"><i class="fa fa-search"/> Ver en Arriendo</a>
+                    </div>
+                </section>
+            </div>
+        </t>
+    </template>
+
+    <template id="servicio_juridico" name="Servicios Jurídicos">
+        <t t-call="website.layout">
+            <div id="wrap">
+                <section class="position-relative" style="height: 400px; overflow: hidden;">
+                    <img src="/bohio_real_estate/static/src/img/servicio-juridico.jpg" alt="Jurídico" class="w-100 h-100" style="object-fit: cover;"/>
+                    <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center" style="background: rgba(0,0,0,0.6);">
+                        <div class="container text-white text-center">
+                            <h1 class="display-3" style="font-family: 'Arista Pro Bold', sans-serif;">Servicios Jurídicos</h1>
+                            <p class="lead">Asesoría legal especializada</p>
+                        </div>
+                    </div>
+                </section>
+                <section class="py-5">
+                    <div class="container text-center">
+                        <a href="/contacto" class="btn btn-bohio-primary btn-lg px-5"><i class="fa fa-phone"/> Agendar Consulta</a>
+                    </div>
+                </section>
+            </div>
+        </t>
+    </template>
+
+    <template id="servicio_marketing" name="Marketing Inmobiliario">
+        <t t-call="website.layout">
+            <div id="wrap">
+                <section class="position-relative" style="height: 400px; overflow: hidden;">
+                    <img src="/bohio_real_estate/static/src/img/servicio-marketing.jpg" alt="Marketing" class="w-100 h-100" style="object-fit: cover;"/>
+                    <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center" style="background: linear-gradient(135deg, rgba(255,29,37,0.8), rgba(0,0,0,0.8));">
+                        <div class="container text-white">
+                            <h1 class="display-3" style="font-family: 'Arista Pro Bold', sans-serif;">Marketing Inmobiliario</h1>
+                            <p class="lead">Promoción profesional de tu propiedad</p>
+                        </div>
+                    </div>
+                </section>
+                <section class="py-5">
+                    <div class="container text-center">
+                        <a href="/contacto" class="btn btn-bohio-primary btn-lg px-5"><i class="fa fa-rocket"/> Promocionar mi Propiedad</a>
+                    </div>
+                </section>
+            </div>
+        </t>
+    </template>
+
+    <template id="clientes_propietarios" name="Propietarios">
+        <t t-call="website.layout">
+            <div id="wrap">
+                <section class="position-relative" style="height: 400px; overflow: hidden;">
+                    <img src="/bohio_real_estate/static/src/img/banner-propietarios.jpg" alt="Propietarios" class="w-100 h-100" style="object-fit: cover;"/>
+                    <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center" style="background: rgba(0,0,0,0.5);">
+                        <div class="container text-white text-center">
+                            <h1 class="display-3" style="font-family: 'Arista Pro Bold', sans-serif;">Propietarios</h1>
+                            <p class="lead">Servicios especializados para dueños de inmuebles</p>
+                        </div>
+                    </div>
+                </section>
+                <section class="py-5">
+                    <div class="container text-center">
+                        <a href="/contacto" class="btn btn-bohio-primary btn-lg px-5"><i class="fa fa-handshake-o"/> Quiero ser Propietario BOHIO</a>
+                    </div>
+                </section>
+            </div>
+        </t>
+    </template>
+
+    <template id="clientes_arrendatarios" name="Arrendatarios">
+        <t t-call="website.layout">
+            <div id="wrap">
+                <section class="position-relative" style="height: 400px; overflow: hidden;">
+                    <img src="/bohio_real_estate/static/src/img/banner-arrendatarios.jpg" alt="Arrendatarios" class="w-100 h-100" style="object-fit: cover;"/>
+                    <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center" style="background: linear-gradient(to right, rgba(0,0,0,0.7), transparent);">
+                        <div class="container text-white">
+                            <h1 class="display-3" style="font-family: 'Arista Pro Bold', sans-serif;">Arrendatarios</h1>
+                            <p class="lead">Encuentra tu hogar ideal con BOHIO</p>
+                        </div>
+                    </div>
+                </section>
+                <section class="py-5">
+                    <div class="container text-center">
+                        <a href="/properties?type_service=rent" class="btn btn-bohio-primary btn-lg px-5"><i class="fa fa-search"/> Buscar Propiedades en Arriendo</a>
+                    </div>
+                </section>
+            </div>
+        </t>
+    </template>
+</odoo>

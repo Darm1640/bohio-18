@@ -1,0 +1,240 @@
+/* BOHIO Real Estate Theme - Colores Corporativos */
+
+@font-face {
+    font-family: "Ciutadella Light";
+    src: url("../fonts/Ciutadella Light.ttf") format("truetype");
+    font-weight: 300;
+}
+
+@font-face {
+    font-family: "Ciutadella SemiBold";
+    src: url("../fonts/Ciutadella SemiBold.ttf") format("truetype");
+    font-weight: 600;
+}
+
+@font-face {
+    font-family: "Arista Pro Bold";
+    src: url("../fonts/arista-pro-bold.ttf") format("truetype");
+    font-weight: 700;
+}
+
+:root {
+    --bohio-red: #ff1d25;
+    --bohio-black: #000000;
+    --bohio-white: #ffffff;
+    --bohio-gray-light: #f5f5f5;
+    --bohio-gray: #666666;
+    --bohio-text: #333333;
+}
+
+body {
+    font-family: "Ciutadella Light", sans-serif;
+    color: var(--bohio-text);
+}
+
+h1, h2, h3 {
+    font-family: "Ciutadella SemiBold", sans-serif;
+}
+
+.bohio-navbar {
+    background-color: var(--bohio-black);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.bohio-navbar .navbar-brand img {
+    max-height: 50px;
+}
+
+.bohio-navbar .nav-link {
+    color: var(--bohio-white) !important;
+    font-family: "Ciutadella SemiBold", sans-serif;
+    padding: 10px 20px;
+    transition: all 0.3s ease;
+}
+
+.bohio-navbar .nav-link:hover,
+.bohio-navbar .nav-link.active {
+    color: var(--bohio-red) !important;
+}
+
+.btn-bohio-primary {
+    background-color: var(--bohio-red);
+    border-color: var(--bohio-red);
+    color: var(--bohio-white);
+    font-family: "Ciutadella SemiBold", sans-serif;
+    padding: 12px 30px;
+    border-radius: 30px;
+    transition: all 0.3s ease;
+}
+
+.btn-bohio-primary:hover {
+    background-color: #cc1820;
+    border-color: #cc1820;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 29, 37, 0.3);
+}
+
+.btn-bohio-black {
+    background-color: var(--bohio-black);
+    border-color: var(--bohio-black);
+    color: var(--bohio-white);
+    font-family: "Ciutadella SemiBold", sans-serif;
+    padding: 12px 30px;
+    border-radius: 30px;
+}
+
+.btn-bohio-black:hover {
+    background-color: #333;
+    border-color: #333;
+}
+
+.btn-bohio-outline {
+    background-color: transparent;
+    border: 2px solid var(--bohio-red);
+    color: var(--bohio-red);
+    font-family: "Ciutadella SemiBold", sans-serif;
+    padding: 10px 28px;
+    border-radius: 30px;
+}
+
+.btn-bohio-outline:hover {
+    background-color: var(--bohio-red);
+    color: var(--bohio-white);
+}
+
+.property-card {
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.property-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(255, 29, 37, 0.15);
+}
+
+.property-card .card-img-top {
+    height: 250px;
+    object-fit: cover;
+}
+
+.property-card .text-primary,
+.text-bohio-red {
+    color: var(--bohio-red) !important;
+}
+
+.property-search-form .form-control,
+.property-search-form .form-select {
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 12px;
+    transition: all 0.3s ease;
+}
+
+.property-search-form .form-control:focus,
+.property-search-form .form-select:focus {
+    border-color: var(--bohio-red);
+    box-shadow: 0 0 0 0.2rem rgba(255, 29, 37, 0.15);
+}
+
+.bg-bohio-red {
+    background-color: var(--bohio-red) !important;
+}
+
+.bg-bohio-black {
+    background-color: var(--bohio-black) !important;
+}
+
+.badge-bohio {
+    background-color: var(--bohio-red);
+    color: var(--bohio-white);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+}
+
+.bohio-hero-section {
+    position: relative;
+    background: linear-gradient(135deg, var(--bohio-black) 0%, #333 100%);
+    padding: 100px 0;
+    color: var(--bohio-white);
+}
+
+.bohio-footer {
+    background-color: var(--bohio-black);
+    color: var(--bohio-white);
+    padding: 60px 0 20px;
+    margin-top: 80px;
+}
+
+.bohio-footer h5 {
+    color: var(--bohio-red);
+    font-family: "Ciutadella SemiBold", sans-serif;
+    margin-bottom: 20px;
+}
+
+.bohio-footer a {
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.bohio-footer a:hover {
+    color: var(--bohio-red);
+}
+
+#codeSearchModal .btn-primary,
+.btn-primary {
+    background-color: var(--bohio-red) !important;
+    border-color: var(--bohio-red) !important;
+}
+
+#codeSearchModal .btn-primary:hover,
+.btn-primary:hover {
+    background-color: #cc1820 !important;
+    border-color: #cc1820 !important;
+}
+
+
+
+.btn-outline-primary {
+    background-color: transparent !important;
+    border: 2px solid var(--bohio-red) !important;
+    color: var(--bohio-red) !important;
+    border-radius: 30px;
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--bohio-red) !important;
+    color: var(--bohio-white) !important;
+    border-color: var(--bohio-red) !important;
+}
+
+.text-primary {
+    color: var(--bohio-red) !important;
+}
+
+a.text-decoration-none:hover {
+    color: var(--bohio-red) !important;
+}
+
+.btn-secondary {
+    background-color: var(--bohio-black) !important;
+    border-color: var(--bohio-black) !important;
+    color: var(--bohio-white) !important;
+}
+
+.btn-secondary:hover {
+    background-color: #333 !important;
+    border-color: #333 !important;
+}
+
+@media (max-width: 768px) {
+    .property-card {
+        margin-bottom: 20px;
+    }
+    .property-search-form .row {
+        gap: 10px;
+    }
+}

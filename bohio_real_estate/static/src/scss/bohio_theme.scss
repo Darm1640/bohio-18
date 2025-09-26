@@ -1,0 +1,92 @@
+/* BOHIO Real Estate Theme Styles */
+
+/* Colores corporativos BOHIO */
+:root {
+    --bohio-primary: #004080;
+    --bohio-secondary: #f39c12;
+    --bohio-success: #27ae60;
+    --bohio-danger: #e74c3c;
+    --bohio-dark: #2c3e50;
+    --bohio-light: #ecf0f1;
+}
+
+/* Estilos para el mapa de propiedades */
+.bohio-properties-map {
+    .properties-sidebar {
+        background-color: var(--bohio-light);
+    }
+
+    .property-card {
+        transition: all 0.3s ease;
+
+        &:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15) !important;
+        }
+    }
+}
+
+/* Marcadores personalizados en el mapa */
+.custom-marker {
+    &.sale-marker {
+        background-color: var(--bohio-primary);
+    }
+
+    &.rent-marker {
+        background-color: var(--bohio-secondary);
+    }
+}
+
+/* Homepage styles */
+.bohio-homepage {
+    .hero-section {
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .quick-search {
+            max-width: 800px;
+        }
+    }
+
+    .service-card {
+        transition: all 0.3s ease;
+
+        &:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
+        }
+    }
+}
+
+/* Comparador de propiedades */
+.bohio-property-compare {
+    .compare-table {
+        th {
+            background-color: var(--bohio-primary);
+            color: white;
+        }
+
+        .table-active {
+            background-color: var(--bohio-light);
+            font-weight: bold;
+        }
+    }
+}
+
+/* Vista Kanban personalizada */
+.o_kanban_view.o_kanban_ungrouped {
+    .o_kanban_record {
+        &.o_kanban_property {
+            border-left: 4px solid var(--bohio-primary);
+        }
+    }
+}

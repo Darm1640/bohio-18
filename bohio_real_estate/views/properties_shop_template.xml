@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="properties_shop" name="Properties Shop">
+        <t t-call="website.layout">
+            <div id="wrap" class="oe_structure">
+                <div class="container mt-4">
+                    <h1 class="text-center mb-4">Buscar Propiedades</h1>
+
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <div class="card shadow-sm">
+                                <div class="card-body">
+                                    <form method="get" action="/properties" class="property-search-form">
+                                        <div class="row g-3">
+                                            <div class="col-md-6">
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" name="search"
+                                                           t-att-value="search" placeholder="Buscar por nombre o descripción..."/>
+                                                    <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal"
+                                                            data-bs-target="#codeSearchModal">
+                                                        <i class="fa fa-qrcode"/> Por Código
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                <select name="type_service" class="form-select">
+                                                    <option value="">Tipo de Servicio</option>
+                                                    <option value="sale" t-att-selected="'selected' if type_service == 'sale' else None">Venta</option>
+                                                    <option value="rent" t-att-selected="'selected' if type_service == 'rent' else None">Arriendo</option>
+                                                    <option value="sale_rent" t-att-selected="'selected' if type_service == 'sale_rent' else None">Venta y Arriendo</option>
+                                                    <option value="vacation_rent" t-att-selected="'selected' if type_service == 'vacation_rent' else None">Arriendo Vacacional</option>
+                                                </select>
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                <select name="property_type" class="form-select">
+                                                    <option value="">Tipo de Inmueble</option>
+                                                    <t t-foreach="property_types" t-as="pt">
+                                                        <option t-att-value="pt['property_type']"
+                                                                t-att-selected="'selected' if property_type == pt['property_type'] else None"
+                                                                t-esc="dict(request.env['product.template']._fields['property_type'].selection).get(pt['property_type'], pt['property_type'])"/>
+                                                    </t>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="row g-3 mt-2">
+                                            <div class="col-md-3">
+                                                <select name="state_id" id="state_filter" class="form-select">
+                                                    <option value="">Departamento</option>
+                                                    <t t-foreach="states" t-as="state">
+                                                        <option t-att-value="state.id"
+                                                                t-att-selected="'selected' if state_id == state.id else None"
+                                                                t-esc="state.name"/>
+                                                    </t>
+                                                </select>
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                <select name="city_id" id="city_filter" class="form-select">
+                                                    <option value="">Ciudad</option>
+                                                    <t t-foreach="cities" t-as="city">
+                                                        <option t-att-value="city.id"
+                                                                t-att-selected="'selected' if city_id == city.id else None"
+                                                                t-esc="city.name"/>
+                                                    </t>
+                                                </select>
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                <select name="region_id" id="region_filter" class="form-select">
+                                                    <option value="">Barrio</option>
+                                                    <t t-foreach="regions" t-as="region">
+                                                        <option t-att-value="region.id"
+                                                                t-att-selected="'selected' if region_id == region.id else None"
+                                                                t-esc="region.name"/>
+                                                    </t>
+                                                </select>
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                <select name="stratum" class="form-select">
+                                                    <option value="">Estrato</option>
+                                                    <option value="1" t-att-selected="'selected' if stratum == '1' else None">Estrato 1</option>
+                                                    <option value="2" t-att-selected="'selected' if stratum == '2' else None">Estrato 2</option>
+                                                    <option value="3" t-att-selected="'selected' if stratum == '3' else None">Estrato 3</option>
+                                                    <option value="4" t-att-selected="'selected' if stratum == '4' else None">Estrato 4</option>
+                                                    <option value="5" t-att-selected="'selected' if stratum == '5' else None">Estrato 5</option>
+                                                    <option value="6" t-att-selected="'selected' if stratum == '6' else None">Estrato 6</option>
+                                                    <option value="commercial" t-att-selected="'selected' if stratum == 'commercial' else None">Comercial</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="row g-3 mt-2">
+                                            <div class="col-md-2">
+                                                <input type="number" name="bedrooms" class="form-control"
+                                                       t-att-value="bedrooms" placeholder="Habitaciones" min="0"/>
+                                            </div>
+
+                                            <div class="col-md-2">
+                                                <input type="number" name="bathrooms" class="form-control"
+                                                       t-att-value="bathrooms" placeholder="Baños" min="0"/>
+                                            </div>
+
+                                            <div class="col-md-2">
+                                                <input type="number" name="price_min" class="form-control"
+                                                       t-att-value="price_min" placeholder="Precio Mín" min="0" step="1000000"/>
+                                            </div>
+
+                                            <div class="col-md-2">
+                                                <input type="number" name="price_max" class="form-control"
+                                                       t-att-value="price_max" placeholder="Precio Máx" min="0" step="1000000"/>
+                                            </div>
+
+                                            <div class="col-md-2">
+                                                <input type="number" name="area_min" class="form-control"
+                                                       t-att-value="area_min" placeholder="Área Mín (m²)" min="0"/>
+                                            </div>
+
+                                            <div class="col-md-2">
+                                                <input type="number" name="area_max" class="form-control"
+                                                       t-att-value="area_max" placeholder="Área Máx (m²)" min="0"/>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mt-3">
+                                            <div class="col-12 text-center">
+                                                <button type="submit" class="btn btn-primary btn-lg px-5">
+                                                    <i class="fa fa-search"/> Buscar Propiedades
+                                                </button>
+                                                <a href="/properties" class="btn btn-secondary btn-lg px-4 ms-2">
+                                                    <i class="fa fa-times"/> Limpiar
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <h4>
+                                <t t-if="product_count == 0">No se encontraron propiedades</t>
+                                <t t-elif="product_count == 1">1 propiedad encontrada</t>
+                                <t t-else=""><span t-esc="product_count"/> propiedades encontradas</t>
+                            </h4>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <t t-foreach="properties" t-as="property">
+                            <div class="col-lg-4 col-md-6 mb-4">
+                                <div class="card h-100 shadow-sm property-card">
+                                    <t t-if="property.image_1920">
+                                        <img class="card-img-top" t-att-src="'/web/image/product.template/%s/image_1920' % property.id"
+                                             t-att-alt="property.name" style="height: 250px; object-fit: cover;"/>
+                                    </t>
+                                    <t t-else="">
+                                        <div class="card-img-top bg-secondary d-flex align-items-center justify-content-center"
+                                             style="height: 250px;">
+                                            <i class="fa fa-home fa-5x text-white"/>
+                                        </div>
+                                    </t>
+
+                                    <div class="card-body">
+                                        <h5 class="card-title">
+                                            <a t-att-href="'/property/%s' % property.id" t-esc="property.name" class="text-decoration-none"/>
+                                        </h5>
+
+                                        <p class="text-muted mb-2">
+                                            <small>
+                                                <i class="fa fa-tag"/> <span t-esc="property.default_code or 'N/A'"/>
+                                            </small>
+                                        </p>
+
+                                        <p class="text-muted mb-2">
+                                            <small>
+                                                <i class="fa fa-map-marker"/>
+                                                <span t-if="property.region_id" t-esc="property.region_id.name"/><span t-if="property.region_id and property.city">, </span><span t-if="property.city" t-esc="property.city"/>
+                                            </small>
+                                        </p>
+
+                                        <div class="d-flex justify-content-between mb-2">
+                                            <span t-if="property.num_bedrooms">
+                                                <i class="fa fa-bed"/> <span t-esc="property.num_bedrooms"/> Hab
+                                            </span>
+                                            <span t-if="property.num_bathrooms">
+                                                <i class="fa fa-bath"/> <span t-esc="property.num_bathrooms"/> Baños
+                                            </span>
+                                            <span t-if="property.property_area">
+                                                <i class="fa fa-arrows-alt"/> <span t-esc="'%.0f' % property.property_area"/> m²
+                                            </span>
+                                        </div>
+
+                                        <h4 class="text-primary mb-3">
+                                            <span t-field="property.list_price" t-options="{'widget': 'monetary', 'display_currency': property.currency_id}"/>
+                                        </h4>
+
+                                        <a t-att-href="'/property/%s' % property.id" class="btn btn-primary w-100">
+                                            Ver Detalles
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </div>
+
+                    <div class="row mt-4" t-if="product_count &gt; 0">
+                        <div class="col-12">
+                            <t t-call="website.pager"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="codeSearchModal" tabindex="-1" aria-labelledby="codeSearchModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="codeSearchModalLabel">Buscar por Código</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"/>
+                        </div>
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label for="property_code_input" class="form-label">Código de Propiedad (BOH-XXX)</label>
+                                <input type="text" class="form-control" id="property_code_input"
+                                       placeholder="Ej: BOH-001"/>
+                            </div>
+                            <div id="code_search_result" class="alert" style="display:none;"></div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="button" class="btn btn-primary" id="search_by_code_btn">
+                                <i class="fa fa-search"/> Buscar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

@@ -1,0 +1,395 @@
+
+
+/* Contenedor principal de la barra lateral */
+#real_estate_sidebar {
+    position: fixed;
+    top: 100px;
+    right: 20px;
+    width: 300px;
+    max-height: calc(100vh - 120px);
+    overflow-y: auto;
+    z-index: 1050;
+    background: #ffffff;
+    border: 1px solid #e9ecef;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+    backdrop-filter: blur(10px);
+}
+
+/* Scrollbar personalizado para la barra lateral */
+#real_estate_sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+#real_estate_sidebar::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+#real_estate_sidebar::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 3px;
+}
+
+#real_estate_sidebar::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}
+
+/* Título de los filtros */
+#real_estate_sidebar h5 {
+    color: #495057;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 0.5rem;
+}
+
+/* Estilos para labels */
+.form-label {
+    color: #495057;
+    font-weight: 500;
+    font-size: 0.875rem;
+    margin-bottom: 0.5rem;
+}
+
+.form-label.small {
+    font-size: 0.8rem;
+    color: #6c757d;
+}
+
+/* Estilos para inputs */
+.form-control-sm {
+    font-size: 0.875rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    border: 1px solid #ced4da;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.form-control-sm:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/* Inputs numéricos centrados */
+.form-control-sm[type="number"] {
+    text-align: center;
+    font-weight: 500;
+}
+
+/* Estilos para selects */
+.form-select-sm {
+    font-size: 0.875rem;
+    padding: 0.5rem 2rem 0.5rem 0.75rem;
+    border-radius: 6px;
+    border: 1px solid #ced4da;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m1 6 7 7 7-7'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 16px 12px;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.form-select-sm:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/* Estilos para checkboxes */
+.form-check {
+    padding: 0.3rem 0.5rem;
+    margin-bottom: 0.5rem;
+    border-radius: 6px;
+    transition: background-color 0.15s ease-in-out;
+}
+
+.form-check:hover {
+    background-color: #f8f9fa;
+    cursor: pointer;
+}
+
+.form-check-input {
+    margin-top: 0.25rem;
+    margin-right: 0.5rem;
+    border-radius: 4px;
+    border: 1px solid #ced4da;
+    transition: all 0.15s ease-in-out;
+}
+
+.form-check-input:checked {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.form-check-input:focus {
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.form-check-label {
+    cursor: pointer;
+    font-size: 0.875rem;
+    color: #495057;
+    user-select: none;
+}
+
+/* Estilos para botones */
+.btn-sm {
+    font-size: 0.875rem;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    transition: all 0.15s ease-in-out;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+    border: none;
+    color: white;
+    font-weight: 600;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #0056b3 0%, #004085 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
+}
+
+.btn-outline-secondary {
+    border: 1px solid #6c757d;
+    color: #6c757d;
+    background: transparent;
+}
+
+.btn-outline-secondary:hover {
+    background-color: #6c757d;
+    color: white;
+    transform: translateY(-1px);
+}
+
+/* Texto de ayuda */
+.text-muted {
+    font-size: 0.75rem;
+    color: #6c757d !important;
+    font-style: italic;
+}
+
+/* Separadores */
+hr {
+    border: none;
+    border-top: 1px solid #e9ecef;
+    margin: 1.5rem 0;
+    opacity: 0.5;
+}
+
+/* Espaciado entre grupos */
+.mb-3, .mb-4 {
+    border-bottom: 1px solid #f8f9fa;
+    padding-bottom: 1rem;
+}
+
+.mb-4:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+/* Grillas para rangos */
+.row.g-1 > .col-6:first-child .form-control-sm {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-right: none;
+}
+
+.row.g-1 > .col-6:last-child .form-control-sm {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+/* Estados de validación */
+.form-control.is-invalid,
+.form-select.is-invalid {
+    border-color: #dc3545;
+    box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+}
+
+.is-invalid:focus {
+    border-color: #dc3545;
+    box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+}
+
+/* Indicador de filtros activos */
+.active-filters-count {
+    font-size: 0.75rem;
+    color: #007bff;
+    font-weight: 500;
+    text-align: center;
+    margin-top: 0.5rem;
+}
+
+/* Efecto de loading en botones */
+.btn.disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* =================================================================== */
+/* RESPONSIVE DESIGN                                                  */
+/* =================================================================== */
+
+/* Tablet */
+@media (max-width: 1024px) {
+    #real_estate_sidebar {
+        width: 280px;
+        right: 15px;
+    }
+}
+
+/* Móvil */
+@media (max-width: 768px) {
+    #real_estate_sidebar {
+        position: relative !important;
+        top: auto !important;
+        right: auto !important;
+        width: 100% !important;
+        max-height: none !important;
+        margin-bottom: 2rem;
+        border-radius: 8px;
+    }
+    
+    /* Hacer sticky en móvil cuando sea necesario */
+    .mobile-sticky #real_estate_sidebar {
+        position: sticky !important;
+        top: 20px;
+        z-index: 1040;
+    }
+}
+
+/* Móvil pequeño */
+@media (max-width: 576px) {
+    #real_estate_sidebar {
+        padding: 1rem;
+        margin: 0 -15px 2rem -15px;
+        border-radius: 0;
+        border-left: none;
+        border-right: none;
+    }
+    
+    .form-control-sm,
+    .form-select-sm {
+        font-size: 0.8rem;
+    }
+    
+    .btn-sm {
+        font-size: 0.8rem;
+        padding: 0.4rem 0.8rem;
+    }
+}
+
+/* =================================================================== */
+/* ANIMACIONES Y EFECTOS                                             */
+/* =================================================================== */
+
+/* Animación de entrada */
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+#real_estate_sidebar {
+    animation: slideInRight 0.3s ease-out;
+}
+
+/* Transiciones suaves */
+.form-control,
+.form-select,
+.btn,
+.form-check {
+    transition: all 0.15s ease-in-out;
+}
+
+/* Efecto hover en toda la barra lateral */
+#real_estate_sidebar:hover {
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* =================================================================== */
+/* ACCESIBILIDAD                                                     */
+/* =================================================================== */
+
+/* Focus visible mejorado */
+.form-control:focus-visible,
+.form-select:focus-visible,
+.btn:focus-visible,
+.form-check-input:focus-visible {
+    outline: 2px solid #007bff;
+    outline-offset: 2px;
+}
+
+/* Contraste mejorado para usuarios con problemas de visión */
+@media (prefers-contrast: high) {
+    #real_estate_sidebar {
+        border: 2px solid #000;
+    }
+    
+    .form-control-sm,
+    .form-select-sm {
+        border: 2px solid #000;
+    }
+    
+    .btn-primary {
+        background: #000;
+        border: 2px solid #000;
+    }
+}
+
+/* Reducir animaciones para usuarios sensibles al movimiento */
+@media (prefers-reduced-motion: reduce) {
+    #real_estate_sidebar {
+        animation: none;
+    }
+    
+    .form-control,
+    .form-select,
+    .btn,
+    .form-check {
+        transition: none;
+    }
+}
+
+/* =================================================================== */
+/* UTILIDADES ADICIONALES                                           */
+/* =================================================================== */
+
+/* Ocultar elementos en print */
+@media print {
+    #real_estate_sidebar {
+        display: none !important;
+    }
+}
+
+/* Clase helper para debug */
+.debug-filters * {
+    border: 1px solid red !important;
+}
+
+/* Clase para forzar visibilidad en móvil */
+.force-mobile-visible {
+    display: block !important;
+}
+
+/* Placeholder styling mejorado */
+.form-control-sm::placeholder,
+.form-select-sm::placeholder {
+    color: #6c757d;
+    opacity: 0.7;
+    font-style: italic;
+}

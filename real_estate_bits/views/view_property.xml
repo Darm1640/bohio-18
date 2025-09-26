@@ -1,0 +1,3000 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+
+        <record model="ir.ui.view" id="product_template_form_view_commission">
+            <field name="name">property.form</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@name='options']/span" position="after">
+                    <span class="d-inline-block">
+                        <field name="is_commission_product"/>
+                        <label for="is_commission_product"/>
+                    </span>
+                </xpath>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="view_property_form">
+            <field name="name">property.form</field>
+            <field name="priority" eval="10"/>
+            <field name="model">product.template</field>
+            <field name="arch" type="xml">
+                <form string="Real Estate">
+                    <header>
+                        <button name="action_reservation" invisible="state != 'free'" string="Reservation" type="object"/>
+                        <field name="state" widget="statusbar" clickable="true" statusbar_visible="free,reserved,on_lease,sold"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button class="oe_stat_button" name="view_maintenance" icon="fa-gears" type="object" invisible="maintenance_count == 0">
+                                <field name="maintenance_count" string="Maintenance" widget="statinfo"/>
+                            </button>
+                            <button type="object" name="view_reservations" class="oe_stat_button" icon="fa-book" invisible="reservation_count == 0">
+                                <field name="reservation_count" widget="statinfo" string="Reservations"/>
+                            </button>
+                        </div>
+                        <field name="image_1920" widget="image" class="oe_avatar" options="{'preview_image': 'image_128'}"/>
+
+                        <div class="oe_title mb24">
+                            <h1>
+                                <field class="text-break" name="name" placeholder="Nombre de la propiedad" default_focus="1" required="1"/>
+                            </h1>
+                            <div class="o_row">
+                                <field name="default_code" on_change="1" required="1" placeholder="Código de propiedad"/>
+                            </div>
+                        </div>
+                        <group>
+                            <group string="Property Information">
+                                <field name="country_enforce_cities" invisible="1"/>
+                                <field name="property_date" required="1"/>
+                                <field name="active" invisible="1"/>
+                                <field name="project_worksite_id"/>
+                                <field name="project_type" readonly="1"/>
+                                <field name="company_id" groups="base.group_multi_company"/>
+                                <field name="property_type_id" required="1"/>
+                                <field name="property_type" invisible="1"/>
+                            </group>
+                            <group string="Address Details">
+                                <field name="partner_id" required="1"/>
+                                <field name="is_multi_owner" string="Multi-propietarios"/>
+                                <field name="owners_lines" invisible="not is_multi_owner" colspan="2">
+                                    <list editable="top" colspan="2">
+                                        <field name="partner_id" options="{'no_create': True}"/>
+                                        <field name="ownership_percentage"/>
+                                        <field name="is_main_owner"/>
+                                    </list>
+                                </field>
+                                <field name="contact_name"/>
+                                <field name="billing_address_id"/>
+                                <label for="street" string="Direccion"/>
+                                <div class="o_address_format">
+                                    <field name="street" placeholder="Calle ..." class="o_address_street"/>
+                                    <field name="street2" placeholder="Calle 2..." class="o_address_street"/>
+                                    <field name="region_id" placeholder="Barrio ..."/>
+                                    <field name="stratum" placeholder="Estrato ..."/>
+                                    <field name="city_id" placeholder="Ciudad" class="o_address_city" domain="[('country_id', '=', country_id)]" invisible="not country_enforce_cities" context="{'default_country_id': country_id, 'default_state_id': state_id, 'default_zipcode': zip}"/>
+                                    <field name="city" placeholder="Ciudad" class="o_address_city" invisible="country_enforce_cities and (city_id or city in ('', False))"/>
+                                    <field name="state_id" class="o_address_state" placeholder="State" options="{'no_open': True, 'no_quick_create': True}" context="{'default_country_id': country_id}"/>
+                                    <field name="zip" placeholder="ZIP" class="o_address_zip"/>
+                                    <div>
+                                        <span>Latitud : <field name="latitude" nolabel="1" class="oe_inline"/>
+                                        </span>
+                                        <br/>
+                                        <span>Longitud : <field name="longitude" nolabel="1" class="oe_inline"/>
+                                        </span>
+                                        <br/>
+                                    </div>
+                                    <field name="country_id" placeholder="Country" class="o_address_country" options="{&quot;no_open&quot;: True, &quot;no_create&quot;: True}"/>
+                                    <field name="l10n_latam_identification_type_id" options="{'no_open': True, 'no_create': True}" placeholder="Type" class="oe_inline" domain="country_id and ['|', ('country_id', '=', False), ('country_id', '=', country_id)] or []" required="True"/>
+                                    <span class="oe_read_only"> - </span>
+                                    <field name="vat" placeholder="NIT/CC" class="oe_inline"/>
+                                </div>
+                            </group>
+                        </group>
+
+                        <notebook>
+                            <page string="Datos Generales del Inmueble" name="general_property_data">
+                                <!-- SECCIÓN DE ÁREA MEJORADA -->
+                                <group colspan="2" string="Área de la Propiedad">
+                                    <group>
+                                        <label for="property_area" string="Área de la Propiedad"/>
+                                        <div class="o_row">
+                                            <field name="property_area" class="oe_inline" required="1" placeholder="Ingrese área..."/>
+                                            <field name="unit_of_measure" class="oe_inline"/>
+                                        </div>
+                                        <field name="area_in_m2" readonly="1" string="Área para Cálculos (m²)" help="Área convertida automáticamente a m² para cálculos internos"/>
+                                        <field name="unit_display_name" readonly="1" string="Unidad Actual"/>
+                                        <field name="unit_label" readonly="1" string="Etiqueta"/>
+                                    </group>
+                                    <group>
+                                        <field name="front_meters"/>
+                                        <field name="depth_meters"/>
+                                    </group>
+                                </group>
+
+                                <!-- SECCIÓN DE PRECIOS DE VENTA -->
+                                <group colspan="2" string="Precios de Venta">
+                                    <group string="Configuración de Precio">
+                                        <field name="property_price_type" required="1" widget="radio"/>
+                                        <field name="price_per_unit" string="Precio por Unidad" placeholder="Precio por unidad actual" decoration-bf="property_price_type == 'sft'"/>
+                                        <field name="discount_type"/>
+                                        <field name="discount" placeholder="Valor del descuento"/>
+                                    </group>
+                                    <group string="Totales y Referencias">
+                                        <field name="price_before_discount" readonly="1" string="Precio Antes Descuento"/>
+                                        <field name="net_price" string="Precio Final de Venta" decoration-bf="1" readonly="0"/>
+
+                                        <separator string="Referencias en Otras Unidades"/>
+                                        <field name="price_per_m2_ref" readonly="1" string="Precio por m² (Referencia)"/>
+                                        <field name="price_per_hectare_ref" readonly="1" string="Precio por Ha (Referencia)"/>
+                                        <field name="price_per_yard_ref" readonly="1" string="Precio por Yd² (Referencia)"/>
+
+                                        <separator string="Rangos para Portales"/>
+                                        <label for="sale_value_from" string="Rango para Listados"/>
+                                        <div class="o_row">
+                                            <field name="sale_value_from" class="oe_inline" placeholder="Desde"/>
+                                            <span class="oe_inline"> hasta </span>
+                                            <field name="sale_value_to" class="oe_inline" placeholder="Hasta"/>
+                                        </div>
+                                    </group>
+                                </group>
+
+                                <!-- SECCIÓN DE PRECIOS DE ARRIENDO -->
+                                <group colspan="2" string="Precios de Arriendo">
+                                    <group string="Configuración de Arriendo">
+                                        <field name="rental_price_type" widget="radio"/>
+                                        <field name="rental_price_per_unit" string="Precio Arriendo por Unidad" placeholder="Precio arriendo por unidad" decoration-bf="rental_price_type == 'sft'"/>
+                                        <field name="rental_discount_type"/>
+                                        <field name="rental_discount" placeholder="Valor del descuento"/>
+                                    </group>
+                                    <group string="Totales de Arriendo">
+                                        <field name="rental_price_before_discount" readonly="1" string="Precio Arriendo Antes Descuento"/>
+                                        <field name="net_rental_price" string="Precio Final de Arriendo" decoration-bf="1" readonly="0"/>
+
+                                        <separator string="Rangos para Portales"/>
+                                        <label for="rent_value_from" string="Rango para Listados"/>
+                                        <div class="o_row">
+                                            <field name="rent_value_from" class="oe_inline" placeholder="Desde"/>
+                                            <span class="oe_inline"> hasta </span>
+                                            <field name="rent_value_to" class="oe_inline" placeholder="Hasta"/>
+                                        </div>
+                                        <field name="admin_value" string="Valor Administración"/>
+                                    </group>
+                                </group>
+
+                                <!-- INFORMACIÓN ADICIONAL DE COSTOS -->
+                                <group colspan="2" string="Información Registral y Fiscal">
+                                    <group>
+                                        <field name="registration_number" string="Folio de Matrícula"/>
+                                        <field name="cadastral_reference" string="Referencia Catastral"/>
+                                        <field name="type_service" string="Tipo de Servicio"/>
+                                        <field name="social_fee_payer"/>
+                                    </group>
+                                    <group>
+                                        <field name="cadastral_valuation" string="Avalúo Catastral"/>
+                                        <field name="property_tax" string="Impuesto Predial"/>
+                                        <field name="tax_base_amount" string="Base Gravable"/>
+                                        <field name="doc_charges" string="Gastos Documentales"/>
+                                    </group>
+                                </group>
+
+                                <!-- DATOS GENERALES DEL INMUEBLE -->
+                                <group colspan="2" string="Datos Generales del Inmueble">
+                                    <group>
+                                        <field name="urbanization_description"/>
+                                        <field name="property_description"/>
+                                        <field name="keys_location"/>
+                                        <field name="key_note"/>
+                                    </group>
+                                    <group>
+                                        <field name="consignment_date" readonly="1"/>
+                                        <field name="property_consignee"/>
+                                        <field name="user_consing_id"/>
+                                        <field name="observations"/>
+                                    </group>
+                                </group>
+
+                                <!-- ===== SOLO PARA LOTES ===== -->
+                                <group string="Características del Terreno" invisible="property_type not in ['lot', 'country_lot', 'plot']">
+                                    <group>
+                                        <field name="solar_area"/>
+                                        <field name="liens"/>
+                                        <field name="has_water" string="Tiene Agua"/>
+                                        <field name="water_nearby" string="Agua Cerca"/>
+                                        <field name="aqueduct_access" string="Acceso Acueducto"/>
+                                    </group>
+                                    <group>
+                                        <field name="gas_installation"/>
+                                        <field name="has_security" string="Seguridad"/>
+                                        <field name="security_cameras" string="Cámaras Vigilancia"/>
+                                    </group>
+                                </group>
+
+                                <!-- ===== CARACTERÍSTICAS RESIDENCIALES (Casas, Apartamentos, Fincas, Hoteles) ===== -->
+                                <group string="Características Residenciales" invisible="property_type in ['lot', 'country_lot', 'plot', 'bodega', 'local', 'office', 'building']">
+                                    <group>
+                                        <group string="Habitaciones y Baños">
+                                            <field name="num_bedrooms"/>
+                                            <field name="num_bathrooms"/>
+                                            <field name="num_living_room"/>
+                                            <field name="service_room"/>
+                                            <field name="service_bathroom"/>
+                                            <field name="auxiliary_bathroom"/>
+                                        </group>
+                                        <group string="Espacios Sociales">
+                                            <field name="living_room"/>
+                                            <field name="living_dining_room"/>
+                                            <field name="main_dining_room"/>
+                                            <field name="auxiliary_dining_room"/>
+                                            <field name="study"/>
+                                            <field name="entrance_hall"/>
+                                        </group>
+                                    </group>
+                                    <group>
+                                        <group string="Cocinas">
+                                            <field name="simple_kitchen"/>
+                                            <field name="integral_kitchen"/>
+                                            <field name="american_kitchen"/>
+                                            <field name="mixed_integral_kitchen"/>
+                                        </group>
+                                        <group string="Almacenamiento">
+                                            <field name="closet"/>
+                                            <field name="n_closet" invisible="not closet"/>
+                                            <field name="walk_in_closet"/>
+                                            <field name="dressing_room"/>
+                                            <field name="n_dressing_room" invisible="not dressing_room"/>
+                                            <field name="utility_room"/>
+                                        </group>
+                                    </group>
+                                </group>
+
+                                <!-- ===== SOLO PARA CASAS Y FINCAS ===== -->
+                                <group string="Características de Casa/Finca" invisible="property_type not in ['house', 'finca', 'cabin', 'country_house', 'architectural_house', 'country_house_2']">
+                                    <group>
+                                        <group string="Niveles y Estructura">
+                                            <field name="number_of_levels"/>
+                                            <field name="property_age"/>
+                                            <field name="property_status"/>
+                                            <field name="floor_type"/>
+                                        </group>
+                                        <group string="Áreas Exteriores">
+                                            <field name="patio"/>
+                                            <field name="garden"/>
+                                            <field name="terrace"/>
+                                            <field name="solar_area"/>
+                                            <field name="solarium"/>
+                                            <field name="laundry_area"/>
+                                        </group>
+                                    </group>
+                                    <group>
+                                        <group string="Parqueadero y Garaje">
+                                            <field name="garage"/>
+                                            <field name="n_garage" invisible="not garage"/>
+                                            <field name="covered_parking"/>
+                                            <field name="uncovered_parking"/>
+                                            <field name="linear_double_parking"/>
+                                            <field name="parallel_double_parking"/>
+                                        </group>
+                                        <group string="Comodidades">
+                                            <field name="fireplace"/>
+                                            <field name="furnished"/>
+                                            <field name="mezzanine"/>
+                                            <field name="alarm"/>
+                                        </group>
+                                    </group>
+                                </group>
+
+                                <!-- ===== SOLO PARA APARTAMENTOS Y ESTUDIOS ===== -->
+                                <group string="Características de Apartamento" invisible="property_type not in ['apartment', 'studio']">
+                                    <group>
+                                        <group string="Ubicación y Estructura">
+                                            <field name="floor_number"/>
+                                            <field name="apartment_type"/>
+                                            <field name="property_age"/>
+                                            <field name="property_status"/>
+                                            <field name="floor_type"/>
+                                        </group>
+                                        <group string="Áreas Privadas">
+                                            <field name="balcony"/>
+                                            <field name="terrace"/>
+                                            <field name="laundry_area"/>
+                                            <field name="furnished"/>
+                                            <field name="mezzanine"/>
+                                        </group>
+                                    </group>
+                                    <group>
+                                        <group string="Parqueadero">
+                                            <field name="covered_parking"/>
+                                            <field name="uncovered_parking"/>
+                                            <field name="linear_double_parking"/>
+                                            <field name="parallel_double_parking"/>
+                                        </group>
+                                        <group string="Seguridad">
+                                            <field name="alarm"/>
+                                            <field name="intercom"/>
+                                            <field name="private_elevator"/>
+                                            <field name="has_security" string="Seguridad"/>
+                                            <field name="security_cameras" string="Cámaras"/>
+                                        </group>
+                                    </group>
+                                </group>
+
+                                <!-- ===== COMODIDADES DEL EDIFICIO/CONJUNTO (Solo apartamentos y estudios) ===== -->
+                                <group string="Comodidades del Edificio/Conjunto" invisible="property_type not in ['apartment', 'studio', 'building']">
+                                    <group>
+                                        <group string="Administración y Acceso">
+                                            <field name="doorman"/>
+                                            <field name="doorman_hours"/>
+                                            <field name="doorman_phone"/>
+                                            <field name="elevator"/>
+                                            <field name="garbage_chute"/>
+                                            <field name="visitors_parking"/>
+                                            <field name="common_parking"/>
+                                        </group>
+                                        <group string="Áreas Recreativas">
+                                            <field name="social_room"/>
+                                            <field name="gym"/>
+                                            <field name="pools"/>
+                                            <field name="n_pools" invisible="not pools"/>
+                                            <field name="sauna"/>
+                                            <field name="turkish_bath"/>
+                                            <field name="jacuzzi"/>
+                                            <field name="green_areas"/>
+                                            <field name="sports_area"/>
+                                            <field name="court"/>
+                                            <field name="bar"/>
+                                        </group>
+                                    </group>
+                                    <!-- JUEGOS INFANTILES -->
+                                    <group string="Zona de Juegos Infantiles">
+                                        <field name="has_playground" string="Zona de Juegos"/>
+                                        <field name="playground_swings" string="Columpios" invisible="not has_playground"/>
+                                        <field name="playground_slides" string="Toboganes" invisible="not has_playground"/>
+                                        <field name="playground_seesaw" string="Balancines" invisible="not has_playground"/>
+                                        <field name="playground_sandbox" string="Arenero" invisible="not has_playground"/>
+                                        <field name="playground_climbing" string="Juegos Escalar" invisible="not has_playground"/>
+                                    </group>
+                                </group>
+
+                                <!-- ===== SOLO PARA OFICINAS ===== -->
+                                <group string="Características de Oficina" invisible="property_type != 'office'">
+                                    <group>
+                                        <group string="Estructura">
+                                            <field name="floor_number"/>
+                                            <field name="property_age"/>
+                                            <field name="floor_type"/>
+                                            <field name="entrance_hall"/>
+                                        </group>
+                                        <group string="Servicios Profesionales">
+                                            <field name="air_conditioning"/>
+                                            <field name="n_air_conditioning" invisible="not air_conditioning"/>
+                                            <field name="elevator"/>
+                                            <field name="covered_parking"/>
+                                            <field name="visitors_parking"/>
+                                            <field name="phone_lines"/>
+                                            <field name="intercom"/>
+                                        </group>
+                                    </group>
+                                </group>
+
+                                <!-- ===== SOLO PARA BODEGAS Y LOCALES ===== -->
+                                <group string="Características Comerciales/Industriales" invisible="property_type not in ['bodega', 'local']">
+                                    <group>
+                                        <group string="Acceso y Carga">
+                                            <field name="truck_door"/>
+                                            <field name="security_door"/>
+                                            <field name="covered_parking"/>
+                                            <field name="uncovered_parking"/>
+                                        </group>
+                                        <group string="Servicios">
+                                            <field name="warehouse"/>
+                                            <field name="utility_room"/>
+                                            <field name="electric_plant"/>
+                                            <field name="electrical_capacity"/>
+                                            <field name="phone_lines"/>
+                                        </group>
+                                    </group>
+                                </group>
+
+                                <!-- ===== SOLO PARA HOTELES ===== -->
+                                <group string="Características de Hotel" invisible="property_type not in ['hotel', 'hotel_house']">
+                                    <group>
+                                        <group string="Habitaciones y Servicios">
+                                            <field name="num_bedrooms" string="N° De Habitaciones/Suites"/>
+                                            <field name="num_bathrooms"/>
+                                            <field name="main_dining_room" string="¿Tiene Restaurante?"/>
+                                            <field name="bar"/>
+                                        </group>
+                                        <group string="Instalaciones">
+                                            <field name="social_room" string="¿Tiene Lobby/Recepción?"/>
+                                            <field name="pools"/>
+                                            <field name="n_pools" invisible="not pools"/>
+                                            <field name="gym"/>
+                                            <field name="sauna"/>
+                                            <field name="jacuzzi"/>
+                                            <field name="covered_parking"/>
+                                        </group>
+                                    </group>
+                                </group>
+
+                                <!-- SERVICIOS BÁSICOS (Para TODAS las propiedades) -->
+                                <group string="Servicios y Utilidades">
+                                    <group>
+                                        <group string="Agua y Gas">
+                                            <field name="has_water" string="Agua"/>
+                                            <field name="hot_water" string="Agua Caliente"/>
+                                            <field name="aqueduct_access" string="Acceso Acueducto"/>
+                                            <field name="gas_installation"/>
+                                            <field name="gas_heating"/>
+                                            <field name="electric_heating"/>
+                                            <field name="no_gas"/>
+                                        </group>
+                                        <group string="Electricidad y Aire Acondicionado">
+                                            <field name="air_conditioning"/>
+                                            <field name="n_air_conditioning" invisible="not air_conditioning"/>
+                                            <field name="ac_connections"/>
+                                            <field name="n_ac_connections" invisible="not ac_connections"/>
+                                            <field name="electric_plant"/>
+                                            <field name="electrical_capacity"/>
+                                            <field name="lamps_included"/>
+                                        </group>
+                                    </group>
+                                    <group>
+                                        <group string="Comunicaciones">
+                                            <field name="phone_lines"/>
+                                            <field name="intercom"/>
+                                        </group>
+                                        <group string="Otros Servicios">
+                                            <field name="warehouse"/>
+                                            <field name="utility_room"/>
+                                            <field name="laundry_area"/>
+                                        </group>
+                                    </group>
+                                </group>
+
+                                <!-- PUERTAS Y SEGURIDAD (Para TODAS las propiedades) -->
+                                <group string="Puertas y Seguridad">
+                                    <group>
+                                        <field name="door_type"/>
+                                        <field name="security_door"/>
+                                        <field name="blinds"/>
+                                        <field name="has_security" string="Seguridad"/>
+                                        <field name="security_cameras" string="Cámaras Vigilancia"/>
+                                        <field name="alarm"/>
+                                        <field name="truck_door"/>
+                                    </group>
+                                </group>
+
+                                <!-- ===== INFORMACIÓN COMERCIAL ===== -->
+                                <group string="Información Comercial">
+                                    <group>
+                                        <field name="real_estate_sign"/>
+                                        <field name="poster_sign"/>
+                                        <field name="real_estate_platform"/>
+                                        <field name="urban_space"/>
+                                        <field name="construction_company"/>
+                                        <field name="referrer"/>
+                                        <field name="ideal_visit_schedule"/>
+                                        <field name="liens"/>
+                                    </group>
+                                </group>
+                            </page>
+
+                            <page name="variants" string="Atributos" groups="product.group_product_variant">
+                                <field name="attribute_line_ids" widget="one2many" context="{'show_attribute': False}" colspan="2">
+                                    <list string="Variants" editable="bottom" decoration-info="value_count &lt;= 1" colspan="2">
+                                        <field name="value_count" column_invisible="True"/>
+                                        <field name="sequence" widget="handle"/>
+                                        <field name="attribute_id" readonly="id"/>
+                                        <field name="value_ids" widget="many2many_tags" options="{'no_create_edit': True, 'color_field': 'color'}" context="{'default_attribute_id': attribute_id, 'show_attribute': False}"/>
+                                        <button string="Configure" class="float-end btn-secondary" type="object" name="action_open_attribute_values" groups="product.group_product_variant"/>
+                                    </list>
+                                </field>
+                                <p class="oe_grey oe_edit_only">
+                                    <strong>Advertencia</strong>: agregar o eliminar atributos
+                                        eliminará y recreará variantes existentes y conducirá
+                                        con la pérdida de sus posibles personalizaciones.
+                                </p>
+                            </page>
+
+                            <page string="Información Básica y Mantenimiento">
+                                <group>
+                                    <group>
+                                        <field name="floor" invisible="project_type == 'plots'"/>
+                                        <field name="description"/>
+                                        <field name="building_unit"/>
+                                    </group>
+                                    <group>
+                                        <field name="partner_from"/>
+                                        <field name="partner_to"/>
+                                        <field name="is_property"/>
+                                        <field name="is_shop"/>
+                                    </group>
+                                </group>
+
+                                <!-- INFORMACIÓN LEGAL MOVIDA AQUÍ -->
+                                <group colspan="2" string="Información Legal y Licencias">
+                                    <group string="Licencias">
+                                        <field name="license_code"/>
+                                        <field name="license_date"/>
+                                        <field name="date_added"/>
+                                        <field name="license_location"/>
+                                    </group>
+                                    <group string="Información Fiscal">
+                                        <field name="is_vis" string="Es VIS"/>
+                                        <field name="is_vip" string="Es VIP"/>
+                                        <field name="has_subsidy" string="Tiene Subsidio"/>
+                                    </group>
+                                </group>
+
+                                <!-- SECCIÓN DE MANTENIMIENTO -->
+                                <group colspan="2" string="Costos de Mantenimiento">
+                                    <group string="Configuración">
+                                        <field name="maintenance_type" required="1"/>
+                                        <field name="maintenance_charges" placeholder="Costo de mantenimiento"/>
+                                    </group>
+                                    <group string="Utilidades">
+                                        <field name="utility_ids" nolabel="1" colspan="2">
+                                            <list editable="top" colspan="2">
+                                                <field name="name" required="1"/>
+                                                <field name="utility_type"/>
+                                                <field name="price"/>
+                                            </list>
+                                        </field>
+                                    </group>
+                                </group>
+
+                                <!-- TOTALES FINALES -->
+                                <group class="oe_subtotal_footer oe_right">
+                                    <div class="oe_subtotal_footer_separator" string="Precios por Unidad"/>
+                                    <field name="price_per_unit" string="Precio Venta por Unidad" decoration-bf="1"/>
+                                    <field name="rental_price_per_unit" string="Precio Arriendo por Unidad" decoration-bf="1"/>
+
+                                    <div class="oe_subtotal_footer_separator" string="Utilidades y Mantenimiento"/>
+                                    <field name="total_utilities" string="Total Utilidades"/>
+                                    <field name="total_maintenance" string="Total Mantenimiento"/>
+
+                                    <div class="oe_subtotal_footer_separator" string="Precios Finales"/>
+                                    <field name="net_price" string="Precio Final de Venta" decoration-bf="1"/>
+                                    <field name="net_rental_price" string="Precio Final de Arriendo" decoration-bf="1"/>
+                                    <field name="total_cost" string="Precio Venta + Mantenimiento" decoration-bf="1"/>
+                                </group>
+                            </page>
+
+                            <page string="Liquidación Notarial" name="notarial_liquidation">
+                                <group>
+                                    <group string="Configuración del Acto">
+                                        <field name="notarial_act_type"/>
+                                        <field name="cuantia_source"/>
+                                        <field name="notarial_amount" invisible="cuantia_source == 'sale_value'" placeholder="Valor específico para liquidación..."/>
+                                        <field name="sale_with_natural_person"/>
+                                        <field name="is_nonprofit_buyer" invisible="not sale_with_natural_person"/>
+                                    </group>
+
+                                    <group string="Documentos y Personas">
+                                        <field name="biometric_persons"/>
+                                        <field name="matriz_copies"/>
+                                        <field name="protocolo_copies"/>
+                                    </group>
+                                </group>
+
+                                <group>
+                                    <group string="Distribución de Costos">
+                                        <field name="cost_distribution"/>
+                                        <field name="buyer_percentage" invisible="cost_distribution != 'custom'"/>
+                                        <field name="seller_percentage" invisible="cost_distribution != 'custom'"/>
+                                    </group>
+
+                                    <group string="Valores Calculados">
+                                        <field name="notarial_rights_value" readonly="1" decoration-bf="1" string="Derechos Notariales"/>
+                                        <field name="total_notarial_cost" readonly="1" decoration-bf="1" string="Total Estimado"/>
+                                    </group>
+                                </group>
+
+                                <group>
+                                    <group string="Distribución Final">
+                                        <field name="buyer_cost" readonly="1" string="Costo Comprador" decoration-bf="1"/>
+                                        <field name="seller_cost" readonly="1" string="Costo Vendedor" decoration-bf="1"/>
+                                    </group>
+
+                                    <group string="Información">
+                                        <div class="alert alert-info">
+                                            <strong>Liquidación Estimativa:</strong>
+                                            <br/>
+                                            • Cálculo aproximado basado en tarifas notariales<br/>
+                                            • Los valores finales deben verificarse con la notaría<br/>
+                                            • Incluye derechos notariales y costos básicos<br/>
+                                            • Para VIS se aplican tarifas preferenciales
+                                </div>
+                            </group>
+                        </group>
+                    </page>
+
+                    <page string="Información Adicional">
+                        <group>
+                            <group string="Proyecto">
+                                <field name="project_area"/>
+                                <field name="rental_fee"/>
+                                <field name="insurance_fee"/>
+                                <field name="template_id"/>
+                            </group>
+                        </group>
+                    </page>
+
+                    <page string="Geolocalización">
+                        <group>
+                            <group>
+                                <field name="address" widget="place_autocomplete" class="oe_inline"/>
+                                <field name="department"/>
+                                <field name="municipality"/>
+                                <field name="neighborhood"/>
+                            </group>
+                        </group>
+                    </page>
+
+                    <page string="Comisiones de Venta" invisible="is_apply != True">
+                        <group string="Comisiones de Venta">
+                            <group>
+                                <field name="is_commission_product"/>
+                                <field name="commission_type"/>
+                                <field name="use_commission_ranges" string="Usar Rangos de Comisión"/>
+                                <field name="is_apply" invisible="1"/>
+                            </group>
+                            <field name="commission_range_ids" colspan="2" invisible="not use_commission_ranges" nolabel="1">
+                                <list editable="bottom" colspan="2">
+                                    <field name="starting_range"/>
+                                    <field name="ending_range"/>
+                                    <field name="sales_manager_commission"/>
+                                    <field name="sales_person_commission"/>
+                                    <field name="sales_manager_commission_amount"/>
+                                    <field name="sales_person_commission_amount"/>
+                                </list>
+                            </field>
+                        </group>
+                    </page>
+
+                    <page string="Documentos">
+                        <field name="attachment_line_ids" colspan="2">
+                            <list editable="bottom" colspan="2">
+                                <field name="name"/>
+                                <field name="file"/>
+                                <field name="is_brochure"/>
+                            </list>
+                        </field>
+                    </page>
+
+                    <page string="Contactos">
+                        <field name="contact_ids" colspan="2"/>
+                    </page>
+
+                    <page string="Notas">
+                        <field name="note" colspan="2"/>
+                    </page>
+                </notebook>
+            </sheet>
+            <chatter/>
+        </form>
+    </field>
+</record>
+<record model="ir.ui.view" id="view_property_tree">
+    <field name="name">property.template.</field>
+    <field name="model">product.template</field>
+    <field name="priority">1</field>
+    <field name="arch" type="xml">
+        <list string="Property" decoration-success="state == 'free'" decoration-info="state == 'reserved'" decoration-warning="state == 'on_lease'" decoration-muted="state == 'sold'" decoration-danger="state == 'blocked'">
+            <field name="default_code"/>
+            <field name="name"/>
+            <field name="property_type_id"/>
+            <field name="property_type" column_invisible="True"/>
+            <field name="partner_id"/>
+            <field name="project_worksite_id"/>
+            <field name="region_id"/>
+            <field name="state"/>
+            <field name="property_area" string="Área (m²)"/>
+            <field name="num_bedrooms" string="Hab."/>
+            <field name="num_bathrooms" string="Baños"/>
+            <field name="sale_value_from" string="Precio"/>
+            <field name="rent_value_from" string="Arriendo"/>
+            <field name="keys_location"/>
+            <field name="property_date"/>
+        </list>
+    </field>
+</record>
+
+<!-- =============================================== -->
+<!-- VISTA KANBAN DE PROPIEDADES -->
+<!-- =============================================== -->
+<record model="ir.ui.view" id="view_property_kanban">
+    <field name="name">property.template.kanban</field>
+    <field name="model">product.template</field>
+    <field name="priority">1</field>
+    <field name="arch" type="xml">
+        <kanban class="o_kanban_property">
+            <field name="id"/>
+            <field name="name"/>
+            <field name="default_code"/>
+            <field name="property_type"/>
+            <field name="property_type_id"/>
+            <field name="state"/>
+            <field name="type_service"/>
+            <field name="num_bedrooms"/>
+            <field name="num_bathrooms"/>
+            <field name="floor_number"/>
+            <field name="property_area"/>
+            <field name="unit_of_measure"/>
+            <field name="net_price"/>
+            <field name="rental_fee"/>
+            <field name="rent_value_from"/>
+            <field name="sale_value_from"/>
+            <field name="region_id"/>
+            <field name="partner_id"/>
+            <field name="covered_parking"/>
+            <field name="uncovered_parking"/>
+            <field name="garage"/>
+            <field name="furnished"/>
+            <field name="city"/>
+            <field name="street"/>
+            <field name="street2"/>
+            <field name="registration_number"/>
+            <field name="cadastral_reference"/>
+            <field name="floor_type"/>
+            <field name="door_type"/>
+            <field name="stratum"/>
+            <field name="living_room"/>
+            <field name="integral_kitchen"/>
+            <field name="service_room"/>
+            <field name="balcony"/>
+            <field name="terrace"/>
+            <field name="garden"/>
+            <field name="patio"/>
+            <field name="bar"/>
+            <field name="property_status"/>
+            <field name="air_conditioning"/>
+            <field name="elevator"/>
+            <field name="pools"/>
+            <field name="gym"/>
+            <field name="security_door"/>
+            <field name="alarm"/>
+            <field name="hot_water"/>
+            <field name="gas_installation"/>
+            <field name="truck_door"/>
+            <field name="electrical_capacity"/>
+            <field name="electric_plant"/>
+            <field name="phone_lines"/>
+            <field name="warehouse"/>
+            <field name="intercom"/>
+            <field name="doorman"/>
+            <field name="visitors_parking"/>
+            <field name="front_meters"/>
+            <field name="depth_meters"/>
+            <field name="fireplace"/>
+            <field name="walk_in_closet"/>
+            <field name="laundry_area"/>
+            <field name="social_room"/>
+            <field name="sauna"/>
+            <field name="green_areas"/>
+            <field name="property_age"/>
+            <field name="apartment_type"/>
+            <field name="entrance_hall"/>
+            <field name="utility_room"/>
+            <field name="currency_id"/>
+            <field name="company_id"/>
+            <templates>
+                <t t-name="card">
+                    <div class="oe_kanban_global_click o_property_kanban" style="width: 310px; min-height: 400px; margin: 6px; border: 1px solid #ddd; border-radius: 6px; background: white; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+
+                        <!-- IMAGEN CON INFO SUPERIOR -->
+                        <div style="height: 120px; background: #f8f9fa; position: relative;">
+                            <img t-attf-src="/web/image/product.template/#{record.id.raw_value}/image_128" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.style.background='#f8f9fa'; this.parentElement.innerHTML='&lt;div style=&quot;display: flex; align-items: center; justify-content: center; height: 100%; color: #999; font-size: 12px;&quot;&gt;&lt;i class=&quot;fa fa-image&quot; style=&quot;font-size: 24px;&quot;&gt;&lt;/i&gt;&lt;/div&gt;';"/>
+
+                            <!-- INFO SUPERIOR DERECHA -->
+                            <div style="position: absolute; top: 4px; right: 4px; display: flex; flex-direction: column; gap: 2px;">
+                                <!-- ESTADO -->
+                                <span t-if="record.state.raw_value == 'free'" style="background: rgba(76, 175, 80, 0.5); color: white; padding: 1px 4px; border-radius: 6px; font-size: 8px; font-weight: 600;">
+                                    <i class="fa fa-check-circle" style="margin-right: 2px;"/>
+DISPONIBLE
+                                </span>
+                                <span t-elif="record.state.raw_value == 'reserved'" style="background: rgba(255, 152, 0, 0.5); color: white; padding: 1px 4px; border-radius: 6px; font-size: 8px; font-weight: 600;">
+                                    <i class="fa fa-clock-o" style="margin-right: 2px;"/>
+RESERVADO
+                                </span>
+                                <span t-elif="record.state.raw_value == 'on_lease'" style="background: rgba(3, 169, 244, 0.5); color: white; padding: 1px 4px; border-radius: 6px; font-size: 8px; font-weight: 600;">
+                                    <i class="fa fa-handshake-o" style="margin-right: 2px;"/>
+ARRENDADO
+                                </span>
+                                <span t-elif="record.state.raw_value == 'sold'" style="background: rgba(96, 125, 139, 0.5); color: white; padding: 1px 4px; border-radius: 6px; font-size: 8px; font-weight: 600;">
+                                    <i class="fa fa-check" style="margin-right: 2px;"/>
+VENDIDO
+                                </span>
+                                <span t-elif="record.state.raw_value == 'blocked'" style="background: rgba(244, 67, 54, 0.5); color: white; padding: 1px 4px; border-radius: 6px; font-size: 8px; font-weight: 600;">
+                                    <i class="fa fa-ban" style="margin-right: 2px;"/>
+BLOQUEADO
+                                </span>
+
+                                <!-- TIPO DE PROPIEDAD -->
+                                <span style="background: rgba(102, 102, 102, 0.6); color: white; padding: 1px 4px; border-radius: 6px; font-size: 8px; font-weight: 600;">
+                                    <!-- Iconos específicos por tipo de propiedad -->
+                                    <i t-if="record.property_type.raw_value == 'bodega'" class="fa fa-industry" style="margin-right: 2px;"/>
+                                    <i t-elif="record.property_type.raw_value == 'local'" class="fa fa-shopping-cart" style="margin-right: 2px;"/>
+                                    <i t-elif="record.property_type.raw_value == 'apartment'" class="fa fa-building" style="margin-right: 2px;"/>
+                                    <i t-elif="record.property_type.raw_value == 'house'" class="fa fa-home" style="margin-right: 2px;"/>
+                                    <i t-elif="record.property_type.raw_value == 'studio'" class="fa fa-bed" style="margin-right: 2px;"/>
+                                    <i t-elif="record.property_type.raw_value == 'office'" class="fa fa-briefcase" style="margin-right: 2px;"/>
+                                    <i t-elif="record.property_type.raw_value == 'finca'" class="fa fa-leaf" style="margin-right: 2px;"/>
+                                    <i t-elif="record.property_type.raw_value == 'lot'" class="fa fa-map" style="margin-right: 2px;"/>
+                                    <i t-elif="record.property_type.raw_value == 'hotel'" class="fa fa-hotel" style="margin-right: 2px;"/>
+                                    <i t-elif="record.property_type.raw_value == 'cabin'" class="fa fa-" style="margin-right: 2px;"/>
+                                    <i t-elif="record.property_type.raw_value == 'building'" class="fa fa-building-o" style="margin-right: 2px;"/>
+                                    <i t-elif="record.property_type.raw_value == 'country_lot'" class="fa fa-envira" style="margin-right: 2px;"/>
+                                    <i t-elif="record.property_type.raw_value == 'blueprint'" class="fa fa-file-text-o" style="margin-right: 2px;"/>
+                                    <i t-elif="record.property_type.raw_value == 'plot'" class="fa fa-map-o" style="margin-right: 2px;"/>
+                                    <!-- Icono por defecto si no hay tipo o no coincide -->
+                                    <i t-else="" class="fa fa-home" style="margin-right: 2px;"/>
+                                    <field name="property_type_id"/>
+                                </span>
+
+                                <!-- TIPO DE SERVICIO -->
+                                <span t-if="record.type_service.raw_value == 'sale'" style="background: rgba(46, 125, 50, 0.6); color: white; padding: 1px 4px; border-radius: 6px; font-size: 8px; font-weight: 600;">
+                                    <i class="fa fa-dollar" style="margin-right: 2px;"/>
+VENTA
+                                </span>
+                                <span t-elif="record.type_service.raw_value == 'rent'" style="background: rgba(25, 118, 210, 0.6); color: white; padding: 1px 4px; border-radius: 6px; font-size: 8px; font-weight: 600;">
+                                    <i class="fa fa-key" style="margin-right: 2px;"/>
+ARRIENDO
+                                </span>
+                                <span t-elif="record.type_service.raw_value == 'sale_rent'" style="background: rgba(156, 39, 176, 0.6); color: white; padding: 1px 4px; border-radius: 6px; font-size: 8px; font-weight: 600;">
+                                    <i class="fa fa-exchange" style="margin-right: 2px;"/>
+VENTA/ARRIENDO
+                                </span>
+                                <span t-elif="record.type_service.raw_value == 'vacation_rent'" style="background: rgba(255, 111, 0, 0.6); color: white; padding: 1px 4px; border-radius: 6px; font-size: 8px; font-weight: 600;">
+                                    <i class="fa fa-plane" style="margin-right: 2px;"/>
+VACACIONAL
+                                </span>
+                                <div style="background: rgba(126, 208, 252, 0.6); color: white; padding: 1px 4px; border-radius: 6px; font-size: 8px; font-weight: 600;" t-if="record.property_area.raw_value">
+                                    <div style="font-size: 14px; color: black;">
+                                        <i class="fa fa-expand"/>
+                                        <t t-esc="Math.round(record.property_area.raw_value)"/>
+                                        <span t-if="record.unit_of_measure.raw_value == 'm'">m²</span>
+                                        <span t-elif="record.unit_of_measure.raw_value == 'yard'">yd²</span>
+                                        <span t-elif="record.unit_of_measure.raw_value == 'hectare'">hectarea</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <!-- CONTENIDO -->
+                        <div style="padding: 8px; background: #f8f9fa; line-height: 1.1;">
+
+                            <!-- TÍTULO, CÓDIGO Y ÁREA -->
+                            <div style="margin-bottom: 6px; background: white; padding: 6px; border-radius: 4px;">
+                                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 2px;">
+                                    <h4 style="margin: 0; font-size: 13px; color: #2c3e50; font-weight: 600; flex: 1; line-height: 1.1;">
+                                        <field name="name"/>
+                                    </h4>
+                                    <div style="font-size: 10px; color: #7f8c8d; font-weight: 500; margin-left: 6px;">
+                                        <field name="default_code"/>
+                                    </div>
+                                </div>
+
+                                <!-- ÁREA PROMINENTE CON CONVERSIÓN -->
+
+
+                                <!-- MATRÍCULA Y REFERENCIA PROMINENTES -->
+                                <div style="font-size: 10px; color: #2c3e50; text-align: center; background: #fff3e0; padding: 3px; border-radius: 4px; font-weight: 600;" t-if="record.registration_number.raw_value or record.cadastral_reference.raw_value">
+                                    <span t-if="record.registration_number.raw_value">📋 Matrícula: <span style="color: #e67e22;">
+                                        <field name="registration_number"/>
+                                    </span>
+                                </span>
+                                <span t-if="record.cadastral_reference.raw_value"> | 🏛️ Catastral: <span style="color: #e67e22;">
+                                    <field name="cadastral_reference"/>
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- DIRECCIÓN -->
+                    <div style="margin-bottom: 6px; font-size: 11px; color: #34495e; background: white; padding: 4px; border-radius: 4px; border-left: 2px solid #3498db;">
+                        <i class="fa fa-map-marker" style="color: #e74c3c; margin-right: 2px;"/>
+                        <span t-if="record.city.raw_value" style="font-weight: 600;">
+                            <field name="city"/>
+                        </span>
+                        <span t-if="record.street.raw_value">
+                            <br/>
+                            <field name="street"/>
+                        </span>
+                        <span t-if="record.region_id.raw_value">
+                            <br/>
+                            <field name="region_id"/>
+                        </span>
+                    </div>
+
+                    <!-- ACABADOS (SOLO PARA INMUEBLES CON CONSTRUCCIÓN) -->
+                    <div t-if="record.property_type.raw_value != 'lot' and record.property_type.raw_value != 'country_lot' and record.property_type.raw_value != 'plot'" style="margin-bottom: 6px; background: white; padding: 4px; border-radius: 4px;">
+                        <div style="font-size: 10px; color: #7f8c8d; font-weight: 600; margin-bottom: 2px;">ACABADOS</div>
+                        <div style="display: flex; flex-wrap: wrap; gap: 2px;">
+                            <span t-if="record.floor_type.raw_value" style="background: #e8f5e8; color: #4caf50; padding: 2px 5px; border-radius: 3px; font-size: 9px;">
+                                <i class="fa fa-th-large"/>
+ Tipo piso:
+                                <span t-if="record.floor_type.raw_value == 'tile'">Baldosa</span>
+                                <span t-elif="record.floor_type.raw_value == 'wood'">Madera</span>
+                                <span t-elif="record.floor_type.raw_value == 'ceramic'">Cerámica</span>
+                                <span t-elif="record.floor_type.raw_value == 'porcelain'">Porcelanato</span>
+                                <span t-elif="record.floor_type.raw_value == 'marble'">Mármol</span>
+                                <span t-else="">
+                                    <t t-esc="record.floor_type.raw_value"/>
+                                </span>
+                            </span>
+                            <span t-if="record.door_type.raw_value" style="background: #fff3e0; color: #f57c00; padding: 2px 5px; border-radius: 3px; font-size: 9px;">
+                                <i class="fa fa-square"/>
+Material de la puerta:
+                                <span t-if="record.door_type.raw_value == 'wood'">Madera</span>
+                                <span t-elif="record.door_type.raw_value == 'metal'">Metal</span>
+                                <span t-elif="record.door_type.raw_value == 'glass'">Vidrio</span>
+                                <span t-elif="record.door_type.raw_value == 'aluminum'">Aluminio</span>
+                                <span t-else="">P.<t t-esc="record.door_type.raw_value"/>
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- CARACTERÍSTICAS PRINCIPALES POR TIPO -->
+                    <div style="margin-bottom: 6px; background: white; padding: 4px; border-radius: 4px;">
+                        <div style="font-size: 10px; color: #7f8c8d; font-weight: 600; margin-bottom: 2px;">CARACTERÍSTICAS</div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2px; font-size: 9px;">
+                            <t t-if="record.stratum.raw_value == '1'">
+                                <span style="background: #f44336; color: white; padding: 1px 3px; border-radius: 2px; font-weight: 600;">
+                                    <i class="fa fa-star"/>
+ Estrato 1
+                                </span>
+                            </t>
+                            <t t-if="record.stratum.raw_value == '2'">
+                                <span style="background: #f44336; color: white; padding: 1px 3px; border-radius: 2px; font-weight: 600;">
+                                    <i class="fa fa-star"/>
+ Estrato 2
+                                </span>
+                            </t>
+                            <t t-if="record.stratum.raw_value == '3'">
+                                <span style="background: #ff9800; color: white; padding: 1px 3px; border-radius: 2px; font-weight: 600;">
+                                    <i class="fa fa-star"/>
+ Estrato 3
+                                </span>
+                            </t>
+                            <t t-if="record.stratum.raw_value == '4'">
+                                <span style="background: #ff9800; color: white; padding: 1px 3px; border-radius: 2px; font-weight: 600;">
+                                    <i class="fa fa-star"/>
+ Estrato 4
+                                </span>
+                            </t>
+                            <t t-if="record.stratum.raw_value == '5'">
+                                <span style="background: #4caf50; color: white; padding: 1px 3px; border-radius: 2px; font-weight: 600;">
+                                    <i class="fa fa-star"/>
+ Estrato 5
+                                </span>
+                            </t>
+                            <t t-if="record.stratum.raw_value == '6'">
+                                <span style="background: #4caf50; color: white; padding: 1px 3px; border-radius: 2px; font-weight: 600;">
+                                    <i class="fa fa-star"/>
+ Estrato 6
+                                </span>
+                            </t>
+                            <t t-if="record.stratum.raw_value == 'commercial'">
+                                <span style="background: #2196f3; color: white; padding: 1px 3px; border-radius: 2px; font-weight: 600;">
+                                    <i class="fa fa-briefcase"/>
+ Comercial
+                                </span>
+                            </t>
+                            <t t-if="record.stratum.raw_value == 'no_stratified'">
+                                <span style="background: #607d8b; color: white; padding: 1px 3px; border-radius: 2px; font-weight: 600;">
+                                    <i class="fa fa-minus"/>
+ No Estratificada
+                                </span>
+                            </t>
+                            <!-- CASAS, FINCAS, CABAÑAS -->
+                            <t t-if="record.property_type.raw_value == 'house' or record.property_type.raw_value == 'finca' or record.property_type.raw_value == 'cabin'">
+                                <span t-if="record.num_bedrooms.raw_value" style="background: #e3f2fd; color: #1976d2; padding: 1px 3px; border-radius: 2px;">
+                                    <i class="fa fa-bed"/>
+                                    <t t-esc="record.num_bedrooms.raw_value"/>
+ Habitaciones
+                                </span>
+                                <span t-if="record.num_bathrooms.raw_value" style="background: #f3e5f5; color: #7b1fa2; padding: 1px 3px; border-radius: 2px;">
+                                    <i class="fa fa-bath"/>
+                                    <t t-esc="record.num_bathrooms.raw_value"/>
+ Baños
+                                </span>
+                                <span t-if="record.garage.raw_value or record.covered_parking.raw_value" style="background: #fce4ec; color: #c2185b; padding: 1px 3px; border-radius: 2px;">
+                                    <i class="fa fa-car"/>
+ Tiene Garaje
+                                </span>
+                                <span t-if="record.furnished.raw_value" style="background: #e8f5e8; color: #4caf50; padding: 1px 3px; border-radius: 2px;">
+                                    <i class="fa fa-home"/>
+ Amoblado
+                                </span>
+                                <span t-if="record.living_room.raw_value" style="background: #f9fbe7; color: #689f38; padding: 1px 3px; border-radius: 2px;">
+                                    <i class="fa fa-tv"/>
+ Tiene Sala
+                                </span>
+                                <span t-if="record.integral_kitchen.raw_value" style="background: #e1f5fe; color: #0288d1; padding: 1px 3px; border-radius: 2px;">
+                                    <i class="fa fa-cutlery"/>
+ Cocina Integral
+                                </span>
+                                <span t-if="record.service_room.raw_value" style="background: #ffeaa7; color: #d63031; padding: 1px 3px; border-radius: 2px;">
+                                    <i class="fa fa-bed"/>
+ Cuarto Servicio
+                                </span>
+                                <span t-if="record.garden.raw_value" style="background: #f1f8e9; color: #388e3c; padding: 1px 3px; border-radius: 2px;">
+                                    <i class="fa fa-leaf"/>
+ Tiene Jardín
+                                </span>
+                                <span t-if="record.pools.raw_value" style="background: #e0f2f1; color: #00796b; padding: 1px 3px; border-radius: 2px;">
+                                    <i class="fa fa-tint"/>
+ Tiene Piscina
+                                </span>
+                                <span t-if="record.fireplace.raw_value" style="background: #ffecb3; color: #e65100; padding: 1px 3px; border-radius: 2px;">
+                                    <i class="fa fa-fire"/>
+ Tiene Chimenea
+                                </span>
+                                <span t-if="record.patio.raw_value" style="background: #e8f4fd; color: #0984e3; padding: 1px 3px; border-radius: 2px;">
+                                    <i class="fa fa-square-o"/>
+ Tiene Patio
+                                </span>
+                                <span t-if="record.terrace.raw_value" style="background: #f3e5f5; color: #7b1fa2; padding: 1px 3px; border-radius: 2px;">
+                                    <i class="fa fa-home"/>
+ Tiene Terraza
+                                </span>
+
+                            </t>
+
+                            <!-- APARTAMENTOS Y ESTUDIOS -->
+                            <t t-if="record.property_type.raw_value == 'apartment' or record.property_type.raw_value == 'studio'">
+                                <span t-if="record.num_bedrooms.raw_value" style="background: #e3f2fd; color: #1976d2; padding: 1px 3px; border-radius: 2px;">
+                                    <i class="fa fa-bed"/>
+                                    <t t-esc="record.num_bedrooms.raw_value"/>
+ Habitaciones
+                                </span>
+                                <span t-if="record.num_bathrooms.raw_value" style="background: #f3e5f5; color: #7b1fa2; padding: 1px 3px; border-radius: 2px;">
+                                    <i class="fa fa-bath"/>
+                                    <t t-esc="record.num_bathrooms.raw_value"/>
+ Baños
+                                </span>
+                                <span t-if="record.floor_number.raw_value" style="background: #f1f8e9; color: #388e3c; padding: 1px 3px; border-radius: 2px;">
+                                    <i class="fa fa-building"/>
+ P<t t-esc="record.floor_number.raw_value"/>
+                                </span>
+
+                                <!-- ESTRATO CON COLORES Y OPCIONES COMPLETAS -->
+
+
+                                <span t-if="record.covered_parking.raw_value" style="background: #fce4ec; color: #c2185b; padding: 1px 3px; border-radius: 2px;">
+                                    <i class="fa fa-car"/>
+                                    <t t-esc="record.covered_parking.raw_value"/>
+ Parqueadero Cubierto
+                                </span>
+                                <span t-if="record.balcony.raw_value" style="background: #e8f4fd; color: #0984e3; padding: 1px 3px; border-radius: 2px;">
+                                    <i class="fa fa-home"/>
+ Tiene Balcón
+                                </span>
+                                <span t-if="record.air_conditioning.raw_value" style="background: #e1f5fe; color: #0288d1; padding: 1px 3px; border-radius: 2px;">
+                                    <i class="fa fa-snowflake-o"/>
+ Aire Acondicionado
+                                </span>
+                                <span t-if="record.elevator.raw_value" style="background: #f9fbe7; color: #689f38; padding: 1px 3px; border-radius: 2px;">
+                                    <i class="fa fa-arrows-v"/>
+ Tiene Ascensor
+                                </span>
+                                <span t-if="record.furnished.raw_value" style="background: #e8f5e8; color: #4caf50; padding: 1px 3px; border-radius: 2px;">
+                                    <i class="fa fa-home"/>
+ Amoblado
+                                </span>
+                                <span t-if="record.social_room.raw_value" style="background: #e8eaf6; color: #3f51b5; padding: 1px 3px; border-radius: 2px;">
+                                    <i class="fa fa-users"/>
+ Salón Social
+                                </span>
+
+                                <!-- TIPO DE APARTAMENTO -->
+                                <t t-if="record.apartment_type.raw_value == 'duplex'">
+                                    <span style="background: #9c27b0; color: white; padding: 1px 3px; border-radius: 2px;">
+                                        <i class="fa fa-home"/>
+ Dúplex
+                                    </span>
+                                </t>
+                                <t t-elif="record.apartment_type.raw_value == 'loft'">
+                                    <span style="background: #795548; color: white; padding: 1px 3px; border-radius: 2px;">
+                                        <i class="fa fa-building"/>
+ Loft
+                                    </span>
+                                </t>
+                                <t t-elif="record.apartment_type.raw_value == 'penthouse'">
+                                    <span style="background: #ff5722; color: white; padding: 1px 3px; border-radius: 2px;">
+                                        <i class="fa fa-star"/>
+ Penthouse
+                                    </span>
+                                </t>
+                            </t>
+
+                            <!-- OFICINAS -->
+                            <t t-if="record.property_type.raw_value == 'office'">
+                                <span t-if="record.floor_number.raw_value" style="background: #f1f8e9; color: #388e3c; padding: 1px 3px; border-radius: 2px;">
+                                    <i class="fa fa-building"/>
+ N° Piso: <t t-esc="record.floor_number.raw_value"/>
+                                </span>
+                                <span t-if="record.covered_parking.raw_value" style="background: #fce4ec; color: #c2185b; padding: 1px 3px; border-radius: 2px;">
+                                    <i class="fa fa-car"/>
+                                    <t t-esc="record.covered_parking.raw_value"/>
+ Parqueadero Cubierto
+                                </span>
+                                <span t-if="record.air_conditioning.raw_value" style="background: #e1f5fe; color: #0288d1; padding: 1px 3px; border-radius: 2px;">
+                                    <i class="fa fa-snowflake-o"/>
+ Aire Acondicionado
+                                </span>
+                                <span t-if="record.elevator.raw_value" style="background: #f9fbe7; color: #689f38; padding: 1px 3px; border-radius: 2px;">
+                                    <i class="fa fa-arrows-v"/>
+ Tiene Ascensor
+                                </span>
+                                <span t-if="record.security_door.raw_value" style="background: #ffebee; color: #d32f2f; padding: 1px 3px; border-radius: 2px;">
+                                    <i class="fa fa-shield"/>
+ Puerta Seguridad
+                                </span>
+
+                                <!-- TIPO DE PORTERÍA -->
+                                <t t-if="record.doorman.raw_value == '24_hours'">
+                                    <span style="background: #4caf50; color: white; padding: 1px 3px; border-radius: 2px;">
+                                        <i class="fa fa-user"/>
+ Portería 24 Horas
+                                    </span>
+                                </t>
+                                <t t-elif="record.doorman.raw_value == 'daytime'">
+                                    <span style="background: #ff9800; color: white; padding: 1px 3px; border-radius: 2px;">
+                                        <i class="fa fa-user"/>
+ Portería Diurna
+                                    </span>
+                                </t>
+                                <t t-elif="record.doorman.raw_value == 'virtual'">
+                                    <span style="background: #2196f3; color: white; padding: 1px 3px; border-radius: 2px;">
+                                        <i class="fa fa-video-camera"/>
+ Video Citófonía
+                                    </span>
+                                </t>
+                                <t t-elif="record.doorman.raw_value == 'none'">
+                                    <span style="background: #607d8b; color: white; padding: 1px 3px; border-radius: 2px;">
+                                        <i class="fa fa-times"/>
+ Sin Portería
+                                    </span>
+                                </t>
+
+                                <span t-if="record.visitors_parking.raw_value" style="background: #fff3e0; color: #f57c00; padding: 1px 3px; border-radius: 2px;">
+                                    <i class="fa fa-car"/>
+ Parqueadero Visitantes
+                                </span>
+                                <span t-if="record.phone_lines.raw_value" style="background: #e0f2f1; color: #00796b; padding: 1px 3px; border-radius: 2px;">
+                                    <i class="fa fa-phone"/>
+                                    <t t-esc="record.phone_lines.raw_value"/>
+ Líneas Telefónicas
+                                </span>
+                                <span t-if="record.intercom.raw_value" style="background: #f3e5f5; color: #7b1fa2; padding: 1px 3px; border-radius: 2px;">
+                                    <i class="fa fa-microphone"/>
+ Citófono
+                                </span>
+                                <span t-if="record.electrical_capacity.raw_value" style="background: #fff8e1; color: #ffa000; padding: 1px 3px; border-radius: 2px;">
+                                    <i class="fa fa-bolt"/>
+                                    <t t-esc="record.electrical_capacity.raw_value"/>
+ Capacidad Eléctrica
+                                </span>
+                            </t>
+
+                            <!-- BODEGAS Y LOCALES -->
+                            <t t-if="record.property_type.raw_value == 'bodega' or record.property_type.raw_value == 'local'">
+                                <span t-if="record.truck_door.raw_value" style="background: #e3f2fd; color: #1976d2; padding: 1px 3px; border-radius: 2px;">
+                                    <i class="fa fa-truck"/>
+ Puerta Camión
+                                </span>
+                                <span t-if="record.electrical_capacity.raw_value" style="background: #fff8e1; color: #ffa000; padding: 1px 3px; border-radius: 2px;">
+                                    <i class="fa fa-bolt"/>
+                                    <t t-esc="record.electrical_capacity.raw_value"/>
+ Capacidad Eléctrica
+                                </span>
+                                <span t-if="record.covered_parking.raw_value" style="background: #fce4ec; color: #c2185b; padding: 1px 3px; border-radius: 2px;">
+                                    <i class="fa fa-car"/>
+                                    <t t-esc="record.covered_parking.raw_value"/>
+ Parqueadero Cubierto
+                                </span>
+                                <span t-if="record.uncovered_parking.raw_value" style="background: #f3e5f5; color: #7b1fa2; padding: 1px 3px; border-radius: 2px;">
+                                    <i class="fa fa-car"/>
+                                    <t t-esc="record.uncovered_parking.raw_value"/>
+ Parqueadero Descubierto
+                                </span>
+                                <span t-if="record.security_door.raw_value" style="background: #ffebee; color: #d32f2f; padding: 1px 3px; border-radius: 2px;">
+                                    <i class="fa fa-shield"/>
+ Puerta Seguridad
+                                </span>
+                                <span t-if="record.warehouse.raw_value" style="background: #f1f8e9; color: #388e3c; padding: 1px 3px; border-radius: 2px;">
+                                    <i class="fa fa-archive"/>
+ Depósito/Bodega
+                                </span>
+                                <span t-if="record.electric_plant.raw_value" style="background: #e1f5fe; color: #0288d1; padding: 1px 3px; border-radius: 2px;">
+                                    <i class="fa fa-flash"/>
+ Planta Eléctrica
+                                </span>
+                                <span t-if="record.phone_lines.raw_value" style="background: #e0f2f1; color: #00796b; padding: 1px 3px; border-radius: 2px;">
+                                    <i class="fa fa-phone"/>
+                                    <t t-esc="record.phone_lines.raw_value"/>
+ Líneas Telefónicas
+                                </span>
+                                <span t-if="record.utility_room.raw_value" style="background: #fff3e0; color: #f57c00; padding: 1px 3px; border-radius: 2px;">
+                                    <i class="fa fa-briefcase"/>
+ Cuarto Útil
+                                </span>
+                                <span t-if="record.garage.raw_value" style="background: #ffeaa7; color: #d63031; padding: 1px 3px; border-radius: 2px;">
+                                    <i class="fa fa-arrows-alt"/>
+ Tiene Garaje
+                                </span>
+                            </t>
+
+                            <!-- LOTES Y TERRENOS -->
+                            <t t-if="record.property_type.raw_value == 'lot' or record.property_type.raw_value == 'country_lot' or record.property_type.raw_value == 'plot'">
+                                <span t-if="record.front_meters.raw_value" style="background: #e8f4fd; color: #0984e3; padding: 1px 3px; border-radius: 2px;">
+                                    <i class="fa fa-arrows-h"/>
+                                    <t t-esc="record.front_meters.raw_value"/>
+m Frente
+                                </span>
+                                <span t-if="record.depth_meters.raw_value" style="background: #ffeaa7; color: #d63031; padding: 1px 3px; border-radius: 2px;">
+                                    <i class="fa fa-arrows-v"/>
+                                    <t t-esc="record.depth_meters.raw_value"/>
+m Fondo
+                                </span>
+                                <span t-if="record.gas_installation.raw_value" style="background: #fab1a0; color: #e17055; padding: 1px 3px; border-radius: 2px;">
+                                    <i class="fa fa-fire"/>
+ Red de Gas
+                                </span>
+                                <span t-if="record.electric_plant.raw_value" style="background: #e1f5fe; color: #0288d1; padding: 1px 3px; border-radius: 2px;">
+                                    <i class="fa fa-bolt"/>
+ Planta Eléctrica
+                                </span>
+                                <span t-if="record.green_areas.raw_value" style="background: #f1f8e9; color: #388e3c; padding: 1px 3px; border-radius: 2px;">
+                                    <i class="fa fa-leaf"/>
+ Zonas Verdes
+                                </span>
+                            </t>
+
+                            <!-- HOTELES -->
+                            <t t-if="record.property_type.raw_value == 'hotel'">
+                                <span t-if="record.num_bedrooms.raw_value" style="background: #e3f2fd; color: #1976d2; padding: 1px 3px; border-radius: 2px;">
+                                    <i class="fa fa-bed"/>
+                                    <t t-esc="record.num_bedrooms.raw_value"/>
+ Habitaciones
+                                </span>
+                                <span t-if="record.num_bathrooms.raw_value" style="background: #f3e5f5; color: #7b1fa2; padding: 1px 3px; border-radius: 2px;">
+                                    <i class="fa fa-bath"/>
+                                    <t t-esc="record.num_bathrooms.raw_value"/>
+ Baños
+                                </span>
+                                <span t-if="record.entrance_hall.raw_value" style="background: #f9fbe7; color: #689f38; padding: 1px 3px; border-radius: 2px;">
+                                    <i class="fa fa-home"/>
+ Tiene Hall
+                                </span>
+                                <span t-if="record.pools.raw_value" style="background: #e0f2f1; color: #00796b; padding: 1px 3px; border-radius: 2px;">
+                                    <i class="fa fa-tint"/>
+ Tiene Piscina
+                                </span>
+                                <span t-if="record.gym.raw_value" style="background: #ffecb3; color: #e65100; padding: 1px 3px; border-radius: 2px;">
+                                    <i class="fa fa-dumbbell"/>
+ Tiene Gimnasio
+                                </span>
+                                <span t-if="record.sauna.raw_value" style="background: #fff3e0; color: #f57c00; padding: 1px 3px; border-radius: 2px;">
+                                    <i class="fa fa-fire"/>
+ Tiene Sauna
+                                </span>
+                                <span t-if="record.covered_parking.raw_value" style="background: #fce4ec; color: #c2185b; padding: 1px 3px; border-radius: 2px;">
+                                    <i class="fa fa-car"/>
+                                    <t t-esc="record.covered_parking.raw_value"/>
+ N° Parqueadero Cubierto
+                                </span>
+                                <span t-if="record.elevator.raw_value" style="background: #f9fbe7; color: #689f38; padding: 1px 3px; border-radius: 2px;">
+                                    <i class="fa fa-arrows-v"/>
+ Tiene Ascensor
+                                </span>
+                                <span t-if="record.green_areas.raw_value" style="background: #f1f8e9; color: #388e3c; padding: 1px 3px; border-radius: 2px;">
+                                    <i class="fa fa-leaf"/>
+ Zonas Verdes
+                                </span>
+                                <span t-if="record.social_room.raw_value" style="background: #e8eaf6; color: #3f51b5; padding: 1px 3px; border-radius: 2px;">
+                                    <i class="fa fa-users"/>
+ Salón Social
+                                </span>
+                            </t>
+
+                            <!-- CARACTERÍSTICAS ADICIONALES GENERALES -->
+
+
+                            <span t-if="record.property_age.raw_value" style="background: #f3e5f5; color: #7b1fa2; padding: 1px 3px; border-radius: 2px;">
+                                <i class="fa fa-clock-o"/>
+                                <t t-esc="record.property_age.raw_value"/>
+ Año de Construcion
+                            </span>
+
+                        </div>
+                    </div>
+
+                    <!-- PROPIETARIO -->
+                    <div style="margin-bottom: 6px; font-size: 10px; color: #546e7a; background: white; padding: 4px; border-radius: 4px;">
+                        <i class="fa fa-user" style="color: #2196f3;"/>
+                        <field name="partner_id"/>
+                    </div>
+                </div>
+
+                <!-- PRECIOS CON FORMATO MONETARIO -->
+                <div style="border-top: 1px solid #eee; padding: 8px; background: white;">
+
+                    <!-- SOLO VENTA -->
+                    <div t-if="record.type_service.raw_value == 'sale'" style="text-align: center; color: #2e7d32; font-weight: 700;">
+                        <div style="font-size: 9px; color: #757575;">PRECIO VENTA</div>
+                        <div style="font-size: 12px;">
+                            <span t-if="record.sale_value_from.raw_value">
+                                <field name="sale_value_from"/>
+                            </span>
+                            <span t-elif="record.net_price.raw_value">
+                                <field name="net_price"/>
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- SOLO ARRIENDO -->
+                    <div t-if="record.type_service.raw_value == 'rent'" style="text-align: center; color: #1976d2; font-weight: 700;">
+                        <div style="font-size: 9px; color: #757575;">PRECIO ARRIENDO</div>
+                        <div style="font-size: 12px;">
+                            <span t-if="record.rent_value_from.raw_value">
+                                <field name="rent_value_from"/>
+/mes
+                            </span>
+                            <span t-elif="record.rental_fee.raw_value">
+                                <field name="rental_fee"/>
+/mes
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- VENTA Y ARRIENDO -->
+                    <div t-if="record.type_service.raw_value == 'sale_rent'" style="display: flex; gap: 4px;">
+                        <div style="flex: 1; text-align: center; background: #e8f5e8; padding: 4px; border-radius: 3px;">
+                            <div style="font-size: 7px; color: #2e7d32; font-weight: 600;">VENTA</div>
+                            <div style="font-size: 9px; color: #2e7d32; font-weight: 700;">
+                                <span t-if="record.sale_value_from.raw_value">
+                                    <field name="sale_value_from"/>
+                                </span>
+                                <span t-elif="record.net_price.raw_value">
+                                    <field name="net_price"/>
+                                </span>
+                            </div>
+                        </div>
+                        <div style="flex: 1; text-align: center; background: #e3f2fd; padding: 4px; border-radius: 3px;">
+                            <div style="font-size: 7px; color: #1976d2; font-weight: 600;">ARRIENDO</div>
+                            <div style="font-size: 9px; color: #1976d2; font-weight: 700;">
+                                <span t-if="record.rent_value_from.raw_value">
+                                    <field name="rent_value_from"/>
+                                </span>
+                                <span t-elif="record.rental_fee.raw_value">
+                                    <field name="rental_fee"/>
+                                </span>
+                            </div>
+                            <div style="font-size: 6px; color: #757575;">/mes</div>
+                        </div>
+                    </div>
+
+                    <!-- VACACIONAL -->
+                    <div t-if="record.type_service.raw_value == 'vacation_rent'" style="text-align: center; color: #f57c00; font-weight: 700;">
+                        <div style="font-size: 9px; color: #757575;">ARRIENDO VACACIONAL</div>
+                        <div style="font-size: 12px;">
+                            <span t-if="record.rent_value_from.raw_value">
+                                <field name="rent_value_from"/>
+/día
+                            </span>
+                            <span t-elif="record.rental_fee.raw_value">
+                                <field name="rental_fee"/>
+/día
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- SIN PRECIO -->
+                    <div t-if="!record.type_service.raw_value" style="text-align: center; color: #757575; font-weight: 600;">
+                        <div style="font-size: 11px;">CONSULTAR PRECIO</div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </templates>
+</kanban>
+
+</field>
+</record>
+
+<!-- =============================================== -->
+<!-- VISTA SEARCH DE PROPIEDADES -->
+<!-- =============================================== -->
+<record model="ir.ui.view" id="view_property_search">
+<field name="name">property.template.search</field>
+<field name="model">product.template</field>
+
+<field name="arch" type="xml">
+<search string="Buscar Propiedades">
+    <field name="name" string="Nombre de Propiedad"/>
+    <field name="default_code" string="Código"/>
+    <field name="partner_id" string="Propietario"/>
+    <field name="property_type_id" string="Tipo"/>
+    <field name="region_id" string="Barrio"/>
+    <field name="city" string="Ciudad"/>
+    <field name="project_worksite_id" string="Proyecto"/>
+    <field name="stratum" string="Estrato"/>
+    <searchpanel>
+        <field name="company_id" groups="base.group_multi_company" icon="fa-building" enable_counters="1"/>
+        <field name="state" icon="fa-flag" enable_counters="1"/>
+        <field name="type_service" icon="fa-handshake-o" enable_counters="1"/>
+        <field name="stratum" icon="fa-star" enable_counters="1"/>
+        <field name="property_type_id" icon="fa-home" enable_counters="1"/>
+    </searchpanel>
+    <!-- Filtros predefinidos -->
+    <filter name="available" string="Disponibles" domain="[('state', '=', 'free')]"/>
+    <filter name="reserved" string="Reservadas" domain="[('state', '=', 'reserved')]"/>
+    <filter name="rented" string="Arrendadas" domain="[('state', '=', 'on_lease')]"/>
+    <filter name="sold" string="Vendidas" domain="[('state', '=', 'sold')]"/>
+    <separator/>
+    <filter name="houses" string="Casas" domain="[('property_type', '=', 'house')]"/>
+    <filter name="apartments" string="Apartamentos" domain="[('property_type', '=', 'apartment')]"/>
+    <filter name="offices" string="Oficinas" domain="[('property_type', '=', 'office')]"/>
+    <filter name="lots" string="Lotes" domain="[('property_type', 'in', ['lot', 'country_lot', 'plot'])]"/>
+    <separator/>
+    <filter name="with_garage" string="Con Garaje" domain="[('garage', '=', True)]"/>
+    <filter name="with_pool" string="Con Piscina" domain="[('pools', '=', True)]"/>
+    <filter name="furnished" string="Amobladas" domain="[('furnished', '=', True)]"/>
+    <separator/>
+    <filter name="multi_owner" string="Múltiples Propietarios" domain="[('is_multi_owner', '=', True)]"/>
+
+    <!-- Filtros por rango -->
+    <separator/>
+    <filter name="price_range_1" string="Hasta $100M" domain="[('net_price', '&lt;=', 100000000)]"/>
+    <filter name="price_range_2" string="$100M - $300M" domain="[('net_price', '&gt;=', 100000000), ('net_price', '&lt;=', 300000000)]"/>
+    <filter name="price_range_3" string="Más de $300M" domain="[('net_price', '&gt;', 300000000)]"/>
+
+    <!-- Agrupaciones -->
+    <group expand="0" string="Agrupar por...">
+        <filter name="group_state" string="Estado" domain="[]" context="{'group_by':'state'}"/>
+        <filter name="group_type" string="Tipo" domain="[]" context="{'group_by':'property_type_id'}"/>
+        <filter name="group_region" string="Barrio" domain="[]" context="{'group_by':'region_id'}"/>
+        <filter name="group_project" string="Proyecto" domain="[]" context="{'group_by':'project_worksite_id'}"/>
+        <filter name="group_owner" string="Propietario" domain="[]" context="{'group_by':'partner_id'}"/>
+        <filter name="group_city" string="Ciudad" domain="[]" context="{'group_by':'city'}"/>
+        <filter name="group_stratum" string="Estrato" domain="[]" context="{'group_by':'stratum'}"/>
+        <filter name="group_floor" string="Piso" domain="[]" context="{'group_by':'floor_number'}"/>
+        <filter name="group_date" string="Fecha" domain="[]" context="{'group_by':'property_date'}"/>
+    </group>
+</search>
+</field>
+</record>
+
+<!-- =============================================== -->
+<!-- VISTAS PARA PROPERTY.TYPE -->
+<!-- =============================================== -->
+
+<!-- Vista  para Tipos de Propiedades -->
+<record model="ir.ui.view" id="view_property_type_tree">
+<field name="name">property.type.</field>
+<field name="model">property.type</field>
+<field name="arch" type="xml">
+<list string="Tipos de Propiedades">
+    <field name="display_name"/>
+    <field name="property_type"/>
+    <field name="parent_id"/>
+    <field name="product_category_id"/>
+</list>
+</field>
+</record>
+
+<!-- Vista Form para Tipos de Propiedades -->
+<record model="ir.ui.view" id="view_property_type_form">
+<field name="name">property.type.form</field>
+<field name="model">property.type</field>
+<field name="arch" type="xml">
+<form string="Tipo de Propiedad">
+    <sheet>
+        <group>
+            <group>
+                <field name="name"/>
+                <field name="parent_id"/>
+                <field name="property_type"/>
+            </group>
+            <group>
+                <field name="display_name" readonly="1"/>
+                <field name="product_category_id" readonly="1"/>
+            </group>
+        </group>
+        <notebook>
+            <page string="Características Visibles">
+                <field name="visible_characteristics" placeholder="JSON con las características que se muestran para este tipo"/>
+            </page>
+            <page string="Subtipos" invisible="not child_ids">
+                <field name="child_ids">
+                    <list>
+                        <field name="name"/>
+                        <field name="property_type"/>
+                        <field name="product_category_id"/>
+                    </list>
+                </field>
+            </page>
+        </notebook>
+    </sheet>
+</form>
+</field>
+</record>
+<record id="notarial_liquidation_report" model="ir.actions.report">
+<field name="name">Liquidación Notarial</field>
+<field name="model">product.template</field>
+<field name="report_type">qweb-pdf</field>
+<field name="report_name">real_estate_bits.notarial_liquidation_template</field>
+<field name="report_file">liquidacion_notarial</field>
+<field name="binding_model_id" ref="product.model_product_template"/>
+<field name="binding_type">report</field>
+</record>
+
+<template id="notarial_liquidation_template">
+<t t-call="web.html_container">
+<t t-foreach="docs" t-as="doc">
+    <div class="article" t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id" t-att-data-oe-lang="o and o.env.context.get('lang')">
+
+
+        <!-- =============================== ESTILOS GLOBALES =============================== -->
+        <style type="text/css">
+                * {
+                    font-family: 'Times New Roman', serif !important;
+                    color: #000000 !important;
+                }
+                .bg-red { background-color: #dc3545 !important; }
+                .text-white { color: white !important; }
+                .text-center { text-align: center !important; }
+                .text-right { text-align: right !important; }
+                .font-bold { font-weight: bold !important; }
+                .mb-20 { margin-bottom: 20px !important; }
+                .p-20 { padding: 20px !important; }
+                .rounded { border-radius: 8px !important; }
+                .table-bordered {
+                    border: 1px solid #000000;
+                    border-collapse: collapse;
+                    width: 100%;
+                }
+                .table-bordered th,
+                .table-bordered td {
+                    border: 1px solid #000000;
+                    padding: 6px 8px;
+                }
+                .table-header {
+                    background-color: #e0e0e0;
+                    font-weight: bold;
+                    text-align: left;
+                }
+                .section-title {
+                    font-size: 14px;
+                    font-weight: bold;
+                    margin-bottom: 6px;
+                    padding-bottom: 2px;
+                    border-bottom: 1px solid #000000;
+                }
+        </style>
+
+        <!-- =============================== HEADER PROPIO =============================== -->
+        <div class="header p-20 mb-20 rounded">
+            <table class="table table-sm table-borderless" cellpadding="0" cellspacing="0" style="width: 100%; border-collapse: collapse;">
+                <tr>
+                    <td style="vertical-align: top;">
+                        <h1 style="font-size: 24px; font-weight: bold; margin: 0;">
+                        LIQUIDACIÓN NOTARIAL
+                        </h1>
+                        <p style="font-size: 12px; margin: 4px 0 0 0;">
+                        Resolución 00585 de 2025 – Superintendencia de Notariado y Registro
+                        </p>
+                        <p style="font-size: 12px; margin: 4px 0 0 0;">
+                        Fecha: <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%d/%m/%Y')"/>
+                        </p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="page" style="font-family: 'Times New Roman', serif; color: #000000; font-size: 12px;">
+            <!-- =============================== INFORMACIÓN DEL INMUEBLE =============================== -->
+            <div class="mb-20">
+                <div class="section-title">INFORMACIÓN DEL INMUEBLE</div>
+                <table class="table table-sm table-borderless" cellpadding="0" cellspacing="0">
+                    <tbody>
+                        <tr>
+                            <td style="width: 30%; font-weight: bold;">Propiedad:</td>
+                            <td>
+                                <span t-field="doc.name"/>
+                            </td>
+                            <td style="width: 20%; font-weight: bold;">Código:</td>
+                            <td>
+                                <span t-field="doc.default_code"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;">Dirección:</td>
+                            <td>
+                                <span t-field="doc.street"/>
+                            </td>
+                            <td style="font-weight: bold;">Propietario:</td>
+                            <td>
+                                <span t-field="doc.partner_id.name"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;">Tipo de Acto:</td>
+                            <td>
+                                <span t-field="doc.notarial_act_type"/>
+                            </td>
+                            <td style="font-weight: bold;">Área:</td>
+                            <td>
+                                <span t-esc="'{:,.0f}'.format(doc.property_area or 0)"/>
+ m²</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;">Cuantía:</td>
+                            <td style="font-weight: bold;">
+                                <span t-if="doc.list_price &gt; 0" t-field="doc.list_price" t-options="{'widget': 'monetary'}"/>
+                                <span t-if="doc.list_price == 0 and doc.notarial_amount &gt; 0" t-field="doc.notarial_amount" t-options="{'widget': 'monetary'}"/>
+                            </td>
+                            <td style="font-weight: bold;">Estado VIS/Herencia:</td>
+                            <td>
+                                <span t-if="doc.is_vis">VIS</span>
+                                <span t-if="doc.is_inheritance">HERENCIA</span>
+                                <span t-if="not doc.is_vis and not doc.is_inheritance">Normal</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- =============================== FORMATO CONDICIONAL =============================== -->
+            <t t-if="doc.is_vis">
+                <div class="mb-20" style="border: 1px solid #000000; padding: 10px;">
+                    <div style="font-size: 14px; font-weight: bold;">VIVIENDA DE INTERÉS SOCIAL</div>
+                    <p style="margin: 4px 0 0 0;">Aplicable descuento del 50 % según normativa.</p>
+                </div>
+            </t>
+            <t t-if="doc.is_inheritance">
+                <div class="mb-20" style="border: 1px solid #000000; padding: 10px;">
+                    <div style="font-size: 14px; font-weight: bold;">LIQUIDACIÓN DE HERENCIA</div>
+                    <p style="margin: 4px 0 0 0;">Régimen especial conforme al Artículo 2 literal c).</p>
+                </div>
+            </t>
+            <t t-if="not doc.is_vis and not doc.is_inheritance">
+                <div class="mb-20" style="border: 1px solid #000000; padding: 10px;">
+                    <div style="font-size: 14px; font-weight: bold;">LIQUIDACIÓN ESTÁNDAR</div>
+                    <p style="margin: 4px 0 0 0;">Tarifas según Resolución 00585 de 2025.</p>
+                </div>
+            </t>
+
+            <!-- =============================== DETALLE DE LIQUIDACIÓN =============================== -->
+            <div class="mb-20">
+                <div class="section-title">DETALLE DE LIQUIDACIÓN</div>
+                <table class="table-bordered" cellpadding="0" cellspacing="0">
+                    <thead>
+                        <tr class="table-header">
+                            <th style="width: 60%;">Concepto</th>
+                            <th style="width: 15%; text-align: center;">Art.</th>
+                            <th style="width: 25%; text-align: right;">Valor</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Derechos Notariales</td>
+                            <td class="text-center">
+                                <span t-if="doc.is_vis">Art. 19</span>
+                                <span t-elif="doc.is_inheritance">Art. 2-c</span>
+                                <span t-elif="'cancelacion' in doc.notarial_act_type">Art. 2-a</span>
+                                <span t-else="">Art. 2-b</span>
+                            </td>
+                            <td class="text-right">
+                                <span t-field="doc.notarial_rights_value" t-options="{'widget':'monetary'}"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>IVA (19 %)</td>
+                            <td class="text-center">Art. 9</td>
+                            <td class="text-right">
+                                <span t-field="doc.iva_value" t-options="{'widget':'monetary'}"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Recaudo SNR</td>
+                            <td class="text-center">Art. 50</td>
+                            <td class="text-right">
+                                <span t-field="doc.snr_recaudo_value" t-options="{'widget':'monetary'}"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Recaudo Fondo</td>
+                            <td class="text-center">Art. 50</td>
+                            <td class="text-right">
+                                <span t-field="doc.fondo_recaudo_value" t-options="{'widget':'monetary'}"/>
+                            </td>
+                        </tr>
+                        <tr t-if="doc.copies_cost &gt; 0">
+                            <td>
+                        Copias y Folios
+                                <span style="font-size: 11px; font-style: italic;">(50 % descuento)</span>
+                            </td>
+                            <td class="text-center">Copias</td>
+                            <td class="text-right">
+                                <span t-field="doc.copies_cost" t-options="{'widget':'monetary'}"/>
+                            </td>
+                        </tr>
+                        <tr t-if="doc.stamp_tax_value &gt; 0">
+                            <td>Impuesto de Timbre</td>
+                            <td class="text-center">D.175/25</td>
+                            <td class="text-right">
+                                <span t-field="doc.stamp_tax_value" t-options="{'widget':'monetary'}"/>
+                            </td>
+                        </tr>
+                        <tr t-if="doc.retention_value &gt; 0">
+                            <td style="font-weight: bold;">Retención en la Fuente (1 %)</td>
+                            <td class="text-center">Art. 254 ET</td>
+                            <td class="text-right">−
+                                <span t-field="doc.retention_value" t-options="{'widget':'monetary'}"/>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="2" style="padding: 8px; font-weight: bold; font-size: 14px;">TOTAL A PAGAR</td>
+                            <td class="text-right" style="padding: 8px; font-weight: bold; font-size: 14px;">
+                                <span t-field="doc.total_notarial_cost" t-options="{'widget':'monetary'}"/>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+
+            <!-- =============================== DISTRIBUCIÓN DE COSTOS =============================== -->
+            <div class="mb-20">
+                <div class="section-title">DISTRIBUCIÓN DE COSTOS</div>
+                <table class="table-bordered" cellpadding="0" cellspacing="0">
+                    <tbody>
+                        <tr>
+                            <td style="width: 50%; font-weight: bold;">Comprador</td>
+                            <td style="width: 50%; font-weight: bold;">Vendedor</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 8px;">
+                                <span style="font-size: 12px;">Monto:</span>
+                                <span class="text-right" style="float: right;">
+                                    <span t-field="doc.buyer_cost" t-options="{'widget':'monetary'}"/>
+                                </span>
+                                <div style="clear: both;"/>
+                                <span style="font-size: 11px;">(                                    <span t-esc="'{:.1f}'.format(doc.buyer_percentage)"/>
+ %)</span>
+                            </td>
+                            <td style="padding: 8px;">
+                                <span style="font-size: 12px;">Monto:</span>
+                                <span class="text-right" style="float: right;">
+                                    <span t-field="doc.seller_cost" t-options="{'widget':'monetary'}"/>
+                                </span>
+                                <div style="clear: both;"/>
+                                <span style="font-size: 11px;">(                                    <span t-esc="'{:.1f}'.format(doc.seller_percentage)"/>
+ %)</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="padding: 8px;">
+                                <span style="font-size: 11px;">Distribución: <strong>
+                                    <span t-field="doc.cost_distribution"/>
+                                </strong>
+                            </span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- =============================== INFORMACIÓN ADICIONAL =============================== -->
+        <div class="mb-20">
+            <div class="section-title">INFORMACIÓN ADICIONAL</div>
+            <table class="table-bordered" cellpadding="0" cellspacing="0">
+                <tbody>
+                    <tr>
+                        <td style="padding: 8px; width: 50%;">
+                            <span style="font-weight: bold;">Copias de Matriz:</span>
+                            <span t-field="doc.matriz_copies"/>
+                        </td>
+                        <td style="padding: 8px; width: 50%;">
+                            <span style="font-weight: bold;">Copias de Protocolo:</span>
+                            <span t-field="doc.protocolo_copies"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px;">
+                            <span style="font-weight: bold;">Persona Natural:</span>
+                            <span t-if="doc.sale_with_natural_person">Sí</span>
+                            <span t-if="not doc.sale_with_natural_person">No</span>
+                        </td>
+                        <td style="padding: 8px;">
+                            <t t-if="doc.is_vis">
+                                <span style="font-style: italic;">Beneficios VIS aplicados</span>
+                            </t>
+                            <t t-if="not doc.is_vis">
+                                <span style="color: #6c757d;">–</span>
+                            </t>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- =============================== PIE DE PÁGINA LEGAL =============================== -->
+        <div class="footer" style="border-top: 1px solid #000000; padding-top: 12px; text-align: center; font-size: 11px; color: #000000;">
+            <p style="margin: 0;">
+                <strong>NOTA LEGAL:</strong> Esta liquidación es referencial basada en la Resolución 00585 de 2025.
+                    Los valores definitivos deben confirmarse según la tarifa notarial vigente.
+            </p>
+            <div class="row align-items-center">
+                <!-- Información del creador -->
+                <div class="col-4 text-start">
+                    <div>
+                        <i class="fa fa-user me-1"/>
+                        <span>Documento creado por: </span>
+                        <span t-field="doc.create_uid.name" style="color: #444;"/>
+                    </div>
+                </div>
+                <!-- Marca de software -->
+                <div class="col-4 text-center">
+                    <div style="font-size: 11px;">
+                        <i class="fa fa-code me-1"/>
+ Odoo - LavishSoft </div>
+                </div>
+                <br/>
+                <!-- Numeración de páginas -->
+                <div class="col-4 text-end" t-if="report_type == 'pdf'">
+                    <div>
+                        <i class="fa fa-file-o me-1"/>
+                        <span>Página </span>
+                        <span class="page" style="color: #444;"/>
+                        <span> de </span>
+                        <span class="topage" style="color: #444;"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</t>
+</t>
+</template>
+
+<!-- ========================================================================= -->
+<!-- 2. BROCHURE DE PROPIEDAD -->
+<!-- ========================================================================= -->
+
+<record id="property_brochure_report" model="ir.actions.report">
+<field name="name">Brochure de Propiedad</field>
+<field name="model">product.template</field>
+<field name="report_type">qweb-pdf</field>
+<field name="report_name">real_estate_bits.property_brochure_template</field>
+<field name="report_file">brochure_propiedad</field>
+<field name="binding_model_id" ref="product.model_product_template"/>
+<field name="binding_type">report</field>
+</record>
+
+<template id="property_brochure_template">
+<t t-call="web.html_container">
+<t t-foreach="docs" t-as="o">
+<div class="article" t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id" t-att-data-oe-lang="o and o.env.context.get('lang')">
+    <style type="text/css">                     /* Estilos globales para PDF */                     * {                         font-family: 'DejaVu Sans', Arial, sans-serif !important;                     }                                          .page {                         font-size: 12px;                         color: #333;                     }                                          /* Clases reutilizables */                     .bg-red { background-color: #dc3545 !important; }                     .text-white { color: white !important; }                     .text-gray { color: #6c757d !important; }                     .text-center { text-align: center !important; }                     .text-right { text-align: right !important; }                     .font-bold { font-weight: bold !important; }                     .mb-10 { margin-bottom: 10px !important; }                     .mb-20 { margin-bottom: 20px !important; }                     .p-10 { padding: 10px !important; }                     .p-15 { padding: 15px !important; }                     .p-20 { padding: 20px !important; }                                          /* Tablas */                     table {                          border-collapse: collapse !important;                          width: 100% !important;                     }                                          /* Bordes redondeados */                     .rounded {                          -webkit-border-radius: 8px !important;                         -moz-border-radius: 8px !important;                         border-radius: 8px !important;                     }                                          /* Badges */                     .badge {                         display: inline-block;                         padding: 4px 12px;                         font-size: 10px;                         font-weight: bold;                         -webkit-border-radius: 15px;                         -moz-border-radius: 15px;                         border-radius: 15px;                     }                                          .badge-light {                         background-color: rgba(255,255,255,0.3) !important;                         color: white !important;                     }                                          /* Estados */                     .state-available {                         background-color: #d4edda !important;                         color: #155724 !important;                     }                                          .state-reserved {                         background-color: #fff3cd !important;                         color: #856404 !important;                     }                                          .state-sold {                         background-color: #f8d7da !important;                         color: #721c24 !important;                     }                                          /* Características */                     .feature-box {                         background-color: #f8f9fa !important;                         padding: 15px !important;                         text-align: center !important;                         -webkit-border-radius: 8px;                         -moz-border-radius: 8px;                         border-radius: 8px;                     }                                          .feature-number {                         font-size: 24px !important;                         font-weight: bold !important;                         color: #dc3545 !important;                         margin-bottom: 5px !important;                     }                                          .feature-label {                         font-size: 10px !important;                         color: #6c757d !important;                         font-weight: bold !important;                         text-transform: uppercase !important;                     }                                          /* Secciones */                     .section-header {                         font-size: 16px !important;                         font-weight: bold !important;                         color: #2c3e50 !important;                         margin-bottom: 15px !important;                         padding-bottom: 5px !important;                     }                                          /* Listas de amenidades */                     .amenity-item {                         padding: 8px 0 !important;                         font-size: 11px !important;                     }                                          .amenity-check {                         color: #28a745 !important;                         font-weight: bold !important;                         margin-right: 8px !important;                     }                 </style>
+    <!-- HEADER -->
+    <div class="header" style="     /* Sin background-color */     padding: 20px;     margin-bottom: 20px;    ">
+        <table class="table table-sm table-borderless" cellpadding="0" cellspacing="0" style="width: 100%; border-collapse: collapse;">
+            <tr>
+                <td width="75%" style="vertical-align: top;">
+                    <h1 style="font-size: 28px; font-weight: bold; margin: 0 0 8px 0; color: #2c3e50;">
+                        <span t-field="o.name"/>
+                    </h1>
+                    <p style="font-size: 14px; margin: 0 0 12px 0; color: #555555;">
+                        <span t-field="o.property_type_id.name"/>
+ •
+                
+                        <span t-field="o.street"/>
+ •
+                
+                        <span t-field="o.city"/>
+                    </p>
+                    <div>
+                        <!-- BADGE ÁREA -->
+                        <span style="               display: inline-block;               background-color: rgba(100, 100, 100, 0.05);               color: #2c3e50;               font-size: 10px;               font-weight: bold;               padding: 4px 12px;               border-radius: 15px;           ">
+                            <span t-esc="'{:,.0f}'.format(o.property_area or 0)"/>
+ m²
+                        </span>
+                        <!-- BADGE ESTRATO (si existe) -->
+                        <t t-if="o.stratum">
+                            <span style="                 display: inline-block;                 background-color: rgba(100, 100, 100, 0.05);                 color: #2c3e50;                 font-size: 10px;                 font-weight: bold;                 padding: 4px 12px;                 border-radius: 15px;                 margin-left: 10px;             ">
+                    Estrato 
+                                <span t-field="o.stratum"/>
+                            </span>
+                        </t>
+                        <!-- BADGE DISPONIBLE (si está libre) -->
+                        <t t-if="o.state == 'free'">
+                            <span style="                 display: inline-block;                 background-color: rgba(100, 100, 100, 0.05);                 color: #2c3e50;                 font-size: 10px;                 font-weight: bold;                 padding: 4px 12px;                 border-radius: 15px;                 margin-left: 10px;             ">
+                    Disponible
+                            </span>
+                        </t>
+                    </div>
+                </td>
+                <td width="25%" style="text-align: right; vertical-align: top;">
+                    <div style="font-size: 11px; margin-bottom: 5px; color: #555555;">CÓDIGO</div>
+                    <div style="             display: inline-block;             background-color: rgba(100, 100, 100, 0.05);             color: #2c3e50;             font-size: 20px;             padding: 12px 20px;             border-radius: 15px;         ">
+                        <span t-field="o.default_code"/>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="page">
+        <!-- CONTENIDO PRINCIPAL -->
+        <table class="table table-sm table-borderless" cellpadding="0" cellspacing="0">
+            <tr>
+                <!-- SIDEBAR -->
+                <td width="35%" valign="top" style="padding-right: 20px;">
+                    <!-- FOTO PLACEHOLDER -->
+                    <div style="border: 2px dashed #dee2e6; padding: 40px 20px; text-align: center; margin-bottom: 20px; background-color: #f8f9fa;" class="rounded">
+                        <div style="font-size: 48px; margin-bottom: 10px;">📷</div>
+                        <div style="font-size: 14px; color: #6c757d;">Foto Principal</div>
+                        <div style="font-size: 12px; color: #6c757d;">del Inmueble</div>
+                    </div>
+                    <!-- PRECIO -->
+                    <!-- BLOQUE PRECIO, RESUMEN Y CONTACTO ADAPTADO -->
+                    <!-- Estilo general: sin fondo rojo; números en color rojo (#dc3545); texto e íconos oscuros como en el encabezado -->
+                    <div style="padding: 20px; margin-bottom: 20px; border: 1px solid #dee2e6; border-radius: 8px;">
+                        <!-- PRECIO -->
+                        <t t-if="o.type_service == 'sale'">
+                            <div style="font-size: 12px; margin-bottom: 5px; color: #2c3e50;">PRECIO DE VENTA</div>
+                            <div style="font-size: 22px; font-weight: bold; margin-bottom: 8px; color: #dc3545;">
+                                <t t-if="o.sale_value_from">
+                                    <span t-field="o.sale_value_from" t-options="{'widget': 'monetary'}"/>
+                                </t>
+                                <t t-elif="o.net_price">
+                                    <span t-field="o.net_price" t-options="{'widget': 'monetary'}"/>
+                                </t>
+                                <t t-else="" style="color: #2c3e50;">Consultar</t>
+                            </div>
+                            <div style="font-size: 11px; color: #555555;">
+            Por m²: 
+            
+                                <span t-field="o.price_per_unit" t-options="{'widget': 'monetary'}" style="color: #dc3545;"/>
+                            </div>
+                        </t>
+                        <t t-elif="o.type_service == 'rent'">
+                            <div style="font-size: 12px; margin-bottom: 5px; color: #2c3e50;">PRECIO DE ARRIENDO</div>
+                            <div style="font-size: 22px; font-weight: bold; margin-bottom: 8px; color: #dc3545;">
+                                <t t-if="o.rent_value_from">
+                                    <span t-field="o.rent_value_from" t-options="{'widget': 'monetary'}"/>
+                                </t>
+                                <t t-elif="o.rental_fee">
+                                    <span t-field="o.rental_fee" t-options="{'widget': 'monetary'}"/>
+                                </t>
+                                <t t-else="" style="color: #2c3e50;">Consultar</t>
+                            </div>
+                            <div style="font-size: 11px; color: #555555;">/mes</div>
+                        </t>
+                        <t t-elif="o.type_service == 'sale_rent'">
+                            <div style="font-size: 12px; margin-bottom: 8px; color: #2c3e50;">VENTA Y ARRIENDO</div>
+                            <table cellpadding="5" cellspacing="5" style="width: 100%; border-collapse: collapse;">
+                                <tr>
+                                    <td width="50%" style="             background-color: rgba(0, 0, 0, 0.03);             padding: 8px;             border-radius: 8px;             text-align: center;             vertical-align: middle;           ">
+                                        <div style="font-size: 8px; margin-bottom: 3px; color: #2c3e50;">VENTA</div>
+                                        <div style="font-size: 14px; font-weight: bold; color: #dc3545;">
+                                            <t t-if="o.sale_value_from">
+                                                <span t-field="o.sale_value_from" t-options="{'widget': 'monetary'}"/>
+                                            </t>
+                                            <t t-elif="o.net_price">
+                                                <span t-field="o.net_price" t-options="{'widget': 'monetary'}"/>
+                                            </t>
+                                        </div>
+                                    </td>
+                                    <td width="50%" style="             background-color: rgba(0, 0, 0, 0.03);             padding: 8px;             border-radius: 8px;             text-align: center;             vertical-align: middle;             margin-left: 10px;           ">
+                                        <div style="font-size: 8px; margin-bottom: 3px; color: #2c3e50;">ARRIENDO</div>
+                                        <div style="font-size: 14px; font-weight: bold; color: #dc3545;">
+                                            <t t-if="o.rent_value_from">
+                                                <span t-field="o.rent_value_from" t-options="{'widget': 'monetary'}"/>
+                                            </t>
+                                            <t t-elif="o.rental_fee">
+                                                <span t-field="o.rental_fee" t-options="{'widget': 'monetary'}"/>
+                                            </t>
+                                        </div>
+                                        <div style="font-size: 7px; color: #555555;">/mes</div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </t>
+                        <t t-elif="o.type_service == 'vacation_rent'">
+                            <div style="font-size: 12px; margin-bottom: 5px; color: #2c3e50;">ARRIENDO VACACIONAL</div>
+                            <div style="font-size: 22px; font-weight: bold; margin-bottom: 8px; color: #dc3545;">
+                                <t t-if="o.rent_value_from">
+                                    <span t-field="o.rent_value_from" t-options="{'widget': 'monetary'}"/>
+                                </t>
+                                <t t-elif="o.rental_fee">
+                                    <span t-field="o.rental_fee" t-options="{'widget': 'monetary'}"/>
+                                </t>
+                                <t t-else="" style="color: #2c3e50;">Consultar</t>
+                            </div>
+                            <div style="font-size: 11px; color: #555555;">/día</div>
+                        </t>
+                        <t t-else="">
+                            <div style="font-size: 18px; font-weight: bold; color: #2c3e50;">CONSULTAR PRECIO</div>
+                        </t>
+                    </div>
+                    <!-- RESUMEN -->
+                    <div style="overflow: hidden; border: 1px solid #dee2e6; border-radius: 8px; margin-bottom: 20px;">
+                        <div style="       border-bottom: 1px solid #dee2e6;       padding: 10px;       font-size: 12px;       font-weight: bold;       text-transform: uppercase;       color: #2c3e50;     ">
+            Resumen Ejecutivo
+                        </div>
+                        <div style="padding: 15px; background-color: #ffffff;">
+                            <table cellpadding="3" cellspacing="0" style="width: 100%; border-collapse: collapse;">
+                                <tr>
+                                    <td style="font-size: 10px; text-transform: uppercase; font-weight: bold; color: #6c757d; width: 30%;">Código:</td>
+                                    <td style="font-size: 11px; color: #2c3e50;">
+                                        <span t-field="o.default_code" style="color: #dc3545;"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="font-size: 10px; text-transform: uppercase; font-weight: bold; color: #6c757d;">Área:</td>
+                                    <td style="font-size: 11px; color: #2c3e50;">
+                                        <span t-esc="'{:,.0f}'.format(o.property_area or 0)" style="color: #dc3545;"/>
+ m²
+                
+                                    </td>
+                                </tr>
+                                <tr t-if="o.stratum">
+                                    <td style="font-size: 10px; text-transform: uppercase; font-weight: bold; color: #6c757d;">Estrato:</td>
+                                    <td style="font-size: 11px; color: #2c3e50;">
+                                        <span t-field="o.stratum" style="color: #dc3545;"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="font-size: 10px; text-transform: uppercase; font-weight: bold; color: #6c757d;">Estado:</td>
+                                    <td style="font-size: 11px;">
+                                        <span t-if="o.state == 'free'" style="               display: inline-block;               background-color: #d4edda;               color: #155724;               font-size: 10px;               font-weight: bold;               padding: 4px 12px;               border-radius: 15px;             ">DISPONIBLE</span>
+                                        <span t-if="o.state == 'reserved'" style="               display: inline-block;               background-color: #fff3cd;               color: #856404;               font-size: 10px;               font-weight: bold;               padding: 4px 12px;               border-radius: 15px;             ">RESERVADA</span>
+                                        <span t-if="o.state == 'sold'" style="               display: inline-block;               background-color: #f8d7da;               color: #721c24;               font-size: 10px;               font-weight: bold;               padding: 4px 12px;               border-radius: 15px;             ">VENDIDA</span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- CONTACTO -->
+                    <div style="overflow: hidden; border: 1px solid #dee2e6; border-radius: 8px; margin-bottom: 20px;">
+                        <div style="       border-bottom: 1px solid #dee2e6;       padding: 10px;       font-size: 12px;       font-weight: bold;       text-transform: uppercase;       color: #2c3e50;     ">
+            Contacto Directo
+                        </div>
+                        <div style="padding: 15px; background-color: #ffffff;">
+                            <div style="text-align: center; margin-bottom: 10px;">
+                                <div style="font-size: 12px; font-weight: bold; color: #2c3e50;">¿Te interesa?</div>
+                                <div style="font-size: 10px; color: #6c757d;">Agenda tu visita</div>
+                            </div>
+                            <table cellpadding="3" cellspacing="0" style="width: 100%; border-collapse: collapse;">
+                                <tr>
+                                    <td style="font-size: 10px; font-weight: bold; color: #6c757d; width: 25%;">TEL:</td>
+                                    <td style="font-size: 11px; color: #2c3e50;">
+                                        <span t-field="o.company_id.phone" style="color: #dc3545;"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="font-size: 10px; font-weight: bold; color: #6c757d;">EMAIL:</td>
+                                    <td style="font-size: 10px; color: #2c3e50;">
+                                        <span t-field="o.company_id.email" style="color: #dc3545;"/>
+                                    </td>
+                                </tr>
+                                <tr t-if="o.company_id.website">
+                                    <td style="font-size: 10px; font-weight: bold; color: #6c757d;">WEB:</td>
+                                    <td style="font-size: 10px; color: #2c3e50;">
+                                        <span t-field="o.company_id.website" style="color: #dc3545;"/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </td>
+                <!-- CONTENIDO PRINCIPAL -->
+                <td width="65%" valign="top">
+                    <!-- INFORMACIÓN GENERAL -->
+                    <div class="mb-20">
+                        <h2 class="section-header">▶ INFORMACIÓN GENERAL</h2>
+                        <table class="table table-sm table-borderless" cellpadding="8" cellspacing="0" style="background-color: white;">
+                            <tr style="background-color: #f8f9fa;">
+                                <td width="30%" class="text-gray font-bold" style="font-size: 11px; text-transform: uppercase;">Tipo:</td>
+                                <td style="font-size: 12px;">
+                                    <span t-field="o.property_type_id.name"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-gray font-bold" style="font-size: 11px; text-transform: uppercase;">Propietario:</td>
+                                <td style="font-size: 12px;">
+                                    <span t-field="o.partner_id.name"/>
+                                </td>
+                            </tr>
+                            <tr style="background-color: #f8f9fa;">
+                                <td class="text-gray font-bold" style="font-size: 11px; text-transform: uppercase;">Área Total:</td>
+                                <td style="font-size: 12px;">
+                                    <span t-esc="'{:,.0f}'.format(o.property_area or 0)"/>
+ metros cuadrados
+                                                    
+                                </td>
+                            </tr>
+                            <tr t-if="o.property_age &gt; 0">
+                                <td class="text-gray font-bold" style="font-size: 11px; text-transform: uppercase;">Antigüedad:</td>
+                                <td style="font-size: 12px;">
+                                    <span t-field="o.property_age"/>
+ años
+                                                    
+                                </td>
+                            </tr>
+                            <tr t-if="o.property_status" style="background-color: #f8f9fa;">
+                                <td class="text-gray font-bold" style="font-size: 11px; text-transform: uppercase;">Estado:</td>
+                                <td style="font-size: 12px;">
+                                    <span t-field="o.property_status"/>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <!-- CARACTERÍSTICAS -->
+                    <div class="mb-20">
+                        <h2 class="section-header">▶ CARACTERÍSTICAS PRINCIPALES</h2>
+                        <table class="table table-sm table-borderless" cellpadding="0" cellspacing="10">
+                            <tr>
+                                <td t-if="o.num_bedrooms &gt; 0" width="25%" class="feature-box">
+                                    <div class="feature-number">
+                                        <span t-field="o.num_bedrooms"/>
+                                    </div>
+                                    <div class="feature-label">HABITACIONES</div>
+                                </td>
+                                <td t-if="o.num_bathrooms &gt; 0" width="25%" class="feature-box">
+                                    <div class="feature-number">
+                                        <span t-field="o.num_bathrooms"/>
+                                    </div>
+                                    <div class="feature-label">BAÑOS</div>
+                                </td>
+                                <td t-if="o.covered_parking &gt; 0" width="25%" class="feature-box">
+                                    <div class="feature-number">
+                                        <span t-field="o.covered_parking"/>
+                                    </div>
+                                    <div class="feature-label">PARQUEADEROS</div>
+                                </td>
+                                <td t-if="o.floor_number &gt; 0" width="25%" class="feature-box">
+                                    <div class="feature-number">
+                                        <span t-field="o.floor_number"/>
+                                    </div>
+                                    <div class="feature-label">PISO</div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <!-- ESPECIFICACIONES -->
+                    <div class="mb-20">
+                        <h2 class="section-header">▶ ESPECIFICACIONES</h2>
+                        <table class="table table-sm table-borderless" cellpadding="8" cellspacing="0">
+                            <tr t-if="o.floor_type" style="background-color: #f8f9fa;">
+                                <td width="30%" class="text-gray font-bold" style="font-size: 11px; text-transform: uppercase;">Tipo de Piso:</td>
+                                <td style="font-size: 12px;">
+                                    <span t-field="o.floor_type"/>
+                                </td>
+                            </tr>
+                            <tr t-if="o.door_type">
+                                <td class="text-gray font-bold" style="font-size: 11px; text-transform: uppercase;">Tipo de Puertas:</td>
+                                <td style="font-size: 12px;">
+                                    <span t-field="o.door_type"/>
+                                </td>
+                            </tr>
+                            <tr t-if="o.apartment_type" style="background-color: #f8f9fa;">
+                                <td class="text-gray font-bold" style="font-size: 11px; text-transform: uppercase;">Tipo de Apartamento:</td>
+                                <td style="font-size: 12px;">
+                                    <span t-field="o.apartment_type"/>
+                                </td>
+                            </tr>
+                            <tr t-if="o.front_meters &gt; 0">
+                                <td class="text-gray font-bold" style="font-size: 11px; text-transform: uppercase;">Frente:</td>
+                                <td style="font-size: 12px;">
+                                    <span t-field="o.front_meters"/>
+ metros
+                                                    
+                                </td>
+                            </tr>
+                            <tr t-if="o.depth_meters &gt; 0" style="background-color: #f8f9fa;">
+                                <td class="text-gray font-bold" style="font-size: 11px; text-transform: uppercase;">Fondo:</td>
+                                <td style="font-size: 12px;">
+                                    <span t-field="o.depth_meters"/>
+ metros
+                                                    
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <!-- AMENIDADES INTERNAS -->
+                    <div class="mb-20">
+                        <h2 class="section-header">▶ AMENIDADES INTERNAS</h2>
+                        <table class="table table-sm table-borderless" cellpadding="0" cellspacing="0">
+                            <tr>
+                                <td width="50%" valign="top">
+                                    <div t-if="o.balcony" class="amenity-item">
+                                        <span class="amenity-check">✓</span> Balcón                                             
+                                                        
+                                    </div>
+                                    <div t-if="o.terrace" class="amenity-item">
+                                        <span class="amenity-check">✓</span> Terraza                                             
+                                                        
+                                    </div>
+                                    <div t-if="o.garden" class="amenity-item">
+                                        <span class="amenity-check">✓</span> Jardín                                             
+                                                        
+                                    </div>
+                                    <div t-if="o.garage" class="amenity-item">
+                                        <span class="amenity-check">✓</span> Garaje                                             
+                                                        
+                                    </div>
+                                    <div t-if="o.air_conditioning" class="amenity-item">
+                                        <span class="amenity-check">✓</span> Aire Acondicionado                                             
+                                                        
+                                    </div>
+                                    <div t-if="o.integral_kitchen" class="amenity-item">
+                                        <span class="amenity-check">✓</span> Cocina Integral                                             
+                                                        
+                                    </div>
+                                </td>
+                                <td width="50%" valign="top">
+                                    <div t-if="o.laundry_area" class="amenity-item">
+                                        <span class="amenity-check">✓</span> Zona Lavandería                                             
+                                                        
+                                    </div>
+                                    <div t-if="o.walk_in_closet" class="amenity-item">
+                                        <span class="amenity-check">✓</span> Walk-in Closet                                             
+                                                        
+                                    </div>
+                                    <div t-if="o.security_door" class="amenity-item">
+                                        <span class="amenity-check">✓</span> Puerta Seguridad                                             
+                                                        
+                                    </div>
+                                    <div t-if="o.gas_installation" class="amenity-item">
+                                        <span class="amenity-check">✓</span> Red de Gas                                             
+                                                        
+                                    </div>
+                                    <div t-if="o.hot_water" class="amenity-item">
+                                        <span class="amenity-check">✓</span> Agua Caliente                                             
+                                                        
+                                    </div>
+                                    <div t-if="o.alarm" class="amenity-item">
+                                        <span class="amenity-check">✓</span> Sistema Alarma                                             
+                                                        
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <!-- AMENIDADES DEL EDIFICIO -->
+                    <div t-if="o.property_type in ['apartment', 'studio']" class="mb-20">
+                        <h2 class="section-header">▶ AMENIDADES DEL EDIFICIO</h2>
+                        <table class="table table-sm table-borderless" cellpadding="0" cellspacing="0">
+                            <tr>
+                                <td width="50%" valign="top">
+                                    <div t-if="o.doorman" class="amenity-item">
+                                        <span class="amenity-check">✓</span> Portería                                             
+                                                        
+                                    </div>
+                                    <div t-if="o.social_room" class="amenity-item">
+                                        <span class="amenity-check">✓</span> Salón Social                                             
+                                                        
+                                    </div>
+                                    <div t-if="o.gym" class="amenity-item">
+                                        <span class="amenity-check">✓</span> Gimnasio                                             
+                                                        
+                                    </div>
+                                    <div t-if="o.pools" class="amenity-item">
+                                        <span class="amenity-check">✓</span> Piscina                                             
+                                                        
+                                    </div>
+                                    <div t-if="o.sauna" class="amenity-item">
+                                        <span class="amenity-check">✓</span> Sauna                                             
+                                                        
+                                    </div>
+                                </td>
+                                <td width="50%" valign="top">
+                                    <div t-if="o.jacuzzi" class="amenity-item">
+                                        <span class="amenity-check">✓</span> Jacuzzi                                             
+                                                        
+                                    </div>
+                                    <div t-if="o.green_areas" class="amenity-item">
+                                        <span class="amenity-check">✓</span> Zonas Verdes                                             
+                                                        
+                                    </div>
+                                    <div t-if="o.playground" class="amenity-item">
+                                        <span class="amenity-check">✓</span> Juegos Infantiles                                             
+                                                        
+                                    </div>
+                                    <div t-if="o.visitors_parking" class="amenity-item">
+                                        <span class="amenity-check">✓</span> Parqueadero Visitantes                                             
+                                                        
+                                    </div>
+                                    <div t-if="o.elevator" class="amenity-item">
+                                        <span class="amenity-check">✓</span> Ascensor                                             
+                                                        
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <!-- DESCRIPCIÓN -->
+                    <div t-if="o.property_description" class="mb-20">
+                        <h2 class="section-header">▶ DESCRIPCIÓN</h2>
+                        <div style="background-color: #f8f9fa; border-left: 4px solid #dc3545; padding: 20px; font-size: 12px; text-align: justify;">
+                            <span t-field="o.property_description"/>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <!-- FOOTER class="footer bg-red text-white p-20 -->
+    <div t-attf-class="footer o_standard_footer">
+        <div style="padding: 1rem; background-color: #fafafa; font-size: 10px; color: #666;">
+
+            <div class="row align-items-center">
+                <!-- Información del creador -->
+                <div class="col-4 text-start">
+                    <div>
+                        <i class="fa fa-user me-1"/>
+                        <span>Documento creado por: </span>
+                        <span t-field="o.create_uid.name" style="color: #444;"/>
+                    </div>
+                </div>
+                <!-- Marca de software -->
+                <div class="col-4 text-center">
+                    <div style="font-size: 11px;">
+                        <i class="fa fa-code me-1"/>
+ Odoo - LavishSoft </div>
+                </div>
+                <br/>
+                <!-- Numeración de páginas -->
+                <div class="col-4 text-end" t-if="report_type == 'pdf'">
+                    <div>
+                        <i class="fa fa-file-o me-1"/>
+                        <span>Página </span>
+                        <span class="page" style="color: #444;"/>
+                        <span> de </span>
+                        <span class="topage" style="color: #444;"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+</t>
+</t>
+</template>
+
+<!-- ========================================================================= -->
+<!-- 3. CARTA DE RESERVA -->
+<!-- ========================================================================= -->
+
+
+<template id="reservation_letter_template">
+<t t-call="web.html_container">
+<t t-foreach="docs" t-as="doc">
+<t t-call="web.external_layout">
+    <div class="page" style="font-family: 'Helvetica', Arial, sans-serif;">
+
+        <!-- Header oficial -->
+        <div style="text-align: center; border-bottom: 3px solid #dc3545; padding-bottom: 20px; margin-bottom: 30px;">
+            <h1 style="color: #dc3545; font-size: 28px; font-weight: 600; margin: 0; letter-spacing: 1px;">CARTA DE RESERVA</h1>
+            <p style="color: #6c757d; font-size: 14px; margin: 10px 0 0 0;">Documento Oficial de Reserva de Inmueble</p>
+        </div>
+
+        <!-- Información de la empresa -->
+        <div style="margin-bottom: 25px;">
+            <p style="margin: 0; font-size: 14px; line-height: 1.6;">
+                <strong>
+                    <span t-field="doc.company_id.name"/>
+                </strong>
+                <br/>
+                                NIT: <span t-field="doc.company_id.vat"/>
+            <br/>
+            <span t-field="doc.company_id.street"/>
+            <br/>
+                                Tel: <span t-field="doc.company_id.phone"/>
+ | Email: <span t-field="doc.company_id.email"/>
+    </p>
+</div>
+
+<!-- Fecha y lugar -->
+<div style="text-align: right; margin-bottom: 30px;">
+    <p style="margin: 0; font-size: 14px;">
+        <span t-field="doc.company_id.city"/>
+,        <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%d de %B de %Y')"/>
+    </p>
+</div>
+
+<!-- Cuerpo de la carta -->
+<div style="margin-bottom: 30px; font-size: 14px; line-height: 1.8; text-align: justify;">
+    <p>Por medio de la presente, hacemos constar que el señor(a) <strong>
+        <span t-field="doc.partner_id.name"/>
+    </strong>, 
+                            identificado(a) con documento <span t-field="doc.partner_id.l10n_latam_identification_type_id.name"/>
+ 
+                            No. <span t-field="doc.partner_id.vat"/>
+, ha efectuado la <strong>RESERVA</strong> del siguiente inmueble:</p>
+</div>
+
+<!-- Información del inmueble -->
+<div style="background: #f8f9fa; border-left: 4px solid #dc3545; padding: 20px; margin-bottom: 25px;">
+<h3 style="color: #dc3545; margin-top: 0; font-size: 18px; font-weight: 600;">DATOS DEL INMUEBLE RESERVADO</h3>
+<table style="width: 100%; font-size: 14px;">
+<tr>
+<td style="width: 30%; padding: 8px 0; color: #6c757d; font-weight: 600;">Código:</td>
+<td style="padding: 8px 0; font-weight: 500;">
+    <span t-field="doc.property_code"/>
+</td>
+</tr>
+<tr>
+<td style="padding: 8px 0; color: #6c757d; font-weight: 600;">Propiedad:</td>
+<td style="padding: 8px 0; font-weight: 500;">
+    <span t-field="doc.property_id.name"/>
+</td>
+</tr>
+<tr>
+<td style="padding: 8px 0; color: #6c757d; font-weight: 600;">Tipo:</td>
+<td style="padding: 8px 0; font-weight: 500;">
+    <span t-field="doc.property_type_id.name"/>
+</td>
+</tr>
+<tr>
+<td style="padding: 8px 0; color: #6c757d; font-weight: 600;">Ubicación:</td>
+<td style="padding: 8px 0; font-weight: 500;">
+    <span t-field="doc.address"/>
+</td>
+</tr>
+<tr>
+<td style="padding: 8px 0; color: #6c757d; font-weight: 600;">Área:</td>
+<td style="padding: 8px 0; font-weight: 500;">
+    <span t-esc="'{:,.0f}'.format(doc.property_area or 0)"/>
+ m²</td>
+</tr>
+<tr t-if="doc.floor > 0">
+<td style="padding: 8px 0; color: #6c757d; font-weight: 600;">Piso:</td>
+<td style="padding: 8px 0; font-weight: 500;">
+    <span t-field="doc.floor"/>
+</td>
+</tr>
+</table>
+</div>
+
+<!-- Valores económicos -->
+<div style="background: linear-gradient(135deg, #dc3545, #c82333); color: white; padding: 20px; margin-bottom: 25px; border-radius: 8px;">
+<h3 style="margin-top: 0; font-size: 18px; font-weight: 600;">VALORES ECONÓMICOS</h3>
+<table style="width: 100%; color: white;">
+<tr>
+<td style="width: 40%; padding: 8px 0; font-weight: 600;">Precio de Venta:</td>
+<td style="padding: 8px 0; font-size: 18px; font-weight: 700;">
+    <span t-field="doc.net_price" t-options="{'widget': 'monetary'}"/>
+</td>
+</tr>
+<tr t-if="doc.price_per_unit">
+<td style="padding: 8px 0; font-weight: 600;">Precio por m²:</td>
+<td style="padding: 8px 0; font-weight: 500;">
+    <span t-field="doc.price_per_unit" t-options="{'widget': 'monetary'}"/>
+</td>
+</tr>
+<tr>
+<td style="padding: 8px 0; font-weight: 600;">Valor de Reserva:</td>
+<td style="padding: 8px 0; font-size: 16px; font-weight: 600;">
+    <span t-field="doc.reservation_amount" t-options="{'widget': 'monetary'}"/>
+</td>
+</tr>
+</table>
+</div>
+
+<!-- Condiciones -->
+<div style="margin-bottom: 30px; font-size: 14px; line-height: 1.8;">
+<h4 style="color: #dc3545; font-size: 16px; font-weight: 600;">CONDICIONES DE LA RESERVA:</h4>
+<ol style="padding-left: 20px;">
+<li style="margin-bottom: 10px;">La presente reserva tiene una vigencia de <strong>30 días calendario</strong> a partir de la fecha de emisión.</li>
+<li style="margin-bottom: 10px;">El valor de la reserva será abonado al precio total del inmueble al momento de la firma de la promesa de compraventa.</li>
+<li style="margin-bottom: 10px;">En caso de desistimiento por parte del reservante, el valor pagado no será reembolsable.</li>
+<li style="margin-bottom: 10px;">El inmueble queda excluido de comercialización durante el período de vigencia de esta reserva.</li>
+<li style="margin-bottom: 10px;">Cualquier modificación a las condiciones deberá ser acordada por escrito entre las partes.</li>
+</ol>
+</div>
+
+<!-- Fechas importantes -->
+<div style="background: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; margin-bottom: 30px;">
+<h5 style="color: #856404; margin-top: 0; font-size: 14px; font-weight: 600;">FECHAS IMPORTANTES</h5>
+<p style="margin: 0; font-size: 13px; color: #856404;">
+<strong>Fecha de Reserva:</strong>
+<span t-esc="context_timestamp(datetime.datetime.now()).strftime('%d/%m/%Y')"/>
+<br/>
+<strong>Vigencia hasta:</strong>
+<span t-esc="(context_timestamp(datetime.datetime.now()) + datetime.timedelta(days=30)).strftime('%d/%m/%Y')"/>
+</p>
+</div>
+
+<!-- Firmas -->
+<div style="margin-top: 60px;">
+<table style="width: 100%;">
+<tr>
+<td style="width: 45%; text-align: center; vertical-align: top;">
+    <div style="border-top: 1px solid #333; width: 250px; margin: 0 auto; padding-top: 10px;">
+        <p style="margin: 0; font-size: 12px; font-weight: 600;">RESERVANTE</p>
+        <p style="margin: 5px 0 0 0; font-size: 11px;">
+            <span t-field="doc.partner_id.name"/>
+        </p>
+        <p style="margin: 0; font-size: 11px;">C.C. <span t-field="doc.partner_id.vat"/>
+        </p>
+    </div>
+</td>
+<td style="width: 10%;"></td>
+<td style="width: 45%; text-align: center; vertical-align: top;">
+    <div style="border-top: 1px solid #333; width: 250px; margin: 0 auto; padding-top: 10px;">
+        <p style="margin: 0; font-size: 12px; font-weight: 600;">INMOBILIARIA</p>
+        <p style="margin: 5px 0 0 0; font-size: 11px;">
+            <span t-field="doc.company_id.name"/>
+        </p>
+        <p style="margin: 0; font-size: 11px;">NIT <span t-field="doc.company_id.vat"/>
+        </p>
+    </div>
+</td>
+</tr>
+</table>
+</div>
+
+<!-- Footer -->
+<div style="margin-top: 40px; font-size: 11px; color: #6c757d; text-align: center; border-top: 1px solid #eee; padding-top: 15px;">
+<p style="margin: 0;">Este documento constituye un acuerdo de reserva y no genera obligaciones de compraventa hasta la firma del contrato correspondiente.</p>
+</div>
+</div>
+</t>
+</t>
+</t>
+</template>
+
+<!-- ========================================================================= -->
+<!-- 4. ACTA DE ENTREGA DE LLAVES -->
+<!-- ========================================================================= -->
+
+<record id="key_delivery_report" model="ir.actions.report">
+<field name="name">Acta de Entrega de Llaves</field>
+<field name="model">product.template</field>
+<field name="report_type">qweb-pdf</field>
+<field name="report_name">real_estate_bits.key_delivery_template</field>
+<field name="report_file">acta_entrega_llaves</field>
+<field name="binding_model_id" ref="product.model_product_template"/>
+<field name="binding_type">report</field>
+</record>
+
+<template id="key_delivery_template">
+<t t-call="web.html_container">
+<t t-foreach="docs" t-as="doc">
+<t t-call="web.external_layout">
+<div class="page" style="font-family: 'Helvetica', Arial, sans-serif;">
+
+<!-- Header oficial -->
+<div style="text-align: center; border-bottom: 3px double #dc3545; padding-bottom: 20px; margin-bottom: 30px;">
+<h1 style="color: #dc3545; font-size: 26px; font-weight: 600; margin: 0; letter-spacing: 1px;">🔐 ACTA DE ENTREGA DE LLAVES</h1>
+<p style="color: #6c757d; font-size: 14px; margin: 10px 0 0 0;">Documento Oficial de Entrega y Recibo</p>
+<p style="color: #6c757d; font-size: 12px; margin: 5px 0 0 0;">Acta No. <strong>ACT-<span t-field="doc.default_code"/>
+-<span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y%m%d')"/>
+</strong>
+</p>
+</div>
+
+<!-- Información de la empresa -->
+<div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 25px;">
+<div class="row">
+<div class="col-8">
+<h4 style="color: #dc3545; margin-top: 0; font-size: 16px;">DATOS DE LA INMOBILIARIA</h4>
+<p style="margin: 0; font-size: 13px; line-height: 1.5;">
+<strong>
+<span t-field="doc.company_id.name"/>
+</strong>
+<br/>
+                                        NIT: <span t-field="doc.company_id.vat"/>
+ | Tel: <span t-field="doc.company_id.phone"/>
+<br/>
+<span t-field="doc.company_id.street"/>
+,<span t-field="doc.company_id.city"/>
+</p>
+</div>
+<div class="col-4 text-right">
+<div style="background: #dc3545; color: white; padding: 10px; border-radius: 8px; text-align: center;">
+<div style="font-size: 12px; opacity: 0.9;">FECHA</div>
+<div style="font-size: 16px; font-weight: 600;">
+<span t-esc="context_timestamp(datetime.datetime.now()).strftime('%d/%m/%Y')"/>
+</div>
+<div style="font-size: 12px; opacity: 0.9;">
+<span t-esc="context_timestamp(datetime.datetime.now()).strftime('%H:%M')"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Preámbulo -->
+<div style="margin-bottom: 30px; font-size: 14px; line-height: 1.8; text-align: justify;">
+<p>En la ciudad de <strong>
+<span t-field="doc.company_id.city"/>
+</strong>, 
+                            siendo las <strong>
+<span t-esc="context_timestamp(datetime.datetime.now()).strftime('%H:%M')"/>
+ horas</strong> 
+                            del día <strong>
+<span t-esc="context_timestamp(datetime.datetime.now()).strftime('%d de %B de %Y')"/>
+</strong>, 
+                            se realiza la presente acta de entrega de llaves del inmueble que se describe a continuación:</p>
+</div>
+
+<!-- Información del inmueble -->
+<div style="background: linear-gradient(135deg, #f8f9fa, #e9ecef); border-left: 4px solid #dc3545; padding: 20px; margin-bottom: 25px; border-radius: 0 8px 8px 0;">
+<h3 style="color: #dc3545; margin-top: 0; font-size: 18px; font-weight: 600; text-align: center;">📋 DATOS DEL INMUEBLE</h3>
+<table style="width: 100%; font-size: 14px;">
+<tr style="border-bottom: 1px solid #dee2e6;">
+<td style="width: 25%; padding: 10px 15px 10px 0; color: #6c757d; font-weight: 600;">Código:</td>
+<td style="width: 25%; padding: 10px 0; font-weight: 500;">
+<span t-field="doc.default_code"/>
+</td>
+<td style="width: 25%; padding: 10px 15px 10px 0; color: #6c757d; font-weight: 600;">Tipo:</td>
+<td style="width: 25%; padding: 10px 0; font-weight: 500;">
+<span t-field="doc.property_type_id.name"/>
+</td>
+</tr>
+<tr style="border-bottom: 1px solid #dee2e6;">
+<td style="padding: 10px 15px 10px 0; color: #6c757d; font-weight: 600;">Propiedad:</td>
+<td style="padding: 10px 0; font-weight: 600; color: #dc3545;" colspan="3">
+<span t-field="doc.name"/>
+</td>
+</tr>
+<tr style="border-bottom: 1px solid #dee2e6;">
+<td style="padding: 10px 15px 10px 0; color: #6c757d; font-weight: 600;">Dirección:</td>
+<td style="padding: 10px 0; font-weight: 500;" colspan="3">
+<span t-field="doc.street"/>
+</td>
+</tr>
+<tr style="border-bottom: 1px solid #dee2e6;">
+<td style="padding: 10px 15px 10px 0; color: #6c757d; font-weight: 600;">Ciudad:</td>
+<td style="padding: 10px 0; font-weight: 500;">
+<span t-field="doc.city"/>
+</td>
+<td style="padding: 10px 15px 10px 0; color: #6c757d; font-weight: 600;">Barrio:</td>
+<td style="padding: 10px 0; font-weight: 500;">
+<span t-field="doc.region_id.name"/>
+</td>
+</tr>
+<tr style="border-bottom: 1px solid #dee2e6;">
+<td style="padding: 10px 15px 10px 0; color: #6c757d; font-weight: 600;">Área:</td>
+<td style="padding: 10px 0; font-weight: 500;">
+<span t-esc="'{:,.0f}'.format(doc.property_area or 0)"/>
+ m²</td>
+<td style="padding: 10px 15px 10px 0; color: #6c757d; font-weight: 600;">Estrato:</td>
+<td style="padding: 10px 0; font-weight: 500;">
+<span t-field="doc.stratum"/>
+</td>
+</tr>
+<tr>
+<td style="padding: 10px 15px 10px 0; color: #6c757d; font-weight: 600;">Propietario:</td>
+<td style="padding: 10px 0; font-weight: 500;" colspan="3">
+<span t-field="doc.partner_id.name"/>
+</td>
+</tr>
+</table>
+</div>
+
+<!-- Información de entrega -->
+<div class="row" style="margin-bottom: 25px;">
+<div class="col-6">
+<div style="background: #d4edda; border-left: 4px solid #28a745; padding: 15px; border-radius: 0 8px 8px 0; height: 100%;">
+<h4 style="color: #155724; margin-top: 0; font-size: 16px; font-weight: 600;">👤 QUIEN ENTREGA</h4>
+<div style="margin-bottom: 15px;">
+<label style="color: #6c757d; font-size: 12px; font-weight: 600; display: block;">NOMBRE COMPLETO</label>
+<div style="border-bottom: 1px solid #28a745; padding: 5px 0; min-height: 25px; font-weight: 500;">
+<span t-field="doc.partner_id.name"/>
+</div>
+</div>
+<div style="margin-bottom: 15px;">
+<label style="color: #6c757d; font-size: 12px; font-weight: 600; display: block;">DOCUMENTO</label>
+<div style="border-bottom: 1px solid #28a745; padding: 5px 0; min-height: 25px;">
+<span t-field="doc.partner_id.l10n_latam_identification_type_id.name"/>
+<span t-field="doc.partner_id.vat"/>
+</div>
+</div>
+<div>
+<label style="color: #6c757d; font-size: 12px; font-weight: 600; display: block;">TELÉFONO</label>
+<div style="border-bottom: 1px solid #28a745; padding: 5px 0; min-height: 25px;">
+<span t-field="doc.partner_id.phone"/>
+</div>
+</div>
+</div>
+</div>
+<div class="col-6">
+<div style="background: #f8d7da; border-left: 4px solid #dc3545; padding: 15px; border-radius: 0 8px 8px 0; height: 100%;">
+<h4 style="color: #721c24; margin-top: 0; font-size: 16px; font-weight: 600;">👥 QUIEN RECIBE</h4>
+<div style="margin-bottom: 15px;">
+<label style="color: #6c757d; font-size: 12px; font-weight: 600; display: block;">NOMBRE COMPLETO</label>
+<div style="border-bottom: 1px solid #dc3545; padding: 5px 0; min-height: 25px;">
+<!-- Campo para completar manualmente -->
+</div>
+</div>
+<div style="margin-bottom: 15px;">
+<label style="color: #6c757d; font-size: 12px; font-weight: 600; display: block;">DOCUMENTO</label>
+<div style="border-bottom: 1px solid #dc3545; padding: 5px 0; min-height: 25px;">
+<!-- Campo para completar manualmente -->
+</div>
+</div>
+<div>
+<label style="color: #6c757d; font-size: 12px; font-weight: 600; display: block;">TELÉFONO</label>
+<div style="border-bottom: 1px solid #dc3545; padding: 5px 0; min-height: 25px;">
+<!-- Campo para completar manualmente -->
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Detalle de llaves -->
+<div style="background: #fff3cd; border-left: 4px solid #ffc107; padding: 20px; margin-bottom: 25px; border-radius: 0 8px 8px 0;">
+<h4 style="color: #856404; margin-top: 0; font-size: 16px; font-weight: 600;">🔑 DETALLE DE LLAVES ENTREGADAS</h4>
+<table style="width: 100%; border-collapse: collapse;">
+<thead>
+<tr style="background: #ffc107; color: #856404;">
+<th style="padding: 10px; text-align: left; border: 1px solid #fff; font-weight: 600;">Descripción</th>
+<th style="padding: 10px; text-align: center; border: 1px solid #fff; font-weight: 600; width: 100px;">Cantidad</th>
+<th style="padding: 10px; text-align: center; border: 1px solid #fff; font-weight: 600; width: 120px;">Observaciones</th>
+</tr>
+</thead>
+<tbody>
+<tr style="border-bottom: 1px solid #ffc107;">
+<td style="padding: 12px; border-right: 1px solid #ffc107;">Llaves principales del inmueble</td>
+<td style="padding: 12px; text-align: center; border-right: 1px solid #ffc107;">___</td>
+<td style="padding: 12px; text-align: center;">________________</td>
+</tr>
+<tr style="border-bottom: 1px solid #ffc107;">
+<td style="padding: 12px; border-right: 1px solid #ffc107;">Llaves de habitaciones</td>
+<td style="padding: 12px; text-align: center; border-right: 1px solid #ffc107;">___</td>
+<td style="padding: 12px; text-align: center;">________________</td>
+</tr>
+<tr style="border-bottom: 1px solid #ffc107;">
+<td style="padding: 12px; border-right: 1px solid #ffc107;">Llaves de garaje/parqueadero</td>
+<td style="padding: 12px; text-align: center; border-right: 1px solid #ffc107;">___</td>
+<td style="padding: 12px; text-align: center;">________________</td>
+</tr>
+<tr style="border-bottom: 1px solid #ffc107;">
+<td style="padding: 12px; border-right: 1px solid #ffc107;">Control remoto portón/puerta</td>
+<td style="padding: 12px; text-align: center; border-right: 1px solid #ffc107;">___</td>
+<td style="padding: 12px; text-align: center;">________________</td>
+</tr>
+<tr>
+<td style="padding: 12px; border-right: 1px solid #ffc107;">Otras llaves/tarjetas de acceso</td>
+<td style="padding: 12px; text-align: center; border-right: 1px solid #ffc107;">___</td>
+<td style="padding: 12px; text-align: center;">________________</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<!-- Condiciones -->
+<div style="margin-bottom: 30px; font-size: 13px; line-height: 1.7;">
+<h4 style="color: #dc3545; font-size: 16px; font-weight: 600;">📝 CONDICIONES Y RESPONSABILIDADES:</h4>
+<ol style="padding-left: 20px;">
+<li style="margin-bottom: 8px;">Las llaves entregadas corresponden al inmueble identificado en la presente acta.</li>
+<li style="margin-bottom: 8px;">El receptor se compromete a hacer buen uso y cuidado de las llaves recibidas.</li>
+<li style="margin-bottom: 8px;">En caso de pérdida, el costo de duplicado y cambio de cerraduras será por cuenta del receptor.</li>
+<li style="margin-bottom: 8px;">Las llaves deben ser devueltas en las mismas condiciones en que se reciben.</li>
+<li style="margin-bottom: 8px;">La presente acta es de carácter irrevocable y las partes aceptan sus términos.</li>
+</ol>
+</div>
+
+<!-- Observaciones -->
+<div style="background: #e2e3e5; padding: 15px; border-radius: 8px; margin-bottom: 40px;">
+<h5 style="color: #383d41; margin-top: 0; font-size: 14px; font-weight: 600;">📄 OBSERVACIONES ADICIONALES:</h5>
+<div style="border-bottom: 1px solid #6c757d; margin: 10px 0; padding-bottom: 10px; min-height: 20px;"></div>
+<div style="border-bottom: 1px solid #6c757d; margin: 10px 0; padding-bottom: 10px; min-height: 20px;"></div>
+<div style="border-bottom: 1px solid #6c757d; margin: 10px 0; padding-bottom: 10px; min-height: 20px;"></div>
+</div>
+
+<!-- Firmas -->
+<div style="margin-top: 60px;">
+<table style="width: 100%;">
+<tr>
+<td style="width: 45%; text-align: center; vertical-align: top;">
+<div style="border-top: 2px solid #333; width: 250px; margin: 0 auto; padding-top: 15px;">
+<p style="margin: 0; font-size: 13px; font-weight: 600;">ENTREGA</p>
+<p style="margin: 5px 0; font-size: 12px;">
+<span t-field="doc.partner_id.name"/>
+</p>
+<p style="margin: 0; font-size: 11px; color: #6c757d;">C.C. <span t-field="doc.partner_id.vat"/>
+</p>
+<p style="margin: 5px 0 0 0; font-size: 11px; color: #6c757d;">Propietario</p>
+</div>
+</td>
+<td style="width: 10%;"></td>
+<td style="width: 45%; text-align: center; vertical-align: top;">
+<div style="border-top: 2px solid #333; width: 250px; margin: 0 auto; padding-top: 15px;">
+<p style="margin: 0; font-size: 13px; font-weight: 600;">RECIBE</p>
+<p style="margin: 5px 0; font-size: 12px;">_________________________</p>
+<p style="margin: 0; font-size: 11px; color: #6c757d;">C.C. ___________________</p>
+<p style="margin: 5px 0 0 0; font-size: 11px; color: #6c757d;">Nuevo Propietario/Arrendatario</p>
+</div>
+</td>
+</tr>
+</table>
+
+<!-- Testigo -->
+<div style="text-align: center; margin-top: 40px;">
+<div style="border-top: 2px solid #333; width: 250px; margin: 0 auto; padding-top: 15px;">
+<p style="margin: 0; font-size: 13px; font-weight: 600;">TESTIGO</p>
+<p style="margin: 5px 0; font-size: 12px;">_________________________</p>
+<p style="margin: 0; font-size: 11px; color: #6c757d;">C.C. ___________________</p>
+</div>
+</div>
+</div>
+
+<!-- Footer legal -->
+<div style="margin-top: 40px; font-size: 10px; color: #6c757d; text-align: center; border-top: 1px solid #eee; padding-top: 15px;">
+<p style="margin: 0;">
+                                Este documento constituye un acta legal de entrega de llaves. Las partes declaran haber leído y aceptado todos los términos aquí establecidos.
+</p>
+</div>
+</div>
+</t>
+</t>
+</t>
+</template>
+
+<!-- Vista Search para Tipos de Propiedades -->
+<record model="ir.ui.view" id="view_property_type_search">
+<field name="name">property.type.search</field>
+<field name="model">property.type</field>
+
+<field name="arch" type="xml">
+<search string="Buscar Tipos de Propiedades">
+<field name="name"/>
+<field name="display_name"/>
+<field name="property_type"/>
+<field name="parent_id"/>
+
+<filter name="main_types" string="Tipos Principales" domain="[('parent_id', '=', False)]"/>
+<filter name="subtypes" string="Subtipos" domain="[('parent_id', '!=', False)]"/>
+
+<group expand="0" string="Agrupar por...">
+<filter name="group_parent" string="Tipo Padre" domain="[]" context="{'group_by':'parent_id'}"/>
+<filter name="group_property_type" string="Categoría" domain="[]" context="{'group_by':'property_type'}"/>
+</group>
+</search>
+</field>
+</record>
+
+
+
+
+<!-- Vista Form extendida para Categorías de Productos -->
+<record model="ir.ui.view" id="view_product_category_form_property">
+<field name="name">product.category.form.property</field>
+<field name="model">product.category</field>
+<field name="inherit_id" ref="product.product_category_form_view"/>
+<field name="arch" type="xml">
+<group name="first" position="after">
+<group string="Comisiones" invisible="is_apply != True">
+<field name="is_apply" invisible="1"/>
+<field name="commission_type"/>
+</group>
+
+<group string="Rangos de Comisión" invisible="is_apply != True">
+<field name="commission_range_ids">
+<list editable="bottom">
+<field name="starting_range"/>
+<field name="ending_range"/>
+<field name="sales_manager_commission"/>
+<field name="sales_person_commission"/>
+<field name="sales_manager_commission_amount"/>
+<field name="sales_person_commission_amount"/>
+</list>
+</field>
+</group>
+</group>
+</field>
+</record>
+
+
+<record id="action_property_type" model="ir.actions.act_window">
+<field name="name">Tipos de Propiedades</field>
+<field name="res_model">property.type</field>
+<field name="view_mode">list,form</field>
+<field name="help" type="html">
+<p class="o_view_nocontent_smiling_face">
+                    Crear tipos de propiedades
+</p>
+<p>
+                    Los tipos de propiedades permiten categorizar y organizar
+                    las propiedades según sus características específicas.
+</p>
+</field>
+</record>
+
+<!-- Acción para Categorías de Productos de Propiedades -->
+<record id="action_property_category" model="ir.actions.act_window">
+<field name="name">Categorías de Propiedades</field>
+<field name="res_model">product.category</field>
+<field name="view_mode">list,form</field>
+<field name="domain">[('property_type', '!=', False)]</field>
+<field name="help" type="html">
+<p class="o_view_nocontent_smiling_face">
+                    Gestionar categorías de propiedades
+</p>
+<p>
+                    Las categorías se crean automáticamente al definir
+                    tipos de propiedades.
+</p>
+</field>
+</record>
+
+<!-- Acción para Ayudante de Datos -->
+
+
+
+<record id="product_template_view_map" model="ir.ui.view">
+<field name="name">product.template.view.map</field>
+<field name="model">product.template</field>
+<field name="arch" type="xml">
+<map res_partner="billing_address_id">
+<field name="billing_address_id" string="Propiedad"/>
+</map>
+</field>
+</record>
+<record model="ir.actions.act_window" id="action_property_act_window">
+<field name="name">Property</field>
+<field name="res_model">product.template</field>
+<field name="view_mode">kanban,list,form,graph,map</field>
+<field name="domain">[('is_property','=',True)]</field>
+<field name="context">{
+                'search_default_region': 1,
+                'search_default_project': 1,
+                'search_default_property': 1,
+                'search_default_floor': 1,
+                'default_is_property':True,
+                'default_sale_ok':False,
+                'default_purchase_ok':False}
+</field>
+<field name="view_id" ref="view_property_tree"/>
+<field name="search_view_id" ref="view_property_search"/>
+</record>
+<record model="ir.actions.act_window.view" id="action_property_act_window_kanbba">
+<field name="sequence" eval="0"/>
+<field name="view_mode">kanban</field>
+<field name="view_id" ref="view_property_kanban"/>
+<field name="act_window_id" ref="action_property_act_window"/>
+</record>
+<record model="ir.actions.act_window.view" id="action_property_act_window_view2">
+<field name="sequence" eval="1"/>
+<field name="view_mode">list</field>
+<field name="view_id" ref="view_property_tree"/>
+<field name="act_window_id" ref="action_property_act_window"/>
+</record>
+
+<record model="ir.actions.act_window.view" id="action_property_act_window_view1">
+<field name="sequence" eval="2"/>
+<field name="view_mode">form</field>
+<field name="view_id" ref="view_property_form"/>
+<field name="act_window_id" ref="action_property_act_window"/>
+</record>
+
+<record model="ir.ui.view" id="view_property_graph">
+<field name="name">product.template.graph</field>
+<field name="model">product.template</field>
+<field name="arch" type="xml">
+<graph string="Invoices" type="pie">
+<field name="state" type="row"/>
+</graph>
+</field>
+</record>
+
+</data>
+</odoo>

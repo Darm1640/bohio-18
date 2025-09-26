@@ -1,0 +1,509 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="real_estate_bits.PropertyDashboard" owl="1">
+        <div class="o_property_dashboard">
+            <div class="container-fluid p-3">
+                <!-- Header -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h2 class="text-primary">
+                                <i class="fa fa-home me-2"/>Dashboard Inmobiliario
+                            </h2>
+                            <button class="btn btn-primary" t-on-click="onViewAllProperties">
+                                <i class="fa fa-list me-2"/>Ver Todas las Propiedades
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- KPIs Cards -->
+                <div class="row mb-4">
+                    <div class="col-lg-3 col-md-6 mb-3">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="text-muted mb-1">Total Propiedades</h6>
+                                        <h3 class="mb-0 text-primary">
+                                            <t t-esc="state.dashboardData.properties_by_status &amp;&amp; state.dashboardData.properties_by_status.length ? state.dashboardData.properties_by_status.reduce((sum, s) => sum + s.count, 0) : 0"/>
+                                        </h3>
+                                    </div>
+                                    <div class="text-primary">
+                                        <i class="fa fa-building fa-2x"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 mb-3">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="text-muted mb-1">Barrios Activos</h6>
+                                        <h3 class="mb-0 text-success">
+                                            <t t-esc="state.dashboardData.properties_by_region ? state.dashboardData.properties_by_region.length : 0"/>
+                                        </h3>
+                                    </div>
+                                    <div class="text-success">
+                                        <i class="fa fa-map-marker fa-2x"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 mb-3">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="text-muted mb-1">Ingreso Mensual Esperado</h6>
+                                        <h3 class="mb-0 text-warning">
+                                            <t t-esc="formatCurrency(state.dashboardData.expected_income &amp;&amp; state.dashboardData.expected_income.length ? state.dashboardData.expected_income.reduce((sum, i) => sum + (i.monthly_income || 0), 0) : 0)"/>
+                                        </h3>
+                                    </div>
+                                    <div class="text-warning">
+                                        <i class="fa fa-dollar fa-2x"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 mb-3">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="text-muted mb-1">Vendedores Activos</h6>
+                                        <h3 class="mb-0 text-info">
+                                            <t t-esc="state.dashboardData.properties_by_salesperson ? state.dashboardData.properties_by_salesperson.length : 0"/>
+                                        </h3>
+                                    </div>
+                                    <div class="text-info">
+                                        <i class="fa fa-users fa-2x"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main Content -->
+                <div class="row">
+                    <!-- Map Section -->
+                    <div class="col-lg-8 mb-4">
+                        <div class="card shadow-sm h-100">
+                            <div class="card-header bg-primary text-white">
+                                <h5 class="mb-0">
+                                    <i class="fa fa-map me-2"/>Mapa de Propiedades por Barrio
+                                </h5>
+                            </div>
+                            <div class="card-body p-0">
+                                <div t-ref="mapContainer" style="height: 500px; width: 100%;" class="position-relative">
+                                    <t t-if="!state.mapLoaded">
+                                        <div class="d-flex justify-content-center align-items-center h-100">
+                                            <div class="spinner-border text-primary" role="status">
+                                                <span class="visually-hidden">Cargando mapa...</span>
+                                            </div>
+                                        </div>
+                                    </t>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Activities -->
+                    <div class="col-lg-4 mb-4">
+                        <div class="card shadow-sm h-100">
+                            <div class="card-header bg-info text-white">
+                                <h5 class="mb-0">
+                                    <i class="fa fa-clock-o me-2"/>Actividades Recientes
+                                </h5>
+                            </div>
+                            <div class="card-body" style="max-height: 460px; overflow-y: auto;">
+                                <div class="list-group list-group-flush">
+                                    <t t-foreach="state.dashboardData.recent_activities" t-as="activity" t-key="activity_index">
+                                        <div class="list-group-item px-0">
+                                            <div class="d-flex w-100 justify-content-between">
+                                                <h6 class="mb-1">
+                                                    <a href="#" t-on-click="() => onPropertyClick(activity.property_id)" class="text-decoration-none">
+                                                        <t t-esc="activity.property_name"/>
+                                                    </a>
+                                                </h6>
+                                                <small class="text-muted">
+                                                    <t t-esc="activity.date_deadline"/>
+                                                </small>
+                                            </div>
+                                            <p class="mb-1">
+                                                <t t-esc="activity.summary"/>
+                                            </p>
+                                            <small>
+                                                <i class="fa fa-user me-1"/>
+                                                <t t-esc="activity.user_name"/>
+                                            </small>
+                                        </div>
+                                    </t>
+                                    <t t-if="!state.dashboardData.recent_activities.length">
+                                        <div class="text-center text-muted py-3">
+                                            No hay actividades recientes
+                                        </div>
+                                    </t>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts Row -->
+                <div class="row mb-4">
+                    <!-- Status Chart -->
+                    <div class="col-lg-4 mb-3">
+                        <div class="card shadow-sm">
+                            <div class="card-header bg-success text-white">
+                                <h5 class="mb-0">
+                                    <i class="fa fa-pie-chart me-2"/>Estado de Propiedades
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <canvas t-ref="statusChart" style="height: 250px;"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Type Chart -->
+                    <div class="col-lg-4 mb-3">
+                        <div class="card shadow-sm">
+                            <div class="card-header bg-warning text-white">
+                                <h5 class="mb-0">
+                                    <i class="fa fa-bar-chart me-2"/>Propiedades por Tipo
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <canvas t-ref="typeChart" style="height: 250px;"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Income Chart -->
+                    <div class="col-lg-4 mb-3">
+                        <div class="card shadow-sm">
+                            <div class="card-header bg-danger text-white">
+                                <h5 class="mb-0">
+                                    <i class="fa fa-dollar me-2"/>Ingreso Esperado por Tipo
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <canvas t-ref="incomeChart" style="height: 250px;"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contracts Section -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <div class="card shadow-sm">
+                            <div class="card-header bg-purple text-white d-flex justify-content-between align-items-center" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                                <h5 class="mb-0">
+                                    <i class="fa fa-file-text-o me-2"/>Gestión de Contratos
+                                    <t t-if="state.dashboardData.user_info?.is_salesperson_only">
+                                        <span class="badge bg-warning ms-2">Mis Contratos</span>
+                                    </t>
+                                </h5>
+                                <button class="btn btn-sm btn-light" t-on-click="onToggleContractsSection">
+                                    <i t-attf-class="fa fa-chevron-#{state.showContractsSection ? 'up' : 'down'}"/>
+                                </button>
+                            </div>
+                            <t t-if="state.showContractsSection">
+                                <div class="card-body">
+                                    <!-- Contract Filters -->
+                                    <div class="row mb-3">
+                                        <div class="col-md-3">
+                                            <label class="form-label">Período</label>
+                                            <select class="form-select form-select-sm" t-on-change="(ev) => onFilterChange('period', ev.target.value)">
+                                                <option value="month">Mes Actual</option>
+                                                <option value="quarter">Trimestre</option>
+                                                <option value="year">Año</option>
+                                                <option value="all">Todos</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="form-label">Tipo de Contrato</label>
+                                            <select class="form-select form-select-sm" t-on-change="(ev) => onFilterChange('contract_type', ev.target.value)">
+                                                <option value="">Todos</option>
+                                                <option value="is_rental">Arrendamiento</option>
+                                                <option value="is_ownership">Propiedad</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="form-label">Estado</label>
+                                            <select class="form-select form-select-sm" t-on-change="(ev) => onFilterChange('state', ev.target.value)">
+                                                <option value="">Todos</option>
+                                                <option value="draft">Borrador</option>
+                                                <option value="confirmed">Confirmado</option>
+                                                <option value="renew">Renovado</option>
+                                                <option value="cancel">Cancelado</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="form-label">Tipo de Propiedad</label>
+                                            <select class="form-select form-select-sm" t-on-change="(ev) => onFilterChange('property_type', ev.target.value)">
+                                                <option value="">Todos</option>
+                                                <option value="apartment">Apartamento</option>
+                                                <option value="house">Casa</option>
+                                                <option value="shop">Local Comercial</option>
+                                                <option value="warehouse">Bodega</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <!-- Contract KPIs -->
+                                    <div class="row mb-3">
+                                        <div class="col-md-3">
+                                            <div class="text-center p-3 bg-light rounded">
+                                                <h4 class="text-primary mb-1">
+                                                    <t t-esc="state.dashboardData.contracts_data?.total_contracts || 0"/>
+                                                </h4>
+                                                <small class="text-muted">Total Contratos</small>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="text-center p-3 bg-light rounded">
+                                                <h4 class="text-success mb-1">
+                                                    <t t-esc="state.dashboardData.contracts_data?.confirmed_count || 0"/>
+                                                </h4>
+                                                <small class="text-muted">Confirmados</small>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="text-center p-3 bg-light rounded">
+                                                <h4 class="text-warning mb-1">
+                                                    <t t-esc="formatCurrency(state.dashboardData.contracts_data?.total_rental_fee || 0)"/>
+                                                </h4>
+                                                <small class="text-muted">Renta Mensual Total</small>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="text-center p-3 bg-light rounded">
+                                                <h4 class="text-info mb-1">
+                                                    <t t-esc="formatCurrency(state.dashboardData.contracts_data?.total_contract_value || 0)"/>
+                                                </h4>
+                                                <small class="text-muted">Valor Total Contratos</small>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Contract Charts -->
+                                    <div class="row mb-3">
+                                        <div class="col-lg-3">
+                                            <div class="card border-0 shadow-sm">
+                                                <div class="card-header bg-light">
+                                                    <h6 class="mb-0">Estados de Contratos</h6>
+                                                </div>
+                                                <div class="card-body">
+                                                    <canvas t-ref="contractStatusChart" style="height: 200px;"></canvas>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <div class="card border-0 shadow-sm">
+                                                <div class="card-header bg-light">
+                                                    <h6 class="mb-0">Tasa de Oportunidad</h6>
+                                                </div>
+                                                <div class="card-body">
+                                                    <canvas t-ref="opportunityChart" style="height: 200px;"></canvas>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <div class="card border-0 shadow-sm">
+                                                <div class="card-header bg-light">
+                                                    <h6 class="mb-0">Estado de Recaudo</h6>
+                                                </div>
+                                                <div class="card-body">
+                                                    <canvas t-ref="collectionChart" style="height: 200px;"></canvas>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <div class="card border-0 shadow-sm">
+                                                <div class="card-header bg-light">
+                                                    <h6 class="mb-0">Facturación vs Recaudo</h6>
+                                                </div>
+                                                <div class="card-body">
+                                                    <canvas t-ref="billingChart" style="height: 200px;"></canvas>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- New Contracts Table -->
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <h6 class="mb-2">
+                                                <i class="fa fa-plus-circle me-2"/>Contratos Nuevos del Mes
+                                            </h6>
+                                            <div class="table-responsive">
+                                                <table class="table table-sm table-hover">
+                                                    <thead class="table-light">
+                                                        <tr>
+                                                            <th>Número</th>
+                                                            <th>Cliente</th>
+                                                            <th>Propiedad</th>
+                                                            <th>Tipo</th>
+                                                            <th>Estado</th>
+                                                            <th>Valor Mensual</th>
+                                                            <th>Período</th>
+                                                            <t t-if="!state.dashboardData.user_info?.is_salesperson_only">
+                                                                <th>Vendedor</th>
+                                                            </t>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <t t-foreach="state.dashboardData.new_contracts_month" t-as="contract" t-key="contract.id">
+                                                            <tr>
+                                                                <td>
+                                                                    <span class="fw-bold text-primary">
+                                                                        <t t-esc="contract.contract_number"/>
+                                                                    </span>
+                                                                </td>
+                                                                <td><t t-esc="contract.partner_name"/></td>
+                                                                <td><t t-esc="contract.property_name"/></td>
+                                                                <td>
+                                                                    <span t-attf-class="badge bg-#{contract.contract_type === 'is_rental' ? 'info' : 'success'}">
+                                                                        <t t-esc="contract.contract_type_label"/>
+                                                                    </span>
+                                                                </td>
+                                                                <td>
+                                                                    <span t-attf-class="badge bg-#{contract.state === 'confirmed' ? 'success' : contract.state === 'draft' ? 'secondary' : 'warning'}">
+                                                                        <t t-esc="contract.state_label"/>
+                                                                    </span>
+                                                                </td>
+                                                                <td><t t-esc="formatCurrency(contract.rental_fee)"/></td>
+                                                                <td>
+                                                                    <small>
+                                                                        <t t-esc="contract.date_from"/> - <t t-esc="contract.date_to || 'Indefinido'"/>
+                                                                    </small>
+                                                                </td>
+                                                                <t t-if="!state.dashboardData.user_info?.is_salesperson_only">
+                                                                    <td><t t-esc="contract.salesperson_name"/></td>
+                                                                </t>
+                                                            </tr>
+                                                        </t>
+                                                        <t t-if="!state.dashboardData.new_contracts_month?.length">
+                                                            <tr>
+                                                                <td colspan="8" class="text-center text-muted py-3">
+                                                                    No hay contratos nuevos este mes
+                                                                </td>
+                                                            </tr>
+                                                        </t>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </t>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Salesperson Section -->
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card shadow-sm">
+                            <div class="card-header bg-secondary text-white">
+                                <h5 class="mb-0">
+                                    <i class="fa fa-users me-2"/>Propiedades por Vendedor
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Vendedor</th>
+                                                <th>Total Propiedades</th>
+                                                <th>Vendidas</th>
+                                                <th>Alquiladas</th>
+                                                <th>Valor Total</th>
+                                                <th>Acciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <t t-foreach="state.dashboardData.properties_by_salesperson" t-as="salesperson" t-key="salesperson.user_id">
+                                                <tr class="cursor-pointer" t-on-click="(ev) => onSalespersonClick(ev, salesperson)">
+                                                    <td>
+                                                        <t t-esc="salesperson.salesperson_name || 'Sin vendedor'"/>
+                                                    </td>
+                                                    <td>
+                                                        <span class="badge bg-primary">
+                                                            <t t-esc="salesperson.property_count"/>
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        <span class="badge bg-danger">
+                                                            <t t-esc="salesperson.sold_count"/>
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        <span class="badge bg-info">
+                                                            <t t-esc="salesperson.rented_count"/>
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        <t t-esc="formatCurrency(salesperson.total_value)"/>
+                                                    </td>
+                                                    <td>
+                                                        <button class="btn btn-sm btn-outline-primary">
+                                                            <i class="fa fa-eye"/> Ver
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </t>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <!-- Selected Salesperson Properties -->
+                                <t t-if="state.selectedSalesperson">
+                                    <div class="mt-4">
+                                        <h6>Propiedades de <t t-esc="state.selectedSalesperson.salesperson_name"/></h6>
+                                        <div class="row">
+                                            <t t-foreach="state.salespersonProperties" t-as="property" t-key="property.id">
+                                                <div class="col-md-6 col-lg-4 mb-3">
+                                                    <div class="card">
+                                                        <div class="card-body">
+                                                            <h6 class="card-title">
+                                                                <a href="#" t-on-click="() => onPropertyClick(property.id)" class="text-decoration-none">
+                                                                    <t t-esc="property.name"/>
+                                                                </a>
+                                                            </h6>
+                                                            <p class="card-text">
+                                                                <span t-attf-class="badge #{getStatusClass(property.status)}">
+                                                                    <t t-esc="getStatusLabel(property.status)"/>
+                                                                </span><br/>
+                                                                <small>
+                                                                    Tipo: <t t-esc="property.type"/><br/>
+                                                                    Barrio: <t t-esc="property.region"/><br/>
+                                                                    Precio: <t t-esc="formatCurrency(property.price)"/>
+                                                                </small>
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </t>
+                                        </div>
+                                    </div>
+                                </t>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+
+</templates>

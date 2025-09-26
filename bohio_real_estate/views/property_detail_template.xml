@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="property_detail" name="Property Detail">
+        <t t-call="website.layout">
+            <div id="wrap" class="oe_structure">
+                <div class="container mt-4 mb-5">
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <div class="card shadow-sm mb-4">
+                                <t t-if="property.image_1920">
+                                    <img class="card-img-top" t-att-src="'/web/image/product.template/%s/image_1920' % property.id"
+                                         t-att-alt="property.name" style="max-height: 500px; object-fit: cover;"/>
+                                </t>
+
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-start mb-3">
+                                        <div>
+                                            <h1 class="h2 mb-2" t-esc="property.name"/>
+                                            <p class="text-muted mb-0">
+                                                <i class="fa fa-tag"/> Código: <strong t-esc="property.default_code or 'N/A'"/>
+                                            </p>
+                                        </div>
+                                        <div class="text-end">
+                                            <h3 class="text-primary mb-0">
+                                                <span t-field="property.list_price" t-options="{'widget': 'monetary', 'display_currency': property.currency_id}"/>
+                                            </h3>
+                                            <span t-if="property.type_service" class="badge bg-info mt-2">
+                                                <span t-esc="dict(property._fields['type_service'].selection).get(property.type_service)"/>
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <hr/>
+
+                                    <div class="row mb-4">
+                                        <div class="col-md-6">
+                                            <h5><i class="fa fa-map-marker text-primary"/> Ubicación</h5>
+                                            <p class="mb-1" t-if="property.address">
+                                                <strong>Dirección:</strong> <span t-esc="property.address"/>
+                                            </p>
+                                            <p class="mb-1" t-if="property.region_id">
+                                                <strong>Barrio:</strong> <span t-esc="property.region_id.name"/>
+                                            </p>
+                                            <p class="mb-1" t-if="property.city">
+                                                <strong>Ciudad:</strong> <span t-esc="property.city"/>
+                                            </p>
+                                            <p class="mb-1" t-if="property.state_id">
+                                                <strong>Departamento:</strong> <span t-esc="property.state_id.name"/>
+                                            </p>
+                                            <p class="mb-1" t-if="property.stratum">
+                                                <strong>Estrato:</strong> <span t-esc="dict(property._fields['stratum'].selection).get(property.stratum)"/>
+                                            </p>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <h5><i class="fa fa-info-circle text-primary"/> Características</h5>
+                                            <div class="row">
+                                                <div class="col-6 mb-2" t-if="property.property_area">
+                                                    <i class="fa fa-arrows-alt"/> <strong t-esc="'%.0f' % property.property_area"/> m²
+                                                </div>
+                                                <div class="col-6 mb-2" t-if="property.num_bedrooms">
+                                                    <i class="fa fa-bed"/> <strong t-esc="property.num_bedrooms"/> Habitaciones
+                                                </div>
+                                                <div class="col-6 mb-2" t-if="property.num_bathrooms">
+                                                    <i class="fa fa-bath"/> <strong t-esc="property.num_bathrooms"/> Baños
+                                                </div>
+                                                <div class="col-6 mb-2" t-if="property.property_age">
+                                                    <i class="fa fa-calendar"/> <strong t-esc="property.property_age"/> años
+                                                </div>
+                                                <div class="col-6 mb-2" t-if="property.number_of_levels">
+                                                    <i class="fa fa-building"/> <strong t-esc="property.number_of_levels"/> Niveles
+                                                </div>
+                                                <div class="col-6 mb-2" t-if="property.floor_number">
+                                                    <i class="fa fa-layer-group"/> Piso <strong t-esc="property.floor_number"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <t t-if="property.description">
+                                        <hr/>
+                                        <h5><i class="fa fa-file-text text-primary"/> Descripción</h5>
+                                        <div class="mb-4" t-field="property.description"/>
+                                    </t>
+
+                                    <t t-if="property.note">
+                                        <hr/>
+                                        <h5><i class="fa fa-sticky-note text-primary"/> Notas Adicionales</h5>
+                                        <div class="mb-4" t-field="property.note"/>
+                                    </t>
+
+                                    <t t-if="property.latitude and property.longitude">
+                                        <hr/>
+                                        <h5><i class="fa fa-map text-primary"/> Ubicación en el Mapa</h5>
+                                        <div id="property_map" style="height: 400px; width: 100%;" class="mb-4"
+                                             t-att-data-lat="property.latitude"
+                                             t-att-data-lng="property.longitude"
+                                             t-att-data-name="property.name"/>
+                                    </t>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4">
+                            <div class="card shadow-sm sticky-top" style="top: 20px;">
+                                <div class="card-header bg-primary text-white">
+                                    <h5 class="mb-0"><i class="fa fa-envelope"/> Contactar</h5>
+                                </div>
+                                <div class="card-body">
+                                    <form action="/contact/property" t-att-data-property-id="property.id" method="post" class="property-contact-form">
+                                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                        <input type="hidden" name="property_id" t-att-value="property.id"/>
+
+                                        <div class="mb-3">
+                                            <label class="form-label">Nombre Completo *</label>
+                                            <input type="text" name="name" class="form-control" required="required"/>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label class="form-label">Correo Electrónico *</label>
+                                            <input type="email" name="email" class="form-control" required="required"/>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label class="form-label">Teléfono</label>
+                                            <input type="tel" name="phone" class="form-control"/>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label class="form-label">Tipo de Cliente</label>
+                                            <select name="client_type" class="form-select">
+                                                <option value="buyer">Comprador</option>
+                                                <option value="tenant">Arrendatario</option>
+                                                <option value="investor">Inversionista</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label class="form-label">Mensaje</label>
+                                            <textarea name="message" class="form-control" rows="4" placeholder="Estoy interesado en esta propiedad..."></textarea>
+                                        </div>
+
+                                        <button type="submit" class="btn btn-primary w-100">
+                                            <i class="fa fa-send"/> Enviar Consulta
+                                        </button>
+                                    </form>
+
+                                    <hr class="my-4"/>
+
+                                    <div class="d-grid gap-2">
+                                        <a href="/properties" class="btn btn-outline-secondary">
+                                            <i class="fa fa-arrow-left"/> Volver a Propiedades
+                                        </a>
+                                        <a t-if="property.latitude and property.longitude"
+                                           href="/properties/map" class="btn btn-outline-info">
+                                            <i class="fa fa-map"/> Ver en Mapa
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    const mapElement = document.getElementById('property_map');
+                    if (mapElement) {
+                        const lat = parseFloat(mapElement.dataset.lat);
+                        const lng = parseFloat(mapElement.dataset.lng);
+                        const name = mapElement.dataset.name;
+
+                        if (lat &amp;&amp; lng) {
+                            const map = L.map('property_map').setView([lat, lng], 15);
+
+                            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                                attribution: '© OpenStreetMap contributors'
+                            }).addTo(map);
+
+                            L.marker([lat, lng]).addTo(map)
+                                .bindPopup(`&lt;b&gt;${name}&lt;/b&gt;`)
+                                .openPopup();
+                        }
+                    }
+                });
+            </script>
+        </t>
+    </template>
+</odoo>

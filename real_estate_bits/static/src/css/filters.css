@@ -1,0 +1,154 @@
+/* Real Estate Bits - Filters CSS */
+
+.real-estate-filters {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.filter-group {
+    margin-bottom: 15px;
+}
+
+.filter-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    color: #333;
+}
+
+.filter-group input,
+.filter-group select {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    transition: border-color 0.3s;
+}
+
+.filter-group input:focus,
+.filter-group select:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+.filter-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.btn-filter {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn-filter-primary {
+    background: #007bff;
+    color: white;
+}
+
+.btn-filter-primary:hover {
+    background: #0056b3;
+}
+
+.btn-filter-reset {
+    background: #6c757d;
+    color: white;
+}
+
+.btn-filter-reset:hover {
+    background: #545b62;
+}
+
+/* Price range slider */
+.price-range-slider {
+    margin: 20px 0;
+}
+
+.price-range-values {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-size: 14px;
+    color: #666;
+}
+
+/* Property type filters */
+.property-type-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 15px 0;
+}
+
+.property-type-filter {
+    padding: 8px 16px;
+    border: 2px solid #ddd;
+    border-radius: 20px;
+    background: white;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.property-type-filter:hover {
+    border-color: #007bff;
+    background: #f0f8ff;
+}
+
+.property-type-filter.active {
+    background: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+
+/* Area filters */
+.area-filters {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+/* Advanced filters toggle */
+.advanced-filters-toggle {
+    display: inline-block;
+    margin: 15px 0;
+    color: #007bff;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.advanced-filters-toggle:hover {
+    text-decoration: underline;
+}
+
+.advanced-filters {
+    display: none;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #ddd;
+}
+
+.advanced-filters.show {
+    display: block;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .area-filters {
+        grid-template-columns: 1fr;
+    }
+
+    .filter-buttons {
+        flex-direction: column;
+    }
+
+    .property-type-filters {
+        justify-content: center;
+    }
+}

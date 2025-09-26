@@ -1,0 +1,266 @@
+.o_property_dashboard {
+    background-color: #f8f9fa;
+    min-height: 100vh;
+}
+
+.o_property_dashboard .card {
+    border: none;
+    border-radius: 10px;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.o_property_dashboard .card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1) !important;
+}
+
+.o_property_dashboard .card-header {
+    border-radius: 10px 10px 0 0;
+    border: none;
+    font-weight: 600;
+}
+
+.o_property_dashboard .badge {
+    padding: 5px 10px;
+    font-size: 0.85rem;
+}
+
+.o_property_dashboard .table {
+    margin-bottom: 0;
+}
+
+.o_property_dashboard .table th {
+    border-bottom: 2px solid #dee2e6;
+    font-weight: 600;
+    color: #495057;
+}
+
+.o_property_dashboard .cursor-pointer {
+    cursor: pointer;
+}
+
+.o_property_dashboard .cursor-pointer:hover {
+    background-color: #f8f9fa;
+}
+
+.o_property_dashboard .list-group-item {
+    border: none;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.o_property_dashboard .list-group-item:last-child {
+    border-bottom: none;
+}
+
+/* Map popup styles */
+.map-popup h6 {
+    margin-bottom: 10px;
+    color: #333;
+    font-weight: 600;
+}
+
+.map-popup p {
+    margin: 5px 0;
+    font-size: 0.9rem;
+}
+
+/* Chart container styles */
+.o_property_dashboard canvas {
+    max-width: 100%;
+}
+
+/* KPI Cards */
+.o_property_dashboard .card-body h3 {
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.o_property_dashboard .card-body h6 {
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Status badges */
+.o_property_dashboard .badge-primary {
+    background-color: #007bff;
+}
+
+.o_property_dashboard .badge-success {
+    background-color: #28a745;
+}
+
+.o_property_dashboard .badge-warning {
+    background-color: #ffc107;
+    color: #212529;
+}
+
+.o_property_dashboard .badge-info {
+    background-color: #17a2b8;
+}
+
+.o_property_dashboard .badge-danger {
+    background-color: #dc3545;
+}
+
+.o_property_dashboard .badge-secondary {
+    background-color: #6c757d;
+}
+
+/* Contracts Section Styles */
+.o_property_dashboard .bg-purple {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.o_property_dashboard .form-select-sm {
+    font-size: 0.875rem;
+    padding: 0.25rem 0.5rem;
+}
+
+.o_property_dashboard .form-label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 0.25rem;
+}
+
+.o_property_dashboard .bg-light {
+    background-color: #f8f9fa !important;
+}
+
+.o_property_dashboard .rounded {
+    border-radius: 8px !important;
+}
+
+.o_property_dashboard .border-0 {
+    border: none !important;
+}
+
+/* Contract KPI Cards */
+.o_property_dashboard .text-center h4 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+}
+
+.o_property_dashboard .text-center small {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+}
+
+/* Contract Charts */
+.o_property_dashboard .card-header h6 {
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+/* Contract Table */
+.o_property_dashboard .table-sm {
+    font-size: 0.875rem;
+}
+
+.o_property_dashboard .table-light {
+    background-color: #f8f9fa;
+}
+
+.o_property_dashboard .fw-bold {
+    font-weight: 700 !important;
+}
+
+/* Toggle button animation */
+.o_property_dashboard .btn-light {
+    background-color: rgba(255, 255, 255, 0.9);
+    border: none;
+    transition: all 0.3s;
+}
+
+.o_property_dashboard .btn-light:hover {
+    background-color: rgba(255, 255, 255, 1);
+    transform: scale(1.1);
+}
+
+.o_property_dashboard .fa-chevron-up,
+.o_property_dashboard .fa-chevron-down {
+    transition: transform 0.3s;
+}
+
+/* Opportunity Chart Colors */
+.o_property_dashboard .text-opportunity {
+    color: #2ecc71;
+}
+
+.o_property_dashboard .text-occupied {
+    color: #3498db;
+}
+
+.o_property_dashboard .text-process {
+    color: #f1c40f;
+}
+
+/* Filter Section */
+.o_property_dashboard .form-select:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+}
+
+/* Contract Status Colors */
+.o_property_dashboard .bg-draft {
+    background-color: #6c757d !important;
+}
+
+.o_property_dashboard .bg-confirmed {
+    background-color: #28a745 !important;
+}
+
+.o_property_dashboard .bg-renew {
+    background-color: #17a2b8 !important;
+}
+
+.o_property_dashboard .bg-cancel {
+    background-color: #dc3545 !important;
+}
+
+/* Scrollbar Styles */
+.o_property_dashboard .table-responsive::-webkit-scrollbar {
+    height: 8px;
+}
+
+.o_property_dashboard .table-responsive::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.o_property_dashboard .table-responsive::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+.o_property_dashboard .table-responsive::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .o_property_dashboard .card-body h3 {
+        font-size: 1.5rem;
+    }
+
+    .o_property_dashboard .card-body h4 {
+        font-size: 1.25rem;
+    }
+
+    .o_property_dashboard .table {
+        font-size: 0.875rem;
+    }
+
+    .o_property_dashboard .form-select-sm {
+        font-size: 0.75rem;
+    }
+
+    .o_property_dashboard canvas {
+        max-height: 150px !important;
+    }
+}

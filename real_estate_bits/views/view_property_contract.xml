@@ -1,0 +1,465 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+        <record id="view_property_contract_tree" model="ir.ui.view">
+            <field name="name">property.contract.</field>
+            <field name="model">property.contract</field>
+            <field name="arch" type="xml">
+                <list>
+                    <field name="name"/>
+                    <field name="date"/>
+                    <field name="partner_id"/>
+                    <field name="user_id"/>
+                    <field name="project_id"/>
+                    <field name="project_code"/>
+                    <field name="property_id"/>
+                    <field name="property_code"/>
+                    <field name="floor"/>
+                    <!--                    <field name="property_fee"/>-->
+                    <field name="insurance_fee"/>
+                    <field name="address"/>
+                    <field name="state" widget="badge" decoration-info="state == 'draft'"
+                           decoration-success="state in ('confirmed','renew')" decoration-danger="state == 'cancel'"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_property_contract_search" model="ir.ui.view">
+            <field name="name">property.contract..filter</field>
+            <field name="model">property.contract</field>
+            
+            <field name="arch" type="xml">
+                <search string="Top Search">
+                    <group>
+                        <field name="name"/>
+                        <field name="partner_id"/>
+                        <field name="user_id"/>
+                        <field name="project_id"/>
+                        <field name="project_code"/>
+                        <field name="property_id" options="{'no_create': True, 'no_open': True}"/>
+                        <field name="property_code"/>
+                    </group>
+                    <newline/>
+                    <group expand="0" string="Group By...">
+                        <filter name="user_id" string="Responsible" domain="[]" context="{'group_by':'user_id'}"/>
+                        <filter name="partner_id" string="Partner" domain="[]" context="{'group_by':'partner_id'}"/>
+                        <filter name="project_id" string="Project" domain="[]" context="{'group_by':'project_id'}"/>
+                        <filter name="state" string="State" domain="[]" context="{'group_by':'state'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="view_update_tarifa_wizard" model="ir.ui.view">
+            <field name="name">update.tarifa.wizard.form</field>
+            <field name="model">update.tarifa.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Actualizar Tarifa">
+                    <group>
+                        <field name="new_price"/>
+                    </group>
+                    <footer>
+                        <button name="action_update_tarifa" string="Actualizar" type="object" class="btn-primary"/>
+                        <button string="Cancelar" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+    
+        <record id="view_renovar_contrato_wizard" model="ir.ui.view">
+            <field name="name">renovar.contrato.wizard.form</field>
+            <field name="model">renovar.contrato.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Renovar Contrato">
+                    <group>
+                        <field name="new_end_date"/>
+                        <field name="new_price"/>
+                        <field name="num_additional_quotas"/>
+                    </group>
+                    <footer>
+                        <button name="action_renovar_contrato" string="Renovar" type="object" class="btn-primary"/>
+                        <button string="Cancelar" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        <record id="action_update_tarifa_wizard" model="ir.actions.act_window">
+            <field name="name">Actualizar Tarifa</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">update.tarifa.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+        
+        <record id="action_renovar_contrato_wizard" model="ir.actions.act_window">
+            <field name="name">Renovar Contrato</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">renovar.contrato.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <record id="view_property_contract_form" model="ir.ui.view">
+            <field name="name">property.contract.form</field>
+            <field name="model">property.contract</field>
+            <field name="arch" type="xml">
+                <form string="Property Contract">
+                    <header>
+                        <button name="action_receive_deposit" type="object" string="Receive Advance Payment"
+                                invisible="contract_type != 'is_ownership' or state == 'cancel'"
+                                class="oe_highlight"/>
+                        <button name="action_calculate" type="object" string="Calculate " class="oe_highlight"
+                                invisible="state in ('cancel','confirmed','renew')"/>
+                        <button name="action_confirm" type="object" string="Confirm" class="oe_highlight"
+                                invisible="state in ('cancel','confirmed','renew')"/>
+                        <button name="action_cancel" type="object" string="Cancel" class="oe_highlight"
+                                invisible="state == 'cancel' or state == 'draft'"/>
+                        <field name="state" options="{'clickable': '1'}" widget="statusbar"
+                               statusbar_visible="draft,confirmed,cancel"/>
+                        <button name="%(action_update_tarifa_wizard)d" type="action" string="Actualizar Tarifa" class="oe_highlight"/>
+                        <button name="%(action_renovar_contrato_wizard)d" type="action" string="Renovar Contrato" class="oe_highlight"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title mb24">
+                            <h1>
+                                <field class="text-break" name="name" readonly="1"/>
+                            </h1>
+                        </div>
+
+                        <style>
+                            div[name="options"] .o_field_boolean {
+                            margin-left: 10px;
+                            margin-right: 0px;
+                            }
+                        </style>
+                        <field name="contract_type" widget="radio" options="{'horizontal': true}"/>
+
+                        <separator string="Contract Information" colspan="4"/>
+                        <group>
+                            <group>
+                                <label for="date" string="Periodo"/>
+                                <div>
+                                    <field name="date" class="oe_inline" readonly="state in ['cancel', 'done', 'paid']"/> - <field name="date_to" class="oe_inline" readonly="state in ['cancel', 'done', 'paid']"/>
+                                </div>
+                                <field name="prorate_first_period" readonly="state !='draft'"/>
+                                <field name="first_invoice_date" readonly="state !='draft'"/>
+                                <field name="is_escenary_propiedad" />
+                                <field name="date_end" readonly="1"/>
+                                <field name="billing_date"/>
+                                <field name="partner_id" widget="res_partner_many2one" context="{'show_address': 1, 'default_is_company': True, 'show_vat': True}" string="Partner" readonly="state !='draft'"/>
+                                <field name="contract_scenery_id"/>
+                                <field name="contract_use" readonly="state !='draft'"/>
+                                <field name="user_id" readonly="state !='draft'"/>
+                                <field name="company_id" groups="base.group_multi_company"/>
+                            </group>
+                            <group>
+                                <field name="origin" readonly="state !='draft'"/>
+                                <field name="rental_agreement" required="1"     invisible="contract_type == 'is_ownership'"/>
+                                <field name="rent"   invisible="contract_type == 'is_ownership' or rental_agreement == 'per_sft'"/>
+                                <field name="rental_fee" invisible="contract_type == 'is_ownership'" readonly="state != 'draft'"/>
+                                <field name="insurance_fee"  readonly="state != 'draft'" />
+                                <label for="recurring_interval" invisible="contract_type == 'is_ownership'"/>
+                                <div class="o_row" invisible="contract_type == 'is_ownership'">
+                                    <span class="mr-1">Cada</span>
+                                    <field name="recurring_interval" required="1"    readonly="state !='draft'"/>
+                                    <field name="periodicity" class="field_rule_type" required="1"   readonly="state != 'draft'"/>
+                                </div>
+                                <field name="commission_rate"/>
+                                <field name="descripcion"/>
+                            </group>
+                        </group>
+                        <group>
+                            <group string="Property Details">
+                                <field name="property_id" options="{'no_create': True, 'no_open': True}"  readonly="state != 'draft'"/>
+                                <field name="partner_is_owner_id"  widget="res_partner_many2one" context="{'show_address': 1, 'default_is_company': True, 'show_vat': True}"/>
+                                <field name="is_multi_propietario" string="Multi-propietarios"/>
+                                <field name="owners_lines"  invisible="not is_multi_propietario">
+                                    <list>
+                                        <field name="partner_id" options="{'no_create': True}"/>
+                                        <field name="ownership_percentage"/>
+                                    </list>  
+                                </field>
+                                <field name="property_code"/>
+                                <field name="type" readonly="state != 'draft'"/>
+                                <field name="address" readonly="state != 'draft'"/>
+                                <field name="property_area" string="Property Area SFT"   readonly="state != 'draft'"/>
+                                <field name="price_per_m" string="Property Price"     readonly="state != 'draft'"/>
+                            </group>
+                            <group string="Project Details">
+                                <field name="project_id" readonly="state != 'draft'"/>
+                                <field name="project_code"/>
+                                <field name="region_id" readonly="state != 'draft'"/>
+                            </group>
+                        </group>
+                        <!-- <separator string="Reservation Details" colspan="4"/>
+                        <group>
+                            <group>
+                                <field name="reservation_id"/>
+                                <field name="deposit" readonly="state != 'draft'"/>
+                            </group>
+                            <group>
+
+                            </group>
+                        </group>
+                        <separator string="Increment Cycle" colspan="4"       invisible="contract_type == 'is_ownership'"/>
+                        <group invisible="contract_type == 'is_ownership'">
+                            <group>
+                                <label for="increment_recurring_interval" string="Increment Period"/>
+                                <div class="o_row">
+                                    <span class="mr-1">Cada</span>
+                                    <field name="increment_recurring_interval" required="1"
+                                           readonly="state != 'draft'"/>
+                                    <field name="increment_period" class="field_rule_type" required="1"
+                                           readonly="state != 'draft'"/>
+                                </div>
+                                <field name="increment_percentage"/>
+                            </group>
+                        </group>
+                        <separator string="Payment Details" colspan="4"/>
+                        <group invisible="contract_type == 'is_rental'">
+                            <group>
+                                <field name="pricing" readonly="state != 'draft'"/>
+                                <field name="date_payment"  readonly="state != 'draft'" required="contract_type == 'is_ownership'"/>
+                                <field name="template_id"  readonly="state != 'draft'" required="contract_type == 'is_ownership'"/>
+                                <field name="account_income" />
+                            </group>
+                            <group invisible="contract_type != 'is_ownership'">
+                                <field name="advance_payment_method" widget="radio" options="{'horizontal': true}"/>
+                                <field name="advance_payment_type" readonly="state != 'draft'"/>
+                                <field name="advance_payment_rate" readonly="state != 'draft' or advance_payment_method =='default'" invisible="advance_payment_type == 'amount'"/>
+                                <field name="advance_payment" readonly="state != 'draft' or advance_payment_method == 'default'"/>
+                                <field name="advance_payment_date"  readonly="state != 'draft'"/>
+                                <field name="advance_payment_journal_id"   readonly="state != 'draft'"        required="advance_payment > 0"/>
+                            </group>
+                        </group>
+
+                        <group invisible="contract_type =='is_ownership'">
+                            <group>
+                                <field name="date_payment"
+                                       readonly="state != 'draft'" required="contract_type == 'is_ownership'"/>
+                                <field name="deposit" readonly="state != 'draft'"/>
+                            </group>
+                            <group>
+                                <field name="advance_payment_journal_id"  readonly="state != 'draft'" string="Rent Payment journal"/>
+                                <field name="tax_status" />
+                                <field name="account_income" />
+                            </group>
+                        </group>
+                        <separator string="Tax" colspan="4"      invisible="tax_status != 'tax_base_amount'"/>
+
+                        <group invisible="tax_status != 'tax_base_amount'">
+
+                            <field name="tax_base_amount"/>
+
+                            <field name="tax_ids">
+                                <list editable="top">
+                                    <field name="name"/>
+                                    <field name="tax_rate"/>
+                                    <field name="tax_base_amount"/>
+                                    <field name="calculated_tax"/>
+                                </list>
+                            </field>
+
+
+                        </group> -->
+                        <!-- <group class="oe_subtotal_footer oe_right"     invisible="tax_status != 'tax_base_amount'">
+                            <field name="sales_price" decoration-bf="1"/>
+                        </group> -->
+
+
+                        <notebook colspan="2">
+                            <page string="Installments">
+
+                                <field name="loan_line_ids" readonly="state != 'draft'">
+                                    <list default_order="invoice_id,date" string="Installments" editable="bottom">
+                                        <field widget="handle" name="serial" required="1"/>
+                                        <field name="date" required="1"/>
+                                        <field name="name" required="1"/>
+
+                                        <field name="amount" required="1"/>
+                                        <field name="amount_residual"/>
+                                        <field name="invoice_id" readonly="1"/>
+                                        <field name="period_start"/>
+                                        <field name="period_end"/>
+                                        <field name="commission"/>
+                                        <field name="invoice_state" widget="badge" optional="show"
+                                               decoration-success="invoice_state == 'posted'"
+                                               decoration-info="invoice_state == 'draft'"/>
+                                        <field name="payment_state" widget="badge"
+                                               decoration-danger="payment_state == 'not_paid'"
+                                               decoration-warning="payment_state in ('partial', 'in_payment')"
+                                               decoration-success="payment_state in ('paid', 'reversed')"
+                                               invisible="payment_state in 'invoicing_legacy'"/>
+                                        <button string="Make Invoice" name="make_invoice" type="object" icon="fa-money"
+                                                invisible="invoice_id != False or parent.state != 'confirmed'"/>
+                                        <button string="View Invoice" name="view_invoice" type="object"
+                                                style="background-color:rgba(0, 160, 74, 0.5);color: #333;"
+                                                invisible="invoice_id == False"/>
+                                    </list>
+                                </field>
+
+                                <group class="oe_subtotal_footer oe_right">
+                                    <field name="amount_total" decoration-bf="1"/>
+                                    <field name="balance"/>
+                                    <field name="paid"/>
+
+                                </group>
+                            </page>
+                            <page string="Novedades Cobro">
+                                <field name="novedad_ids">
+
+                                </field>
+                            </page> 
+                            <page string="Intereses">
+                                <field name="debit_line_ids">
+                                    <list editable="bottom">
+                                        <field name="value_amount"/>
+                                        <field name="value" nolabel="1"/>
+                                        <field name="nb_days" />
+                                        <field name="delay_type" nolabel="1"/>
+                                    </list>
+                                </field>
+                                <group string="Muestra">
+                                    <div class="d-flex gap-2" colspan="2" col="4">
+                                        Ejemplo:
+                                        <field name="example_amount" class="oe_inline"/>
+                                        de
+                                        <field name="example_date" class="fw-bold border-bottom o_example_date"/>
+                                    </div>
+                                    <div colspan="2" class="py-1 bg-secondary">
+                                        <field name="example_preview" class="ps-2" />
+                                    </div>
+                                </group>
+                            </page>
+                            <page string="Documents">
+                                <field name="attachment_line_ids">
+                                    <list editable="bottom">
+                                        <field name="name"/>
+                                        <field name="file"/>
+                                    </list>
+                                </field>
+                            </page>
+                           
+                        </notebook>
+
+                    </sheet>
+                    <chatter/>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_property_contract_act_window" model="ir.actions.act_window">
+            <field name="name">Property Contract</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">property.contract</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click to add a new Property Contract
+                </p>
+            </field>
+        </record>
+        <record id="view_postpone_quota_wizard_form" model="ir.ui.view">
+            <field name="name">postpone.quota.wizard.form</field>
+            <field name="model">postpone.quota.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Trasladar Cuotas">
+                    <group>
+                        <field name="novedad_id" invisible="1"/>
+                        <field name="months_to_postpone"/>
+                    </group>
+                    <footer>
+                        <button name="action_postpone" string="Trasladar" type="object" class="btn-primary"/>
+                        <button string="Cancelar" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+    <!-- Cancel Contract Wizard View -->
+    <record id="view_cancel_contract_wizard_form" model="ir.ui.view">
+        <field name="name">cancel.contract.wizard.form</field>
+        <field name="model">cancel.contract.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Cancelar Contrato">
+                <group>
+                    <field name="termination_date"/>
+                    <field name="reason"/>
+                </group>
+                <footer>
+                    <button name="action_cancel_contract" string="Cancelar Contrato" type="object" class="btn-primary"/>
+                    <button string="Cancelar" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Change Client Wizard View -->
+    <record id="view_change_client_wizard_form" model="ir.ui.view">
+        <field name="name">change.client.wizard.form</field>
+        <field name="model">change.client.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Cambiar Cliente">
+                <group>
+                    <field name="new_partner_id"/>
+                </group>
+                <footer>
+                    <button name="action_change_client" string="Cambiar Cliente" type="object" class="btn-primary"/>
+                    <button string="Cancelar" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Modify Payment Wizard View -->
+    <record id="view_modify_payment_wizard_form" model="ir.ui.view">
+        <field name="name">modify.payment.wizard.form</field>
+        <field name="model">modify.payment.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Modificar Pagos">
+                <group>
+                    <field name="new_rental_fee"/>
+                </group>
+                <field name="quota_ids">
+                    <list editable="bottom">
+                        <field name="name"/>
+                        <field name="date"/>
+                        <field name="amount"/>
+                    </list>
+                </field>
+                <footer>
+                    <button name="action_modify_payment" string="Modificar Pagos" type="object" class="btn-primary"/>
+                    <button string="Cancelar" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Reactivate Contract Wizard View -->
+    <record id="view_reactivate_contract_wizard_form" model="ir.ui.view">
+        <field name="name">reactivate.contract.wizard.form</field>
+        <field name="model">reactivate.contract.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Reactivar Contrato">
+                <p>¿Está seguro de que desea reactivar este contrato?</p>
+                <footer>
+                    <button name="action_reactivate_contract" string="Reactivar Contrato" type="object" class="btn-primary"/>
+                    <button string="Cancelar" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+        <record id="view_property_contract_form_inherit" model="ir.ui.view">
+            <field name="name">property.contract.form.inherit</field>
+            <field name="model">property.contract</field>
+            <field name="inherit_id" ref="real_estate_bits.view_property_contract_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//header" position="inside">
+                    <button name="action_cancel_contract_wizard" string="Cancelar Contrato" type="object" />
+                    <button name="action_change_client_wizard" string="Cambiar Cliente" type="object" />
+                    <button name="action_modify_payment_wizard" string="Modificar Pagos" type="object" />
+                    <button name="action_reactivate_contract_wizard" string="Reactivar Contrato" type="object" />
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Equipo de ventas inmobiliarias -->
+        <record id="crm_team_real_estate" model="crm.team">
+            <field name="name">Equipo Inmobiliaria BOHIO</field>
+            <field name="use_leads">True</field>
+            <field name="use_opportunities">True</field>
+            <field name="alias_name">inmobiliaria</field>
+        </record>
+
+        <!-- Configuración de website -->
+        <record id="website_bohio_config" model="website">
+            <field name="name">BOHIO Real Estate</field>
+            <field name="domain">www.bohio.com.co</field>
+        </record>
+    </data>
+</odoo>

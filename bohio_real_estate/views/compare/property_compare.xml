@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Template para comparación de propiedades -->
+    <template id="property_compare_view" name="Property Comparison">
+        <t t-call="website.layout">
+            <div id="wrap" class="bohio-property-compare">
+                <div class="container py-5">
+                    <h1 class="text-center mb-4">Comparar Propiedades</h1>
+
+                    <div class="compare-table-wrapper">
+                        <table class="table table-bordered compare-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 200px;">Característica</th>
+                                    <th t-foreach="properties" t-as="property" class="text-center">
+                                        <div class="property-header">
+                                            <img t-att-src="property.image_1920" class="img-fluid mb-2"
+                                                 style="max-height: 150px;" alt="Property"/>
+                                            <h5 t-esc="property.name"/>
+                                            <p class="text-muted small" t-esc="property.default_code"/>
+                                            <button class="btn btn-sm btn-danger"
+                                                    t-att-onclick="'removeFromCompare(' + str(property.id) + ')'">
+                                                <i class="fa fa-times"/> Remover
+                                            </button>
+                                        </div>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Información Básica -->
+                                <tr class="table-active">
+                                    <td colspan="5"><strong>INFORMACIÓN BÁSICA</strong></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Código</strong></td>
+                                    <td t-foreach="properties" t-as="property" class="text-center">
+                                        <t t-esc="property.default_code"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Tipo de Servicio</strong></td>
+                                    <td t-foreach="properties" t-as="property" class="text-center">
+                                        <span t-if="property.type_service == 'sale'" class="badge badge-primary">Venta</span>
+                                        <span t-if="property.type_service == 'rent'" class="badge badge-info">Arriendo</span>
+                                        <span t-if="property.type_service == 'sale_rent'" class="badge badge-success">Venta/Arriendo</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Tipo de Inmueble</strong></td>
+                                    <td t-foreach="properties" t-as="property" class="text-center">
+                                        <t t-esc="property.property_type_id.name"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Estado</strong></td>
+                                    <td t-foreach="properties" t-as="property" class="text-center">
+                                        <span t-attf-class="badge badge-#{property.state == 'free' and 'success' or property.state == 'reserved' and 'warning' or 'secondary'}">
+                                            <t t-esc="dict(property._fields['state'].selection).get(property.state)"/>
+                                        </span>
+                                    </td>
+                                </tr>
+
+                                <!-- Ubicación -->
+                                <tr class="table-active">
+                                    <td colspan="5"><strong>UBICACIÓN</strong></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Dirección</strong></td>
+                                    <td t-foreach="properties" t-as="property" class="text-center">
+                                        <t t-esc="property.address or property.street"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Ciudad</strong></td>
+                                    <td t-foreach="properties" t-as="property" class="text-center">
+                                        <t t-esc="property.city"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Barrio</strong></td>
+                                    <td t-foreach="properties" t-as="property" class="text-center">
+                                        <t t-esc="property.neighborhood"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Estrato</strong></td>
+                                    <td t-foreach="properties" t-as="property" class="text-center">
+                                        <t t-esc="property.stratum or '-'"/>
+                                    </td>
+                                </tr>
+
+                                <!-- Características -->
+                                <tr class="table-active">
+                                    <td colspan="5"><strong>CARACTERÍSTICAS</strong></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Área (m²)</strong></td>
+                                    <td t-foreach="properties" t-as="property" class="text-center">
+                                        <t t-esc="property.property_area"/> m²
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Habitaciones</strong></td>
+                                    <td t-foreach="properties" t-as="property" class="text-center">
+                                        <t t-esc="property.num_bedrooms or 0"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Baños</strong></td>
+                                    <td t-foreach="properties" t-as="property" class="text-center">
+                                        <t t-esc="property.num_bathrooms or 0"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Garajes</strong></td>
+                                    <td t-foreach="properties" t-as="property" class="text-center">
+                                        <t t-esc="property.n_garage or 0"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Antigüedad</strong></td>
+                                    <td t-foreach="properties" t-as="property" class="text-center">
+                                        <t t-esc="property.property_age"/> años
+                                    </td>
+                                </tr>
+
+                                <!-- Amenidades -->
+                                <tr class="table-active">
+                                    <td colspan="5"><strong>AMENIDADES</strong></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Piscina</strong></td>
+                                    <td t-foreach="properties" t-as="property" class="text-center">
+                                        <i t-attf-class="fa fa-#{property.pool and 'check text-success' or 'times text-danger'}"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Gimnasio</strong></td>
+                                    <td t-foreach="properties" t-as="property" class="text-center">
+                                        <i t-attf-class="fa fa-#{property.gym and 'check text-success' or 'times text-danger'}"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Jardín</strong></td>
+                                    <td t-foreach="properties" t-as="property" class="text-center">
+                                        <i t-attf-class="fa fa-#{property.garden and 'check text-success' or 'times text-danger'}"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Terraza</strong></td>
+                                    <td t-foreach="properties" t-as="property" class="text-center">
+                                        <i t-attf-class="fa fa-#{property.terrace and 'check text-success' or 'times text-danger'}"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Aire Acondicionado</strong></td>
+                                    <td t-foreach="properties" t-as="property" class="text-center">
+                                        <i t-attf-class="fa fa-#{property.air_conditioning and 'check text-success' or 'times text-danger'}"/>
+                                    </td>
+                                </tr>
+
+                                <!-- Precios -->
+                                <tr class="table-active">
+                                    <td colspan="5"><strong>PRECIOS</strong></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Precio</strong></td>
+                                    <td t-foreach="properties" t-as="property" class="text-center">
+                                        <h5 class="text-primary">
+                                            <t t-esc="property.list_price"
+                                               t-options='{"widget": "monetary", "display_currency": property.currency_id}'/>
+                                        </h5>
+                                    </td>
+                                </tr>
+                                <tr t-if="any(p.type_service in ['rent', 'sale_rent'] for p in properties)">
+                                    <td><strong>Administración</strong></td>
+                                    <td t-foreach="properties" t-as="property" class="text-center">
+                                        <t t-if="property.administration_fee">
+                                            <t t-esc="property.administration_fee"
+                                               t-options='{"widget": "monetary", "display_currency": property.currency_id}'/>
+                                        </t>
+                                        <t t-else="">-</t>
+                                    </td>
+                                </tr>
+
+                                <!-- Acciones -->
+                                <tr>
+                                    <td><strong>Acciones</strong></td>
+                                    <td t-foreach="properties" t-as="property" class="text-center">
+                                        <a t-attf-href="/property/#{property.id}" class="btn btn-primary btn-sm">
+                                            <i class="fa fa-eye"/> Ver Detalles
+                                        </a>
+                                        <button class="btn btn-success btn-sm"
+                                                t-att-onclick="'requestInfo(' + str(property.id) + ')'">
+                                            <i class="fa fa-envelope"/> Solicitar Info
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Botones de acción -->
+                    <div class="text-center mt-4">
+                        <button class="btn btn-secondary" onclick="window.print()">
+                            <i class="fa fa-print"/> Imprimir Comparación
+                        </button>
+                        <button class="btn btn-primary" onclick="downloadComparison()">
+                            <i class="fa fa-download"/> Descargar PDF
+                        </button>
+                        <a href="/properties/map" class="btn btn-info">
+                            <i class="fa fa-map"/> Volver al Mapa
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <script>
+                function removeFromCompare(propertyId) {
+                    // Remover propiedad de la comparación
+                    var currentIds = window.location.search.replace('?ids=', '').split(',');
+                    var newIds = currentIds.filter(function(id) { return id != propertyId; });
+
+                    if (newIds.length &lt; 2) {
+                        alert('Debes mantener al menos 2 propiedades para comparar');
+                        return;
+                    }
+
+                    window.location.href = '/properties/compare?ids=' + newIds.join(',');
+                }
+
+                function requestInfo(propertyId) {
+                    // Abrir modal o redirigir a formulario de contacto
+                    window.location.href = '/contact?property_id=' + propertyId;
+                }
+
+                function downloadComparison() {
+                    // Implementar descarga de PDF
+                    window.print();
+                }
+            </script>
+        </t>
+    </template>
+</odoo>

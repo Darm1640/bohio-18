@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Menú principal CRM Bohio -->
+        <menuitem id="menu_bohio_crm_root"
+                  name="CRM Bohio"
+                  sequence="5"
+                  web_icon="bohio_real_estate,static/description/icon.png"/>
+
+        <!-- Dashboard con Métricas -->
+        <menuitem id="menu_bohio_crm_metrics"
+                  name="Dashboard Métricas"
+                  parent="menu_bohio_crm_root"
+                  action="action_bohio_crm_metrics"
+                  sequence="1"/>
+
+        <!-- Dashboard Principal -->
+        <menuitem id="menu_bohio_crm_dashboard"
+                  name="Dashboard Visual"
+                  parent="menu_bohio_crm_root"
+                  action="action_bohio_crm_dashboard"
+                  sequence="2"/>
+
+        <!-- Pipeline de Ventas -->
+        <menuitem id="menu_bohio_crm_pipeline"
+                  name="Pipeline de Ventas"
+                  parent="menu_bohio_crm_root"
+                  action="action_bohio_crm_dashboard"
+                  sequence="3"/>
+
+        <!-- Gastos -->
+        <menuitem id="menu_bohio_crm_expenses"
+                  name="Gastos"
+                  parent="menu_bohio_crm_root"
+                  sequence="4"/>
+
+        <menuitem id="menu_bohio_crm_expense_new"
+                  name="Registrar Gasto"
+                  parent="menu_bohio_crm_expenses"
+                  action="hr_expense.action_hr_expense_sheet_my_all"
+                  sequence="1"/>
+
+  
+
+        <!-- Configuración -->
+        <menuitem id="menu_bohio_crm_config"
+                  name="Configuración"
+                  parent="menu_bohio_crm_root"
+                  sequence="99"
+                  groups="base.group_system"/>
+
+        <!-- Etapas -->
+        <menuitem id="menu_bohio_crm_stages"
+                  name="Etapas de Venta"
+                  parent="menu_bohio_crm_config"
+                  action="crm.crm_stage_action"
+                  sequence="1"/>
+
+        <!-- Equipos de Ventas -->
+        <!-- <menuitem id="menu_bohio_crm_teams"
+                  name="Equipos de Ventas"
+                  parent="menu_bohio_crm_config"
+                  action="crm.crm_team_action"
+                  sequence="2"/> -->
+    </data>
+</odoo>

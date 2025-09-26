@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Placeholder para templates de propiedades -->
+    <template id="property_detail" name="Property Detail">
+        <t t-call="website.layout">
+            <div id="wrap">
+                <div class="container py-5">
+                    <h1 class="text-center">Detalle de Propiedad</h1>
+                    <!-- El contenido será implementado posteriormente -->
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

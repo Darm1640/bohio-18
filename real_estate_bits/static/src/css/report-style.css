@@ -1,0 +1,77 @@
+table.gridtable td,
+th {
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+table.gridtable {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+table.gridtable th,
+td {
+  padding: 5px;
+}
+table.report_table {
+  font-size: 16px !important;
+  border-collapse: collapse !important;
+  width: 100% !important;
+}
+
+table.report_table th,
+table.report_table td {
+  padding: 8px !important;
+  text-align: center !important;
+}
+
+table.report_table tr:nth-child(even) {
+  background-color: #f2f2f2 !important;
+}
+
+table.report_table th {
+  background-color: #000080 !important;
+  color: white !important;
+}
+
+.o_property_kanban {
+  padding: 0 !important;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.o_property_kanban:hover {
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.o_property_kanban .o_kanban_image_fill_left {
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+
+.o_property_kanban .o_kanban_record_title {
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+.o_property_kanban .badge {
+  font-size: 0.9em;
+  padding: 5px 10px;
+  margin-right: 5px;
+}
+
+.o_property_kanban .oe_kanban_bottom_left,
+.o_property_kanban .oe_kanban_bottom_right {
+  margin-top: 10px;
+}
+
+.o_property_kanban small {
+  color: #7f8c8d;
+}
+
+.o_property_kanban .fa {
+  margin-right: 5px;
+}

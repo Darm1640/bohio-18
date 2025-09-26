@@ -1,0 +1,1145 @@
+/* Venture CRM Dashboard Style - BOHÍO Edition */
+
+/* Variables de diseño moderno con colores BOHÍO */
+:root {
+    /* Colores principales BOHÍO adaptados al estilo Venture */
+    --venture-primary: #8B4513;  /* Marrón tierra BOHÍO */
+    --venture-secondary: #D2691E; /* Chocolate claro BOHÍO */
+    --venture-info: #FFD700;      /* Dorado BOHÍO */
+    --venture-warning: #FF8C00;   /* Naranja oscuro */
+    --venture-danger: #DC143C;    /* Carmesí */
+    --venture-dark: #654321;      /* Marrón oscuro BOHÍO */
+    --venture-gray: #8492A6;
+    --venture-light: #FFF8DC;     /* Cornsilk BOHÍO */
+
+    /* Colores originales BOHÍO */
+    --bohio-primary: #8B4513;
+    --bohio-secondary: #D2691E;
+    --bohio-gold: #FFD700;
+
+    /* Sombras modernas */
+    --shadow-sm: 0 2px 4px rgba(0,0,0,0.06);
+    --shadow-md: 0 4px 6px rgba(0,0,0,0.07);
+    --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
+    --shadow-xl: 0 20px 25px rgba(0,0,0,0.1);
+}
+
+/* Dashboard Container principal */
+.bohio_dashboard_container.venture-style {
+    background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
+    min-height: 100vh;
+    padding: 0;
+}
+
+/* Header del dashboard */
+.venture-dashboard-header {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 20px 30px;
+    margin-bottom: 30px;
+}
+
+.venture-dashboard-header h1 {
+    color: white;
+    font-size: 28px;
+    font-weight: 700;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.venture-dashboard-header .date-range {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 8px 16px;
+    border-radius: 8px;
+    color: white;
+    font-size: 14px;
+    margin-left: auto;
+}
+
+/* Contenedor de métricas mejorado */
+.venture-metrics-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+    padding: 0 30px;
+    margin-bottom: 30px;
+}
+
+/* Tarjetas de métricas estilo Venture */
+.venture-metric-card {
+    background: white;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.venture-metric-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--venture-primary), var(--venture-info));
+}
+
+.venture-metric-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 20px rgba(50, 50, 93, 0.15), 0 3px 8px rgba(0, 0, 0, 0.12);
+}
+
+.venture-metric-card .metric-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+
+.venture-metric-card .metric-icon-wrapper {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+}
+
+.venture-metric-card.leads .metric-icon-wrapper {
+    background: linear-gradient(135deg, #8B4513, #D2691E);
+    color: white;
+}
+
+.venture-metric-card.revenue .metric-icon-wrapper {
+    background: linear-gradient(135deg, #28a745, #52c41a);
+    color: white;
+}
+
+.venture-metric-card.properties .metric-icon-wrapper {
+    background: linear-gradient(135deg, #D2691E, #FF8C00);
+    color: white;
+}
+
+.venture-metric-card.conversion .metric-icon-wrapper {
+    background: linear-gradient(135deg, #FFD700, #FFA500);
+    color: #654321;
+}
+
+.venture-metric-card .metric-change {
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.venture-metric-card .metric-change.positive {
+    background: rgba(45, 206, 137, 0.1);
+    color: #2dce89;
+}
+
+.venture-metric-card .metric-change.negative {
+    background: rgba(245, 54, 92, 0.1);
+    color: #f5365c;
+}
+
+.venture-metric-card .metric-value {
+    font-size: 32px;
+    font-weight: 700;
+    color: #172b4d;
+    margin-bottom: 8px;
+    line-height: 1;
+}
+
+.venture-metric-card .metric-label {
+    color: #8492a6;
+    font-size: 14px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.venture-metric-card .metric-sublabel {
+    color: #adb5bd;
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+/* Gráficos y visualizaciones */
+.venture-charts-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 24px;
+    padding: 0 30px;
+    margin-bottom: 30px;
+}
+
+.venture-chart-card {
+    background: white;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.venture-chart-card .chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.venture-chart-card .chart-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #172b4d;
+}
+
+.venture-chart-card .chart-options {
+    display: flex;
+    gap: 8px;
+}
+
+.venture-chart-card .chart-option {
+    padding: 6px 12px;
+    border-radius: 6px;
+    background: #f8f9fe;
+    color: #8492a6;
+    font-size: 12px;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.venture-chart-card .chart-option:hover {
+    background: var(--venture-primary);
+    color: white;
+}
+
+.venture-chart-card .chart-option.active {
+    background: var(--venture-primary);
+    color: white;
+}
+
+/* Pipeline de ventas mejorado */
+.venture-pipeline-container {
+    background: white;
+    border-radius: 16px;
+    padding: 24px;
+    margin: 0 30px 30px;
+    box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.venture-pipeline-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.venture-pipeline-stages {
+    display: flex;
+    gap: 16px;
+    overflow-x: auto;
+    padding-bottom: 8px;
+}
+
+.venture-pipeline-stage {
+    flex: 1;
+    min-width: 200px;
+    background: #f8f9fe;
+    border-radius: 12px;
+    padding: 20px;
+    position: relative;
+}
+
+.venture-pipeline-stage::after {
+    content: '→';
+    position: absolute;
+    right: -24px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #cbd5e0;
+    font-size: 20px;
+}
+
+.venture-pipeline-stage:last-child::after {
+    display: none;
+}
+
+.venture-pipeline-stage .stage-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: #8492a6;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+}
+
+.venture-pipeline-stage .stage-value {
+    font-size: 28px;
+    font-weight: 700;
+    color: #172b4d;
+    margin-bottom: 8px;
+}
+
+.venture-pipeline-stage .stage-count {
+    font-size: 12px;
+    color: #adb5bd;
+}
+
+.venture-pipeline-stage .stage-progress {
+    margin-top: 16px;
+    height: 4px;
+    background: #e9ecef;
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.venture-pipeline-stage .stage-progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--venture-primary), var(--venture-info));
+    border-radius: 2px;
+    transition: width 0.3s ease;
+}
+
+/* Lista de actividades moderna */
+.venture-activities-card {
+    background: white;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.venture-activity-item {
+    display: flex;
+    align-items: center;
+    padding: 16px;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    transition: all 0.2s;
+    cursor: pointer;
+}
+
+.venture-activity-item:hover {
+    background: #f8f9fe;
+    transform: translateX(4px);
+}
+
+.venture-activity-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 16px;
+    font-size: 18px;
+}
+
+.venture-activity-icon.call {
+    background: rgba(94, 114, 228, 0.1);
+    color: var(--venture-primary);
+}
+
+.venture-activity-icon.meeting {
+    background: rgba(45, 206, 137, 0.1);
+    color: var(--venture-secondary);
+}
+
+.venture-activity-icon.email {
+    background: rgba(17, 205, 239, 0.1);
+    color: var(--venture-info);
+}
+
+.venture-activity-content {
+    flex: 1;
+}
+
+.venture-activity-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #172b4d;
+    margin-bottom: 4px;
+}
+
+.venture-activity-meta {
+    font-size: 12px;
+    color: #8492a6;
+}
+
+.venture-activity-time {
+    font-size: 12px;
+    color: #adb5bd;
+    margin-left: auto;
+}
+
+/* Top vendedores con avatares */
+.venture-sellers-card {
+    background: white;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.venture-seller-item {
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    margin-bottom: 12px;
+    border-radius: 8px;
+    transition: all 0.2s;
+}
+
+.venture-seller-item:hover {
+    background: #f8f9fe;
+}
+
+.venture-seller-rank {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 14px;
+    margin-right: 12px;
+}
+
+.venture-seller-rank.gold {
+    background: linear-gradient(135deg, #ffd700, #ffed4e);
+    color: #996515;
+}
+
+.venture-seller-rank.silver {
+    background: linear-gradient(135deg, #c0c0c0, #e8e8e8);
+    color: #666;
+}
+
+.venture-seller-rank.bronze {
+    background: linear-gradient(135deg, #cd7f32, #e4a853);
+    color: #7a4a1e;
+}
+
+.venture-seller-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    margin-right: 12px;
+    background: linear-gradient(135deg, #8B4513, #D2691E);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 600;
+}
+
+.venture-seller-info {
+    flex: 1;
+}
+
+.venture-seller-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: #172b4d;
+    margin-bottom: 2px;
+}
+
+.venture-seller-stats {
+    font-size: 12px;
+    color: #8492a6;
+}
+
+.venture-seller-revenue {
+    text-align: right;
+}
+
+.venture-seller-amount {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--venture-secondary);
+}
+
+.venture-seller-growth {
+    font-size: 11px;
+    color: #8492a6;
+    margin-top: 2px;
+}
+
+/* Propiedades grid moderno */
+.venture-properties-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 24px;
+    padding: 0 30px 30px;
+}
+
+.venture-property-card {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.venture-property-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 20px rgba(50, 50, 93, 0.15), 0 3px 8px rgba(0, 0, 0, 0.12);
+}
+
+.venture-property-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    background: linear-gradient(135deg, #8B4513, #D2691E);
+    position: relative;
+}
+
+.venture-property-badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.venture-property-badge.sale {
+    color: var(--venture-secondary);
+}
+
+.venture-property-badge.rent {
+    color: var(--venture-info);
+}
+
+.venture-property-content {
+    padding: 20px;
+}
+
+.venture-property-price {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--bohio-venture-primary);
+    margin-bottom: 8px;
+}
+
+.venture-property-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #172b4d;
+    margin-bottom: 8px;
+}
+
+.venture-property-location {
+    font-size: 13px;
+    color: #8492a6;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.venture-property-features {
+    display: flex;
+    gap: 16px;
+    padding-top: 16px;
+    border-top: 1px solid #e9ecef;
+}
+
+.venture-property-feature {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: #8492a6;
+}
+
+.venture-property-feature i {
+    color: var(--venture-primary);
+}
+
+/* Animaciones suaves */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.venture-metric-card,
+.venture-chart-card,
+.venture-pipeline-container,
+.venture-activities-card,
+.venture-sellers-card,
+.venture-property-card {
+    animation: slideIn 0.5s cubic-bezier(0.4, 0, 0.2, 1) backwards;
+}
+
+.venture-metric-card:nth-child(1) { animation-delay: 0.1s; }
+.venture-metric-card:nth-child(2) { animation-delay: 0.15s; }
+.venture-metric-card:nth-child(3) { animation-delay: 0.2s; }
+.venture-metric-card:nth-child(4) { animation-delay: 0.25s; }
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .venture-charts-row {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .venture-metrics-container {
+        grid-template-columns: 1fr;
+    }
+
+    .venture-pipeline-stages {
+        flex-direction: column;
+    }
+
+    .venture-pipeline-stage::after {
+        display: none;
+    }
+
+    .venture-properties-grid {
+        grid-template-columns: 1fr;
+        padding: 0 20px 20px;
+    }
+}
+
+/* Column Header con métricas por columna */
+.bohio-column-header {
+    background: linear-gradient(135deg, #f8f9fa, #ffffff);
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 10px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+.bohio-column-header .column-stats {
+    font-size: 12px;
+}
+
+.bohio-column-header .stat-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.bohio-column-header .stat-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 8px;
+    background: white;
+    border-radius: 6px;
+    border-left: 3px solid;
+}
+
+.bohio-column-header .stat-item.success {
+    border-left-color: #28a745;
+}
+
+.bohio-column-header .stat-item.success i {
+    color: #28a745;
+}
+
+.bohio-column-header .stat-item.danger {
+    border-left-color: #dc3545;
+}
+
+.bohio-column-header .stat-item.danger i {
+    color: #dc3545;
+}
+
+.bohio-column-header .stat-item.primary {
+    border-left-color: #8B4513;
+}
+
+.bohio-column-header .stat-item.primary i {
+    color: #8B4513;
+}
+
+.bohio-column-header .stat-item.warning {
+    border-left-color: #FFD700;
+}
+
+.bohio-column-header .stat-item.warning i {
+    color: #FF8C00;
+}
+
+.bohio-column-header .stat-value {
+    font-size: 18px;
+    font-weight: 700;
+    color: #172b4d;
+    margin: 4px 0;
+}
+
+.bohio-column-header .stat-label {
+    font-size: 10px;
+    color: #6c757d;
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.bohio-column-header .column-progress {
+    text-align: center;
+}
+
+.bohio-column-header .column-progress small {
+    font-size: 10px;
+    display: block;
+    margin-top: 4px;
+}
+
+/* Dashboard Kanban estilo Property Management */
+.o_crm_bohio_dashboard {
+    padding: 24px;
+    background: #f5f7fa;
+}
+
+/* Scroll horizontal para métricas */
+.bohio-metrics-scroll-container {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 8px 4px 16px 4px;
+    margin-bottom: 24px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(139, 69, 19, 0.3) rgba(139, 69, 19, 0.05);
+}
+
+.bohio-metrics-scroll-container::-webkit-scrollbar {
+    height: 8px;
+}
+
+.bohio-metrics-scroll-container::-webkit-scrollbar-track {
+    background: rgba(139, 69, 19, 0.05);
+    border-radius: 10px;
+}
+
+.bohio-metrics-scroll-container::-webkit-scrollbar-thumb {
+    background: rgba(139, 69, 19, 0.3);
+    border-radius: 10px;
+    transition: background 0.3s;
+}
+
+.bohio-metrics-scroll-container::-webkit-scrollbar-thumb:hover {
+    background: rgba(139, 69, 19, 0.5);
+}
+
+/* Tarjetas de métricas estilo Property Management */
+.o_crm_bohio_dashboard .dashboard-card {
+    min-width: 280px;
+    background: white;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04), 0 1px 4px rgba(0, 0, 0, 0.04);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+    border-top: 4px solid;
+}
+
+.o_crm_bohio_dashboard .dashboard-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100px;
+    height: 100px;
+    background: radial-gradient(circle, rgba(139, 69, 19, 0.03) 0%, transparent 70%);
+    border-radius: 50%;
+    transform: translate(30%, -30%);
+}
+
+.o_crm_bohio_dashboard .dashboard-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08), 0 4px 8px rgba(0, 0, 0, 0.06);
+}
+
+/* Estilos de tarjetas por tipo */
+.o_crm_bohio_dashboard .dashboard-card.bohio-won {
+    border-top-color: #10b981;
+}
+
+.o_crm_bohio_dashboard .dashboard-card.bohio-won .card-header-icon {
+    background: linear-gradient(135deg, #10b981, #34d399);
+    color: white;
+}
+
+.o_crm_bohio_dashboard .dashboard-card.bohio-lost {
+    border-top-color: #ef4444;
+}
+
+.o_crm_bohio_dashboard .dashboard-card.bohio-lost .card-header-icon {
+    background: linear-gradient(135deg, #ef4444, #f87171);
+    color: white;
+}
+
+.o_crm_bohio_dashboard .dashboard-card.bohio-invoiced {
+    border-top-color: #8B4513;
+}
+
+.o_crm_bohio_dashboard .dashboard-card.bohio-invoiced .card-header-icon {
+    background: linear-gradient(135deg, #8B4513, #D2691E);
+    color: white;
+}
+
+.o_crm_bohio_dashboard .dashboard-card.bohio-paid {
+    border-top-color: #f59e0b;
+}
+
+.o_crm_bohio_dashboard .dashboard-card.bohio-paid .card-header-icon {
+    background: linear-gradient(135deg, #f59e0b, #fbbf24);
+    color: white;
+}
+
+/* Header icon de las tarjetas */
+.o_crm_bohio_dashboard .card-header-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    margin-bottom: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Contenido de las tarjetas */
+.o_crm_bohio_dashboard .card-body-content {
+    flex: 1;
+}
+
+.o_crm_bohio_dashboard .card-label {
+    font-size: 13px;
+    color: #64748b;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 0 0 8px 0;
+}
+
+.o_crm_bohio_dashboard .card-value {
+    font-size: 32px;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0 0 12px 0;
+    line-height: 1.1;
+}
+
+.o_crm_bohio_dashboard .card-footer-info {
+    margin-top: 12px;
+}
+
+.o_crm_bohio_dashboard .card-footer-info .badge {
+    font-size: 11px;
+    padding: 4px 10px;
+    font-weight: 600;
+}
+
+.o_crm_bohio_dashboard .card-footer-info .text-muted {
+    font-size: 12px;
+}
+
+/* Animaciones para las tarjetas */
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.o_crm_bohio_dashboard .dashboard-card {
+    animation: slideInUp 0.4s ease-out;
+}
+
+.o_crm_bohio_dashboard .dashboard-card[data-card="won"] {
+    animation-delay: 0.1s;
+}
+
+.o_crm_bohio_dashboard .dashboard-card[data-card="lost"] {
+    animation-delay: 0.2s;
+}
+
+.o_crm_bohio_dashboard .dashboard-card[data-card="invoiced"] {
+    animation-delay: 0.3s;
+}
+
+.o_crm_bohio_dashboard .dashboard-card[data-card="paid"] {
+    animation-delay: 0.4s;
+}
+
+/* Efecto hover mejorado */
+.o_crm_bohio_dashboard .dashboard-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, transparent, rgba(255,255,255,0.1));
+    border-radius: 12px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.o_crm_bohio_dashboard .dashboard-card:hover::before {
+    opacity: 1;
+}
+
+.o_crm_bohio_dashboard .dashboard-card {
+    position: relative;
+    overflow: hidden;
+}
+
+.bohio-monthly-goal-card {
+    background: white;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04), 0 1px 4px rgba(0, 0, 0, 0.04);
+    border-top: 4px solid #8B4513;
+    margin-top: 8px;
+}
+
+.bohio-monthly-goal-card .goal-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.bohio-monthly-goal-card .goal-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #8B4513, #D2691E);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(139, 69, 19, 0.2);
+}
+
+.bohio-monthly-goal-card .goal-info {
+    flex: 1;
+}
+
+.bohio-monthly-goal-card .goal-info h4 {
+    font-size: 15px;
+    font-weight: 600;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 0 0 8px 0;
+}
+
+.bohio-monthly-goal-card .goal-values {
+    font-size: 22px;
+}
+
+.bohio-monthly-goal-card .current-value {
+    font-weight: 700;
+    color: #10b981;
+}
+
+.bohio-monthly-goal-card .separator {
+    color: #94a3b8;
+    margin: 0 8px;
+    font-weight: 400;
+}
+
+.bohio-monthly-goal-card .target-value {
+    color: #64748b;
+    font-weight: 600;
+}
+
+.bohio-monthly-goal-card .goal-percentage {
+    font-size: 36px;
+    font-weight: 700;
+    color: #8B4513;
+    line-height: 1;
+}
+
+.bohio-monthly-goal-card .progress {
+    border-radius: 10px;
+    overflow: hidden;
+    background: rgba(139, 69, 19, 0.08);
+}
+
+.bohio-monthly-goal-card .progress-bar {
+    border-radius: 10px;
+    transition: width 0.6s ease;
+}
+
+.bohio-monthly-goal-wrapper {
+    padding: 0 4px;
+}
+
+.bohio-monthly-goal-card .goal-stats {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.bohio-monthly-goal-card .stat-item-inline {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: #64748b;
+}
+
+.bohio-monthly-goal-card .stat-item-inline i {
+    font-size: 14px;
+}
+
+.bohio-monthly-goal-card .stat-label-inline {
+    font-weight: 600;
+}
+
+/* Kanban Header Metrics */
+.bohio_kanban_header {
+    background: linear-gradient(135deg, rgba(139, 69, 19, 0.05), rgba(210, 105, 30, 0.05));
+    border-bottom: 2px solid rgba(139, 69, 19, 0.1);
+    border-radius: 8px 8px 0 0;
+}
+
+.bohio_metrics_summary {
+    gap: 12px;
+}
+
+.bohio_metrics_summary .metric_item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    padding: 4px 8px;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 6px;
+}
+
+.bohio_metrics_summary .metric_item i {
+    font-size: 14px;
+}
+
+.bohio_metrics_summary .metric_label {
+    color: #6c757d;
+    font-weight: 500;
+}
+
+.bohio_metrics_summary .metric_item strong {
+    color: #172b4d;
+    font-size: 14px;
+}
+
+.bohio_monthly_progress {
+    background: rgba(255, 255, 255, 0.5);
+    padding: 8px 12px;
+    border-radius: 6px;
+}
+
+.bohio_monthly_progress .progress_label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #172b4d;
+}
+
+.bohio_monthly_progress .progress_values {
+    font-size: 12px;
+    color: #6c757d;
+}
+
+.bohio_monthly_progress .progress_values strong {
+    color: #28a745;
+    font-size: 13px;
+}
+
+/* Kanban Card Details */
+.bohio_revenue_info,
+.bohio_time_info,
+.bohio_source_info,
+.bohio_deadline_info {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+}
+
+.bohio_details_toggle a {
+    text-decoration: none;
+    color: var(--venture-primary);
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.bohio_details_toggle a:hover {
+    color: var(--venture-secondary);
+}
+
+.bohio_extra_details .detail_row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+}
+
+.bohio_extra_details .detail_row i {
+    width: 16px;
+    text-align: center;
+}
+
+.bohio_crm_kanban .o_kanban_record_body {
+    padding: 12px;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    .venture-metric-card,
+    .venture-chart-card,
+    .venture-pipeline-container,
+    .venture-activities-card,
+    .venture-sellers-card,
+    .venture-property-card {
+        background: #1a1f36;
+        color: #fff;
+    }
+
+    .venture-metric-value,
+    .venture-chart-title,
+    .venture-activity-title,
+    .venture-seller-name,
+    .venture-property-title {
+        color: #fff;
+    }
+
+    .venture-metric-label,
+    .venture-activity-meta,
+    .venture-seller-stats,
+    .venture-property-location {
+        color: #8492a6;
+    }
+}

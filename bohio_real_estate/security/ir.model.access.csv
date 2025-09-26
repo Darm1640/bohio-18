@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_property_compare_public,access.property.compare.public,model_property_compare,,1,0,0,0
+access_bohio_crm_dashboard,access.bohio.crm.dashboard,model_bohio_crm_dashboard,,1,0,0,0
+access_bohio_crm_dashboard_user,access.bohio.crm.dashboard.user,model_bohio_crm_dashboard,base.group_user,1,1,1,1
