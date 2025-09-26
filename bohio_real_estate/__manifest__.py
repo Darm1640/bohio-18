@@ -26,6 +26,7 @@
         'security/ir.model.access.csv',
         'data/website_data.xml',
         'views/property_inherit_views.xml',
+        'views/property_document_views.xml',
         'views/website_templates.xml',
         'views/properties_shop_template.xml',
         'views/property_detail_template.xml',
@@ -70,4 +71,5 @@
     'auto_install': False,
     'license': 'LGPL-3',
     'pre_init_hook': 'pre_init_hook',
+    'post_init_hook': 'post_init_hook',
 }

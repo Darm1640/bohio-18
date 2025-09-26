@@ -27,6 +27,9 @@
                     </header>
                     <sheet>
                         <div class="oe_button_box" name="button_box">
+                            <button class="oe_stat_button" name="action_view_documents" icon="fa-file-text-o" type="object">
+                                <field name="document_count" string="Documentos" widget="statinfo"/>
+                            </button>
                             <button class="oe_stat_button" name="view_maintenance" icon="fa-gears" type="object" invisible="maintenance_count == 0">
                                 <field name="maintenance_count" string="Maintenance" widget="statinfo"/>
                             </button>
@@ -655,11 +658,15 @@
                     </page>
 
                     <page string="Documentos">
-                        <field name="attachment_line_ids" colspan="2">
-                            <list editable="bottom" colspan="2">
+                        <field name="property_attachment_ids"
+                               context="{'default_res_model': 'product.template', 'default_res_id': id, 'default_is_property_document': True}">
+                            <list editable="bottom">
                                 <field name="name"/>
-                                <field name="file"/>
+                                <field name="document_type"/>
+                                <field name="datas" filename="name"/>
                                 <field name="is_brochure"/>
+                                <field name="document_sequence" widget="handle"/>
+                                <field name="mimetype" invisible="1"/>
                             </list>
                         </field>
                     </page>

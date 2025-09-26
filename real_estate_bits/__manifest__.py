@@ -21,7 +21,6 @@
         "data/ir_sequence.xml",
         "security/ir.model.access.csv",
         "views/view_account_invoice.xml",
-        "views/view_attachment_line.xml",
         "views/view_crm_team.xml",
         "views/view_installment_template.xml",
         "views/view_product_category.xml",

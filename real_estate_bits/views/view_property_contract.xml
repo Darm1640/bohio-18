@@ -320,10 +320,13 @@
                                 </field>
                             </page>
                             <page string="Documents">
-                                <field name="attachment_line_ids">
+                                <field name="contract_attachment_ids"
+                                       context="{'default_res_model': 'property.contract', 'default_res_id': id, 'default_is_property_document': True}">
                                     <list editable="bottom">
                                         <field name="name"/>
-                                        <field name="file"/>
+                                        <field name="document_type"/>
+                                        <field name="datas" filename="name"/>
+                                        <field name="document_sequence" widget="handle"/>
                                     </list>
                                 </field>
                             </page>

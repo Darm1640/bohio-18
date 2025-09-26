@@ -352,13 +352,10 @@
                                 </group>
                             </page>
                             <page string="Documents">
-                                <field name="project_attachment_ids"
-                                       context="{'default_res_model': 'project.worksite', 'default_res_id': id, 'default_is_property_document': True}">
+                                <field name="attachment_line_ids">
                                     <list editable="bottom">
                                         <field name="name"/>
-                                        <field name="document_type"/>
-                                        <field name="datas" filename="name"/>
-                                        <field name="document_sequence" widget="handle"/>
+                                        <field name="file"/>
                                     </list>
                                 </field>
                             </page>
@@ -620,13 +617,10 @@
                                 </group>
                             </page>
                             <page string="Documents">
-                                <field name="project_attachment_ids"
-                                       context="{'default_res_model': 'project.worksite', 'default_res_id': id, 'default_is_property_document': True}">
+                                <field name="attachment_line_ids">
                                     <list editable="bottom">
                                         <field name="name"/>
-                                        <field name="document_type"/>
-                                        <field name="datas" filename="name"/>
-                                        <field name="document_sequence" widget="handle"/>
+                                        <field name="file"/>
                                     </list>
                                 </field>
                             </page>

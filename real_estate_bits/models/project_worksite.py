@@ -56,7 +56,6 @@ class Project(models.Model):
 
     note = fields.Html("Notes")
     description = fields.Text("Description")
-    attachment_line_ids = fields.One2many("attachment.line", "project_worksite_id", "Documents")
 
     license_code = fields.Char("License Code", size=16)
     license_date = fields.Date("License Date")

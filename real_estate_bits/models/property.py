@@ -79,7 +79,6 @@ class Property(models.Model):
 
     note = fields.Html("Notas", tracking=True)
     description = fields.Text("Descripción", tracking=True)
-    attachment_line_ids = fields.One2many("attachment.line", "property_id", "Documentos")
 
     # =================== PROPERTY TYPES ===================
     property_type_id = fields.Many2one("property.type", "Tipo de Propiedad", tracking=True, index=True)

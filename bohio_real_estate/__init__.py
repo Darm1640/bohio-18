@@ -14,3 +14,8 @@ def pre_init_hook(env):
         AND name LIKE '%bohio%'
     """)
     env.cr.commit()
+
+
+def post_init_hook(env):
+    from .models.portal_menu import post_init_hook as setup_portal
+    setup_portal(env)

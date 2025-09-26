@@ -2,7 +2,6 @@ id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_gmap_config,access_gmap_config,model_gmap_config,base.group_user,1,1,1,1
 access_reale_state_region_user,access_reale_state_region,model_region_region,base.group_user,1,1,1,1
 access_lat_lng_line_user,access_lat_lng_line,model_lat_lng_line,base.group_user,1,1,1,1
-access_attachment_line_user,access_attachment_line,model_attachment_line,base.group_user,1,1,1,1
 access_project_worksite_user,access_project_worksite,model_project_worksite,base.group_user,1,1,1,1
 access_project_worksite_category_user,access_project_worksite_category,model_project_worksite_category,base.group_user,1,1,1,1
 access_project_amenities_user,access_project_amenities,model_project_amenities,base.group_user,1,1,1,1

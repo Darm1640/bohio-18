@@ -126,7 +126,6 @@ class Contract(models.Model):
         ("tax_base_amount", "Monto Base de Impuesto")
     ], default="per_installment", string="Estado de Impuesto")
     
-    attachment_line_ids = fields.One2many("attachment.line", "contract_id", "Documentos")
     reservation_id = fields.Many2one("property.reservation", "Reserva")
     
     paid = fields.Float(compute="_check_amounts", string="Monto Pagado")
