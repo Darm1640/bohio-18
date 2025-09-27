@@ -81,7 +81,7 @@ class Project(models.Model):
     parent_id = fields.Many2one("project.worksite", "Main Property")
     child_ids = fields.One2many("project.worksite", "parent_id", "Sub Property")
 
-    property_plan_ids = fields.One2many("attachment.line", "project_plan_id", string="Plans", copy=True)
+    # property_plan_ids MOVED to property_attachments.py
     amenities_ids = fields.Many2many("project.amenities", "project_worksite_amenities_rel", "pid", "aid")
 
     company_id = fields.Many2one("res.company", string="Company", default=lambda self: self.env.company)

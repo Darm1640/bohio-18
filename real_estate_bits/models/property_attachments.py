@@ -33,6 +33,35 @@ class IrAttachment(models.Model):
             doc.is_expired = doc.expiration_date and doc.expiration_date < today if doc.expiration_date else False
 
 
+class ProjectWorksite(models.Model):
+    _inherit = 'project.worksite'
+
+    property_plan_ids = fields.One2many(
+        'ir.attachment',
+        'res_id',
+        domain=lambda self: [('res_model', '=', 'project.worksite'), ('document_type', '=', 'plan')],
+        string='Floor Plans',
+        context={'default_res_model': 'project.worksite', 'default_document_type': 'plan', 'default_is_property_document': True}
+    )
+
+    project_attachment_ids = fields.One2many(
+        'ir.attachment',
+        'res_id',
+        domain=lambda self: [('res_model', '=', 'project.worksite'), ('is_property_document', '=', True)],
+        string='Documentos del Proyecto'
+    )
+
+    project_document_count = fields.Integer('Cant. Documentos', compute='_compute_project_document_count')
+
+    def _compute_project_document_count(self):
+        for record in self:
+            record.project_document_count = self.env['ir.attachment'].search_count([
+                ('res_model', '=', 'project.worksite'),
+                ('res_id', '=', record.id),
+                ('is_property_document', '=', True)
+            ])
+
+
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
 
@@ -90,27 +119,6 @@ class PropertyContract(models.Model):
         for record in self:
             record.contract_document_count = self.env['ir.attachment'].search_count([
                 ('res_model', '=', 'property.contract'),
-                ('res_id', '=', record.id),
-                ('is_property_document', '=', True)
-            ])
-
-
-class ProjectWorksite(models.Model):
-    _inherit = 'project.worksite'
-
-    project_attachment_ids = fields.One2many(
-        'ir.attachment',
-        'res_id',
-        domain=lambda self: [('res_model', '=', 'project.worksite'), ('is_property_document', '=', True)],
-        string='Documentos del Proyecto'
-    )
-
-    project_document_count = fields.Integer('Cant. Documentos', compute='_compute_project_document_count')
-
-    def _compute_project_document_count(self):
-        for record in self:
-            record.project_document_count = self.env['ir.attachment'].search_count([
-                ('res_model', '=', 'project.worksite'),
                 ('res_id', '=', record.id),
                 ('is_property_document', '=', True)
             ])
