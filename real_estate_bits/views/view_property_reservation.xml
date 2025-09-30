@@ -27,8 +27,12 @@
                                 invisible="state != 'draft'"/>
                         <button name="action_contract_ownership" type="object" string="Sell" class="oe_highlight"
                                 invisible="state == 'canceled' or state == 'draft' or state == 'contracted'"/>
-                        <button name="action_contract_rental" type="object" string="Rent" class="oe_highlight"
-                                invisible="state == 'canceled' or state =='draft' or state == 'contracted'"/>
+                        <button name="action_contract_rental" type="object" string="Crear Contrato" class="oe_highlight"
+                                invisible="state == 'canceled' or state =='draft' or state == 'contracted'"
+                                help="Crear contrato de arrendamiento desde esta reserva"/>
+                        <button name="action_create_sale_order" type="object" string="Generar Orden" class="btn-info"
+                                invisible="state == 'canceled' or state =='draft' or state == 'contracted'"
+                                help="Generar orden de venta desde esta reserva"/>
                         <button name="action_cancel" type="object" string="Cancel" class="oe_highlight"
                                 invisible="state == 'canceled' or state == 'draft' or state == 'contracted'"/>
                         <button name="action_draft" type="object" string="Reset To Draft"
@@ -126,6 +130,15 @@
                                     <field name="total_commission"/>
                                  </group>
                          </group>
+
+                        <!-- Información de Conversión -->
+                        <group string="Estado de Conversión" invisible="conversion_state == 'pending'">
+                            <group>
+                                <field name="conversion_state" readonly="1"/>
+                                <field name="contract_id" readonly="1" invisible="not contract_id"/>
+                                <field name="sale_order_id" readonly="1" invisible="not sale_order_id"/>
+                            </group>
+                        </group>
                     </sheet>
                     <chatter/>
                 </form>

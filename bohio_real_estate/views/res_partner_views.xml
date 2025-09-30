@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Vista Form de res.partner con campos BOHIO -->
+    <record id="view_partner_form_bohio" model="ir.ui.view">
+        <field name="name">res.partner.form.bohio</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <!-- Agregar campos en la parte superior -->
+            <xpath expr="//field[@name='category_id']" position="after">
+                <field name="customer_type" widget="badge"
+                       decoration-info="customer_type == 'final'"
+                       decoration-success="customer_type == 'marketer'"
+                       decoration-warning="customer_type == 'distributor'"/>
+            </xpath>
+
+            <!-- Agregar pestaña de Información BOHIO -->
+            <xpath expr="//notebook" position="inside">
+                <page string="Información Inmobiliaria" name="real_estate_info">
+                    <group>
+                        <group string="Clasificación de Cliente">
+                            <field name="customer_type"/>
+                            <field name="is_autorizado" widget="boolean_toggle"/>
+                            <field name="tratamiento_datos"/>
+                        </group>
+                        <group string="Datos Personales">
+                            <field name="first_name"/>
+                            <field name="middle_name"/>
+                            <field name="surname"/>
+                            <field name="mother_name"/>
+                            <field name="commercial_name"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Ubicación">
+                            <field name="state_id" options="{'no_create': True}"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

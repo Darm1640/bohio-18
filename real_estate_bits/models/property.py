@@ -29,26 +29,6 @@ class Property(models.Model):
     _description = "Propiedad"
     _order = "sequence, id"
 
-    # =================== COMMISSION ===================
-    @api.depends()
-    def _compute_is_apply(self):
-        for rec in self:
-            commission_based_on = rec.company_id.commission_based_on if rec.company_id else self.env.company.commission_based_on
-            rec.is_apply = False
-            if commission_based_on == 'product_template':
-                rec.is_apply = True
-
-    commission_type = fields.Selection(string="Tipo de Comisión", selection=[
-        ('percentage', 'Por Porcentaje'),
-        ('fix', 'Monto Fijo')
-    ], tracking=True)
-    is_commission_product = fields.Boolean('¿Es Producto de Comisión?', tracking=True)
-    is_apply = fields.Boolean(string='¿Aplicar?', compute='_compute_is_apply')
-    
-    use_commission_ranges = fields.Boolean('¿Usar Rangos de Comisión?', tracking=True, 
-                                         help="Activar para usar rangos de comisión por venta")
-    commission_range_ids = fields.One2many('sales.commission.range', 'commission_product_id',
-                                           string='Rangos de Comisión de Ventas')
 
     # =================== BASIC INFO ===================
     state = fields.Selection([
@@ -115,9 +95,7 @@ class Property(models.Model):
         digits=(10, 8),
         tracking=True,
         index=True,
-        compute='_compute_geolocation',
         store=True,
-        readonly=False,
         help='Latitud GPS calculada automáticamente desde la dirección'
     )
 
@@ -126,8 +104,6 @@ class Property(models.Model):
         digits=(11, 8),
         tracking=True,
         index=True,
-        compute='_compute_geolocation',
-        store=True,
         readonly=False,
         help='Longitud GPS calculada automáticamente desde la dirección'
     )
@@ -1263,7 +1239,7 @@ class Property(models.Model):
                 order.user_consing_id = (
                     order.partner_id.user_id.partner_id
                     or order.partner_id.commercial_partner_id.user_id.partner_id
-
+                    or (self.env.user.has_group('sales_team.group_sale_salesman') and self.env.user.partner_id)
                 )
 
     @api.depends('email_from')
@@ -1419,25 +1395,7 @@ class Property(models.Model):
 
             prop.full_computed_address = ', '.join(parts) if parts else ''
 
-    @api.depends('full_computed_address')
-    def _compute_geolocation(self):
-        """Calcula latitud y longitud usando servicios de geocodificación"""
-        for prop in self:
-            # Solo calcular si no tiene coordenadas y tiene dirección
-            if not (prop.latitude and prop.longitude) and prop.full_computed_address:
-                coords = self._geocode_address(prop.full_computed_address)
-                if coords:
-                    prop.latitude = coords['lat']
-                    prop.longitude = coords['lng']
-                    prop.geocoding_status = 'success'
-                    _logger.info(f"Geocodificación exitosa para {prop.name}: {coords}")
-                else:
-                    prop.geocoding_status = 'failed'
-                    _logger.warning(f"No se pudieron obtener coordenadas para: {prop.full_computed_address}")
-            elif prop.latitude and prop.longitude:
-                # Si ya tiene coordenadas, marcar como manual si fueron ingresadas por el usuario
-                if not prop.geocoding_status or prop.geocoding_status == 'pending':
-                    prop.geocoding_status = 'manual'
+
 
     def _geocode_address(self, address):
         """
@@ -1713,6 +1671,56 @@ class Property(models.Model):
             "¡El código de propiedad debe ser único por proyecto!",
         ),
     ]
+
+class ContractOwnerPartner(models.Model):
+    _name = 'contract.owner.partner'
+    _description = 'Propietario del Contrato'
+    _order = 'is_main_owner, id'
+    
+
+    partner_id = fields.Many2one("res.partner", "Propietario", required=True)
+    product_id = fields.Many2one("product.template", "Propiedad", index=True)
+    ownership_percentage = fields.Float("Porcentaje de Propiedad", default=100.0)
+    is_main_owner = fields.Boolean("Propietario Principal", default=False)
+    start_date = fields.Date("Fecha de Inicio")
+    end_date = fields.Date("Fecha de Fin")
+    notes = fields.Text("Notas")
+    contract_scenery_id = fields.Many2one(
+        comodel_name='contract_scenery.contract_scenery',
+        string='Escenario')
+
+    @api.constrains('ownership_percentage')
+    def _check_ownership_percentage(self):
+        for record in self:
+            if record.ownership_percentage < 0 or record.ownership_percentage > 100:
+                raise UserError("El porcentaje de propiedad debe estar entre 0 y 100")
+
+    @api.model
+    def create(self, vals):
+        if vals.get('is_main_owner') and vals.get('product_id'):
+            existing_main = self.search([
+                ('product_id', '=', vals['product_id']),
+                ('is_main_owner', '=', True)
+            ])
+            existing_main.write({'is_main_owner': False})
+        return super().create(vals)   
+    
+
+    @api.depends('product_id', 'partner_id', 'ownership_percentage')
+    def _compute_display_name(self):
+        for template in self:
+            partner_name = template.partner_id.name or ''
+            percentage = template.ownership_percentage or 0
+            product_name =  ''
+            
+            if partner_name and percentage:
+                template.display_name = f'[{percentage}% ] {partner_name}'
+            elif partner_name:
+                template.display_name = f'[{partner_name}] {product_name}'
+            else:
+                template.display_name = product_name
+
+
 class ResPartner(models.Model):
     _inherit = 'res.partner'
     

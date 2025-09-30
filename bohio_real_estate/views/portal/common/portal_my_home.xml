@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Extensión del Portal Home para agregar enlace a BOHIO -->
+    <template id="portal_my_home" name="Portal My Home - BOHIO" inherit_id="portal.portal_my_home" priority="40">
+        <xpath expr="//div[@id='portal_client_category']" position="before">
+            <t t-set="portal_client_category_enable" t-value="True"/>
+        </xpath>
+
+        <xpath expr="//div[@id='portal_client_category']" position="inside">
+            <!-- Enlace al portal BOHIO -->
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="icon" t-value="'/bohio_real_estate/static/description/icon.png'"/>
+                <t t-set="title">Mi BOHIO</t>
+                <t t-set="url" t-value="'/mybohio'"/>
+                <t t-set="text">Acceda a su portal personalizado de propiedades</t>
+            </t>
+        </xpath>
+    </template>
+</odoo>

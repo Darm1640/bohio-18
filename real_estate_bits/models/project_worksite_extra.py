@@ -37,19 +37,3 @@ class PropertyUtilities(models.Model):
         ('other', 'Otro')
     ], string="Tipo de Servicio", default='other')
 
-class Taxes(models.Model):
-    _name = "price.taxes"
-    _description = "Taxes"
-
-    name = fields.Char("Tax Name")
-    tax_rate = fields.Float("Tax Rate")
-    description = fields.Char("Description",related="name")
-
-    calculated_tax = fields.Float(string="Calculated Tax", compute="_compute_tax_calculate", store=True)
-    contract_id = fields.Many2one("property.contract")
-    tax_base_amount = fields.Float(related="contract_id.tax_base_amount", string="Tax Base Amount", store=True)
-
-    @api.depends('tax_base_amount', 'tax_rate')
-    def _compute_tax_calculate(self):
-        for rec in self:
-            rec.calculated_tax = rec.tax_base_amount * rec.tax_rate / 100

@@ -1,10 +1,24 @@
 from odoo import http
 from odoo.http import request
 from odoo.addons.website.controllers.main import QueryURL
+from odoo.addons.portal.controllers.portal import CustomerPortal, pager as portal_pager
 import json
+import base64
 
 
 class BohioRealEstateController(http.Controller):
+
+    @http.route('/', type='http', auth='public', website=True)
+    def bohio_home(self, **kw):
+        featured_properties = request.env['product.template'].sudo().search([
+            ('is_property', '=', True),
+            ('website_published', '=', True),
+            ('state', '=', 'free')
+        ], limit=6, order='create_date desc')
+
+        return request.render('bohio_real_estate.bohio_homepage', {
+            'featured_properties': featured_properties
+        })
 
     @http.route('/properties/map', type='http', auth='public', website=True)
     def properties_map(self, **kw):
@@ -117,30 +131,52 @@ class BohioRealEstateController(http.Controller):
 
     @http.route('/pqrs/submit', type='http', auth='public', website=True, methods=['POST'], csrf=True)
     def pqrs_submit(self, **post):
-        lead_vals = {
-            'name': f"PQRS - {post.get('pqrs_type', 'Solicitud')}",
-            'contact_name': post.get('name'),
-            'email_from': post.get('email'),
-            'phone': post.get('phone'),
-            'description': post.get('message'),
-            'request_source': 'pqrs',
-            'client_type': post.get('client_type'),
-            'pqrs_type': post.get('pqrs_type'),
-            'type': 'lead',
+        pqrs_type = post.get('pqrs_type', 'petition')
+        pqrs_type_labels = {
+            'petition': 'Petición',
+            'complaint': 'Queja',
+            'claim': 'Reclamo',
+            'suggestion': 'Sugerencia'
         }
 
-        service_team = request.env['crm.team'].sudo().search([
+        partner = None
+        if request.env.user and request.env.user != request.env.ref('base.public_user'):
+            partner = request.env.user.partner_id
+
+        pqrs_team = request.env['helpdesk.team'].sudo().search([
             '|',
-            ('name', 'ilike', 'servicio'),
-            ('name', 'ilike', 'service')
+            ('name', 'ilike', 'pqrs'),
+            ('name', 'ilike', 'servicio')
         ], limit=1)
 
-        if service_team:
-            lead_vals['team_id'] = service_team.id
+        if not pqrs_team:
+            pqrs_team = request.env['helpdesk.team'].sudo().search([], limit=1)
 
-        request.env['crm.lead'].sudo().create(lead_vals)
+        ticket_vals = {
+            'name': f"{pqrs_type_labels.get(pqrs_type, 'Solicitud')} - {post.get('name', 'Cliente')}",
+            'partner_id': partner.id if partner else False,
+            'partner_name': post.get('name'),
+            'partner_email': post.get('email'),
+            'partner_phone': post.get('phone'),
+            'description': post.get('message'),
+            'team_id': pqrs_team.id if pqrs_team else False,
+            'ticket_type_id': False,
+        }
 
-        return request.render('bohio_real_estate.pqrs_thanks')
+        ticket = request.env['helpdesk.ticket'].sudo().create(ticket_vals)
+
+        if post.get('attachment'):
+            attachment_vals = {
+                'name': post.get('attachment').filename,
+                'datas': base64.b64encode(post.get('attachment').read()),
+                'res_model': 'helpdesk.ticket',
+                'res_id': ticket.id,
+            }
+            request.env['ir.attachment'].sudo().create(attachment_vals)
+
+        return request.render('bohio_real_estate.pqrs_thanks', {
+            'ticket': ticket
+        })
 
     @http.route('/property/<int:property_id>', type='http', auth='public', website=True)
     def property_detail(self, property_id, **kw):
@@ -331,11 +367,19 @@ class BohioRealEstateController(http.Controller):
         if not code:
             return {'error': 'Código requerido'}
 
+        code_clean = code.strip().upper()
+
         prop = request.env['product.template'].sudo().search([
             ('is_property', '=', True),
-            ('default_code', '=ilike', code.strip()),
+            ('default_code', 'ilike', code_clean),
             ('website_published', '=', True)
         ], limit=1)
+
+        if not prop:
+            prop = request.env['product.template'].sudo().search([
+                ('is_property', '=', True),
+                ('default_code', 'ilike', f'%{code_clean}%'),
+            ], limit=1)
 
         if prop:
             return {
@@ -343,10 +387,11 @@ class BohioRealEstateController(http.Controller):
                 'id': prop.id,
                 'name': prop.name,
                 'code': prop.default_code,
-                'url': f'/property/{prop.id}'
+                'url': f'/property/{prop.id}',
+                'published': prop.website_published
             }
 
-        return {'found': False, 'error': 'Propiedad no encontrada'}
+        return {'found': False, 'error': f'No se encontró ninguna propiedad con el código "{code}"'}
 
     @http.route('/api/cities_by_state', type='json', auth='public', website=True)
     def cities_by_state(self, state_id=None, **kw):
@@ -373,6 +418,296 @@ class BohioRealEstateController(http.Controller):
         return {
             'regions': [{'id': r.id, 'name': r.name} for r in regions]
         }
+
+    def _get_property_characteristics_map(self):
+        """Mapeo de características relevantes por tipo de propiedad"""
+        return {
+            'apartment': {
+                'basic': ['num_bedrooms', 'num_bathrooms', 'property_area', 'floor_number', 'apartment_type'],
+                'price': ['net_price', 'net_rental_price', 'price_per_unit'],
+                'amenities': ['elevator', 'balcony', 'doorman', 'parking', 'furnished'],
+                'building': ['pools', 'gym', 'social_room', 'green_areas']
+            },
+            'house': {
+                'basic': ['num_bedrooms', 'num_bathrooms', 'property_area', 'number_of_levels', 'property_age'],
+                'price': ['net_price', 'net_rental_price', 'price_per_unit'],
+                'amenities': ['garage', 'patio', 'garden', 'terrace', 'furnished'],
+                'features': ['service_room', 'study', 'fireplace']
+            },
+            'studio': {
+                'basic': ['num_bathrooms', 'property_area', 'floor_number'],
+                'price': ['net_price', 'net_rental_price', 'price_per_unit'],
+                'amenities': ['elevator', 'balcony', 'furnished'],
+                'building': ['doorman', 'parking']
+            },
+            'office': {
+                'basic': ['property_area', 'floor_number', 'number_of_levels'],
+                'price': ['net_price', 'net_rental_price', 'price_per_unit'],
+                'amenities': ['elevator', 'air_conditioning', 'parking'],
+                'features': ['electrical_capacity', 'phone_lines']
+            },
+            'bodega': {
+                'basic': ['property_area', 'front_meters', 'depth_meters'],
+                'price': ['net_price', 'net_rental_price', 'price_per_unit'],
+                'features': ['truck_door', 'electric_plant', 'electrical_capacity'],
+                'security': ['has_security', 'security_cameras']
+            },
+            'local': {
+                'basic': ['property_area', 'front_meters', 'floor_number'],
+                'price': ['net_price', 'net_rental_price', 'price_per_unit'],
+                'amenities': ['air_conditioning', 'bathroom'],
+                'features': ['electrical_capacity', 'water_nearby']
+            },
+            'finca': {
+                'basic': ['property_area', 'unit_of_measure'],
+                'price': ['net_price', 'net_rental_price'],
+                'features': ['has_water', 'water_nearby', 'aqueduct_access'],
+                'amenities': ['num_bedrooms', 'num_bathrooms', 'pools']
+            },
+            'lot': {
+                'basic': ['property_area', 'front_meters', 'depth_meters', 'unit_of_measure'],
+                'price': ['net_price', 'price_per_unit'],
+                'features': ['water_nearby', 'aqueduct_access', 'urban_space'],
+                'location': ['stratum', 'state_id', 'city_id']
+            },
+            'country_lot': {
+                'basic': ['property_area', 'unit_of_measure', 'front_meters', 'depth_meters'],
+                'price': ['net_price', 'price_per_unit'],
+                'features': ['water_nearby', 'aqueduct_access'],
+                'location': ['state_id', 'city_id']
+            },
+            'hotel': {
+                'basic': ['property_area', 'num_bedrooms', 'number_of_levels'],
+                'price': ['net_price', 'net_rental_price'],
+                'amenities': ['pools', 'gym', 'social_room', 'parking'],
+                'features': ['elevator', 'restaurant']
+            },
+            'building': {
+                'basic': ['property_area', 'number_of_levels'],
+                'price': ['net_price', 'net_rental_price'],
+                'features': ['elevator', 'parking', 'electrical_capacity'],
+                'location': ['state_id', 'city_id', 'stratum']
+            }
+        }
+
+    def _get_property_fields(self, prop):
+        """Obtiene campos relevantes según tipo de propiedad"""
+        characteristics_map = self._get_property_characteristics_map()
+        property_type = prop.property_type or 'apartment'
+
+        char_config = characteristics_map.get(property_type, characteristics_map['apartment'])
+
+        result = {
+            'id': prop.id,
+            'name': prop.name,
+            'default_code': prop.default_code,
+            'type_service': prop.type_service,
+            'property_type': prop.property_type,
+            'property_type_name': prop.property_type_id.name if prop.property_type_id else '',
+            'currency': prop.currency_id.symbol if prop.currency_id else '$',
+            'address': prop.address or '',
+            'city': prop.city_id.name if prop.city_id else '',
+            'state': prop.state_id.name if prop.state_id else '',
+            'region': prop.region_id.name if prop.region_id else '',
+            'image_url': f'/web/image/product.template/{prop.id}/image_1920',
+            'url': f'/property/{prop.id}',
+            'latitude': prop.latitude,
+            'longitude': prop.longitude,
+        }
+
+        all_fields = []
+        for category in char_config.values():
+            all_fields.extend(category)
+
+        field_mapping = {
+            'num_bedrooms': ('bedrooms', lambda p: p.num_bedrooms),
+            'num_bathrooms': ('bathrooms', lambda p: p.num_bathrooms),
+            'property_area': ('area', lambda p: p.property_area),
+            'unit_of_measure': ('area_unit', lambda p: p.unit_of_measure),
+            'floor_number': ('floor', lambda p: p.floor_number),
+            'number_of_levels': ('levels', lambda p: p.number_of_levels),
+            'property_age': ('age', lambda p: p.property_age),
+            'apartment_type': ('apartment_type', lambda p: p.apartment_type),
+            'front_meters': ('front_meters', lambda p: p.front_meters),
+            'depth_meters': ('depth_meters', lambda p: p.depth_meters),
+            'net_price': ('sale_price', lambda p: p.net_price),
+            'net_rental_price': ('rental_price', lambda p: p.net_rental_price),
+            'price_per_unit': ('price_per_unit', lambda p: p.price_per_unit),
+            'stratum': ('stratum', lambda p: p.stratum),
+            'parking': ('parking', lambda p: (prop.covered_parking or 0) + (prop.uncovered_parking or 0)),
+            'garage': ('has_garage', lambda p: p.garage),
+            'elevator': ('has_elevator', lambda p: p.elevator),
+            'pools': ('has_pool', lambda p: p.pools),
+            'gym': ('has_gym', lambda p: p.gym),
+            'furnished': ('is_furnished', lambda p: p.furnished),
+            'balcony': ('has_balcony', lambda p: p.balcony),
+            'terrace': ('has_terrace', lambda p: p.terrace),
+            'patio': ('has_patio', lambda p: p.patio),
+            'garden': ('has_garden', lambda p: p.garden),
+        }
+
+        for field in all_fields:
+            if field in field_mapping:
+                key, getter = field_mapping[field]
+                result[key] = getter(prop)
+
+        return result
+
+    @http.route('/api/properties/search', type='json', auth='public', website=True)
+    def api_properties_search(self, filters=None, page=1, limit=12, **kw):
+        Product = request.env['product.template']
+
+        domain = [
+            ('is_property', '=', True),
+            ('website_published', '=', True)
+        ]
+
+        if not filters:
+            filters = {}
+
+        if filters.get('search'):
+            search_term = filters['search']
+            domain.append('|')
+            domain.append(('name', 'ilike', search_term))
+            domain.append('|')
+            domain.append(('default_code', 'ilike', search_term))
+            domain.append(('description', 'ilike', search_term))
+
+        if filters.get('property_type'):
+            domain.append(('property_type', '=', filters['property_type']))
+
+        if filters.get('type_service'):
+            domain.append(('type_service', '=', filters['type_service']))
+
+        if filters.get('state_id'):
+            domain.append(('state_id', '=', int(filters['state_id'])))
+
+        if filters.get('city_id'):
+            domain.append(('city_id', '=', int(filters['city_id'])))
+
+        if filters.get('region_id'):
+            domain.append(('region_id', '=', int(filters['region_id'])))
+
+        if filters.get('bedrooms'):
+            domain.append(('num_bedrooms', '>=', int(filters['bedrooms'])))
+
+        if filters.get('bathrooms'):
+            domain.append(('num_bathrooms', '>=', int(filters['bathrooms'])))
+
+        if filters.get('price_min'):
+            domain.append('|')
+            domain.append(('net_price', '>=', float(filters['price_min'])))
+            domain.append(('net_rental_price', '>=', float(filters['price_min'])))
+
+        if filters.get('price_max'):
+            domain.append('|')
+            domain.append(('net_price', '<=', float(filters['price_max'])))
+            domain.append(('net_rental_price', '<=', float(filters['price_max'])))
+
+        if filters.get('area_min'):
+            domain.append(('property_area', '>=', float(filters['area_min'])))
+
+        if filters.get('area_max'):
+            domain.append(('property_area', '<=', float(filters['area_max'])))
+
+        if filters.get('garage'):
+            domain.append(('garage', '=', True))
+
+        if filters.get('parking'):
+            total_parking = int(filters['parking'])
+            domain.append('|')
+            domain.append(('covered_parking', '>=', total_parking))
+            domain.append(('uncovered_parking', '>=', total_parking))
+
+        total_count = Product.sudo().search_count(domain)
+
+        offset = (page - 1) * limit
+        properties = Product.sudo().search(
+            domain,
+            limit=limit,
+            offset=offset,
+            order='sequence, property_date desc, id desc'
+        )
+
+        results = []
+        for prop in properties:
+            results.append(self._get_property_fields(prop))
+
+        return {
+            'properties': results,
+            'total': total_count,
+            'page': page,
+            'pages': (total_count + limit - 1) // limit,
+            'limit': limit
+        }
+
+    @http.route('/api/location/autocomplete', type='json', auth='public', website=True)
+    def location_autocomplete(self, term='', **kw):
+        """Autocomplete para ubicaciones: departamentos, ciudades y barrios"""
+        if not term or len(term) < 2:
+            return {'results': []}
+
+        term = term.strip()
+        results = []
+
+        State = request.env['res.country.state'].sudo()
+        City = request.env['res.city'].sudo()
+        Region = request.env['region.region'].sudo()
+
+        states = State.search([
+            ('country_id.code', '=', 'CO'),
+            ('name', 'ilike', term)
+        ], limit=5, order='name')
+
+        for state in states:
+            city_count = City.search_count([('state_id', '=', state.id)])
+            results.append({
+                'type': 'state',
+                'id': state.id,
+                'name': state.name,
+                'display': f"{state.name} (Departamento)",
+                'subtitle': f"{city_count} ciudades",
+                'level': 1
+            })
+
+        cities = City.search([
+            ('name', 'ilike', term)
+        ], limit=8, order='name')
+
+        for city in cities:
+            region_count = Region.search_count([('city_id', '=', city.id)])
+            results.append({
+                'type': 'city',
+                'id': city.id,
+                'name': city.name,
+                'state_id': city.state_id.id,
+                'state_name': city.state_id.name,
+                'display': f"{city.name}, {city.state_id.name}",
+                'subtitle': f"{region_count} barrios",
+                'level': 2
+            })
+
+        regions = Region.search([
+            ('name', 'ilike', term)
+        ], limit=10, order='name')
+
+        for region in regions:
+            results.append({
+                'type': 'region',
+                'id': region.id,
+                'name': region.name,
+                'city_id': region.city_id.id,
+                'city_name': region.city_id.name,
+                'state_id': region.city_id.state_id.id,
+                'state_name': region.city_id.state_id.name,
+                'display': f"{region.name}",
+                'subtitle': f"{region.city_id.name}, {region.city_id.state_id.name}",
+                'level': 3
+            })
+
+        results.sort(key=lambda x: (x['level'], x['name']))
+
+        return {'results': results}
 
     @http.route('/servicios/venta', type='http', auth='public', website=True)
     def servicio_venta(self, **kw):
@@ -496,4 +831,111 @@ class BohioRealEstateController(http.Controller):
         return request.render('bohio_real_estate.portal_my_payments', {
             'payments': payments,
             'page_name': 'payments',
+        })
+
+    @http.route('/my/tickets', type='http', auth='user', website=True)
+    def portal_my_tickets(self, page=1, **kw):
+        partner = request.env.user.partner_id
+        Ticket = request.env['helpdesk.ticket']
+
+        ticket_count = Ticket.search_count([
+            ('partner_id', '=', partner.id)
+        ])
+
+        pager = portal_pager(
+            url='/my/tickets',
+            total=ticket_count,
+            page=page,
+            step=10
+        )
+
+        tickets = Ticket.search([
+            ('partner_id', '=', partner.id)
+        ], order='create_date desc', limit=10, offset=pager['offset'])
+
+        return request.render('bohio_real_estate.portal_my_tickets', {
+            'tickets': tickets,
+            'page_name': 'tickets',
+            'pager': pager,
+        })
+
+    @http.route('/my/ticket/<int:ticket_id>', type='http', auth='user', website=True)
+    def portal_ticket_detail(self, ticket_id, **kw):
+        ticket = request.env['helpdesk.ticket'].search([
+            ('id', '=', ticket_id),
+            ('partner_id', '=', request.env.user.partner_id.id)
+        ], limit=1)
+
+        if not ticket:
+            return request.redirect('/my/tickets')
+
+        return request.render('bohio_real_estate.portal_ticket_detail', {
+            'ticket': ticket,
+            'page_name': 'ticket_detail',
+        })
+
+    @http.route('/my/ticket/<int:ticket_id>/add_message', type='http', auth='user', website=True, methods=['POST'], csrf=True)
+    def portal_ticket_add_message(self, ticket_id, **post):
+        ticket = request.env['helpdesk.ticket'].search([
+            ('id', '=', ticket_id),
+            ('partner_id', '=', request.env.user.partner_id.id)
+        ], limit=1)
+
+        if not ticket:
+            return request.redirect('/my/tickets')
+
+        message = post.get('message', '').strip()
+
+        if message:
+            ticket.message_post(
+                body=message,
+                message_type='comment',
+                subtype_xmlid='mail.mt_comment',
+                author_id=request.env.user.partner_id.id
+            )
+
+        if post.get('attachment'):
+            attachment_file = post.get('attachment')
+            attachment_vals = {
+                'name': attachment_file.filename,
+                'datas': base64.b64encode(attachment_file.read()),
+                'res_model': 'helpdesk.ticket',
+                'res_id': ticket.id,
+            }
+            request.env['ir.attachment'].sudo().create(attachment_vals)
+
+        return request.redirect(f'/my/ticket/{ticket_id}')
+
+    @http.route('/my', type='http', auth='user', website=True)
+    def portal_my_home(self, **kw):
+        partner = request.env.user.partner_id
+
+        properties_count = request.env['product.template'].sudo().search_count([
+            ('is_property', '=', True),
+            '|',
+            ('partner_id', '=', partner.id),
+            ('owners_lines.partner_id', '=', partner.id)
+        ])
+
+        contracts_count = request.env['property.contract'].search_count([
+            ('partner_id', '=', partner.id),
+            ('state', '!=', 'cancel')
+        ])
+
+        tickets_count = request.env['helpdesk.ticket'].search_count([
+            ('partner_id', '=', partner.id)
+        ])
+
+        opportunities_count = request.env['crm.lead'].search_count([
+            ('partner_id', '=', partner.id),
+            ('type', '=', 'opportunity'),
+            ('show_in_portal', '=', True)
+        ])
+
+        return request.render('bohio_real_estate.portal_my_home', {
+            'properties_count': properties_count,
+            'contracts_count': contracts_count,
+            'tickets_count': tickets_count,
+            'opportunities_count': opportunities_count,
+            'page_name': 'home',
         })

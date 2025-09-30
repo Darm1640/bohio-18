@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="mybohio_tenant_contracts" name="BOHIO Tenant Contracts">
+        <t t-call="bohio_real_estate.mybohio_portal_layout">
+            <div class="mybohio-contracts-tenant">
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <h2>Mis Contratos</h2>
+                        <p class="text-muted">Contratos de arriendo activos e históricos</p>
+                    </div>
+                </div>
+
+                <!-- Contratos Activos -->
+                <t t-if="active_contracts">
+                    <h4 class="mb-3">Contratos Activos</h4>
+                    <div class="row mb-4">
+                        <t t-foreach="active_contracts" t-as="contract">
+                            <div class="col-md-6 mb-3">
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-start mb-3">
+                                            <h5 class="card-title" t-field="contract.property_id.name"/>
+                                            <span t-att-class="'badge bg-%s' % ('success' if contract.state == 'confirmed' else 'info')"
+                                                  t-esc="dict(contract._fields['state'].selection).get(contract.state)"/>
+                                        </div>
+
+                                        <p class="text-muted mb-2">
+                                            <i class="fa fa-map-marker"></i>
+                                            <t t-esc="contract.property_id.address or contract.property_id.street"/>
+                                        </p>
+
+                                        <div class="row mb-3">
+                                            <div class="col-6">
+                                                <small class="text-muted">Código</small><br/>
+                                                <strong t-esc="contract.property_code"/>
+                                            </div>
+                                            <div class="col-6">
+                                                <small class="text-muted">Renta Mensual</small><br/>
+                                                <strong class="text-primary">$<t t-esc="'{:,.0f}'.format(contract.rent or 0)"/></strong>
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <small class="text-muted">Vigencia</small><br/>
+                                            <strong>
+                                                <t t-esc="contract.date_from.strftime('%d/%m/%Y')"/> -
+                                                <t t-esc="contract.date_to.strftime('%d/%m/%Y') if contract.date_to else 'Indefinido'"/>
+                                            </strong>
+                                        </div>
+
+                                        <a t-att-href="'/mybohio/tenant/contract/%s' % contract.id" class="btn btn-primary btn-sm w-100">
+                                            <i class="fa fa-eye"></i> Ver Detalle
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </div>
+                </t>
+
+                <!-- Contratos Históricos -->
+                <t t-if="historical_contracts">
+                    <h4 class="mb-3">Histórico</h4>
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Propiedad</th>
+                                            <th>Código</th>
+                                            <th>Inicio</th>
+                                            <th>Fin</th>
+                                            <th>Renta</th>
+                                            <th>Estado</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-foreach="historical_contracts" t-as="contract">
+                                            <tr>
+                                                <td><t t-field="contract.property_id.name"/></td>
+                                                <td><small><t t-esc="contract.property_code"/></small></td>
+                                                <td><t t-esc="contract.date_from.strftime('%d/%m/%Y')"/></td>
+                                                <td><t t-esc="contract.date_to.strftime('%d/%m/%Y') if contract.date_to else '-'"/></td>
+                                                <td>$<t t-esc="'{:,.0f}'.format(contract.rent or 0)"/></td>
+                                                <td>
+                                                    <span class="badge bg-secondary"
+                                                          t-esc="dict(contract._fields['state'].selection).get(contract.state)"/>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+
+                <t t-if="not active_contracts and not historical_contracts">
+                    <div class="alert alert-info text-center">
+                        <i class="fa fa-info-circle fa-3x mb-3"></i>
+                        <p>No tiene contratos registrados</p>
+                    </div>
+                </t>
+            </div>
+        </t>
+    </template>
+
+    <template id="mybohio_tenant_contract_detail" name="BOHIO Tenant Contract Detail">
+        <t t-call="bohio_real_estate.mybohio_portal_layout">
+            <div class="mybohio-contract-detail-tenant">
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="/mybohio/tenant">Dashboard</a></li>
+                                <li class="breadcrumb-item"><a href="/mybohio/tenant/contracts">Contratos</a></li>
+                                <li class="breadcrumb-item active">Detalle</li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="card mb-4">
+                            <div class="card-header bg-primary text-white">
+                                <h5 class="mb-0">Contrato de Arriendo</h5>
+                            </div>
+                            <div class="card-body">
+                                <h3 t-field="contract.property_id.name"/>
+                                <p class="text-muted">
+                                    <i class="fa fa-map-marker"></i>
+                                    <t t-esc="contract.property_id.address or contract.property_id.street"/>
+                                </p>
+
+                                <div class="row mt-4">
+                                    <div class="col-md-4">
+                                        <p><strong>Código:</strong><br/><t t-esc="contract.property_code"/></p>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <p><strong>Cuota Mensual:</strong><br/>
+                                            <span class="h5 text-primary">$<t t-esc="'{:,.0f}'.format(contract.rent or 0)"/></span>
+                                        </p>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <p><strong>Estado:</strong><br/>
+                                            <span t-att-class="'badge bg-%s' % ('success' if contract.state == 'confirmed' else 'warning')"
+                                                  t-esc="dict(contract._fields['state'].selection).get(contract.state)"/>
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <p><strong>Fecha Inicio:</strong><br/>
+                                            <t t-esc="contract.date_from.strftime('%d/%m/%Y')"/>
+                                        </p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p><strong>Fecha Fin:</strong><br/>
+                                            <t t-esc="contract.date_to.strftime('%d/%m/%Y') if contract.date_to else 'Indefinido'"/>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Historial de Pagos -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="mb-0">Historial de Pagos</h5>
+                            </div>
+                            <div class="card-body">
+                                <t t-if="payments">
+                                    <div class="table-responsive">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Fecha</th>
+                                                    <th>Referencia</th>
+                                                    <th class="text-end">Monto</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <t t-foreach="payments" t-as="payment">
+                                                    <tr>
+                                                        <td><t t-esc="payment.date.strftime('%d/%m/%Y')"/></td>
+                                                        <td><small><t t-esc="payment.ref or payment.name"/></small></td>
+                                                        <td class="text-end">
+                                                            <strong>$<t t-esc="'{:,.0f}'.format(payment.amount)"/></strong>
+                                                        </td>
+                                                    </tr>
+                                                </t>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </t>
+                                <t t-else="">
+                                    <p class="text-muted text-center">No hay pagos registrados</p>
+                                </t>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Resumen -->
+                    <div class="col-md-4">
+                        <div class="card mb-3">
+                            <div class="card-header bg-success text-white">
+                                <h6 class="mb-0">Resumen de Pagos</h6>
+                            </div>
+                            <div class="card-body">
+                                <p>
+                                    <strong>Total Pagado:</strong><br/>
+                                    <span class="h4 text-success">$<t t-esc="'{:,.0f}'.format(total_paid)"/></span>
+                                </p>
+                                <p>
+                                    <strong>Pendiente:</strong><br/>
+                                    <span class="h4 text-warning">$<t t-esc="'{:,.0f}'.format(total_pending)"/></span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

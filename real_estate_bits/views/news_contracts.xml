@@ -100,7 +100,7 @@
         </field>
     </record>
 
-    <!-- Tree View -->
+    <!-- list View -->
     <record id="view_property_contract_novedad_tree" model="ir.ui.view">
         <field name="name">property.contract.novedad.</field>
         <field name="model">property.contract.novedad</field>

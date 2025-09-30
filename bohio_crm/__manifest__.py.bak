@@ -1,0 +1,58 @@
+{
+    'name': 'BOHIO CRM',
+    'version': '18.0.1.0.1',
+    'category': 'Sales/CRM',
+    'summary': 'CRM especializado para negocio inmobiliario',
+    'description': """
+        BOHIO CRM
+        =========
+        Módulo de CRM especializado para gestión inmobiliaria:
+        - Extensión de leads con campos inmobiliarios
+        - Comparador de hasta 4 propiedades
+        - Dashboard CRM personalizado
+        - Cálculo automático de comisiones
+        - Métricas de arriendo y ventas
+        - Gestión de PQRS
+        - Integración con propiedades
+    """,
+    'author': 'BOHIO Inmobiliaria',
+    'website': 'https://www.bohio.com.co',
+    'depends': [
+        'crm',
+        'real_estate_bits',
+    ],
+    'data': [
+        'security/ir.model.access.csv',
+        'views/crm_lead_views.xml',
+        'views/bohio_crm_dashboard_views.xml',
+        'report/property_comparison_report.xml',
+    ],
+    'assets': {
+        'web.assets_backend': [
+            # Chart.js
+            'web/static/lib/Chart/Chart.js',
+            'web/static/lib/chartjs-adapter-luxon/chartjs-adapter-luxon.js',
+            # Existing assets
+            'bohio_crm/static/src/css/bohio_crm_dashboard.css',
+            'bohio_crm/static/src/css/bohio_crm_form.css',
+            'bohio_crm/static/src/js/bohio_crm_dashboard.js',
+            'bohio_crm/static/src/xml/bohio_crm_dashboard.xml',
+            # New enhanced dashboard assets
+            'bohio_crm/static/src/css/bohio_crm_dashboard_enhanced.css',
+            'bohio_crm/static/src/js/bohio_crm_dashboard_enhanced.js',
+            'bohio_crm/static/src/xml/bohio_crm_dashboard_enhanced.xml',
+            # Form timeline view
+            'bohio_crm/static/src/js/bohio_crm_form_timeline.js',
+            # Kanban and List custom views
+            'bohio_crm/static/src/js/bohio_crm_kanban.js',
+            'bohio_crm/static/src/js/bohio_crm_list.js',
+        ],
+    },
+    'external_dependencies': {
+        'javascript': ['leaflet'],
+    },
+    'installable': True,
+    'application': False,
+    'auto_install': False,
+    'license': 'LGPL-3',
+}

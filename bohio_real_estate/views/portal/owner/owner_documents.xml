@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="mybohio_owner_documents" name="BOHIO Owner Documents">
+        <t t-call="bohio_real_estate.mybohio_portal_layout">
+            <div class="mybohio-documents-owner">
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <h2>Mis Documentos</h2>
+                        <p class="text-muted">Documentos de propiedades y contratos</p>
+                    </div>
+                </div>
+
+                <!-- Filtros -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <form method="get" action="/mybohio/owner/documents" class="row g-3">
+                            <div class="col-md-4">
+                                <label class="form-label">Propiedad</label>
+                                <select name="property_id" class="form-select">
+                                    <option value="">Todas las propiedades</option>
+                                    <t t-foreach="properties" t-as="prop">
+                                        <option t-att-value="prop.id"
+                                                t-att-selected="'selected' if property_id == prop.id else None">
+                                            <t t-esc="prop.name"/>
+                                        </option>
+                                    </t>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Tipo de Documento</label>
+                                <select name="document_type" class="form-select">
+                                    <option value="">Todos los tipos</option>
+                                    <option value="contract" t-att-selected="'selected' if document_type == 'contract' else None">Contrato</option>
+                                    <option value="deed" t-att-selected="'selected' if document_type == 'deed' else None">Escritura</option>
+                                    <option value="certificate" t-att-selected="'selected' if document_type == 'certificate' else None">Certificado</option>
+                                    <option value="invoice" t-att-selected="'selected' if document_type == 'invoice' else None">Factura</option>
+                                    <option value="payment" t-att-selected="'selected' if document_type == 'payment' else None">Comprobante de Pago</option>
+                                    <option value="report" t-att-selected="'selected' if document_type == 'report' else None">Reporte</option>
+                                    <option value="other" t-att-selected="'selected' if document_type == 'other' else None">Otro</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">&#160;</label>
+                                <button type="submit" class="btn btn-primary w-100">
+                                    <i class="fa fa-filter"></i> Filtrar
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Lista de Documentos -->
+                <div class="card">
+                    <div class="card-body">
+                        <t t-if="documents">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Documento</th>
+                                            <th>Tipo</th>
+                                            <th>Propiedad</th>
+                                            <th>Fecha</th>
+                                            <th>Vencimiento</th>
+                                            <th>Estado</th>
+                                            <th class="text-end">Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-foreach="documents" t-as="doc">
+                                            <tr>
+                                                <td>
+                                                    <i class="fa fa-file-pdf text-danger me-2"></i>
+                                                    <strong t-esc="doc.name"/>
+                                                </td>
+                                                <td>
+                                                    <span class="badge bg-secondary" t-esc="dict(doc._fields['document_type'].selection).get(doc.document_type, 'Otro')"/>
+                                                </td>
+                                                <td>
+                                                    <t t-if="doc.res_model == 'product.template' and doc.res_id">
+                                                        <small t-esc="request.env['product.template'].sudo().browse(doc.res_id).name"/>
+                                                    </t>
+                                                    <t t-else="">
+                                                        <small class="text-muted">-</small>
+                                                    </t>
+                                                </td>
+                                                <td>
+                                                    <small t-esc="doc.create_date.strftime('%d/%m/%Y')"/>
+                                                </td>
+                                                <td>
+                                                    <t t-if="doc.expiration_date">
+                                                        <small t-esc="doc.expiration_date.strftime('%d/%m/%Y')"/>
+                                                        <t t-if="doc.is_expired">
+                                                            <br/>
+                                                            <span class="badge bg-danger">Vencido</span>
+                                                        </t>
+                                                    </t>
+                                                    <t t-else="">
+                                                        <small class="text-muted">-</small>
+                                                    </t>
+                                                </td>
+                                                <td>
+                                                    <t t-if="doc.is_expired">
+                                                        <span class="badge bg-danger">
+                                                            <i class="fa fa-times-circle"></i> Vencido
+                                                        </span>
+                                                    </t>
+                                                    <t t-else="">
+                                                        <span class="badge bg-success">
+                                                            <i class="fa fa-check-circle"></i> Vigente
+                                                        </span>
+                                                    </t>
+                                                </td>
+                                                <td class="text-end">
+                                                    <a t-attf-href="/web/content/#{doc.id}?download=true"
+                                                       class="btn btn-sm btn-outline-primary">
+                                                        <i class="fa fa-download"></i> Descargar
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- Paginación -->
+                            <t t-if="pager">
+                                <t t-call="portal.pager"/>
+                            </t>
+                        </t>
+                        <t t-else="">
+                            <div class="alert alert-info text-center">
+                                <i class="fa fa-info-circle"></i> No hay documentos disponibles
+                            </div>
+                        </t>
+                    </div>
+                </div>
+
+                <!-- Resumen de documentos por vencer -->
+                <t t-if="expiring_soon">
+                    <div class="card border-warning mt-4">
+                        <div class="card-header bg-warning text-white">
+                            <i class="fa fa-exclamation-triangle"></i> Documentos por Vencer
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-unstyled mb-0">
+                                <t t-foreach="expiring_soon" t-as="exp_doc">
+                                    <li class="mb-2">
+                                        <strong t-esc="exp_doc.name"/>
+                                        - Vence: <t t-esc="exp_doc.expiration_date.strftime('%d/%m/%Y')"/>
+                                    </li>
+                                </t>
+                            </ul>
+                        </div>
+                    </div>
+                </t>
+            </div>
+        </t>
+    </template>
+</odoo>

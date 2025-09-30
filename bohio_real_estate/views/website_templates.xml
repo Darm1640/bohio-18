@@ -1,239 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- Template base que hereda del layout de website -->
-    <template id="bohio_layout" inherit_id="website.layout" name="BOHIO Layout">
-        <xpath expr="//head" position="inside">
-            <!-- Leaflet CSS para OpenStreetMap -->
-            <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-                  integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
-            <!-- Estilos personalizados BOHIO -->
-            <link rel="stylesheet" href="/bohio_real_estate/static/src/css/bohio_theme.css"/>
-        </xpath>
-        <xpath expr="//body" position="inside">
-            <!-- Leaflet JS para OpenStreetMap -->
-            <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-                    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-        </xpath>
-    </template>
-    
-    <template id="bohio_header" inherit_id="website.layout" name="BOHIO Header">
-        <xpath expr="//header" position="replace">
-            <header class="bohio-navbar sticky-top">
-                <nav class="navbar navbar-expand-lg navbar-dark">
-                    <div class="container-fluid">
-                        <a class="navbar-brand" href="/">
-                            <img src="/bohio_real_estate/static/src/img/logo-bohio.png" alt="BOHIO" style="max-height: 60px;"/>
-                        </a>
-                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#bohioNavbar">
-                            <span class="navbar-toggler-icon"/>
-                        </button>
-                        <div class="collapse navbar-collapse" id="bohioNavbar">
-                            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                                <li class="nav-item">
-                                    <a class="nav-link" href="/">Inicio</a>
-                                </li>
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Servicios</a>
-                                    <ul class="dropdown-menu dropdown-menu-dark">
-                                        <li><a class="dropdown-item" href="/servicios/arriendo">Arriendo</a></li>
-                                        <li><a class="dropdown-item" href="/servicios/venta">Venta</a></li>
-                                        <li><a class="dropdown-item" href="/servicios/juridico">Servicios Jurídicos</a></li>
-                                        <li><a class="dropdown-item" href="/servicios/marketing">Marketing Inmobiliario</a></li>
-                                    </ul>
-                                </li>
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Clientes</a>
-                                    <ul class="dropdown-menu dropdown-menu-dark">
-                                        <li><a class="dropdown-item" href="/clientes/propietarios">Propietarios</a></li>
-                                        <li><a class="dropdown-item" href="/clientes/arrendatarios">Arrendatarios</a></li>
-                                    </ul>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="/properties">Propiedades</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="/contacto">Contacto</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="btn btn-bohio-primary ms-2" href="/properties">
-                                        <i class="fa fa-search"/> Buscar
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </nav>
-            </header>
-        </xpath>
-    </template>
-
-    <!-- Template de agradecimiento después de contacto -->
-    <template id="contact_thanks" name="Contact Thanks">
+    <!-- Homepage Template -->
+    <template id="bohio_homepage" name="BOHIO Homepage">
         <t t-call="website.layout">
-            <div id="wrap">
-                <div class="container py-5">
-                    <div class="row">
-                        <div class="col-lg-8 mx-auto text-center">
-                            <h1 class="display-4 mb-4">¡Gracias por contactarnos!</h1>
-                            <p class="lead">Hemos recibido tu solicitud y nos pondremos en contacto contigo lo antes posible.</p>
-                            <p>Nuestro equipo de expertos inmobiliarios revisará tu consulta y te responderá en un plazo máximo de 24 horas hábiles.</p>
-                            <div class="mt-4">
-                                <a href="/properties" class="btn btn-primary">Ver más propiedades</a>
-                                <a href="/" class="btn btn-secondary">Volver al inicio</a>
+            <div id="wrap" class="oe_structure">
+                <!-- Hero Section -->
+                <section class="s_banner o_cc o_cc2" data-name="Banner">
+                    <div class="container">
+                        <div class="row align-items-center">
+                            <div class="col-lg-7 text-center text-lg-start">
+                                <h1 class="display-3 fw-bold">Encuentra tu Hogar Ideal</h1>
+                                <p class="lead">Propiedades en venta y arriendo en las mejores zonas</p>
+                                <a href="/properties" class="btn btn-primary btn-lg">Ver Propiedades</a>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </t>
-    </template>
+                </section>
 
-    <!-- Template de agradecimiento PQRS -->
-    <template id="pqrs_thanks" name="PQRS Thanks">
-        <t t-call="website.layout">
-            <div id="wrap">
-                <div class="container py-5">
-                    <div class="row">
-                        <div class="col-lg-8 mx-auto text-center">
-                            <h1 class="display-4 mb-4">PQRS Recibido</h1>
-                            <p class="lead">Tu solicitud ha sido registrada exitosamente.</p>
-                            <div class="alert alert-info">
-                                <p><strong>Tiempos de respuesta:</strong></p>
-                                <ul class="list-unstyled">
-                                    <li>Peticiones: 15 días hábiles</li>
-                                    <li>Quejas y Reclamos: 15 días hábiles</li>
-                                    <li>Sugerencias: 30 días hábiles</li>
-                                </ul>
-                            </div>
-                            <p>Te notificaremos por correo electrónico cuando tu solicitud sea procesada.</p>
-                            <div class="mt-4">
-                                <a href="/" class="btn btn-primary">Volver al inicio</a>
+                <!-- Featured Properties -->
+                <section class="s_features o_cc o_cc1 pt64 pb64" data-name="Features">
+                    <div class="container">
+                        <div class="row mb-4">
+                            <div class="col-12 text-center">
+                                <h2 class="display-4">Propiedades Destacadas</h2>
+                                <p class="lead text-muted">Las mejores opciones del momento</p>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </t>
-    </template>
-
-    <!-- Formulario PQRS -->
-    <template id="pqrs_form" name="PQRS Form">
-        <t t-call="website.layout">
-            <div id="wrap">
-                <div class="container py-5">
-                    <h1 class="text-center mb-5">Sistema PQRS</h1>
-                    <div class="row">
-                        <div class="col-lg-8 mx-auto">
-                            <form action="/pqrs/submit" method="post">
-                                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
-
-                                <div class="mb-3">
-                                    <label class="form-label">Tipo de Solicitud</label>
-                                    <select name="pqrs_type" class="form-select" required="required">
-                                        <option value="">Seleccione...</option>
-                                        <option value="petition">Petición</option>
-                                        <option value="complaint">Queja</option>
-                                        <option value="claim">Reclamo</option>
-                                        <option value="suggestion">Sugerencia</option>
-                                    </select>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label class="form-label">Tipo de Cliente</label>
-                                    <select name="client_type" class="form-select" required="required">
-                                        <option value="">Seleccione...</option>
-                                        <option value="owner">Propietario</option>
-                                        <option value="tenant">Arrendatario</option>
-                                        <option value="buyer">Comprador</option>
-                                        <option value="other">Otro</option>
-                                    </select>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-6 mb-3">
-                                        <label class="form-label">Nombre Completo</label>
-                                        <input type="text" name="name" class="form-control" required="required"/>
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label class="form-label">Correo Electrónico</label>
-                                        <input type="email" name="email" class="form-control" required="required"/>
+                        <div class="row">
+                            <t t-foreach="featured_properties" t-as="property">
+                                <div class="col-md-4 mb-4">
+                                    <div class="card h-100">
+                                        <t t-if="property.image_1920">
+                                            <img t-att-src="'data:image/png;base64,%s' % property.image_1920.decode('utf-8')"
+                                                 class="card-img-top"
+                                                 t-att-alt="property.name"
+                                                 style="height: 200px; object-fit: cover;"/>
+                                        </t>
+                                        <div class="card-body">
+                                            <h5 class="card-title" t-esc="property.name"/>
+                                            <p class="card-text">
+                                                <i class="fa fa-map-marker-alt me-2"></i>
+                                                <t t-esc="property.city_id.name if property.city_id else 'N/A'"/>
+                                            </p>
+                                            <p class="text-primary fw-bold fs-4">
+                                                $<t t-esc="'{:,.0f}'.format(property.list_price)"/>
+                                            </p>
+                                            <a t-attf-href="/property/#{property.id}" class="btn btn-outline-primary">
+                                                Ver Detalles
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
-
-                                <div class="mb-3">
-                                    <label class="form-label">Teléfono</label>
-                                    <input type="tel" name="phone" class="form-control"/>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label class="form-label">Mensaje</label>
-                                    <textarea name="message" class="form-control" rows="5" required="required"></textarea>
-                                </div>
-
-                                <div class="text-center">
-                                    <button type="submit" class="btn btn-primary btn-lg">
-                                        <i class="fa fa-send"/> Enviar PQRS
-                                    </button>
-                                </div>
-                            </form>
+                            </t>
+                        </div>
+                        <div class="row mt-4">
+                            <div class="col-12 text-center">
+                                <a href="/properties" class="btn btn-secondary btn-lg">Ver Todas las Propiedades</a>
+                            </div>
                         </div>
                     </div>
+                </section>
+            </div>
+        </t>
+    </template>
+
+    <!-- Property Map View -->
+    <template id="property_map_view" name="Property Map View">
+        <t t-call="website.layout">
+            <div id="wrap">
+                <div class="container-fluid p-0">
+                    <div id="property_map" style="height: 600px; width: 100%;"></div>
                 </div>
             </div>
         </t>
     </template>
 
-    
-    <template id="bohio_footer" inherit_id="website.layout" name="BOHIO Footer">
-        <xpath expr="//footer" position="replace">
-            <footer class="bohio-footer">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-4 mb-4">
-                            <img src="/bohio_real_estate/static/src/img/logo-bohio.png" alt="BOHIO" class="mb-3" style="max-height: 50px;"/>
-                            <p class="text-white-50">Consultores en soluciones inmobiliarias. Más de 20 años de experiencia en el mercado.</p>
-                            <div class="mt-3">
-                                <a href="#" class="text-white me-3"><i class="fa fa-facebook fa-2x"/></a>
-                                <a href="#" class="text-white me-3"><i class="fa fa-instagram fa-2x"/></a>
-                                <a href="#" class="text-white me-3"><i class="fa fa-youtube fa-2x"/></a>
-                                <a href="#" class="text-white"><i class="fa fa-linkedin fa-2x"/></a>
-                            </div>
-                        </div>
-                        <div class="col-md-2 mb-4">
-                            <h5>Servicios</h5>
-                            <ul class="list-unstyled">
-                                <li><a href="/servicios/venta">Venta</a></li>
-                                <li><a href="/servicios/arriendo">Arriendo</a></li>
-                                <li><a href="/servicios/juridico">Jurídicos</a></li>
-                                <li><a href="/servicios/marketing">Marketing</a></li>
-                            </ul>
-                        </div>
-                        <div class="col-md-2 mb-4">
-                            <h5>Clientes</h5>
-                            <ul class="list-unstyled">
-                                <li><a href="/clientes/propietarios">Propietarios</a></li>
-                                <li><a href="/clientes/arrendatarios">Arrendatarios</a></li>
-                                <li><a href="/pqrs">PQRS</a></li>
-                            </ul>
-                        </div>
-                        <div class="col-md-4 mb-4">
-                            <h5>Contacto</h5>
-                            <p class="text-white-50">
-                                <i class="fa fa-map-marker text-bohio-red"/> Cali, Valle del Cauca, Colombia<br/>
-                                <i class="fa fa-phone text-bohio-red"/> +57 (2) 123 4567<br/>
-                                <i class="fa fa-whatsapp text-bohio-red"/> +57 300 000 0000<br/>
-                                <i class="fa fa-envelope text-bohio-red"/> info@bohio.com.co
-                            </p>
-                        </div>
-                    </div>
-                    <hr class="bg-white-50"/>
-                    <div class="row">
-                        <div class="col-md-12 text-center text-white-50">
-                            <p class="mb-0">© 2025 BOHIO Inmobiliaria. Todos los derechos reservados.</p>
-                        </div>
-                    </div>
-                </div>
-            </footer>
-        </xpath>
-    </template>
 </odoo>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="mybohio_no_role" name="BOHIO - No Role Assigned">
+        <t t-call="portal.portal_layout">
+            <div class="container mt-5">
+                <div class="row justify-content-center">
+                    <div class="col-md-8 text-center">
+                        <div class="card shadow-sm">
+                            <div class="card-body p-5">
+                                <i class="fa fa-exclamation-triangle fa-5x text-warning mb-4"></i>
+                                <h2 class="mb-3">Sin Rol Asignado</h2>
+                                <p class="lead text-muted mb-4">
+                                    Su cuenta no tiene un rol asignado en el sistema BOHIO.
+                                </p>
+                                <p class="text-muted mb-4">
+                                    Para acceder al portal necesita ser registrado como:
+                                </p>
+                                <div class="row mb-4">
+                                    <div class="col-md-6">
+                                        <div class="card border-primary">
+                                            <div class="card-body">
+                                                <i class="fa fa-home fa-2x text-primary mb-2"></i>
+                                                <h5>Propietario</h5>
+                                                <small class="text-muted">Gestione sus propiedades y vea sus pagos</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="card border-info">
+                                            <div class="card-body">
+                                                <i class="fa fa-user fa-2x text-info mb-2"></i>
+                                                <h5>Arrendatario</h5>
+                                                <small class="text-muted">Vea sus contratos y realice pagos</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr/>
+                                <p class="mb-3">
+                                    <strong>¿Necesita ayuda?</strong>
+                                </p>
+                                <p class="text-muted mb-4">
+                                    Contacte a nuestro equipo de soporte para que le asignen el rol correspondiente.
+                                </p>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                                    <a href="/contactus" class="btn btn-primary btn-lg">
+                                        <i class="fa fa-envelope"></i> Contactar Soporte
+                                    </a>
+                                    <a href="/pqrs" class="btn btn-outline-secondary btn-lg">
+                                        <i class="fa fa-question-circle"></i> Crear PQRS
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

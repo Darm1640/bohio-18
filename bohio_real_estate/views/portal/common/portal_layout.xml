@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="mybohio_portal_layout" name="MyBOHIO Portal Layout">
+        <t t-call="portal.portal_layout">
+            <t t-set="additional_title">MyBOHIO</t>
+
+            <div class="container-fluid mybohio-portal">
+                <div class="row">
+                    <!-- Sidebar -->
+                    <div class="col-lg-2 mybohio-sidebar bg-light vh-100 position-fixed">
+                        <div class="p-3">
+                            <div class="mybohio-logo mb-4 text-center">
+                                <h3 class="text-primary">BOHIO</h3>
+                                <small class="text-muted">Portal Cliente</small>
+                            </div>
+
+                            <!-- Menú Propietario -->
+                            <t t-if="role_info.get('is_owner')">
+                                <div class="mybohio-menu-section mb-4">
+                                    <h6 class="text-uppercase text-muted mb-3">
+                                        <i class="fa fa-home"></i> Propietario
+                                    </h6>
+                                    <nav class="nav flex-column">
+                                        <a t-att-class="'nav-link ' + ('active' if page_name == 'mybohio_owner' else '')" href="/mybohio/owner">
+                                            <i class="fa fa-dashboard"></i> Dashboard
+                                        </a>
+                                        <a t-att-class="'nav-link ' + ('active' if 'properties' in page_name else '')" href="/mybohio/owner/properties">
+                                            <i class="fa fa-building"></i> Mis Propiedades
+                                            <span class="badge bg-primary float-end" t-esc="role_info.get('properties_count', 0)"/>
+                                        </a>
+                                        <a t-att-class="'nav-link ' + ('active' if page_name == 'mybohio_owner_payments' else '')" href="/mybohio/owner/payments">
+                                            <i class="fa fa-money"></i> Pagos Recibidos
+                                        </a>
+                                        <a t-att-class="'nav-link ' + ('active' if page_name == 'mybohio_owner_invoices' else '')" href="/mybohio/owner/invoices">
+                                            <i class="fa fa-file-invoice"></i> Facturas
+                                        </a>
+                                        <a t-att-class="'nav-link ' + ('active' if 'opportunities' in page_name else '')" href="/mybohio/owner/opportunities">
+                                            <i class="fa fa-star"></i> Oportunidades
+                                        </a>
+                                        <a t-att-class="'nav-link ' + ('active' if page_name == 'mybohio_owner_documents' else '')" href="/mybohio/owner/documents">
+                                            <i class="fa fa-folder"></i> Documentos
+                                        </a>
+                                        <a t-att-class="'nav-link ' + ('active' if page_name == 'mybohio_owner_tickets' else '')" href="/mybohio/owner/tickets">
+                                            <i class="fa fa-ticket"></i> PQRS
+                                        </a>
+                                    </nav>
+                                </div>
+                            </t>
+
+                            <!-- Menú Arrendatario -->
+                            <t t-if="role_info.get('is_tenant')">
+                                <div class="mybohio-menu-section mb-4">
+                                    <h6 class="text-uppercase text-muted mb-3">
+                                        <i class="fa fa-user"></i> Arrendatario
+                                    </h6>
+                                    <nav class="nav flex-column">
+                                        <a t-att-class="'nav-link ' + ('active' if page_name == 'mybohio_tenant' else '')" href="/mybohio/tenant">
+                                            <i class="fa fa-dashboard"></i> Dashboard
+                                        </a>
+                                        <a t-att-class="'nav-link ' + ('active' if 'tenant_contract' in page_name else '')" href="/mybohio/tenant/contracts">
+                                            <i class="fa fa-file-contract"></i> Mis Contratos
+                                            <span class="badge bg-info float-end" t-esc="role_info.get('tenant_contracts_count', 0)"/>
+                                        </a>
+                                        <a t-att-class="'nav-link ' + ('active' if page_name == 'mybohio_tenant_payments' else '')" href="/mybohio/tenant/payments">
+                                            <i class="fa fa-credit-card"></i> Mis Pagos
+                                        </a>
+                                        <a t-att-class="'nav-link ' + ('active' if page_name == 'mybohio_tenant_invoices' else '')" href="/mybohio/tenant/invoices">
+                                            <i class="fa fa-file-invoice"></i> Facturas
+                                        </a>
+                                        <a t-att-class="'nav-link ' + ('active' if page_name == 'mybohio_tenant_documents' else '')" href="/mybohio/tenant/documents">
+                                            <i class="fa fa-folder"></i> Documentos
+                                        </a>
+                                        <a t-att-class="'nav-link ' + ('active' if page_name == 'mybohio_tenant_tickets' else '')" href="/mybohio/tenant/tickets">
+                                            <i class="fa fa-ticket"></i> PQRS
+                                        </a>
+                                    </nav>
+                                </div>
+                            </t>
+
+                            <!-- Configuración -->
+                            <div class="mybohio-menu-section">
+                                <nav class="nav flex-column">
+                                    <a class="nav-link" href="/my/account">
+                                        <i class="fa fa-cog"></i> Configuración
+                                    </a>
+                                    <a class="nav-link" href="/web/session/logout">
+                                        <i class="fa fa-sign-out"></i> Cerrar Sesión
+                                    </a>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Content Area -->
+                    <div class="col-lg-10 offset-lg-2 mybohio-content">
+                        <div class="p-4">
+                            <t t-raw="0"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

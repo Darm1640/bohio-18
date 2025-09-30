@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="mybohio_tenant_payments" name="BOHIO Tenant Payments">
+        <t t-call="bohio_real_estate.mybohio_portal_layout">
+            <div class="mybohio-payments-tenant">
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <h2>Mis Pagos</h2>
+                        <p class="text-muted">Historial de pagos realizados</p>
+                    </div>
+                </div>
+
+                <!-- Resumen de Pagos -->
+                <div class="row mb-4">
+                    <div class="col-md-4">
+                        <div class="metric-card">
+                            <div class="metric-icon bg-success">
+                                <i class="fa fa-check-circle"></i>
+                            </div>
+                            <div class="metric-details">
+                                <div class="metric-value">${{'{:,.0f}'.format(total_paid)}}</div>
+                                <div class="metric-label">Total Pagado</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="metric-card">
+                            <div class="metric-icon bg-warning">
+                                <i class="fa fa-clock"></i>
+                            </div>
+                            <div class="metric-details">
+                                <div class="metric-value">${{'{:,.0f}'.format(pending_amount)}}</div>
+                                <div class="metric-label">Pendiente</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="metric-card">
+                            <div class="metric-icon bg-info">
+                                <i class="fa fa-calendar-alt"></i>
+                            </div>
+                            <div class="metric-details">
+                                <div class="metric-value"><t t-esc="payments_count"/></div>
+                                <div class="metric-label">Pagos Realizados</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Filtros -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <form method="get" action="/mybohio/tenant/payments" class="row g-3">
+                            <div class="col-md-4">
+                                <label class="form-label">Contrato</label>
+                                <select name="contract_id" class="form-select">
+                                    <option value="">Todos los contratos</option>
+                                    <t t-foreach="contracts" t-as="contract">
+                                        <option t-att-value="contract.id"
+                                                t-att-selected="'selected' if contract_id == contract.id else None">
+                                            <t t-esc="contract.property_id.name"/>
+                                        </option>
+                                    </t>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Desde</label>
+                                <input type="date" name="date_from" class="form-control" t-att-value="date_from"/>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Hasta</label>
+                                <input type="date" name="date_to" class="form-control" t-att-value="date_to"/>
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label">&#160;</label>
+                                <button type="submit" class="btn btn-primary w-100">
+                                    <i class="fa fa-filter"></i> Filtrar
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Lista de Pagos -->
+                <div class="card">
+                    <div class="card-body">
+                        <t t-if="payments">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Fecha</th>
+                                            <th>Referencia</th>
+                                            <th>Contrato</th>
+                                            <th>Propiedad</th>
+                                            <th>Concepto</th>
+                                            <th class="text-end">Monto</th>
+                                            <th>Estado</th>
+                                            <th class="text-end">Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-foreach="payments" t-as="payment">
+                                            <tr>
+                                                <td>
+                                                    <t t-esc="payment.date.strftime('%d/%m/%Y')"/>
+                                                </td>
+                                                <td>
+                                                    <small><strong t-esc="payment.name"/></small>
+                                                </td>
+                                                <td>
+                                                    <t t-if="payment.contract_id">
+                                                        <small t-esc="payment.contract_id.name"/>
+                                                    </t>
+                                                    <t t-else="">
+                                                        <small class="text-muted">-</small>
+                                                    </t>
+                                                </td>
+                                                <td>
+                                                    <t t-if="payment.contract_id">
+                                                        <small t-esc="payment.contract_id.property_id.name"/>
+                                                    </t>
+                                                    <t t-else="">
+                                                        <small class="text-muted">-</small>
+                                                    </t>
+                                                </td>
+                                                <td>
+                                                    <small t-esc="payment.communication or 'Pago de arriendo'"/>
+                                                </td>
+                                                <td class="text-end">
+                                                    <strong class="text-primary">
+                                                        $<t t-esc="'{:,.0f}'.format(payment.amount)"/>
+                                                    </strong>
+                                                </td>
+                                                <td>
+                                                    <t t-if="payment.state == 'posted'">
+                                                        <span class="badge bg-success">
+                                                            <i class="fa fa-check"></i> Confirmado
+                                                        </span>
+                                                    </t>
+                                                    <t t-elif="payment.state == 'draft'">
+                                                        <span class="badge bg-warning">
+                                                            <i class="fa fa-clock"></i> Borrador
+                                                        </span>
+                                                    </t>
+                                                    <t t-else="">
+                                                        <span class="badge bg-secondary" t-esc="payment.state"/>
+                                                    </t>
+                                                </td>
+                                                <td class="text-end">
+                                                    <t t-if="payment.state == 'posted'">
+                                                        <a t-attf-href="/my/invoices/#{payment.id}?access_token=#{payment.access_token}"
+                                                           class="btn btn-sm btn-outline-primary"
+                                                           target="_blank">
+                                                            <i class="fa fa-file-pdf"></i> Ver
+                                                        </a>
+                                                    </t>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- Paginación -->
+                            <t t-if="pager">
+                                <t t-call="portal.pager"/>
+                            </t>
+                        </t>
+                        <t t-else="">
+                            <div class="alert alert-info text-center">
+                                <i class="fa fa-info-circle"></i> No hay pagos registrados
+                            </div>
+                        </t>
+                    </div>
+                </div>
+
+                <!-- Próximo Pago -->
+                <t t-if="next_payment">
+                    <div class="card border-warning mt-4">
+                        <div class="card-header bg-warning text-white">
+                            <i class="fa fa-exclamation-triangle"></i> Próximo Pago
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <p class="mb-1">
+                                        <strong>Propiedad:</strong> <t t-esc="next_payment['property']"/>
+                                    </p>
+                                    <p class="mb-1">
+                                        <strong>Fecha de Vencimiento:</strong> <t t-esc="next_payment['due_date']"/>
+                                    </p>
+                                </div>
+                                <div class="col-md-6 text-end">
+                                    <h3 class="text-warning mb-0">
+                                        $<t t-esc="'{:,.0f}'.format(next_payment['amount'])"/>
+                                    </h3>
+                                    <small class="text-muted">Monto a pagar</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </div>
+        </t>
+    </template>
+</odoo>

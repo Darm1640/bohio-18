@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="mybohio_owner_dashboard" name="BOHIO Owner Dashboard">
+        <t t-call="bohio_real_estate.mybohio_portal_layout">
+            <div class="mybohio-dashboard-owner">
+                <!-- Header -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <h2>Dashboard Propietario</h2>
+                        <p class="text-muted">Bienvenido, <t t-esc="partner.name"/></p>
+                    </div>
+                </div>
+
+                <!-- Metrics Cards -->
+                <div class="row mb-4">
+                    <!-- Total Propiedades -->
+                    <div class="col-md-3">
+                        <div class="card metric-card h-100">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <p class="text-muted mb-1">Total Propiedades</p>
+                                        <h3 class="mb-0" t-esc="metrics['total_properties']"/>
+                                    </div>
+                                    <div class="metric-icon bg-primary">
+                                        <i class="fa fa-building fa-2x text-white"></i>
+                                    </div>
+                                </div>
+                                <div class="mt-3">
+                                    <small class="text-success">
+                                        <i class="fa fa-check-circle"></i>
+                                        <t t-esc="metrics['occupied_properties']"/> Ocupadas
+                                    </small>
+                                    <small class="text-muted ms-2">
+                                        <i class="fa fa-circle"></i>
+                                        <t t-esc="metrics['vacant_properties']"/> Vacantes
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Ocupación -->
+                    <div class="col-md-3">
+                        <div class="card metric-card h-100">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <p class="text-muted mb-1">Ocupación</p>
+                                        <h3 class="mb-0"><t t-esc="'%.1f' % metrics['occupancy_rate']"/>%</h3>
+                                    </div>
+                                    <div class="metric-icon bg-success">
+                                        <i class="fa fa-chart-pie fa-2x text-white"></i>
+                                    </div>
+                                </div>
+                                <div class="mt-3">
+                                    <div class="progress" style="height: 8px;">
+                                        <div class="progress-bar bg-success" role="progressbar"
+                                             t-att-style="'width: %s%%' % metrics['occupancy_rate']"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Ingreso Mensual -->
+                    <div class="col-md-3">
+                        <div class="card metric-card h-100">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <p class="text-muted mb-1">Ingreso Mensual</p>
+                                        <h3 class="mb-0">
+                                            <t t-esc="'${:,.0f}'.format(metrics['monthly_income'])"/>
+                                        </h3>
+                                    </div>
+                                    <div class="metric-icon bg-warning">
+                                        <i class="fa fa-dollar-sign fa-2x text-white"></i>
+                                    </div>
+                                </div>
+                                <div class="mt-3">
+                                    <small class="text-success">
+                                        <i class="fa fa-arrow-up"></i>
+                                        Recibido: $<t t-esc="'{:,.0f}'.format(metrics['income_received'])"/>
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pendiente -->
+                    <div class="col-md-3">
+                        <div class="card metric-card h-100">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <p class="text-muted mb-1">Pendiente</p>
+                                        <h3 class="mb-0">
+                                            <t t-esc="'${:,.0f}'.format(metrics['pending_amount'])"/>
+                                        </h3>
+                                    </div>
+                                    <div class="metric-icon bg-danger">
+                                        <i class="fa fa-exclamation-triangle fa-2x text-white"></i>
+                                    </div>
+                                </div>
+                                <div class="mt-3">
+                                    <small class="text-muted">
+                                        Por cobrar
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Solicitar Crédito -->
+                <t t-if="has_credit_limit">
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <div class="alert alert-info">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h5><i class="fa fa-credit-card"></i> Crédito Disponible</h5>
+                                        <p class="mb-0">Tiene cupo disponible de <strong>$<t t-esc="'{:,.0f}'.format(partner.credit_limit)"/></strong></p>
+                                    </div>
+                                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#creditRequestModal">
+                                        Solicitar Crédito
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+
+                <!-- Propiedades Recientes -->
+                <div class="row mb-4">
+                    <div class="col-md-8">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0">Mis Propiedades</h5>
+                                <a href="/mybohio/owner/properties" class="btn btn-sm btn-outline-primary">Ver Todas</a>
+                            </div>
+                            <div class="card-body">
+                                <div class="list-group list-group-flush">
+                                    <t t-foreach="properties[:5]" t-as="prop">
+                                        <a t-att-href="'/mybohio/owner/property/%s' % prop.id" class="list-group-item list-group-item-action">
+                                            <div class="d-flex w-100 justify-content-between align-items-center">
+                                                <div>
+                                                    <h6 class="mb-1" t-field="prop.name"/>
+                                                    <small class="text-muted">
+                                                        <i class="fa fa-map-marker"></i>
+                                                        <t t-esc="prop.city_id.name if prop.city_id else prop.city"/>
+                                                    </small>
+                                                </div>
+                                                <div class="text-end">
+                                                    <span t-if="prop.managed_by_bohio" class="badge bg-info">Administrado por BOHIO</span>
+                                                    <t t-else="">
+                                                        <span class="badge bg-success">Propia</span>
+                                                    </t>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </t>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Oportunidades Recientes -->
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0">Oportunidades</h5>
+                                <a href="/mybohio/owner/opportunities" class="btn btn-sm btn-outline-primary">Ver Todas</a>
+                            </div>
+                            <div class="card-body">
+                                <t t-if="opportunities">
+                                    <div class="list-group list-group-flush">
+                                        <t t-foreach="opportunities" t-as="opp">
+                                            <a t-att-href="'/mybohio/owner/opportunity/%s' % opp.id" class="list-group-item list-group-item-action">
+                                                <div class="d-flex w-100 justify-content-between">
+                                                    <h6 class="mb-1" t-field="opp.name"/>
+                                                    <small>
+                                                        <span t-att-class="'badge bg-%s' % ('success' if opp.stage_id.is_won else 'primary')"
+                                                              t-field="opp.stage_id.name"/>
+                                                    </small>
+                                                </div>
+                                            </a>
+                                        </t>
+                                    </div>
+                                </t>
+                                <t t-else="">
+                                    <p class="text-muted text-center py-3">No hay oportunidades activas</p>
+                                </t>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal Solicitar Crédito -->
+                <div class="modal fade" id="creditRequestModal" tabindex="-1">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <form method="POST" action="/mybohio/request_credit">
+                                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Solicitar Crédito</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"/>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="mb-3">
+                                        <label class="form-label">Monto Solicitado</label>
+                                        <input type="number" class="form-control" name="amount" required="1"
+                                               t-att-max="partner.credit_limit"/>
+                                        <small class="text-muted">Cupo disponible: $<t t-esc="'{:,.0f}'.format(partner.credit_limit)"/></small>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Propósito</label>
+                                        <textarea class="form-control" name="purpose" rows="3" required="1"/>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                    <button type="submit" class="btn btn-primary">Solicitar</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

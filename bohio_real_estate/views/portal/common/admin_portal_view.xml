@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="mybohio_admin_portal_home" name="BOHIO Admin Portal - General View">
+        <t t-call="web.layout">
+            <div class="container-fluid mybohio-admin-portal">
+                <div class="row mt-4 mb-4">
+                    <div class="col-12">
+                        <h2>Portal BOHIO - Vista General</h2>
+                        <p class="text-muted">Vista administrativa completa del portal de clientes</p>
+                    </div>
+                </div>
+
+                <!-- Pestañas -->
+                <ul class="nav nav-tabs mb-4" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-bs-toggle="tab" href="#propietarios" role="tab">
+                            <i class="fa fa-home"></i> Propietarios
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-bs-toggle="tab" href="#arrendatarios" role="tab">
+                            <i class="fa fa-user"></i> Arrendatarios
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-bs-toggle="tab" href="#pagos" role="tab">
+                            <i class="fa fa-money-bill"></i> Pagos
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-bs-toggle="tab" href="#contratos" role="tab">
+                            <i class="fa fa-file-contract"></i> Contratos
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-bs-toggle="tab" href="#tickets" role="tab">
+                            <i class="fa fa-ticket"></i> PQRS
+                        </a>
+                    </li>
+                </ul>
+
+                <!-- Tab Content -->
+                <div class="tab-content">
+                    <!-- Propietarios -->
+                    <div class="tab-pane fade show active" id="propietarios" role="tabpanel">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="card">
+                                    <div class="card-body text-center">
+                                        <h6 class="text-muted">Total Propietarios</h6>
+                                        <h2 class="text-primary" t-esc="len(owners)"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card">
+                                    <div class="card-body text-center">
+                                        <h6 class="text-muted">Propiedades Totales</h6>
+                                        <h2 class="text-success" t-esc="total_properties"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card">
+                                    <div class="card-body text-center">
+                                        <h6 class="text-muted">Ocupación Promedio</h6>
+                                        <h2 class="text-warning"><t t-esc="'%.1f' % avg_occupancy"/>%</h2>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card">
+                                    <div class="card-body text-center">
+                                        <h6 class="text-muted">Ingresos Mensuales</h6>
+                                        <h2 class="text-info">$<t t-esc="'{:,.0f}'.format(total_monthly_income)"/></h2>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card mt-4">
+                            <div class="card-header">
+                                <h5>Listado de Propietarios</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Nombre</th>
+                                                <th>Email</th>
+                                                <th>Teléfono</th>
+                                                <th>Propiedades</th>
+                                                <th>Ocupación</th>
+                                                <th>Ingreso Mensual</th>
+                                                <th>Acciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <t t-foreach="owners" t-as="owner">
+                                                <tr>
+                                                    <td><strong><span t-field="owner.name"/></strong></td>
+                                                    <td><small><span t-field="owner.email"/></small></td>
+                                                    <td><small><span t-field="owner.phone"/></small></td>
+                                                    <td class="text-center"><t t-esc="owner_stats[owner.id]['total_properties']"/></td>
+                                                    <td>
+                                                        <div class="progress" style="height: 20px;">
+                                                            <div class="progress-bar" role="progressbar"
+                                                                 t-attf-style="width: {{owner_stats[owner.id]['occupancy_rate']}}%">
+                                                                <t t-esc="'%.0f' % owner_stats[owner.id]['occupancy_rate']"/>%
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td><strong>$<t t-esc="'{:,.0f}'.format(owner_stats[owner.id]['monthly_income'])"/></strong></td>
+                                                    <td>
+                                                        <a t-att-href="'/web#id=%s&amp;model=res.partner&amp;view_type=form' % owner.id"
+                                                           class="btn btn-sm btn-outline-primary" target="_blank">
+                                                            <i class="fa fa-external-link"></i> Ver
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            </t>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Arrendatarios -->
+                    <div class="tab-pane fade" id="arrendatarios" role="tabpanel">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="card">
+                                    <div class="card-body text-center">
+                                        <h6 class="text-muted">Total Arrendatarios</h6>
+                                        <h2 class="text-primary" t-esc="len(tenants)"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card">
+                                    <div class="card-body text-center">
+                                        <h6 class="text-muted">Contratos Activos</h6>
+                                        <h2 class="text-success" t-esc="active_tenant_contracts"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card">
+                                    <div class="card-body text-center">
+                                        <h6 class="text-muted">Pagos al Día</h6>
+                                        <h2 class="text-success" t-esc="tenants_up_to_date"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card">
+                                    <div class="card-body text-center">
+                                        <h6 class="text-muted">Mora Total</h6>
+                                        <h2 class="text-danger">$<t t-esc="'{:,.0f}'.format(total_overdue)"/></h2>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card mt-4">
+                            <div class="card-header">
+                                <h5>Listado de Arrendatarios</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Nombre</th>
+                                                <th>Email</th>
+                                                <th>Propiedad</th>
+                                                <th>Renta</th>
+                                                <th>Estado</th>
+                                                <th>Acciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <t t-foreach="tenants" t-as="tenant">
+                                                <tr>
+                                                    <td><strong><span t-field="tenant.name"/></strong></td>
+                                                    <td><small><span t-field="tenant.email"/></small></td>
+                                                    <td><t t-esc="tenant_stats[tenant.id]['property_name']"/></td>
+                                                    <td><strong>$<t t-esc="'{:,.0f}'.format(tenant_stats[tenant.id]['rent'])"/></strong></td>
+                                                    <td>
+                                                        <span t-att-class="'badge bg-%s' % ('success' if tenant_stats[tenant.id]['up_to_date'] else 'danger')">
+                                                            <t t-if="tenant_stats[tenant.id]['up_to_date']">Al día</t>
+                                                            <t t-else="">Mora</t>
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        <a t-att-href="'/web#id=%s&amp;model=res.partner&amp;view_type=form' % tenant.id"
+                                                           class="btn btn-sm btn-outline-primary" target="_blank">
+                                                            <i class="fa fa-external-link"></i> Ver
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            </t>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Otras pestañas aquí... -->
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

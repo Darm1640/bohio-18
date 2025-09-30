@@ -20,10 +20,7 @@
     "data": [
         "data/ir_sequence.xml",
         "security/ir.model.access.csv",
-        "views/view_account_invoice.xml",
-        "views/view_crm_team.xml",
         "views/view_installment_template.xml",
-        "views/view_product_category.xml",
         "views/view_project_worksite.xml",
         "views/view_property.xml",
         "views/news_contracts.xml",
@@ -32,15 +29,15 @@
         "views/view_region.xml",
         "views/view_repair_order.xml",
         "views/view_res_config_settings.xml",
-        "views/view_sale_order.xml",
-        "views/view_sales_commission.xml",
-        "views/news_recaudo_odoo.xml",
-        "views/reporte_recaudo.xml",
+        "wizard/modify_contract_wizard_views.xml",
         "views/menu_items.xml",
         "views/templates.xml",
         "views/property_dashboard_views.xml",
+        "views/bohio_mass_payment_views.xml",
+        "views/bohio_debit_note_wizard_views.xml",
+        "views/property_contract_line_views.xml",
         "static/src/xml/home.xml",
-        
+
     ],
     "assets": {
         "web.assets_backend": [
@@ -49,17 +46,13 @@
             "web/static/lib/chartjs-adapter-luxon/chartjs-adapter-luxon.js",
             "real_estate_bits/static/src/css/report-style.css",
             "real_estate_bits/static/src/xml/gmap.xml",
-            # "real_estate_bits/static/src/js/init.js",
-            # "real_estate_bits/static/src/js/map_widget.js",
-            # "real_estate_bits/static/src/js/map_widget_multi.js",
             "real_estate_bits/static/src/js/place_autocomplete.js",
-            # "real_estate_bits/static/src/js/place_autocomplete_multi.js",
             "real_estate_bits/static/src/xml/property_dashboard.xml",
             "real_estate_bits/static/src/xml/autocomplete.xml",
             "real_estate_bits/static/src/css/property_dashboard.css",
             "real_estate_bits/static/src/js/property_dashboard.js",
-           # "real_estate_bits/static/src/js/property_filters.js", #real_estate_bits/static/src/js/property_filters.js
-            #"real_estate_bits/static/src/css/style.scss",
+            "real_estate_bits/static/src/css/property_contract_improved.css",
+            "real_estate_bits/static/src/css/property_contract_kanban.css",
         ],
         'web.assets_frontend': [
             "real_estate_bits/static/src/css/filters.css",
@@ -80,9 +73,4 @@
     "license": "LGPL-3",
     "auto_install": False,
     "application": True,
-   # 'pre_init_hook': 'pre_init_hook',
-    #'post_init_hook': 'post_init_hook',
-   # 'uninstall_hook': 'uninstall_hook',
-
-
 }

@@ -9,7 +9,6 @@ from . import property_extra
 from . import account_payment
 from . import account_invoice
 from . import project_worksite
-from . import sales_commission
 from . import property_contract
 from . import res_config_settings
 from . import property_reservation
@@ -17,7 +16,9 @@ from . import installment_template
 from . import project_worksite_extra
 from . import res_users
 from . import news_contracts
-from . import recaudo_news_payment
 from . import master
 from . import property_dashboard
 from . import property_attachments
+from . import contract_scenery
+from . import bohio_mass_payment
+from . import property_contract_line

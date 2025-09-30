@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="mybohio_tenant_invoices" name="BOHIO Tenant Invoices">
+        <t t-call="bohio_real_estate.mybohio_portal_layout">
+            <div class="mybohio-invoices-tenant">
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <h2>Mis Facturas</h2>
+                        <p class="text-muted">Facturas de arriendo recibidas</p>
+                    </div>
+                </div>
+
+                <!-- Resumen de Facturas -->
+                <div class="row mb-4">
+                    <div class="col-md-3">
+                        <div class="metric-card">
+                            <div class="metric-icon bg-primary">
+                                <i class="fa fa-file-invoice"></i>
+                            </div>
+                            <div class="metric-details">
+                                <div class="metric-value"><t t-esc="total_invoices"/></div>
+                                <div class="metric-label">Total Facturas</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="metric-card">
+                            <div class="metric-icon bg-success">
+                                <i class="fa fa-check-circle"></i>
+                            </div>
+                            <div class="metric-details">
+                                <div class="metric-value"><t t-esc="paid_invoices"/></div>
+                                <div class="metric-label">Pagadas</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="metric-card">
+                            <div class="metric-icon bg-warning">
+                                <i class="fa fa-clock"></i>
+                            </div>
+                            <div class="metric-details">
+                                <div class="metric-value"><t t-esc="pending_invoices"/></div>
+                                <div class="metric-label">Pendientes</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="metric-card">
+                            <div class="metric-icon bg-danger">
+                                <i class="fa fa-exclamation-circle"></i>
+                            </div>
+                            <div class="metric-details">
+                                <div class="metric-value"><t t-esc="overdue_invoices"/></div>
+                                <div class="metric-label">Vencidas</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Filtros -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <form method="get" action="/mybohio/tenant/invoices" class="row g-3">
+                            <div class="col-md-3">
+                                <label class="form-label">Contrato</label>
+                                <select name="contract_id" class="form-select">
+                                    <option value="">Todos los contratos</option>
+                                    <t t-foreach="contracts" t-as="contract">
+                                        <option t-att-value="contract.id"
+                                                t-att-selected="'selected' if contract_id == contract.id else None">
+                                            <t t-esc="contract.property_id.name"/>
+                                        </option>
+                                    </t>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Estado</label>
+                                <select name="state" class="form-select">
+                                    <option value="">Todos los estados</option>
+                                    <option value="draft" t-att-selected="'selected' if state == 'draft' else None">Borrador</option>
+                                    <option value="posted" t-att-selected="'selected' if state == 'posted' else None">Publicada</option>
+                                    <option value="paid" t-att-selected="'selected' if state == 'paid' else None">Pagada</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label">Desde</label>
+                                <input type="date" name="date_from" class="form-control" t-att-value="date_from"/>
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label">Hasta</label>
+                                <input type="date" name="date_to" class="form-control" t-att-value="date_to"/>
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label">&#160;</label>
+                                <button type="submit" class="btn btn-primary w-100">
+                                    <i class="fa fa-filter"></i> Filtrar
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Lista de Facturas -->
+                <div class="card">
+                    <div class="card-body">
+                        <t t-if="invoices">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Factura</th>
+                                            <th>Fecha</th>
+                                            <th>Vencimiento</th>
+                                            <th>Propiedad</th>
+                                            <th class="text-end">Monto Total</th>
+                                            <th class="text-end">Saldo</th>
+                                            <th>Estado</th>
+                                            <th class="text-end">Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-foreach="invoices" t-as="invoice">
+                                            <tr t-att-class="'table-danger' if invoice.invoice_date_due and invoice.invoice_date_due &lt; today and invoice.payment_state != 'paid' else ''">
+                                                <td>
+                                                    <strong t-esc="invoice.name"/>
+                                                </td>
+                                                <td>
+                                                    <t t-esc="invoice.invoice_date.strftime('%d/%m/%Y') if invoice.invoice_date else '-'"/>
+                                                </td>
+                                                <td>
+                                                    <t t-if="invoice.invoice_date_due">
+                                                        <t t-esc="invoice.invoice_date_due.strftime('%d/%m/%Y')"/>
+                                                        <t t-if="invoice.invoice_date_due &lt; today and invoice.payment_state != 'paid'">
+                                                            <br/>
+                                                            <span class="badge bg-danger">Vencida</span>
+                                                        </t>
+                                                    </t>
+                                                    <t t-else="">
+                                                        <span class="text-muted">-</span>
+                                                    </t>
+                                                </td>
+                                                <td>
+                                                    <t t-if="invoice.invoice_line_ids and invoice.invoice_line_ids[0].contract_id">
+                                                        <small t-esc="invoice.invoice_line_ids[0].contract_id.property_id.name"/>
+                                                    </t>
+                                                    <t t-else="">
+                                                        <small class="text-muted">-</small>
+                                                    </t>
+                                                </td>
+                                                <td class="text-end">
+                                                    <strong>$<t t-esc="'{:,.0f}'.format(invoice.amount_total)"/></strong>
+                                                </td>
+                                                <td class="text-end">
+                                                    <t t-if="invoice.amount_residual &gt; 0">
+                                                        <strong class="text-danger">
+                                                            $<t t-esc="'{:,.0f}'.format(invoice.amount_residual)"/>
+                                                        </strong>
+                                                    </t>
+                                                    <t t-else="">
+                                                        <span class="text-success">$0</span>
+                                                    </t>
+                                                </td>
+                                                <td>
+                                                    <t t-if="invoice.payment_state == 'paid'">
+                                                        <span class="badge bg-success">
+                                                            <i class="fa fa-check"></i> Pagada
+                                                        </span>
+                                                    </t>
+                                                    <t t-elif="invoice.payment_state == 'partial'">
+                                                        <span class="badge bg-warning">
+                                                            <i class="fa fa-exclamation"></i> Parcial
+                                                        </span>
+                                                    </t>
+                                                    <t t-elif="invoice.payment_state == 'not_paid'">
+                                                        <span class="badge bg-danger">
+                                                            <i class="fa fa-times"></i> Sin Pagar
+                                                        </span>
+                                                    </t>
+                                                    <t t-else="">
+                                                        <span class="badge bg-secondary" t-esc="invoice.payment_state"/>
+                                                    </t>
+                                                </td>
+                                                <td class="text-end">
+                                                    <div class="btn-group btn-group-sm">
+                                                        <a t-attf-href="/my/invoices/#{invoice.id}?access_token=#{invoice.access_token}"
+                                                           class="btn btn-outline-primary"
+                                                           target="_blank">
+                                                            <i class="fa fa-eye"></i> Ver
+                                                        </a>
+                                                        <a t-attf-href="/my/invoices/#{invoice.id}/pdf?access_token=#{invoice.access_token}"
+                                                           class="btn btn-outline-secondary"
+                                                           target="_blank">
+                                                            <i class="fa fa-file-pdf"></i> PDF
+                                                        </a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                    <tfoot t-if="len(invoices) &gt; 1">
+                                        <tr class="table-secondary">
+                                            <th colspan="4" class="text-end">TOTALES:</th>
+                                            <th class="text-end">
+                                                $<t t-esc="'{:,.0f}'.format(sum(inv.amount_total for inv in invoices))"/>
+                                            </th>
+                                            <th class="text-end">
+                                                $<t t-esc="'{:,.0f}'.format(sum(inv.amount_residual for inv in invoices))"/>
+                                            </th>
+                                            <th colspan="2"></th>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+
+                            <!-- Paginación -->
+                            <t t-if="pager">
+                                <t t-call="portal.pager"/>
+                            </t>
+                        </t>
+                        <t t-else="">
+                            <div class="alert alert-info text-center">
+                                <i class="fa fa-info-circle"></i> No hay facturas registradas
+                            </div>
+                        </t>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

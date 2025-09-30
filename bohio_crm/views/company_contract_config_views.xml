@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- Acción para el wizard -->
+    
+        <!-- Vista de formulario para configuración de contratos -->
+        <record id="view_company_contract_config_form" model="ir.ui.view">
+            <field name="name">company.contract.config.form</field>
+            <field name="model">company.contract.config</field>
+            <field name="arch" type="xml">
+                <form string="Configuración de Contratos">
+                    <header>
+                        <button name="action_apply_to_all_contracts"
+                                type="object"
+                                string="Aplicar a Todos los Contratos"
+                                class="btn-warning"
+                                help="Aplicar esta configuración a contratos existentes"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="display_name" readonly="1"/>
+                            </h1>
+                        </div>
+
+                        <group>
+                            <group string="Información General">
+                                <field name="company_id"/>
+                                <field name="active"/>
+                                <field name="auto_apply_to_new_contracts"/>
+                            </group>
+                        </group>
+
+                        <notebook>
+                            <page string="Comisiones" name="commissions">
+                                <group>
+                                    <group string="Configuración de Comisiones">
+                                        <field name="default_commission_percentage"/>
+                                        <field name="commission_calculation_method"/>
+                                    </group>
+                                </group>
+                            </page>
+
+                            <page string="Intereses por Mora" name="interests">
+                                <group>
+                                    <group string="Configuración de Intereses">
+                                        <field name="default_interest_rate"/>
+                                        <field name="default_grace_days"/>
+                                        <field name="auto_calculate_interest"/>
+                                    </group>
+                                </group>
+                            </page>
+
+                            <page string="Incrementos" name="increments">
+                                <group>
+                                    <group string="Incrementos Automáticos">
+                                        <field name="default_increment_percentage"/>
+                                    </group>
+                                </group>
+                            </page>
+
+                            <page string="Periodicidad" name="periodicity">
+                                <group>
+                                    <group string="Configuración de Períodos">
+                                        <field name="default_periodicity"/>
+                                    </group>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Vista de lista -->
+        <record id="view_company_contract_config_tree" model="ir.ui.view">
+            <field name="name">company.contract.config.tree</field>
+            <field name="model">company.contract.config</field>
+            <field name="arch" type="xml">
+                <list string="Configuraciones de Contratos">
+                    <field name="company_id"/>
+                    <field name="default_commission_percentage" string="Comisión %"/>
+                    <field name="default_interest_rate" string="Interés %"/>
+                    <field name="default_increment_percentage" string="Incremento %"/>
+                    <field name="default_periodicity" string="Periodicidad"/>
+                    <field name="auto_apply_to_new_contracts" string="Auto Aplicar"/>
+                    <field name="active"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Acción para configuración de contratos -->
+        <record id="action_company_contract_config" model="ir.actions.act_window">
+            <field name="name">Configuración de Contratos</field>
+            <field name="res_model">company.contract.config</field>
+            <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Configurar parámetros por defecto para contratos
+                </p>
+                <p>
+                    Establezca comisiones, tasas de interés, incrementos y demás parámetros
+                    que se aplicarán automáticamente a los nuevos contratos.
+                </p>
+            </field>
+        </record>
+
+        <!-- Vista de formulario para wizard de modificar contrato -->
+        <record id="view_modify_contract_wizard_form" model="ir.ui.view">
+            <field name="name">modify.contract.wizard.form</field>
+            <field name="model">modify.contract.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Modificar Contrato" class="o_contract_wizard">
+                    <header>
+                        <button name="action_execute_operation"
+                                string="Aplicar Modificación"
+                                type="object"
+                                class="btn-primary oe_highlight"/>
+                        <button string="Cancelar" class="btn-secondary" special="cancel"/>
+                    </header>
+
+                    <sheet>
+                        <div class="o_wizard_header">
+                            <h2><i class="fa fa-edit"></i> Modificar Contrato</h2>
+                            <h4 class="text-muted">
+                                <field name="contract_id" readonly="1" options="{'no_open': True}"/>
+                            </h4>
+                        </div>
+
+                        <!-- Información actual del contrato -->
+                        <div class="alert alert-info">
+                            <h5><i class="fa fa-info-circle"></i> Información Actual</h5>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <strong>Fecha Fin:</strong><br/>
+                                    <field name="current_end_date" readonly="1"/>
+                                </div>
+                                <div class="col-md-3">
+                                    <strong>Canon Actual:</strong><br/>
+                                    <field name="current_rental_fee" widget="monetary" readonly="1"/>
+                                </div>
+                                <div class="col-md-3">
+                                    <strong>Facturas Pendientes:</strong><br/>
+                                    <field name="pending_invoices" readonly="1"/>
+                                </div>
+                                <div class="col-md-3">
+                                    <strong>Monto Pendiente:</strong><br/>
+                                    <field name="pending_amount" widget="monetary" readonly="1"/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Selector de operación -->
+                        <group>
+                            <field name="operation_type" widget="radio"/>
+                        </group>
+
+                        <!-- Campos comunes -->
+                        <group string="Información General">
+                            <field name="reason" placeholder="Describa el motivo de esta operación..." required="True"/>
+                            <field name="effective_date"/>
+                        </group>
+
+                        <!-- Campos específicos por operación -->
+                        <group string="Configuración" invisible="operation_type not in ('extend', 'renew', 'modify_amount')">
+                            <field name="new_end_date"
+                                   invisible="operation_type not in ('extend', 'renew')"
+                                   required="operation_type in ('extend', 'renew')"/>
+                            <field name="new_rental_fee"
+                                   invisible="operation_type not in ('renew', 'modify_amount')"
+                                   required="operation_type == 'modify_amount'"/>
+                            <field name="extend_months"
+                                   invisible="operation_type != 'extend'"/>
+                        </group>
+
+                        <group string="Configuración de Cancelación" invisible="operation_type != 'cancel'">
+                            <field name="cancellation_type" required="operation_type == 'cancel'"/>
+                            <field name="apply_penalty"/>
+                            <field name="penalty_amount" invisible="not apply_penalty"/>
+                        </group>
+
+                        <group string="Configuración de Suspensión" invisible="operation_type != 'suspend'">
+                            <field name="suspension_start" required="operation_type == 'suspend'"/>
+                            <field name="suspension_end" required="operation_type == 'suspend'"/>
+                        </group>
+
+                        <div class="alert alert-warning" invisible="operation_type != 'cancel' or pending_invoices == 0">
+                            <i class="fa fa-warning"></i> <strong>Advertencia:</strong>
+                            Este contrato tiene facturas pendientes. La cancelación requerirá aprobación.
+                        </div>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+    </data>
+</odoo>

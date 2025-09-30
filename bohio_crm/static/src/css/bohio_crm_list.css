@@ -1,0 +1,287 @@
+/* ============================================
+   BOHIO CRM - Vista List/Tree Estilizada
+   Colores: Rojo #ff1d25 y Negro #000000
+   ============================================ */
+
+.o_list_view {
+    background: #f5f6fa;
+}
+
+/* Tabla Principal */
+.o_list_table {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    overflow: hidden;
+}
+
+/* Header de la tabla */
+.o_list_table thead {
+    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+    border-bottom: 3px solid #ff1d25;
+}
+
+.o_list_table thead th {
+    color: white !important;
+    font-weight: 600;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 15px 10px;
+    border: none;
+}
+
+.o_list_table thead th:hover {
+    background: rgba(255,29,37,0.1);
+}
+
+/* Filas */
+.o_list_table tbody tr {
+    border-bottom: 1px solid #f0f0f0;
+    transition: all 0.2s;
+}
+
+.o_list_table tbody tr:hover {
+    background: #fff5f5 !important;
+    transform: scale(1.01);
+    box-shadow: 0 2px 8px rgba(255,29,37,0.1);
+}
+
+/* Celdas */
+.o_list_table tbody td {
+    padding: 12px 10px;
+    font-size: 13px;
+    color: #2c3e50;
+}
+
+/* Decoraciones */
+.o_list_table tbody tr.text-danger {
+    border-left: 4px solid #ff1d25;
+}
+
+.o_list_table tbody tr.text-success {
+    border-left: 4px solid #50c878;
+}
+
+.o_list_table tbody tr.text-warning {
+    border-left: 4px solid #f39c12;
+}
+
+/* Campos especiales */
+.o_list_table .o_priority_star {
+    color: #ff1d25;
+}
+
+.o_list_table .o_priority_star.fa-star-o {
+    color: #cbd5e0;
+}
+
+/* Progress bar */
+.o_list_table .o_progressbar {
+    height: 8px;
+    background: #e9ecef;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.o_list_table .o_progressbar_value {
+    background: linear-gradient(135deg, #50c878 0%, #3fa463 100%);
+    height: 100%;
+    transition: width 0.3s;
+}
+
+/* Avatar */
+.o_list_table .o_m2o_avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 2px solid #ff1d25;
+}
+
+/* Badges y Tags */
+.o_list_table .badge {
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.o_list_table .badge-primary {
+    background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%);
+    border: 1px solid #ff1d25;
+}
+
+.o_list_table .badge-success {
+    background: linear-gradient(135deg, #50c878 0%, #3fa463 100%);
+    border: 1px solid #ff1d25;
+}
+
+.o_list_table .badge-warning {
+    background: linear-gradient(135deg, #f39c12 0%, #d68910 100%);
+    border: 1px solid #000000;
+}
+
+/* Multi-edit mode */
+.o_list_table tbody tr.o_selected_row {
+    background: #fff5f5 !important;
+    border-left: 4px solid #ff1d25;
+}
+
+.o_list_table tbody tr.o_selected_row td {
+    background: transparent;
+}
+
+/* Checkboxes */
+.o_list_table .o_list_record_selector input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    border: 2px solid #cbd5e0;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.o_list_table .o_list_record_selector input[type="checkbox"]:checked {
+    background: #ff1d25;
+    border-color: #ff1d25;
+}
+
+/* Botones en header */
+.o_list_view .o_list_buttons button {
+    padding: 8px 16px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    background: white;
+    color: #2c3e50;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.o_list_view .o_list_buttons button.btn-primary {
+    background: linear-gradient(135deg, #ff1d25 0%, #cc0000 100%);
+    border: none;
+    color: white;
+}
+
+.o_list_view .o_list_buttons button.btn-primary:hover {
+    background: linear-gradient(135deg, #cc0000 0%, #990000 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(255,29,37,0.3);
+}
+
+.o_list_view .o_list_buttons button:hover {
+    background: #f8f9fa;
+    border-color: #ff1d25;
+    transform: translateY(-2px);
+}
+
+/* Totales (footer) */
+.o_list_table tfoot {
+    background: #f8f9fa;
+    border-top: 2px solid #ff1d25;
+}
+
+.o_list_table tfoot td {
+    font-weight: 700;
+    color: #000000;
+    padding: 12px 10px;
+}
+
+/* Activity widget */
+.o_list_table .o_activity_cell {
+    text-align: center;
+}
+
+.o_list_table .o_activity_btn {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+}
+
+.o_list_table .o_activity_btn.o_activity_color_default {
+    background: #cbd5e0;
+    color: white;
+}
+
+.o_list_table .o_activity_btn.o_activity_color_today {
+    background: #f39c12;
+    color: white;
+}
+
+.o_list_table .o_activity_btn.o_activity_color_overdue {
+    background: #ff1d25;
+    color: white;
+}
+
+/* Enlaces */
+.o_list_table a {
+    color: #ff1d25;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.o_list_table a:hover {
+    color: #cc0000;
+    text-decoration: underline;
+}
+
+/* Campos monetarios */
+.o_list_table .o_list_number {
+    font-family: 'Courier New', monospace;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+/* Empty state */
+.o_list_view .o_view_nocontent {
+    background: white;
+    border-radius: 12px;
+    padding: 60px 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.o_list_view .o_view_nocontent .o_view_nocontent_smiling_face {
+    color: #ff1d25;
+    font-size: 100px;
+}
+
+/* Paginación */
+.o_list_view .o_pager {
+    background: white;
+    border-radius: 6px;
+    padding: 8px 15px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.o_list_view .o_pager button {
+    color: #ff1d25;
+    border: 1px solid #ff1d25;
+    border-radius: 4px;
+    padding: 4px 10px;
+}
+
+.o_list_view .o_pager button:hover {
+    background: #ff1d25;
+    color: white;
+}
+
+.o_list_view .o_pager .o_pager_value {
+    color: #2c3e50;
+    font-weight: 600;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .o_list_table thead th {
+        font-size: 11px;
+        padding: 10px 5px;
+    }
+
+    .o_list_table tbody td {
+        font-size: 12px;
+        padding: 10px 5px;
+    }
+}

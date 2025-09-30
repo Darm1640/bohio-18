@@ -16,7 +16,7 @@
                         <div class="col-12 col-lg-6 o_setting_box">
                             <div class="o_setting_left_pane"/>
                             <div class="o_setting_right_pane">
-                                <span class="o_form_label">Contracts Income Account</span>
+                                <span class="o_form_label" for="">Contracts Income Account</span>
                                 <span class="fa fa-lg fa-building-o" title="Values set here are company-specific."
                                       aria-label="Values set here are company-specific."
                                       groups="base.group_multi_company" role="img"/>
@@ -104,18 +104,6 @@
                         </div>
                     </div>
 
-                    <h2>Commissions</h2>
-                    <div class="row mt16 o_settings_container">
-                        <div class="col-xs-12 col-md-6 o_setting_box">
-                            <div class="o_setting_right_pane">
-                                <label for="when_to_pay"/>
-                                <div class="text-muted">
-                                    Allow manual pay commission
-                                </div>
-                                <field name="when_to_pay" class="o_light_label mt16" widget="radio"/>
-                            </div>
-                        </div>
-                   </div>
                 </div>
             </xpath>
         </field>

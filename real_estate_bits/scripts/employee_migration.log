@@ -1,0 +1,482 @@
+2025-09-30 06:09:12,788 - [INFO] - 
+######################################################################
+2025-09-30 06:09:12,788 - [INFO] - # COPIA DE EMPLEADOS Y USUARIOS: SITE -> ODOO 18
+2025-09-30 06:09:12,788 - [INFO] - ######################################################################
+2025-09-30 06:09:12,788 - [INFO] - 
+Conectando a ORIGEN: https://inmobiliariabohio.cloudpepper.site
+2025-09-30 06:09:25,288 - [INFO] - OK - Conectado (UID: 2)
+2025-09-30 06:09:25,289 - [INFO] - 
+Conectando a DESTINO: https://darm1640-bohio-18.odoo.com
+2025-09-30 06:09:26,057 - [INFO] - OK - Conectado (UID: 2)
+2025-09-30 06:09:26,684 - [INFO] - 
+Cache base: Pais=49, Cia=1
+
+2025-09-30 06:09:26,684 - [INFO] - Detectando campos comunes de hr.employee...
+2025-09-30 06:09:27,577 - [INFO] -    Campos en origen: 216
+2025-09-30 06:09:27,577 - [INFO] -    Campos en destino: 142
+2025-09-30 06:09:27,577 - [INFO] -    Campos comunes: 129
+2025-09-30 06:09:27,577 - [INFO] -    Campos a copiar: 36
+2025-09-30 06:09:27,577 - [INFO] -    Campos: name, work_email, work_phone, mobile_phone, job_id, department_id, parent_id, coach_id, work_location_id, user_id...
+2025-09-30 06:09:27,577 - [INFO] - 
+######################################################################
+2025-09-30 06:09:27,578 - [INFO] - # COPIA DE EMPLEADOS Y USUARIOS
+2025-09-30 06:09:27,578 - [INFO] - ######################################################################
+
+2025-09-30 06:09:27,578 - [INFO] - Buscando empleados en origen...
+2025-09-30 06:09:27,749 - [INFO] - Encontrados 26 empleados activos
+
+2025-09-30 06:09:27,749 - [INFO] - 
+[1/26]
+2025-09-30 06:09:27,749 - [INFO] - 
+======================================================================
+2025-09-30 06:09:27,749 - [INFO] - Empleado: Administrator (ID origen: 1)
+2025-09-30 06:09:28,082 - [INFO] - 
+Resumen:
+2025-09-30 06:09:28,082 - [INFO] -   Email: admin@example.com
+2025-09-30 06:09:28,082 - [INFO] -   Puesto: None
+2025-09-30 06:09:28,082 - [INFO] -   Departamento: 2
+2025-09-30 06:09:28,082 - [INFO] -   Total campos: 7
+2025-09-30 06:09:28,082 - [INFO] - 
+Creando empleado en destino...
+2025-09-30 06:09:28,330 - [INFO] - OK! Empleado creado: Administrator -> ID [28]
+2025-09-30 06:09:28,330 - [INFO] - 
+Creando usuario de sistema...
+2025-09-30 06:09:28,892 - [ERROR] -    Error creando usuario: <Fault 1: 'Traceback (most recent call last):\n  File "/home/odoo/src/odoo/odoo/addons/base/controllers/rpc.py", line 165, in xmlrpc_2\n    response = self._xmlrpc(service)\n               ^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/addons/base/controllers/rpc.py", line 139, in _xmlrpc\n    result = dispatch_rpc(service, method, params)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/http.py", line 412, in dispatch_rpc\n    return dispatch(method, params)\n           ^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 58, in dispatch\n    res = execute_kw(db, uid, *params[3:])\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 81, in execute_kw\n    return execute(db, uid, obj, method, *args, **kw or {})\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 87, in execute\n    res = execute_cr(cr, uid, obj, method, *args, **kw)\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 72, in execute_cr\n    result = retrying(partial(odoo.api.call_kw, recs, method, args, kw), env)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 156, in retrying\n    result = func()\n             ^^^^^^\n  File "/home/odoo/src/odoo/odoo/api.py", line 535, in call_kw\n    result = getattr(recs, name)(*args, **kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nTypeError: create() got an unexpected keyword argument \'no_reset_password\'\n'>
+2025-09-30 06:09:28,893 - [INFO] - 
+[2/26]
+2025-09-30 06:09:28,893 - [INFO] - 
+======================================================================
+2025-09-30 06:09:28,893 - [INFO] - Empleado: Adrian Antonio Arrieta Guerra (ID origen: 52)
+2025-09-30 06:09:29,311 - [INFO] - 
+Resumen:
+2025-09-30 06:09:29,311 - [INFO] -   Email: adrian.arrieta.g@outlook.com
+2025-09-30 06:09:29,311 - [INFO] -   Puesto: 1
+2025-09-30 06:09:29,311 - [INFO] -   Departamento: 2
+2025-09-30 06:09:29,311 - [INFO] -   Total campos: 11
+2025-09-30 06:09:29,311 - [INFO] - 
+Creando empleado en destino...
+2025-09-30 06:09:29,579 - [INFO] - OK! Empleado creado: Adrian Antonio Arrieta Guerra -> ID [29]
+2025-09-30 06:09:29,579 - [INFO] - 
+Creando usuario de sistema...
+2025-09-30 06:09:30,120 - [ERROR] -    Error creando usuario: <Fault 1: 'Traceback (most recent call last):\n  File "/home/odoo/src/odoo/odoo/addons/base/controllers/rpc.py", line 165, in xmlrpc_2\n    response = self._xmlrpc(service)\n               ^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/addons/base/controllers/rpc.py", line 139, in _xmlrpc\n    result = dispatch_rpc(service, method, params)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/http.py", line 412, in dispatch_rpc\n    return dispatch(method, params)\n           ^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 58, in dispatch\n    res = execute_kw(db, uid, *params[3:])\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 81, in execute_kw\n    return execute(db, uid, obj, method, *args, **kw or {})\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 87, in execute\n    res = execute_cr(cr, uid, obj, method, *args, **kw)\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 72, in execute_cr\n    result = retrying(partial(odoo.api.call_kw, recs, method, args, kw), env)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 156, in retrying\n    result = func()\n             ^^^^^^\n  File "/home/odoo/src/odoo/odoo/api.py", line 535, in call_kw\n    result = getattr(recs, name)(*args, **kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nTypeError: create() got an unexpected keyword argument \'no_reset_password\'\n'>
+2025-09-30 06:09:30,120 - [INFO] - 
+[3/26]
+2025-09-30 06:09:30,120 - [INFO] - 
+======================================================================
+2025-09-30 06:09:30,120 - [INFO] - Empleado: Adrian Edith Bolaños Hernandez (ID origen: 53)
+2025-09-30 06:09:30,708 - [INFO] - 
+Resumen:
+2025-09-30 06:09:30,708 - [INFO] -   Email: adriatakones@gmail.com
+2025-09-30 06:09:30,708 - [INFO] -   Puesto: 2
+2025-09-30 06:09:30,708 - [INFO] -   Departamento: 3
+2025-09-30 06:09:30,708 - [INFO] -   Total campos: 11
+2025-09-30 06:09:30,708 - [INFO] - 
+Creando empleado en destino...
+2025-09-30 06:09:30,981 - [INFO] - OK! Empleado creado: Adrian Edith Bolaños Hernandez -> ID [30]
+2025-09-30 06:09:30,982 - [INFO] - 
+Creando usuario de sistema...
+2025-09-30 06:09:31,537 - [ERROR] -    Error creando usuario: <Fault 1: 'Traceback (most recent call last):\n  File "/home/odoo/src/odoo/odoo/addons/base/controllers/rpc.py", line 165, in xmlrpc_2\n    response = self._xmlrpc(service)\n               ^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/addons/base/controllers/rpc.py", line 139, in _xmlrpc\n    result = dispatch_rpc(service, method, params)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/http.py", line 412, in dispatch_rpc\n    return dispatch(method, params)\n           ^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 58, in dispatch\n    res = execute_kw(db, uid, *params[3:])\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 81, in execute_kw\n    return execute(db, uid, obj, method, *args, **kw or {})\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 87, in execute\n    res = execute_cr(cr, uid, obj, method, *args, **kw)\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 72, in execute_cr\n    result = retrying(partial(odoo.api.call_kw, recs, method, args, kw), env)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 156, in retrying\n    result = func()\n             ^^^^^^\n  File "/home/odoo/src/odoo/odoo/api.py", line 535, in call_kw\n    result = getattr(recs, name)(*args, **kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nTypeError: create() got an unexpected keyword argument \'no_reset_password\'\n'>
+2025-09-30 06:09:31,538 - [INFO] - 
+[4/26]
+2025-09-30 06:09:31,538 - [INFO] - 
+======================================================================
+2025-09-30 06:09:31,538 - [INFO] - Empleado: Adriana Cristina Pineda Arrieta (ID origen: 54)
+2025-09-30 06:09:31,913 - [INFO] - 
+Resumen:
+2025-09-30 06:09:31,913 - [INFO] -   Email: adripineda45@hotmail.com
+2025-09-30 06:09:31,913 - [INFO] -   Puesto: 3
+2025-09-30 06:09:31,913 - [INFO] -   Departamento: 3
+2025-09-30 06:09:31,913 - [INFO] -   Total campos: 10
+2025-09-30 06:09:31,913 - [INFO] - 
+Creando empleado en destino...
+2025-09-30 06:09:32,172 - [INFO] - OK! Empleado creado: Adriana Cristina Pineda Arrieta -> ID [31]
+2025-09-30 06:09:32,173 - [INFO] - 
+Creando usuario de sistema...
+2025-09-30 06:09:32,714 - [ERROR] -    Error creando usuario: <Fault 1: 'Traceback (most recent call last):\n  File "/home/odoo/src/odoo/odoo/addons/base/controllers/rpc.py", line 165, in xmlrpc_2\n    response = self._xmlrpc(service)\n               ^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/addons/base/controllers/rpc.py", line 139, in _xmlrpc\n    result = dispatch_rpc(service, method, params)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/http.py", line 412, in dispatch_rpc\n    return dispatch(method, params)\n           ^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 58, in dispatch\n    res = execute_kw(db, uid, *params[3:])\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 81, in execute_kw\n    return execute(db, uid, obj, method, *args, **kw or {})\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 87, in execute\n    res = execute_cr(cr, uid, obj, method, *args, **kw)\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 72, in execute_cr\n    result = retrying(partial(odoo.api.call_kw, recs, method, args, kw), env)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 156, in retrying\n    result = func()\n             ^^^^^^\n  File "/home/odoo/src/odoo/odoo/api.py", line 535, in call_kw\n    result = getattr(recs, name)(*args, **kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nTypeError: create() got an unexpected keyword argument \'no_reset_password\'\n'>
+2025-09-30 06:09:32,714 - [INFO] - 
+[5/26]
+2025-09-30 06:09:32,714 - [INFO] - 
+======================================================================
+2025-09-30 06:09:32,714 - [INFO] - Empleado: Carlos David Garces Diaz (ID origen: 55)
+2025-09-30 06:09:33,186 - [INFO] - 
+Resumen:
+2025-09-30 06:09:33,186 - [INFO] -   Email: davidgarces0307@hotmail.com
+2025-09-30 06:09:33,186 - [INFO] -   Puesto: 4
+2025-09-30 06:09:33,186 - [INFO] -   Departamento: 3
+2025-09-30 06:09:33,186 - [INFO] -   Total campos: 11
+2025-09-30 06:09:33,186 - [INFO] - 
+Creando empleado en destino...
+2025-09-30 06:09:33,435 - [INFO] - OK! Empleado creado: Carlos David Garces Diaz -> ID [32]
+2025-09-30 06:09:33,435 - [INFO] - 
+Creando usuario de sistema...
+2025-09-30 06:09:33,988 - [ERROR] -    Error creando usuario: <Fault 1: 'Traceback (most recent call last):\n  File "/home/odoo/src/odoo/odoo/addons/base/controllers/rpc.py", line 165, in xmlrpc_2\n    response = self._xmlrpc(service)\n               ^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/addons/base/controllers/rpc.py", line 139, in _xmlrpc\n    result = dispatch_rpc(service, method, params)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/http.py", line 412, in dispatch_rpc\n    return dispatch(method, params)\n           ^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 58, in dispatch\n    res = execute_kw(db, uid, *params[3:])\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 81, in execute_kw\n    return execute(db, uid, obj, method, *args, **kw or {})\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 87, in execute\n    res = execute_cr(cr, uid, obj, method, *args, **kw)\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 72, in execute_cr\n    result = retrying(partial(odoo.api.call_kw, recs, method, args, kw), env)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 156, in retrying\n    result = func()\n             ^^^^^^\n  File "/home/odoo/src/odoo/odoo/api.py", line 535, in call_kw\n    result = getattr(recs, name)(*args, **kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nTypeError: create() got an unexpected keyword argument \'no_reset_password\'\n'>
+2025-09-30 06:09:33,988 - [INFO] - 
+[6/26]
+2025-09-30 06:09:33,988 - [INFO] - 
+======================================================================
+2025-09-30 06:09:33,988 - [INFO] - Empleado: Deisy Estela Diaz Espitia (ID origen: 56)
+2025-09-30 06:09:34,386 - [INFO] - 
+Resumen:
+2025-09-30 06:09:34,386 - [INFO] -   Email: deisydies@gmail.com
+2025-09-30 06:09:34,386 - [INFO] -   Puesto: 5
+2025-09-30 06:09:34,386 - [INFO] -   Departamento: 3
+2025-09-30 06:09:34,386 - [INFO] -   Total campos: 11
+2025-09-30 06:09:34,386 - [INFO] - 
+Creando empleado en destino...
+2025-09-30 06:09:34,633 - [INFO] - OK! Empleado creado: Deisy Estela Diaz Espitia -> ID [33]
+2025-09-30 06:09:34,634 - [INFO] - 
+Creando usuario de sistema...
+2025-09-30 06:09:35,186 - [ERROR] -    Error creando usuario: <Fault 1: 'Traceback (most recent call last):\n  File "/home/odoo/src/odoo/odoo/addons/base/controllers/rpc.py", line 165, in xmlrpc_2\n    response = self._xmlrpc(service)\n               ^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/addons/base/controllers/rpc.py", line 139, in _xmlrpc\n    result = dispatch_rpc(service, method, params)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/http.py", line 412, in dispatch_rpc\n    return dispatch(method, params)\n           ^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 58, in dispatch\n    res = execute_kw(db, uid, *params[3:])\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 81, in execute_kw\n    return execute(db, uid, obj, method, *args, **kw or {})\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 87, in execute\n    res = execute_cr(cr, uid, obj, method, *args, **kw)\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 72, in execute_cr\n    result = retrying(partial(odoo.api.call_kw, recs, method, args, kw), env)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 156, in retrying\n    result = func()\n             ^^^^^^\n  File "/home/odoo/src/odoo/odoo/api.py", line 535, in call_kw\n    result = getattr(recs, name)(*args, **kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nTypeError: create() got an unexpected keyword argument \'no_reset_password\'\n'>
+2025-09-30 06:09:35,187 - [INFO] - 
+[7/26]
+2025-09-30 06:09:35,187 - [INFO] - 
+======================================================================
+2025-09-30 06:09:35,187 - [INFO] - Empleado: Diana Lucia Manco Rangel (ID origen: 57)
+2025-09-30 06:09:35,585 - [INFO] - 
+Resumen:
+2025-09-30 06:09:35,586 - [INFO] -   Email: dianamanco93@gmail.com
+2025-09-30 06:09:35,586 - [INFO] -   Puesto: 6
+2025-09-30 06:09:35,586 - [INFO] -   Departamento: 2
+2025-09-30 06:09:35,586 - [INFO] -   Total campos: 11
+2025-09-30 06:09:35,586 - [INFO] - 
+Creando empleado en destino...
+2025-09-30 06:09:35,835 - [INFO] - OK! Empleado creado: Diana Lucia Manco Rangel -> ID [34]
+2025-09-30 06:09:35,835 - [INFO] - 
+Creando usuario de sistema...
+2025-09-30 06:09:36,384 - [ERROR] -    Error creando usuario: <Fault 1: 'Traceback (most recent call last):\n  File "/home/odoo/src/odoo/odoo/addons/base/controllers/rpc.py", line 165, in xmlrpc_2\n    response = self._xmlrpc(service)\n               ^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/addons/base/controllers/rpc.py", line 139, in _xmlrpc\n    result = dispatch_rpc(service, method, params)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/http.py", line 412, in dispatch_rpc\n    return dispatch(method, params)\n           ^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 58, in dispatch\n    res = execute_kw(db, uid, *params[3:])\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 81, in execute_kw\n    return execute(db, uid, obj, method, *args, **kw or {})\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 87, in execute\n    res = execute_cr(cr, uid, obj, method, *args, **kw)\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 72, in execute_cr\n    result = retrying(partial(odoo.api.call_kw, recs, method, args, kw), env)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 156, in retrying\n    result = func()\n             ^^^^^^\n  File "/home/odoo/src/odoo/odoo/api.py", line 535, in call_kw\n    result = getattr(recs, name)(*args, **kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nTypeError: create() got an unexpected keyword argument \'no_reset_password\'\n'>
+2025-09-30 06:09:36,384 - [INFO] - 
+[8/26]
+2025-09-30 06:09:36,384 - [INFO] - 
+======================================================================
+2025-09-30 06:09:36,384 - [INFO] - Empleado: Duban Javier Chica López (ID origen: 58)
+2025-09-30 06:09:36,785 - [INFO] - 
+Resumen:
+2025-09-30 06:09:36,785 - [INFO] -   Email: dubanchica06@gmail.com
+2025-09-30 06:09:36,785 - [INFO] -   Puesto: 7
+2025-09-30 06:09:36,785 - [INFO] -   Departamento: 2
+2025-09-30 06:09:36,785 - [INFO] -   Total campos: 11
+2025-09-30 06:09:36,785 - [INFO] - 
+Creando empleado en destino...
+2025-09-30 06:09:37,036 - [INFO] - OK! Empleado creado: Duban Javier Chica López -> ID [35]
+2025-09-30 06:09:37,037 - [INFO] - 
+Creando usuario de sistema...
+2025-09-30 06:09:37,590 - [ERROR] -    Error creando usuario: <Fault 1: 'Traceback (most recent call last):\n  File "/home/odoo/src/odoo/odoo/addons/base/controllers/rpc.py", line 165, in xmlrpc_2\n    response = self._xmlrpc(service)\n               ^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/addons/base/controllers/rpc.py", line 139, in _xmlrpc\n    result = dispatch_rpc(service, method, params)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/http.py", line 412, in dispatch_rpc\n    return dispatch(method, params)\n           ^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 58, in dispatch\n    res = execute_kw(db, uid, *params[3:])\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 81, in execute_kw\n    return execute(db, uid, obj, method, *args, **kw or {})\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 87, in execute\n    res = execute_cr(cr, uid, obj, method, *args, **kw)\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 72, in execute_cr\n    result = retrying(partial(odoo.api.call_kw, recs, method, args, kw), env)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 156, in retrying\n    result = func()\n             ^^^^^^\n  File "/home/odoo/src/odoo/odoo/api.py", line 535, in call_kw\n    result = getattr(recs, name)(*args, **kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nTypeError: create() got an unexpected keyword argument \'no_reset_password\'\n'>
+2025-09-30 06:09:37,590 - [INFO] - 
+[9/26]
+2025-09-30 06:09:37,590 - [INFO] - 
+======================================================================
+2025-09-30 06:09:37,590 - [INFO] - Empleado: EDWIN ALONSO TRUJILLO MESA (ID origen: 74)
+2025-09-30 06:09:37,792 - [INFO] - 
+Resumen:
+2025-09-30 06:09:37,792 - [INFO] -   Email: etrumes@gmail.com
+2025-09-30 06:09:37,792 - [INFO] -   Puesto: 2
+2025-09-30 06:09:37,792 - [INFO] -   Departamento: 3
+2025-09-30 06:09:37,792 - [INFO] -   Total campos: 11
+2025-09-30 06:09:37,792 - [INFO] - 
+Creando empleado en destino...
+2025-09-30 06:09:38,038 - [INFO] - OK! Empleado creado: EDWIN ALONSO TRUJILLO MESA -> ID [36]
+2025-09-30 06:09:38,038 - [INFO] - 
+Creando usuario de sistema...
+2025-09-30 06:09:38,587 - [ERROR] -    Error creando usuario: <Fault 1: 'Traceback (most recent call last):\n  File "/home/odoo/src/odoo/odoo/addons/base/controllers/rpc.py", line 165, in xmlrpc_2\n    response = self._xmlrpc(service)\n               ^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/addons/base/controllers/rpc.py", line 139, in _xmlrpc\n    result = dispatch_rpc(service, method, params)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/http.py", line 412, in dispatch_rpc\n    return dispatch(method, params)\n           ^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 58, in dispatch\n    res = execute_kw(db, uid, *params[3:])\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 81, in execute_kw\n    return execute(db, uid, obj, method, *args, **kw or {})\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 87, in execute\n    res = execute_cr(cr, uid, obj, method, *args, **kw)\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 72, in execute_cr\n    result = retrying(partial(odoo.api.call_kw, recs, method, args, kw), env)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 156, in retrying\n    result = func()\n             ^^^^^^\n  File "/home/odoo/src/odoo/odoo/api.py", line 535, in call_kw\n    result = getattr(recs, name)(*args, **kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nTypeError: create() got an unexpected keyword argument \'no_reset_password\'\n'>
+2025-09-30 06:09:38,588 - [INFO] - 
+[10/26]
+2025-09-30 06:09:38,588 - [INFO] - 
+======================================================================
+2025-09-30 06:09:38,588 - [INFO] - Empleado: Eliana Sofia Perneth Garces (ID origen: 59)
+2025-09-30 06:09:38,989 - [INFO] - 
+Resumen:
+2025-09-30 06:09:38,989 - [INFO] -   Email: Eperneth@gmail.com
+2025-09-30 06:09:38,989 - [INFO] -   Puesto: 8
+2025-09-30 06:09:38,989 - [INFO] -   Departamento: 3
+2025-09-30 06:09:38,989 - [INFO] -   Total campos: 11
+2025-09-30 06:09:38,989 - [INFO] - 
+Creando empleado en destino...
+2025-09-30 06:09:39,242 - [INFO] - OK! Empleado creado: Eliana Sofia Perneth Garces -> ID [37]
+2025-09-30 06:09:39,243 - [INFO] - 
+Creando usuario de sistema...
+2025-09-30 06:09:39,786 - [ERROR] -    Error creando usuario: <Fault 1: 'Traceback (most recent call last):\n  File "/home/odoo/src/odoo/odoo/addons/base/controllers/rpc.py", line 165, in xmlrpc_2\n    response = self._xmlrpc(service)\n               ^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/addons/base/controllers/rpc.py", line 139, in _xmlrpc\n    result = dispatch_rpc(service, method, params)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/http.py", line 412, in dispatch_rpc\n    return dispatch(method, params)\n           ^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 58, in dispatch\n    res = execute_kw(db, uid, *params[3:])\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 81, in execute_kw\n    return execute(db, uid, obj, method, *args, **kw or {})\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 87, in execute\n    res = execute_cr(cr, uid, obj, method, *args, **kw)\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 72, in execute_cr\n    result = retrying(partial(odoo.api.call_kw, recs, method, args, kw), env)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 156, in retrying\n    result = func()\n             ^^^^^^\n  File "/home/odoo/src/odoo/odoo/api.py", line 535, in call_kw\n    result = getattr(recs, name)(*args, **kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nTypeError: create() got an unexpected keyword argument \'no_reset_password\'\n'>
+2025-09-30 06:09:39,786 - [INFO] - 
+[11/26]
+2025-09-30 06:09:39,786 - [INFO] - 
+======================================================================
+2025-09-30 06:09:39,786 - [INFO] - Empleado: Enadis Esther Rodriguez Ballesta (ID origen: 60)
+2025-09-30 06:09:40,185 - [INFO] - 
+Resumen:
+2025-09-30 06:09:40,186 - [INFO] -   Email: enadis.stella1907@gmail.com
+2025-09-30 06:09:40,186 - [INFO] -   Puesto: 9
+2025-09-30 06:09:40,186 - [INFO] -   Departamento: 3
+2025-09-30 06:09:40,186 - [INFO] -   Total campos: 11
+2025-09-30 06:09:40,186 - [INFO] - 
+Creando empleado en destino...
+2025-09-30 06:09:40,434 - [INFO] - OK! Empleado creado: Enadis Esther Rodriguez Ballesta -> ID [38]
+2025-09-30 06:09:40,435 - [INFO] - 
+Creando usuario de sistema...
+2025-09-30 06:09:40,985 - [ERROR] -    Error creando usuario: <Fault 1: 'Traceback (most recent call last):\n  File "/home/odoo/src/odoo/odoo/addons/base/controllers/rpc.py", line 165, in xmlrpc_2\n    response = self._xmlrpc(service)\n               ^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/addons/base/controllers/rpc.py", line 139, in _xmlrpc\n    result = dispatch_rpc(service, method, params)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/http.py", line 412, in dispatch_rpc\n    return dispatch(method, params)\n           ^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 58, in dispatch\n    res = execute_kw(db, uid, *params[3:])\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 81, in execute_kw\n    return execute(db, uid, obj, method, *args, **kw or {})\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 87, in execute\n    res = execute_cr(cr, uid, obj, method, *args, **kw)\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 72, in execute_cr\n    result = retrying(partial(odoo.api.call_kw, recs, method, args, kw), env)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 156, in retrying\n    result = func()\n             ^^^^^^\n  File "/home/odoo/src/odoo/odoo/api.py", line 535, in call_kw\n    result = getattr(recs, name)(*args, **kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nTypeError: create() got an unexpected keyword argument \'no_reset_password\'\n'>
+2025-09-30 06:09:40,985 - [INFO] - 
+[12/26]
+2025-09-30 06:09:40,985 - [INFO] - 
+======================================================================
+2025-09-30 06:09:40,985 - [INFO] - Empleado: Erica Cristina Contreras Barrera (ID origen: 61)
+2025-09-30 06:09:41,195 - [INFO] - 
+Resumen:
+2025-09-30 06:09:41,195 - [INFO] -   Email: ericacristinacontreras@gmail.com
+2025-09-30 06:09:41,195 - [INFO] -   Puesto: 3
+2025-09-30 06:09:41,195 - [INFO] -   Departamento: 3
+2025-09-30 06:09:41,195 - [INFO] -   Total campos: 11
+2025-09-30 06:09:41,195 - [INFO] - 
+Creando empleado en destino...
+2025-09-30 06:09:41,434 - [INFO] - OK! Empleado creado: Erica Cristina Contreras Barrera -> ID [39]
+2025-09-30 06:09:41,434 - [INFO] - 
+Creando usuario de sistema...
+2025-09-30 06:09:42,024 - [ERROR] -    Error creando usuario: <Fault 1: 'Traceback (most recent call last):\n  File "/home/odoo/src/odoo/odoo/addons/base/controllers/rpc.py", line 165, in xmlrpc_2\n    response = self._xmlrpc(service)\n               ^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/addons/base/controllers/rpc.py", line 139, in _xmlrpc\n    result = dispatch_rpc(service, method, params)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/http.py", line 412, in dispatch_rpc\n    return dispatch(method, params)\n           ^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 58, in dispatch\n    res = execute_kw(db, uid, *params[3:])\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 81, in execute_kw\n    return execute(db, uid, obj, method, *args, **kw or {})\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 87, in execute\n    res = execute_cr(cr, uid, obj, method, *args, **kw)\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 72, in execute_cr\n    result = retrying(partial(odoo.api.call_kw, recs, method, args, kw), env)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 156, in retrying\n    result = func()\n             ^^^^^^\n  File "/home/odoo/src/odoo/odoo/api.py", line 535, in call_kw\n    result = getattr(recs, name)(*args, **kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nTypeError: create() got an unexpected keyword argument \'no_reset_password\'\n'>
+2025-09-30 06:09:42,024 - [INFO] - 
+[13/26]
+2025-09-30 06:09:42,024 - [INFO] - 
+======================================================================
+2025-09-30 06:09:42,024 - [INFO] - Empleado: Laury Estela Coronado Paternina (ID origen: 72)
+2025-09-30 06:09:42,412 - [INFO] - 
+Resumen:
+2025-09-30 06:09:42,412 - [INFO] -   Email:  laurycoronado@outlook.com
+2025-09-30 06:09:42,412 - [INFO] -   Puesto: 10
+2025-09-30 06:09:42,412 - [INFO] -   Departamento: 3
+2025-09-30 06:09:42,412 - [INFO] -   Total campos: 11
+2025-09-30 06:09:42,412 - [INFO] - 
+Creando empleado en destino...
+2025-09-30 06:09:42,660 - [INFO] - OK! Empleado creado: Laury Estela Coronado Paternina -> ID [40]
+2025-09-30 06:09:42,660 - [INFO] - 
+Creando usuario de sistema...
+2025-09-30 06:09:43,212 - [ERROR] -    Error creando usuario: <Fault 1: 'Traceback (most recent call last):\n  File "/home/odoo/src/odoo/odoo/addons/base/controllers/rpc.py", line 165, in xmlrpc_2\n    response = self._xmlrpc(service)\n               ^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/addons/base/controllers/rpc.py", line 139, in _xmlrpc\n    result = dispatch_rpc(service, method, params)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/http.py", line 412, in dispatch_rpc\n    return dispatch(method, params)\n           ^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 58, in dispatch\n    res = execute_kw(db, uid, *params[3:])\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 81, in execute_kw\n    return execute(db, uid, obj, method, *args, **kw or {})\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 87, in execute\n    res = execute_cr(cr, uid, obj, method, *args, **kw)\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 72, in execute_cr\n    result = retrying(partial(odoo.api.call_kw, recs, method, args, kw), env)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 156, in retrying\n    result = func()\n             ^^^^^^\n  File "/home/odoo/src/odoo/odoo/api.py", line 535, in call_kw\n    result = getattr(recs, name)(*args, **kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nTypeError: create() got an unexpected keyword argument \'no_reset_password\'\n'>
+2025-09-30 06:09:43,213 - [INFO] - 
+[14/26]
+2025-09-30 06:09:43,213 - [INFO] - 
+======================================================================
+2025-09-30 06:09:43,213 - [INFO] - Empleado: Lidia Beatriz Lenes Miranda (ID origen: 62)
+2025-09-30 06:09:43,614 - [INFO] - 
+Resumen:
+2025-09-30 06:09:43,614 - [INFO] -   Email: lidia.lenes.65@gmail.com
+2025-09-30 06:09:43,614 - [INFO] -   Puesto: 11
+2025-09-30 06:09:43,614 - [INFO] -   Departamento: 2
+2025-09-30 06:09:43,614 - [INFO] -   Total campos: 11
+2025-09-30 06:09:43,614 - [INFO] - 
+Creando empleado en destino...
+2025-09-30 06:09:43,860 - [INFO] - OK! Empleado creado: Lidia Beatriz Lenes Miranda -> ID [41]
+2025-09-30 06:09:43,860 - [INFO] - 
+Creando usuario de sistema...
+2025-09-30 06:09:44,413 - [ERROR] -    Error creando usuario: <Fault 1: 'Traceback (most recent call last):\n  File "/home/odoo/src/odoo/odoo/addons/base/controllers/rpc.py", line 165, in xmlrpc_2\n    response = self._xmlrpc(service)\n               ^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/addons/base/controllers/rpc.py", line 139, in _xmlrpc\n    result = dispatch_rpc(service, method, params)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/http.py", line 412, in dispatch_rpc\n    return dispatch(method, params)\n           ^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 58, in dispatch\n    res = execute_kw(db, uid, *params[3:])\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 81, in execute_kw\n    return execute(db, uid, obj, method, *args, **kw or {})\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 87, in execute\n    res = execute_cr(cr, uid, obj, method, *args, **kw)\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 72, in execute_cr\n    result = retrying(partial(odoo.api.call_kw, recs, method, args, kw), env)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 156, in retrying\n    result = func()\n             ^^^^^^\n  File "/home/odoo/src/odoo/odoo/api.py", line 535, in call_kw\n    result = getattr(recs, name)(*args, **kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nTypeError: create() got an unexpected keyword argument \'no_reset_password\'\n'>
+2025-09-30 06:09:44,413 - [INFO] - 
+[15/26]
+2025-09-30 06:09:44,413 - [INFO] - 
+======================================================================
+2025-09-30 06:09:44,413 - [INFO] - Empleado: Luis Alfredo Vertel Sanchez  (ID origen: 63)
+2025-09-30 06:09:44,822 - [INFO] - 
+Resumen:
+2025-09-30 06:09:44,823 - [INFO] -   Email: alfredovertel@hotmail.com
+2025-09-30 06:09:44,823 - [INFO] -   Puesto: 12
+2025-09-30 06:09:44,823 - [INFO] -   Departamento: 2
+2025-09-30 06:09:44,823 - [INFO] -   Total campos: 11
+2025-09-30 06:09:44,823 - [INFO] - 
+Creando empleado en destino...
+2025-09-30 06:09:45,061 - [INFO] - OK! Empleado creado: Luis Alfredo Vertel Sanchez  -> ID [42]
+2025-09-30 06:09:45,061 - [INFO] - 
+Creando usuario de sistema...
+2025-09-30 06:09:45,612 - [ERROR] -    Error creando usuario: <Fault 1: 'Traceback (most recent call last):\n  File "/home/odoo/src/odoo/odoo/addons/base/controllers/rpc.py", line 165, in xmlrpc_2\n    response = self._xmlrpc(service)\n               ^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/addons/base/controllers/rpc.py", line 139, in _xmlrpc\n    result = dispatch_rpc(service, method, params)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/http.py", line 412, in dispatch_rpc\n    return dispatch(method, params)\n           ^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 58, in dispatch\n    res = execute_kw(db, uid, *params[3:])\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 81, in execute_kw\n    return execute(db, uid, obj, method, *args, **kw or {})\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 87, in execute\n    res = execute_cr(cr, uid, obj, method, *args, **kw)\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 72, in execute_cr\n    result = retrying(partial(odoo.api.call_kw, recs, method, args, kw), env)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 156, in retrying\n    result = func()\n             ^^^^^^\n  File "/home/odoo/src/odoo/odoo/api.py", line 535, in call_kw\n    result = getattr(recs, name)(*args, **kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nTypeError: create() got an unexpected keyword argument \'no_reset_password\'\n'>
+2025-09-30 06:09:45,612 - [INFO] - 
+[16/26]
+2025-09-30 06:09:45,612 - [INFO] - 
+======================================================================
+2025-09-30 06:09:45,613 - [INFO] - Empleado: Marcela  Cecilia Perez Argel (ID origen: 64)
+2025-09-30 06:09:46,011 - [INFO] - 
+Resumen:
+2025-09-30 06:09:46,011 - [INFO] -   Email: Perezmarcela0614@gmail.com
+2025-09-30 06:09:46,011 - [INFO] -   Puesto: 13
+2025-09-30 06:09:46,011 - [INFO] -   Departamento: 2
+2025-09-30 06:09:46,012 - [INFO] -   Total campos: 11
+2025-09-30 06:09:46,012 - [INFO] - 
+Creando empleado en destino...
+2025-09-30 06:09:46,264 - [INFO] - OK! Empleado creado: Marcela  Cecilia Perez Argel -> ID [43]
+2025-09-30 06:09:46,265 - [INFO] - 
+Creando usuario de sistema...
+2025-09-30 06:09:46,813 - [ERROR] -    Error creando usuario: <Fault 1: 'Traceback (most recent call last):\n  File "/home/odoo/src/odoo/odoo/addons/base/controllers/rpc.py", line 165, in xmlrpc_2\n    response = self._xmlrpc(service)\n               ^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/addons/base/controllers/rpc.py", line 139, in _xmlrpc\n    result = dispatch_rpc(service, method, params)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/http.py", line 412, in dispatch_rpc\n    return dispatch(method, params)\n           ^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 58, in dispatch\n    res = execute_kw(db, uid, *params[3:])\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 81, in execute_kw\n    return execute(db, uid, obj, method, *args, **kw or {})\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 87, in execute\n    res = execute_cr(cr, uid, obj, method, *args, **kw)\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 72, in execute_cr\n    result = retrying(partial(odoo.api.call_kw, recs, method, args, kw), env)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 156, in retrying\n    result = func()\n             ^^^^^^\n  File "/home/odoo/src/odoo/odoo/api.py", line 535, in call_kw\n    result = getattr(recs, name)(*args, **kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nTypeError: create() got an unexpected keyword argument \'no_reset_password\'\n'>
+2025-09-30 06:09:46,813 - [INFO] - 
+[17/26]
+2025-09-30 06:09:46,813 - [INFO] - 
+======================================================================
+2025-09-30 06:09:46,813 - [INFO] - Empleado: Maria Alejandra Cavadia Moreno (ID origen: 65)
+2025-09-30 06:09:47,213 - [INFO] - 
+Resumen:
+2025-09-30 06:09:47,213 - [INFO] -   Email: maryale.30@gmail.com
+2025-09-30 06:09:47,214 - [INFO] -   Puesto: 14
+2025-09-30 06:09:47,214 - [INFO] -   Departamento: 2
+2025-09-30 06:09:47,214 - [INFO] -   Total campos: 11
+2025-09-30 06:09:47,214 - [INFO] - 
+Creando empleado en destino...
+2025-09-30 06:09:47,474 - [INFO] - OK! Empleado creado: Maria Alejandra Cavadia Moreno -> ID [44]
+2025-09-30 06:09:47,474 - [INFO] - 
+Creando usuario de sistema...
+2025-09-30 06:09:48,014 - [ERROR] -    Error creando usuario: <Fault 1: 'Traceback (most recent call last):\n  File "/home/odoo/src/odoo/odoo/addons/base/controllers/rpc.py", line 165, in xmlrpc_2\n    response = self._xmlrpc(service)\n               ^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/addons/base/controllers/rpc.py", line 139, in _xmlrpc\n    result = dispatch_rpc(service, method, params)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/http.py", line 412, in dispatch_rpc\n    return dispatch(method, params)\n           ^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 58, in dispatch\n    res = execute_kw(db, uid, *params[3:])\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 81, in execute_kw\n    return execute(db, uid, obj, method, *args, **kw or {})\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 87, in execute\n    res = execute_cr(cr, uid, obj, method, *args, **kw)\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 72, in execute_cr\n    result = retrying(partial(odoo.api.call_kw, recs, method, args, kw), env)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 156, in retrying\n    result = func()\n             ^^^^^^\n  File "/home/odoo/src/odoo/odoo/api.py", line 535, in call_kw\n    result = getattr(recs, name)(*args, **kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nTypeError: create() got an unexpected keyword argument \'no_reset_password\'\n'>
+2025-09-30 06:09:48,014 - [INFO] - 
+[18/26]
+2025-09-30 06:09:48,014 - [INFO] - 
+======================================================================
+2025-09-30 06:09:48,014 - [INFO] - Empleado: Marlon JordanoMurillo Garces (ID origen: 76)
+2025-09-30 06:09:48,422 - [INFO] - 
+Resumen:
+2025-09-30 06:09:48,422 - [INFO] -   Email: 	Mgarces397@gmail.com
+2025-09-30 06:09:48,422 - [INFO] -   Puesto: 15
+2025-09-30 06:09:48,422 - [INFO] -   Departamento: 2
+2025-09-30 06:09:48,422 - [INFO] -   Total campos: 11
+2025-09-30 06:09:48,422 - [INFO] - 
+Creando empleado en destino...
+2025-09-30 06:09:48,664 - [INFO] - OK! Empleado creado: Marlon JordanoMurillo Garces -> ID [45]
+2025-09-30 06:09:48,665 - [INFO] - 
+Creando usuario de sistema...
+2025-09-30 06:09:49,214 - [ERROR] -    Error creando usuario: <Fault 1: 'Traceback (most recent call last):\n  File "/home/odoo/src/odoo/odoo/addons/base/controllers/rpc.py", line 165, in xmlrpc_2\n    response = self._xmlrpc(service)\n               ^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/addons/base/controllers/rpc.py", line 139, in _xmlrpc\n    result = dispatch_rpc(service, method, params)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/http.py", line 412, in dispatch_rpc\n    return dispatch(method, params)\n           ^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 58, in dispatch\n    res = execute_kw(db, uid, *params[3:])\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 81, in execute_kw\n    return execute(db, uid, obj, method, *args, **kw or {})\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 87, in execute\n    res = execute_cr(cr, uid, obj, method, *args, **kw)\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 72, in execute_cr\n    result = retrying(partial(odoo.api.call_kw, recs, method, args, kw), env)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 156, in retrying\n    result = func()\n             ^^^^^^\n  File "/home/odoo/src/odoo/odoo/api.py", line 535, in call_kw\n    result = getattr(recs, name)(*args, **kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nTypeError: create() got an unexpected keyword argument \'no_reset_password\'\n'>
+2025-09-30 06:09:49,214 - [INFO] - 
+[19/26]
+2025-09-30 06:09:49,214 - [INFO] - 
+======================================================================
+2025-09-30 06:09:49,214 - [INFO] - Empleado: María Claudia Romero Cogollo  (ID origen: 75)
+2025-09-30 06:09:49,611 - [INFO] - 
+Resumen:
+2025-09-30 06:09:49,611 - [INFO] -   Email: romerocogollom@gmail.com
+2025-09-30 06:09:49,611 - [INFO] -   Puesto: 16
+2025-09-30 06:09:49,611 - [INFO] -   Departamento: 2
+2025-09-30 06:09:49,611 - [INFO] -   Total campos: 11
+2025-09-30 06:09:49,611 - [INFO] - 
+Creando empleado en destino...
+2025-09-30 06:09:49,861 - [INFO] - OK! Empleado creado: María Claudia Romero Cogollo  -> ID [46]
+2025-09-30 06:09:49,861 - [INFO] - 
+Creando usuario de sistema...
+2025-09-30 06:09:50,412 - [ERROR] -    Error creando usuario: <Fault 1: 'Traceback (most recent call last):\n  File "/home/odoo/src/odoo/odoo/addons/base/controllers/rpc.py", line 165, in xmlrpc_2\n    response = self._xmlrpc(service)\n               ^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/addons/base/controllers/rpc.py", line 139, in _xmlrpc\n    result = dispatch_rpc(service, method, params)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/http.py", line 412, in dispatch_rpc\n    return dispatch(method, params)\n           ^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 58, in dispatch\n    res = execute_kw(db, uid, *params[3:])\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 81, in execute_kw\n    return execute(db, uid, obj, method, *args, **kw or {})\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 87, in execute\n    res = execute_cr(cr, uid, obj, method, *args, **kw)\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 72, in execute_cr\n    result = retrying(partial(odoo.api.call_kw, recs, method, args, kw), env)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 156, in retrying\n    result = func()\n             ^^^^^^\n  File "/home/odoo/src/odoo/odoo/api.py", line 535, in call_kw\n    result = getattr(recs, name)(*args, **kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nTypeError: create() got an unexpected keyword argument \'no_reset_password\'\n'>
+2025-09-30 06:09:50,412 - [INFO] - 
+[20/26]
+2025-09-30 06:09:50,412 - [INFO] - 
+======================================================================
+2025-09-30 06:09:50,412 - [INFO] - Empleado: Rafael Andres Meza Lazaro (ID origen: 66)
+2025-09-30 06:09:50,613 - [INFO] - 
+Resumen:
+2025-09-30 06:09:50,613 - [INFO] -   Email: andresmeza0321@gmail.com
+2025-09-30 06:09:50,613 - [INFO] -   Puesto: 2
+2025-09-30 06:09:50,613 - [INFO] -   Departamento: 3
+2025-09-30 06:09:50,613 - [INFO] -   Total campos: 11
+2025-09-30 06:09:50,613 - [INFO] - 
+Creando empleado en destino...
+2025-09-30 06:09:50,863 - [INFO] - OK! Empleado creado: Rafael Andres Meza Lazaro -> ID [47]
+2025-09-30 06:09:50,864 - [INFO] - 
+Creando usuario de sistema...
+2025-09-30 06:09:51,419 - [ERROR] -    Error creando usuario: <Fault 1: 'Traceback (most recent call last):\n  File "/home/odoo/src/odoo/odoo/addons/base/controllers/rpc.py", line 165, in xmlrpc_2\n    response = self._xmlrpc(service)\n               ^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/addons/base/controllers/rpc.py", line 139, in _xmlrpc\n    result = dispatch_rpc(service, method, params)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/http.py", line 412, in dispatch_rpc\n    return dispatch(method, params)\n           ^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 58, in dispatch\n    res = execute_kw(db, uid, *params[3:])\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 81, in execute_kw\n    return execute(db, uid, obj, method, *args, **kw or {})\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 87, in execute\n    res = execute_cr(cr, uid, obj, method, *args, **kw)\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 72, in execute_cr\n    result = retrying(partial(odoo.api.call_kw, recs, method, args, kw), env)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 156, in retrying\n    result = func()\n             ^^^^^^\n  File "/home/odoo/src/odoo/odoo/api.py", line 535, in call_kw\n    result = getattr(recs, name)(*args, **kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nTypeError: create() got an unexpected keyword argument \'no_reset_password\'\n'>
+2025-09-30 06:09:51,420 - [INFO] - 
+[21/26]
+2025-09-30 06:09:51,420 - [INFO] - 
+======================================================================
+2025-09-30 06:09:51,420 - [INFO] - Empleado: Rocio del Socorro Ramos Anaya (ID origen: 67)
+2025-09-30 06:09:51,618 - [INFO] - 
+Resumen:
+2025-09-30 06:09:51,618 - [INFO] -   Email:  villacarbe57@gmail.com
+2025-09-30 06:09:51,618 - [INFO] -   Puesto: 3
+2025-09-30 06:09:51,618 - [INFO] -   Departamento: 3
+2025-09-30 06:09:51,618 - [INFO] -   Total campos: 11
+2025-09-30 06:09:51,618 - [INFO] - 
+Creando empleado en destino...
+2025-09-30 06:09:51,861 - [INFO] - OK! Empleado creado: Rocio del Socorro Ramos Anaya -> ID [48]
+2025-09-30 06:09:51,861 - [INFO] - 
+Creando usuario de sistema...
+2025-09-30 06:09:52,413 - [ERROR] -    Error creando usuario: <Fault 1: 'Traceback (most recent call last):\n  File "/home/odoo/src/odoo/odoo/addons/base/controllers/rpc.py", line 165, in xmlrpc_2\n    response = self._xmlrpc(service)\n               ^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/addons/base/controllers/rpc.py", line 139, in _xmlrpc\n    result = dispatch_rpc(service, method, params)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/http.py", line 412, in dispatch_rpc\n    return dispatch(method, params)\n           ^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 58, in dispatch\n    res = execute_kw(db, uid, *params[3:])\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 81, in execute_kw\n    return execute(db, uid, obj, method, *args, **kw or {})\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 87, in execute\n    res = execute_cr(cr, uid, obj, method, *args, **kw)\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 72, in execute_cr\n    result = retrying(partial(odoo.api.call_kw, recs, method, args, kw), env)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 156, in retrying\n    result = func()\n             ^^^^^^\n  File "/home/odoo/src/odoo/odoo/api.py", line 535, in call_kw\n    result = getattr(recs, name)(*args, **kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nTypeError: create() got an unexpected keyword argument \'no_reset_password\'\n'>
+2025-09-30 06:09:52,413 - [INFO] - 
+[22/26]
+2025-09-30 06:09:52,413 - [INFO] - 
+======================================================================
+2025-09-30 06:09:52,413 - [INFO] - Empleado: Sandy Paola González Lora (ID origen: 73)
+2025-09-30 06:09:52,815 - [INFO] - 
+Resumen:
+2025-09-30 06:09:52,815 - [INFO] -   Email: sandygonzalo09@gmail.com
+2025-09-30 06:09:52,815 - [INFO] -   Puesto: 17
+2025-09-30 06:09:52,815 - [INFO] -   Departamento: 2
+2025-09-30 06:09:52,815 - [INFO] -   Total campos: 11
+2025-09-30 06:09:52,815 - [INFO] - 
+Creando empleado en destino...
+2025-09-30 06:09:53,075 - [INFO] - OK! Empleado creado: Sandy Paola González Lora -> ID [49]
+2025-09-30 06:09:53,076 - [INFO] - 
+Creando usuario de sistema...
+2025-09-30 06:09:53,612 - [ERROR] -    Error creando usuario: <Fault 1: 'Traceback (most recent call last):\n  File "/home/odoo/src/odoo/odoo/addons/base/controllers/rpc.py", line 165, in xmlrpc_2\n    response = self._xmlrpc(service)\n               ^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/addons/base/controllers/rpc.py", line 139, in _xmlrpc\n    result = dispatch_rpc(service, method, params)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/http.py", line 412, in dispatch_rpc\n    return dispatch(method, params)\n           ^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 58, in dispatch\n    res = execute_kw(db, uid, *params[3:])\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 81, in execute_kw\n    return execute(db, uid, obj, method, *args, **kw or {})\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 87, in execute\n    res = execute_cr(cr, uid, obj, method, *args, **kw)\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 72, in execute_cr\n    result = retrying(partial(odoo.api.call_kw, recs, method, args, kw), env)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 156, in retrying\n    result = func()\n             ^^^^^^\n  File "/home/odoo/src/odoo/odoo/api.py", line 535, in call_kw\n    result = getattr(recs, name)(*args, **kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nTypeError: create() got an unexpected keyword argument \'no_reset_password\'\n'>
+2025-09-30 06:09:53,612 - [INFO] - 
+[23/26]
+2025-09-30 06:09:53,612 - [INFO] - 
+======================================================================
+2025-09-30 06:09:53,612 - [INFO] - Empleado: Valeria Lozada Echeverri (ID origen: 71)
+2025-09-30 06:09:54,013 - [INFO] - 
+Resumen:
+2025-09-30 06:09:54,013 - [INFO] -   Email: valeria_1104@hotmail.com
+2025-09-30 06:09:54,013 - [INFO] -   Puesto: 18
+2025-09-30 06:09:54,013 - [INFO] -   Departamento: 2
+2025-09-30 06:09:54,013 - [INFO] -   Total campos: 11
+2025-09-30 06:09:54,013 - [INFO] - 
+Creando empleado en destino...
+2025-09-30 06:09:54,263 - [INFO] - OK! Empleado creado: Valeria Lozada Echeverri -> ID [50]
+2025-09-30 06:09:54,264 - [INFO] - 
+Creando usuario de sistema...
+2025-09-30 06:09:54,811 - [ERROR] -    Error creando usuario: <Fault 1: 'Traceback (most recent call last):\n  File "/home/odoo/src/odoo/odoo/addons/base/controllers/rpc.py", line 165, in xmlrpc_2\n    response = self._xmlrpc(service)\n               ^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/addons/base/controllers/rpc.py", line 139, in _xmlrpc\n    result = dispatch_rpc(service, method, params)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/http.py", line 412, in dispatch_rpc\n    return dispatch(method, params)\n           ^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 58, in dispatch\n    res = execute_kw(db, uid, *params[3:])\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 81, in execute_kw\n    return execute(db, uid, obj, method, *args, **kw or {})\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 87, in execute\n    res = execute_cr(cr, uid, obj, method, *args, **kw)\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 72, in execute_cr\n    result = retrying(partial(odoo.api.call_kw, recs, method, args, kw), env)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 156, in retrying\n    result = func()\n             ^^^^^^\n  File "/home/odoo/src/odoo/odoo/api.py", line 535, in call_kw\n    result = getattr(recs, name)(*args, **kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nTypeError: create() got an unexpected keyword argument \'no_reset_password\'\n'>
+2025-09-30 06:09:54,811 - [INFO] - 
+[24/26]
+2025-09-30 06:09:54,811 - [INFO] - 
+======================================================================
+2025-09-30 06:09:54,811 - [INFO] - Empleado: Victor David Alvarez Diaz (ID origen: 68)
+2025-09-30 06:09:55,217 - [INFO] - 
+Resumen:
+2025-09-30 06:09:55,217 - [INFO] -   Email: Zico149@hotmail.com
+2025-09-30 06:09:55,217 - [INFO] -   Puesto: 19
+2025-09-30 06:09:55,217 - [INFO] -   Departamento: 2
+2025-09-30 06:09:55,217 - [INFO] -   Total campos: 11
+2025-09-30 06:09:55,217 - [INFO] - 
+Creando empleado en destino...
+2025-09-30 06:09:55,460 - [INFO] - OK! Empleado creado: Victor David Alvarez Diaz -> ID [51]
+2025-09-30 06:09:55,460 - [INFO] - 
+Creando usuario de sistema...
+2025-09-30 06:09:56,014 - [ERROR] -    Error creando usuario: <Fault 1: 'Traceback (most recent call last):\n  File "/home/odoo/src/odoo/odoo/addons/base/controllers/rpc.py", line 165, in xmlrpc_2\n    response = self._xmlrpc(service)\n               ^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/addons/base/controllers/rpc.py", line 139, in _xmlrpc\n    result = dispatch_rpc(service, method, params)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/http.py", line 412, in dispatch_rpc\n    return dispatch(method, params)\n           ^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 58, in dispatch\n    res = execute_kw(db, uid, *params[3:])\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 81, in execute_kw\n    return execute(db, uid, obj, method, *args, **kw or {})\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 87, in execute\n    res = execute_cr(cr, uid, obj, method, *args, **kw)\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 72, in execute_cr\n    result = retrying(partial(odoo.api.call_kw, recs, method, args, kw), env)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 156, in retrying\n    result = func()\n             ^^^^^^\n  File "/home/odoo/src/odoo/odoo/api.py", line 535, in call_kw\n    result = getattr(recs, name)(*args, **kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nTypeError: create() got an unexpected keyword argument \'no_reset_password\'\n'>
+2025-09-30 06:09:56,014 - [INFO] - 
+[25/26]
+2025-09-30 06:09:56,014 - [INFO] - 
+======================================================================
+2025-09-30 06:09:56,014 - [INFO] - Empleado: YAMIT JOSE HERNANDEZ HOYOS (ID origen: 69)
+2025-09-30 06:09:56,412 - [INFO] - 
+Resumen:
+2025-09-30 06:09:56,412 - [INFO] -   Email: yajoheho25@gmail.com
+2025-09-30 06:09:56,412 - [INFO] -   Puesto: 20
+2025-09-30 06:09:56,412 - [INFO] -   Departamento: 3
+2025-09-30 06:09:56,412 - [INFO] -   Total campos: 11
+2025-09-30 06:09:56,412 - [INFO] - 
+Creando empleado en destino...
+2025-09-30 06:09:56,689 - [INFO] - OK! Empleado creado: YAMIT JOSE HERNANDEZ HOYOS -> ID [52]
+2025-09-30 06:09:56,689 - [INFO] - 
+Creando usuario de sistema...
+2025-09-30 06:09:57,231 - [ERROR] -    Error creando usuario: <Fault 1: 'Traceback (most recent call last):\n  File "/home/odoo/src/odoo/odoo/addons/base/controllers/rpc.py", line 165, in xmlrpc_2\n    response = self._xmlrpc(service)\n               ^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/addons/base/controllers/rpc.py", line 139, in _xmlrpc\n    result = dispatch_rpc(service, method, params)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/http.py", line 412, in dispatch_rpc\n    return dispatch(method, params)\n           ^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 58, in dispatch\n    res = execute_kw(db, uid, *params[3:])\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 81, in execute_kw\n    return execute(db, uid, obj, method, *args, **kw or {})\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 87, in execute\n    res = execute_cr(cr, uid, obj, method, *args, **kw)\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 72, in execute_cr\n    result = retrying(partial(odoo.api.call_kw, recs, method, args, kw), env)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 156, in retrying\n    result = func()\n             ^^^^^^\n  File "/home/odoo/src/odoo/odoo/api.py", line 535, in call_kw\n    result = getattr(recs, name)(*args, **kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nTypeError: create() got an unexpected keyword argument \'no_reset_password\'\n'>
+2025-09-30 06:09:57,231 - [INFO] - 
+[26/26]
+2025-09-30 06:09:57,231 - [INFO] - 
+======================================================================
+2025-09-30 06:09:57,231 - [INFO] - Empleado: Yulis Melisa Vasquez Portacio (ID origen: 70)
+2025-09-30 06:09:57,630 - [INFO] - 
+Resumen:
+2025-09-30 06:09:57,630 - [INFO] -   Email: yulisvasquez23@gmail.com
+2025-09-30 06:09:57,630 - [INFO] -   Puesto: 21
+2025-09-30 06:09:57,630 - [INFO] -   Departamento: 2
+2025-09-30 06:09:57,630 - [INFO] -   Total campos: 11
+2025-09-30 06:09:57,630 - [INFO] - 
+Creando empleado en destino...
+2025-09-30 06:09:57,900 - [INFO] - OK! Empleado creado: Yulis Melisa Vasquez Portacio -> ID [53]
+2025-09-30 06:09:57,900 - [INFO] - 
+Creando usuario de sistema...
+2025-09-30 06:09:58,435 - [ERROR] -    Error creando usuario: <Fault 1: 'Traceback (most recent call last):\n  File "/home/odoo/src/odoo/odoo/addons/base/controllers/rpc.py", line 165, in xmlrpc_2\n    response = self._xmlrpc(service)\n               ^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/addons/base/controllers/rpc.py", line 139, in _xmlrpc\n    result = dispatch_rpc(service, method, params)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/http.py", line 412, in dispatch_rpc\n    return dispatch(method, params)\n           ^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 58, in dispatch\n    res = execute_kw(db, uid, *params[3:])\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 81, in execute_kw\n    return execute(db, uid, obj, method, *args, **kw or {})\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 87, in execute\n    res = execute_cr(cr, uid, obj, method, *args, **kw)\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 72, in execute_cr\n    result = retrying(partial(odoo.api.call_kw, recs, method, args, kw), env)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/odoo/src/odoo/odoo/service/model.py", line 156, in retrying\n    result = func()\n             ^^^^^^\n  File "/home/odoo/src/odoo/odoo/api.py", line 535, in call_kw\n    result = getattr(recs, name)(*args, **kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nTypeError: create() got an unexpected keyword argument \'no_reset_password\'\n'>
+2025-09-30 06:09:58,436 - [INFO] - 
+======================================================================
+2025-09-30 06:09:58,436 - [INFO] - RESUMEN FINAL
+2025-09-30 06:09:58,436 - [INFO] - ======================================================================
+2025-09-30 06:09:58,436 - [INFO] - Total:    26
+2025-09-30 06:09:58,436 - [INFO] - Exitosos: 26 (100.0%)
+2025-09-30 06:09:58,436 - [INFO] - Fallidos: 0
+2025-09-30 06:09:58,436 - [INFO] - ======================================================================
+
+2025-09-30 06:09:58,436 - [INFO] - 
+Proceso completado: 26/26 exitosos
+2025-09-30 06:09:58,436 - [INFO] - Usuarios creados para empleados con email
+

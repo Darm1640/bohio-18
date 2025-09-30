@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Vista Form CRM BOHIO - Layout Personalizado -->
+    <record id="view_crm_lead_form_bohio" model="ir.ui.view">
+        <field name="name">crm.lead.form.bohio</field>
+        <field name="model">crm.lead</field>
+        <field name="priority">99</field>
+        <field name="arch" type="xml">
+            <form string="Oportunidad Inmobiliaria" js_class="crm_bohio_form">
+                <!-- ETAPAS ARRIBA -->
+                <header>
+                    <button name="action_set_won" string="Ganada" type="object"
+                            class="oe_highlight" invisible="active == False or probability == 100"
+                            data-hotkey="w"/>
+                    <button name="action_set_lost" string="Perdida" type="object"
+                            class="btn-secondary" invisible="active == False or probability == 0"
+                            data-hotkey="l"/>
+                    <button name="action_set_won_rainbowman" string="Marcar como Ganada" type="object"
+                            class="oe_highlight" invisible="active == False or probability == 100"/>
+                    <field name="stage_id" widget="statusbar" options="{'clickable': '1', 'fold_field': 'fold'}"
+                           domain="['|', ('team_id', '=', False), ('team_id', '=', team_id)]"/>
+                </header>
+
+                <sheet>
+                    <!-- Smart Buttons -->
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" type="object" name="action_view_compared_properties" icon="fa-balance-scale">
+                            <field string="Comparar" name="compared_properties_count" widget="statinfo"/>
+                        </button>
+                        <button class="oe_stat_button" type="object" name="action_view_recommended_properties" icon="fa-lightbulb-o">
+                            <field string="Recomendaciones" name="recommendation_count" widget="statinfo"/>
+                        </button>
+                        <button class="oe_stat_button" type="object" name="action_view_partner_contracts" icon="fa-file-text"
+                                invisible="not partner_id">
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_text">Contratos</span>
+                            </div>
+                        </button>
+                    </div>
+
+                    <!-- Título -->
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="ej. Juan Pérez - Apartamento Centro"/>
+                        </h1>
+                        <h3 class="o_row">
+                            <field name="partner_id" placeholder="Cliente"
+                                   context="{'default_is_company': type == 'opportunity', 'show_vat': True}"/>
+                            <span class="mx-2" invisible="not partner_id or not company_id"> - </span>
+                            <field name="company_id" groups="base.group_multi_company"
+                                   options="{'no_create': True}"/>
+                        </h3>
+                    </div>
+
+                    <!-- CAMPOS OCULTOS NECESARIOS -->
+                    <field name="type" invisible="1"/>
+                    <field name="active" invisible="1"/>
+                    <field name="probability" invisible="1"/>
+                    <field name="company_currency" invisible="1"/>
+
+                    <!-- LAYOUT DE 3 COLUMNAS: IZQUIERDA | CENTRO (CHATTER) | DERECHA -->
+                    <div class="row">
+                        <!-- COLUMNA IZQUIERDA: ACTIVIDADES Y REUNIONES -->
+                        <div class="col-lg-3">
+                            <group string="Actividades y Reuniones" class="o_label_nowrap">
+                                <field name="activity_ids" widget="mail_activity" nolabel="1"/>
+                                <separator string="Próxima Actividad"/>
+                                <field name="date_deadline" widget="date"/>
+                                <field name="user_id" string="Responsable" domain="[('share', '=', False)]"/>
+                                <field name="team_id" string="Equipo"/>
+                                <separator string="Prioridad"/>
+                                <field name="priority" widget="priority" nolabel="1"/>
+                                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" placeholder="Etiquetas"/>
+                            </group>
+                        </div>
+
+                        <!-- COLUMNA CENTRO: CHATTER -->
+                        <div class="col-lg-6">
+                            <!-- Chatter con TODO -->
+                            <group string="Comunicación" class="o_label_nowrap">
+                                <div class="o_chatter_container">
+                                    <field name="message_follower_ids" widget="mail_followers"/>
+                                    <field name="activity_ids" widget="mail_activity"/>
+                                    <field name="message_ids" widget="mail_thread" options="{'post_refresh': 'always'}"/>
+                                </div>
+                            </group>
+
+                            <separator string="Notas, Correos y Mensajes"/>
+                            <!-- Sección separada SOLO para notas/correos/mensajes -->
+                            <group string="Historial de Comunicación" class="o_label_nowrap">
+                                <field name="message_ids" widget="mail_thread"
+                                       options="{'display_log_button': True, 'post_refresh': 'always'}"
+                                       domain="[('message_type', 'in', ['email', 'comment', 'notification'])]"
+                                       nolabel="1"/>
+                            </group>
+                        </div>
+
+                        <!-- COLUMNA DERECHA: PROPIEDAD A COMPRAR -->
+                        <div class="col-lg-3">
+                            <group string="Propiedad de Interés" class="o_label_nowrap">
+                                <field name="property_ids" widget="many2many_tags" placeholder="Propiedades"/>
+                                <separator string="Comparar Propiedades"/>
+                                <field name="compared_properties_ids" nolabel="1"
+                                       domain="[('is_property', '=', True)]">
+                                    <list string="Comparativas" limit="4">
+                                        <field name="default_code" string="Código"/>
+                                        <field name="name"/>
+                                        <field name="list_price" widget="monetary"/>
+                                    </list>
+                                </field>
+                            </group>
+
+                            <!-- Recomendaciones basadas en lógica existente -->
+                            <group string="Sugerencias Automáticas" class="o_label_nowrap">
+                                <div class="alert alert-info" role="alert">
+                                    <i class="fa fa-info-circle"/> Basadas en preferencias del cliente
+                                </div>
+                                <button name="action_view_recommended_properties" type="object"
+                                        string="Ver Recomendaciones" icon="fa-lightbulb-o" class="btn-primary"/>
+                            </group>
+                        </div>
+                    </div>
+
+                    <!-- SECCIÓN: MÉTRICAS (DEBAJO DEL LAYOUT 3 COLUMNAS) -->
+                    <separator string="Métricas Financieras"/>
+                    <group>
+                        <group>
+                            <label for="expected_revenue" string="Ingreso Esperado"/>
+                            <div class="o_row">
+                                <field name="expected_revenue" widget="monetary" class="oe_inline"/>
+                                <span class="mx-2" invisible="type != 'opportunity'"> a </span>
+                                <field name="date_deadline" class="oe_inline" widget="date" invisible="type != 'opportunity'"/>
+                            </div>
+                            <field name="estimated_monthly_rent" widget="monetary" string="Renta Mensual Est."/>
+                            <field name="estimated_total_amount" widget="monetary" string="Monto Total Est."/>
+                        </group>
+                        <group>
+                            <field name="commission_percentage" widget="percentage" string="Comisión %"/>
+                            <field name="estimated_commission" widget="monetary" string="Comisión Est."/>
+                            <field name="payment_percentage" widget="percentage" string="% Pagado"
+                                   invisible="not contract_id"/>
+                        </group>
+                    </group>
+
+                    <!-- INFORMACIÓN CONTRACTUAL COMPRIMIDA -->
+                    <group string="Info. Contractual" invisible="service_interested not in ['rent', 'sale']">
+                        <group>
+                            <field name="contract_id" readonly="1"/>
+                            <field name="contract_start_date"/>
+                            <field name="contract_duration_months" invisible="service_interested != 'rent'"/>
+                        </group>
+                        <group invisible="not contract_id">
+                            <field name="total_invoiced" widget="monetary" string="Facturado"/>
+                            <field name="total_paid" widget="monetary" string="Pagado"/>
+                            <field name="total_pending" widget="monetary" string="Pendiente"/>
+                        </group>
+                    </group>
+
+                    <!-- INFORMACIÓN DEL CLIENTE -->
+                    <separator string="Información del Cliente"/>
+                    <group>
+                        <group>
+                            <field name="client_type" widget="radio" options="{'horizontal': true}" string="Tipo Cliente"/>
+                            <field name="service_interested" required="1" string="Servicio"/>
+                            <field name="email_from" widget="email" string="Email"/>
+                            <field name="phone" widget="phone" string="Teléfono"/>
+                            <field name="mobile" widget="phone" string="Móvil"/>
+                        </group>
+                        <group>
+                            <field name="referred_by_partner_id" string="Referido por"/>
+                            <field name="occupation" string="Ocupación"/>
+                            <field name="monthly_income" widget="monetary" string="Ingreso Mensual"/>
+                            <field name="number_of_occupants" string="Num. Ocupantes"/>
+                        </group>
+                    </group>
+
+                    <!-- PREFERENCIAS DE PROPIEDAD -->
+                    <separator string="Preferencias de Búsqueda"/>
+                    <group>
+                        <group>
+                            <field name="desired_city" string="Ciudad"/>
+                            <field name="desired_neighborhood" string="Barrio"/>
+                            <field name="desired_property_type_id" string="Tipo Propiedad"/>
+                            <field name="project_id" string="Proyecto"/>
+                        </group>
+                        <group>
+                            <label for="budget_min" string="Presupuesto"/>
+                            <div class="o_row">
+                                <field name="budget_min" widget="monetary" class="oe_inline"/>
+                                <span class="mx-2">a</span>
+                                <field name="budget_max" widget="monetary" class="oe_inline"/>
+                            </div>
+                            <label for="min_bedrooms" string="Habitaciones"/>
+                            <div class="o_row">
+                                <field name="min_bedrooms" class="oe_inline"/>
+                                <span class="mx-2">a</span>
+                                <field name="ideal_bedrooms" class="oe_inline"/>
+                            </div>
+                            <field name="min_bathrooms" string="Baños Mín."/>
+                            <label for="min_area" string="Área (m²)"/>
+                            <div class="o_row">
+                                <field name="min_area" class="oe_inline"/>
+                                <span class="mx-2">a</span>
+                                <field name="max_area" class="oe_inline"/>
+                            </div>
+                        </group>
+                    </group>
+
+                    <!-- INFORMACIÓN ADICIONAL -->
+                    <separator string="Información Adicional"/>
+                    <group>
+                        <group>
+                            <field name="has_pets" string="Tiene Mascotas"/>
+                            <field name="pet_type" invisible="not has_pets" string="Tipo Mascota"/>
+                            <field name="requires_parking" string="Requiere Parqueadero"/>
+                            <field name="parking_spots" invisible="not requires_parking" string="Espacios"/>
+                        </group>
+                        <group>
+                            <field name="property_purpose" string="Propósito"/>
+                            <field name="requires_gym" string="Gimnasio"/>
+                            <field name="requires_pool" string="Piscina"/>
+                            <field name="requires_common_areas" string="Áreas Comunes"/>
+                            <field name="requires_security" string="Seguridad"/>
+                            <field name="requires_elevator" string="Ascensor"/>
+                        </group>
+                    </group>
+
+                    <!-- NOTAS INTERNAS -->
+                    <separator string="Notas Internas"/>
+                    <field name="description" placeholder="Notas internas sobre el cliente y sus preferencias..." nolabel="1"/>
+
+                    <!-- PQRS SI APLICA -->
+                    <group string="PQRS" invisible="not pqrs_type">
+                        <group>
+                            <field name="pqrs_type"/>
+                            <field name="pqrs_status"/>
+                            <field name="response_deadline" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="helpdesk_ticket_id" readonly="1"/>
+                        </group>
+                        <field name="pqrs_description" placeholder="Descripción detallada del PQRS..." colspan="2" nolabel="1"/>
+                    </group>
+                </sheet>
+
+                <!-- CHATTER AL FINAL (adicional) -->
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+</odoo>

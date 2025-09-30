@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- ============================================
+             ACCIONES Y WIZARDS
+             ============================================ -->
+
+        <!-- Acción Modificar Contrato -->
+        <record id="action_modify_contract_wizard" model="ir.actions.act_window">
+            <field name="name">Modificar Contrato</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">modify.contract.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <!-- Acción Renovar Contrato (usa el wizard de modificación existente) -->
+        <record id="action_renew_contract" model="ir.actions.act_window">
+            <field name="name">Renovar Contrato</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">modify.contract.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="context">{'default_modify_action': 'renew'}</field>
+        </record>
+
+        <!-- ============================================
+             VISTA SEARCH
+             ============================================ -->
+        <record id="view_property_contract_search" model="ir.ui.view">
+            <field name="name">property.contract.search</field>
+            <field name="model">property.contract</field>
+            <field name="arch" type="xml">
+                <search string="Buscar Contratos">
+                    <field name="name"/>
+                    <field name="partner_id"/>
+                    <field name="user_id"/>
+                    <field name="project_id"/>
+                    <field name="property_id"/>
+                    <field name="property_code"/>
+
+                    <filter name="confirmed" string="Confirmados" domain="[('state', '=', 'confirmed')]"/>
+                    <filter name="draft" string="Borradores" domain="[('state', '=', 'draft')]"/>
+                    <filter name="expiring_soon" string="Por Vencer" domain="[('date_to', '&gt;=', context_today().strftime('%Y-%m-%d')), ('state', '=', 'confirmed')]"/>
+                    <filter name="multi_property" string="Multi-Propiedad" domain="[('is_multi_property', '=', True)]"/>
+
+                    <separator/>
+                    <filter name="my_contracts" string="Mis Contratos" domain="[('user_id', '=', uid)]"/>
+
+                    <group expand="0" string="Agrupar Por">
+                        <filter name="group_user" string="Responsable" context="{'group_by': 'user_id'}"/>
+                        <filter name="group_partner" string="Inquilino" context="{'group_by': 'partner_id'}"/>
+                        <filter name="group_project" string="Proyecto" context="{'group_by': 'project_id'}"/>
+                        <filter name="group_state" string="Estado" context="{'group_by': 'state'}"/>
+                        <filter name="group_date_from" string="Fecha Inicio" context="{'group_by': 'date_from'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- ============================================
+             VISTA LIST
+             ============================================ -->
+        <record id="view_property_contract_tree" model="ir.ui.view">
+            <field name="name">property.contract.list</field>
+            <field name="model">property.contract</field>
+            <field name="arch" type="xml">
+                <list string="Contratos de Arrendamiento" multi_edit="1" sample="1">
+                    <field name="name" string="Número"/>
+                    <field name="date_from" string="Inicio"/>
+                    <field name="date_to" string="Fin"/>
+                    <field name="partner_id" string="Inquilino"/>
+                    <field name="partner_is_owner_id" string="Propietario" optional="hide"/>
+                    <field name="user_id" string="Vendedor"/>
+                    <field name="project_id" string="Proyecto" optional="show"/>
+                    <field name="property_id" string="Propiedad" optional="show"/>
+                    <field name="property_code" string="Código" optional="show"/>
+                    <field name="rental_fee" string="Canon" widget="monetary" optional="show"/>
+                    <field name="amount_total" string="Total" widget="monetary" optional="show"/>
+                    <field name="paid" string="Pagado" widget="monetary" optional="show"/>
+                    <field name="balance" string="Saldo" widget="monetary" optional="show"/>
+                    <field name="next_payment_date" string="Próx. Pago" optional="show"/>
+                    <field name="state" string="Estado" widget="badge"
+                           decoration-info="state == 'draft'"
+                           decoration-success="state in ('confirmed','renew')"
+                           decoration-danger="state == 'cancel'"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- ============================================
+             VISTA KANBAN
+             ============================================ -->
+        <record id="view_property_contract_kanban" model="ir.ui.view">
+            <field name="name">property.contract.kanban</field>
+            <field name="model">property.contract</field>
+            <field name="arch" type="xml">
+                <kanban default_group_by="state" class="o_contract_kanban" sample="1" quick_create="false">
+                    <field name="name"/>
+                    <field name="partner_id"/>
+                    <field name="property_id"/>
+                    <field name="date_from"/>
+                    <field name="date_to"/>
+                    <field name="rental_fee"/>
+                    <field name="amount_total"/>
+                    <field name="balance"/>
+                    <field name="state"/>
+                    <field name="color"/>
+                    <field name="is_multi_property"/>
+                    <field name="active_properties_count"/>
+
+                    <templates>
+                        <t t-name="card">
+                            <div class="oe_kanban_global_click o_contract_kanban_card"
+                                 t-attf-style="border-left-color: #{kanban_color(record.color.raw_value)}">
+
+                                <!-- Dropdown de acciones -->
+                                <div class="o_dropdown_kanban dropdown">
+                                    <a class="dropdown-toggle o-no-caret btn" role="button"
+                                       data-bs-toggle="dropdown" href="#" aria-label="Dropdown menu">
+                                        <span class="fa fa-ellipsis-v"/>
+                                    </a>
+                                    <div class="dropdown-menu" role="menu">
+                                        <a role="menuitem" type="edit" class="dropdown-item">Editar</a>
+                                        <a role="menuitem" type="delete" class="dropdown-item">Eliminar</a>
+                                        <div class="dropdown-divider"/>
+                                        <a role="menuitem" type="object" name="action_confirm"
+                                           class="dropdown-item" t-if="record.state.raw_value == 'draft'">
+                                            <i class="fa fa-check"/> Confirmar
+                                        </a>
+                                        <a role="menuitem" type="action"
+                                           name="%(action_renew_contract)d"
+                                           class="dropdown-item" t-if="record.state.raw_value == 'confirmed'">
+                                            <i class="fa fa-refresh"/> Renovar
+                                        </a>
+                                        <div class="dropdown-divider"/>
+                                        <ul class="oe_kanban_colorpicker" data-field="color"/>
+                                    </div>
+                                </div>
+
+                                <!-- Header -->
+                                <div class="o_kanban_card_header mb-2">
+                                    <strong class="o_kanban_record_title">
+                                        <field name="name"/>
+                                    </strong>
+                                    <div class="o_kanban_record_subtitle text-muted small">
+                                        <t t-if="record.is_multi_property.raw_value">
+                                            Multi-Propiedad (<t t-esc="record.active_properties_count.value"/> activas)
+                                        </t>
+                                        <t t-else="">
+                                            <field name="property_id"/>
+                                        </t>
+                                    </div>
+                                </div>
+
+                                <!-- Info del Inquilino -->
+                                <div class="o_contract_client_info mb-2">
+                                    <div class="client-name">
+                                        <i class="fa fa-user text-primary"/> <field name="partner_id"/>
+                                    </div>
+                                </div>
+
+                                <!-- Fechas -->
+                                <div class="o_contract_dates mb-2">
+                                    <div class="d-flex justify-content-between small">
+                                        <span><i class="fa fa-calendar-check-o text-success"/>
+                                            <field name="date_from"/>
+                                        </span>
+                                        <span><i class="fa fa-calendar-times-o text-danger"/>
+                                            <field name="date_to"/>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <!-- Métricas Financieras -->
+                                <div class="o_contract_metrics">
+                                    <div class="row g-1">
+                                        <div class="col-6">
+                                            <div class="metric-small bg-primary">
+                                                <div class="label">Canon</div>
+                                                <div class="value">
+                                                    <field name="rental_fee" widget="monetary"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="metric-small bg-success">
+                                                <div class="label">Total</div>
+                                                <div class="value">
+                                                    <field name="amount_total" widget="monetary"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="metric-balance mt-1" t-if="record.balance.raw_value > 0">
+                                        <strong>Saldo: </strong>
+                                        <field name="balance" widget="monetary"/>
+                                    </div>
+                                </div>
+
+                                <!-- Footer -->
+                                <div class="o_kanban_card_footer mt-2">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <field name="user_id" widget="many2one_avatar_user"/>
+                                        <div class="badge" t-attf-class="badge bg-#{record.state.raw_value == 'confirmed' ? 'success' : record.state.raw_value == 'draft' ? 'info' : 'secondary'}">
+                                            <field name="state"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <!-- ============================================
+             VISTA GANTT
+             ============================================ -->
+        <record id="view_property_contract_gantt" model="ir.ui.view">
+            <field name="name">property.contract.gantt</field>
+            <field name="model">property.contract</field>
+            <field name="arch" type="xml">
+                <gantt string="Contratos - Línea de Tiempo"
+                       date_start="date_from"
+                       date_stop="date_to"
+                       color="state"
+                       default_group_by="user_id"
+                       sample="1"
+                       precision="{'day': 'month:quarter', 'week': 'day:month', 'month': 'day:year'}"
+                       create="false"
+                       cell_create="false">
+
+                    <field name="name"/>
+                    <field name="partner_id"/>
+                    <field name="property_id"/>
+                    <field name="rental_fee"/>
+                    <field name="state"/>
+                    <field name="user_id"/>
+                    <field name="project_id"/>
+
+                    <templates>
+                        <div t-name="gantt-popover">
+                            <div class="o_gantt_popover">
+                                <div class="o_gantt_popover_header">
+                                    <strong><t t-esc="name"/></strong>
+                                </div>
+                                <div class="o_gantt_popover_body">
+                                    <div><strong>Inquilino:</strong> <t t-esc="partner_id[1]"/></div>
+                                    <div><strong>Propiedad:</strong> <t t-esc="property_id[1]"/></div>
+                                    <div><strong>Canon:</strong> <t t-esc="rental_fee"/></div>
+                                    <div><strong>Estado:</strong>
+                                        <span t-attf-class="badge bg-#{state == 'confirmed' ? 'success' : state == 'draft' ? 'info' : 'secondary'}">
+                                            <t t-esc="state"/>
+                                        </span>
+                                    </div>
+                                    <div class="mt-2">
+                                        <button type="action" name="%(action_renew_contract)d"
+                                                class="btn btn-sm btn-primary"
+                                                t-if="state == 'confirmed'">
+                                            <i class="fa fa-refresh"/> Renovar
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </templates>
+                </gantt>
+            </field>
+        </record>
+
+        <!-- ============================================
+             ACTION WINDOW
+             ============================================ -->
+        <record id="action_property_contract_act_window" model="ir.actions.act_window">
+            <field name="name">Contratos de Propiedad</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">property.contract</field>
+            <field name="view_mode">list,kanban,form,gantt</field>
+            <field name="search_view_id" ref="view_property_contract_search"/>
+            <field name="context">{}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Crear un nuevo contrato de propiedad
+                </p>
+                <p>
+                    Los contratos permiten gestionar arrendamientos con inquilinos,
+                    propiedades, pagos y toda la información relacionada.
+                </p>
+            </field>
+        </record>
+
+    </data>
+</odoo>

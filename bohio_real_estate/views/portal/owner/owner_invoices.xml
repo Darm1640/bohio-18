@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="mybohio_owner_invoices" name="BOHIO Owner Invoices">
+        <t t-call="bohio_real_estate.mybohio_portal_layout">
+            <div class="mybohio-invoices-owner">
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <h2>Facturas y Comisiones</h2>
+                        <p class="text-muted">Facturas emitidas como propietario</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <t t-if="invoices">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Fecha</th>
+                                            <th>Número</th>
+                                            <th>Descripción</th>
+                                            <th class="text-end">Total</th>
+                                            <th>Estado Pago</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-foreach="invoices" t-as="invoice">
+                                            <tr>
+                                                <td t-esc="invoice.invoice_date.strftime('%d/%m/%Y') if invoice.invoice_date else ''"/>
+                                                <td><strong t-field="invoice.name"/></td>
+                                                <td>
+                                                    <t t-if="'comisión' in invoice.name.lower() or 'comision' in invoice.name.lower()">
+                                                        <span class="badge bg-warning">Comisión</span>
+                                                    </t>
+                                                    <t t-else="">
+                                                        <small t-esc="invoice.ref or '-'"/>
+                                                    </t>
+                                                </td>
+                                                <td class="text-end">
+                                                    <strong>$<t t-esc="'{:,.0f}'.format(invoice.amount_total)"/></strong>
+                                                </td>
+                                                <td>
+                                                    <span t-att-class="'badge bg-%s' % ('success' if invoice.payment_state == 'paid' else 'warning')">
+                                                        <t t-if="invoice.payment_state == 'paid'">Pagado</t>
+                                                        <t t-elif="invoice.payment_state == 'partial'">Parcial</t>
+                                                        <t t-else="">Pendiente</t>
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <a t-att-href="'/my/invoices/%s' % invoice.id" class="btn btn-sm btn-outline-primary" target="_blank">
+                                                        <i class="fa fa-print"></i> Imprimir
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <t t-if="pager">
+                                <t t-call="portal.pager"/>
+                            </t>
+                        </t>
+                        <t t-else="">
+                            <div class="alert alert-info text-center">
+                                <i class="fa fa-info-circle"></i> No hay facturas registradas
+                            </div>
+                        </t>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

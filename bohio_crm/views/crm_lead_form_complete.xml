@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- FORMULARIO COMPLETO BOHIO CRM - Basado en HTML de Referencia -->
+    <record id="view_crm_lead_form_bohio_complete" model="ir.ui.view">
+        <field name="name">crm.lead.form.bohio.complete</field>
+        <field name="model">crm.lead</field>
+        <field name="priority">1</field>
+        <field name="arch" type="xml">
+            <form string="Oportunidad Inmobiliaria" class="o_crm_bohio_form">
+                <!-- HEADER FIJO CON BOTONES DE ACCIÓN -->
+                <header class="o_form_statusbar_fixed">
+                    <button name="action_schedule_meeting" string="Agendar Cita" type="object"
+                            class="btn-primary" icon="fa-calendar" data-hotkey="c"/>
+                    <button name="action_make_call" string="Llamada" type="object"
+                            icon="fa-phone" data-hotkey="p"/>
+                    <button name="action_send_email" string="Email" type="object"
+                            icon="fa-envelope" data-hotkey="e"/>
+                    <button name="action_set_won" string="Ganada" type="object"
+                            class="oe_highlight" invisible="active == False or probability == 100" data-hotkey="w"/>
+                    <button name="action_set_lost" string="Perdida" type="object"
+                            class="btn-danger" invisible="active == False or probability == 0" data-hotkey="l"/>
+                    <field name="stage_id" widget="statusbar" options="{'clickable': '1', 'fold_field': 'fold'}"
+                           domain="['|', ('team_id', '=', False), ('team_id', '=', team_id)]"/>
+                </header>
+
+                <sheet>
+                    <!-- Smart Buttons -->
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" type="object" name="action_view_compared_properties" icon="fa-balance-scale">
+                            <field string="Comparar" name="compared_properties_count" widget="statinfo"/>
+                        </button>
+                        <button class="oe_stat_button" type="object" name="action_view_recommended_properties" icon="fa-lightbulb-o">
+                            <field string="IA" name="recommendation_count" widget="statinfo"/>
+                        </button>
+                        <button class="oe_stat_button" type="object" name="action_view_partner_contracts" icon="fa-file-text"
+                                invisible="not partner_id">
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_text">Contratos</span>
+                            </div>
+                        </button>
+                    </div>
+
+                    <!-- TÍTULO -->
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="ej. Juan Pérez - Apartamento Centro" required="1"/>
+                        </h1>
+                        <h3 class="o_row">
+                            <field name="partner_id" placeholder="Cliente" required="1"
+                                   context="{'default_is_company': type == 'opportunity', 'show_vat': True}"/>
+                            <span class="mx-2" invisible="not partner_id or not company_id"> - </span>
+                            <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"/>
+                        </h3>
+                    </div>
+
+                    <!-- CAMPOS OCULTOS NECESARIOS -->
+                    <field name="type" invisible="1"/>
+                    <field name="active" invisible="1"/>
+                    <field name="probability" invisible="1"/>
+                    <field name="company_currency" invisible="1"/>
+                    <field name="team_id" invisible="1"/>
+
+                    <!-- ==========================================
+                         BARRA DE MÉTRICAS EDITABLES
+                         ========================================== -->
+                    <group string="Métricas Financieras" class="o_bohio_metrics_bar">
+                        <group colspan="4">
+                            <div class="row">
+                                <div class="col-lg-3 col-md-6">
+                                    <label for="expected_revenue" class="metric-label"/>
+                                    <field name="expected_revenue" class="metric-input" placeholder="0"/>
+                                    <small class="text-muted">Valor Esperado ($)</small>
+                                </div>
+                                <div class="col-lg-3 col-md-6">
+                                    <label for="recurring_revenue" class="metric-label"/>
+                                    <field name="recurring_revenue" class="metric-input" placeholder="0"/>
+                                    <small class="text-muted">Recurrente/Mes ($)</small>
+                                </div>
+                                <div class="col-lg-2 col-md-6">
+                                    <label for="estimated_total_amount" class="metric-label"/>
+                                    <field name="estimated_total_amount" readonly="1" class="metric-value"/>
+                                    <small class="text-muted">Total Estimado</small>
+                                </div>
+                                <div class="col-lg-2 col-md-6">
+                                    <label for="commission_percentage" class="metric-label"/>
+                                    <field name="commission_percentage" class="metric-input" placeholder="3"/>
+                                    <small class="text-muted">% Comisión</small>
+                                </div>
+                                <div class="col-lg-2 col-md-6">
+                                    <label for="estimated_commission" class="metric-label"/>
+                                    <field name="estimated_commission" readonly="1" class="metric-value"/>
+                                    <small class="text-muted">Comisión Total</small>
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-lg-2 col-md-4">
+                                    <label for="probability" class="metric-label"/>
+                                    <field name="probability" widget="progressbar"/>
+                                    <small class="text-muted">Probabilidad %</small>
+                                </div>
+                                <div class="col-lg-2 col-md-4">
+                                    <label for="days_open" class="metric-label"/>
+                                    <field name="days_open" readonly="1" class="metric-value"/>
+                                    <small class="text-muted">Días Pipeline</small>
+                                </div>
+                                <div class="col-lg-2 col-md-4">
+                                    <div class="o_form_label metric-label">Score IA</div>
+                                    <div class="metric-value text-success">
+                                        98%
+                                    </div>
+                                </div>
+                            </div>
+                        </group>
+                    </group>
+
+                    <!-- ==========================================
+                         SECCIÓN DE CLIENTE EXPANDIBLE
+                         ========================================== -->
+                    <group string="📋 Información del Cliente" class="o_bohio_client_section">
+                        <group>
+                            <field name="partner_id"/>
+                            <field name="email_from" widget="email"/>
+                            <field name="phone" widget="phone"/>
+                            <field name="client_type"/>
+                        </group>
+                        <group>
+                            <field name="service_interested"/>
+                            <field name="referred_by_partner_id"/>
+                            <field name="user_id" string="Vendedor Asignado"/>
+                            <field name="team_id"/>
+                        </group>
+                    </group>
+
+                    <!-- ==========================================
+                         WIDGET PROPIEDADES RECOMENDADAS CON IA
+                         ========================================== -->
+                    <div class="o_bohio_recommendations_widget">
+                        <div class="widget-header">
+                            <h3>
+                                <i class="fa fa-magic text-primary"/> Propiedades Recomendadas (IA)
+                                <span class="badge bg-success ms-2">
+                                    <field name="recommendation_count"/> disponibles
+                                </span>
+                            </h3>
+                            <button type="object" name="action_refresh_recommendations"
+                                    class="btn btn-sm btn-outline-primary">
+                                <i class="fa fa-refresh"/> Actualizar
+                            </button>
+                        </div>
+                        <field name="recommended_properties_ids" mode="kanban" nolabel="1">
+                            <kanban>
+                                <field name="name"/>
+                                <field name="default_code"/>
+                                <field name="list_price"/>
+                                <templates>
+                                    <t t-name="card">
+                                        <div class="recommended-property-card">
+                                            <div class="property-header">
+                                                <strong><t t-esc="record.name.value"/></strong>
+                                                <span class="badge bg-success">95% Match</span>
+                                            </div>
+                                            <div class="property-details">
+                                                <div>Código: <t t-esc="record.default_code.value"/></div>
+                                                <div>Precio: <t t-esc="record.list_price.value"/></div>
+                                            </div>
+                                            <button class="btn btn-sm btn-primary w-100 mt-2"
+                                                    type="object" name="action_add_to_lead_comparison"
+                                                    context="{'lead_id': parent.id}">
+                                                Agregar a Comparación
+                                            </button>
+                                        </div>
+                                    </t>
+                                </templates>
+                            </kanban>
+                        </field>
+                    </div>
+
+                    <!-- ==========================================
+                         PREFERENCIAS DE BÚSQUEDA
+                         ========================================== -->
+                    <group string="🔍 Preferencias de Búsqueda" class="o_bohio_preferences">
+                        <group>
+                            <field name="desired_property_type_id"/>
+                            <field name="desired_neighborhood"/>
+                            <field name="desired_city"/>
+                            <field name="budget_min"/>
+                            <field name="budget_max"/>
+                        </group>
+                        <group>
+                            <field name="min_bedrooms"/>
+                            <field name="min_bathrooms"/>
+                            <field name="min_area"/>
+                            <field name="max_area"/>
+                            <field name="requires_parking"/>
+                            <field name="parking_spots" invisible="not requires_parking"/>
+                        </group>
+                    </group>
+
+                    <!-- ==========================================
+                         INFORMACIÓN ADICIONAL
+                         ========================================== -->
+                    <group string="👥 Información Adicional del Cliente">
+                        <group>
+                            <field name="number_of_occupants"/>
+                            <field name="has_pets"/>
+                            <field name="pet_type" invisible="not has_pets"/>
+                            <field name="occupation"/>
+                        </group>
+                        <group>
+                            <field name="monthly_income"/>
+                            <field name="property_purpose"/>
+                            <field name="contract_start_date"/>
+                            <field name="contract_duration_months"/>
+                        </group>
+                    </group>
+
+                    <!-- ==========================================
+                         AMENIDADES REQUERIDAS
+                         ========================================== -->
+                    <group string="🏊 Amenidades Requeridas">
+                        <group>
+                            <field name="requires_common_areas"/>
+                            <field name="requires_gym"/>
+                            <field name="requires_pool"/>
+                        </group>
+                        <group>
+                            <field name="requires_security"/>
+                            <field name="requires_elevator"/>
+                        </group>
+                    </group>
+
+                    <!-- ==========================================
+                         LAYOUT DE 3 COLUMNAS
+                         ========================================== -->
+                    <div class="row o_bohio_main_layout">
+                        <!-- COLUMNA IZQUIERDA: COMPARACIÓN DE PROPIEDADES -->
+                        <div class="col-lg-3 o_bohio_comparison_column">
+                            <group string="🏘️ Propiedades en Comparación">
+                                <field name="compared_properties_ids" widget="many2many" nolabel="1">
+                                    <list>
+                                        <field name="default_code"/>
+                                        <field name="name"/>
+                                        <field name="list_price"/>
+                                    </list>
+                                </field>
+                                <div class="text-muted small mt-2">
+                                    Máximo 4 propiedades
+                                </div>
+                            </group>
+                        </div>
+
+                        <!-- COLUMNA CENTRO: TIMELINE/CHATTER -->
+                        <div class="col-lg-6 o_bohio_timeline_column">
+                            <group string="💬 Comunicación y Actividades">
+                                <field name="activity_ids" widget="mail_activity" nolabel="1"/>
+                            </group>
+
+                            <separator string="📧 Historial de Comunicación"/>
+                            <div class="o_bohio_chatter">
+                                <chatter/>
+                            </div>
+                        </div>
+
+                        <!-- COLUMNA DERECHA: TAREAS Y PROPIEDADES -->
+                        <div class="col-lg-3 o_bohio_tasks_column">
+                            <group string="✅ Tareas Pendientes">
+                                <field name="date_deadline" string="Fecha Límite"/>
+                                <field name="priority" widget="priority"/>
+                                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                            </group>
+
+                            <group string="🏢 Proyecto">
+                                <field name="project_id"/>
+                            </group>
+
+                            <group string="📊 Información Adicional">
+                                <field name="date_open" readonly="1"/>
+                                <field name="date_closed" readonly="1" invisible="not date_closed"/>
+                                <field name="create_date" readonly="1"/>
+                            </group>
+                        </div>
+                    </div>
+
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+</odoo>

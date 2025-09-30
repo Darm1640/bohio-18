@@ -2,19 +2,6 @@
 <odoo>
     <data>
 
-        <record model="ir.ui.view" id="product_template_form_view_commission">
-            <field name="name">property.form</field>
-            <field name="model">product.template</field>
-            <field name="inherit_id" ref="product.product_template_form_view"/>
-            <field name="arch" type="xml">
-                <xpath expr="//div[@name='options']/span" position="after">
-                    <span class="d-inline-block">
-                        <field name="is_commission_product"/>
-                        <label for="is_commission_product"/>
-                    </span>
-                </xpath>
-            </field>
-        </record>
         <record model="ir.ui.view" id="view_property_form">
             <field name="name">property.form</field>
             <field name="priority" eval="10"/>
@@ -117,9 +104,9 @@
                                 </group>
 
                                 <!-- SECCIÓN DE PRECIOS DE VENTA -->
-                                <group colspan="2" string="Precios de Venta">
+                                <group colspan="2" string="Precios de Venta" invisible="type_service in ['rent', 'vacation_rent']">
                                     <group string="Configuración de Precio">
-                                        <field name="property_price_type" required="1" widget="radio"/>
+                                        <field name="property_price_type" required="type_service in ['sale', 'sale_rent']" widget="radio"/>
                                         <field name="price_per_unit" string="Precio por Unidad" placeholder="Precio por unidad actual" decoration-bf="property_price_type == 'sft'"/>
                                         <field name="discount_type"/>
                                         <field name="discount" placeholder="Valor del descuento"/>
@@ -144,7 +131,7 @@
                                 </group>
 
                                 <!-- SECCIÓN DE PRECIOS DE ARRIENDO -->
-                                <group colspan="2" string="Precios de Arriendo">
+                                <group colspan="2" string="Precios de Arriendo" invisible="type_service == 'sale'">
                                     <group string="Configuración de Arriendo">
                                         <field name="rental_price_type" widget="radio"/>
                                         <field name="rental_price_per_unit" string="Precio Arriendo por Unidad" placeholder="Precio arriendo por unidad" decoration-bf="rental_price_type == 'sft'"/>
@@ -636,26 +623,6 @@
                         </group>
                     </page>
 
-                    <page string="Comisiones de Venta" invisible="is_apply != True">
-                        <group string="Comisiones de Venta">
-                            <group>
-                                <field name="is_commission_product"/>
-                                <field name="commission_type"/>
-                                <field name="use_commission_ranges" string="Usar Rangos de Comisión"/>
-                                <field name="is_apply" invisible="1"/>
-                            </group>
-                            <field name="commission_range_ids" colspan="2" invisible="not use_commission_ranges" nolabel="1">
-                                <list editable="bottom" colspan="2">
-                                    <field name="starting_range"/>
-                                    <field name="ending_range"/>
-                                    <field name="sales_manager_commission"/>
-                                    <field name="sales_person_commission"/>
-                                    <field name="sales_manager_commission_amount"/>
-                                    <field name="sales_person_commission_amount"/>
-                                </list>
-                            </field>
-                        </group>
-                    </page>
 
                     <page string="Documentos">
                         <field name="property_attachment_ids"
@@ -822,22 +789,22 @@ BLOQUEADO
                                 <!-- TIPO DE PROPIEDAD -->
                                 <span style="background: rgba(102, 102, 102, 0.6); color: white; padding: 1px 4px; border-radius: 6px; font-size: 8px; font-weight: 600;">
                                     <!-- Iconos específicos por tipo de propiedad -->
-                                    <i t-if="record.property_type.raw_value == 'bodega'" class="fa fa-industry" style="margin-right: 2px;"/>
-                                    <i t-elif="record.property_type.raw_value == 'local'" class="fa fa-shopping-cart" style="margin-right: 2px;"/>
-                                    <i t-elif="record.property_type.raw_value == 'apartment'" class="fa fa-building" style="margin-right: 2px;"/>
-                                    <i t-elif="record.property_type.raw_value == 'house'" class="fa fa-home" style="margin-right: 2px;"/>
-                                    <i t-elif="record.property_type.raw_value == 'studio'" class="fa fa-bed" style="margin-right: 2px;"/>
-                                    <i t-elif="record.property_type.raw_value == 'office'" class="fa fa-briefcase" style="margin-right: 2px;"/>
-                                    <i t-elif="record.property_type.raw_value == 'finca'" class="fa fa-leaf" style="margin-right: 2px;"/>
-                                    <i t-elif="record.property_type.raw_value == 'lot'" class="fa fa-map" style="margin-right: 2px;"/>
-                                    <i t-elif="record.property_type.raw_value == 'hotel'" class="fa fa-hotel" style="margin-right: 2px;"/>
-                                    <i t-elif="record.property_type.raw_value == 'cabin'" class="fa fa-" style="margin-right: 2px;"/>
-                                    <i t-elif="record.property_type.raw_value == 'building'" class="fa fa-building-o" style="margin-right: 2px;"/>
-                                    <i t-elif="record.property_type.raw_value == 'country_lot'" class="fa fa-envira" style="margin-right: 2px;"/>
-                                    <i t-elif="record.property_type.raw_value == 'blueprint'" class="fa fa-file-text-o" style="margin-right: 2px;"/>
-                                    <i t-elif="record.property_type.raw_value == 'plot'" class="fa fa-map-o" style="margin-right: 2px;"/>
+                                    <i t-if="record.property_type.raw_value == 'bodega'" class="fa fa-industry" style="margin-right: 2px;" title="Bodega"/>
+                                    <i t-elif="record.property_type.raw_value == 'local'" class="fa fa-shopping-cart" style="margin-right: 2px;" title="Local"/>
+                                    <i t-elif="record.property_type.raw_value == 'apartment'" class="fa fa-building" style="margin-right: 2px;" title="Apartamento"/>
+                                    <i t-elif="record.property_type.raw_value == 'house'" class="fa fa-home" style="margin-right: 2px;" title="Casa"/>
+                                    <i t-elif="record.property_type.raw_value == 'studio'" class="fa fa-bed" style="margin-right: 2px;" title="Estudio"/>
+                                    <i t-elif="record.property_type.raw_value == 'office'" class="fa fa-briefcase" style="margin-right: 2px;" title="Oficina"/>
+                                    <i t-elif="record.property_type.raw_value == 'finca'" class="fa fa-leaf" style="margin-right: 2px;" title="Finca"/>
+                                    <i t-elif="record.property_type.raw_value == 'lot'" class="fa fa-map" style="margin-right: 2px;" title="Lote"/>
+                                    <i t-elif="record.property_type.raw_value == 'hotel'" class="fa fa-hotel" style="margin-right: 2px;" title="Hotel"/>
+                                    <i t-elif="record.property_type.raw_value == 'cabin'" class="fa fa-home" style="margin-right: 2px;" title="Cabaña"/>
+                                    <i t-elif="record.property_type.raw_value == 'building'" class="fa fa-building-o" style="margin-right: 2px;" title="Edificio"/>
+                                    <i t-elif="record.property_type.raw_value == 'country_lot'" class="fa fa-envira" style="margin-right: 2px;" title="Lote Campestre"/>
+                                    <i t-elif="record.property_type.raw_value == 'blueprint'" class="fa fa-file-text-o" style="margin-right: 2px;" title="Plano"/>
+                                    <i t-elif="record.property_type.raw_value == 'plot'" class="fa fa-map-o" style="margin-right: 2px;" title="Parcela"/>
                                     <!-- Icono por defecto si no hay tipo o no coincide -->
-                                    <i t-else="" class="fa fa-home" style="margin-right: 2px;"/>
+                                    <i t-else="" class="fa fa-home" style="margin-right: 2px;" title="Propiedad"/>
                                     <field name="property_type_id"/>
                                 </span>
 
@@ -2882,33 +2849,6 @@ m Fondo
 
 
 
-<!-- Vista Form extendida para Categorías de Productos -->
-<record model="ir.ui.view" id="view_product_category_form_property">
-<field name="name">product.category.form.property</field>
-<field name="model">product.category</field>
-<field name="inherit_id" ref="product.product_category_form_view"/>
-<field name="arch" type="xml">
-<group name="first" position="after">
-<group string="Comisiones" invisible="is_apply != True">
-<field name="is_apply" invisible="1"/>
-<field name="commission_type"/>
-</group>
-
-<group string="Rangos de Comisión" invisible="is_apply != True">
-<field name="commission_range_ids">
-<list editable="bottom">
-<field name="starting_range"/>
-<field name="ending_range"/>
-<field name="sales_manager_commission"/>
-<field name="sales_person_commission"/>
-<field name="sales_manager_commission_amount"/>
-<field name="sales_person_commission_amount"/>
-</list>
-</field>
-</group>
-</group>
-</field>
-</record>
 
 
 <record id="action_property_type" model="ir.actions.act_window">
@@ -2931,14 +2871,13 @@ m Fondo
 <field name="name">Categorías de Propiedades</field>
 <field name="res_model">product.category</field>
 <field name="view_mode">list,form</field>
-<field name="domain">[('property_type', '!=', False)]</field>
+<field name="domain">[]</field>
 <field name="help" type="html">
 <p class="o_view_nocontent_smiling_face">
                     Gestionar categorías de propiedades
 </p>
 <p>
-                    Las categorías se crean automáticamente al definir
-                    tipos de propiedades.
+                    Crear y organizar categorías de productos inmobiliarios.
 </p>
 </field>
 </record>

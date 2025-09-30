@@ -1,11 +1,8 @@
 document.addEventListener('DOMContentLoaded', function() {
-    let submitTimeout = null;
     const form = document.getElementById('real_estate_filters_form');
-    
-    if (!form) {
-        console.warn('Real estate filters form not found');
-        return;
-    }
+    if (!form) return;
+
+    let submitTimeout = null;
 
     // Función para formatear números según tipo
     function formatNumber(num, type) {

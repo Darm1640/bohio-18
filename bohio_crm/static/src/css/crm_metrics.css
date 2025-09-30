@@ -1,0 +1,225 @@
+/* CRM Metrics Views Styling */
+
+/* List View Enhancements */
+.o_list_view.crm_metrics_tree {
+    --o-list-decoration-info: #17a2b8;
+    --o-list-decoration-success: #28a745;
+    --o-list-decoration-warning: #ffc107;
+    --o-list-decoration-danger: #dc3545;
+}
+
+.o_list_view.crm_metrics_tree .o_data_row {
+    transition: all 0.2s ease;
+}
+
+.o_list_view.crm_metrics_tree .o_data_row:hover {
+    background-color: rgba(0, 123, 255, 0.05);
+    transform: translateX(2px);
+    box-shadow: 2px 0 4px rgba(0, 123, 255, 0.1);
+}
+
+/* Metrics columns highlighting */
+.o_list_view.crm_metrics_tree .o_field_monetary {
+    font-weight: 600;
+    color: #28a745;
+}
+
+.o_list_view.crm_metrics_tree .o_field_float {
+    font-weight: 500;
+}
+
+.o_list_view.crm_metrics_tree .o_priority_star {
+    color: #ffc107;
+}
+
+/* Dashboard specific styling */
+.o_list_view.crm_metrics_dashboard_tree {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.o_list_view.crm_metrics_dashboard_tree thead {
+    background: linear-gradient(90deg, #007bff, #0056b3);
+    color: white;
+}
+
+.o_list_view.crm_metrics_dashboard_tree .o_list_record_selector {
+    display: none;
+}
+
+/* Kanban View Enhancements */
+.o_kanban_view.crm_metrics_kanban .o_kanban_record {
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+    border-left: 4px solid transparent;
+}
+
+.o_kanban_view.crm_metrics_kanban .o_kanban_record:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+}
+
+/* Stage-based coloring */
+.o_kanban_view.crm_metrics_kanban .o_kanban_record[data-stage-color="1"] {
+    border-left-color: #dc3545;
+}
+
+.o_kanban_view.crm_metrics_kanban .o_kanban_record[data-stage-color="2"] {
+    border-left-color: #ffc107;
+}
+
+.o_kanban_view.crm_metrics_kanban .o_kanban_record[data-stage-color="3"] {
+    border-left-color: #17a2b8;
+}
+
+.o_kanban_view.crm_metrics_kanban .o_kanban_record[data-stage-color="4"] {
+    border-left-color: #28a745;
+}
+
+/* Metrics display in cards */
+.o_kanban_view.crm_metrics_kanban .o_field_monetary {
+    font-weight: 600;
+    color: #28a745;
+    font-size: 1.1em;
+}
+
+.o_kanban_view.crm_metrics_kanban .progress {
+    height: 8px;
+    border-radius: 4px;
+    background-color: #e9ecef;
+}
+
+.o_kanban_view.crm_metrics_kanban .progress-bar {
+    border-radius: 4px;
+    background: linear-gradient(90deg, #28a745, #20c997);
+    transition: width 0.6s ease;
+}
+
+/* Client type badges */
+.o_kanban_view.crm_metrics_kanban .badge {
+    font-size: 0.75em;
+    padding: 0.25em 0.5em;
+    border-radius: 12px;
+}
+
+.o_kanban_view.crm_metrics_kanban .badge[data-client-type="owner"] {
+    background-color: #007bff;
+    color: white;
+}
+
+.o_kanban_view.crm_metrics_kanban .badge[data-client-type="tenant"] {
+    background-color: #17a2b8;
+    color: white;
+}
+
+.o_kanban_view.crm_metrics_kanban .badge[data-client-type="buyer"] {
+    background-color: #28a745;
+    color: white;
+}
+
+.o_kanban_view.crm_metrics_kanban .badge[data-client-type="seller"] {
+    background-color: #ffc107;
+    color: black;
+}
+
+.o_kanban_view.crm_metrics_kanban .badge[data-client-type="investor"] {
+    background-color: #6f42c1;
+    color: white;
+}
+
+/* Dashboard kanban specific */
+.o_kanban_view.crm_metrics_dashboard_kanban {
+    background: #f8f9fa;
+}
+
+.o_kanban_view.crm_metrics_dashboard_kanban .o_kanban_group {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    margin: 8px;
+    padding: 12px;
+}
+
+.o_kanban_view.crm_metrics_dashboard_kanban .o_kanban_group_title {
+    font-weight: 600;
+    color: #495057;
+    border-bottom: 2px solid #dee2e6;
+    padding-bottom: 8px;
+    margin-bottom: 12px;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .o_list_view.crm_metrics_tree .o_data_row:hover {
+        transform: none;
+        box-shadow: none;
+    }
+
+    .o_kanban_view.crm_metrics_kanban .o_kanban_record:hover {
+        transform: none;
+    }
+
+    .o_kanban_view.crm_metrics_kanban .o_kanban_record {
+        margin: 4px;
+    }
+}
+
+/* Animation for new records */
+@keyframes slideInFromRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.o_list_view.crm_metrics_tree .o_data_row.o_new_record {
+    animation: slideInFromRight 0.5s ease;
+}
+
+.o_kanban_view.crm_metrics_kanban .o_kanban_record.o_new_record {
+    animation: slideInFromRight 0.5s ease;
+}
+
+/* Metrics summary bar */
+.crm_metrics_summary {
+    background: linear-gradient(90deg, #007bff, #0056b3);
+    color: white;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.crm_metrics_summary .metric-item {
+    text-align: center;
+}
+
+.crm_metrics_summary .metric-value {
+    font-size: 1.5em;
+    font-weight: bold;
+    display: block;
+}
+
+.crm_metrics_summary .metric-label {
+    font-size: 0.85em;
+    opacity: 0.9;
+}
+
+/* Loading states */
+.o_list_view.crm_metrics_tree.o_loading .o_data_row {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.o_kanban_view.crm_metrics_kanban.o_loading .o_kanban_record {
+    opacity: 0.6;
+    pointer-events: none;
+}

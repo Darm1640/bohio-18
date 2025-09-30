@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="mybohio_tenant_documents" name="BOHIO Tenant Documents">
+        <t t-call="bohio_real_estate.mybohio_portal_layout">
+            <div class="mybohio-documents-tenant">
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <h2>Mis Documentos</h2>
+                        <p class="text-muted">Documentos de contratos y pagos</p>
+                    </div>
+                </div>
+
+                <!-- Filtros -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <form method="get" action="/mybohio/tenant/documents" class="row g-3">
+                            <div class="col-md-4">
+                                <label class="form-label">Contrato</label>
+                                <select name="contract_id" class="form-select">
+                                    <option value="">Todos los contratos</option>
+                                    <t t-foreach="contracts" t-as="contract">
+                                        <option t-att-value="contract.id"
+                                                t-att-selected="'selected' if contract_id == contract.id else None">
+                                            <t t-esc="contract.property_id.name"/>
+                                        </option>
+                                    </t>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Tipo de Documento</label>
+                                <select name="document_type" class="form-select">
+                                    <option value="">Todos los tipos</option>
+                                    <option value="contract" t-att-selected="'selected' if document_type == 'contract' else None">Contrato</option>
+                                    <option value="invoice" t-att-selected="'selected' if document_type == 'invoice' else None">Factura</option>
+                                    <option value="payment" t-att-selected="'selected' if document_type == 'payment' else None">Comprobante de Pago</option>
+                                    <option value="certificate" t-att-selected="'selected' if document_type == 'certificate' else None">Certificado</option>
+                                    <option value="other" t-att-selected="'selected' if document_type == 'other' else None">Otro</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">&#160;</label>
+                                <button type="submit" class="btn btn-primary w-100">
+                                    <i class="fa fa-filter"></i> Filtrar
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Lista de Documentos por Contrato -->
+                <t t-if="documents_by_contract">
+                    <t t-foreach="documents_by_contract.items()" t-as="contract_docs">
+                        <t t-set="contract" t-value="contract_docs[0]"/>
+                        <t t-set="docs" t-value="contract_docs[1]"/>
+
+                        <div class="card mb-4">
+                            <div class="card-header bg-light">
+                                <div class="row align-items-center">
+                                    <div class="col-md-8">
+                                        <h5 class="mb-0">
+                                            <i class="fa fa-file-contract text-primary me-2"></i>
+                                            <t t-esc="contract.property_id.name"/>
+                                        </h5>
+                                        <small class="text-muted">
+                                            Contrato: <t t-esc="contract.name"/> |
+                                            Desde: <t t-esc="contract.date_start.strftime('%d/%m/%Y')"/> |
+                                            Hasta: <t t-esc="contract.date_end.strftime('%d/%m/%Y') if contract.date_end else 'Indefinido'"/>
+                                        </small>
+                                    </div>
+                                    <div class="col-md-4 text-end">
+                                        <span class="badge bg-primary">
+                                            <t t-esc="len(docs)"/> documento<t t-if="len(docs) != 1">s</t>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-sm table-hover mb-0">
+                                        <thead>
+                                            <tr>
+                                                <th>Documento</th>
+                                                <th>Tipo</th>
+                                                <th>Fecha</th>
+                                                <th>Tamaño</th>
+                                                <th class="text-end">Acciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <t t-foreach="docs" t-as="doc">
+                                                <tr>
+                                                    <td>
+                                                        <i t-attf-class="fa fa-file-#{doc.mimetype.split('/')[1] if '/' in doc.mimetype else 'alt'} me-2"
+                                                           t-att-class="'text-danger' if 'pdf' in doc.mimetype else 'text-primary'"></i>
+                                                        <strong t-esc="doc.name"/>
+                                                    </td>
+                                                    <td>
+                                                        <t t-if="doc.document_type">
+                                                            <span class="badge bg-secondary" t-esc="dict(doc._fields['document_type'].selection).get(doc.document_type, 'Otro')"/>
+                                                        </t>
+                                                        <t t-else="">
+                                                            <span class="text-muted">-</span>
+                                                        </t>
+                                                    </td>
+                                                    <td>
+                                                        <small t-esc="doc.create_date.strftime('%d/%m/%Y %H:%M')"/>
+                                                    </td>
+                                                    <td>
+                                                        <small>
+                                                            <t t-if="doc.file_size &lt; 1024">
+                                                                <t t-esc="doc.file_size"/> bytes
+                                                            </t>
+                                                            <t t-elif="doc.file_size &lt; 1024*1024">
+                                                                <t t-esc="'{:.1f}'.format(doc.file_size/1024)"/> KB
+                                                            </t>
+                                                            <t t-else="">
+                                                                <t t-esc="'{:.1f}'.format(doc.file_size/(1024*1024))"/> MB
+                                                            </t>
+                                                        </small>
+                                                    </td>
+                                                    <td class="text-end">
+                                                        <div class="btn-group btn-group-sm">
+                                                            <a t-attf-href="/web/content/#{doc.id}"
+                                                               class="btn btn-outline-primary"
+                                                               target="_blank">
+                                                                <i class="fa fa-eye"></i> Ver
+                                                            </a>
+                                                            <a t-attf-href="/web/content/#{doc.id}?download=true"
+                                                               class="btn btn-outline-secondary">
+                                                                <i class="fa fa-download"></i> Descargar
+                                                            </a>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </t>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+                <t t-else="">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="alert alert-info text-center mb-0">
+                                <i class="fa fa-info-circle"></i> No hay documentos disponibles
+                            </div>
+                        </div>
+                    </div>
+                </t>
+
+                <!-- Resumen de Documentos -->
+                <div class="card border-info mt-4">
+                    <div class="card-header bg-info text-white">
+                        <i class="fa fa-info-circle"></i> Información
+                    </div>
+                    <div class="card-body">
+                        <p class="mb-2">
+                            <strong>Total de documentos:</strong> <t t-esc="total_documents"/>
+                        </p>
+                        <p class="mb-0">
+                            Los documentos incluyen: contratos firmados, comprobantes de pago, certificados de paz y salvo, facturas y otros documentos relacionados con sus arriendos.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

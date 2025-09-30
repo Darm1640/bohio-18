@@ -1,7 +1,5 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_property_compare_public,access.property.compare.public,model_property_compare,,1,0,0,0
-access_bohio_crm_dashboard,access.bohio.crm.dashboard,model_bohio_crm_dashboard,,1,0,0,0
-access_bohio_crm_dashboard_user,access.bohio.crm.dashboard.user,model_bohio_crm_dashboard,base.group_user,1,1,1,1
-access_property_image_user,property.image.user,model_property_image,base.group_user,1,1,1,1
-access_property_image_public,property.image.public,model_property_image,base.group_public,1,0,0,0
-access_property_image_portal,property.image.portal,model_property_image,base.group_portal,1,0,0,0
+access_property_image_user,property.image user,model_property_image,base.group_user,1,1,1,1
+access_property_image_portal,property.image portal,model_property_image,base.group_portal,1,0,0,0
+access_property_image_public,property.image public,model_property_image,base.group_public,1,0,0,0
+access_property_image_system,property.image system,model_property_image,base.group_system,1,1,1,1

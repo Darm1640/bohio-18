@@ -1,30 +1,189 @@
+/* Dashboard Principal - Con Scroll - Colores Bohio */
 .o_property_dashboard {
-    background-color: #f8f9fa;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
     min-height: 100vh;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
+/* Container con padding y scroll */
+.o_property_dashboard .container-fluid {
+    max-height: calc(100vh - 48px);
+    overflow-y: auto;
+    padding-bottom: 30px !important;
+}
+
+/* Scrollbar personalizado para el dashboard */
+.o_property_dashboard .container-fluid::-webkit-scrollbar {
+    width: 10px;
+}
+
+.o_property_dashboard .container-fluid::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+}
+
+.o_property_dashboard .container-fluid::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+}
+
+.o_property_dashboard .container-fluid::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.5);
+}
+
+/* Cards con toques Bohio */
 .o_property_dashboard .card {
     border: none;
-    border-radius: 10px;
-    transition: transform 0.3s, box-shadow 0.3s;
+    border-radius: 15px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    background: #ffffff;
+    border-top: 2px solid transparent;
 }
 
 .o_property_dashboard .card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 20px rgba(0,0,0,0.1) !important;
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(255,29,37,0.15) !important;
+    border-top: 2px solid #ff1d25;
 }
 
 .o_property_dashboard .card-header {
-    border-radius: 10px 10px 0 0;
+    border-radius: 15px 15px 0 0;
     border: none;
+    font-weight: 600;
+    padding: 1rem 1.5rem;
+}
+
+/* Header del Usuario - Nueva Sección con Toques Bohio */
+.o_property_dashboard .user-info-card {
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+    border-left: 4px solid #ff1d25;
+}
+
+.o_property_dashboard .user-avatar {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    border: 4px solid #fff;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+    object-fit: cover;
+}
+
+.o_property_dashboard .user-name {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #2c3e50;
+    margin: 0;
+}
+
+.o_property_dashboard .user-role {
+    font-size: 0.9rem;
+    color: #7f8c8d;
+    font-weight: 500;
+}
+
+.o_property_dashboard .user-email {
+    font-size: 0.85rem;
+    color: #95a5a6;
+}
+
+/* Nuevo esquema de colores para badges */
+.o_property_dashboard .badge {
+    padding: 6px 12px;
+    font-size: 0.85rem;
+    border-radius: 8px;
     font-weight: 600;
 }
 
-.o_property_dashboard .badge {
-    padding: 5px 10px;
-    font-size: 0.85rem;
+/* KPI Cards - Colores Integrados con Toques Bohio */
+.o_property_dashboard .kpi-card-1 {
+    background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%);
+    border-left: 4px solid #ff1d25;
+    color: white;
 }
 
+.o_property_dashboard .kpi-card-2 {
+    background: linear-gradient(135deg, #50c878 0%, #3fa463 100%);
+    border-left: 4px solid #ff1d25;
+    color: white;
+}
+
+.o_property_dashboard .kpi-card-3 {
+    background: linear-gradient(135deg, #f39c12 0%, #d68910 100%);
+    border-left: 4px solid #000000;
+    color: white;
+}
+
+.o_property_dashboard .kpi-card-4 {
+    background: linear-gradient(135deg, #9b59b6 0%, #7d3c98 100%);
+    border-left: 4px solid #000000;
+    color: white;
+}
+
+/* Colores de header para cards - Integrados con Toques Bohio */
+.o_property_dashboard .card-header.bg-primary {
+    background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%) !important;
+    border-bottom: 2px solid #ff1d25;
+}
+
+.o_property_dashboard .card-header.bg-success {
+    background: linear-gradient(135deg, #50c878 0%, #3fa463 100%) !important;
+    border-bottom: 2px solid #ff1d25;
+}
+
+.o_property_dashboard .card-header.bg-warning {
+    background: linear-gradient(135deg, #f39c12 0%, #d68910 100%) !important;
+    border-bottom: 2px solid #000000;
+}
+
+.o_property_dashboard .card-header.bg-danger {
+    background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%) !important;
+    border-bottom: 2px solid #ff1d25;
+}
+
+.o_property_dashboard .card-header.bg-info {
+    background: linear-gradient(135deg, #5dade2 0%, #3498db 100%) !important;
+    border-bottom: 2px solid #000000;
+}
+
+/* Status badges - Integrados con Toques Bohio */
+.o_property_dashboard .badge-primary {
+    background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%);
+    border: 1px solid #ff1d25;
+}
+
+.o_property_dashboard .badge-success {
+    background: linear-gradient(135deg, #50c878 0%, #3fa463 100%);
+    border: 1px solid #ff1d25;
+}
+
+.o_property_dashboard .badge-warning {
+    background: linear-gradient(135deg, #f39c12 0%, #d68910 100%);
+    color: white;
+    border: 1px solid #000000;
+}
+
+.o_property_dashboard .badge-info {
+    background: linear-gradient(135deg, #5dade2 0%, #3498db 100%);
+    border: 1px solid #000000;
+}
+
+.o_property_dashboard .badge-danger {
+    background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+    border: 1px solid #ff1d25;
+}
+
+.o_property_dashboard .badge-secondary {
+    background: linear-gradient(135deg, #95a5a6 0%, #7f8c8d 100%);
+    border: 1px solid #000000;
+}
+
+/* Tables */
 .o_property_dashboard .table {
     margin-bottom: 0;
 }
@@ -32,20 +191,28 @@
 .o_property_dashboard .table th {
     border-bottom: 2px solid #dee2e6;
     font-weight: 600;
-    color: #495057;
+    color: #2c3e50;
+    background-color: #f8f9fa;
 }
 
 .o_property_dashboard .cursor-pointer {
     cursor: pointer;
+    transition: background-color 0.2s;
 }
 
 .o_property_dashboard .cursor-pointer:hover {
     background-color: #f8f9fa;
 }
 
+/* List groups */
 .o_property_dashboard .list-group-item {
     border: none;
     border-bottom: 1px solid #e9ecef;
+    transition: background-color 0.2s;
+}
+
+.o_property_dashboard .list-group-item:hover {
+    background-color: #f8f9fa;
 }
 
 .o_property_dashboard .list-group-item:last-child {
@@ -53,15 +220,21 @@
 }
 
 /* Map popup styles */
+.map-popup {
+    padding: 5px;
+}
+
 .map-popup h6 {
     margin-bottom: 10px;
-    color: #333;
-    font-weight: 600;
+    color: #2c3e50;
+    font-weight: 700;
+    font-size: 1rem;
 }
 
 .map-popup p {
     margin: 5px 0;
     font-size: 0.9rem;
+    color: #495057;
 }
 
 /* Chart container styles */
@@ -69,9 +242,9 @@
     max-width: 100%;
 }
 
-/* KPI Cards */
+/* KPI Cards Typography */
 .o_property_dashboard .card-body h3 {
-    font-size: 2rem;
+    font-size: 2.2rem;
     font-weight: 700;
 }
 
@@ -79,42 +252,15 @@
     font-size: 0.875rem;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    font-weight: 600;
 }
 
-/* Status badges */
-.o_property_dashboard .badge-primary {
-    background-color: #007bff;
-}
-
-.o_property_dashboard .badge-success {
-    background-color: #28a745;
-}
-
-.o_property_dashboard .badge-warning {
-    background-color: #ffc107;
-    color: #212529;
-}
-
-.o_property_dashboard .badge-info {
-    background-color: #17a2b8;
-}
-
-.o_property_dashboard .badge-danger {
-    background-color: #dc3545;
-}
-
-.o_property_dashboard .badge-secondary {
-    background-color: #6c757d;
-}
-
-/* Contracts Section Styles */
-.o_property_dashboard .bg-purple {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-}
-
+/* Form styles */
 .o_property_dashboard .form-select-sm {
     font-size: 0.875rem;
     padding: 0.25rem 0.5rem;
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
 }
 
 .o_property_dashboard .form-label {
@@ -129,11 +275,7 @@
 }
 
 .o_property_dashboard .rounded {
-    border-radius: 8px !important;
-}
-
-.o_property_dashboard .border-0 {
-    border: none !important;
+    border-radius: 12px !important;
 }
 
 /* Contract KPI Cards */
@@ -151,8 +293,9 @@
 }
 
 /* Contract Charts */
-.o_property_dashboard .card-header h6 {
-    font-size: 0.875rem;
+.o_property_dashboard .card-header h6,
+.o_property_dashboard .card-header h5 {
+    font-size: 1rem;
     font-weight: 600;
     margin: 0;
 }
@@ -175,29 +318,22 @@
     background-color: rgba(255, 255, 255, 0.9);
     border: none;
     transition: all 0.3s;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .o_property_dashboard .btn-light:hover {
     background-color: rgba(255, 255, 255, 1);
-    transform: scale(1.1);
+    transform: scale(1.15);
 }
 
 .o_property_dashboard .fa-chevron-up,
 .o_property_dashboard .fa-chevron-down {
     transition: transform 0.3s;
-}
-
-/* Opportunity Chart Colors */
-.o_property_dashboard .text-opportunity {
-    color: #2ecc71;
-}
-
-.o_property_dashboard .text-occupied {
-    color: #3498db;
-}
-
-.o_property_dashboard .text-process {
-    color: #f1c40f;
 }
 
 /* Filter Section */
@@ -206,24 +342,28 @@
     box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
 }
 
-/* Contract Status Colors */
+/* Contract Status Colors mejorados */
 .o_property_dashboard .bg-draft {
-    background-color: #6c757d !important;
+    background: linear-gradient(135deg, #6c757d 0%, #495057 100%) !important;
 }
 
 .o_property_dashboard .bg-confirmed {
-    background-color: #28a745 !important;
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%) !important;
 }
 
 .o_property_dashboard .bg-renew {
-    background-color: #17a2b8 !important;
+    background: linear-gradient(135deg, #30cfd0 0%, #330867 100%) !important;
 }
 
 .o_property_dashboard .bg-cancel {
-    background-color: #dc3545 !important;
+    background: linear-gradient(135deg, #fa709a 0%, #fee140 100%) !important;
 }
 
-/* Scrollbar Styles */
+/* Scrollbar Styles for tables */
+.o_property_dashboard .table-responsive {
+    overflow-x: auto;
+}
+
 .o_property_dashboard .table-responsive::-webkit-scrollbar {
     height: 8px;
 }
@@ -240,6 +380,99 @@
 
 .o_property_dashboard .table-responsive::-webkit-scrollbar-thumb:hover {
     background: #555;
+}
+
+/* Mapa - Mayor altura y scroll */
+.o_property_dashboard #mapContainer {
+    min-height: 500px;
+    border-radius: 0 0 15px 15px;
+}
+
+/* Actividades con scroll */
+.o_property_dashboard .activities-scroll {
+    max-height: 460px;
+    overflow-y: auto;
+}
+
+.o_property_dashboard .activities-scroll::-webkit-scrollbar {
+    width: 6px;
+}
+
+.o_property_dashboard .activities-scroll::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.o_property_dashboard .activities-scroll::-webkit-scrollbar-thumb {
+    background: #cbd5e0;
+    border-radius: 10px;
+}
+
+.o_property_dashboard .activities-scroll::-webkit-scrollbar-thumb:hover {
+    background: #a0aec0;
+}
+
+/* Enlaces y botones con colores Bohio */
+.o_property_dashboard a {
+    color: #ff1d25;
+    text-decoration: none;
+    transition: all 0.3s;
+}
+
+.o_property_dashboard a:hover {
+    color: #cc0000;
+    text-decoration: underline;
+}
+
+.o_property_dashboard .btn-primary {
+    background: linear-gradient(135deg, #ff1d25 0%, #cc0000 100%);
+    border: none;
+    color: white;
+}
+
+.o_property_dashboard .btn-primary:hover {
+    background: linear-gradient(135deg, #cc0000 0%, #990000 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(255,29,37,0.3);
+}
+
+.o_property_dashboard .btn-secondary {
+    background: linear-gradient(135deg, #000000 0%, #333333 100%);
+    border: none;
+    color: white;
+}
+
+.o_property_dashboard .btn-secondary:hover {
+    background: linear-gradient(135deg, #333333 0%, #000000 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+/* Títulos con toques Bohio */
+.o_property_dashboard h1, .o_property_dashboard h2 {
+    color: #000000;
+    position: relative;
+}
+
+.o_property_dashboard h3, .o_property_dashboard h4 {
+    color: #2c3e50;
+}
+
+.o_property_dashboard .user-name {
+    color: #000000;
+}
+
+.o_property_dashboard .user-name i {
+    color: #ff1d25;
+}
+
+/* Iconos con color Bohio */
+.o_property_dashboard .fa {
+    color: #ff1d25;
+}
+
+.o_property_dashboard .card-header .fa {
+    color: white;
 }
 
 /* Responsive adjustments */
@@ -261,6 +494,15 @@
     }
 
     .o_property_dashboard canvas {
-        max-height: 150px !important;
+        max-height: 200px !important;
+    }
+
+    .o_property_dashboard .user-avatar {
+        width: 50px;
+        height: 50px;
+    }
+
+    .o_property_dashboard .user-name {
+        font-size: 1rem;
     }
 }

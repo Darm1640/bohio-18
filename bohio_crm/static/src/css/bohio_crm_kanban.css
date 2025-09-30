@@ -1,0 +1,337 @@
+/* ============================================
+   BOHIO CRM - Vista Kanban Estilizada
+   Colores: Rojo #ff1d25 y Negro #000000
+   ============================================ */
+
+.o_bohio_crm_kanban {
+    background: #f5f6fa;
+}
+
+/* Header del Grupo Kanban con Métricas */
+.o_kanban_header {
+    background: white;
+    border-radius: 8px 8px 0 0;
+    border-bottom: 3px solid #ff1d25;
+    padding: 15px;
+}
+
+.o_kanban_header_title_name {
+    color: #000000;
+    font-weight: 600;
+    font-size: 18px;
+}
+
+.metric-pill {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    color: white;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.metric-pill.bg-primary {
+    background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%);
+    border: 1px solid #ff1d25;
+}
+
+.metric-pill.bg-success {
+    background: linear-gradient(135deg, #50c878 0%, #3fa463 100%);
+    border: 1px solid #ff1d25;
+}
+
+.metric-pill.bg-warning {
+    background: linear-gradient(135deg, #f39c12 0%, #d68910 100%);
+    border: 1px solid #000000;
+}
+
+/* Card Principal */
+.o_bohio_kanban_card {
+    border: none !important;
+    border-radius: 12px !important;
+    background: white;
+    padding: 15px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+    border-left: 4px solid #ff1d25 !important;
+    position: relative;
+}
+
+.o_bohio_kanban_card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(255,29,37,0.2);
+}
+
+/* Header de la card */
+.o_kanban_card_header {
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.o_kanban_card_header_title .o_primary strong {
+    color: #000000;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.o_kanban_card_header_title .o_secondary .o_tag {
+    background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%);
+    border: 1px solid #ff1d25;
+    color: white;
+    font-size: 11px;
+    padding: 3px 8px;
+    border-radius: 12px;
+    margin: 2px;
+}
+
+/* Cliente Info */
+.o_bohio_client_info {
+    padding: 10px 0;
+    border-bottom: 1px solid #f0f0f0;
+    margin-bottom: 12px;
+}
+
+.o_bohio_client_info .client-name {
+    color: #2c3e50;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.o_bohio_client_info .client-contact {
+    color: #95a5a6;
+    font-size: 12px;
+    margin-top: 4px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* Proyecto Info */
+.o_bohio_project_info {
+    padding: 8px 0;
+}
+
+.o_bohio_project_info .fa {
+    color: #ff1d25;
+}
+
+.o_bohio_project_info .badge {
+    background: linear-gradient(135deg, #5dade2 0%, #3498db 100%);
+    border: 1px solid #ff1d25;
+    font-size: 11px;
+    padding: 4px 8px;
+}
+
+/* Métricas Financieras */
+.o_bohio_financial_metrics {
+    margin: 12px 0;
+}
+
+.o_bohio_financial_metrics .metric-item {
+    background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%);
+    border-radius: 8px;
+    padding: 10px;
+    text-align: center;
+    color: white;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    border-left: 3px solid #ff1d25;
+}
+
+.o_bohio_financial_metrics .metric-item.metric-recurring {
+    background: linear-gradient(135deg, #50c878 0%, #3fa463 100%);
+}
+
+.o_bohio_financial_metrics .metric-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    opacity: 0.9;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.o_bohio_financial_metrics .metric-value {
+    font-size: 14px;
+    font-weight: bold;
+    margin-top: 4px;
+}
+
+.o_bohio_financial_metrics .metric-commission {
+    background: linear-gradient(135deg, #f39c12 0%, #d68910 100%);
+    border: 2px solid #ff1d25;
+    color: white;
+    margin-top: 8px;
+}
+
+/* Barra de Probabilidad */
+.o_bohio_probability {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid #f0f0f0;
+}
+
+.o_bohio_probability .probability-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+}
+
+.o_bohio_probability .probability-label {
+    font-size: 11px;
+    color: #95a5a6;
+    text-transform: uppercase;
+}
+
+.o_bohio_probability .probability-value {
+    font-size: 13px;
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+.o_bohio_probability .progress {
+    height: 6px;
+    background: #e9ecef;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.o_bohio_probability .progress-bar {
+    transition: width 0.3s ease;
+}
+
+/* Footer */
+.o_kanban_card_footer {
+    padding-top: 12px;
+    margin-top: 12px;
+    border-top: 1px solid #f0f0f0;
+}
+
+/* Prioridad */
+.o_priority .o_priority_star {
+    color: #ff1d25;
+    font-size: 14px;
+}
+
+.o_priority .o_priority_star.fa-star {
+    color: #ff1d25;
+}
+
+.o_priority .o_priority_star.fa-star-o {
+    color: #cbd5e0;
+}
+
+/* Dropdown menu */
+.o_dropdown_kanban .dropdown-toggle {
+    color: #95a5a6;
+}
+
+.o_dropdown_kanban .dropdown-toggle:hover {
+    color: #ff1d25;
+}
+
+/* Actividades */
+.o_kanban_card_manage_section {
+    margin-top: 10px;
+}
+
+.o_kanban_card_manage_section .o_activity_color_default {
+    background: #cbd5e0;
+}
+
+.o_kanban_card_manage_section .o_activity_color_today {
+    background: #f39c12;
+}
+
+.o_kanban_card_manage_section .o_activity_color_overdue {
+    background: #ff1d25;
+}
+
+/* Columnas Kanban */
+.o_kanban_group {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 10px;
+}
+
+.o_kanban_header {
+    padding: 15px;
+    border-bottom: 2px solid #ff1d25;
+    background: white;
+    border-radius: 8px 8px 0 0;
+}
+
+.o_kanban_header .o_kanban_header_title {
+    color: #000000;
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.o_column_progress {
+    height: 3px;
+    background: #e9ecef;
+    margin-top: 10px;
+}
+
+.o_column_progress .progress-bar-success {
+    background: #50c878;
+}
+
+.o_column_progress .progress-bar-warning {
+    background: #f39c12;
+}
+
+.o_column_progress .progress-bar-danger {
+    background: #ff1d25;
+}
+
+/* Quick Create */
+.o_kanban_quick_create {
+    background: white;
+    border: 2px dashed #ff1d25;
+    border-radius: 8px;
+    padding: 15px;
+}
+
+.o_kanban_quick_create .o_form_button_create {
+    background: linear-gradient(135deg, #ff1d25 0%, #cc0000 100%);
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-weight: 600;
+}
+
+.o_kanban_quick_create .o_form_button_create:hover {
+    background: linear-gradient(135deg, #cc0000 0%, #990000 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(255,29,37,0.3);
+}
+
+/* Search Panel */
+.o_search_panel_category_value {
+    color: #2c3e50;
+}
+
+.o_search_panel_category_value.active {
+    background: #fff5f5;
+    border-left: 3px solid #ff1d25;
+    color: #ff1d25;
+    font-weight: 600;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .o_bohio_kanban_card {
+        margin-bottom: 15px;
+    }
+
+    .metric-box {
+        padding: 8px;
+    }
+
+    .metric-value {
+        font-size: 14px;
+    }
+}

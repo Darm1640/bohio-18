@@ -37,9 +37,30 @@ class LoanLine(models.Model):
     currency_id = fields.Many2one(related="invoice_id.currency_id", readonly=True)
     tax_ids = fields.Many2many("account.tax", string="Tax")
     commission = fields.Float("Comisión", digits=(16, 2))
+    commission_percentage = fields.Float("% Comisión", default=8.0)
+    commission_invoice_ids = fields.Many2many('account.move', string='Facturas de Comisión', copy=False)
     period_start = fields.Date("Inicio del periodo")
     period_end = fields.Date("Fin del periodo")
-    commission_invoice_ids = fields.Many2many('account.move', string='Facturas de Comisión', copy=False)
+
+    # CAMPOS DE INTERÉS POR MORA (MANUAL)
+    interest_amount = fields.Float(
+        'Interés por Mora',
+        digits=(16, 2),
+        default=0.0,
+        help='Monto de interés por mora - ejemplo: 25000'
+    )
+    days_overdue = fields.Integer(
+        'Días de Mora',
+        compute='_compute_overdue_info',
+        store=True,
+        help='Días transcurridos desde vencimiento'
+    )
+    is_overdue = fields.Boolean(
+        'En Mora',
+        compute='_compute_overdue_info',
+        store=True,
+        help='Verdadero si la cuota está vencida'
+    )
 
 
     def make_invoice(self):
@@ -85,26 +106,32 @@ class LoanLine(models.Model):
             # Usar la cuenta por cobrar del escenario
             inv_dict["pay_sell_force_account_id"] = scenery.account_receivable_inq.id
 
-            # Obtener el producto variante
-            product_variant = product_obj.search([('product_tmpl_id', '=', contract.property_id.id)], limit=1)
-            if not product_variant:
-                raise UserError(_("No product variant found for the specified product template!"))
-
-            # Verificar si hay múltiples propietarios
-            owners = contract.property_id.owners_lines
-            if owners:
-                total_percentage = sum(owner.percentage for owner in owners)
-                for owner in owners:
-                    owner_percentage = owner.percentage / total_percentage
-                    owner_amount = rec.amount * owner_percentage
-                    if owner.contract_scenery_id:
-                        scenery = owners.contract_scenery_id
-                    line_vals = self._prepare_invoice_line(rec, product_variant, owner_amount, owner.partner_id, scenery)
-                    inv_dict["invoice_line_ids"].append((0, 0, line_vals))
+            # FACTURACIÓN PARA CONTRATOS MULTI-PROPIEDAD
+            if contract.is_multi_property and contract.contract_line_ids:
+                # Generar líneas consolidadas para todas las propiedades activas en el período
+                self._create_multi_property_invoice_lines(inv_dict, rec, contract, scenery)
             else:
-                # Si no hay propietarios definidos, usar el partner principal del contrato
-                line_vals = self._prepare_invoice_line(rec, product_variant, rec.amount, contract.partner_is_owner_id, scenery)
-                inv_dict["invoice_line_ids"].append((0, 0, line_vals))
+                # FACTURACIÓN TRADICIONAL (UNA PROPIEDAD)
+                # Obtener el producto variante
+                product_variant = product_obj.search([('product_tmpl_id', '=', contract.property_id.id)], limit=1)
+                if not product_variant:
+                    raise UserError(_("No product variant found for the specified product template!"))
+
+                # Verificar si hay múltiples propietarios en la propiedad principal
+                owners = contract.property_id.owners_lines
+                if owners:
+                    total_percentage = sum(owner.percentage for owner in owners)
+                    for owner in owners:
+                        owner_percentage = owner.percentage / total_percentage
+                        owner_amount = rec.amount * owner_percentage
+                        if owner.contract_scenery_id:
+                            scenery = owner.contract_scenery_id
+                        line_vals = self._prepare_invoice_line(rec, product_variant, owner_amount, owner.partner_id, scenery)
+                        inv_dict["invoice_line_ids"].append((0, 0, line_vals))
+                else:
+                    # Si no hay propietarios definidos, usar el partner principal del contrato
+                    line_vals = self._prepare_invoice_line(rec, product_variant, rec.amount, contract.partner_is_owner_id, scenery)
+                    inv_dict["invoice_line_ids"].append((0, 0, line_vals))
 
             invoice = move_obj.create(inv_dict)
             self.invoice_id = invoice.id
@@ -214,6 +241,7 @@ class LoanLine(models.Model):
             })],
         }
 
+
     def view_invoice(self):
         # Buscar los registros relacionados
         moves = self.env["account.move"].sudo().search([("line_id", "=", self.id)])
@@ -259,6 +287,139 @@ class LoanLine(models.Model):
         template_res = self.env["mail.template"]
         template = template_res.browse(template_id)
         template.send_mail(self.id, force_send=True)
+
+    def action_recalculate_interest(self):
+        """Recalcular interés por mora"""
+        self.ensure_one()
+        # Placeholder - implementar lógica de cálculo
+        return True
+
+    def action_set_manual_interest(self):
+        """Permite cambiar el interés manualmente"""
+        self.ensure_one()
+        # El usuario puede editar directamente el campo interest_amount
+        return True
+
+    def _create_multi_property_invoice_lines(self, inv_dict, loan_line, contract, scenery):
+        """Crear líneas de factura consolidada para contrato multi-propiedad"""
+        product_obj = self.env['product.product']
+
+        # Obtener propiedades activas en el período de esta cuota
+        active_lines = contract.contract_line_ids.filtered(
+            lambda l: l.state == 'active' and
+                     l.date_from <= loan_line.period_end and
+                     (not l.date_end_real or l.date_end_real >= loan_line.period_start)
+        )
+
+        if not active_lines:
+            raise UserError(_("No hay propiedades activas para facturar en este período"))
+
+        # Crear líneas de factura por cada propiedad activa
+        for line in active_lines:
+            # Calcular el monto proporcional de esta propiedad para esta cuota
+            line_amount = loan_line.amount * (line.rental_fee / contract.total_rental_fee)
+
+            # Obtener producto de la propiedad
+            product_variant = product_obj.search([('product_tmpl_id', '=', line.property_id.id)], limit=1)
+            if not product_variant:
+                # Crear producto si no existe
+                product_variant = product_obj.create({
+                    'name': line.property_id.name,
+                    'product_tmpl_id': line.property_id.id,
+                })
+
+            # Verificar propietarios de esta propiedad específica
+            property_owners = line.property_id.owners_lines
+            if property_owners:
+                # Multi-propietarios en esta propiedad específica
+                total_percentage = sum(owner.percentage for owner in property_owners)
+                for owner in property_owners:
+                    owner_percentage = owner.percentage / total_percentage
+                    owner_amount = line_amount * owner_percentage
+
+                    # Usar escenario específico del propietario si está configurado
+                    if contract.is_escenary_propiedad and owner.contract_scenery_id:
+                        line_scenery = owner.contract_scenery_id
+                    else:
+                        line_scenery = scenery
+
+                    line_vals = self._prepare_multi_property_invoice_line(
+                        loan_line, product_variant, owner_amount, owner.partner_id, line_scenery, line.property_id
+                    )
+                    inv_dict["invoice_line_ids"].append((0, 0, line_vals))
+            else:
+                # Un solo propietario para esta propiedad
+                line_vals = self._prepare_multi_property_invoice_line(
+                    loan_line, product_variant, line_amount, line.property_id.partner_id, scenery, line.property_id
+                )
+                inv_dict["invoice_line_ids"].append((0, 0, line_vals))
+
+    def _prepare_multi_property_invoice_line(self, loan_line, product_variant, amount, partner, scenery, property_obj):
+        """Preparar línea de factura para propiedad específica en contrato multi-propiedad"""
+        line_vals = {
+            "name": f"{property_obj.name} - {loan_line.name}",
+            "quantity": 1,
+            "price_unit": amount,
+            "product_id": product_variant.id,
+            "partner_id": partner.id,
+            "account_id": scenery.income_account_inq.id,
+        }
+
+        # Agregar impuestos del escenario
+        if scenery.inq_tax_ids:
+            line_vals.update({"tax_ids": [(6, 0, scenery.inq_tax_ids.ids)]})
+
+        return line_vals
+
+    @api.depends('date', 'payment_state')
+    def _compute_overdue_info(self):
+        """Calcular información de mora"""
+        today = fields.Date.today()
+
+        for line in self:
+            if line.payment_state == 'paid' or not line.date:
+                line.days_overdue = 0
+                line.is_overdue = False
+                continue
+
+            # Días desde vencimiento
+            days_since_due = (today - line.date).days
+
+            if days_since_due > 0:
+                line.days_overdue = days_since_due
+                line.is_overdue = True
+            else:
+                line.days_overdue = 0
+                line.is_overdue = False
+
+    def create_invoice_line(self):
+        """Crear factura para esta línea de pago"""
+        self.ensure_one()
+
+        if self.invoice_id:
+            return {
+                'type': 'ir.actions.act_window',
+                'name': 'Factura',
+                'res_model': 'account.move',
+                'res_id': self.invoice_id.id,
+                'view_mode': 'form',
+                'target': 'current',
+            }
+
+        # Crear factura usando el método existente
+        self.make_invoice()
+
+        if self.invoice_id:
+            return {
+                'type': 'ir.actions.act_window',
+                'name': 'Factura Creada',
+                'res_model': 'account.move',
+                'res_id': self.invoice_id.id,
+                'view_mode': 'form',
+                'target': 'current',
+            }
+
+        return {'type': 'ir.actions.act_window_close'}
 
 class AccountMove(models.Model):
     _inherit = 'account.move'

@@ -32,6 +32,28 @@ class PropertyReservation(models.Model):
 
     deposit_count = fields.Integer(compute="_deposit_count", string="Deposits")
 
+    # RELACIÓN CON CONTRATO CREADO
+    contract_id = fields.Many2one(
+        'property.contract',
+        string='Contrato Creado',
+        help='Contrato generado desde esta reserva'
+    )
+
+    # ESTADO DE CONVERSIÓN
+    conversion_state = fields.Selection([
+        ('pending', 'Pendiente'),
+        ('converted', 'Convertida a Contrato'),
+        ('sale_order_created', 'Orden de Venta Creada'),
+        ('expired', 'Expirada')
+    ], string='Estado de Conversión', default='pending', tracking=True)
+
+    # RELACIÓN CON ORDEN DE VENTA
+    sale_order_id = fields.Many2one(
+        'sale.order',
+        string='Orden de Venta',
+        help='Orden de venta generada desde esta reserva'
+    )
+
     # Reservation Info
     name = fields.Char("Name", size=64, default='New')
     booking_type = fields.Selection([('is_rental', 'Rental'), ('is_ownership', 'Ownership')], default='is_rental')
@@ -187,26 +209,72 @@ class PropertyReservation(models.Model):
         }
 
     def action_contract_rental(self):
+        """Crear contrato desde reserva con valores automáticos"""
+        contract = self.env['property.contract'].create_from_reservation(self.id)
+
         return {
-            "name": _("Rental Contract"),
+            "name": _("Contrato de Arrendamiento"),
             "view_type": "form",
             "view_mode": "form",
             "res_model": "property.contract",
-            "view_id": self.env.ref("real_estate_bits.view_property_contract_form").id,
+            "res_id": contract.id,
             "type": "ir.actions.act_window",
-            "context": {
-                "form_view_initial_mode": "edit",
-                "default_contract_type": "is_rental",
-                "default_project_id": self.project_id.id,
-                "default_partner_id": self.partner_id.id,
-                "default_property_id": self.property_id.id,
-                "default_pricing": self.net_price,
-                "default_price_per_m": self.price_per_m,
-                "default_property_price_type": self.property_price_type,
-                "default_type": self.type,
-                "default_reservation_id": self.id,
-            },
             "target": "current",
+        }
+
+    def action_create_contract_with_template(self):
+        """Crear contrato desde reserva usando plantilla"""
+        return {
+            'name': 'Crear Contrato desde Reserva',
+            'type': 'ir.actions.act_window',
+            'res_model': 'create.contract.from.reservation.wizard',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {'default_reservation_id': self.id}
+        }
+
+    def action_create_sale_order(self):
+        """Generar orden de venta desde reserva"""
+        if not self.property_id:
+            raise UserError(_("Debe seleccionar una propiedad para generar la orden"))
+
+        # Buscar producto variante de la propiedad
+        product_variant = self.env['product.product'].search([
+            ('product_tmpl_id', '=', self.property_id.id)
+        ], limit=1)
+
+        if not product_variant:
+            raise UserError(_("No se encontró variante del producto para la propiedad"))
+
+        # Crear orden de venta
+        order_vals = {
+            'partner_id': self.partner_id.id,
+            'user_id': self.user_id.id,
+            'origin': f"Reserva: {self.name}",
+            'client_order_ref': self.name,
+            'order_line': [(0, 0, {
+                'product_id': product_variant.id,
+                'product_uom_qty': 1,
+                'price_unit': self.amount,
+                'name': f"Reserva de {self.property_id.name}",
+            })]
+        }
+
+        sale_order = self.env['sale.order'].create(order_vals)
+
+        # Relacionar reserva con orden
+        self.write({
+            'sale_order_id': sale_order.id,
+            'state': 'sale_order_created'
+        })
+
+        return {
+            'name': _('Orden de Venta'),
+            'type': 'ir.actions.act_window',
+            'res_model': 'sale.order',
+            'res_id': sale_order.id,
+            'view_mode': 'form',
+            'target': 'current'
         }
 
     def view_contract_own(self):

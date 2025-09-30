@@ -280,4 +280,124 @@
         <field name="binding_type">report</field>
         <field name="groups_id" eval="[(4, ref('base.group_user'))]"/>
     </record>
+
+    <!-- Plantilla de comparación desde CRM Lead -->
+    <template id="report_crm_property_comparison_document">
+        <t t-call="web.external_layout">
+            <t t-foreach="docs" t-as="o">
+            <div class="page">
+                <div class="row bohio-header">
+                    <div class="col-4">
+                        <img src="/bohio_real_estate/static/description/icon.png"
+                             style="max-height: 60px;" alt="BOHÍO"/>
+                    </div>
+                    <div class="col-8 text-end">
+                        <h2 style="color: #ff1d25; font-weight: 700;">
+                            COMPARATIVO DE PROPIEDADES
+                        </h2>
+                        <p class="text-muted">
+                            <t t-esc="context_timestamp(datetime.datetime.now()).strftime('%d/%m/%Y')"/>
+                        </p>
+                    </div>
+                </div>
+
+                <hr style="border-color: #ff1d25; border-width: 2px;"/>
+
+                <!-- Cliente -->
+                <div class="row mt-3 mb-4">
+                    <div class="col-12">
+                        <h5 style="color: #ff1d25;">Preparado para:</h5>
+                        <p><strong><t t-esc="o.partner_id.name if o.partner_id else 'Cliente'"/></strong></p>
+                        <t t-if="o.partner_id">
+                            <p t-if="o.partner_id.email">Email: <t t-esc="o.partner_id.email"/></p>
+                            <p t-if="o.partner_id.phone">Teléfono: <t t-esc="o.partner_id.phone"/></p>
+                        </t>
+                    </div>
+                </div>
+
+                <!-- Obtener propiedades -->
+                <t t-set="properties" t-value="[p for p in [o.compare_property_1_id, o.compare_property_2_id, o.compare_property_3_id, o.compare_property_4_id] if p]"/>
+
+                <!-- Comparativo visual -->
+                <div class="row mt-4">
+                    <t t-foreach="properties" t-as="prop">
+                        <div t-att-class="'col-%s' % (12 // len(properties))">
+                            <div style="border: 2px solid #ff1d25; border-radius: 12px; overflow: hidden; margin-bottom: 20px;">
+                                <img t-if="prop.image_1920"
+                                     t-att-src="image_data_uri(prop.image_1920)"
+                                     style="width: 100%; height: 200px; object-fit: cover;"/>
+                                <div style="padding: 16px; background: white;">
+                                    <h4 style="color: #ff1d25; margin: 0;"><t t-esc="prop.name"/></h4>
+                                    <p style="margin: 8px 0; color: #666;">
+                                        <i class="fa fa-barcode"/> <t t-esc="prop.default_code or 'N/A'"/>
+                                    </p>
+                                    <div style="margin: 12px 0; padding: 12px; background: #f8f9fa; border-radius: 8px;">
+                                        <div style="font-size: 24px; font-weight: 700; color: #ff1d25;">
+                                            $<t t-esc="'{:,.0f}'.format(prop.list_price)"/>
+                                        </div>
+                                    </div>
+                                    <div style="margin-top: 12px;">
+                                        <p style="margin: 4px 0;"><i class="fa fa-map-marker"/> <t t-esc="prop.neighborhood"/>, <t t-esc="prop.municipality"/></p>
+                                        <p style="margin: 4px 0;"><i class="fa fa-arrows-alt"/> <t t-esc="prop.property_area"/> m²</p>
+                                        <p style="margin: 4px 0;"><i class="fa fa-bed"/> <t t-esc="prop.num_bedrooms or 0"/> habitaciones</p>
+                                        <p style="margin: 4px 0;"><i class="fa fa-bath"/> <t t-esc="prop.num_bathrooms or 0"/> baños</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+
+                <!-- Mensaje del Agente -->
+                <div class="row mt-4" style="background: #fff8f8; border-left: 4px solid #ff1d25; padding: 20px; border-radius: 8px;">
+                    <div class="col-12">
+                        <h5 style="color: #ff1d25; margin-bottom: 12px;">
+                            <i class="fa fa-user-circle"/> Su Asesor Inmobiliario
+                        </h5>
+                        <p style="margin: 0 0 12px 0; font-size: 14px; line-height: 1.6;">
+                            <strong><t t-esc="o.user_id.name if o.user_id else 'Equipo BOHÍO'"/></strong><br/>
+                            <t t-if="o.user_id and o.user_id.phone">
+                                <i class="fa fa-phone"/> <t t-esc="o.user_id.phone"/><br/>
+                            </t>
+                            <t t-if="o.user_id and o.user_id.email">
+                                <i class="fa fa-envelope"/> <t t-esc="o.user_id.email"/>
+                            </t>
+                        </p>
+                        <p style="margin: 0; font-size: 13px; font-style: italic; color: #666;">
+                            "¿Listo para encontrar tu hogar ideal? <strong style="color: #ff1d25;">¡Llámame ahora!</strong>
+                            Estoy aquí para ayudarte a tomar la mejor decisión y guiarte en cada paso del proceso."
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Footer -->
+                <div class="row mt-4" style="border-top: 2px solid #ff1d25; padding-top: 20px;">
+                    <div class="col-6">
+                        <h5 style="color: #ff1d25;">BOHÍO Inmobiliaria</h5>
+                        <p style="margin: 0; font-size: 12px; color: #666;">
+                            Tu hogar, nuestra pasión
+                        </p>
+                    </div>
+                    <div class="col-6 text-end">
+                        <p style="margin: 0; font-size: 11px; color: #999;">
+                            Documento confidencial
+                        </p>
+                    </div>
+                </div>
+            </div>
+            </t>
+        </t>
+    </template>
+
+    <!-- Reporte desde CRM -->
+    <record id="action_report_property_comparison" model="ir.actions.report">
+        <field name="name">Comparativo de Propiedades</field>
+        <field name="model">crm.lead</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">bohio_real_estate.report_crm_property_comparison_document</field>
+        <field name="report_file">bohio_real_estate.report_crm_property_comparison</field>
+        <field name="print_report_name">'Comparativo_%s' % (object.name)</field>
+        <field name="binding_model_id" ref="crm.model_crm_lead"/>
+        <field name="binding_type">report</field>
+    </record>
 </odoo>

@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- Acciones - DEBEN IR PRIMERO -->
+        <record id="action_bohio_crm_opportunities" model="ir.actions.act_window">
+            <field name="name">Oportunidades</field>
+            <field name="res_model">crm.lead</field>
+            <field name="view_mode">kanban,list,form,calendar</field>
+            <field name="domain">[('type', '=', 'opportunity')]</field>
+            <field name="context">{
+                'default_type': 'opportunity',
+                'search_default_assigned_to_me': 1,
+                'search_default_open': 1,
+            }</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    ¡Aún no hay oportunidades!
+                </p>
+                <p>
+                    Las oportunidades son leads calificados que representan un negocio potencial.
+                </p>
+            </field>
+        </record>
+
+        <!-- Referencias explícitas a las vistas -->
+        <record id="action_bohio_crm_opportunities_view_kanban" model="ir.actions.act_window.view">
+            <field name="sequence">1</field>
+            <field name="view_mode">kanban</field>
+            <field name="view_id" ref="view_crm_lead_kanban_bohio"/>
+            <field name="act_window_id" ref="action_bohio_crm_opportunities"/>
+        </record>
+
+        <record id="action_bohio_crm_opportunities_view_list" model="ir.actions.act_window.view">
+            <field name="sequence">2</field>
+            <field name="view_mode">list</field>
+            <field name="view_id" ref="view_crm_lead_list_bohio"/>
+            <field name="act_window_id" ref="action_bohio_crm_opportunities"/>
+        </record>
+
+        <record id="action_bohio_crm_opportunities_view_form" model="ir.actions.act_window.view">
+            <field name="sequence">3</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_crm_lead_form_bohio_complete"/>
+            <field name="act_window_id" ref="action_bohio_crm_opportunities"/>
+        </record>
+
+        <record id="action_bohio_crm_opportunities_view_calendar" model="ir.actions.act_window.view">
+            <field name="sequence">4</field>
+            <field name="view_mode">calendar</field>
+            <field name="view_id" ref="view_crm_lead_calendar_bohio"/>
+            <field name="act_window_id" ref="action_bohio_crm_opportunities"/>
+        </record>
+
+        <record id="action_bohio_crm_leads" model="ir.actions.act_window">
+            <field name="name">Prospectos</field>
+            <field name="res_model">crm.lead</field>
+            <field name="view_mode">kanban,list,form,calendar</field>
+            <field name="domain">[('type', '=', 'lead')]</field>
+            <field name="context">{
+                'default_type': 'lead',
+                'search_default_assigned_to_me': 1,
+            }</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    ¡Aún no hay prospectos!
+                </p>
+                <p>
+                    Los prospectos son contactos iniciales que pueden convertirse en oportunidades.
+                </p>
+            </field>
+        </record>
+
+        <record id="action_bohio_crm_pipeline_dashboard" model="ir.actions.act_window">
+            <field name="name">Dashboard Pipeline</field>
+            <field name="res_model">crm.lead</field>
+            <field name="view_mode">kanban,pivot,graph</field>
+            <field name="domain">[('type', '=', 'opportunity')]</field>
+            <field name="context">{
+                'group_by': ['stage_id'],
+            }</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    ¡Dashboard de Pipeline!
+                </p>
+                <p>
+                    Visualiza el estado de tus oportunidades agrupadas por etapa con métricas.
+                </p>
+            </field>
+        </record>
+
+        <!-- Vista Kanban Dashboard Pipeline -->
+        <record id="view_crm_pipeline_dashboard_kanban" model="ir.ui.view">
+            <field name="name">crm.lead.pipeline.dashboard.kanban</field>
+            <field name="model">crm.lead</field>
+            <field name="arch" type="xml">
+                <kanban default_group_by="stage_id" class="o_kanban_small_column o_kanban_dashboard" quick_create="false">
+                    <field name="stage_id"/>
+                    <field name="user_id"/>
+                    <field name="partner_id"/>
+                    <field name="expected_revenue"/>
+                    <field name="days_open"/>
+                    <field name="probability"/>
+                    <field name="client_type"/>
+                    <field name="service_interested"/>
+                    <field name="company_currency"/>
+
+                    <templates>
+                        <t t-name="kanban-header">
+                            <div class="o_kanban_header d-flex justify-content-between align-items-center p-3">
+                                <div class="o_kanban_header_title">
+                                    <div class="o_kanban_header_title_name fw-bold fs-5" t-esc="group.value"/>
+                                    <div class="text-muted small">
+                                        <t t-esc="group.count"/> oportunidades
+                                    </div>
+                                </div>
+                                <div class="o_kanban_header_pills d-flex flex-column align-items-end">
+                                    <span class="badge bg-primary mb-1" title="Suma del Ingreso Esperado">
+                                        <i class="fa fa-money"/> $<t t-esc="group.aggregates.expected_revenue or 0"/>
+                                    </span>
+                                    <span class="badge bg-secondary" title="Promedio de días en el pipeline">
+                                        <i class="fa fa-clock-o"/> <t t-esc="group.aggregates.avg_days_in_pipeline or '0'"/>d
+                                    </span>
+                                </div>
+                            </div>
+                        </t>
+                        <t t-name="card">
+                            <div class="oe_kanban_card d-flex flex-column">
+                                <div class="oe_kanban_content">
+                                    <div class="oe_kanban_details">
+                                        <strong class="o_kanban_record_title">
+                                            <field name="name"/>
+                                        </strong>
+                                        <div class="text-muted">
+                                            <field name="partner_id"/>
+                                        </div>
+                                        <div class="row mt-2">
+                                            <div class="col-6" t-if="record.client_type.value">
+                                                <span class="badge bg-info text-dark">
+                                                    <field name="client_type"/>
+                                                </span>
+                                            </div>
+                                            <div class="col-6" t-if="record.service_interested.value">
+                                                <span class="badge bg-success">
+                                                    <field name="service_interested"/>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="mt-2">
+                                            <strong class="text-success">
+                                                <field name="expected_revenue" widget="monetary" options="{'currency_field': 'company_currency'}"/>
+                                            </strong>
+                                        </div>
+                                        <div class="mt-1">
+                                            <div class="progress" style="height: 8px;">
+                                                <div class="progress-bar bg-warning"
+                                                     t-attf-style="width: #{record.probability.value}%"
+                                                     t-att-aria-valuenow="record.probability.value"
+                                                     aria-valuemin="0" aria-valuemax="100">
+                                                </div>
+                                            </div>
+                                            <small class="text-muted">
+                                                Probabilidad: <t t-esc="record.probability.value"/>%
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="oe_kanban_footer d-flex justify-content-between align-items-center mt-2">
+                                    <div class="oe_kanban_footer_left">
+                                        <field name="activity_ids" widget="kanban_activity"/>
+                                    </div>
+                                    <div class="oe_kanban_footer_right">
+                                        <field name="user_id" widget="many2one_avatar_user"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <!-- Menú Principal BOHIO CRM -->
+        <menuitem id="menu_bohio_crm_root"
+                  name="Bohio CRM"
+                  sequence="5"
+                  web_icon="bohio_crm,static/description/icon.png"/>
+
+        <!-- ORDEN CORRECTO: Dashboard -> Oportunidades -> Prospectos -> Configuración -->
+
+        <!-- 1. DASHBOARD (Primero) -->
+        <menuitem id="menu_bohio_crm_dashboard"
+                  name="Dashboard"
+                  parent="menu_bohio_crm_root"
+                  action="action_bohio_crm_pipeline_dashboard"
+                  sequence="1"/>
+
+        <!-- 2. OPORTUNIDADES (Segundo) -->
+        <menuitem id="menu_bohio_crm_opportunities"
+                  name="Oportunidades"
+                  parent="menu_bohio_crm_root"
+                  action="action_bohio_crm_opportunities"
+                  sequence="10"/>
+
+        <!-- 3. PROSPECTOS (Tercero) -->
+        <menuitem id="menu_bohio_crm_leads"
+                  name="Prospectos"
+                  parent="menu_bohio_crm_root"
+                  action="action_bohio_crm_leads"
+                  sequence="20"/>
+
+        <!-- 4. CONFIGURACIÓN (Último) -->
+        <menuitem id="menu_bohio_arriendo"
+                  name="Configuración"
+                  parent="menu_bohio_crm_root"
+                  sequence="90"/>
+
+        <menuitem id="menu_contract_config"
+                  name="Configuración Contratos"
+                  parent="menu_bohio_arriendo"
+                  action="action_company_contract_config"
+                  sequence="10"/>
+
+    </data>
+</odoo>

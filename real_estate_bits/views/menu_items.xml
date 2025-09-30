@@ -45,9 +45,6 @@
                   parent="menu_property_reservation_main"/>
 
 
-        <menuitem id="menu_recaudo_root" name="Recaudos" parent="real_estate_bits.menu_real_estate_root"/>
-        <menuitem id="menu_recaudo" name="Recaudos Grupal" parent="menu_recaudo_root" action="action_recaudo"/>
-        <menuitem id="menu_recaudo_line" name="Recaudos " parent="menu_recaudo_root" action="action_recaudo_line"/>
         <!-- Maintenance -->
         <menuitem id="menu_property_maintenance_main" name="Maintenance" sequence="15"
                   parent="real_estate_bits.menu_real_estate_root"/>

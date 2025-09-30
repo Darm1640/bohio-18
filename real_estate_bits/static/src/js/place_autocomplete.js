@@ -20,14 +20,17 @@ export class place_autocomplete extends CharField {
         onWillStart(async() => {
             if (typeof google == "undefined") {
                 let key = await this.orm.call("gmap.config", "get_key_api", [], {});
-                $.getScript("https://maps.googleapis.com/maps/api/js?key=" + key + "&libraries=places&callback=Function.prototype");
+                const script = document.createElement('script');
+                script.src = `https://maps.googleapis.com/maps/api/js?key=${key}&libraries=places&callback=Function.prototype`;
+                script.async = true;
+                document.head.appendChild(script);
             }
         });
 
         onMounted(() => {
             const self = this;
             if(this?.input?.el) {
-                $(this?.input?.el).parent().removeClass("oe_inline");
+                this.input.el.parentElement?.classList.remove("oe_inline");
             }
             this.t = setInterval(function () {
                 if (typeof google !== "undefined") {
@@ -139,7 +142,7 @@ export class place_autocomplete extends CharField {
         geocoder.geocode({ location: latLng }, function (results, status) {
             if (status === "OK") {
                 if (self.input.el) {
-                    $(self.input.el).val(results[0].formatted_address);
+                    self.input.el.value = results[0].formatted_address;
                 }
             }
         });
@@ -155,7 +158,9 @@ export class place_autocomplete extends CharField {
     }
 
     toggleMap(ev) {
-        $(this.gmapContainer.el).toggle();
+        if (this.gmapContainer.el) {
+            this.gmapContainer.el.style.display = this.gmapContainer.el.style.display === 'none' ? 'block' : 'none';
+        }
         this.update_marker(this.lat, this.lng);
     }
 }

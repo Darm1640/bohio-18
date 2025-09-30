@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ========================================== -->
+    <!-- REGLAS DE ACCESO PARA PORTAL DE BOHIO     -->
+    <!-- ========================================== -->
+
+    <!-- PROPIEDADES: Propietarios solo ven sus propiedades -->
+    <record id="property_owner_portal_rule" model="ir.rule">
+        <field name="name">Property: Portal Users - Own Properties Only</field>
+        <field name="model_id" ref="product.model_product_template"/>
+        <field name="domain_force">[
+            '|',
+            ('partner_id', '=', user.partner_id.id),
+            ('owners_lines.partner_id', '=', user.partner_id.id)
+        ]</field>
+        <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <!-- CONTRATOS: Arrendatarios solo ven sus contratos -->
+    <record id="contract_tenant_portal_rule" model="ir.rule">
+        <field name="name">Contract: Portal Users - Own Contracts Only</field>
+        <field name="model_id" ref="real_estate_bits.model_property_contract"/>
+        <field name="domain_force">[('partner_id', '=', user.partner_id.id)]</field>
+        <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <!-- PAGOS: Usuarios de portal solo ven sus pagos -->
+    <record id="payment_portal_rule" model="ir.rule">
+        <field name="name">Payment: Portal Users - Own Payments Only</field>
+        <field name="model_id" ref="account.model_account_payment"/>
+        <field name="domain_force">[('partner_id', '=', user.partner_id.id)]</field>
+        <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <!-- FACTURAS: Usuarios de portal solo ven sus facturas -->
+    <record id="invoice_portal_rule" model="ir.rule">
+        <field name="name">Invoice: Portal Users - Own Invoices Only</field>
+        <field name="model_id" ref="account.model_account_move"/>
+        <field name="domain_force">[
+            ('partner_id', '=', user.partner_id.id),
+            ('move_type', 'in', ['out_invoice', 'out_refund', 'in_invoice', 'in_refund'])
+        ]</field>
+        <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <!-- OPORTUNIDADES CRM: Solo las marcadas para mostrar en portal -->
+    <record id="opportunity_portal_rule" model="ir.rule">
+        <field name="name">Opportunity: Portal Users - Own Visible Opportunities</field>
+        <field name="model_id" ref="crm.model_crm_lead"/>
+        <field name="domain_force">[
+            ('partner_id', '=', user.partner_id.id),
+            ('show_in_portal', '=', True)
+        ]</field>
+        <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <!-- TICKETS HELPDESK: Solo propios tickets -->
+    <record id="ticket_portal_rule" model="ir.rule">
+        <field name="name">Helpdesk Ticket: Portal Users - Own Tickets Only</field>
+        <field name="model_id" ref="helpdesk.model_helpdesk_ticket"/>
+        <field name="domain_force">[('partner_id', '=', user.partner_id.id)]</field>
+        <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <!-- ADJUNTOS: Solo documentos de propiedades/contratos propios -->
+    <record id="attachment_portal_rule" model="ir.rule">
+        <field name="name">Attachment: Portal Users - Own Documents Only</field>
+        <field name="model_id" ref="base.model_ir_attachment"/>
+        <field name="domain_force">[
+            '|', '|', '|',
+            ('create_uid', '=', user.id),
+            '&amp;', ('res_model', '=', 'product.template'),
+                 ('res_id', 'in', user.env['product.template'].sudo().search([('partner_id', '=', user.partner_id.id)]).ids),
+            '&amp;', ('res_model', '=', 'property.contract'),
+                 ('res_id', 'in', user.env['property.contract'].sudo().search(['|', ('partner_id', '=', user.partner_id.id), ('partner_is_owner_id', '=', user.partner_id.id)]).ids),
+            '&amp;', ('res_model', '=', 'helpdesk.ticket'),
+                 ('res_id', 'in', user.env['helpdesk.ticket'].sudo().search([('partner_id', '=', user.partner_id.id)]).ids)
+        ]</field>
+        <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <!-- IMÁGENES DE PROPIEDADES: Solo de propiedades propias -->
+    <record id="property_image_portal_rule" model="ir.rule">
+        <field name="name">Property Image: Portal Users - Own Properties Only</field>
+        <field name="model_id" ref="bohio_real_estate.model_property_image"/>
+        <field name="domain_force">[
+            '|',
+            ('property_id.partner_id', '=', user.partner_id.id),
+            ('property_id.owners_lines.partner_id', '=', user.partner_id.id)
+        ]</field>
+        <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <!-- PARTNER: Usuarios de portal pueden leer su propio partner -->
+    <record id="partner_portal_rule" model="ir.rule">
+        <field name="name">Partner: Portal Users - Own Partner Only</field>
+        <field name="model_id" ref="base.model_res_partner"/>
+        <field name="domain_force">[('id', '=', user.partner_id.id)]</field>
+        <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+</odoo>

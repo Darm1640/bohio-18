@@ -4,10 +4,9 @@ from datetime import datetime, timedelta
 import json
 
 
-class PropertyDashboard(models.Model):
+class PropertyDashboard(models.AbstractModel):
     _name = 'property.dashboard'
     _description = 'Dashboard de Propiedades Inmobiliarias'
-    _auto = False
 
     @api.model
     def get_dashboard_data(self):
@@ -20,8 +19,29 @@ class PropertyDashboard(models.Model):
             'properties_by_type': self._get_properties_by_type(),
             'recent_activities': self._get_recent_activities(),
             'map_data': self._get_map_data(),
+            'user_info': self._get_user_info(),
         }
         return data
+
+    def _get_user_info(self):
+        """Obtiene información del usuario actual"""
+        user = self.env.user
+        partner = user.partner_id
+
+        # Obtener la imagen del usuario (avatar)
+        avatar_url = '/web/image?model=res.partner&id=%s&field=avatar_128' % partner.id if partner.avatar_128 else '/web/static/img/placeholder.png'
+
+        # Obtener el puesto de trabajo (job position)
+        job_title = partner.function or 'Usuario'
+
+        return {
+            'name': user.name or 'Usuario',
+            'email': user.email or '',
+            'avatar_url': avatar_url,
+            'job_title': job_title,
+            'company': user.company_id.name if user.company_id else '',
+            'groups': [g.name for g in user.groups_id[:5]],  # Primeros 5 grupos
+        }
 
     def _get_properties_by_status(self):
         """Obtiene propiedades agrupadas por estado"""

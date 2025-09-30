@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="mybohio_tenant_dashboard" name="BOHIO Tenant Dashboard">
+        <t t-call="bohio_real_estate.mybohio_portal_layout">
+            <div class="mybohio-dashboard-tenant">
+                <!-- Header -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <h2>Dashboard Arrendatario</h2>
+                        <p class="text-muted">Bienvenido, <t t-esc="partner.name"/></p>
+                    </div>
+                </div>
+
+                <!-- Metrics Cards -->
+                <div class="row mb-4">
+                    <!-- Contratos Activos -->
+                    <div class="col-md-3">
+                        <div class="card metric-card h-100">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <p class="text-muted mb-1">Contratos Activos</p>
+                                        <h3 class="mb-0" t-esc="metrics['active_contracts']"/>
+                                    </div>
+                                    <div class="metric-icon bg-primary">
+                                        <i class="fa fa-file-contract fa-2x text-white"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Renta Mensual -->
+                    <div class="col-md-3">
+                        <div class="card metric-card h-100">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <p class="text-muted mb-1">Renta Mensual</p>
+                                        <h3 class="mb-0">
+                                            <t t-esc="'${:,.0f}'.format(metrics['monthly_rent'])"/>
+                                        </h3>
+                                    </div>
+                                    <div class="metric-icon bg-info">
+                                        <i class="fa fa-home fa-2x text-white"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pagado Este Mes -->
+                    <div class="col-md-3">
+                        <div class="card metric-card h-100">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <p class="text-muted mb-1">Pagado Este Mes</p>
+                                        <h3 class="mb-0">
+                                            <t t-esc="'${:,.0f}'.format(metrics['paid_this_month'])"/>
+                                        </h3>
+                                    </div>
+                                    <div class="metric-icon bg-success">
+                                        <i class="fa fa-check-circle fa-2x text-white"></i>
+                                    </div>
+                                </div>
+                                <div class="mt-3">
+                                    <small class="text-success">
+                                        <t t-esc="metrics['payments_this_month']"/> pagos
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pendiente de Pago -->
+                    <div class="col-md-3">
+                        <div class="card metric-card h-100">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <p class="text-muted mb-1">Pendiente</p>
+                                        <h3 class="mb-0">
+                                            <t t-esc="'${:,.0f}'.format(metrics['invoices_pending'])"/>
+                                        </h3>
+                                    </div>
+                                    <div class="metric-icon bg-warning">
+                                        <i class="fa fa-clock fa-2x text-white"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contratos Activos -->
+                <div class="row mb-4">
+                    <div class="col-md-8">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0">Mis Contratos</h5>
+                                <a href="/mybohio/tenant/contracts" class="btn btn-sm btn-outline-primary">Ver Todos</a>
+                            </div>
+                            <div class="card-body">
+                                <t t-if="contracts">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>Propiedad</th>
+                                                    <th>Código</th>
+                                                    <th>Renta</th>
+                                                    <th>Estado</th>
+                                                    <th>Vigencia</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <t t-foreach="contracts" t-as="contract">
+                                                    <tr>
+                                                        <td>
+                                                            <a t-att-href="'/mybohio/tenant/contract/%s' % contract.id" t-field="contract.property_id.name"/>
+                                                        </td>
+                                                        <td><t t-esc="contract.property_code"/></td>
+                                                        <td><t t-esc="'${:,.0f}'.format(contract.rent or 0)"/></td>
+                                                        <td>
+                                                            <span t-att-class="'badge bg-%s' % ('success' if contract.state == 'confirmed' else 'warning')"
+                                                                  t-esc="dict(contract._fields['state'].selection).get(contract.state)"/>
+                                                        </td>
+                                                        <td>
+                                                            <small>
+                                                                <t t-esc="contract.date_from.strftime('%d/%m/%Y') if contract.date_from else ''"/>
+                                                                -
+                                                                <t t-esc="contract.date_to.strftime('%d/%m/%Y') if contract.date_to else ''"/>
+                                                            </small>
+                                                        </td>
+                                                    </tr>
+                                                </t>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </t>
+                                <t t-else="">
+                                    <p class="text-muted text-center py-3">No tiene contratos activos</p>
+                                </t>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Facturas Pendientes -->
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0">Facturas Recientes</h5>
+                                <a href="/mybohio/tenant/invoices" class="btn btn-sm btn-outline-primary">Ver Todas</a>
+                            </div>
+                            <div class="card-body">
+                                <t t-if="invoices">
+                                    <div class="list-group list-group-flush">
+                                        <t t-foreach="invoices" t-as="invoice">
+                                            <div class="list-group-item">
+                                                <div class="d-flex w-100 justify-content-between">
+                                                    <div>
+                                                        <h6 class="mb-1" t-field="invoice.name"/>
+                                                        <small class="text-muted" t-field="invoice.invoice_date"/>
+                                                    </div>
+                                                    <div class="text-end">
+                                                        <strong><t t-esc="'${:,.0f}'.format(invoice.amount_total)"/></strong>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </t>
+                                    </div>
+                                </t>
+                                <t t-else="">
+                                    <p class="text-muted text-center py-3">No hay facturas pendientes</p>
+                                </t>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

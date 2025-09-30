@@ -1,0 +1,1025 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Script de Carga Masiva de Propiedades - Real Estate Bits
+=========================================================
+Carga propiedades como servicios mediante XML-RPC a Odoo 18
+Basado en el modelo completo de property.py
+
+Autor: Claude Code
+Fecha: 2025-09-30
+Versión: 1.0.0
+"""
+
+import xmlrpc.client
+import json
+import csv
+import logging
+from datetime import date, datetime
+from typing import Dict, List, Any, Optional, Tuple
+
+# =================== CONFIGURACIÓN ===================
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s'
+)
+logger = logging.getLogger(__name__)
+
+# =================== CONFIGURACIÓN DE CONEXIÓN ===================
+# Modo: 'local' o 'cloud'
+MODE = 'cloud'  # Cambiar a 'local' para usar servidor local
+
+CONNECTIONS = {
+    'local': {
+        'url': 'http://localhost:8069',
+        'db': 'david_test',
+        'username': 'admin',
+        'password': 'admin'
+    },
+    'cloud': {
+        'url': 'https://darm1640-bohio-18.odoo.com',
+        'db': 'darm1640-bohio-18-main-24081960',
+        'username': 'admin',
+        'password': 'admin'
+    }
+}
+
+CONFIG = CONNECTIONS[MODE]
+
+
+# =================== CLASE PRINCIPAL ===================
+class OdooPropertyLoader:
+    """Cargador masivo de propiedades mediante XML-RPC"""
+
+    def __init__(self, url: str, db: str, username: str, password: str):
+        """
+        Inicializa la conexión con Odoo
+
+        Args:
+            url: URL del servidor Odoo
+            db: Nombre de la base de datos
+            username: Usuario de Odoo
+            password: Contraseña
+        """
+        self.url = url
+        self.db = db
+        self.username = username
+        self.password = password
+
+        # Conexiones XML-RPC
+        self.common = xmlrpc.client.ServerProxy(f'{url}/xmlrpc/2/common')
+        self.models = xmlrpc.client.ServerProxy(f'{url}/xmlrpc/2/object')
+
+        # Autenticación
+        try:
+            self.uid = self.common.authenticate(db, username, password, {})
+            if not self.uid:
+                raise Exception("Autenticación fallida")
+            logger.info(f"✓ Conectado a {url} - Base: {db} - Usuario: {username} (UID: {self.uid})")
+        except Exception as e:
+            logger.error(f"✗ Error de conexión: {e}")
+            raise
+
+        # Cache de IDs
+        self._cache_ids()
+
+    def _cache_ids(self):
+        """Cachea IDs de registros frecuentemente usados"""
+        logger.info("Cacheando registros base...")
+
+        # País por defecto (Colombia)
+        country = self.search_record('res.country', [('code', '=', 'CO')])
+        self.country_co_id = country['id'] if country else False
+
+        # Compañía por defecto
+        company = self.search_record('res.company', [('id', '=', 1)])
+        self.company_id = company['id'] if company else 1
+
+        # Moneda COP
+        currency = self.search_record('res.currency', [('name', '=', 'COP')])
+        self.currency_cop_id = currency['id'] if currency else False
+
+        # Tipo de documento CC
+        doc_type = self.search_record('l10n_latam.identification.type', [('name', '=', 'CC')])
+        self.doc_type_cc_id = doc_type['id'] if doc_type else False
+
+        logger.info(f"  - País CO: {self.country_co_id}")
+        logger.info(f"  - Compañía: {self.company_id}")
+        logger.info(f"  - Moneda COP: {self.currency_cop_id}")
+        logger.info(f"  - Tipo Doc CC: {self.doc_type_cc_id}")
+
+    def execute(self, model: str, method: str, *args, **kwargs) -> Any:
+        """
+        Ejecuta un método en Odoo mediante XML-RPC
+
+        Args:
+            model: Nombre del modelo (ej: 'product.template')
+            method: Método a ejecutar (ej: 'create', 'search', 'read')
+            *args: Argumentos posicionales
+            **kwargs: Argumentos con nombre
+
+        Returns:
+            Resultado de la ejecución
+        """
+        try:
+            return self.models.execute_kw(
+                self.db, self.uid, self.password,
+                model, method, args, kwargs
+            )
+        except Exception as e:
+            logger.error(f"Error ejecutando {model}.{method}: {e}")
+            raise
+
+    def search_record(self, model: str, domain: List, limit: int = 1) -> Optional[Dict]:
+        """
+        Busca un registro en Odoo
+
+        Args:
+            model: Nombre del modelo
+            domain: Dominio de búsqueda Odoo
+            limit: Límite de registros
+
+        Returns:
+            Diccionario con el registro o None
+        """
+        ids = self.execute(model, 'search', domain, {'limit': limit})
+        if ids:
+            records = self.execute(model, 'read', ids)
+            return records[0] if records else None
+        return None
+
+    def get_or_create_partner(self, partner_data: Dict) -> int:
+        """
+        Obtiene o crea un res.partner (propietario)
+
+        Args:
+            partner_data: Diccionario con datos del propietario
+
+        Returns:
+            ID del partner
+        """
+        # Buscar por VAT si existe
+        if partner_data.get('vat'):
+            existing = self.search_record('res.partner', [('vat', '=', partner_data['vat'])])
+            if existing:
+                logger.debug(f"  Partner existente: {existing['name']} (ID: {existing['id']})")
+                return existing['id']
+
+        # Buscar por nombre si existe
+        if partner_data.get('name'):
+            existing = self.search_record('res.partner', [('name', '=', partner_data['name'])])
+            if existing:
+                logger.debug(f"  Partner existente: {existing['name']} (ID: {existing['id']})")
+                return existing['id']
+
+        # Crear nuevo partner
+        vals = {
+            'name': partner_data.get('name', 'Propietario'),
+            'type': 'contact',
+            'customer_rank': 1,
+            'is_company': partner_data.get('is_company', False),
+            'vat': partner_data.get('vat'),
+            'phone': partner_data.get('phone'),
+            'mobile': partner_data.get('mobile'),
+            'email': partner_data.get('email'),
+            'street': partner_data.get('street'),
+            'street2': partner_data.get('street2'),
+            'zip': partner_data.get('zip'),
+            'city': partner_data.get('city'),
+            'state_id': partner_data.get('state_id'),
+            'country_id': partner_data.get('country_id', self.country_co_id),
+            'l10n_latam_identification_type_id': partner_data.get('l10n_latam_identification_type_id', self.doc_type_cc_id),
+        }
+
+        # Limpiar valores None
+        vals = {k: v for k, v in vals.items() if v is not None}
+
+        partner_id = self.execute('res.partner', 'create', vals)
+        logger.info(f"  ✓ Partner creado: {vals['name']} (ID: {partner_id})")
+        return partner_id
+
+    def get_or_create_region(self, region_name: str, state_id: Optional[int] = None) -> Optional[int]:
+        """
+        Obtiene o crea una región (barrio)
+
+        Args:
+            region_name: Nombre de la región/barrio
+            state_id: ID del departamento
+
+        Returns:
+            ID de la región o None
+        """
+        if not region_name:
+            return None
+
+        # Buscar región existente
+        domain = [('name', '=', region_name)]
+        if state_id:
+            domain.append(('state_id', '=', state_id))
+
+        existing = self.search_record('region.region', domain)
+        if existing:
+            logger.debug(f"  Región existente: {existing['name']} (ID: {existing['id']})")
+            return existing['id']
+
+        # Crear nueva región
+        vals = {
+            'name': region_name,
+            'state_id': state_id or False,
+            'country_id': self.country_co_id,
+        }
+
+        region_id = self.execute('region.region', 'create', vals)
+        logger.info(f"  ✓ Región creada: {region_name} (ID: {region_id})")
+        return region_id
+
+    def get_or_create_property_type(self, type_name: str, property_type: str = 'apartment') -> int:
+        """
+        Obtiene o crea un tipo de propiedad
+
+        Args:
+            type_name: Nombre del tipo de propiedad
+            property_type: Tipo base (apartment, house, land, etc)
+
+        Returns:
+            ID del tipo de propiedad
+        """
+        if not type_name:
+            type_name = "Apartamento"
+
+        # Buscar tipo existente
+        existing = self.search_record('property.type', [('name', '=', type_name)])
+        if existing:
+            logger.debug(f"  Tipo de propiedad existente: {existing['name']} (ID: {existing['id']})")
+            return existing['id']
+
+        # Crear nuevo tipo
+        vals = {
+            'name': type_name,
+            'property_type': property_type,
+        }
+
+        type_id = self.execute('property.type', 'create', vals)
+        logger.info(f"  ✓ Tipo de propiedad creado: {type_name} (ID: {type_id})")
+        return type_id
+
+    def get_state_id(self, state_name: str) -> Optional[int]:
+        """Obtiene ID del departamento por nombre"""
+        if not state_name:
+            return None
+        state = self.search_record('res.country.state', [
+            ('name', 'ilike', state_name),
+            ('country_id', '=', self.country_co_id)
+        ])
+        return state['id'] if state else None
+
+    def get_city_id(self, city_name: str, state_id: Optional[int] = None) -> Optional[int]:
+        """Obtiene ID de la ciudad por nombre"""
+        if not city_name:
+            return None
+        domain = [('name', 'ilike', city_name)]
+        if state_id:
+            domain.append(('state_id', '=', state_id))
+        city = self.search_record('res.city', domain)
+        return city['id'] if city else None
+
+    def create_property(self, property_data: Dict) -> Tuple[bool, int, str]:
+        """
+        Crea una propiedad completa como producto/servicio
+
+        Args:
+            property_data: Diccionario con todos los datos de la propiedad
+
+        Returns:
+            Tuple (éxito, id, mensaje)
+        """
+        try:
+            # =================== 1. VALIDACIONES BÁSICAS ===================
+            if not property_data.get('name'):
+                return False, 0, "Error: Nombre de propiedad requerido"
+
+            # =================== 2. PROCESAMIENTO DE RELACIONES ===================
+
+            # 2.1 Propietario principal
+            partner_id = None
+            if property_data.get('partner_data'):
+                partner_id = self.get_or_create_partner(property_data['partner_data'])
+
+            # 2.2 Ubicación
+            state_id = None
+            if property_data.get('state_name'):
+                state_id = self.get_state_id(property_data['state_name'])
+
+            city_id = None
+            if property_data.get('city_name'):
+                city_id = self.get_city_id(property_data['city_name'], state_id)
+
+            region_id = None
+            if property_data.get('region_name'):
+                region_id = self.get_or_create_region(property_data['region_name'], state_id)
+
+            # 2.3 Tipo de propiedad
+            property_type_id = None
+            if property_data.get('property_type_name'):
+                property_type_id = self.get_or_create_property_type(
+                    property_data['property_type_name'],
+                    property_data.get('property_type', 'apartment')
+                )
+
+            # =================== 3. CONSTRUCCIÓN DE VALORES ===================
+            vals = {
+                # === IDENTIFICACIÓN ===
+                'name': property_data['name'],
+                'detailed_type': 'service',  # IMPORTANTE: Es un servicio
+                'is_property': True,
+                'is_shop': False,
+
+                # === INFORMACIÓN BÁSICA ===
+                'state': property_data.get('state', 'free'),
+                'sequence': property_data.get('sequence', 10),
+                'partner_id': partner_id or False,
+                'region_id': region_id or False,
+                'property_date': property_data.get('property_date', date.today().isoformat()),
+                'note': property_data.get('note', False),
+                'description': property_data.get('description', False),
+
+                # === TIPO DE PROPIEDAD ===
+                'property_type_id': property_type_id or False,
+
+                # === UBICACIÓN COMPLETA ===
+                'address': property_data.get('address', False),
+                'street': property_data.get('street', False),
+                'street2': property_data.get('street2', False),
+                'zip': property_data.get('zip', False),
+                'city': property_data.get('city', False),
+                'city_id': city_id or False,
+                'state_id': state_id or False,
+                'country_id': property_data.get('country_id', self.country_co_id),
+                'department': property_data.get('department', False),
+                'municipality': property_data.get('municipality', False),
+                'neighborhood': property_data.get('neighborhood', False),
+
+                # === GEOLOCALIZACIÓN ===
+                'latitude': property_data.get('latitude', 0.0),
+                'longitude': property_data.get('longitude', 0.0),
+                'geocoding_status': property_data.get('geocoding_status', 'pending'),
+
+                # === CARACTERÍSTICAS BÁSICAS ===
+                'stratum': property_data.get('stratum', False),
+                'type_service': property_data.get('type_service', 'rent'),
+                'property_status': property_data.get('property_status', 'used'),
+
+                # === MEDIDAS ===
+                'property_area': property_data.get('property_area', 0.0),
+                'unit_of_measure': property_data.get('unit_of_measure', 'm'),
+                'front_meters': property_data.get('front_meters', 0.0),
+                'depth_meters': property_data.get('depth_meters', 0.0),
+
+                # === CARACTERÍSTICAS FÍSICAS ===
+                'num_bedrooms': property_data.get('num_bedrooms', 0),
+                'num_bathrooms': property_data.get('num_bathrooms', 0),
+                'property_age': property_data.get('property_age', 0),
+                'num_living_room': property_data.get('num_living_room', 0),
+                'floor_number': property_data.get('floor_number', 0),
+                'number_of_levels': property_data.get('number_of_levels', 1),
+
+                # === SALAS Y ESPACIOS ===
+                'living_room': property_data.get('living_room', False),
+                'living_dining_room': property_data.get('living_dining_room', False),
+                'main_dining_room': property_data.get('main_dining_room', False),
+                'study': property_data.get('study', False),
+
+                # === COCINAS ===
+                'simple_kitchen': property_data.get('simple_kitchen', False),
+                'integral_kitchen': property_data.get('integral_kitchen', False),
+                'american_kitchen': property_data.get('american_kitchen', False),
+
+                # === BAÑOS Y SERVICIOS ===
+                'service_room': property_data.get('service_room', False),
+                'service_bathroom': property_data.get('service_bathroom', False),
+                'auxiliary_bathroom': property_data.get('auxiliary_bathroom', False),
+
+                # === ALMACENAMIENTO ===
+                'closet': property_data.get('closet', False),
+                'n_closet': property_data.get('n_closet', 0),
+                'walk_in_closet': property_data.get('walk_in_closet', False),
+                'warehouse': property_data.get('warehouse', False),
+
+                # === ÁREAS EXTERIORES ===
+                'patio': property_data.get('patio', False),
+                'garden': property_data.get('garden', False),
+                'balcony': property_data.get('balcony', False),
+                'terrace': property_data.get('terrace', False),
+                'laundry_area': property_data.get('laundry_area', False),
+
+                # === PISOS Y ACABADOS ===
+                'floor_type': property_data.get('floor_type', False),
+                'marble_floor': property_data.get('marble_floor', False),
+
+                # === PUERTAS Y VENTANAS ===
+                'door_type': property_data.get('door_type', False),
+                'security_door': property_data.get('security_door', False),
+                'blinds': property_data.get('blinds', False),
+
+                # === PARQUEADERO ===
+                'garage': property_data.get('garage', False),
+                'n_garage': property_data.get('n_garage', 0),
+                'covered_parking': property_data.get('covered_parking', 0),
+                'uncovered_parking': property_data.get('uncovered_parking', 0),
+                'visitors_parking': property_data.get('visitors_parking', False),
+
+                # === SERVICIOS PÚBLICOS ===
+                'gas_installation': property_data.get('gas_installation', False),
+                'gas_heating': property_data.get('gas_heating', False),
+                'electric_heating': property_data.get('electric_heating', False),
+                'has_water': property_data.get('has_water', True),
+                'hot_water': property_data.get('hot_water', False),
+                'air_conditioning': property_data.get('air_conditioning', False),
+                'n_air_conditioning': property_data.get('n_air_conditioning', 0),
+
+                # === COMUNICACIONES ===
+                'phone_lines': property_data.get('phone_lines', 0),
+                'intercom': property_data.get('intercom', False),
+
+                # === SEGURIDAD ===
+                'has_security': property_data.get('has_security', False),
+                'security_cameras': property_data.get('security_cameras', False),
+                'alarm': property_data.get('alarm', False),
+
+                # === AMENIDADES DEL EDIFICIO ===
+                'doorman': property_data.get('doorman', False),
+                'elevator': property_data.get('elevator', False),
+                'garbage_chute': property_data.get('garbage_chute', False),
+
+                # === ÁREAS RECREATIVAS ===
+                'social_room': property_data.get('social_room', False),
+                'gym': property_data.get('gym', False),
+                'pools': property_data.get('pools', False),
+                'n_pools': property_data.get('n_pools', 0),
+                'sauna': property_data.get('sauna', False),
+                'jacuzzi': property_data.get('jacuzzi', False),
+                'green_areas': property_data.get('green_areas', False),
+                'sports_area': property_data.get('sports_area', False),
+                'has_playground': property_data.get('has_playground', False),
+
+                # === CARACTERÍSTICAS ADICIONALES ===
+                'furnished': property_data.get('furnished', False),
+                'fireplace': property_data.get('fireplace', False),
+                'mezzanine': property_data.get('mezzanine', False),
+                'apartment_type': property_data.get('apartment_type', False),
+
+                # === PRECIOS DE VENTA ===
+                'property_price_type': property_data.get('property_price_type', 'sft'),
+                'price_per_unit': property_data.get('price_per_unit', 0.0),
+                'net_price': property_data.get('net_price', 0.0),
+                'discount_type': property_data.get('discount_type', False),
+                'discount': property_data.get('discount', 0.0),
+                'sale_value_from': property_data.get('sale_value_from', 0.0),
+                'sale_value_to': property_data.get('sale_value_to', 0.0),
+
+                # === PRECIOS DE ARRIENDO ===
+                'rental_price_type': property_data.get('rental_price_type', 'fix'),
+                'rental_price_per_unit': property_data.get('rental_price_per_unit', 0.0),
+                'net_rental_price': property_data.get('net_rental_price', 0.0),
+                'rental_discount_type': property_data.get('rental_discount_type', False),
+                'rental_discount': property_data.get('rental_discount', 0.0),
+                'rent_value_from': property_data.get('rent_value_from', 0.0),
+                'rent_value_to': property_data.get('rent_value_to', 0.0),
+
+                # === ADMINISTRACIÓN ===
+                'admin_value': property_data.get('admin_value', 0.0),
+                'cadastral_valuation': property_data.get('cadastral_valuation', 0.0),
+                'property_tax': property_data.get('property_tax', 0.0),
+
+                # === MANTENIMIENTO ===
+                'maintenance_type': property_data.get('maintenance_type', 'fix'),
+                'maintenance_charges': property_data.get('maintenance_charges', 0.0),
+
+                # === INFORMACIÓN LEGAL ===
+                'license_code': property_data.get('license_code', False),
+                'registration_number': property_data.get('registration_number', False),
+                'cadastral_reference': property_data.get('cadastral_reference', False),
+                'liens': property_data.get('liens', False),
+
+                # === CONSIGNACIÓN ===
+                'consignment_date': property_data.get('consignment_date', date.today().isoformat()),
+                'property_consignee': property_data.get('property_consignee', False),
+                'keys_location': property_data.get('keys_location', False),
+                'key_note': property_data.get('key_note', False),
+
+                # === DESCRIPCIONES ===
+                'urbanization_description': property_data.get('urbanization_description', False),
+                'property_description': property_data.get('property_description', False),
+                'observations': property_data.get('observations', False),
+
+                # === INFORMACIÓN DE CONTACTO ===
+                'contact_name': property_data.get('contact_name', False),
+                'email_from': property_data.get('email_from', False),
+                'phone': property_data.get('phone', False),
+                'mobile': property_data.get('mobile', False),
+                'website': property_data.get('website', False),
+
+                # === IDENTIFICACIÓN FISCAL ===
+                'vat': property_data.get('vat', False),
+                'l10n_latam_identification_type_id': property_data.get('l10n_latam_identification_type_id', self.doc_type_cc_id),
+
+                # === PROYECTO ===
+                'building_unit': property_data.get('building_unit', False),
+                'is_vis': property_data.get('is_vis', False),
+                'is_vip': property_data.get('is_vip', False),
+
+                # === SISTEMA ===
+                'company_id': property_data.get('company_id', self.company_id),
+                'currency_id': property_data.get('currency_id', self.currency_cop_id),
+            }
+
+            # Limpiar valores False para campos booleanos y None
+            vals = {k: v for k, v in vals.items() if v is not False or isinstance(v, bool)}
+
+            # =================== 4. CREAR PROPIEDAD ===================
+            property_id = self.execute('product.template', 'create', vals)
+
+            if not property_id:
+                return False, 0, "Error: No se pudo crear la propiedad"
+
+            logger.info(f"✓ Propiedad creada: {property_data['name']} (ID: {property_id})")
+
+            # =================== 5. CREAR DIRECCIÓN DE FACTURACIÓN ===================
+            if partner_id and property_data.get('create_billing_address', True):
+                self._create_billing_address(property_id, partner_id, property_data)
+
+            # =================== 6. CREAR PROPIETARIOS ADICIONALES ===================
+            if property_data.get('additional_owners'):
+                self._create_additional_owners(property_id, property_data['additional_owners'])
+
+            return True, property_id, f"Propiedad creada exitosamente (ID: {property_id})"
+
+        except Exception as e:
+            error_msg = f"Error creando propiedad: {str(e)}"
+            logger.error(error_msg)
+            return False, 0, error_msg
+
+    def _create_billing_address(self, property_id: int, partner_id: int, property_data: Dict):
+        """Crea la dirección de facturación de la propiedad"""
+        try:
+            # Leer datos de la propiedad creada
+            prop = self.execute('product.template', 'read', [property_id], ['name', 'street', 'latitude', 'longitude'])[0]
+
+            billing_vals = {
+                'name': f"{prop['street']} - {prop['name']}",
+                'type': 'invoice',
+                'parent_id': partner_id,
+                'street': property_data.get('street'),
+                'street2': property_data.get('street2'),
+                'zip': property_data.get('zip'),
+                'city': property_data.get('city'),
+                'partner_latitude': property_data.get('latitude', 0.0),
+                'partner_longitude': property_data.get('longitude', 0.0),
+                'city_id': property_data.get('city_id'),
+                'state_id': property_data.get('state_id'),
+                'country_id': property_data.get('country_id', self.country_co_id),
+            }
+
+            billing_vals = {k: v for k, v in billing_vals.items() if v is not None}
+
+            billing_id = self.execute('res.partner', 'create', billing_vals)
+
+            # Actualizar propiedad con billing_address_id
+            self.execute('product.template', 'write', [property_id], {
+                'billing_address_id': billing_id
+            })
+
+            logger.info(f"  ✓ Dirección de facturación creada (ID: {billing_id})")
+
+        except Exception as e:
+            logger.warning(f"  ⚠ No se pudo crear dirección de facturación: {e}")
+
+    def _create_additional_owners(self, property_id: int, owners: List[Dict]):
+        """Crea propietarios adicionales en contract.owner.partner"""
+        try:
+            for owner_data in owners:
+                # Crear o buscar partner
+                partner_id = self.get_or_create_partner(owner_data.get('partner_data', {}))
+
+                owner_vals = {
+                    'product_id': property_id,
+                    'partner_id': partner_id,
+                    'ownership_percentage': owner_data.get('ownership_percentage', 0.0),
+                    'is_main_owner': owner_data.get('is_main_owner', False),
+                    'start_date': owner_data.get('start_date', False),
+                    'end_date': owner_data.get('end_date', False),
+                    'notes': owner_data.get('notes', False),
+                }
+
+                owner_vals = {k: v for k, v in owner_vals.items() if v is not False or isinstance(v, bool)}
+
+                owner_id = self.execute('contract.owner.partner', 'create', owner_vals)
+                logger.info(f"  ✓ Propietario adicional creado (ID: {owner_id})")
+
+        except Exception as e:
+            logger.warning(f"  ⚠ Error creando propietarios adicionales: {e}")
+
+    def bulk_create_properties(self, properties_list: List[Dict]) -> Dict:
+        """
+        Crea múltiples propiedades en lote
+
+        Args:
+            properties_list: Lista de diccionarios con datos de propiedades
+
+        Returns:
+            Diccionario con estadísticas de carga
+        """
+        stats = {
+            'total': len(properties_list),
+            'success': 0,
+            'failed': 0,
+            'errors': []
+        }
+
+        logger.info(f"\n{'='*60}")
+        logger.info(f"INICIANDO CARGA MASIVA DE {stats['total']} PROPIEDADES")
+        logger.info(f"{'='*60}\n")
+
+        for idx, prop_data in enumerate(properties_list, 1):
+            logger.info(f"\n[{idx}/{stats['total']}] Procesando: {prop_data.get('name', 'Sin nombre')}")
+
+            success, prop_id, message = self.create_property(prop_data)
+
+            if success:
+                stats['success'] += 1
+            else:
+                stats['failed'] += 1
+                stats['errors'].append({
+                    'property': prop_data.get('name', 'Sin nombre'),
+                    'error': message
+                })
+                logger.error(f"  ✗ {message}")
+
+        # Resumen final
+        logger.info(f"\n{'='*60}")
+        logger.info(f"RESUMEN DE CARGA")
+        logger.info(f"{'='*60}")
+        logger.info(f"Total procesadas: {stats['total']}")
+        logger.info(f"Exitosas:        {stats['success']} ({stats['success']/stats['total']*100:.1f}%)")
+        logger.info(f"Fallidas:        {stats['failed']} ({stats['failed']/stats['total']*100:.1f}%)")
+
+        if stats['errors']:
+            logger.info(f"\n{'='*60}")
+            logger.info(f"ERRORES DETALLADOS")
+            logger.info(f"{'='*60}")
+            for error in stats['errors']:
+                logger.error(f"  - {error['property']}: {error['error']}")
+
+        return stats
+
+
+# =================== DATOS DE EJEMPLO ===================
+def get_sample_properties() -> List[Dict]:
+    """
+    Genera datos de ejemplo de propiedades para carga
+
+    Returns:
+        Lista de diccionarios con datos de propiedades
+    """
+    return [
+        {
+            # === IDENTIFICACIÓN ===
+            'name': 'Apartamento Moderno en El Poblado',
+            'state': 'free',
+            'sequence': 10,
+
+            # === PROPIETARIO ===
+            'partner_data': {
+                'name': 'Juan Pérez García',
+                'vat': '1234567890',
+                'phone': '+57 301 234 5678',
+                'email': 'juan.perez@example.com',
+                'is_company': False,
+            },
+
+            # === UBICACIÓN ===
+            'state_name': 'Antioquia',
+            'city_name': 'Medellín',
+            'region_name': 'El Poblado',
+            'street': 'Carrera 43A #5-33',
+            'street2': 'Edificio Torre Central, Apto 802',
+            'neighborhood': 'El Poblado',
+            'zip': '050021',
+
+            # === TIPO DE PROPIEDAD ===
+            'property_type_name': 'Apartamento',
+            'property_type': 'apartment',
+
+            # === CARACTERÍSTICAS ===
+            'stratum': '6',
+            'type_service': 'rent',
+            'property_status': 'new',
+            'property_area': 85.0,
+            'unit_of_measure': 'm',
+            'num_bedrooms': 3,
+            'num_bathrooms': 2,
+            'property_age': 2,
+            'floor_number': 8,
+
+            # === ESPACIOS ===
+            'living_room': True,
+            'main_dining_room': True,
+            'integral_kitchen': True,
+            'service_room': True,
+            'service_bathroom': True,
+            'closet': True,
+            'n_closet': 3,
+            'balcony': True,
+
+            # === PARQUEADERO ===
+            'garage': True,
+            'n_garage': 1,
+            'covered_parking': 1,
+
+            # === SERVICIOS ===
+            'gas_installation': True,
+            'has_water': True,
+            'hot_water': True,
+            'air_conditioning': False,
+            'intercom': True,
+
+            # === AMENIDADES ===
+            'doorman': '24_hours',
+            'elevator': True,
+            'social_room': True,
+            'gym': True,
+            'pools': True,
+            'green_areas': True,
+
+            # === SEGURIDAD ===
+            'has_security': True,
+            'security_cameras': True,
+
+            # === PRECIOS ===
+            'net_rental_price': 2500000.0,
+            'rent_value_from': 2500000.0,
+            'admin_value': 350000.0,
+            'property_tax': 480000.0,
+
+            # === DESCRIPCIONES ===
+            'property_description': 'Hermoso apartamento moderno en una de las mejores zonas de Medellín',
+            'observations': 'Disponible inmediato',
+        },
+        {
+            # === IDENTIFICACIÓN ===
+            'name': 'Casa Campestre Rionegro',
+            'state': 'free',
+            'sequence': 20,
+
+            # === PROPIETARIO ===
+            'partner_data': {
+                'name': 'María Rodríguez López',
+                'vat': '9876543210',
+                'phone': '+57 304 987 6543',
+                'email': 'maria.rodriguez@example.com',
+                'is_company': False,
+            },
+
+            # === UBICACIÓN ===
+            'state_name': 'Antioquia',
+            'city_name': 'Rionegro',
+            'region_name': 'Llanogrande',
+            'street': 'Vereda Llanogrande Km 2.5',
+            'neighborhood': 'Llanogrande',
+            'zip': '054040',
+
+            # === TIPO DE PROPIEDAD ===
+            'property_type_name': 'Casa',
+            'property_type': 'house',
+
+            # === CARACTERÍSTICAS ===
+            'stratum': '5',
+            'type_service': 'sale_rent',
+            'property_status': 'used',
+            'property_area': 250.0,
+            'unit_of_measure': 'm',
+            'num_bedrooms': 4,
+            'num_bathrooms': 3,
+            'property_age': 5,
+            'number_of_levels': 2,
+
+            # === ESPACIOS ===
+            'living_room': True,
+            'main_dining_room': True,
+            'study': True,
+            'integral_kitchen': True,
+            'service_room': True,
+            'service_bathroom': True,
+            'closet': True,
+            'n_closet': 5,
+            'garden': True,
+            'terrace': True,
+            'laundry_area': True,
+
+            # === PARQUEADERO ===
+            'garage': True,
+            'n_garage': 2,
+            'covered_parking': 2,
+
+            # === SERVICIOS ===
+            'gas_installation': True,
+            'has_water': True,
+            'hot_water': True,
+            'fireplace': True,
+
+            # === AMENIDADES ===
+            'green_areas': True,
+            'has_security': True,
+
+            # === PRECIOS ===
+            'net_price': 650000000.0,
+            'sale_value_from': 650000000.0,
+            'net_rental_price': 3500000.0,
+            'rent_value_from': 3500000.0,
+            'admin_value': 250000.0,
+            'property_tax': 1200000.0,
+
+            # === DESCRIPCIONES ===
+            'property_description': 'Hermosa casa campestre en el mejor sector de Rionegro',
+            'observations': 'Excelente ubicación cerca al aeropuerto',
+        },
+        {
+            # === IDENTIFICACIÓN ===
+            'name': 'Oficina Centro Medellín',
+            'state': 'free',
+            'sequence': 30,
+
+            # === PROPIETARIO ===
+            'partner_data': {
+                'name': 'Inversiones XYZ S.A.S.',
+                'vat': '900123456',
+                'phone': '+57 604 444 5555',
+                'email': 'info@inversionesxyz.com',
+                'is_company': True,
+            },
+
+            # === UBICACIÓN ===
+            'state_name': 'Antioquia',
+            'city_name': 'Medellín',
+            'region_name': 'Centro',
+            'street': 'Calle 50 #50-25',
+            'street2': 'Edificio Empresarial, Oficina 301',
+            'neighborhood': 'Centro',
+            'zip': '050001',
+
+            # === TIPO DE PROPIEDAD ===
+            'property_type_name': 'Oficina',
+            'property_type': 'office',
+
+            # === CARACTERÍSTICAS ===
+            'stratum': 'commercial',
+            'type_service': 'rent',
+            'property_status': 'remodeled',
+            'property_area': 65.0,
+            'unit_of_measure': 'm',
+            'num_bathrooms': 1,
+            'floor_number': 3,
+
+            # === SERVICIOS ===
+            'has_water': True,
+            'phone_lines': 2,
+            'air_conditioning': True,
+            'n_air_conditioning': 2,
+
+            # === AMENIDADES ===
+            'doorman': 'daytime',
+            'elevator': True,
+            'has_security': True,
+            'security_cameras': True,
+
+            # === PRECIOS ===
+            'net_rental_price': 1800000.0,
+            'rent_value_from': 1800000.0,
+            'admin_value': 180000.0,
+
+            # === DESCRIPCIONES ===
+            'property_description': 'Oficina completamente remodelada en el corazón de Medellín',
+            'observations': 'Ideal para empresas de servicios',
+        }
+    ]
+
+
+# =================== FUNCIONES DE UTILIDAD ===================
+def load_from_csv(file_path: str) -> List[Dict]:
+    """
+    Carga propiedades desde archivo CSV
+
+    Args:
+        file_path: Ruta al archivo CSV
+
+    Returns:
+        Lista de diccionarios con datos de propiedades
+    """
+    properties = []
+
+    with open(file_path, 'r', encoding='utf-8') as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            # Convertir tipos de datos
+            prop_data = {}
+
+            # Campos de texto
+            text_fields = ['name', 'street', 'street2', 'zip', 'neighborhood',
+                          'property_description', 'observations']
+            for field in text_fields:
+                prop_data[field] = row.get(field, '').strip() or False
+
+            # Campos numéricos
+            numeric_fields = {
+                'property_area': float,
+                'num_bedrooms': int,
+                'num_bathrooms': int,
+                'floor_number': int,
+                'net_rental_price': float,
+                'admin_value': float,
+            }
+            for field, type_func in numeric_fields.items():
+                try:
+                    prop_data[field] = type_func(row.get(field, 0))
+                except (ValueError, TypeError):
+                    prop_data[field] = 0
+
+            # Campos booleanos
+            bool_fields = ['living_room', 'garage', 'elevator', 'pools']
+            for field in bool_fields:
+                prop_data[field] = row.get(field, '').lower() in ['true', '1', 'yes', 'sí']
+
+            # Propietario
+            if row.get('owner_name'):
+                prop_data['partner_data'] = {
+                    'name': row.get('owner_name'),
+                    'vat': row.get('owner_vat'),
+                    'phone': row.get('owner_phone'),
+                    'email': row.get('owner_email'),
+                }
+
+            # Ubicación
+            prop_data['state_name'] = row.get('state_name')
+            prop_data['city_name'] = row.get('city_name')
+            prop_data['region_name'] = row.get('region_name')
+
+            properties.append(prop_data)
+
+    logger.info(f"✓ Cargadas {len(properties)} propiedades desde CSV")
+    return properties
+
+
+def load_from_json(file_path: str) -> List[Dict]:
+    """
+    Carga propiedades desde archivo JSON
+
+    Args:
+        file_path: Ruta al archivo JSON
+
+    Returns:
+        Lista de diccionarios con datos de propiedades
+    """
+    with open(file_path, 'r', encoding='utf-8') as f:
+        properties = json.load(f)
+
+    logger.info(f"✓ Cargadas {len(properties)} propiedades desde JSON")
+    return properties
+
+
+# =================== FUNCIÓN PRINCIPAL ===================
+def main():
+    """Función principal de ejecución"""
+
+    # Conectar a Odoo
+    loader = OdooPropertyLoader(
+        url=CONFIG['url'],
+        db=CONFIG['db'],
+        username=CONFIG['username'],
+        password=CONFIG['password']
+    )
+
+    # Opción 1: Cargar propiedades de ejemplo
+    logger.info("\n=== OPCIÓN 1: CARGAR PROPIEDADES DE EJEMPLO ===")
+    properties = get_sample_properties()
+
+    # Opción 2: Cargar desde CSV (descomentar para usar)
+    # logger.info("\n=== OPCIÓN 2: CARGAR DESDE CSV ===")
+    # properties = load_from_csv('properties.csv')
+
+    # Opción 3: Cargar desde JSON (descomentar para usar)
+    # logger.info("\n=== OPCIÓN 3: CARGAR DESDE JSON ===")
+    # properties = load_from_json('properties.json')
+
+    # Ejecutar carga masiva
+    stats = loader.bulk_create_properties(properties)
+
+    # Mostrar resultado
+    logger.info(f"\n{'='*60}")
+    logger.info(f"CARGA COMPLETADA")
+    logger.info(f"{'='*60}")
+
+    return stats
+
+
+if __name__ == '__main__':
+    main()

@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="mybohio_owner_tickets" name="BOHIO Owner Tickets">
+        <t t-call="bohio_real_estate.mybohio_portal_layout">
+            <div class="mybohio-tickets">
+                <div class="row mb-4">
+                    <div class="col-12 d-flex justify-content-between align-items-center">
+                        <div>
+                            <h2>Mis PQRS</h2>
+                            <p class="text-muted">Peticiones, Quejas, Reclamos y Sugerencias</p>
+                        </div>
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createTicketModal">
+                            <i class="fa fa-plus"></i> Nueva PQRS
+                        </button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <t t-if="tickets">
+                            <div class="list-group">
+                                <t t-foreach="tickets" t-as="ticket">
+                                    <a t-att-href="'/mybohio/owner/ticket/%s' % ticket.id" class="list-group-item list-group-item-action">
+                                        <div class="d-flex w-100 justify-content-between align-items-start">
+                                            <div>
+                                                <h6 class="mb-1" t-field="ticket.name"/>
+                                                <small class="text-muted">
+                                                    <t t-esc="ticket.create_date.strftime('%d/%m/%Y %H:%M')"/>
+                                                </small>
+                                            </div>
+                                            <span t-att-class="'badge bg-%s' % ('success' if ticket.stage_id.is_close else 'primary')"
+                                                  t-field="ticket.stage_id.name"/>
+                                        </div>
+                                        <t t-if="ticket.description">
+                                            <p class="mb-1 mt-2">
+                                                <small t-esc="ticket.description[:100] + '...' if len(ticket.description) > 100 else ticket.description"/>
+                                            </p>
+                                        </t>
+                                    </a>
+                                </t>
+                            </div>
+
+                            <t t-if="pager">
+                                <div class="mt-3">
+                                    <t t-call="portal.pager"/>
+                                </div>
+                            </t>
+                        </t>
+                        <t t-else="">
+                            <div class="alert alert-info text-center">
+                                <i class="fa fa-info-circle"></i> No tiene tickets registrados
+                            </div>
+                        </t>
+                    </div>
+                </div>
+
+                <!-- Modal Crear PQRS -->
+                <div class="modal fade" id="createTicketModal" tabindex="-1">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <form method="POST" action="/mybohio/create_ticket" enctype="multipart/form-data">
+                                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Nueva PQRS</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"/>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="mb-3">
+                                        <label class="form-label">Tipo</label>
+                                        <select class="form-select" name="pqrs_type" required="1">
+                                            <option value="petition">Petición</option>
+                                            <option value="complaint">Queja</option>
+                                            <option value="claim">Reclamo</option>
+                                            <option value="suggestion">Sugerencia</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Asunto</label>
+                                        <input type="text" class="form-control" name="subject" required="1"/>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Mensaje</label>
+                                        <textarea class="form-control" name="message" rows="5" required="1"/>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Adjuntar Archivo (opcional)</label>
+                                        <input type="file" class="form-control" name="attachment"/>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                    <button type="submit" class="btn btn-primary">Enviar PQRS</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="mybohio_owner_ticket_detail" name="BOHIO Owner Ticket Detail">
+        <t t-call="bohio_real_estate.mybohio_portal_layout">
+            <div class="mybohio-ticket-detail">
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="/mybohio/owner">Dashboard</a></li>
+                                <li class="breadcrumb-item"><a href="/mybohio/owner/tickets">PQRS</a></li>
+                                <li class="breadcrumb-item active" t-field="ticket.name"/>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <h4 class="mb-0" t-field="ticket.name"/>
+                                    <span t-att-class="'badge bg-%s' % ('success' if ticket.stage_id.is_close else 'primary')"
+                                          t-field="ticket.stage_id.name"/>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <p><strong>Fecha Creación:</strong> <t t-esc="ticket.create_date.strftime('%d/%m/%Y %H:%M')"/></p>
+
+                                <t t-if="ticket.description">
+                                    <div class="mt-3">
+                                        <h6>Descripción Inicial</h6>
+                                        <p t-field="ticket.description"/>
+                                    </div>
+                                </t>
+
+                                <!-- Mensajes del Ticket -->
+                                <div class="mt-4">
+                                    <h6>Historial de Mensajes</h6>
+                                    <t t-foreach="ticket.message_ids.sorted(lambda m: m.date, reverse=True)" t-as="message">
+                                        <t t-if="message.message_type == 'comment'">
+                                            <div class="card mb-2">
+                                                <div class="card-body">
+                                                    <div class="d-flex justify-content-between">
+                                                        <strong t-esc="message.author_id.name"/>
+                                                        <small class="text-muted" t-esc="message.date.strftime('%d/%m/%Y %H:%M')"/>
+                                                    </div>
+                                                    <p class="mb-0 mt-2" t-raw="message.body"/>
+                                                </div>
+                                            </div>
+                                        </t>
+                                    </t>
+                                </div>
+
+                                <!-- Agregar Mensaje -->
+                                <div class="card mt-4 bg-light">
+                                    <div class="card-body">
+                                        <h6>Agregar Mensaje</h6>
+                                        <form method="POST" t-att-action="'/mybohio/ticket/%s/message' % ticket.id" enctype="multipart/form-data">
+                                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                            <div class="mb-3">
+                                                <textarea class="form-control" name="message" rows="3" placeholder="Escriba su mensaje..."/>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Adjuntar Archivo</label>
+                                                <input type="file" class="form-control" name="attachment"/>
+                                            </div>
+                                            <button type="submit" class="btn btn-primary">
+                                                <i class="fa fa-paper-plane"></i> Enviar
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <!-- Info Ticket -->
+                        <div class="card mb-3">
+                            <div class="card-header">
+                                <h6 class="mb-0">Información</h6>
+                            </div>
+                            <div class="card-body">
+                                <p>
+                                    <strong>Equipo:</strong><br/>
+                                    <t t-esc="ticket.team_id.name if ticket.team_id else 'Sin asignar'"/>
+                                </p>
+                                <p>
+                                    <strong>Prioridad:</strong><br/>
+                                    <span t-att-class="'badge bg-%s' % ('danger' if ticket.priority == '3' else 'warning' if ticket.priority == '2' else 'secondary')">
+                                        <t t-esc="dict(ticket._fields['priority'].selection).get(ticket.priority)"/>
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- Copiar mismo template para tenant -->
+    <template id="mybohio_tenant_tickets" inherit_id="mybohio_owner_tickets"/>
+    <template id="mybohio_tenant_ticket_detail" inherit_id="mybohio_owner_ticket_detail"/>
+</odoo>

@@ -81,7 +81,7 @@ def subtract_month(date_a, year=0, month=0):
 class Contract(models.Model):
     _name = "property.contract"
     _description = "Contrato de Propiedad"
-    _inherit = ["mail.thread", "mail.activity.mixin"]
+    _inherit = ["mail.thread", "mail.activity.mixin", "portal.mixin"]
     _check_company_auto = True
     
     def _default_security_deposit_account(self):
@@ -93,8 +93,7 @@ class Contract(models.Model):
     name = fields.Char("Numero", size=64, default='New')
     origin = fields.Char("Documento Fuente", size=64)
     contract_type = fields.Selection([
-        ('is_rental', 'Arrendamiento'), 
-        ('is_ownership', 'Propiedad')
+        ('is_rental', 'Arrendamiento')
     ], default='is_rental', string="Tipo de Contrato")
     type = fields.Selection(
         selection=PROJECT_WORKSITE_TYPE + [('shop', 'Tienda')], 
@@ -104,35 +103,57 @@ class Contract(models.Model):
     partner_id = fields.Many2one("res.partner", "Inquilino O Propietario", required=True)
     company_id = fields.Many2one("res.company", string="Compañía", default=lambda self: self.env.company)
     
-    date = fields.Date("Fecha de Inicio", default=fields.Date.context_today)
-    date_from = fields.Date("Fecha de Inicio", required=True, default=fields.Date.context_today)
-    date_to = fields.Date("Fecha de Fin")
-    date_end = fields.Date("Fecha de Terminación de Contrato")
-    date_payment = fields.Date("Fecha del Primer Pago", default=fields.Date.context_today)
+    # FECHAS PRINCIPALES (Limpiar redundancias)
+    date_from = fields.Date("Fecha de Inicio", required=True, default=fields.Date.context_today, tracking=True)
+    date_to = fields.Date("Fecha de Fin", tracking=True)
+    date_end = fields.Date("Fecha de Terminación Real", help="Fecha real de terminación del contrato")
     first_invoice_date = fields.Date("Fecha de Primera Factura", default=fields.Date.today(), tracking=True)
-    advance_payment_date = fields.Date("Fecha de Pago Anticipado")
-    date_maintenance = fields.Date("Fecha de Mantenimiento")
+
+    # FECHAS CALCULADAS
+    first_billing_date = fields.Date(
+        string='Fecha Primera Factura Calculada',
+        compute='_compute_first_billing_date',
+        store=True,
+        readonly=False,
+        help='Fecha real de la primera factura considerando día de facturación'
+    )
+    next_payment_date = fields.Date(
+        string='Próximo Pago',
+        compute='_compute_next_payment_info',
+        help='Fecha del próximo pago pendiente'
+    )
+    last_payment_date = fields.Date(
+        string='Último Pago',
+        compute='_compute_last_payment_info',
+        help='Fecha del último pago realizado'
+    )
     
     state = fields.Selection([
-        ("draft", "Borrador"), 
-        ("confirmed", "Confirmado"), 
+        ("draft", "Borrador"),
+        ("confirmed", "Confirmado"),
         ("renew", "Renovado"),
         ("cancel", "Cancelado")
     ], "Estado", default=lambda *a: "draft")
-    
+
+    color = fields.Integer(
+        string="Color",
+        compute="_compute_color",
+        store=False,
+        help="Color del contrato según días restantes: Rojo (<30 días), Naranja (30-60 días), Verde (>60 días)"
+    )
+
     apply_tax = fields.Boolean("Aplicar Impuesto")
     tax_status = fields.Selection([
         ("per_installment", "Por Cuota"), 
         ("tax_base_amount", "Monto Base de Impuesto")
     ], default="per_installment", string="Estado de Impuesto")
     
-    reservation_id = fields.Many2one("property.reservation", "Reserva")
     
     paid = fields.Float(compute="_check_amounts", string="Monto Pagado")
     balance = fields.Float(compute="_check_amounts", string="Saldo")
     amount_total = fields.Float(compute="_check_amounts", string="Monto Total")
-    
-    project_id = fields.Many2one("project.worksite", related="reservation_id.project_id", store=True)
+
+    project_id = fields.Many2one("project.worksite", related="property_id.project_worksite_id", string="Proyecto", store=True)
     project_code = fields.Char("Código", related="project_id.default_code", store=True)
     
     property_id = fields.Many2one(
@@ -235,13 +256,7 @@ class Contract(models.Model):
         help="Día del mes en que se genera la factura (1-31)"
     )
     is_escenary_propiedad = fields.Boolean("Usar Escenario de Propiedad", default=False, tracking=True)
-    commission_rate = fields.Float("Tasa de Comisión (%)", default=0.0, tracking=True)
     
-    pricing = fields.Float("Precio", digits="Product Price")
-    template_id = fields.Many2one("installment.template", "Plantilla de Cuotas")
-    tax_base_amount = fields.Float("Monto Base de Impuesto", related="property_id.tax_base_amount")
-    tax_ids = fields.One2many("price.taxes", "contract_id")
-    sales_price = fields.Float("Precio de Venta", compute="_compute_tax_and_ownership_tax")
     
     maintenance = fields.Float(string="Mantenimiento", digits="Product Price")
     maintenance_type = fields.Selection([
@@ -249,26 +264,6 @@ class Contract(models.Model):
         ("amount", "Monto")
     ], string="Tipo de Mantenimiento")
     
-    advance_payment_method = fields.Selection([
-        ("default", "Predeterminado"), 
-        ("custom", "Personalizado")
-    ], default='custom', string="Método de Pago Anticipado")
-    advance_payment_type = fields.Selection([
-        ("percentage", "Porcentaje"), 
-        ("amount", "Monto")
-    ], default='percentage', string="Tipo de Pago Anticipado")
-    advance_payment_rate = fields.Float(
-        compute="_compute_advance_payment", 
-        string="% de Pago Anticipado", 
-        store=True
-    )
-    advance_payment = fields.Float(
-        "Valor de Pago Anticipado", 
-        compute="_compute_advance_payment", 
-        store=True
-    )
-    advance_payment_journal_id = fields.Many2one("account.journal", string="Diario de Pago Anticipado")
-    advance_payment_payment_id = fields.Many2one("account.payment", string="Pago Anticipado")
     
     descripcion = fields.Text('Descripción')
     contract_use = fields.Selection([
@@ -298,43 +293,87 @@ class Contract(models.Model):
         ('compound', 'Interés Compuesto')
     ], string='Método de Cálculo', default='simple', tracking=True)
 
-    def action_cancel_contract_wizard(self):
-        return {
-            'name': 'Cancelar Contrato',
-            'type': 'ir.actions.act_window',
-            'res_model': 'cancel.contract.wizard',
-            'view_mode': 'form',
-            'target': 'new',
-            'context': {'default_termination_date': self.date_to}
-        }
+    # CONFIGURACIÓN DE PLANTILLA (TEMPORAL - USAR SELECTION)
+    contract_template = fields.Selection([
+        ('standard_local', 'Contrato Local Estándar'),
+        ('commercial', 'Contrato Comercial'),
+        ('residential', 'Contrato Residencial'),
+        ('luxury', 'Contrato Premium'),
+    ], string='Plantilla de Contrato', help='Plantilla predefinida con condiciones estándar')
 
-    def action_change_client_wizard(self):
-        return {
-            'name': 'Cambiar Cliente',
-            'type': 'ir.actions.act_window',
-            'res_model': 'change.client.wizard',
-            'view_mode': 'form',
-            'target': 'new',
-        }
+    # CAMPOS DE COMISIÓN
+    commission_percentage = fields.Float(
+        'Comisión (%)',
+        compute='_compute_commission_config',
+        store=True,
+        readonly=False,
+        help='Porcentaje de comisión - toma por defecto de configuración empresarial'
+    )
+    commission_calculation_method = fields.Selection([
+        ('gross_amount', 'Sobre Monto Bruto'),
+        ('net_amount', 'Sobre Monto Neto'),
+        ('rental_fee_only', 'Solo Canon')
+    ], string='Base de Comisión',
+       compute='_compute_commission_config',
+       store=True,
+       readonly=False)
 
-    def action_modify_payment_wizard(self):
-        return {
-            'name': 'Modificar Pagos',
-            'type': 'ir.actions.act_window',
-            'res_model': 'modify.payment.wizard',
-            'view_mode': 'form',
-            'target': 'new',
-            'context': {'default_new_rental_fee': self.rental_fee}
-        }
+    total_commission = fields.Float(
+        'Comisión Total',
+        compute='_compute_total_commission',
+        store=True,
+        digits='Account'
+    )
 
-    def action_reactivate_contract_wizard(self):
-        return {
-            'name': 'Reactivar Contrato',
-            'type': 'ir.actions.act_window',
-            'res_model': 'reactivate.contract.wizard',
-            'view_mode': 'form',
-            'target': 'new',
-        }
+    # FECHAS CALCULADAS MEJORADAS
+    first_billing_date = fields.Date(
+        string='Primera Factura Calculada',
+        compute='_compute_first_billing_date',
+        store=True,
+        readonly=False,
+        help='Fecha real de la primera factura considerando día de facturación'
+    )
+    next_payment_date = fields.Date(
+        string='Próximo Pago',
+        compute='_compute_next_payment_info',
+        help='Fecha del próximo pago pendiente'
+    )
+    next_payment_amount = fields.Float(
+        string='Monto Próximo Pago',
+        compute='_compute_next_payment_info',
+        help='Monto de la próxima cuota a pagar',
+        digits='Account'
+    )
+    last_payment_date = fields.Date(
+        string='Último Pago',
+        compute='_compute_last_payment_info',
+        help='Fecha del último pago realizado'
+    )
+
+    # RELACIONES CON PAGOS
+    payment_ids = fields.Many2many(
+        'account.payment',
+        'payment_contract_rel',
+        'contract_id', 'payment_id',
+        string='Pagos Relacionados'
+    )
+
+    # RELACIÓN CON RESERVAS
+    reservation_id = fields.Many2one(
+        'property.reservation',
+        string='Reserva Origen',
+        help='Reserva desde la cual se creó este contrato'
+    )
+
+    # ESTADO DE FIRMA
+    signature_state = fields.Selection([
+        ('not_required', 'No Requerida'),
+        ('pending', 'Pendiente'),
+        ('partial', 'Parcialmente Firmado'),
+        ('complete', 'Completamente Firmado')
+    ], string='Estado de Firma', default='not_required', tracking=True)
+
+    # MÉTODOS DE WIZARDS ELIMINADOS - AHORA USAR EL WIZARD UNIFICADO
 
     def compute_interest(self, base_amount, days_overdue):
         """
@@ -394,10 +433,6 @@ class Contract(models.Model):
         preview_html += "</tbody></table></div>"
         return preview_html
 
-    @api.depends('tax_base_amount', 'tax_ids')
-    def _compute_tax_and_ownership_tax(self):
-        for rec in self:
-            rec.sales_price = rec.tax_base_amount + sum(rec.tax_ids.mapped("calculated_tax"))
 
     @api.depends("loan_line_ids.amount", "loan_line_ids.amount_residual")
     def _check_amounts(self):
@@ -425,6 +460,10 @@ class Contract(models.Model):
         self.entry_count = len(move_ids)
 
     def auto_rental_invoice(self):
+        """
+        Crear facturas automáticas de alquiler.
+        MEJORADO: Considera contratos multi-propiedad y multi-propietario.
+        """
         try:
             rental_pool = self.env["loan.line"]
             rental_line_ids = rental_pool.search([
@@ -437,36 +476,255 @@ class Contract(models.Model):
 
             for line in rental_line_ids:
                 if not line.invoice_id:
+                    contract = line.contract_id
+
+                    # LÓGICA MEJORADA: Verificar si es multi-propiedad con multi-propietario
+                    if contract.is_multi_property and contract.contract_line_ids:
+                        # Multi-propiedad: Crear facturas por propietario
+                        self._create_invoice_multi_property(line, contract, journal)
+                    elif contract.property_id.is_multi_owner and contract.owners_lines:
+                        # Propiedad única con múltiples propietarios
+                        self._create_invoice_multi_owner(line, contract, journal)
+                    else:
+                        # Caso estándar: Un propietario
+                        self._create_invoice_single_owner(line, contract, journal)
+        except Exception as e:
+            _logger.error(f"Error en auto_rental_invoice: {str(e)}")
+            return "Error Interno"
+
+    def _create_invoice_single_owner(self, line, contract, journal):
+        """Crear factura estándar para un solo propietario"""
+        inv_dict = {
+            "journal_id": journal.id,
+            "partner_id": contract.partner_id.id,
+            "move_type": "out_invoice",
+            "rental_line_id": line.id,
+            "invoice_date_due": line.date,
+            "ref": f"{contract.name} - {line.name}",
+        }
+
+        vals = {
+            "name": f"{contract.name} - {line.name}",
+            "quantity": 1,
+            "price_unit": line.amount,
+        }
+
+        if line.tax_status == 'per_installment':
+            tax_ids = [(6, 0, self.env.company.account_sale_tax_id.ids)]
+            vals.update({"tax_ids": tax_ids})
+
+        inv_dict["invoice_line_ids"] = [(0, None, vals)]
+        invoice = self.env["account.move"].create(inv_dict)
+        invoice.action_post()
+        line.invoice_id = invoice.id
+
+    def _create_invoice_multi_owner(self, line, contract, journal):
+        """
+        Crear facturas separadas por propietario para una propiedad con múltiples owners.
+        Cada propietario recibe su % del total.
+        """
+        for owner_line in contract.owners_lines:
+            if owner_line.ownership_percentage <= 0:
+                continue
+
+            # Calcular monto proporcional
+            owner_amount = line.amount * (owner_line.ownership_percentage / 100.0)
+
+            inv_dict = {
+                "journal_id": journal.id,
+                "partner_id": owner_line.partner_id.id,  # Factura al propietario
+                "move_type": "out_invoice",
+                "rental_line_id": line.id,
+                "invoice_date_due": line.date,
+                "ref": f"{contract.name} - {line.name} - Propietario: {owner_line.partner_id.name}",
+            }
+
+            vals = {
+                "name": f"{contract.name} - {line.name} ({owner_line.ownership_percentage}% Propiedad)",
+                "quantity": 1,
+                "price_unit": owner_amount,
+                "product_id": contract.property_id.id if hasattr(contract.property_id, 'product_variant_id') else False,
+            }
+
+            if line.tax_status == 'per_installment':
+                tax_ids = [(6, 0, self.env.company.account_sale_tax_id.ids)]
+                vals.update({"tax_ids": tax_ids})
+
+            inv_dict["invoice_line_ids"] = [(0, None, vals)]
+
+            try:
+                invoice = self.env["account.move"].create(inv_dict)
+                invoice.action_post()
+
+                # Log en el contrato
+                contract.message_post(
+                    body=f"Factura creada para propietario {owner_line.partner_id.name}: "
+                         f"{self.env.company.currency_id.format(owner_amount)} "
+                         f"({owner_line.ownership_percentage}% de {self.env.company.currency_id.format(line.amount)})"
+                )
+            except Exception as e:
+                _logger.error(f"Error creando factura para propietario {owner_line.partner_id.name}: {str(e)}")
+
+        # Marcar la línea como facturada (vincula a la primera factura creada)
+        if contract.owners_lines:
+            first_invoice = self.env["account.move"].search([
+                ("rental_line_id", "=", line.id)
+            ], limit=1)
+            if first_invoice:
+                line.invoice_id = first_invoice.id
+
+    def _create_invoice_multi_property(self, line, contract, journal):
+        """
+        Crear facturas para contrato multi-propiedad.
+        Divide el monto de la cuota proporcionalmente entre las propiedades activas.
+        Cada propiedad puede tener múltiples propietarios.
+        """
+        active_contract_lines = contract.contract_line_ids.filtered(lambda l: l.state == 'active')
+
+        if not active_contract_lines:
+            _logger.warning(f"No hay líneas activas para el contrato {contract.name}")
+            return
+
+        total_rental = sum(active_contract_lines.mapped('rental_fee'))
+
+        if total_rental <= 0:
+            _logger.warning(f"Canon total es 0 para contrato {contract.name}")
+            return
+
+        # Crear factura por cada línea de propiedad
+        for contract_line in active_contract_lines:
+            # Calcular monto proporcional de esta línea en la cuota
+            line_percentage = (contract_line.rental_fee / total_rental) if total_rental > 0 else 0
+            line_amount = line.amount * line_percentage
+
+            property_obj = contract_line.property_id
+
+            # Verificar si la propiedad tiene múltiples propietarios
+            if property_obj.is_multi_owner and property_obj.owners_lines:
+                # Multi-propietario: Crear factura por cada owner
+                for owner_line in property_obj.owners_lines:
+                    if owner_line.ownership_percentage <= 0:
+                        continue
+
+                    owner_amount = line_amount * (owner_line.ownership_percentage / 100.0)
+
                     inv_dict = {
                         "journal_id": journal.id,
-                        "partner_id": line.contract_id.partner_id.id,
+                        "partner_id": owner_line.partner_id.id,
                         "move_type": "out_invoice",
                         "rental_line_id": line.id,
                         "invoice_date_due": line.date,
-                        "ref": (line.contract_id.name + " - " + line.name),
+                        "ref": f"{contract.name} - {property_obj.name} - {owner_line.partner_id.name}",
                     }
 
                     vals = {
-                        "name": (line.contract_id.name + " - " + line.name),
+                        "name": f"{contract.name} - {property_obj.name} ({owner_line.ownership_percentage}%)",
                         "quantity": 1,
-                        "price_unit": line.amount,
+                        "price_unit": owner_amount,
+                        "product_id": property_obj.id if hasattr(property_obj, 'product_variant_id') else False,
                     }
 
                     if line.tax_status == 'per_installment':
-                        tax_ids = [(6, 0, self.env.company.account_sale_tax_id.ids,)]
+                        tax_ids = [(6, 0, self.env.company.account_sale_tax_id.ids)]
                         vals.update({"tax_ids": tax_ids})
 
                     inv_dict["invoice_line_ids"] = [(0, None, vals)]
-                    invoice = account_move_obj.create(inv_dict)
-                    invoice.action_post()
-                    line.invoice_id = invoice.id
-        except:
-            return "Error Interno"
 
-    @api.depends("rent", "property_area", "property_id", "rental_agreement")
+                    try:
+                        invoice = self.env["account.move"].create(inv_dict)
+                        invoice.action_post()
+
+                        contract.message_post(
+                            body=f"Factura creada - Propiedad: {property_obj.name}, "
+                                 f"Propietario: {owner_line.partner_id.name}, "
+                                 f"Monto: {self.env.company.currency_id.format(owner_amount)}"
+                        )
+                    except Exception as e:
+                        _logger.error(f"Error creando factura multi-propiedad: {str(e)}")
+            else:
+                # Propiedad con un solo propietario
+                owner_id = property_obj.partner_id
+
+                if not owner_id:
+                    _logger.warning(f"Propiedad {property_obj.name} no tiene propietario definido")
+                    continue
+
+                inv_dict = {
+                    "journal_id": journal.id,
+                    "partner_id": owner_id.id,
+                    "move_type": "out_invoice",
+                    "rental_line_id": line.id,
+                    "invoice_date_due": line.date,
+                    "ref": f"{contract.name} - {property_obj.name}",
+                }
+
+                vals = {
+                    "name": f"{contract.name} - {property_obj.name}",
+                    "quantity": 1,
+                    "price_unit": line_amount,
+                    "product_id": property_obj.id if hasattr(property_obj, 'product_variant_id') else False,
+                }
+
+                if line.tax_status == 'per_installment':
+                    tax_ids = [(6, 0, self.env.company.account_sale_tax_id.ids)]
+                    vals.update({"tax_ids": tax_ids})
+
+                inv_dict["invoice_line_ids"] = [(0, None, vals)]
+
+                try:
+                    invoice = self.env["account.move"].create(inv_dict)
+                    invoice.action_post()
+
+                    contract.message_post(
+                        body=f"Factura creada - Propiedad: {property_obj.name}, "
+                             f"Monto: {self.env.company.currency_id.format(line_amount)}"
+                    )
+                except Exception as e:
+                    _logger.error(f"Error creando factura para propiedad única: {str(e)}")
+
+        # Marcar la línea como facturada
+        first_invoice = self.env["account.move"].search([
+            ("rental_line_id", "=", line.id)
+        ], limit=1)
+        if first_invoice:
+            line.invoice_id = first_invoice.id
+
+    @api.depends("rent", "property_area", "property_id", "rental_agreement", "is_multi_property", "contract_line_ids.rental_fee", "contract_line_ids.state")
     def _compute_rental_fee(self):
         for rec in self:
-            rec.rental_fee = rec.property_id.rent_value_from
+            if rec.is_multi_property and rec.contract_line_ids:
+                # Usar suma de líneas activas para contratos multi-propiedad
+                active_lines = rec.contract_line_ids.filtered(lambda l: l.state == 'active')
+                rec.rental_fee = sum(active_lines.mapped('rental_fee'))
+            else:
+                # Método original para contratos de una sola propiedad
+                rec.rental_fee = rec.property_id.rent_value_from
+
+    @api.depends('date_to', 'state')
+    def _compute_color(self):
+        """
+        Calcular color del contrato según días restantes hasta vencimiento:
+        - Rojo (1): Menos de 30 días
+        - Naranja (2): Entre 30 y 60 días
+        - Amarillo (3): Entre 60 y 90 días
+        - Verde (10): Más de 90 días o no confirmado
+        """
+        today = fields.Date.today()
+        for rec in self:
+            if rec.state != 'confirmed' or not rec.date_to:
+                rec.color = 10  # Verde por defecto
+            else:
+                days_remaining = (rec.date_to - today).days
+                if days_remaining < 0:
+                    rec.color = 1  # Rojo - Vencido
+                elif days_remaining < 30:
+                    rec.color = 1  # Rojo - Menos de 30 días
+                elif days_remaining < 60:
+                    rec.color = 2  # Naranja - 30-60 días
+                elif days_remaining < 90:
+                    rec.color = 3  # Amarillo - 60-90 días
+                else:
+                    rec.color = 10  # Verde - Más de 90 días
 
     @api.constrains("recurring_interval")
     def _check_recurring_interval(self):
@@ -519,8 +777,6 @@ class Contract(models.Model):
     def action_calculate(self):
         if self.contract_type == 'is_rental' and self.rental_fee > 0:
             self.prepare_lines()
-        elif self.contract_type == 'is_ownership' and self.pricing > 0:
-            self.loan_line_ids = self._prepare_lines(self.date_payment)
 
     @api.onchange("region_id")
     def onchange_region(self):
@@ -664,8 +920,6 @@ class Contract(models.Model):
                     prorated_amount = current_rental_fee
                     last_increment_date = period_start
 
-            # Calcular comisión
-            commission = prorated_amount * (self.commission_rate / 100) if self.commission_rate else 0
 
             # Fecha de facturación (día específico del mes siguiente o día de corte)
             invoice_date = self._get_invoice_date(period_end)
@@ -678,7 +932,6 @@ class Contract(models.Model):
                     period_start.strftime('%d/%m/%Y'),
                     period_end.strftime('%d/%m/%Y')
                 ),
-                "commission": self.company_id.currency_id.round(commission),
                 "period_start": period_start,
                 "period_end": period_end,
             }))
@@ -743,119 +996,9 @@ class Contract(models.Model):
         res = divmod(e360 - s360, 30)
         return ((res[0] * 30) + res[1]) or 0
 
-    @api.onchange("reservation_id")
-    def onchange_reservation(self):
-        self.project_id = self.reservation_id.project_id.id
-        self.region_id = self.reservation_id.region_id.id
-        self.partner_id = self.reservation_id.partner_id.id
-        self.property_id = self.reservation_id.property_id.id
-        self.address = self.reservation_id.address
-        self.floor = self.reservation_id.floor
-        self.pricing = self.reservation_id.net_price
-        self.date_payment = self.reservation_id.date_payment
-        self.template_id = self.reservation_id.template_id.id
-        self.type = self.reservation_id.type
-        self.property_area = self.reservation_id.property_area
 
-    def action_receive_deposit(self):
-        if not self.advance_payment_journal_id:
-            raise UserError(_("¡Por favor configure el Diario de Pago Anticipado!"))
-        if not self.advance_payment_date:
-            raise UserError(_("¡Por favor configure la Fecha de Pago Anticipado!"))
-        
-        custom_adv_payment = self.advance_payment
-        rec = self.env["account.payment"].create({
-            "payment_type": "inbound",
-            "partner_type": "customer",
-            "amount": custom_adv_payment,
-            "partner_id": self.partner_id.id,
-            "date": self.advance_payment_date,
-        })
-        rec.action_post()
-        self.advance_payment_payment_id = rec.id
 
-    @api.depends("template_id", "advance_payment_type", "advance_payment_method")
-    def _compute_advance_payment(self):
-        if self.advance_payment_method == 'default':
-            self.advance_payment_type = "percentage"
-            self.advance_payment_rate = self.template_id.adv_payment_rate
-            self.advance_payment = self.pricing * float(self.advance_payment_rate) / 100
-        else:
-            if self.advance_payment_type == "percentage":
-                self.advance_payment = self.pricing * float(self.advance_payment_rate) / 100
 
-    def _prepare_lines(self, date_payment):
-        self.loan_line_ids = None
-        loan_lines = []
-        if self.template_id:
-            ind = 1
-            pricing = self.pricing
-            custom_adv_payment = self.advance_payment
-
-            mon = self.template_id.duration_month
-            yr = self.template_id.duration_year
-            repetition = self.template_id.repetition_rate
-            advance_percent = self.template_id.adv_payment_rate
-            deduct = self.template_id.deduct
-            
-            if not date_payment:
-                raise UserError(_("¡Por favor seleccione la fecha del primer pago!"))
-            
-            adv_payment = self.advance_payment
-            if mon > 12:
-                x = mon / 12
-                mon = (x * 12) + mon % 12
-            mons = mon + (yr * 12)
-            
-            if adv_payment:
-                loan_lines.append((0, 0, {
-                    "name": _("Pago Anticipado"),
-                    "serial": ind,
-                    "journal_id": int(
-                        self.env["ir.config_parameter"].sudo().get_param("real_estate_bits.income_journal")
-                    ),
-                    "amount": adv_payment,
-                    "date": self.advance_payment_date,
-                }))
-                ind += 1
-                if deduct:
-                    pricing -= adv_payment
-
-            if self.deposit > 0.0:
-                pricing -= self.deposit
-
-            loan_amount = (pricing / float(mons or 1)) * repetition
-            m = 0
-            while m < mons:
-                loan_lines.append((0, 0, {
-                    "name": _("Cuota de Préstamo"),
-                    "serial": ind,
-                    "journal_id": int(
-                        self.env["ir.config_parameter"].sudo().get_param("real_estate_bits.income_journal")
-                    ),
-                    "amount": loan_amount,
-                    "date": date_payment,
-                }))
-                ind += 1
-                date_payment = add_months(date_payment, int(repetition))
-                m += repetition
-                self.date_to = date_payment
-
-            if self.maintenance:
-                loan_lines.append((0, 0, {
-                    "name": _("Mantenimiento"),
-                    "serial": ind,
-                    "journal_id": int(
-                        self.env["ir.config_parameter"].sudo().get_param("real_estate_bits.maintenance_journal")
-                    ),
-                    "amount": self.maintenance
-                    if self.maintenance_type == "amount"
-                    else self.pricing * (self.maintenance / 100),
-                    "date": self.date_maintenance,
-                }))
-                ind += 1
-
-        return loan_lines
 
     def action_confirm(self):
         for contract_id in self:
@@ -887,10 +1030,6 @@ class Contract(models.Model):
             if contract_id.contract_type == 'is_rental':
                 contract_id.property_id.write({"state": "on_lease"})
                 contract_id.name = self.env["ir.sequence"].next_by_code("rental.contract")
-
-            if contract_id.contract_type == "is_ownership":
-                contract_id.property_id.write({"state": "sold"})
-                contract_id.name = self.env["ir.sequence"].next_by_code("ownership.contract")
 
         self.write({"state": "confirmed"})
 
@@ -1003,6 +1142,388 @@ class Contract(models.Model):
                     }),
                 ],
             })
+
+    # MÉTODOS COMPUTE AGREGADOS
+    @api.depends('company_id')
+    def _compute_commission_config(self):
+        """Aplicar configuración por defecto de la empresa"""
+        for contract in self:
+            if not contract.commission_percentage:  # Solo si está vacío
+                # Valores por defecto
+                contract.commission_percentage = 8.0
+                contract.commission_calculation_method = 'gross_amount'
+
+    @api.depends('loan_line_ids.commission')
+    def _compute_total_commission(self):
+        """Calcular comisión total del contrato"""
+        for contract in self:
+            contract.total_commission = sum(contract.loan_line_ids.mapped('commission'))
+
+    @api.depends('date_from', 'billing_date', 'first_invoice_date')
+    def _compute_first_billing_date(self):
+        """Calcular fecha real de primera factura"""
+        for contract in self:
+            if not (contract.date_from and contract.billing_date):
+                contract.first_billing_date = contract.first_invoice_date
+                continue
+
+            start_date = contract.date_from
+            billing_day = contract.billing_date
+
+            # Si es el primer día o ya pasó el día de facturación del mes
+            if start_date.day >= billing_day:
+                # Próximo mes
+                next_month = start_date + relativedelta(months=1)
+                try:
+                    contract.first_billing_date = next_month.replace(day=billing_day)
+                except ValueError:
+                    # Día no existe en el mes (ej: 31 Feb)
+                    contract.first_billing_date = next_month.replace(day=monthrange(next_month.year, next_month.month)[1])
+            else:
+                # Mismo mes
+                contract.first_billing_date = start_date.replace(day=billing_day)
+
+    @api.depends('loan_line_ids.date', 'loan_line_ids.amount', 'loan_line_ids.payment_state')
+    def _compute_next_payment_info(self):
+        """Calcular información del próximo pago pendiente"""
+        for contract in self:
+            pending_lines = contract.loan_line_ids.filtered(
+                lambda l: l.payment_state != 'paid' and l.date >= fields.Date.today()
+            ).sorted('date')
+
+            if pending_lines:
+                next_line = pending_lines[0]
+                contract.next_payment_amount = next_line.amount
+                contract.next_payment_date = next_line.date
+            else:
+                contract.next_payment_amount = 0.0
+                contract.next_payment_date = False
+
+    @api.depends('loan_line_ids.date', 'loan_line_ids.payment_state')
+    def _compute_last_payment_info(self):
+        """Calcular fecha del último pago realizado"""
+        for contract in self:
+            paid_lines = contract.loan_line_ids.filtered(
+                lambda l: l.payment_state == 'paid'
+            ).sorted('date', reverse=True)
+
+            contract.last_payment_date = paid_lines[0].date if paid_lines else False
+
+    def action_modify_contract(self):
+        """Abrir wizard de modificación unificado"""
+        return {
+            'name': 'Modificar Contrato',
+            'type': 'ir.actions.act_window',
+            'res_model': 'modify.contract.wizard',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {'default_contract_id': self.id}
+        }
+
+    def compute_depreciation_board(self, date=False):
+        """Recalcular líneas futuras (como Account Asset)"""
+        for contract in self:
+            if contract.state != 'confirmed':
+                continue
+
+            # Eliminar líneas futuras no pagadas
+            future_lines = contract.loan_line_ids.filtered(
+                lambda l: l.date >= (date or fields.Date.today()) and l.payment_state != 'paid'
+            )
+            future_lines.unlink()
+
+            # Regenerar líneas
+            contract.prepare_lines()
+
+            contract.message_post(
+                body=f"Líneas de pago recalculadas desde {(date or fields.Date.today()).strftime('%d/%m/%Y')}"
+            )
+
+    def _recalculate_future_installments_on_line_change(self):
+        """Recalcular cuotas futuras cuando cambian las líneas de propiedades"""
+        self.ensure_one()
+
+        if self.state != 'confirmed' or not self.is_multi_property:
+            return
+
+        # Fecha de corte: primera cuota no pagada o hoy
+        cutoff_date = fields.Date.today()
+        first_unpaid = self.loan_line_ids.filtered(
+            lambda l: l.payment_state != 'paid'
+        ).sorted('date')
+
+        if first_unpaid:
+            cutoff_date = first_unpaid[0].date
+
+        # Guardar cuotas ya pagadas
+        paid_lines = self.loan_line_ids.filtered(lambda l: l.payment_state == 'paid')
+
+        # Eliminar cuotas futuras no pagadas
+        future_lines = self.loan_line_ids.filtered(
+            lambda l: l.date >= cutoff_date and l.payment_state != 'paid'
+        )
+        future_lines.unlink()
+
+        # Recalcular desde la fecha de corte usando el nuevo canon total
+        self._prepare_lines_from_date(cutoff_date)
+
+        # Log del cambio
+        new_total = sum(self.contract_line_ids.filtered(lambda l: l.state == 'active').mapped('rental_fee'))
+        self.message_post(
+            body=_('Canon recalculado automáticamente. Nuevo total: %s (desde %s)') % (
+                self.env.company.currency_id.format(new_total),
+                cutoff_date.strftime('%d/%m/%Y')
+            )
+        )
+
+    def _prepare_lines_from_date(self, start_date):
+        """Preparar líneas de cobro desde una fecha específica"""
+        self.ensure_one()
+
+        if not (self.periodicity and self.date_to):
+            return
+
+        end_date = self.date_to
+        current_rental_fee = self.rental_fee  # Ya incluye el total de líneas activas
+        period_months = int(self.periodicity)
+
+        if not current_rental_fee or current_rental_fee <= 0:
+            _logger.warning(f"Canon total es cero para contrato {self.name}. No se generarán líneas.")
+            return
+
+        current_date = start_date
+        # Obtener el último serial usado
+        last_serial = max(self.loan_line_ids.mapped('serial') or [0])
+        serial = last_serial + 1
+
+        # Variables para incrementos
+        last_increment_date = self.date_from
+
+        # Calcular si ya se han aplicado incrementos
+        months_since_start = self._get_months_between(self.date_from, current_date)
+        if self.increment_recurring_interval and self.increment_percentage:
+            increment_interval_months = self.increment_recurring_interval * (12 if self.increment_period == 'years' else 1)
+            increments_applied = months_since_start // increment_interval_months
+
+            # Aplicar incrementos acumulados
+            for _ in range(increments_applied):
+                current_rental_fee = current_rental_fee * (1 + self.increment_percentage / 100)
+
+            last_increment_date = self.date_from + relativedelta(months=increments_applied * increment_interval_months)
+
+        rental_lines = []
+
+        while current_date <= end_date:
+            # Calcular período
+            period_start = current_date
+            period_end = self._get_period_end_date(current_date, period_months, end_date)
+
+            # Verificar si hay líneas activas en este período
+            active_properties_in_period = self._get_active_properties_in_period(period_start, period_end)
+            if not active_properties_in_period:
+                # Si no hay propiedades activas, saltar este período
+                current_date = period_end + relativedelta(days=1)
+                continue
+
+            # Calcular el canon proporcional según propiedades activas
+            period_rental_fee = self._calculate_period_rental_fee(period_start, period_end, current_rental_fee)
+
+            # Aplicar incremento si corresponde
+            if self.increment_recurring_interval and self.increment_percentage:
+                months_since_increment = self._get_months_between(last_increment_date, period_start)
+                increment_interval_months = self.increment_recurring_interval * (12 if self.increment_period == 'years' else 1)
+
+                if months_since_increment >= increment_interval_months:
+                    current_rental_fee = current_rental_fee * (1 + self.increment_percentage / 100)
+                    period_rental_fee = self._calculate_period_rental_fee(period_start, period_end, current_rental_fee)
+                    last_increment_date = period_start
+
+            # Fecha de facturación
+            invoice_date = self._get_invoice_date(period_end)
+
+            rental_lines.append((0, 0, {
+                "serial": serial,
+                "amount": self.company_id.currency_id.round(period_rental_fee),
+                "date": invoice_date,
+                "name": _("Canon período %s - %s") % (
+                    period_start.strftime('%d/%m/%Y'),
+                    period_end.strftime('%d/%m/%Y')
+                ),
+                "period_start": period_start,
+                "period_end": period_end,
+            }))
+
+            # Avanzar al siguiente período
+            current_date = period_end + relativedelta(days=1)
+            serial += 1
+
+            # Prevenir loops infinitos
+            if serial > 2000:
+                raise ValidationError(_("Se excedió el límite de períodos (2000). Verifique las fechas del contrato."))
+
+        # Agregar líneas (no sobreescribir las existentes)
+        if rental_lines:
+            existing_lines = [(6, 0, self.loan_line_ids.ids)]
+            self.write({"loan_line_ids": existing_lines + rental_lines})
+
+    def _get_active_properties_in_period(self, period_start, period_end):
+        """Obtener propiedades activas en un período específico"""
+        if not self.is_multi_property:
+            return [self.property_id] if self.property_id else []
+
+        active_lines = self.contract_line_ids.filtered(
+            lambda l: l.state == 'active' and
+                     l.date_from <= period_end and
+                     (not l.date_end_real or l.date_end_real >= period_start)
+        )
+        return active_lines.mapped('property_id')
+
+    def _calculate_period_rental_fee(self, period_start, period_end, base_rental_fee):
+        """Calcular canon para un período considerando propiedades activas y terminaciones"""
+        if not self.is_multi_property:
+            return base_rental_fee
+
+        # Obtener líneas que están activas durante todo el período
+        period_duration = (period_end - period_start).days + 1
+        total_rental_for_period = 0.0
+
+        for line in self.contract_line_ids:
+            if line.state not in ['active', 'terminated']:
+                continue
+
+            # Calcular días que esta línea está activa en el período
+            line_start = max(line.date_from, period_start)
+            line_end = min(line.date_end_real or line.date_to, period_end)
+
+            if line_start <= line_end:
+                active_days = (line_end - line_start).days + 1
+                daily_rate = line.rental_fee / 30  # Aproximación diaria
+
+                if self.prorate_first_period:
+                    # Prorratear según días activos
+                    total_rental_for_period += daily_rate * active_days
+                else:
+                    # Canon completo si está activa cualquier día del período
+                    total_rental_for_period += line.rental_fee
+
+        return total_rental_for_period
+
+    def action_asset_modify(self):
+        """Modificar contrato (como Account Asset)"""
+        return self.action_modify_contract()
+
+    @api.model
+    def create_from_reservation(self, reservation_id):
+        """Crear contrato desde reserva"""
+        reservation = self.env['property.reservation'].browse(reservation_id)
+
+        contract_vals = {
+            'partner_id': reservation.partner_id.id,
+            'property_id': reservation.property_id.id,
+            'user_id': reservation.user_id.id,
+            'reservation_id': reservation.id,
+            'origin': f"Reserva: {reservation.name}",
+            'date_from': reservation.date_from or fields.Date.today(),
+            'date_to': reservation.date_to,
+            'rental_fee': reservation.property_id.rent_value_from,
+            'insurance_fee': reservation.property_id.insurance_fee,
+            'deposit': reservation.amount,  # El monto de reserva como depósito
+            # Configuración por defecto
+            'commission_percentage': 8.0,
+            'interest_rate': 1.5,
+            'interest_days_grace': 5,
+            'increment_percentage': 4.0,
+            'apply_interest': True,
+            'periodicity': '1',
+        }
+
+        contract = self.create(contract_vals)
+
+        # Marcar reserva como convertida
+        reservation.write({
+            'conversion_state': 'converted',
+            'contract_id': contract.id
+        })
+
+        return contract
+
+    @api.onchange('contract_template')
+    def _onchange_contract_template(self):
+        """Aplicar plantilla predefinida"""
+        if not self.contract_template:
+            return
+
+        # Configuraciones por tipo de plantilla
+        template_configs = {
+            'standard_local': {
+                'commission_percentage': 8.0,
+                'interest_rate': 1.5,
+                'interest_days_grace': 5,
+                'increment_percentage': 4.0,
+                'apply_interest': True,
+                'prorate_first_period': True,
+                'billing_date': 1,
+                'periodicity': '1'
+            },
+            'commercial': {
+                'commission_percentage': 6.0,
+                'interest_rate': 2.0,
+                'interest_days_grace': 3,
+                'increment_percentage': 6.0,
+                'apply_interest': True,
+                'prorate_first_period': False,
+                'billing_date': 5,
+                'periodicity': '1'
+            },
+            'residential': {
+                'commission_percentage': 10.0,
+                'interest_rate': 1.0,
+                'interest_days_grace': 10,
+                'increment_percentage': 3.5,
+                'apply_interest': True,
+                'prorate_first_period': True,
+                'billing_date': 1,
+                'periodicity': '1'
+            },
+            'luxury': {
+                'commission_percentage': 5.0,
+                'interest_rate': 1.5,
+                'interest_days_grace': 15,
+                'increment_percentage': 5.0,
+                'apply_interest': True,
+                'prorate_first_period': True,
+                'billing_date': 1,
+                'periodicity': '3'  # Trimestral
+            }
+        }
+
+        config = template_configs.get(self.contract_template, {})
+
+        # Solo aplicar valores si están vacíos
+        for field, value in config.items():
+            if not getattr(self, field, None):
+                setattr(self, field, value)
+
+    @api.onchange('property_id')
+    def onchange_unit(self):
+        """MEJORAR método existente - líneas 521-527"""
+        if self.property_id:
+            self.type = self.property_id.project_type
+            self.project_id = self.property_id.project_worksite_id.id
+            self.region_id = self.property_id.region_id.id
+
+            # Traer valor de arriendo de la propiedad (COMO SOLICITASTE)
+            if not self.rental_fee:  # Solo si está vacío
+                self.rental_fee = self.property_id.rent_value_from
+
+            if not self.insurance_fee:  # Solo si está vacío
+                self.insurance_fee = self.property_id.insurance_fee
+
+    def _compute_access_url(self):
+        """URL de acceso al portal"""
+        super()._compute_access_url()
+        for contract in self:
+            contract.access_url = f'/my/contract/{contract.id}'
 
 
 class AccountDebitTermLine(models.Model):

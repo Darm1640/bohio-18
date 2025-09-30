@@ -1,0 +1,544 @@
+<?xml version="1.0" encoding="utf-8"?>
+<data>
+
+    <!-- Vista Wizard Crear Nota Débito - Estilo Encuesta -->
+    <record id="view_bohio_debit_note_wizard_form" model="ir.ui.view">
+        <field name="name">bohio.debit.note.wizard.form</field>
+        <field name="model">bohio.debit.note.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Crear Nota Débito" class="o_form_nosheet">
+                <header>
+                    <button name="action_create_debit_notes" type="object" string="✓ Crear Notas Débito"
+                            class="btn-primary"/>
+                    <button special="cancel" string="Cancelar" class="btn-secondary"/>
+                </header>
+
+                <div class="o_form_sheet">
+                    <!-- Header tipo Survey -->
+                    <div class="o_survey_nav pt16 mb-4">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-lg-12 text-center">
+                                    <h1 class="o_survey_main_title pt-4">
+                                        <i class="fa fa-file-text-o"/> Crear Notas Débito
+                                    </h1>
+                                    <p class="lead text-muted">
+                                        Configure y genere notas débito automáticamente
+                                    </p>
+                                    <p class="text-muted">Mes de proceso: <field name="period_month" readonly="1" style="background: transparent; border: none;"/></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Paso 1: Selección de Contratos -->
+                    <div class="o_survey_question mb-4">
+                        <h3 class="o_survey_question_title"><i class="fa fa-filter"/> Paso 1: Seleccionar Contratos</h3>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="contract_ids" class="form-label">
+                                        <strong>📋 Contratos Específicos</strong>
+                                    </label>
+                                    <field name="contract_ids" widget="many2many_tags"
+                                           placeholder="Dejar vacío para aplicar filtros automáticos..."/>
+                                    <small class="text-muted">Si no selecciona contratos específicos, se aplicarán los filtros del pago masivo</small>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="partner_ids" class="form-label">
+                                        <strong>👥 Clientes Específicos</strong>
+                                    </label>
+                                    <field name="partner_ids" widget="many2many_tags"
+                                           placeholder="Opcional: filtrar por clientes..."/>
+                                    <small class="text-muted">Filtro adicional por inquilinos específicos</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Paso 2: Configuración de la Nota -->
+                    <div class="card mb-4">
+                        <div class="card-header bg-warning text-dark">
+                            <h4><i class="fa fa-cog"/> Paso 2: Configurar Nota Débito</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="concept" class="form-label">
+                                            <strong>📝 Concepto</strong>
+                                        </label>
+                                        <field name="concept" placeholder="Ej: Interés por Mora, Multa por Incumplimiento..."/>
+                                    </div>
+                                    <div class="form-group mt-3">
+                                        <label for="description" class="form-label">
+                                            <strong>📄 Descripción Detallada</strong>
+                                        </label>
+                                        <field name="description" placeholder="Descripción adicional para la nota débito..."/>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="calculation_method" class="form-label">
+                                            <strong>🧮 Método de Cálculo</strong>
+                                        </label>
+                                        <field name="calculation_method" widget="radio"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Paso 3: Valores de Cálculo -->
+                    <div class="card mb-4">
+                        <div class="card-header bg-info text-white">
+                            <h4><i class="fa fa-calculator"/> Paso 3: Valores de Cálculo</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <!-- Monto Fijo -->
+                                <div class="col-md-4" invisible="calculation_method != 'fixed_amount'">
+                                    <div class="text-center p-3 border rounded bg-light">
+                                        <h5><i class="fa fa-dollar text-success"/> Monto Fijo</h5>
+                                        <field name="fixed_amount" widget="monetary" class="form-control-lg text-center"/>
+                                        <small class="text-muted">Se aplicará este monto a todos los seleccionados</small>
+                                    </div>
+                                </div>
+
+                                <!-- Porcentaje -->
+                                <div class="col-md-4" invisible="calculation_method != 'percentage'">
+                                    <div class="text-center p-3 border rounded bg-light">
+                                        <h5><i class="fa fa-percent text-warning"/> Porcentaje del Canon</h5>
+                                        <field name="percentage" widget="percentage" class="form-control-lg text-center"/>
+                                        <small class="text-muted">Porcentaje sobre el canon del mes</small>
+                                    </div>
+                                </div>
+
+                                <!-- Tasa de Interés -->
+                                <div class="col-md-4" invisible="calculation_method != 'interest_rate'">
+                                    <div class="text-center p-3 border rounded bg-light">
+                                        <h5><i class="fa fa-line-chart text-danger"/> Tasa de Interés</h5>
+                                        <field name="interest_rate" widget="percentage" class="form-control-lg text-center"/>
+                                        <field name="days_base" class="form-control mt-2"/>
+                                        <small class="text-muted">Solo para cuotas vencidas</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Paso 4: Impuestos -->
+                    <div class="card mb-4">
+                        <div class="card-header bg-secondary text-white">
+                            <h4><i class="fa fa-university"/> Paso 4: Configuración de Impuestos</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-check form-switch">
+                                        <field name="apply_taxes" widget="boolean_toggle"/>
+                                        <label for="apply_taxes" class="form-check-label">
+                                            <strong>Aplicar Impuestos sobre la Nota Débito</strong>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6" invisible="not apply_taxes">
+                                    <label for="tax_ids" class="form-label">
+                                        <strong>🏛️ Impuestos a Aplicar</strong>
+                                    </label>
+                                    <field name="tax_ids" widget="many2many_tags"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Vista Previa -->
+                    <div class="card">
+                        <div class="card-header bg-success text-white">
+                            <h4><i class="fa fa-eye"/> Vista Previa del Resultado</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="alert alert-info" role="alert">
+                                <p><strong>📊 Resumen:</strong></p>
+                                <ul class="mb-0">
+                                    <li><strong>Concepto:</strong> <field name="concept" readonly="1" style="background: transparent; border: none;"/></li>
+                                    <li><strong>Método:</strong>
+                                        <span invisible="calculation_method != 'fixed_amount'">Monto Fijo de <field name="fixed_amount" widget="monetary" readonly="1" style="background: transparent; border: none;"/></span>
+                                        <span invisible="calculation_method != 'percentage'">Porcentaje del <field name="percentage" readonly="1" style="background: transparent; border: none;"/>% sobre el canon</span>
+                                        <span invisible="calculation_method != 'interest_rate'">Tasa de interés del <field name="interest_rate" readonly="1" style="background: transparent; border: none;"/>% sobre cuotas vencidas</span>
+                                    </li>
+                                    <li><strong>Impuestos:</strong>
+                                        <span invisible="apply_taxes">No aplicar impuestos</span>
+                                        <span invisible="not apply_taxes">Aplicar impuestos configurados</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Vista Form para Nota Débito Individual -->
+    <record id="view_bohio_debit_note_form" model="ir.ui.view">
+        <field name="name">bohio.debit.note.form</field>
+        <field name="model">bohio.debit.note</field>
+        <field name="arch" type="xml">
+            <form string="Nota Débito" class="o_form_nosheet">
+                <header>
+                    <button name="action_confirm" type="object" string="✓ Confirmar"
+                            class="btn-primary" invisible="state != 'draft'"/>
+                    <button name="action_create_invoice" type="object" string="📄 Facturar"
+                            class="btn-success" invisible="state != 'confirmed'"/>
+                    <button name="action_cancel" type="object" string="❌ Cancelar"
+                            class="btn-secondary" invisible="state not in ['draft', 'confirmed']"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,invoiced"/>
+                </header>
+
+                <div class="o_form_sheet">
+                    <!-- Encabezado de Nota Débito -->
+                    <div class="text-center mb-4" style="background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%); color: white; padding: 15px; border-radius: 8px;">
+                        <h2><i class="fa fa-file-text"/> <field name="name" readonly="1" style="background: transparent; border: none; color: white; font-weight: bold;"/></h2>
+                        <h4><field name="concept" readonly="state != 'draft'" style="background: transparent; border: none; color: white;"/></h4>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header bg-primary text-white">
+                                    <h5><i class="fa fa-info"/> Información General</h5>
+                                </div>
+                                <div class="card-body">
+                                    <field name="date" readonly="state != 'draft'"/>
+                                    <field name="partner_id" readonly="state != 'draft'"/>
+                                    <field name="contract_id" readonly="state != 'draft'"/>
+                                    <field name="description" placeholder="Descripción detallada..."
+                                           readonly="state != 'draft'"/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header bg-success text-white">
+                                    <h5><i class="fa fa-calculator"/> Cálculo de Montos</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <label for="base_amount" class="form-label o_form_label"><strong>Monto Base</strong></label>
+                                            <field name="base_amount" widget="monetary" readonly="state != 'draft'"/>
+                                        </div>
+                                        <div class="col-6">
+                                            <label for="rate" class="form-label o_form_label"><strong>Tasa (%)</strong></label>
+                                            <field name="rate" widget="percentage" readonly="state != 'draft'"/>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-3">
+                                        <div class="col-12">
+                                            <label for="amount" class="form-label o_form_label"><strong>Monto Total</strong></label>
+                                            <field name="amount" widget="monetary" class="form-control-lg"
+                                                   decoration-bf="1" readonly="state != 'draft'"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sección de Impuestos -->
+                    <div class="card mt-3">
+                        <div class="card-header bg-warning text-dark">
+                            <h5><i class="fa fa-university"/> Configuración de Impuestos</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <field name="tax_ids" widget="many2many_tags"
+                                           placeholder="Seleccionar impuestos..."
+                                           readonly="state != 'draft'"/>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="tax_amount" class="form-label o_form_label"><strong>Impuestos</strong></label>
+                                    <field name="tax_amount" widget="monetary" readonly="1"/>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="amount_total" class="form-label o_form_label"><strong>Total Final</strong></label>
+                                    <field name="amount_total" widget="monetary" readonly="1"
+                                           class="form-control-lg" decoration-bf="1"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Factura Generada -->
+                    <div class="card mt-3" invisible="not invoice_id">
+                        <div class="card-header bg-success text-white">
+                            <h5><i class="fa fa-check-circle"/> Factura Generada</h5>
+                        </div>
+                        <div class="card-body">
+                            <field name="invoice_id" readonly="1"/>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Vista List para Notas Débito -->
+    <record id="view_bohio_debit_note_tree" model="ir.ui.view">
+        <field name="name">bohio.debit.note.tree</field>
+        <field name="model">bohio.debit.note</field>
+        <field name="arch" type="xml">
+            <list string="Notas Débito"
+                  decoration-muted="state == 'draft'"
+                  decoration-info="state == 'confirmed'"
+                  decoration-success="state == 'invoiced'"
+                  decoration-danger="state == 'cancelled'">
+
+                <field name="name" decoration-bf="1"/>
+                <field name="date"/>
+                <field name="partner_id"/>
+                <field name="contract_id"/>
+                <field name="concept"/>
+                <field name="amount" widget="monetary" sum="Total Base"/>
+                <field name="tax_amount" widget="monetary" sum="Total Impuestos"/>
+                <field name="amount_total" widget="monetary" sum="Total Final" decoration-bf="1"/>
+                <field name="state" widget="badge"
+                       decoration-muted="state == 'draft'"
+                       decoration-info="state == 'confirmed'"
+                       decoration-success="state == 'invoiced'"
+                       decoration-danger="state == 'cancelled'"/>
+                <field name="invoice_id"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Vista Wizard Balance de Impuestos -->
+    <record id="view_bohio_tax_income_balance_wizard_form" model="ir.ui.view">
+        <field name="name">bohio.tax.income.balance.wizard.form</field>
+        <field name="model">bohio.tax.income.balance.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Balance de Impuestos e Ingresos" class="o_form_nosheet">
+                <header>
+                    <button name="action_load_balance_data" type="object" string="🔄 Cargar Datos"
+                            class="btn-primary"/>
+                    <button name="action_reconcile_selected" type="object" string="✓ Conciliar Seleccionados"
+                            class="btn-success"/>
+                    <button special="cancel" string="Cerrar" class="btn-secondary"/>
+                </header>
+
+                <div class="o_form_sheet">
+                    <!-- Encabezado del Balance -->
+                    <div class="text-center mb-4" style="background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%); color: white; padding: 20px; border-radius: 10px;">
+                        <h1><i class="fa fa-balance-scale"/> Balance Fiscal</h1>
+                        <h4>Control de Impuestos e Ingresos - Pagos Parciales</h4>
+                        <p class="mb-0">Período: <field name="period_month" readonly="1" style="background: transparent; border: none; color: white; font-weight: bold;"/></p>
+                    </div>
+
+                    <!-- Filtros de Vista -->
+                    <div class="card mb-4">
+                        <div class="card-header bg-secondary text-white">
+                            <h5><i class="fa fa-filter"/> Filtros de Vista</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <field name="only_partial_payments"/>
+                                    <label for="only_partial_payments" class="form-check-label o_form_label">Solo mostrar pagos parciales</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="filter_by_reconciliation" class="form-label o_form_label"><strong>Estado de Conciliación</strong></label>
+                                    <field name="filter_by_reconciliation" widget="radio"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Resumen de Totales -->
+                    <div class="row mb-4">
+                        <div class="col-md-2">
+                            <div class="card text-center bg-primary text-white">
+                                <div class="card-body">
+                                    <h4><field name="total_expected_canon" widget="monetary"/></h4>
+                                    <p class="mb-0">Canon Esperado</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="card text-center bg-success text-white">
+                                <div class="card-body">
+                                    <h4><field name="total_received_canon" widget="monetary"/></h4>
+                                    <p class="mb-0">Canon Recibido</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="card text-center bg-warning text-dark">
+                                <div class="card-body">
+                                    <h4><field name="total_expected_commission" widget="monetary"/></h4>
+                                    <p class="mb-0">Comisión</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="card text-center bg-info text-white">
+                                <div class="card-body">
+                                    <h4><field name="total_expected_taxes" widget="monetary"/></h4>
+                                    <p class="mb-0">Impuestos</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="card text-center bg-dark text-white">
+                                <div class="card-body">
+                                    <h4><field name="total_to_owners" widget="monetary"/></h4>
+                                    <p class="mb-0">Neto Propietarios</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Detalle por Línea -->
+                    <div class="card">
+                        <div class="card-header bg-dark text-white">
+                            <h5><i class="fa fa-list"/> Detalle por Propietario</h5>
+                        </div>
+                        <div class="card-body p-0">
+                            <field name="balance_line_ids">
+                                <list string="Balance por Línea" editable="bottom"
+                                      decoration-success="is_reconciled and not has_issues"
+                                      decoration-warning="not is_reconciled and not has_issues"
+                                      decoration-danger="has_issues"
+                                      decoration-info="selected">
+
+                                    <field name="selected" widget="boolean_toggle"/>
+                                    <field name="partner_id" readonly="1"/>
+                                    <field name="contract_id" readonly="1"/>
+
+                                    <field name="canon_expected" widget="monetary" readonly="1" sum="Esperado"/>
+                                    <field name="canon_received" widget="monetary" readonly="1" sum="Recibido"/>
+                                    <field name="canon_difference" widget="monetary" readonly="1" sum="Diferencia"
+                                           decoration-success="canon_difference >= 0"
+                                           decoration-danger="canon_difference &lt; 0"/>
+                                    <field name="difference_percentage" widget="percentage" readonly="1"
+                                           decoration-success="difference_percentage >= 0"
+                                           decoration-danger="difference_percentage &lt; 0"/>
+
+                                    <field name="commission_amount" widget="monetary" readonly="1" sum="Comisión"/>
+                                    <field name="tax_amount" widget="monetary" readonly="1" sum="Impuestos"/>
+                                    <field name="net_to_owner" widget="monetary" readonly="1" sum="Neto"
+                                           decoration-bf="1"/>
+
+                                    <field name="is_reconciled" readonly="1" widget="boolean_toggle"/>
+                                    <field name="has_issues" readonly="1" widget="boolean_toggle"/>
+                                    <field name="issue_description" readonly="1"/>
+                                </list>
+                            </field>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Vista Wizard Conciliación de Impuestos -->
+    <record id="view_bohio_tax_reconcile_wizard_form" model="ir.ui.view">
+        <field name="name">bohio.tax.reconcile.wizard.form</field>
+        <field name="model">bohio.tax.reconcile.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Conciliación de Impuestos" class="o_form_nosheet">
+                <div class="o_form_sheet">
+                    <!-- Encabezado -->
+                    <div class="text-center mb-4" style="background: linear-gradient(135deg, #fdcb6e 0%, #e17055 100%); color: white; padding: 15px; border-radius: 8px;">
+                        <h2><i class="fa fa-balance-scale"/> Conciliación de Impuestos</h2>
+                        <h4>Monto: <field name="tax_amount" widget="monetary" readonly="1" style="background: transparent; border: none; color: white; font-weight: bold;"/></h4>
+                    </div>
+
+                    <!-- Opciones de Conciliación -->
+                    <div class="card">
+                        <div class="card-header bg-info text-white">
+                            <h5><i class="fa fa-cog"/> Seleccione una Opción</h5>
+                        </div>
+                        <div class="card-body">
+                            <field name="reconcile_option" widget="radio" class="mb-3"/>
+
+                            <!-- Ajuste Manual -->
+                            <div invisible="reconcile_option != 'manual'">
+                                <div class="alert alert-warning" role="alert">
+                                    <strong>Ajuste Manual:</strong> Especifique el monto a ajustar y el motivo
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label for="manual_adjustment" class="form-label o_form_label"><strong>Ajuste</strong></label>
+                                        <field name="manual_adjustment" widget="monetary"/>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="reason" class="form-label o_form_label"><strong>Motivo</strong></label>
+                                        <field name="reason" placeholder="Explique el motivo del ajuste..."/>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Motivo para Skip -->
+                            <div invisible="reconcile_option != 'skip'">
+                                <div class="alert alert-danger" role="alert">
+                                    <strong>Marcar como No Conciliable:</strong> Esta línea será omitida del pago
+                                </div>
+                                <label for="reason" class="form-label o_form_label"><strong>Motivo</strong></label>
+                                <field name="reason" placeholder="Explique por qué no se puede conciliar..." required="reconcile_option == 'skip'"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <footer>
+                    <button name="action_apply_reconciliation" type="object" string="✓ Aplicar"
+                            class="btn-primary"/>
+                    <button special="cancel" string="Cancelar" class="btn-secondary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Acción para Wizard de Nota Débito -->
+    <record id="action_bohio_debit_note_wizard" model="ir.actions.act_window">
+        <field name="name">Crear Nota Débito</field>
+        <field name="res_model">bohio.debit.note.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <!-- Acción para Balance de Impuestos -->
+    <record id="action_bohio_tax_income_balance_wizard" model="ir.actions.act_window">
+        <field name="name">Balance de Impuestos e Ingresos</field>
+        <field name="res_model">bohio.tax.income.balance.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <!-- Acción para Notas Débito -->
+    <record id="action_bohio_debit_note" model="ir.actions.act_window">
+        <field name="name">Notas Débito</field>
+        <field name="res_model">bohio.debit.note</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                ¡Cree su primera nota débito!
+            </p>
+            <p>
+                Las notas débito permiten cargar conceptos adicionales
+                como intereses por mora, multas y otros cargos.
+            </p>
+        </field>
+    </record>
+
+    <!-- Menú para Notas Débito -->
+    <menuitem id="menu_bohio_debit_note"
+              name="Notas Débito"
+              parent="real_estate_bits.menu_real_estate_root"
+              action="action_bohio_debit_note"
+              sequence="26"/>
+
+</data>

@@ -1,0 +1,2785 @@
+2025-09-30 04:42:53,328 - [INFO] - 
+######################################################################
+2025-09-30 04:42:53,329 - [INFO] - # COPIA COMPLETA DE PROPIEDADES: SITE -> ODOO 18
+2025-09-30 04:42:53,329 - [INFO] - # Version 3.0 - TODOS LOS CAMPOS
+2025-09-30 04:42:53,329 - [INFO] - ######################################################################
+2025-09-30 04:42:53,329 - [INFO] - 
+Conectando a ORIGEN: https://inmobiliariabohio.cloudpepper.site - DB: inmobiliariabohio.cloudpepper.site
+2025-09-30 04:42:54,821 - [INFO] - OK - Conectado (UID: 2)
+2025-09-30 04:42:54,821 - [INFO] - 
+Conectando a DESTINO: https://darm1640-bohio-18.odoo.com - DB: darm1640-bohio-18-main-24081960
+2025-09-30 04:42:58,684 - [INFO] - OK - Conectado (UID: 2)
+2025-09-30 04:42:59,802 - [INFO] - 
+Cache base: Pais=49, Cia=1, Mon=8
+
+2025-09-30 04:42:59,802 - [INFO] - 
+######################################################################
+2025-09-30 04:42:59,802 - [INFO] - # COPIA COMPLETA DE PROPIEDADES
+2025-09-30 04:42:59,802 - [INFO] - ######################################################################
+
+2025-09-30 04:42:59,802 - [INFO] - Buscando propiedades en origen...
+2025-09-30 04:42:59,802 - [INFO] - Campos a copiar: 130
+2025-09-30 04:43:18,778 - [INFO] - Encontradas 2498 propiedades
+
+2025-09-30 04:43:18,778 - [INFO] - 
+[1/2498]
+2025-09-30 04:43:18,778 - [INFO] - 
+======================================================================
+2025-09-30 04:43:18,778 - [INFO] - Propiedad: BODEGA (ID origen: 9947)
+2025-09-30 04:43:19,277 - [INFO] -    + Partner existente (Nombre): JUAN MANUEL OLMOS  PARDO -> 9149
+2025-09-30 04:43:19,880 - [INFO] - 
+Total campos a copiar: 108
+2025-09-30 04:43:19,880 - [INFO] - Resumen:
+2025-09-30 04:43:19,880 - [INFO] -   Propietario: 9149
+2025-09-30 04:43:19,880 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:43:19,880 - [INFO] -   Area: 615.0 m2
+2025-09-30 04:43:19,880 - [INFO] -   Habitaciones: 0 | Banos: 2
+2025-09-30 04:43:19,880 - [INFO] -   Arriendo: $5,610,000
+2025-09-30 04:43:19,881 - [INFO] -   Venta: $0
+2025-09-30 04:43:19,881 - [INFO] - 
+Creando en destino con 108 campos...
+2025-09-30 04:43:20,446 - [INFO] - OK! Propiedad creada: BODEGA -> ID [542]
+2025-09-30 04:43:20,446 - [INFO] - 
+[2/2498]
+2025-09-30 04:43:20,446 - [INFO] - 
+======================================================================
+2025-09-30 04:43:20,446 - [INFO] - Propiedad: LOCAL (ID origen: 9948)
+2025-09-30 04:43:21,233 - [INFO] -    + Partner existente (Nombre): DENIS DEL CARMEN FUENTES MOLINA -> 8487
+2025-09-30 04:43:21,873 - [INFO] - 
+Total campos a copiar: 109
+2025-09-30 04:43:21,873 - [INFO] - Resumen:
+2025-09-30 04:43:21,873 - [INFO] -   Propietario: 8487
+2025-09-30 04:43:21,873 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:43:21,873 - [INFO] -   Area: 1100.0 m2
+2025-09-30 04:43:21,873 - [INFO] -   Habitaciones: 0 | Banos: 0
+2025-09-30 04:43:21,874 - [INFO] -   Arriendo: $24,137,931
+2025-09-30 04:43:21,874 - [INFO] -   Venta: $0
+2025-09-30 04:43:21,874 - [INFO] - 
+Creando en destino con 109 campos...
+2025-09-30 04:43:22,183 - [INFO] - OK! Propiedad creada: LOCAL -> ID [543]
+2025-09-30 04:43:22,183 - [INFO] - 
+[3/2498]
+2025-09-30 04:43:22,183 - [INFO] - 
+======================================================================
+2025-09-30 04:43:22,183 - [INFO] - Propiedad: LOCAL (ID origen: 9949)
+2025-09-30 04:43:22,815 - [INFO] -    + Partner existente (VAT): BOHIO CONSULTORES INMOBILIARIOS S.A.S -> 8291
+2025-09-30 04:43:23,145 - [INFO] - 
+Total campos a copiar: 107
+2025-09-30 04:43:23,145 - [INFO] - Resumen:
+2025-09-30 04:43:23,145 - [INFO] -   Propietario: 8291
+2025-09-30 04:43:23,145 - [INFO] -   Ubicacion: Depto Antioquia (CO) [X], Ciudad Medellin [X], Barrio N/A [X]
+2025-09-30 04:43:23,145 - [INFO] -   Area: 0.0 m2
+2025-09-30 04:43:23,145 - [INFO] -   Habitaciones: 0 | Banos: 0
+2025-09-30 04:43:23,146 - [INFO] -   Arriendo: $229,483
+2025-09-30 04:43:23,146 - [INFO] -   Venta: $0
+2025-09-30 04:43:23,146 - [INFO] - 
+Creando en destino con 107 campos...
+2025-09-30 04:43:23,459 - [INFO] - OK! Propiedad creada: LOCAL -> ID [544]
+2025-09-30 04:43:23,460 - [INFO] - 
+[4/2498]
+2025-09-30 04:43:23,460 - [INFO] - 
+======================================================================
+2025-09-30 04:43:23,460 - [INFO] - Propiedad: OFICINA (ID origen: 9950)
+2025-09-30 04:43:24,239 - [INFO] -    + Partner existente (Nombre): SABAS EFREN ARROYO OTERO -> 9947
+2025-09-30 04:43:24,837 - [INFO] - 
+Total campos a copiar: 110
+2025-09-30 04:43:24,837 - [INFO] - Resumen:
+2025-09-30 04:43:24,837 - [INFO] -   Propietario: 9947
+2025-09-30 04:43:24,837 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:43:24,837 - [INFO] -   Area: 45.0 m2
+2025-09-30 04:43:24,837 - [INFO] -   Habitaciones: 0 | Banos: 1
+2025-09-30 04:43:24,837 - [INFO] -   Arriendo: $850,000
+2025-09-30 04:43:24,838 - [INFO] -   Venta: $0
+2025-09-30 04:43:24,838 - [INFO] - 
+Creando en destino con 110 campos...
+2025-09-30 04:43:25,155 - [INFO] - OK! Propiedad creada: OFICINA -> ID [545]
+2025-09-30 04:43:25,155 - [INFO] - 
+[5/2498]
+2025-09-30 04:43:25,155 - [INFO] - 
+======================================================================
+2025-09-30 04:43:25,156 - [INFO] - Propiedad: OFICINA (ID origen: 9951)
+2025-09-30 04:43:25,773 - [INFO] - 
+Total campos a copiar: 108
+2025-09-30 04:43:25,773 - [INFO] - Resumen:
+2025-09-30 04:43:25,774 - [INFO] -   Propietario: 9947
+2025-09-30 04:43:25,774 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:43:25,774 - [INFO] -   Area: 50.0 m2
+2025-09-30 04:43:25,775 - [INFO] -   Habitaciones: 0 | Banos: 0
+2025-09-30 04:43:25,775 - [INFO] -   Arriendo: $1,009,319
+2025-09-30 04:43:25,775 - [INFO] -   Venta: $0
+2025-09-30 04:43:25,775 - [INFO] - 
+Creando en destino con 108 campos...
+2025-09-30 04:43:26,090 - [INFO] - OK! Propiedad creada: OFICINA -> ID [546]
+2025-09-30 04:43:26,090 - [INFO] - 
+[6/2498]
+2025-09-30 04:43:26,090 - [INFO] - 
+======================================================================
+2025-09-30 04:43:26,091 - [INFO] - Propiedad: LOCAL (ID origen: 9952)
+2025-09-30 04:43:26,852 - [INFO] -    + Partner existente (Nombre): MAGNOLIA DE JESÚS MEJÍA PALACIOS -> 9415
+2025-09-30 04:43:27,251 - [INFO] - 
+Total campos a copiar: 109
+2025-09-30 04:43:27,251 - [INFO] - Resumen:
+2025-09-30 04:43:27,252 - [INFO] -   Propietario: 9415
+2025-09-30 04:43:27,252 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:43:27,252 - [INFO] -   Area: 31.0 m2
+2025-09-30 04:43:27,252 - [INFO] -   Habitaciones: 0 | Banos: 1
+2025-09-30 04:43:27,252 - [INFO] -   Arriendo: $1,000,000
+2025-09-30 04:43:27,252 - [INFO] -   Venta: $0
+2025-09-30 04:43:27,252 - [INFO] - 
+Creando en destino con 109 campos...
+2025-09-30 04:43:27,559 - [INFO] - OK! Propiedad creada: LOCAL -> ID [547]
+2025-09-30 04:43:27,560 - [INFO] - 
+[7/2498]
+2025-09-30 04:43:27,560 - [INFO] - 
+======================================================================
+2025-09-30 04:43:27,560 - [INFO] - Propiedad: LOCAL (ID origen: 9953)
+2025-09-30 04:43:28,047 - [INFO] -    ? Ciudad 'MONTERÍA (230017)' no encontrada, buscando por barrio 'el centro [MONTERÍA - Córdoba CO] '...
+2025-09-30 04:43:28,382 - [INFO] - 
+Total campos a copiar: 109
+2025-09-30 04:43:28,382 - [INFO] - Resumen:
+2025-09-30 04:43:28,382 - [INFO] -   Propietario: 9415
+2025-09-30 04:43:28,382 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio el centro [MONTERÍA - Córdoba CO]  [X]
+2025-09-30 04:43:28,383 - [INFO] -   Area: 31.0 m2
+2025-09-30 04:43:28,383 - [INFO] -   Habitaciones: 0 | Banos: 1
+2025-09-30 04:43:28,383 - [INFO] -   Arriendo: $1,833,457
+2025-09-30 04:43:28,383 - [INFO] -   Venta: $0
+2025-09-30 04:43:28,383 - [INFO] - 
+Creando en destino con 109 campos...
+2025-09-30 04:43:28,689 - [INFO] - OK! Propiedad creada: LOCAL -> ID [548]
+2025-09-30 04:43:28,689 - [INFO] - 
+[8/2498]
+2025-09-30 04:43:28,689 - [INFO] - 
+======================================================================
+2025-09-30 04:43:28,689 - [INFO] - Propiedad: LOCAL (ID origen: 9954)
+2025-09-30 04:43:29,185 - [INFO] -    ? Ciudad 'MONTERÍA (230017)' no encontrada, buscando por barrio 'el centro [MONTERÍA - Córdoba CO] '...
+2025-09-30 04:43:29,515 - [INFO] - 
+Total campos a copiar: 108
+2025-09-30 04:43:29,515 - [INFO] - Resumen:
+2025-09-30 04:43:29,515 - [INFO] -   Propietario: 9415
+2025-09-30 04:43:29,515 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio el centro [MONTERÍA - Córdoba CO]  [X]
+2025-09-30 04:43:29,515 - [INFO] -   Area: 25.0 m2
+2025-09-30 04:43:29,516 - [INFO] -   Habitaciones: 0 | Banos: 1
+2025-09-30 04:43:29,516 - [INFO] -   Arriendo: $550,000
+2025-09-30 04:43:29,516 - [INFO] -   Venta: $0
+2025-09-30 04:43:29,516 - [INFO] - 
+Creando en destino con 108 campos...
+2025-09-30 04:43:29,821 - [INFO] - OK! Propiedad creada: LOCAL -> ID [549]
+2025-09-30 04:43:29,821 - [INFO] - 
+[9/2498]
+2025-09-30 04:43:29,821 - [INFO] - 
+======================================================================
+2025-09-30 04:43:29,821 - [INFO] - Propiedad: LOCAL (ID origen: 9955)
+2025-09-30 04:43:30,593 - [INFO] -    + Partner existente (Nombre): ADELANA SALCEDO HERNANDEZ -> 8029
+2025-09-30 04:43:30,983 - [INFO] - 
+Total campos a copiar: 108
+2025-09-30 04:43:30,984 - [INFO] - Resumen:
+2025-09-30 04:43:30,984 - [INFO] -   Propietario: 8029
+2025-09-30 04:43:30,984 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:43:30,984 - [INFO] -   Area: 40.0 m2
+2025-09-30 04:43:30,984 - [INFO] -   Habitaciones: 0 | Banos: 0
+2025-09-30 04:43:30,984 - [INFO] -   Arriendo: $700,000
+2025-09-30 04:43:30,984 - [INFO] -   Venta: $0
+2025-09-30 04:43:30,984 - [INFO] - 
+Creando en destino con 108 campos...
+2025-09-30 04:43:31,303 - [INFO] - OK! Propiedad creada: LOCAL -> ID [550]
+2025-09-30 04:43:31,303 - [INFO] - 
+[10/2498]
+2025-09-30 04:43:31,303 - [INFO] - 
+======================================================================
+2025-09-30 04:43:31,303 - [INFO] - Propiedad: CASA (ID origen: 9956)
+2025-09-30 04:43:32,109 - [INFO] -    + Partner existente (Nombre): CARLOS ARTURO BERROCAL -> 8325
+2025-09-30 04:43:32,710 - [INFO] - 
+Total campos a copiar: 107
+2025-09-30 04:43:32,710 - [INFO] - Resumen:
+2025-09-30 04:43:32,710 - [INFO] -   Propietario: 8325
+2025-09-30 04:43:32,710 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:43:32,710 - [INFO] -   Area: 288.0 m2
+2025-09-30 04:43:32,711 - [INFO] -   Habitaciones: 0 | Banos: 0
+2025-09-30 04:43:32,711 - [INFO] -   Arriendo: $2,100,000
+2025-09-30 04:43:32,711 - [INFO] -   Venta: $400,000,000
+2025-09-30 04:43:32,711 - [INFO] - 
+Creando en destino con 107 campos...
+2025-09-30 04:43:33,046 - [INFO] - OK! Propiedad creada: CASA -> ID [551]
+2025-09-30 04:43:33,046 - [INFO] - 
+[11/2498]
+2025-09-30 04:43:33,046 - [INFO] - 
+======================================================================
+2025-09-30 04:43:33,047 - [INFO] - Propiedad: LOCAL (ID origen: 9957)
+2025-09-30 04:43:33,862 - [INFO] -    + Partner existente (Nombre): MARY ALVAREZ DE ALVAREZ -> 9574
+2025-09-30 04:43:34,261 - [INFO] - 
+Total campos a copiar: 108
+2025-09-30 04:43:34,261 - [INFO] - Resumen:
+2025-09-30 04:43:34,261 - [INFO] -   Propietario: 9574
+2025-09-30 04:43:34,261 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:43:34,262 - [INFO] -   Area: 60.0 m2
+2025-09-30 04:43:34,262 - [INFO] -   Habitaciones: 0 | Banos: 10
+2025-09-30 04:43:34,262 - [INFO] -   Arriendo: $1,000,000
+2025-09-30 04:43:34,262 - [INFO] -   Venta: $0
+2025-09-30 04:43:34,262 - [INFO] - 
+Creando en destino con 108 campos...
+2025-09-30 04:43:34,568 - [INFO] - OK! Propiedad creada: LOCAL -> ID [552]
+2025-09-30 04:43:34,569 - [INFO] - 
+[12/2498]
+2025-09-30 04:43:34,569 - [INFO] - 
+======================================================================
+2025-09-30 04:43:34,569 - [INFO] - Propiedad: OFICINA (ID origen: 9958)
+2025-09-30 04:43:35,210 - [INFO] - 
+Total campos a copiar: 109
+2025-09-30 04:43:35,211 - [INFO] - Resumen:
+2025-09-30 04:43:35,211 - [INFO] -   Propietario: 9947
+2025-09-30 04:43:35,211 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:43:35,211 - [INFO] -   Area: 60.0 m2
+2025-09-30 04:43:35,212 - [INFO] -   Habitaciones: 0 | Banos: 1
+2025-09-30 04:43:35,212 - [INFO] -   Arriendo: $965,000
+2025-09-30 04:43:35,212 - [INFO] -   Venta: $0
+2025-09-30 04:43:35,212 - [INFO] - 
+Creando en destino con 109 campos...
+2025-09-30 04:43:35,518 - [INFO] - OK! Propiedad creada: OFICINA -> ID [553]
+2025-09-30 04:43:35,518 - [INFO] - 
+[13/2498]
+2025-09-30 04:43:35,518 - [INFO] - 
+======================================================================
+2025-09-30 04:43:35,519 - [INFO] - Propiedad: OFICINA (ID origen: 9959)
+2025-09-30 04:43:36,283 - [INFO] -    + Partner existente (Nombre): VERA LUCIA FLOREZ SÁNCHEZ -> 10046
+2025-09-30 04:43:36,674 - [INFO] - 
+Total campos a copiar: 109
+2025-09-30 04:43:36,676 - [INFO] - Resumen:
+2025-09-30 04:43:36,676 - [INFO] -   Propietario: 10046
+2025-09-30 04:43:36,676 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:43:36,676 - [INFO] -   Area: 47.0 m2
+2025-09-30 04:43:36,676 - [INFO] -   Habitaciones: 0 | Banos: 1
+2025-09-30 04:43:36,676 - [INFO] -   Arriendo: $907,377
+2025-09-30 04:43:36,676 - [INFO] -   Venta: $0
+2025-09-30 04:43:36,676 - [INFO] - 
+Creando en destino con 109 campos...
+2025-09-30 04:43:37,021 - [INFO] - OK! Propiedad creada: OFICINA -> ID [554]
+2025-09-30 04:43:37,021 - [INFO] - 
+[14/2498]
+2025-09-30 04:43:37,021 - [INFO] - 
+======================================================================
+2025-09-30 04:43:37,021 - [INFO] - Propiedad: OFICINA (ID origen: 9960)
+2025-09-30 04:43:37,852 - [INFO] -    + Partner existente (Nombre): JACQUELINE DEL ROSARIO FRANCIS VILLADIEGO -> 8950
+2025-09-30 04:43:38,255 - [INFO] - 
+Total campos a copiar: 108
+2025-09-30 04:43:38,255 - [INFO] - Resumen:
+2025-09-30 04:43:38,255 - [INFO] -   Propietario: 8950
+2025-09-30 04:43:38,256 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:43:38,256 - [INFO] -   Area: 35.0 m2
+2025-09-30 04:43:38,256 - [INFO] -   Habitaciones: 0 | Banos: 1
+2025-09-30 04:43:38,256 - [INFO] -   Arriendo: $551,250
+2025-09-30 04:43:38,256 - [INFO] -   Venta: $0
+2025-09-30 04:43:38,256 - [INFO] - 
+Creando en destino con 108 campos...
+2025-09-30 04:43:38,564 - [INFO] - OK! Propiedad creada: OFICINA -> ID [555]
+2025-09-30 04:43:38,564 - [INFO] - 
+[15/2498]
+2025-09-30 04:43:38,564 - [INFO] - 
+======================================================================
+2025-09-30 04:43:38,564 - [INFO] - Propiedad: LOCAL (ID origen: 9961)
+2025-09-30 04:43:39,342 - [INFO] -    + Partner existente (Nombre): ANGELO ANAYA CAPONE -> 8190
+2025-09-30 04:43:39,740 - [INFO] - 
+Total campos a copiar: 108
+2025-09-30 04:43:39,741 - [INFO] - Resumen:
+2025-09-30 04:43:39,741 - [INFO] -   Propietario: 8190
+2025-09-30 04:43:39,741 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:43:39,741 - [INFO] -   Area: 84.0 m2
+2025-09-30 04:43:39,741 - [INFO] -   Habitaciones: 0 | Banos: 1
+2025-09-30 04:43:39,741 - [INFO] -   Arriendo: $3,500,000
+2025-09-30 04:43:39,741 - [INFO] -   Venta: $0
+2025-09-30 04:43:39,741 - [INFO] - 
+Creando en destino con 108 campos...
+2025-09-30 04:43:40,052 - [INFO] - OK! Propiedad creada: LOCAL -> ID [556]
+2025-09-30 04:43:40,052 - [INFO] - 
+[16/2498]
+2025-09-30 04:43:40,053 - [INFO] - 
+======================================================================
+2025-09-30 04:43:40,053 - [INFO] - Propiedad: CASA (ID origen: 9962)
+2025-09-30 04:43:40,828 - [INFO] -    + Partner existente (Nombre): FRANCIA SOFIA MILANES -> 8739
+2025-09-30 04:43:41,217 - [INFO] - 
+Total campos a copiar: 107
+2025-09-30 04:43:41,217 - [INFO] - Resumen:
+2025-09-30 04:43:41,218 - [INFO] -   Propietario: 8739
+2025-09-30 04:43:41,218 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:43:41,218 - [INFO] -   Area: 220.0 m2
+2025-09-30 04:43:41,218 - [INFO] -   Habitaciones: 0 | Banos: 0
+2025-09-30 04:43:41,218 - [INFO] -   Arriendo: $0
+2025-09-30 04:43:41,218 - [INFO] -   Venta: $1,200,000,000
+2025-09-30 04:43:41,218 - [INFO] - 
+Creando en destino con 107 campos...
+2025-09-30 04:43:41,526 - [INFO] - OK! Propiedad creada: CASA -> ID [557]
+2025-09-30 04:43:41,526 - [INFO] - 
+[17/2498]
+2025-09-30 04:43:41,526 - [INFO] - 
+======================================================================
+2025-09-30 04:43:41,526 - [INFO] - Propiedad: APARTAMENTO (ID origen: 9963)
+2025-09-30 04:43:42,316 - [INFO] -    + Partner existente (Nombre): BEATRIZ ELENA AYUBI MARTINEZ -> 8261
+2025-09-30 04:43:42,900 - [INFO] - 
+Total campos a copiar: 111
+2025-09-30 04:43:42,901 - [INFO] - Resumen:
+2025-09-30 04:43:42,901 - [INFO] -   Propietario: 8261
+2025-09-30 04:43:42,901 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:43:42,901 - [INFO] -   Area: 68.0 m2
+2025-09-30 04:43:42,901 - [INFO] -   Habitaciones: 2 | Banos: 2
+2025-09-30 04:43:42,901 - [INFO] -   Arriendo: $1,450,000
+2025-09-30 04:43:42,901 - [INFO] -   Venta: $0
+2025-09-30 04:43:42,901 - [INFO] -   Amenidades: Ascensor, Piscina, Salon Social
+2025-09-30 04:43:42,901 - [INFO] - 
+Creando en destino con 111 campos...
+2025-09-30 04:43:43,210 - [INFO] - OK! Propiedad creada: APARTAMENTO -> ID [558]
+2025-09-30 04:43:43,211 - [INFO] - 
+[18/2498]
+2025-09-30 04:43:43,211 - [INFO] - 
+======================================================================
+2025-09-30 04:43:43,211 - [INFO] - Propiedad: APARTAMENTO (ID origen: 9964)
+2025-09-30 04:43:43,977 - [INFO] -    + Partner existente (Nombre): DINA LUZ ROMERO CONTRERAS -> 8529
+2025-09-30 04:43:44,368 - [INFO] - 
+Total campos a copiar: 110
+2025-09-30 04:43:44,368 - [INFO] - Resumen:
+2025-09-30 04:43:44,368 - [INFO] -   Propietario: 8529
+2025-09-30 04:43:44,368 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:43:44,368 - [INFO] -   Area: 75.0 m2
+2025-09-30 04:43:44,368 - [INFO] -   Habitaciones: 3 | Banos: 2
+2025-09-30 04:43:44,368 - [INFO] -   Arriendo: $1,236,176
+2025-09-30 04:43:44,368 - [INFO] -   Venta: $0
+2025-09-30 04:43:44,368 - [INFO] -   Amenidades: Piscina, Salon Social
+2025-09-30 04:43:44,368 - [INFO] - 
+Creando en destino con 110 campos...
+2025-09-30 04:43:44,678 - [INFO] - OK! Propiedad creada: APARTAMENTO -> ID [559]
+2025-09-30 04:43:44,678 - [INFO] - 
+[19/2498]
+2025-09-30 04:43:44,678 - [INFO] - 
+======================================================================
+2025-09-30 04:43:44,678 - [INFO] - Propiedad: CASA (ID origen: 9965)
+2025-09-30 04:43:45,431 - [INFO] -    + Partner existente (Nombre): AMIRA HERNANDEZ DE MARTINEZ -> 8132
+2025-09-30 04:43:45,632 - [INFO] -    ? Ciudad 'MONTERÍA (230017)' no encontrada, buscando por barrio 'costa de oro [MONTERÍA - Córdoba CO] '...
+2025-09-30 04:43:46,030 - [INFO] - 
+Total campos a copiar: 108
+2025-09-30 04:43:46,030 - [INFO] - Resumen:
+2025-09-30 04:43:46,030 - [INFO] -   Propietario: 8132
+2025-09-30 04:43:46,030 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio costa de oro [MONTERÍA - Córdoba CO]  [X]
+2025-09-30 04:43:46,030 - [INFO] -   Area: 200.0 m2
+2025-09-30 04:43:46,030 - [INFO] -   Habitaciones: 3 | Banos: 2
+2025-09-30 04:43:46,030 - [INFO] -   Arriendo: $0
+2025-09-30 04:43:46,030 - [INFO] -   Venta: $400,000,000
+2025-09-30 04:43:46,030 - [INFO] -   Amenidades: Garage
+2025-09-30 04:43:46,030 - [INFO] - 
+Creando en destino con 108 campos...
+2025-09-30 04:43:46,338 - [INFO] - OK! Propiedad creada: CASA -> ID [560]
+2025-09-30 04:43:46,338 - [INFO] - 
+[20/2498]
+2025-09-30 04:43:46,338 - [INFO] - 
+======================================================================
+2025-09-30 04:43:46,338 - [INFO] - Propiedad: FINCA (ID origen: 9966)
+2025-09-30 04:43:47,112 - [INFO] -    + Partner existente (Nombre): REMBERTO HERNANDO DE JESUS GARCIA ANAYA -> 9847
+2025-09-30 04:43:47,710 - [INFO] - 
+Total campos a copiar: 107
+2025-09-30 04:43:47,710 - [INFO] - Resumen:
+2025-09-30 04:43:47,710 - [INFO] -   Propietario: 9847
+2025-09-30 04:43:47,710 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:43:47,710 - [INFO] -   Area: 400.0 m2
+2025-09-30 04:43:47,710 - [INFO] -   Habitaciones: 0 | Banos: 0
+2025-09-30 04:43:47,710 - [INFO] -   Arriendo: $2,500,000
+2025-09-30 04:43:47,710 - [INFO] -   Venta: $0
+2025-09-30 04:43:47,710 - [INFO] - 
+Creando en destino con 107 campos...
+2025-09-30 04:43:48,027 - [INFO] - OK! Propiedad creada: FINCA -> ID [561]
+2025-09-30 04:43:48,027 - [INFO] - 
+[21/2498]
+2025-09-30 04:43:48,027 - [INFO] - 
+======================================================================
+2025-09-30 04:43:48,027 - [INFO] - Propiedad: FINCA (ID origen: 9967)
+2025-09-30 04:43:48,828 - [INFO] -    + Partner existente (Nombre): HERNANDO JOSE RUA OTERO -> 8891
+2025-09-30 04:43:49,227 - [INFO] - 
+Total campos a copiar: 107
+2025-09-30 04:43:49,227 - [INFO] - Resumen:
+2025-09-30 04:43:49,227 - [INFO] -   Propietario: 8891
+2025-09-30 04:43:49,227 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:43:49,228 - [INFO] -   Area: 22000.0 m2
+2025-09-30 04:43:49,228 - [INFO] -   Habitaciones: 0 | Banos: 1
+2025-09-30 04:43:49,228 - [INFO] -   Arriendo: $0
+2025-09-30 04:43:49,228 - [INFO] -   Venta: $300,000,000
+2025-09-30 04:43:49,228 - [INFO] - 
+Creando en destino con 107 campos...
+2025-09-30 04:43:49,538 - [INFO] - OK! Propiedad creada: FINCA -> ID [562]
+2025-09-30 04:43:49,538 - [INFO] - 
+[22/2498]
+2025-09-30 04:43:49,538 - [INFO] - 
+======================================================================
+2025-09-30 04:43:49,538 - [INFO] - Propiedad: OFICINA (ID origen: 9968)
+2025-09-30 04:43:50,152 - [INFO] - 
+Total campos a copiar: 108
+2025-09-30 04:43:50,152 - [INFO] - Resumen:
+2025-09-30 04:43:50,152 - [INFO] -   Propietario: 9947
+2025-09-30 04:43:50,153 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:43:50,153 - [INFO] -   Area: 50.0 m2
+2025-09-30 04:43:50,153 - [INFO] -   Habitaciones: 0 | Banos: 1
+2025-09-30 04:43:50,153 - [INFO] -   Arriendo: $940,800
+2025-09-30 04:43:50,153 - [INFO] -   Venta: $0
+2025-09-30 04:43:50,153 - [INFO] - 
+Creando en destino con 108 campos...
+2025-09-30 04:43:50,544 - [INFO] - OK! Propiedad creada: OFICINA -> ID [563]
+2025-09-30 04:43:50,544 - [INFO] - 
+[23/2498]
+2025-09-30 04:43:50,544 - [INFO] - 
+======================================================================
+2025-09-30 04:43:50,545 - [INFO] - Propiedad: CASA (ID origen: 9969)
+2025-09-30 04:43:51,419 - [INFO] -    + Partner existente (Nombre): CARMEN FLOREZ DE RAMIREZ -> 8365
+2025-09-30 04:43:51,617 - [INFO] -    ? Ciudad 'MONTERÍA (230017)' no encontrada, buscando por barrio 'el centro [MONTERÍA - Córdoba CO] '...
+2025-09-30 04:43:52,012 - [INFO] - 
+Total campos a copiar: 107
+2025-09-30 04:43:52,012 - [INFO] - Resumen:
+2025-09-30 04:43:52,012 - [INFO] -   Propietario: 8365
+2025-09-30 04:43:52,012 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio el centro [MONTERÍA - Córdoba CO]  [X]
+2025-09-30 04:43:52,012 - [INFO] -   Area: 342.0 m2
+2025-09-30 04:43:52,012 - [INFO] -   Habitaciones: 0 | Banos: 0
+2025-09-30 04:43:52,012 - [INFO] -   Arriendo: $9,500,000
+2025-09-30 04:43:52,012 - [INFO] -   Venta: $950,000,000
+2025-09-30 04:43:52,013 - [INFO] - 
+Creando en destino con 107 campos...
+2025-09-30 04:43:52,372 - [INFO] - OK! Propiedad creada: CASA -> ID [564]
+2025-09-30 04:43:52,372 - [INFO] - 
+[24/2498]
+2025-09-30 04:43:52,373 - [INFO] - 
+======================================================================
+2025-09-30 04:43:52,373 - [INFO] - Propiedad: APARTAMENTO (ID origen: 9970)
+2025-09-30 04:43:53,007 - [INFO] - 
+Total campos a copiar: 107
+2025-09-30 04:43:53,007 - [INFO] - Resumen:
+2025-09-30 04:43:53,007 - [INFO] -   Propietario: 8891
+2025-09-30 04:43:53,007 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:43:53,007 - [INFO] -   Area: 100.0 m2
+2025-09-30 04:43:53,007 - [INFO] -   Habitaciones: 0 | Banos: 0
+2025-09-30 04:43:53,007 - [INFO] -   Arriendo: $900,000
+2025-09-30 04:43:53,008 - [INFO] -   Venta: $150,000,000
+2025-09-30 04:43:53,008 - [INFO] - 
+Creando en destino con 107 campos...
+2025-09-30 04:43:53,333 - [INFO] - OK! Propiedad creada: APARTAMENTO -> ID [565]
+2025-09-30 04:43:53,333 - [INFO] - 
+[25/2498]
+2025-09-30 04:43:53,333 - [INFO] - 
+======================================================================
+2025-09-30 04:43:53,333 - [INFO] - Propiedad: CASA (ID origen: 9971)
+2025-09-30 04:43:54,107 - [INFO] -    + Partner existente (Nombre): EDGAR OSPINO RAMIREZ -> 8556
+2025-09-30 04:43:54,502 - [INFO] - 
+Total campos a copiar: 107
+2025-09-30 04:43:54,502 - [INFO] - Resumen:
+2025-09-30 04:43:54,502 - [INFO] -   Propietario: 8556
+2025-09-30 04:43:54,503 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:43:54,503 - [INFO] -   Area: 210.0 m2
+2025-09-30 04:43:54,503 - [INFO] -   Habitaciones: 5 | Banos: 0
+2025-09-30 04:43:54,503 - [INFO] -   Arriendo: $0
+2025-09-30 04:43:54,503 - [INFO] -   Venta: $400,000,000
+2025-09-30 04:43:54,503 - [INFO] - 
+Creando en destino con 107 campos...
+2025-09-30 04:43:54,808 - [INFO] - OK! Propiedad creada: CASA -> ID [566]
+2025-09-30 04:43:54,808 - [INFO] - 
+[26/2498]
+2025-09-30 04:43:54,808 - [INFO] - 
+======================================================================
+2025-09-30 04:43:54,808 - [INFO] - Propiedad: LOTE (ID origen: 9972)
+2025-09-30 04:43:55,870 - [INFO] -    + Partner existente (Nombre): NICOLAS JOSE DUMAR LOPEZ -> 9695
+2025-09-30 04:43:56,512 - [INFO] - 
+Total campos a copiar: 107
+2025-09-30 04:43:56,512 - [INFO] - Resumen:
+2025-09-30 04:43:56,512 - [INFO] -   Propietario: 9695
+2025-09-30 04:43:56,513 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Chinú [X], Barrio N/A [X]
+2025-09-30 04:43:56,513 - [INFO] -   Area: 0.0 m2
+2025-09-30 04:43:56,513 - [INFO] -   Habitaciones: 0 | Banos: 0
+2025-09-30 04:43:56,513 - [INFO] -   Arriendo: $0
+2025-09-30 04:43:56,513 - [INFO] -   Venta: $1,050,000,000
+2025-09-30 04:43:56,513 - [INFO] - 
+Creando en destino con 107 campos...
+2025-09-30 04:43:56,832 - [INFO] - OK! Propiedad creada: LOTE -> ID [567]
+2025-09-30 04:43:56,832 - [INFO] - 
+[27/2498]
+2025-09-30 04:43:56,832 - [INFO] - 
+======================================================================
+2025-09-30 04:43:56,832 - [INFO] - Propiedad: CASA (ID origen: 9973)
+2025-09-30 04:43:57,593 - [INFO] -    + Partner existente (Nombre): BLEIDER ASTRID CASTILLO MERCADO -> 8290
+2025-09-30 04:43:57,998 - [INFO] - 
+Total campos a copiar: 108
+2025-09-30 04:43:57,998 - [INFO] - Resumen:
+2025-09-30 04:43:57,999 - [INFO] -   Propietario: 8290
+2025-09-30 04:43:57,999 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:43:57,999 - [INFO] -   Area: 162.0 m2
+2025-09-30 04:43:57,999 - [INFO] -   Habitaciones: 4 | Banos: 0
+2025-09-30 04:43:57,999 - [INFO] -   Arriendo: $0
+2025-09-30 04:43:57,999 - [INFO] -   Venta: $320,000,000
+2025-09-30 04:43:57,999 - [INFO] - 
+Creando en destino con 108 campos...
+2025-09-30 04:43:58,295 - [INFO] - OK! Propiedad creada: CASA -> ID [568]
+2025-09-30 04:43:58,296 - [INFO] - 
+[28/2498]
+2025-09-30 04:43:58,296 - [INFO] - 
+======================================================================
+2025-09-30 04:43:58,296 - [INFO] - Propiedad: FINCA (ID origen: 9974)
+2025-09-30 04:43:59,144 - [INFO] -    + Partner existente (Nombre): HUGO  FERNANDO CHICA -> 8897
+2025-09-30 04:43:59,534 - [INFO] - 
+Total campos a copiar: 107
+2025-09-30 04:43:59,534 - [INFO] - Resumen:
+2025-09-30 04:43:59,534 - [INFO] -   Propietario: 8897
+2025-09-30 04:43:59,534 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Ciénaga de Oro [X], Barrio N/A [X]
+2025-09-30 04:43:59,534 - [INFO] -   Area: 45900.0 m2
+2025-09-30 04:43:59,534 - [INFO] -   Habitaciones: 0 | Banos: 3
+2025-09-30 04:43:59,534 - [INFO] -   Arriendo: $0
+2025-09-30 04:43:59,536 - [INFO] -   Venta: $1,575,000,000
+2025-09-30 04:43:59,536 - [INFO] - 
+Creando en destino con 107 campos...
+2025-09-30 04:43:59,843 - [INFO] - OK! Propiedad creada: FINCA -> ID [569]
+2025-09-30 04:43:59,843 - [INFO] - 
+[29/2498]
+2025-09-30 04:43:59,843 - [INFO] - 
+======================================================================
+2025-09-30 04:43:59,843 - [INFO] - Propiedad: LOTE (ID origen: 9975)
+2025-09-30 04:44:00,635 - [INFO] -    + Partner existente (Nombre): LUZ MARINA MUñOZ CARVAJAL -> 9395
+2025-09-30 04:44:01,031 - [INFO] - 
+Total campos a copiar: 108
+2025-09-30 04:44:01,031 - [INFO] - Resumen:
+2025-09-30 04:44:01,031 - [INFO] -   Propietario: 9395
+2025-09-30 04:44:01,031 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:44:01,032 - [INFO] -   Area: 398.0 m2
+2025-09-30 04:44:01,032 - [INFO] -   Habitaciones: 0 | Banos: 0
+2025-09-30 04:44:01,032 - [INFO] -   Arriendo: $0
+2025-09-30 04:44:01,032 - [INFO] -   Venta: $680,000,000
+2025-09-30 04:44:01,032 - [INFO] - 
+Creando en destino con 108 campos...
+2025-09-30 04:44:01,345 - [INFO] - OK! Propiedad creada: LOTE -> ID [570]
+2025-09-30 04:44:01,346 - [INFO] - 
+[30/2498]
+2025-09-30 04:44:01,346 - [INFO] - 
+======================================================================
+2025-09-30 04:44:01,346 - [INFO] - Propiedad: CASA (ID origen: 9976)
+2025-09-30 04:44:02,137 - [INFO] -    + Partner existente (Nombre): GUSTAVO ESQUIVEL  -> 8855
+2025-09-30 04:44:02,538 - [INFO] - 
+Total campos a copiar: 108
+2025-09-30 04:44:02,538 - [INFO] - Resumen:
+2025-09-30 04:44:02,538 - [INFO] -   Propietario: 8855
+2025-09-30 04:44:02,538 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:44:02,538 - [INFO] -   Area: 0.0 m2
+2025-09-30 04:44:02,538 - [INFO] -   Habitaciones: 0 | Banos: 0
+2025-09-30 04:44:02,538 - [INFO] -   Arriendo: $0
+2025-09-30 04:44:02,538 - [INFO] -   Venta: $460,000,000
+2025-09-30 04:44:02,539 - [INFO] - 
+Creando en destino con 108 campos...
+2025-09-30 04:44:02,842 - [INFO] - OK! Propiedad creada: CASA -> ID [571]
+2025-09-30 04:44:02,842 - [INFO] - 
+[31/2498]
+2025-09-30 04:44:02,842 - [INFO] - 
+======================================================================
+2025-09-30 04:44:02,842 - [INFO] - Propiedad: CASA (ID origen: 9977)
+2025-09-30 04:44:03,461 - [INFO] - 
+Total campos a copiar: 108
+2025-09-30 04:44:03,461 - [INFO] - Resumen:
+2025-09-30 04:44:03,461 - [INFO] -   Propietario: 8855
+2025-09-30 04:44:03,461 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:44:03,461 - [INFO] -   Area: 212.0 m2
+2025-09-30 04:44:03,461 - [INFO] -   Habitaciones: 0 | Banos: 0
+2025-09-30 04:44:03,461 - [INFO] -   Arriendo: $0
+2025-09-30 04:44:03,461 - [INFO] -   Venta: $460,000,000
+2025-09-30 04:44:03,461 - [INFO] - 
+Creando en destino con 108 campos...
+2025-09-30 04:44:03,768 - [INFO] - OK! Propiedad creada: CASA -> ID [572]
+2025-09-30 04:44:03,768 - [INFO] - 
+[32/2498]
+2025-09-30 04:44:03,768 - [INFO] - 
+======================================================================
+2025-09-30 04:44:03,768 - [INFO] - Propiedad: LOTE (ID origen: 9978)
+2025-09-30 04:44:04,541 - [INFO] -    + Partner existente (Nombre): HUMBERTO VEGA GARCIA -> 8908
+2025-09-30 04:44:04,940 - [INFO] - 
+Total campos a copiar: 108
+2025-09-30 04:44:04,940 - [INFO] - Resumen:
+2025-09-30 04:44:04,940 - [INFO] -   Propietario: 8908
+2025-09-30 04:44:04,941 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:44:04,941 - [INFO] -   Area: 450.0 m2
+2025-09-30 04:44:04,941 - [INFO] -   Habitaciones: 0 | Banos: 0
+2025-09-30 04:44:04,941 - [INFO] -   Arriendo: $0
+2025-09-30 04:44:04,941 - [INFO] -   Venta: $330,000,000
+2025-09-30 04:44:04,942 - [INFO] - 
+Creando en destino con 108 campos...
+2025-09-30 04:44:05,249 - [INFO] - OK! Propiedad creada: LOTE -> ID [573]
+2025-09-30 04:44:05,249 - [INFO] - 
+[33/2498]
+2025-09-30 04:44:05,250 - [INFO] - 
+======================================================================
+2025-09-30 04:44:05,250 - [INFO] - Propiedad: APARTAMENTO (ID origen: 9979)
+2025-09-30 04:44:06,033 - [INFO] -    + Partner existente (Nombre): NILETH  GARCIA DE ESPINOSA -> 9698
+2025-09-30 04:44:06,431 - [INFO] - 
+Total campos a copiar: 108
+2025-09-30 04:44:06,431 - [INFO] - Resumen:
+2025-09-30 04:44:06,431 - [INFO] -   Propietario: 9698
+2025-09-30 04:44:06,431 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:44:06,431 - [INFO] -   Area: 120.0 m2
+2025-09-30 04:44:06,431 - [INFO] -   Habitaciones: 0 | Banos: 4
+2025-09-30 04:44:06,431 - [INFO] -   Arriendo: $0
+2025-09-30 04:44:06,431 - [INFO] -   Venta: $260,000,000
+2025-09-30 04:44:06,431 - [INFO] -   Amenidades: Ascensor, Gimnasio, Salon Social
+2025-09-30 04:44:06,432 - [INFO] - 
+Creando en destino con 108 campos...
+2025-09-30 04:44:06,742 - [INFO] - OK! Propiedad creada: APARTAMENTO -> ID [574]
+2025-09-30 04:44:06,742 - [INFO] - 
+[34/2498]
+2025-09-30 04:44:06,742 - [INFO] - 
+======================================================================
+2025-09-30 04:44:06,742 - [INFO] - Propiedad: CASA (ID origen: 9980)
+2025-09-30 04:44:07,509 - [INFO] -    + Partner existente (Nombre): ROCIO HERRERA  FERNANDEZ -> 9876
+2025-09-30 04:44:07,907 - [INFO] - 
+Total campos a copiar: 108
+2025-09-30 04:44:07,907 - [INFO] - Resumen:
+2025-09-30 04:44:07,907 - [INFO] -   Propietario: 9876
+2025-09-30 04:44:07,908 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:44:07,908 - [INFO] -   Area: 130.0 m2
+2025-09-30 04:44:07,908 - [INFO] -   Habitaciones: 3 | Banos: 0
+2025-09-30 04:44:07,908 - [INFO] -   Arriendo: $0
+2025-09-30 04:44:07,908 - [INFO] -   Venta: $240,000,000
+2025-09-30 04:44:07,908 - [INFO] - 
+Creando en destino con 108 campos...
+2025-09-30 04:44:08,212 - [INFO] - OK! Propiedad creada: CASA -> ID [575]
+2025-09-30 04:44:08,212 - [INFO] - 
+[35/2498]
+2025-09-30 04:44:08,212 - [INFO] - 
+======================================================================
+2025-09-30 04:44:08,212 - [INFO] - Propiedad: APARTAMENTO (ID origen: 9981)
+2025-09-30 04:44:08,976 - [INFO] -    + Partner existente (Nombre): FANNY EDITH QUIROZ VEGA -> 8712
+2025-09-30 04:44:09,376 - [INFO] - 
+Total campos a copiar: 110
+2025-09-30 04:44:09,377 - [INFO] - Resumen:
+2025-09-30 04:44:09,377 - [INFO] -   Propietario: 8712
+2025-09-30 04:44:09,377 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:44:09,377 - [INFO] -   Area: 85.0 m2
+2025-09-30 04:44:09,377 - [INFO] -   Habitaciones: 2 | Banos: 2
+2025-09-30 04:44:09,377 - [INFO] -   Arriendo: $1,000,000
+2025-09-30 04:44:09,377 - [INFO] -   Venta: $1,000,000
+2025-09-30 04:44:09,377 - [INFO] - 
+Creando en destino con 110 campos...
+2025-09-30 04:44:09,681 - [INFO] - OK! Propiedad creada: APARTAMENTO -> ID [576]
+2025-09-30 04:44:09,681 - [INFO] - 
+[36/2498]
+2025-09-30 04:44:09,681 - [INFO] - 
+======================================================================
+2025-09-30 04:44:09,681 - [INFO] - Propiedad: APARTAMENTO (ID origen: 9982)
+2025-09-30 04:44:10,466 - [INFO] -    + Partner existente (Nombre): CESAR SANES AYALA -> 8398
+2025-09-30 04:44:10,862 - [INFO] - 
+Total campos a copiar: 106
+2025-09-30 04:44:10,863 - [INFO] - Resumen:
+2025-09-30 04:44:10,863 - [INFO] -   Propietario: 8398
+2025-09-30 04:44:10,863 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:44:10,863 - [INFO] -   Area: 79.4 m2
+2025-09-30 04:44:10,863 - [INFO] -   Habitaciones: 0 | Banos: 0
+2025-09-30 04:44:10,863 - [INFO] -   Arriendo: $1,200,000
+2025-09-30 04:44:10,863 - [INFO] -   Venta: $0
+2025-09-30 04:44:10,863 - [INFO] - 
+Creando en destino con 106 campos...
+2025-09-30 04:44:11,166 - [INFO] - OK! Propiedad creada: APARTAMENTO -> ID [577]
+2025-09-30 04:44:11,166 - [INFO] - 
+[37/2498]
+2025-09-30 04:44:11,166 - [INFO] - 
+======================================================================
+2025-09-30 04:44:11,166 - [INFO] - Propiedad: LOTE (ID origen: 9983)
+2025-09-30 04:44:12,034 - [INFO] -    + Partner existente (Nombre): HECTOR MARIO LOPEZ BERRIO -> 8865
+2025-09-30 04:44:12,429 - [INFO] - 
+Total campos a copiar: 107
+2025-09-30 04:44:12,429 - [INFO] - Resumen:
+2025-09-30 04:44:12,429 - [INFO] -   Propietario: 8865
+2025-09-30 04:44:12,429 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:44:12,429 - [INFO] -   Area: 608.0 m2
+2025-09-30 04:44:12,429 - [INFO] -   Habitaciones: 0 | Banos: 0
+2025-09-30 04:44:12,429 - [INFO] -   Arriendo: $0
+2025-09-30 04:44:12,429 - [INFO] -   Venta: $140,000,000
+2025-09-30 04:44:12,429 - [INFO] - 
+Creando en destino con 107 campos...
+2025-09-30 04:44:12,752 - [INFO] - OK! Propiedad creada: LOTE -> ID [578]
+2025-09-30 04:44:12,752 - [INFO] - 
+[38/2498]
+2025-09-30 04:44:12,752 - [INFO] - 
+======================================================================
+2025-09-30 04:44:12,752 - [INFO] - Propiedad: LOTE (ID origen: 9984)
+2025-09-30 04:44:13,465 - [INFO] - 
+Total campos a copiar: 107
+2025-09-30 04:44:13,465 - [INFO] - Resumen:
+2025-09-30 04:44:13,465 - [INFO] -   Propietario: 8865
+2025-09-30 04:44:13,465 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:44:13,465 - [INFO] -   Area: 3600.0 m2
+2025-09-30 04:44:13,465 - [INFO] -   Habitaciones: 0 | Banos: 0
+2025-09-30 04:44:13,465 - [INFO] -   Arriendo: $0
+2025-09-30 04:44:13,465 - [INFO] -   Venta: $260,000,000
+2025-09-30 04:44:13,465 - [INFO] - 
+Creando en destino con 107 campos...
+2025-09-30 04:44:13,810 - [INFO] - OK! Propiedad creada: LOTE -> ID [579]
+2025-09-30 04:44:13,810 - [INFO] - 
+[39/2498]
+2025-09-30 04:44:13,810 - [INFO] - 
+======================================================================
+2025-09-30 04:44:13,810 - [INFO] - Propiedad: LOCAL (ID origen: 9985)
+2025-09-30 04:44:14,563 - [INFO] - 
+Total campos a copiar: 108
+2025-09-30 04:44:14,564 - [INFO] - Resumen:
+2025-09-30 04:44:14,564 - [INFO] -   Propietario: 8190
+2025-09-30 04:44:14,564 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:44:14,564 - [INFO] -   Area: 70.0 m2
+2025-09-30 04:44:14,564 - [INFO] -   Habitaciones: 0 | Banos: 2
+2025-09-30 04:44:14,564 - [INFO] -   Arriendo: $1,948,673
+2025-09-30 04:44:14,564 - [INFO] -   Venta: $0
+2025-09-30 04:44:14,564 - [INFO] - 
+Creando en destino con 108 campos...
+2025-09-30 04:44:14,903 - [INFO] - OK! Propiedad creada: LOCAL -> ID [580]
+2025-09-30 04:44:14,903 - [INFO] - 
+[40/2498]
+2025-09-30 04:44:14,903 - [INFO] - 
+======================================================================
+2025-09-30 04:44:14,903 - [INFO] - Propiedad: LOCAL (ID origen: 9986)
+2025-09-30 04:44:15,632 - [INFO] - 
+Total campos a copiar: 109
+2025-09-30 04:44:15,632 - [INFO] - Resumen:
+2025-09-30 04:44:15,632 - [INFO] -   Propietario: 8190
+2025-09-30 04:44:15,632 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:44:15,632 - [INFO] -   Area: 75.0 m2
+2025-09-30 04:44:15,632 - [INFO] -   Habitaciones: 0 | Banos: 2
+2025-09-30 04:44:15,632 - [INFO] -   Arriendo: $1,300,000
+2025-09-30 04:44:15,632 - [INFO] -   Venta: $0
+2025-09-30 04:44:15,632 - [INFO] - 
+Creando en destino con 109 campos...
+2025-09-30 04:44:15,952 - [INFO] - OK! Propiedad creada: LOCAL -> ID [581]
+2025-09-30 04:44:15,952 - [INFO] - 
+[41/2498]
+2025-09-30 04:44:15,952 - [INFO] - 
+======================================================================
+2025-09-30 04:44:15,952 - [INFO] - Propiedad: APARTAMENTO (ID origen: 9987)
+2025-09-30 04:44:16,720 - [INFO] -    + Partner existente (Nombre): CARLOS ANDRES POSADA -> 8322
+2025-09-30 04:44:17,117 - [INFO] - 
+Total campos a copiar: 109
+2025-09-30 04:44:17,117 - [INFO] - Resumen:
+2025-09-30 04:44:17,117 - [INFO] -   Propietario: 8322
+2025-09-30 04:44:17,118 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:44:17,118 - [INFO] -   Area: 65.0 m2
+2025-09-30 04:44:17,118 - [INFO] -   Habitaciones: 3 | Banos: 2
+2025-09-30 04:44:17,118 - [INFO] -   Arriendo: $0
+2025-09-30 04:44:17,118 - [INFO] -   Venta: $70,000,000
+2025-09-30 04:44:17,118 - [INFO] - 
+Creando en destino con 109 campos...
+2025-09-30 04:44:17,433 - [INFO] - OK! Propiedad creada: APARTAMENTO -> ID [582]
+2025-09-30 04:44:17,434 - [INFO] - 
+[42/2498]
+2025-09-30 04:44:17,434 - [INFO] - 
+======================================================================
+2025-09-30 04:44:17,434 - [INFO] - Propiedad: APARTAMENTO (ID origen: 9988)
+2025-09-30 04:44:18,067 - [INFO] - 
+Total campos a copiar: 109
+2025-09-30 04:44:18,067 - [INFO] - Resumen:
+2025-09-30 04:44:18,067 - [INFO] -   Propietario: 8322
+2025-09-30 04:44:18,067 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:44:18,067 - [INFO] -   Area: 65.0 m2
+2025-09-30 04:44:18,067 - [INFO] -   Habitaciones: 3 | Banos: 2
+2025-09-30 04:44:18,067 - [INFO] -   Arriendo: $0
+2025-09-30 04:44:18,067 - [INFO] -   Venta: $70,000,000
+2025-09-30 04:44:18,067 - [INFO] - 
+Creando en destino con 109 campos...
+2025-09-30 04:44:18,365 - [INFO] - OK! Propiedad creada: APARTAMENTO -> ID [583]
+2025-09-30 04:44:18,365 - [INFO] - 
+[43/2498]
+2025-09-30 04:44:18,365 - [INFO] - 
+======================================================================
+2025-09-30 04:44:18,365 - [INFO] - Propiedad: APARTAMENTO (ID origen: 9989)
+2025-09-30 04:44:19,001 - [INFO] - 
+Total campos a copiar: 108
+2025-09-30 04:44:19,001 - [INFO] - Resumen:
+2025-09-30 04:44:19,001 - [INFO] -   Propietario: 8322
+2025-09-30 04:44:19,001 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:44:19,001 - [INFO] -   Area: 65.0 m2
+2025-09-30 04:44:19,001 - [INFO] -   Habitaciones: 3 | Banos: 2
+2025-09-30 04:44:19,001 - [INFO] -   Arriendo: $0
+2025-09-30 04:44:19,001 - [INFO] -   Venta: $70,000,000
+2025-09-30 04:44:19,001 - [INFO] - 
+Creando en destino con 108 campos...
+2025-09-30 04:44:19,298 - [INFO] - OK! Propiedad creada: APARTAMENTO -> ID [584]
+2025-09-30 04:44:19,298 - [INFO] - 
+[44/2498]
+2025-09-30 04:44:19,298 - [INFO] - 
+======================================================================
+2025-09-30 04:44:19,298 - [INFO] - Propiedad: APARTAMENTO (ID origen: 9990)
+2025-09-30 04:44:19,931 - [INFO] - 
+Total campos a copiar: 109
+2025-09-30 04:44:19,931 - [INFO] - Resumen:
+2025-09-30 04:44:19,931 - [INFO] -   Propietario: 8322
+2025-09-30 04:44:19,931 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:44:19,931 - [INFO] -   Area: 65.0 m2
+2025-09-30 04:44:19,931 - [INFO] -   Habitaciones: 3 | Banos: 2
+2025-09-30 04:44:19,931 - [INFO] -   Arriendo: $0
+2025-09-30 04:44:19,931 - [INFO] -   Venta: $70,000,000
+2025-09-30 04:44:19,931 - [INFO] - 
+Creando en destino con 109 campos...
+2025-09-30 04:44:20,227 - [INFO] - OK! Propiedad creada: APARTAMENTO -> ID [585]
+2025-09-30 04:44:20,227 - [INFO] - 
+[45/2498]
+2025-09-30 04:44:20,227 - [INFO] - 
+======================================================================
+2025-09-30 04:44:20,228 - [INFO] - Propiedad: CASA (ID origen: 9991)
+2025-09-30 04:44:21,123 - [INFO] - 
+Total campos a copiar: 107
+2025-09-30 04:44:21,123 - [INFO] - Resumen:
+2025-09-30 04:44:21,123 - [INFO] -   Propietario: 8322
+2025-09-30 04:44:21,123 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:44:21,123 - [INFO] -   Area: 480.0 m2
+2025-09-30 04:44:21,123 - [INFO] -   Habitaciones: 0 | Banos: 0
+2025-09-30 04:44:21,123 - [INFO] -   Arriendo: $0
+2025-09-30 04:44:21,123 - [INFO] -   Venta: $400,000,000
+2025-09-30 04:44:21,123 - [INFO] - 
+Creando en destino con 107 campos...
+2025-09-30 04:44:21,631 - [INFO] - OK! Propiedad creada: CASA -> ID [586]
+2025-09-30 04:44:21,631 - [INFO] - 
+[46/2498]
+2025-09-30 04:44:21,631 - [INFO] - 
+======================================================================
+2025-09-30 04:44:21,631 - [INFO] - Propiedad: CASA (ID origen: 9992)
+2025-09-30 04:44:22,401 - [INFO] -    + Partner existente (Nombre): NILA ROSA BEDOYA BENITEZ -> 9697
+2025-09-30 04:44:22,586 - [INFO] -    ? Ciudad 'MONTERÍA (230017)' no encontrada, buscando por barrio 'pasatiempo [MONTERÍA - Córdoba CO] '...
+2025-09-30 04:44:22,986 - [INFO] - 
+Total campos a copiar: 107
+2025-09-30 04:44:22,986 - [INFO] - Resumen:
+2025-09-30 04:44:22,986 - [INFO] -   Propietario: 9697
+2025-09-30 04:44:22,986 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio pasatiempo [MONTERÍA - Córdoba CO]  [X]
+2025-09-30 04:44:22,986 - [INFO] -   Area: 600.0 m2
+2025-09-30 04:44:22,987 - [INFO] -   Habitaciones: 0 | Banos: 0
+2025-09-30 04:44:22,987 - [INFO] -   Arriendo: $0
+2025-09-30 04:44:22,987 - [INFO] -   Venta: $530,000,000
+2025-09-30 04:44:22,987 - [INFO] - 
+Creando en destino con 107 campos...
+2025-09-30 04:44:23,298 - [INFO] - OK! Propiedad creada: CASA -> ID [587]
+2025-09-30 04:44:23,298 - [INFO] - 
+[47/2498]
+2025-09-30 04:44:23,298 - [INFO] - 
+======================================================================
+2025-09-30 04:44:23,298 - [INFO] - Propiedad: LOCAL (ID origen: 9993)
+2025-09-30 04:44:24,069 - [INFO] -    + Partner existente (Nombre): FLORESMIRO MONTES -> 8735
+2025-09-30 04:44:24,473 - [INFO] - 
+Total campos a copiar: 109
+2025-09-30 04:44:24,473 - [INFO] - Resumen:
+2025-09-30 04:44:24,473 - [INFO] -   Propietario: 8735
+2025-09-30 04:44:24,473 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:44:24,473 - [INFO] -   Area: 288.0 m2
+2025-09-30 04:44:24,473 - [INFO] -   Habitaciones: 0 | Banos: 1
+2025-09-30 04:44:24,473 - [INFO] -   Arriendo: $4,500,000
+2025-09-30 04:44:24,474 - [INFO] -   Venta: $576,000,000
+2025-09-30 04:44:24,474 - [INFO] - 
+Creando en destino con 109 campos...
+2025-09-30 04:44:24,779 - [INFO] - OK! Propiedad creada: LOCAL -> ID [588]
+2025-09-30 04:44:24,779 - [INFO] - 
+[48/2498]
+2025-09-30 04:44:24,779 - [INFO] - 
+======================================================================
+2025-09-30 04:44:24,779 - [INFO] - Propiedad: FINCA (ID origen: 9994)
+2025-09-30 04:44:25,548 - [INFO] -    + Partner existente (Nombre): PIEDAD LOPEZ  JIMENEZ -> 9805
+2025-09-30 04:44:25,947 - [INFO] - 
+Total campos a copiar: 108
+2025-09-30 04:44:25,947 - [INFO] - Resumen:
+2025-09-30 04:44:25,947 - [INFO] -   Propietario: 9805
+2025-09-30 04:44:25,947 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:44:25,947 - [INFO] -   Area: 53000.0 m2
+2025-09-30 04:44:25,948 - [INFO] -   Habitaciones: 0 | Banos: 2
+2025-09-30 04:44:25,948 - [INFO] -   Arriendo: $0
+2025-09-30 04:44:25,948 - [INFO] -   Venta: $1,350,000,000
+2025-09-30 04:44:25,948 - [INFO] - 
+Creando en destino con 108 campos...
+2025-09-30 04:44:26,255 - [INFO] - OK! Propiedad creada: FINCA -> ID [589]
+2025-09-30 04:44:26,255 - [INFO] - 
+[49/2498]
+2025-09-30 04:44:26,256 - [INFO] - 
+======================================================================
+2025-09-30 04:44:26,256 - [INFO] - Propiedad: LOCAL (ID origen: 9995)
+2025-09-30 04:44:27,020 - [INFO] -    + Partner existente (Nombre): FUADT LAKAH CASTAñO -> 8765
+2025-09-30 04:44:27,213 - [INFO] -    ? Ciudad 'MONTERÍA (230017)' no encontrada, buscando por barrio 'el centro [MONTERÍA - Córdoba CO] '...
+2025-09-30 04:44:27,612 - [INFO] - 
+Total campos a copiar: 110
+2025-09-30 04:44:27,612 - [INFO] - Resumen:
+2025-09-30 04:44:27,614 - [INFO] -   Propietario: 8765
+2025-09-30 04:44:27,614 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio el centro [MONTERÍA - Córdoba CO]  [X]
+2025-09-30 04:44:27,614 - [INFO] -   Area: 360.0 m2
+2025-09-30 04:44:27,615 - [INFO] -   Habitaciones: 0 | Banos: 2
+2025-09-30 04:44:27,615 - [INFO] -   Arriendo: $10,000,000
+2025-09-30 04:44:27,615 - [INFO] -   Venta: $0
+2025-09-30 04:44:27,615 - [INFO] - 
+Creando en destino con 110 campos...
+2025-09-30 04:44:27,922 - [INFO] - OK! Propiedad creada: LOCAL -> ID [590]
+2025-09-30 04:44:27,922 - [INFO] - 
+[50/2498]
+2025-09-30 04:44:27,922 - [INFO] - 
+======================================================================
+2025-09-30 04:44:27,922 - [INFO] - Propiedad: CASA (ID origen: 9996)
+2025-09-30 04:44:28,701 - [INFO] -    + Partner existente (Nombre): EDUARDO ENRIQUE HERNANDEZ GODIN -> 8577
+2025-09-30 04:44:29,094 - [INFO] - 
+Total campos a copiar: 107
+2025-09-30 04:44:29,095 - [INFO] - Resumen:
+2025-09-30 04:44:29,095 - [INFO] -   Propietario: 8577
+2025-09-30 04:44:29,095 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:44:29,095 - [INFO] -   Area: 285.0 m2
+2025-09-30 04:44:29,095 - [INFO] -   Habitaciones: 0 | Banos: 0
+2025-09-30 04:44:29,095 - [INFO] -   Arriendo: $0
+2025-09-30 04:44:29,095 - [INFO] -   Venta: $484,500,000
+2025-09-30 04:44:29,095 - [INFO] - 
+Creando en destino con 107 campos...
+2025-09-30 04:44:29,402 - [INFO] - OK! Propiedad creada: CASA -> ID [591]
+2025-09-30 04:44:29,402 - [INFO] - 
+[51/2498]
+2025-09-30 04:44:29,402 - [INFO] - 
+======================================================================
+2025-09-30 04:44:29,402 - [INFO] - Propiedad: LOCAL (ID origen: 9997)
+2025-09-30 04:44:30,159 - [INFO] -    + Partner existente (Nombre): YUDITH DEL PILAR PEREZ CARRASCAL -> 10109
+2025-09-30 04:44:30,560 - [INFO] - 
+Total campos a copiar: 110
+2025-09-30 04:44:30,560 - [INFO] - Resumen:
+2025-09-30 04:44:30,560 - [INFO] -   Propietario: 10109
+2025-09-30 04:44:30,560 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:44:30,560 - [INFO] -   Area: 301.0 m2
+2025-09-30 04:44:30,560 - [INFO] -   Habitaciones: 0 | Banos: 7
+2025-09-30 04:44:30,560 - [INFO] -   Arriendo: $6,500,000
+2025-09-30 04:44:30,560 - [INFO] -   Venta: $0
+2025-09-30 04:44:30,560 - [INFO] - 
+Creando en destino con 110 campos...
+2025-09-30 04:44:30,867 - [INFO] - OK! Propiedad creada: LOCAL -> ID [592]
+2025-09-30 04:44:30,868 - [INFO] - 
+[52/2498]
+2025-09-30 04:44:30,868 - [INFO] - 
+======================================================================
+2025-09-30 04:44:30,868 - [INFO] - Propiedad: LOCAL (ID origen: 9998)
+2025-09-30 04:44:31,596 - [INFO] -    + Partner existente (VAT): JIMMY PIñA BECERRA -> 10326
+2025-09-30 04:44:31,926 - [INFO] - 
+Total campos a copiar: 108
+2025-09-30 04:44:31,926 - [INFO] - Resumen:
+2025-09-30 04:44:31,926 - [INFO] -   Propietario: 10326
+2025-09-30 04:44:31,926 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:44:31,926 - [INFO] -   Area: 57.0 m2
+2025-09-30 04:44:31,926 - [INFO] -   Habitaciones: 0 | Banos: 2
+2025-09-30 04:44:31,926 - [INFO] -   Arriendo: $1,300,000
+2025-09-30 04:44:31,926 - [INFO] -   Venta: $0
+2025-09-30 04:44:31,926 - [INFO] - 
+Creando en destino con 108 campos...
+2025-09-30 04:44:32,296 - [INFO] - OK! Propiedad creada: LOCAL -> ID [593]
+2025-09-30 04:44:32,297 - [INFO] - 
+[53/2498]
+2025-09-30 04:44:32,297 - [INFO] - 
+======================================================================
+2025-09-30 04:44:32,297 - [INFO] - Propiedad: LOCAL (ID origen: 9999)
+2025-09-30 04:44:33,095 - [INFO] - 
+Total campos a copiar: 108
+2025-09-30 04:44:33,095 - [INFO] - Resumen:
+2025-09-30 04:44:33,095 - [INFO] -   Propietario: 10326
+2025-09-30 04:44:33,095 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:44:33,095 - [INFO] -   Area: 55.0 m2
+2025-09-30 04:44:33,095 - [INFO] -   Habitaciones: 0 | Banos: 1
+2025-09-30 04:44:33,095 - [INFO] -   Arriendo: $1,200,000
+2025-09-30 04:44:33,095 - [INFO] -   Venta: $0
+2025-09-30 04:44:33,095 - [INFO] - 
+Creando en destino con 108 campos...
+2025-09-30 04:44:33,439 - [INFO] - OK! Propiedad creada: LOCAL -> ID [594]
+2025-09-30 04:44:33,440 - [INFO] - 
+[54/2498]
+2025-09-30 04:44:33,440 - [INFO] - 
+======================================================================
+2025-09-30 04:44:33,440 - [INFO] - Propiedad: CASA (ID origen: 10000)
+2025-09-30 04:44:34,368 - [INFO] -    + Partner existente (Nombre): NINFA ESTELLA BETANCUR -> 9699
+2025-09-30 04:44:34,760 - [INFO] - 
+Total campos a copiar: 107
+2025-09-30 04:44:34,760 - [INFO] - Resumen:
+2025-09-30 04:44:34,760 - [INFO] -   Propietario: 9699
+2025-09-30 04:44:34,760 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:44:34,760 - [INFO] -   Area: 265.0 m2
+2025-09-30 04:44:34,760 - [INFO] -   Habitaciones: 4 | Banos: 4
+2025-09-30 04:44:34,760 - [INFO] -   Arriendo: $0
+2025-09-30 04:44:34,760 - [INFO] -   Venta: $380,000,000
+2025-09-30 04:44:34,760 - [INFO] - 
+Creando en destino con 107 campos...
+2025-09-30 04:44:35,069 - [INFO] - OK! Propiedad creada: CASA -> ID [595]
+2025-09-30 04:44:35,069 - [INFO] - 
+[55/2498]
+2025-09-30 04:44:35,069 - [INFO] - 
+======================================================================
+2025-09-30 04:44:35,069 - [INFO] - Propiedad: CASA (ID origen: 10001)
+2025-09-30 04:44:35,843 - [INFO] -    + Partner existente (Nombre): ANA VENTURA BANDA MORALES -> 8167
+2025-09-30 04:44:36,226 - [INFO] - 
+Total campos a copiar: 107
+2025-09-30 04:44:36,226 - [INFO] - Resumen:
+2025-09-30 04:44:36,226 - [INFO] -   Propietario: 8167
+2025-09-30 04:44:36,226 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:44:36,226 - [INFO] -   Area: 266.72 m2
+2025-09-30 04:44:36,226 - [INFO] -   Habitaciones: 0 | Banos: 0
+2025-09-30 04:44:36,226 - [INFO] -   Arriendo: $0
+2025-09-30 04:44:36,226 - [INFO] -   Venta: $400,000,000
+2025-09-30 04:44:36,226 - [INFO] - 
+Creando en destino con 107 campos...
+2025-09-30 04:44:36,531 - [INFO] - OK! Propiedad creada: CASA -> ID [596]
+2025-09-30 04:44:36,532 - [INFO] - 
+[56/2498]
+2025-09-30 04:44:36,532 - [INFO] - 
+======================================================================
+2025-09-30 04:44:36,532 - [INFO] - Propiedad: CASA (ID origen: 10002)
+2025-09-30 04:44:37,306 - [INFO] -    + Partner existente (Nombre): ALBERTO JULIO OCHOA ARIZAL -> 8053
+2025-09-30 04:44:37,502 - [INFO] -    ? Ciudad 'MONTERÍA (230017)' no encontrada, buscando por barrio 'california [MONTERÍA - Córdoba CO] '...
+2025-09-30 04:44:37,901 - [INFO] - 
+Total campos a copiar: 107
+2025-09-30 04:44:37,901 - [INFO] - Resumen:
+2025-09-30 04:44:37,901 - [INFO] -   Propietario: 8053
+2025-09-30 04:44:37,901 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio california [MONTERÍA - Córdoba CO]  [X]
+2025-09-30 04:44:37,901 - [INFO] -   Area: 288.0 m2
+2025-09-30 04:44:37,901 - [INFO] -   Habitaciones: 0 | Banos: 0
+2025-09-30 04:44:37,901 - [INFO] -   Arriendo: $0
+2025-09-30 04:44:37,901 - [INFO] -   Venta: $455,000,000
+2025-09-30 04:44:37,901 - [INFO] - 
+Creando en destino con 107 campos...
+2025-09-30 04:44:38,209 - [INFO] - OK! Propiedad creada: CASA -> ID [597]
+2025-09-30 04:44:38,209 - [INFO] - 
+[57/2498]
+2025-09-30 04:44:38,209 - [INFO] - 
+======================================================================
+2025-09-30 04:44:38,209 - [INFO] - Propiedad: LOCAL (ID origen: 10003)
+2025-09-30 04:44:38,986 - [INFO] -    + Partner existente (Nombre): FABIO FRANCISCO PETRO PETRO -> 8704
+2025-09-30 04:44:39,377 - [INFO] - 
+Total campos a copiar: 108
+2025-09-30 04:44:39,377 - [INFO] - Resumen:
+2025-09-30 04:44:39,377 - [INFO] -   Propietario: 8704
+2025-09-30 04:44:39,377 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:44:39,377 - [INFO] -   Area: 60.0 m2
+2025-09-30 04:44:39,377 - [INFO] -   Habitaciones: 0 | Banos: 0
+2025-09-30 04:44:39,377 - [INFO] -   Arriendo: $1,800,000
+2025-09-30 04:44:39,377 - [INFO] -   Venta: $0
+2025-09-30 04:44:39,377 - [INFO] - 
+Creando en destino con 108 campos...
+2025-09-30 04:44:39,692 - [INFO] - OK! Propiedad creada: LOCAL -> ID [598]
+2025-09-30 04:44:39,692 - [INFO] - 
+[58/2498]
+2025-09-30 04:44:39,692 - [INFO] - 
+======================================================================
+2025-09-30 04:44:39,692 - [INFO] - Propiedad: APARTAMENTO (ID origen: 10004)
+2025-09-30 04:44:40,452 - [INFO] -    + Partner existente (Nombre): BETTY ELENA SALOME VERGARA -> 8282
+2025-09-30 04:44:40,853 - [INFO] - 
+Total campos a copiar: 107
+2025-09-30 04:44:40,853 - [INFO] - Resumen:
+2025-09-30 04:44:40,853 - [INFO] -   Propietario: 8282
+2025-09-30 04:44:40,853 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:44:40,853 - [INFO] -   Area: 195.0 m2
+2025-09-30 04:44:40,853 - [INFO] -   Habitaciones: 0 | Banos: 0
+2025-09-30 04:44:40,853 - [INFO] -   Arriendo: $1,600,000
+2025-09-30 04:44:40,853 - [INFO] -   Venta: $290,000,000
+2025-09-30 04:44:40,853 - [INFO] - 
+Creando en destino con 107 campos...
+2025-09-30 04:44:41,157 - [INFO] - OK! Propiedad creada: APARTAMENTO -> ID [599]
+2025-09-30 04:44:41,157 - [INFO] - 
+[59/2498]
+2025-09-30 04:44:41,157 - [INFO] - 
+======================================================================
+2025-09-30 04:44:41,157 - [INFO] - Propiedad: LOCAL (ID origen: 10005)
+2025-09-30 04:44:41,650 - [INFO] -    ? Ciudad 'MONTERÍA (230017)' no encontrada, buscando por barrio 'el centro [MONTERÍA - Córdoba CO] '...
+2025-09-30 04:44:41,992 - [INFO] - 
+Total campos a copiar: 108
+2025-09-30 04:44:41,992 - [INFO] - Resumen:
+2025-09-30 04:44:41,992 - [INFO] -   Propietario: 8029
+2025-09-30 04:44:41,992 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio el centro [MONTERÍA - Córdoba CO]  [X]
+2025-09-30 04:44:41,992 - [INFO] -   Area: 60.0 m2
+2025-09-30 04:44:41,992 - [INFO] -   Habitaciones: 0 | Banos: 1
+2025-09-30 04:44:41,992 - [INFO] -   Arriendo: $728,630
+2025-09-30 04:44:41,992 - [INFO] -   Venta: $0
+2025-09-30 04:44:41,992 - [INFO] - 
+Creando en destino con 108 campos...
+2025-09-30 04:44:42,299 - [INFO] - OK! Propiedad creada: LOCAL -> ID [600]
+2025-09-30 04:44:42,299 - [INFO] - 
+[60/2498]
+2025-09-30 04:44:42,299 - [INFO] - 
+======================================================================
+2025-09-30 04:44:42,299 - [INFO] - Propiedad: LOCAL (ID origen: 10006)
+2025-09-30 04:44:43,081 - [INFO] -    + Partner existente (Nombre): ANTONIO JOSE PATIÑO CARRASCAL -> 8201
+2025-09-30 04:44:43,475 - [INFO] - 
+Total campos a copiar: 108
+2025-09-30 04:44:43,475 - [INFO] - Resumen:
+2025-09-30 04:44:43,475 - [INFO] -   Propietario: 8201
+2025-09-30 04:44:43,475 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:44:43,475 - [INFO] -   Area: 125.0 m2
+2025-09-30 04:44:43,475 - [INFO] -   Habitaciones: 0 | Banos: 2
+2025-09-30 04:44:43,475 - [INFO] -   Arriendo: $2,500,000
+2025-09-30 04:44:43,476 - [INFO] -   Venta: $0
+2025-09-30 04:44:43,476 - [INFO] - 
+Creando en destino con 108 campos...
+2025-09-30 04:44:43,772 - [INFO] - OK! Propiedad creada: LOCAL -> ID [601]
+2025-09-30 04:44:43,772 - [INFO] - 
+[61/2498]
+2025-09-30 04:44:43,772 - [INFO] - 
+======================================================================
+2025-09-30 04:44:43,772 - [INFO] - Propiedad: CASA (ID origen: 10007)
+2025-09-30 04:44:44,546 - [INFO] -    + Partner existente (Nombre): BETTY DORIA DE CORDERO -> 8281
+2025-09-30 04:44:44,988 - [INFO] - 
+Total campos a copiar: 108
+2025-09-30 04:44:44,989 - [INFO] - Resumen:
+2025-09-30 04:44:44,989 - [INFO] -   Propietario: 8281
+2025-09-30 04:44:44,989 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:44:44,989 - [INFO] -   Area: 230.0 m2
+2025-09-30 04:44:44,989 - [INFO] -   Habitaciones: 5 | Banos: 4
+2025-09-30 04:44:44,989 - [INFO] -   Arriendo: $3,000,000
+2025-09-30 04:44:44,989 - [INFO] -   Venta: $0
+2025-09-30 04:44:44,989 - [INFO] -   Amenidades: Garage
+2025-09-30 04:44:44,989 - [INFO] - 
+Creando en destino con 108 campos...
+2025-09-30 04:44:45,419 - [INFO] - OK! Propiedad creada: CASA -> ID [602]
+2025-09-30 04:44:45,419 - [INFO] - 
+[62/2498]
+2025-09-30 04:44:45,419 - [INFO] - 
+======================================================================
+2025-09-30 04:44:45,419 - [INFO] - Propiedad: CASA (ID origen: 10008)
+2025-09-30 04:44:46,290 - [INFO] -    + Partner existente (Nombre): GLORIA MARQUEZ -> 8824
+2025-09-30 04:44:46,482 - [INFO] -    ? Ciudad 'MONTERÍA (230017)' no encontrada, buscando por barrio 'el centro [MONTERÍA - Córdoba CO] '...
+2025-09-30 04:44:46,883 - [INFO] - 
+Total campos a copiar: 108
+2025-09-30 04:44:46,883 - [INFO] - Resumen:
+2025-09-30 04:44:46,883 - [INFO] -   Propietario: 8824
+2025-09-30 04:44:46,883 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio el centro [MONTERÍA - Córdoba CO]  [X]
+2025-09-30 04:44:46,883 - [INFO] -   Area: 660.0 m2
+2025-09-30 04:44:46,883 - [INFO] -   Habitaciones: 11 | Banos: 7
+2025-09-30 04:44:46,883 - [INFO] -   Arriendo: $12,000,000
+2025-09-30 04:44:46,883 - [INFO] -   Venta: $0
+2025-09-30 04:44:46,883 - [INFO] - 
+Creando en destino con 108 campos...
+2025-09-30 04:44:47,195 - [INFO] - OK! Propiedad creada: CASA -> ID [603]
+2025-09-30 04:44:47,196 - [INFO] - 
+[63/2498]
+2025-09-30 04:44:47,196 - [INFO] - 
+======================================================================
+2025-09-30 04:44:47,196 - [INFO] - Propiedad: APARTAMENTO (ID origen: 10009)
+2025-09-30 04:44:47,982 - [INFO] -    + Partner existente (Nombre): MARCELA ESTELA MARTINEZ DIAZ -> 9440
+2025-09-30 04:44:48,380 - [INFO] - 
+Total campos a copiar: 108
+2025-09-30 04:44:48,380 - [INFO] - Resumen:
+2025-09-30 04:44:48,380 - [INFO] -   Propietario: 9440
+2025-09-30 04:44:48,380 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:44:48,381 - [INFO] -   Area: 220.0 m2
+2025-09-30 04:44:48,381 - [INFO] -   Habitaciones: 3 | Banos: 3
+2025-09-30 04:44:48,381 - [INFO] -   Arriendo: $1,400,000
+2025-09-30 04:44:48,381 - [INFO] -   Venta: $0
+2025-09-30 04:44:48,381 - [INFO] - 
+Creando en destino con 108 campos...
+2025-09-30 04:44:48,689 - [INFO] - OK! Propiedad creada: APARTAMENTO -> ID [604]
+2025-09-30 04:44:48,689 - [INFO] - 
+[64/2498]
+2025-09-30 04:44:48,689 - [INFO] - 
+======================================================================
+2025-09-30 04:44:48,689 - [INFO] - Propiedad: LOCAL (ID origen: 10010)
+2025-09-30 04:44:49,447 - [INFO] -    + Partner existente (Nombre): BERNARDO ABAD COLON VERTEL -> 8271
+2025-09-30 04:44:49,647 - [INFO] -    ? Ciudad 'MONTERÍA (230017)' no encontrada, buscando por barrio 'el centro [MONTERÍA - Córdoba CO] '...
+2025-09-30 04:44:50,281 - [INFO] - 
+Total campos a copiar: 108
+2025-09-30 04:44:50,282 - [INFO] - Resumen:
+2025-09-30 04:44:50,282 - [INFO] -   Propietario: 8271
+2025-09-30 04:44:50,282 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio el centro [MONTERÍA - Córdoba CO]  [X]
+2025-09-30 04:44:50,282 - [INFO] -   Area: 50.0 m2
+2025-09-30 04:44:50,282 - [INFO] -   Habitaciones: 0 | Banos: 1
+2025-09-30 04:44:50,282 - [INFO] -   Arriendo: $1,000,000
+2025-09-30 04:44:50,282 - [INFO] -   Venta: $0
+2025-09-30 04:44:50,282 - [INFO] - 
+Creando en destino con 108 campos...
+2025-09-30 04:44:50,591 - [INFO] - OK! Propiedad creada: LOCAL -> ID [605]
+2025-09-30 04:44:50,591 - [INFO] - 
+[65/2498]
+2025-09-30 04:44:50,591 - [INFO] - 
+======================================================================
+2025-09-30 04:44:50,591 - [INFO] - Propiedad: CASA (ID origen: 10011)
+2025-09-30 04:44:51,360 - [INFO] -    + Partner existente (Nombre): PABLO ALFONSO ABUCHAR CALLE -> 9768
+2025-09-30 04:44:51,763 - [INFO] - 
+Total campos a copiar: 109
+2025-09-30 04:44:51,763 - [INFO] - Resumen:
+2025-09-30 04:44:51,763 - [INFO] -   Propietario: 9768
+2025-09-30 04:44:51,763 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:44:51,763 - [INFO] -   Area: 1400.0 m2
+2025-09-30 04:44:51,763 - [INFO] -   Habitaciones: 5 | Banos: 6
+2025-09-30 04:44:51,763 - [INFO] -   Arriendo: $0
+2025-09-30 04:44:51,763 - [INFO] -   Venta: $1,000,000,000
+2025-09-30 04:44:51,763 - [INFO] -   Amenidades: Garage, Piscina
+2025-09-30 04:44:51,763 - [INFO] - 
+Creando en destino con 109 campos...
+2025-09-30 04:44:52,067 - [INFO] - OK! Propiedad creada: CASA -> ID [606]
+2025-09-30 04:44:52,067 - [INFO] - 
+[66/2498]
+2025-09-30 04:44:52,067 - [INFO] - 
+======================================================================
+2025-09-30 04:44:52,067 - [INFO] - Propiedad: APARTAMENTO (ID origen: 10012)
+2025-09-30 04:44:52,830 - [INFO] -    + Partner existente (Nombre): MARIA CECILIA JIMENEZ GONZALEZ -> 9478
+2025-09-30 04:44:53,030 - [INFO] -    ? Ciudad 'MONTERÍA (230017)' no encontrada, buscando por barrio 'caracolí [MONTERÍA - Córdoba CO] '...
+2025-09-30 04:44:53,428 - [INFO] - 
+Total campos a copiar: 112
+2025-09-30 04:44:53,429 - [INFO] - Resumen:
+2025-09-30 04:44:53,429 - [INFO] -   Propietario: 9478
+2025-09-30 04:44:53,429 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio caracolí [MONTERÍA - Córdoba CO]  [X]
+2025-09-30 04:44:53,429 - [INFO] -   Area: 56.82 m2
+2025-09-30 04:44:53,429 - [INFO] -   Habitaciones: 3 | Banos: 1
+2025-09-30 04:44:53,429 - [INFO] -   Arriendo: $0
+2025-09-30 04:44:53,429 - [INFO] -   Venta: $140,000,000
+2025-09-30 04:44:53,429 - [INFO] - 
+Creando en destino con 112 campos...
+2025-09-30 04:44:53,752 - [INFO] - OK! Propiedad creada: APARTAMENTO -> ID [607]
+2025-09-30 04:44:53,752 - [INFO] - 
+[67/2498]
+2025-09-30 04:44:53,752 - [INFO] - 
+======================================================================
+2025-09-30 04:44:53,753 - [INFO] - Propiedad: LOTE (ID origen: 10013)
+2025-09-30 04:44:54,547 - [INFO] -    + Partner existente (Nombre): OSWALDO ANTONIO BUELVAS JIMENEZ -> 9764
+2025-09-30 04:44:54,940 - [INFO] - 
+Total campos a copiar: 107
+2025-09-30 04:44:54,940 - [INFO] - Resumen:
+2025-09-30 04:44:54,940 - [INFO] -   Propietario: 9764
+2025-09-30 04:44:54,940 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:44:54,940 - [INFO] -   Area: 1456.0 m2
+2025-09-30 04:44:54,940 - [INFO] -   Habitaciones: 0 | Banos: 0
+2025-09-30 04:44:54,940 - [INFO] -   Arriendo: $0
+2025-09-30 04:44:54,940 - [INFO] -   Venta: $873,600,000
+2025-09-30 04:44:54,940 - [INFO] - 
+Creando en destino con 107 campos...
+2025-09-30 04:44:55,262 - [INFO] - OK! Propiedad creada: LOTE -> ID [608]
+2025-09-30 04:44:55,262 - [INFO] - 
+[68/2498]
+2025-09-30 04:44:55,262 - [INFO] - 
+======================================================================
+2025-09-30 04:44:55,262 - [INFO] - Propiedad: OFICINA (ID origen: 10014)
+2025-09-30 04:44:55,941 - [INFO] - 
+Total campos a copiar: 108
+2025-09-30 04:44:55,941 - [INFO] - Resumen:
+2025-09-30 04:44:55,941 - [INFO] -   Propietario: 9415
+2025-09-30 04:44:55,941 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:44:55,941 - [INFO] -   Area: 106.0 m2
+2025-09-30 04:44:55,941 - [INFO] -   Habitaciones: 0 | Banos: 1
+2025-09-30 04:44:55,941 - [INFO] -   Arriendo: $1,500,000
+2025-09-30 04:44:55,941 - [INFO] -   Venta: $0
+2025-09-30 04:44:55,941 - [INFO] - 
+Creando en destino con 108 campos...
+2025-09-30 04:44:56,283 - [INFO] - OK! Propiedad creada: OFICINA -> ID [609]
+2025-09-30 04:44:56,283 - [INFO] - 
+[69/2498]
+2025-09-30 04:44:56,283 - [INFO] - 
+======================================================================
+2025-09-30 04:44:56,283 - [INFO] - Propiedad: CASA (ID origen: 10015)
+2025-09-30 04:44:57,041 - [INFO] -    + Partner existente (Nombre): ADELANGEL DURANGO QUIÑONEZ -> 8030
+2025-09-30 04:44:57,242 - [INFO] -    ? Ciudad 'MONTERÍA (230017)' no encontrada, buscando por barrio 'el centro [MONTERÍA - Córdoba CO] '...
+2025-09-30 04:44:57,639 - [INFO] - 
+Total campos a copiar: 107
+2025-09-30 04:44:57,639 - [INFO] - Resumen:
+2025-09-30 04:44:57,639 - [INFO] -   Propietario: 8030
+2025-09-30 04:44:57,639 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio el centro [MONTERÍA - Córdoba CO]  [X]
+2025-09-30 04:44:57,639 - [INFO] -   Area: 396.0 m2
+2025-09-30 04:44:57,640 - [INFO] -   Habitaciones: 5 | Banos: 5
+2025-09-30 04:44:57,640 - [INFO] -   Arriendo: $0
+2025-09-30 04:44:57,640 - [INFO] -   Venta: $792,000,000
+2025-09-30 04:44:57,640 - [INFO] -   Amenidades: Garage
+2025-09-30 04:44:57,640 - [INFO] - 
+Creando en destino con 107 campos...
+2025-09-30 04:44:57,947 - [INFO] - OK! Propiedad creada: CASA -> ID [610]
+2025-09-30 04:44:57,947 - [INFO] - 
+[70/2498]
+2025-09-30 04:44:57,947 - [INFO] - 
+======================================================================
+2025-09-30 04:44:57,947 - [INFO] - Propiedad: LOCAL (ID origen: 10016)
+2025-09-30 04:44:58,726 - [INFO] -    + Partner existente (Nombre): GUILLERMINA RODRIGUEZ MANOTAS -> 8836
+2025-09-30 04:44:58,931 - [INFO] -    ? Ciudad 'MONTERÍA (230017)' no encontrada, buscando por barrio 'el centro [MONTERÍA - Córdoba CO] '...
+2025-09-30 04:44:59,326 - [INFO] - 
+Total campos a copiar: 108
+2025-09-30 04:44:59,326 - [INFO] - Resumen:
+2025-09-30 04:44:59,326 - [INFO] -   Propietario: 8836
+2025-09-30 04:44:59,326 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio el centro [MONTERÍA - Córdoba CO]  [X]
+2025-09-30 04:44:59,326 - [INFO] -   Area: 30.0 m2
+2025-09-30 04:44:59,326 - [INFO] -   Habitaciones: 0 | Banos: 1
+2025-09-30 04:44:59,326 - [INFO] -   Arriendo: $900,000
+2025-09-30 04:44:59,326 - [INFO] -   Venta: $0
+2025-09-30 04:44:59,326 - [INFO] - 
+Creando en destino con 108 campos...
+2025-09-30 04:44:59,650 - [INFO] - OK! Propiedad creada: LOCAL -> ID [611]
+2025-09-30 04:44:59,650 - [INFO] - 
+[71/2498]
+2025-09-30 04:44:59,650 - [INFO] - 
+======================================================================
+2025-09-30 04:44:59,650 - [INFO] - Propiedad: CASA (ID origen: 10017)
+2025-09-30 04:45:00,447 - [INFO] -    + Partner existente (Nombre): VICTOR JULIO ROLON ESCALANTE -> 10056
+2025-09-30 04:45:00,845 - [INFO] - 
+Total campos a copiar: 108
+2025-09-30 04:45:00,845 - [INFO] - Resumen:
+2025-09-30 04:45:00,845 - [INFO] -   Propietario: 10056
+2025-09-30 04:45:00,845 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:45:00,846 - [INFO] -   Area: 300.0 m2
+2025-09-30 04:45:00,846 - [INFO] -   Habitaciones: 4 | Banos: 5
+2025-09-30 04:45:00,846 - [INFO] -   Arriendo: $0
+2025-09-30 04:45:00,846 - [INFO] -   Venta: $700,000,000
+2025-09-30 04:45:00,846 - [INFO] -   Amenidades: Garage
+2025-09-30 04:45:00,846 - [INFO] - 
+Creando en destino con 108 campos...
+2025-09-30 04:45:01,153 - [INFO] - OK! Propiedad creada: CASA -> ID [612]
+2025-09-30 04:45:01,153 - [INFO] - 
+[72/2498]
+2025-09-30 04:45:01,153 - [INFO] - 
+======================================================================
+2025-09-30 04:45:01,153 - [INFO] - Propiedad: CASA (ID origen: 10018)
+2025-09-30 04:45:01,911 - [INFO] -    + Partner existente (Nombre): PETRONA MOLINA PERNETH -> 9798
+2025-09-30 04:45:02,111 - [INFO] -    ? Ciudad 'MONTERÍA (230017)' no encontrada, buscando por barrio 'el centro [MONTERÍA - Córdoba CO] '...
+2025-09-30 04:45:02,509 - [INFO] - 
+Total campos a copiar: 108
+2025-09-30 04:45:02,509 - [INFO] - Resumen:
+2025-09-30 04:45:02,509 - [INFO] -   Propietario: 9798
+2025-09-30 04:45:02,509 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio el centro [MONTERÍA - Córdoba CO]  [X]
+2025-09-30 04:45:02,509 - [INFO] -   Area: 140.0 m2
+2025-09-30 04:45:02,509 - [INFO] -   Habitaciones: 3 | Banos: 2
+2025-09-30 04:45:02,509 - [INFO] -   Arriendo: $1,000,000
+2025-09-30 04:45:02,509 - [INFO] -   Venta: $0
+2025-09-30 04:45:02,510 - [INFO] -   Amenidades: Garage
+2025-09-30 04:45:02,510 - [INFO] - 
+Creando en destino con 108 campos...
+2025-09-30 04:45:02,817 - [INFO] - OK! Propiedad creada: CASA -> ID [613]
+2025-09-30 04:45:02,817 - [INFO] - 
+[73/2498]
+2025-09-30 04:45:02,817 - [INFO] - 
+======================================================================
+2025-09-30 04:45:02,817 - [INFO] - Propiedad: APARTAMENTO (ID origen: 10019)
+2025-09-30 04:45:03,560 - [INFO] - 
+Total campos a copiar: 109
+2025-09-30 04:45:03,560 - [INFO] - Resumen:
+2025-09-30 04:45:03,560 - [INFO] -   Propietario: 8167
+2025-09-30 04:45:03,560 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:45:03,560 - [INFO] -   Area: 72.0 m2
+2025-09-30 04:45:03,560 - [INFO] -   Habitaciones: 3 | Banos: 2
+2025-09-30 04:45:03,560 - [INFO] -   Arriendo: $700,000
+2025-09-30 04:45:03,560 - [INFO] -   Venta: $0
+2025-09-30 04:45:03,560 - [INFO] - 
+Creando en destino con 109 campos...
+2025-09-30 04:45:03,863 - [INFO] - OK! Propiedad creada: APARTAMENTO -> ID [614]
+2025-09-30 04:45:03,863 - [INFO] - 
+[74/2498]
+2025-09-30 04:45:03,863 - [INFO] - 
+======================================================================
+2025-09-30 04:45:03,863 - [INFO] - Propiedad: EDIFICIO (ID origen: 10020)
+2025-09-30 04:45:04,684 - [INFO] - 
+Total campos a copiar: 108
+2025-09-30 04:45:04,685 - [INFO] - Resumen:
+2025-09-30 04:45:04,685 - [INFO] -   Propietario: 8167
+2025-09-30 04:45:04,685 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:45:04,685 - [INFO] -   Area: 0.0 m2
+2025-09-30 04:45:04,685 - [INFO] -   Habitaciones: 0 | Banos: 0
+2025-09-30 04:45:04,685 - [INFO] -   Arriendo: $0
+2025-09-30 04:45:04,685 - [INFO] -   Venta: $980,000,000
+2025-09-30 04:45:04,685 - [INFO] - 
+Creando en destino con 108 campos...
+2025-09-30 04:45:04,992 - [INFO] - OK! Propiedad creada: EDIFICIO -> ID [615]
+2025-09-30 04:45:04,992 - [INFO] - 
+[75/2498]
+2025-09-30 04:45:04,992 - [INFO] - 
+======================================================================
+2025-09-30 04:45:04,992 - [INFO] - Propiedad: CASA (ID origen: 10021)
+2025-09-30 04:45:05,767 - [INFO] -    + Partner existente (Nombre): OMAIRA GONZALEZ NAVARRO -> 9741
+2025-09-30 04:45:05,967 - [INFO] -    ? Ciudad 'MONTERÍA (230017)' no encontrada, buscando por barrio 'costa de oro [MONTERÍA - Córdoba CO] '...
+2025-09-30 04:45:06,368 - [INFO] - 
+Total campos a copiar: 108
+2025-09-30 04:45:06,368 - [INFO] - Resumen:
+2025-09-30 04:45:06,368 - [INFO] -   Propietario: 9741
+2025-09-30 04:45:06,368 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio costa de oro [MONTERÍA - Córdoba CO]  [X]
+2025-09-30 04:45:06,368 - [INFO] -   Area: 500.0 m2
+2025-09-30 04:45:06,368 - [INFO] -   Habitaciones: 3 | Banos: 3
+2025-09-30 04:45:06,368 - [INFO] -   Arriendo: $5,000,000
+2025-09-30 04:45:06,368 - [INFO] -   Venta: $0
+2025-09-30 04:45:06,368 - [INFO] -   Amenidades: Garage
+2025-09-30 04:45:06,368 - [INFO] - 
+Creando en destino con 108 campos...
+2025-09-30 04:45:06,685 - [INFO] - OK! Propiedad creada: CASA -> ID [616]
+2025-09-30 04:45:06,685 - [INFO] - 
+[76/2498]
+2025-09-30 04:45:06,685 - [INFO] - 
+======================================================================
+2025-09-30 04:45:06,685 - [INFO] - Propiedad: APARTAMENTO (ID origen: 10022)
+2025-09-30 04:45:07,486 - [INFO] -    + Partner existente (Nombre): EDWIN JOSE NEGRETE RUIZ -> 8592
+2025-09-30 04:45:07,884 - [INFO] - 
+Total campos a copiar: 109
+2025-09-30 04:45:07,884 - [INFO] - Resumen:
+2025-09-30 04:45:07,884 - [INFO] -   Propietario: 8592
+2025-09-30 04:45:07,884 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:45:07,884 - [INFO] -   Area: 68.0 m2
+2025-09-30 04:45:07,884 - [INFO] -   Habitaciones: 0 | Banos: 0
+2025-09-30 04:45:07,884 - [INFO] -   Arriendo: $920,000
+2025-09-30 04:45:07,884 - [INFO] -   Venta: $0
+2025-09-30 04:45:07,884 - [INFO] - 
+Creando en destino con 109 campos...
+2025-09-30 04:45:08,189 - [INFO] - OK! Propiedad creada: APARTAMENTO -> ID [617]
+2025-09-30 04:45:08,189 - [INFO] - 
+[77/2498]
+2025-09-30 04:45:08,189 - [INFO] - 
+======================================================================
+2025-09-30 04:45:08,189 - [INFO] - Propiedad: CASA (ID origen: 10023)
+2025-09-30 04:45:08,961 - [INFO] -    + Partner existente (Nombre): HERNANDO CALUME LAZA -> 8887
+2025-09-30 04:45:09,345 - [INFO] - 
+Total campos a copiar: 108
+2025-09-30 04:45:09,345 - [INFO] - Resumen:
+2025-09-30 04:45:09,345 - [INFO] -   Propietario: 8887
+2025-09-30 04:45:09,345 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Cereté [X], Barrio N/A [X]
+2025-09-30 04:45:09,345 - [INFO] -   Area: 750.0 m2
+2025-09-30 04:45:09,345 - [INFO] -   Habitaciones: 5 | Banos: 0
+2025-09-30 04:45:09,345 - [INFO] -   Arriendo: $0
+2025-09-30 04:45:09,345 - [INFO] -   Venta: $1,100,000,000
+2025-09-30 04:45:09,345 - [INFO] - 
+Creando en destino con 108 campos...
+2025-09-30 04:45:09,651 - [INFO] - OK! Propiedad creada: CASA -> ID [618]
+2025-09-30 04:45:09,652 - [INFO] - 
+[78/2498]
+2025-09-30 04:45:09,652 - [INFO] - 
+======================================================================
+2025-09-30 04:45:09,652 - [INFO] - Propiedad: CASA (ID origen: 10024)
+2025-09-30 04:45:10,427 - [INFO] -    + Partner existente (Nombre): ISABEL CRISTINA DE LA OSSA LASTRE -> 8934
+2025-09-30 04:45:10,816 - [INFO] - 
+Total campos a copiar: 108
+2025-09-30 04:45:10,817 - [INFO] - Resumen:
+2025-09-30 04:45:10,817 - [INFO] -   Propietario: 8934
+2025-09-30 04:45:10,817 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:45:10,817 - [INFO] -   Area: 232.0 m2
+2025-09-30 04:45:10,817 - [INFO] -   Habitaciones: 5 | Banos: 3
+2025-09-30 04:45:10,817 - [INFO] -   Arriendo: $0
+2025-09-30 04:45:10,817 - [INFO] -   Venta: $350,000,000
+2025-09-30 04:45:10,817 - [INFO] -   Amenidades: Garage
+2025-09-30 04:45:10,817 - [INFO] - 
+Creando en destino con 108 campos...
+2025-09-30 04:45:11,119 - [INFO] - OK! Propiedad creada: CASA -> ID [619]
+2025-09-30 04:45:11,119 - [INFO] - 
+[79/2498]
+2025-09-30 04:45:11,119 - [INFO] - 
+======================================================================
+2025-09-30 04:45:11,119 - [INFO] - Propiedad: CASA (ID origen: 10025)
+2025-09-30 04:45:11,891 - [INFO] -    + Partner existente (Nombre): LIBARDO DOMINGO MARZOLA NARVAEZ -> 9248
+2025-09-30 04:45:12,281 - [INFO] - 
+Total campos a copiar: 109
+2025-09-30 04:45:12,281 - [INFO] - Resumen:
+2025-09-30 04:45:12,282 - [INFO] -   Propietario: 9248
+2025-09-30 04:45:12,282 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:45:12,282 - [INFO] -   Area: 112.0 m2
+2025-09-30 04:45:12,282 - [INFO] -   Habitaciones: 3 | Banos: 2
+2025-09-30 04:45:12,282 - [INFO] -   Arriendo: $830,074
+2025-09-30 04:45:12,282 - [INFO] -   Venta: $0
+2025-09-30 04:45:12,282 - [INFO] - 
+Creando en destino con 109 campos...
+2025-09-30 04:45:12,588 - [INFO] - OK! Propiedad creada: CASA -> ID [620]
+2025-09-30 04:45:12,588 - [INFO] - 
+[80/2498]
+2025-09-30 04:45:12,588 - [INFO] - 
+======================================================================
+2025-09-30 04:45:12,589 - [INFO] - Propiedad: OFICINA (ID origen: 10026)
+2025-09-30 04:45:13,349 - [INFO] -    + Partner existente (Nombre): LOURDES MARIA GANEN DE HERRERA -> 9300
+2025-09-30 04:45:13,749 - [INFO] - 
+Total campos a copiar: 110
+2025-09-30 04:45:13,749 - [INFO] - Resumen:
+2025-09-30 04:45:13,749 - [INFO] -   Propietario: 9300
+2025-09-30 04:45:13,750 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:45:13,750 - [INFO] -   Area: 50.59 m2
+2025-09-30 04:45:13,750 - [INFO] -   Habitaciones: 0 | Banos: 1
+2025-09-30 04:45:13,750 - [INFO] -   Arriendo: $800,000
+2025-09-30 04:45:13,750 - [INFO] -   Venta: $0
+2025-09-30 04:45:13,750 - [INFO] - 
+Creando en destino con 110 campos...
+2025-09-30 04:45:14,170 - [INFO] - OK! Propiedad creada: OFICINA -> ID [621]
+2025-09-30 04:45:14,170 - [INFO] - 
+[81/2498]
+2025-09-30 04:45:14,170 - [INFO] - 
+======================================================================
+2025-09-30 04:45:14,171 - [INFO] - Propiedad: LOCAL (ID origen: 10027)
+2025-09-30 04:45:14,801 - [INFO] - 
+Total campos a copiar: 111
+2025-09-30 04:45:14,801 - [INFO] - Resumen:
+2025-09-30 04:45:14,801 - [INFO] -   Propietario: 9300
+2025-09-30 04:45:14,801 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:45:14,801 - [INFO] -   Area: 22.6 m2
+2025-09-30 04:45:14,801 - [INFO] -   Habitaciones: 0 | Banos: 1
+2025-09-30 04:45:14,801 - [INFO] -   Arriendo: $800,000
+2025-09-30 04:45:14,801 - [INFO] -   Venta: $0
+2025-09-30 04:45:14,801 - [INFO] - 
+Creando en destino con 111 campos...
+2025-09-30 04:45:15,142 - [INFO] - OK! Propiedad creada: LOCAL -> ID [622]
+2025-09-30 04:45:15,142 - [INFO] - 
+[82/2498]
+2025-09-30 04:45:15,142 - [INFO] - 
+======================================================================
+2025-09-30 04:45:15,142 - [INFO] - Propiedad: CASA (ID origen: 10028)
+2025-09-30 04:45:15,942 - [INFO] -    + Partner existente (Nombre): LINEY PAYARES MEDRANO -> 9283
+2025-09-30 04:45:16,338 - [INFO] - 
+Total campos a copiar: 109
+2025-09-30 04:45:16,338 - [INFO] - Resumen:
+2025-09-30 04:45:16,339 - [INFO] -   Propietario: 9283
+2025-09-30 04:45:16,339 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:45:16,339 - [INFO] -   Area: 400.0 m2
+2025-09-30 04:45:16,339 - [INFO] -   Habitaciones: 6 | Banos: 5
+2025-09-30 04:45:16,339 - [INFO] -   Arriendo: $3,500,000
+2025-09-30 04:45:16,339 - [INFO] -   Venta: $0
+2025-09-30 04:45:16,339 - [INFO] - 
+Creando en destino con 109 campos...
+2025-09-30 04:45:16,683 - [INFO] - OK! Propiedad creada: CASA -> ID [623]
+2025-09-30 04:45:16,683 - [INFO] - 
+[83/2498]
+2025-09-30 04:45:16,683 - [INFO] - 
+======================================================================
+2025-09-30 04:45:16,683 - [INFO] - Propiedad: CASA (ID origen: 10029)
+2025-09-30 04:45:17,441 - [INFO] -    + Partner existente (Nombre): ANA TRINIDAD BURGO MARTINEZ -> 8166
+2025-09-30 04:45:17,639 - [INFO] -    ? Ciudad 'MONTERÍA (230017)' no encontrada, buscando por barrio 'el centro [MONTERÍA - Córdoba CO] '...
+2025-09-30 04:45:18,035 - [INFO] - 
+Total campos a copiar: 107
+2025-09-30 04:45:18,035 - [INFO] - Resumen:
+2025-09-30 04:45:18,035 - [INFO] -   Propietario: 8166
+2025-09-30 04:45:18,035 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio el centro [MONTERÍA - Córdoba CO]  [X]
+2025-09-30 04:45:18,035 - [INFO] -   Area: 247.5 m2
+2025-09-30 04:45:18,035 - [INFO] -   Habitaciones: 3 | Banos: 4
+2025-09-30 04:45:18,035 - [INFO] -   Arriendo: $0
+2025-09-30 04:45:18,035 - [INFO] -   Venta: $340,000,000
+2025-09-30 04:45:18,035 - [INFO] -   Amenidades: Garage
+2025-09-30 04:45:18,035 - [INFO] - 
+Creando en destino con 107 campos...
+2025-09-30 04:45:18,340 - [INFO] - OK! Propiedad creada: CASA -> ID [624]
+2025-09-30 04:45:18,340 - [INFO] - 
+[84/2498]
+2025-09-30 04:45:18,340 - [INFO] - 
+======================================================================
+2025-09-30 04:45:18,340 - [INFO] - Propiedad: CASA (ID origen: 10030)
+2025-09-30 04:45:19,103 - [INFO] -    + Partner existente (Nombre): NERY JUDITH CARREÑO -> 9689
+2025-09-30 04:45:19,512 - [INFO] - 
+Total campos a copiar: 111
+2025-09-30 04:45:19,512 - [INFO] - Resumen:
+2025-09-30 04:45:19,512 - [INFO] -   Propietario: 9689
+2025-09-30 04:45:19,512 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:45:19,512 - [INFO] -   Area: 113.0 m2
+2025-09-30 04:45:19,512 - [INFO] -   Habitaciones: 3 | Banos: 3
+2025-09-30 04:45:19,512 - [INFO] -   Arriendo: $1,650,000
+2025-09-30 04:45:19,512 - [INFO] -   Venta: $300,000,000
+2025-09-30 04:45:19,512 - [INFO] -   Amenidades: Garage, Piscina
+2025-09-30 04:45:19,514 - [INFO] - 
+Creando en destino con 111 campos...
+2025-09-30 04:45:19,805 - [INFO] - OK! Propiedad creada: CASA -> ID [625]
+2025-09-30 04:45:19,805 - [INFO] - 
+[85/2498]
+2025-09-30 04:45:19,805 - [INFO] - 
+======================================================================
+2025-09-30 04:45:19,805 - [INFO] - Propiedad: LOTE (ID origen: 10031)
+2025-09-30 04:45:20,563 - [INFO] -    + Partner existente (Nombre): JORGE LUIS LAMBOGLIA CALONGE -> 9052
+2025-09-30 04:45:20,959 - [INFO] - 
+Total campos a copiar: 108
+2025-09-30 04:45:20,959 - [INFO] - Resumen:
+2025-09-30 04:45:20,959 - [INFO] -   Propietario: 9052
+2025-09-30 04:45:20,959 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:45:20,959 - [INFO] -   Area: 1000.0 m2
+2025-09-30 04:45:20,959 - [INFO] -   Habitaciones: 0 | Banos: 0
+2025-09-30 04:45:20,959 - [INFO] -   Arriendo: $0
+2025-09-30 04:45:20,959 - [INFO] -   Venta: $65,000,000
+2025-09-30 04:45:20,959 - [INFO] - 
+Creando en destino con 108 campos...
+2025-09-30 04:45:21,278 - [INFO] - OK! Propiedad creada: LOTE -> ID [626]
+2025-09-30 04:45:21,278 - [INFO] - 
+[86/2498]
+2025-09-30 04:45:21,278 - [INFO] - 
+======================================================================
+2025-09-30 04:45:21,278 - [INFO] - Propiedad: LOTE (ID origen: 10032)
+2025-09-30 04:45:21,905 - [INFO] - 
+Total campos a copiar: 108
+2025-09-30 04:45:21,905 - [INFO] - Resumen:
+2025-09-30 04:45:21,905 - [INFO] -   Propietario: 9052
+2025-09-30 04:45:21,905 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:45:21,905 - [INFO] -   Area: 1000.0 m2
+2025-09-30 04:45:21,905 - [INFO] -   Habitaciones: 0 | Banos: 0
+2025-09-30 04:45:21,905 - [INFO] -   Arriendo: $0
+2025-09-30 04:45:21,905 - [INFO] -   Venta: $65,000,000
+2025-09-30 04:45:21,905 - [INFO] - 
+Creando en destino con 108 campos...
+2025-09-30 04:45:22,198 - [INFO] - OK! Propiedad creada: LOTE -> ID [627]
+2025-09-30 04:45:22,198 - [INFO] - 
+[87/2498]
+2025-09-30 04:45:22,198 - [INFO] - 
+======================================================================
+2025-09-30 04:45:22,198 - [INFO] - Propiedad: LOTE (ID origen: 10033)
+2025-09-30 04:45:22,835 - [INFO] - 
+Total campos a copiar: 108
+2025-09-30 04:45:22,835 - [INFO] - Resumen:
+2025-09-30 04:45:22,835 - [INFO] -   Propietario: 9052
+2025-09-30 04:45:22,835 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:45:22,835 - [INFO] -   Area: 1000.0 m2
+2025-09-30 04:45:22,835 - [INFO] -   Habitaciones: 0 | Banos: 0
+2025-09-30 04:45:22,836 - [INFO] -   Arriendo: $0
+2025-09-30 04:45:22,836 - [INFO] -   Venta: $65,000,000
+2025-09-30 04:45:22,836 - [INFO] - 
+Creando en destino con 108 campos...
+2025-09-30 04:45:23,132 - [INFO] - OK! Propiedad creada: LOTE -> ID [628]
+2025-09-30 04:45:23,132 - [INFO] - 
+[88/2498]
+2025-09-30 04:45:23,132 - [INFO] - 
+======================================================================
+2025-09-30 04:45:23,132 - [INFO] - Propiedad: LOTE (ID origen: 10034)
+2025-09-30 04:45:23,763 - [INFO] - 
+Total campos a copiar: 108
+2025-09-30 04:45:23,763 - [INFO] - Resumen:
+2025-09-30 04:45:23,763 - [INFO] -   Propietario: 9052
+2025-09-30 04:45:23,763 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:45:23,763 - [INFO] -   Area: 1000.0 m2
+2025-09-30 04:45:23,763 - [INFO] -   Habitaciones: 0 | Banos: 0
+2025-09-30 04:45:23,763 - [INFO] -   Arriendo: $0
+2025-09-30 04:45:23,763 - [INFO] -   Venta: $65,000,000
+2025-09-30 04:45:23,764 - [INFO] - 
+Creando en destino con 108 campos...
+2025-09-30 04:45:24,061 - [INFO] - OK! Propiedad creada: LOTE -> ID [629]
+2025-09-30 04:45:24,061 - [INFO] - 
+[89/2498]
+2025-09-30 04:45:24,061 - [INFO] - 
+======================================================================
+2025-09-30 04:45:24,061 - [INFO] - Propiedad: LOTE (ID origen: 10035)
+2025-09-30 04:45:24,681 - [INFO] - 
+Total campos a copiar: 108
+2025-09-30 04:45:24,681 - [INFO] - Resumen:
+2025-09-30 04:45:24,681 - [INFO] -   Propietario: 9052
+2025-09-30 04:45:24,681 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:45:24,681 - [INFO] -   Area: 1000.0 m2
+2025-09-30 04:45:24,681 - [INFO] -   Habitaciones: 0 | Banos: 0
+2025-09-30 04:45:24,681 - [INFO] -   Arriendo: $0
+2025-09-30 04:45:24,681 - [INFO] -   Venta: $65,000,000
+2025-09-30 04:45:24,681 - [INFO] - 
+Creando en destino con 108 campos...
+2025-09-30 04:45:25,066 - [INFO] - OK! Propiedad creada: LOTE -> ID [630]
+2025-09-30 04:45:25,066 - [INFO] - 
+[90/2498]
+2025-09-30 04:45:25,066 - [INFO] - 
+======================================================================
+2025-09-30 04:45:25,066 - [INFO] - Propiedad: CASA (ID origen: 10036)
+2025-09-30 04:45:25,841 - [INFO] -    + Partner existente (Nombre): YULIS ARTEAGA HERNANDEZ -> 10112
+2025-09-30 04:45:26,240 - [INFO] - 
+Total campos a copiar: 109
+2025-09-30 04:45:26,240 - [INFO] - Resumen:
+2025-09-30 04:45:26,240 - [INFO] -   Propietario: 10112
+2025-09-30 04:45:26,240 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:45:26,240 - [INFO] -   Area: 168.0 m2
+2025-09-30 04:45:26,240 - [INFO] -   Habitaciones: 3 | Banos: 2
+2025-09-30 04:45:26,240 - [INFO] -   Arriendo: $0
+2025-09-30 04:45:26,240 - [INFO] -   Venta: $250,000,000
+2025-09-30 04:45:26,240 - [INFO] -   Amenidades: Garage
+2025-09-30 04:45:26,240 - [INFO] - 
+Creando en destino con 109 campos...
+2025-09-30 04:45:26,546 - [INFO] - OK! Propiedad creada: CASA -> ID [631]
+2025-09-30 04:45:26,546 - [INFO] - 
+[91/2498]
+2025-09-30 04:45:26,546 - [INFO] - 
+======================================================================
+2025-09-30 04:45:26,546 - [INFO] - Propiedad: OFICINA (ID origen: 10037)
+2025-09-30 04:45:27,306 - [INFO] -    + Partner existente (Nombre): RAFAEL LOBELO -> 9826
+2025-09-30 04:45:27,704 - [INFO] - 
+Total campos a copiar: 108
+2025-09-30 04:45:27,704 - [INFO] - Resumen:
+2025-09-30 04:45:27,704 - [INFO] -   Propietario: 9826
+2025-09-30 04:45:27,704 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:45:27,704 - [INFO] -   Area: 410.0 m2
+2025-09-30 04:45:27,704 - [INFO] -   Habitaciones: 0 | Banos: 8
+2025-09-30 04:45:27,704 - [INFO] -   Arriendo: $10,000,000
+2025-09-30 04:45:27,704 - [INFO] -   Venta: $0
+2025-09-30 04:45:27,704 - [INFO] - 
+Creando en destino con 108 campos...
+2025-09-30 04:45:28,023 - [INFO] - OK! Propiedad creada: OFICINA -> ID [632]
+2025-09-30 04:45:28,023 - [INFO] - 
+[92/2498]
+2025-09-30 04:45:28,023 - [INFO] - 
+======================================================================
+2025-09-30 04:45:28,023 - [INFO] - Propiedad: OFICINA (ID origen: 10038)
+2025-09-30 04:45:28,503 - [INFO] -    ? Ciudad 'MONTERÍA (230017)' no encontrada, buscando por barrio 'el centro [MONTERÍA - Córdoba CO] '...
+2025-09-30 04:45:28,844 - [INFO] - 
+Total campos a copiar: 107
+2025-09-30 04:45:28,844 - [INFO] - Resumen:
+2025-09-30 04:45:28,844 - [INFO] -   Propietario: 9826
+2025-09-30 04:45:28,844 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio el centro [MONTERÍA - Córdoba CO]  [X]
+2025-09-30 04:45:28,844 - [INFO] -   Area: 410.0 m2
+2025-09-30 04:45:28,844 - [INFO] -   Habitaciones: 0 | Banos: 0
+2025-09-30 04:45:28,844 - [INFO] -   Arriendo: $0
+2025-09-30 04:45:28,844 - [INFO] -   Venta: $1,200,000,000
+2025-09-30 04:45:28,844 - [INFO] - 
+Creando en destino con 107 campos...
+2025-09-30 04:45:29,152 - [INFO] - OK! Propiedad creada: OFICINA -> ID [633]
+2025-09-30 04:45:29,152 - [INFO] - 
+[93/2498]
+2025-09-30 04:45:29,152 - [INFO] - 
+======================================================================
+2025-09-30 04:45:29,152 - [INFO] - Propiedad: FINCA (ID origen: 10039)
+2025-09-30 04:45:29,904 - [INFO] -    + Partner existente (Nombre): JAIR ALVAREZ HURTADO -> 8964
+2025-09-30 04:45:30,300 - [INFO] - 
+Total campos a copiar: 109
+2025-09-30 04:45:30,301 - [INFO] - Resumen:
+2025-09-30 04:45:30,301 - [INFO] -   Propietario: 8964
+2025-09-30 04:45:30,301 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Ciénaga de Oro [X], Barrio N/A [X]
+2025-09-30 04:45:30,301 - [INFO] -   Area: 5875.0 m2
+2025-09-30 04:45:30,301 - [INFO] -   Habitaciones: 0 | Banos: 3
+2025-09-30 04:45:30,301 - [INFO] -   Arriendo: $0
+2025-09-30 04:45:30,301 - [INFO] -   Venta: $350,000,000
+2025-09-30 04:45:30,301 - [INFO] - 
+Creando en destino con 109 campos...
+2025-09-30 04:45:30,605 - [INFO] - OK! Propiedad creada: FINCA -> ID [634]
+2025-09-30 04:45:30,605 - [INFO] - 
+[94/2498]
+2025-09-30 04:45:30,605 - [INFO] - 
+======================================================================
+2025-09-30 04:45:30,605 - [INFO] - Propiedad: CASA (ID origen: 10040)
+2025-09-30 04:45:31,225 - [INFO] - 
+Total campos a copiar: 109
+2025-09-30 04:45:31,225 - [INFO] - Resumen:
+2025-09-30 04:45:31,225 - [INFO] -   Propietario: 9248
+2025-09-30 04:45:31,225 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:45:31,225 - [INFO] -   Area: 110.0 m2
+2025-09-30 04:45:31,225 - [INFO] -   Habitaciones: 3 | Banos: 2
+2025-09-30 04:45:31,225 - [INFO] -   Arriendo: $885,823
+2025-09-30 04:45:31,225 - [INFO] -   Venta: $0
+2025-09-30 04:45:31,225 - [INFO] -   Amenidades: Garage
+2025-09-30 04:45:31,225 - [INFO] - 
+Creando en destino con 109 campos...
+2025-09-30 04:45:31,540 - [INFO] - OK! Propiedad creada: CASA -> ID [635]
+2025-09-30 04:45:31,540 - [INFO] - 
+[95/2498]
+2025-09-30 04:45:31,540 - [INFO] - 
+======================================================================
+2025-09-30 04:45:31,540 - [INFO] - Propiedad: EDIFICIO (ID origen: 10041)
+2025-09-30 04:45:32,314 - [INFO] -    + Partner existente (Nombre): SANDRA DELGADO -> 9964
+2025-09-30 04:45:32,516 - [INFO] -    ? Ciudad 'MONTERÍA (230017)' no encontrada, buscando por barrio 'el centro [MONTERÍA - Córdoba CO] '...
+2025-09-30 04:45:32,909 - [INFO] - 
+Total campos a copiar: 108
+2025-09-30 04:45:32,909 - [INFO] - Resumen:
+2025-09-30 04:45:32,909 - [INFO] -   Propietario: 9964
+2025-09-30 04:45:32,909 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio el centro [MONTERÍA - Córdoba CO]  [X]
+2025-09-30 04:45:32,909 - [INFO] -   Area: 500.0 m2
+2025-09-30 04:45:32,909 - [INFO] -   Habitaciones: 0 | Banos: 0
+2025-09-30 04:45:32,909 - [INFO] -   Arriendo: $10,000,000
+2025-09-30 04:45:32,909 - [INFO] -   Venta: $0
+2025-09-30 04:45:32,909 - [INFO] - 
+Creando en destino con 108 campos...
+2025-09-30 04:45:33,220 - [INFO] - OK! Propiedad creada: EDIFICIO -> ID [636]
+2025-09-30 04:45:33,222 - [INFO] - 
+[96/2498]
+2025-09-30 04:45:33,222 - [INFO] - 
+======================================================================
+2025-09-30 04:45:33,222 - [INFO] - Propiedad: EDIFICIO (ID origen: 10042)
+2025-09-30 04:45:33,881 - [INFO] - 
+Total campos a copiar: 110
+2025-09-30 04:45:33,881 - [INFO] - Resumen:
+2025-09-30 04:45:33,881 - [INFO] -   Propietario: 9964
+2025-09-30 04:45:33,881 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:45:33,881 - [INFO] -   Area: 500.0 m2
+2025-09-30 04:45:33,881 - [INFO] -   Habitaciones: 0 | Banos: 0
+2025-09-30 04:45:33,881 - [INFO] -   Arriendo: $9,000,000
+2025-09-30 04:45:33,881 - [INFO] -   Venta: $950,000,000
+2025-09-30 04:45:33,881 - [INFO] - 
+Creando en destino con 110 campos...
+2025-09-30 04:45:34,154 - [INFO] - OK! Propiedad creada: EDIFICIO -> ID [637]
+2025-09-30 04:45:34,154 - [INFO] - 
+[97/2498]
+2025-09-30 04:45:34,154 - [INFO] - 
+======================================================================
+2025-09-30 04:45:34,154 - [INFO] - Propiedad: CASA (ID origen: 10043)
+2025-09-30 04:45:34,916 - [INFO] -    + Partner existente (Nombre): DIANA MARIA VEGA MERCADO -> 8507
+2025-09-30 04:45:35,316 - [INFO] - 
+Total campos a copiar: 109
+2025-09-30 04:45:35,316 - [INFO] - Resumen:
+2025-09-30 04:45:35,316 - [INFO] -   Propietario: 8507
+2025-09-30 04:45:35,316 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:45:35,316 - [INFO] -   Area: 250.0 m2
+2025-09-30 04:45:35,316 - [INFO] -   Habitaciones: 3 | Banos: 3
+2025-09-30 04:45:35,316 - [INFO] -   Arriendo: $0
+2025-09-30 04:45:35,316 - [INFO] -   Venta: $375,000,000
+2025-09-30 04:45:35,316 - [INFO] -   Amenidades: Garage
+2025-09-30 04:45:35,316 - [INFO] - 
+Creando en destino con 109 campos...
+2025-09-30 04:45:35,628 - [INFO] - OK! Propiedad creada: CASA -> ID [638]
+2025-09-30 04:45:35,629 - [INFO] - 
+[98/2498]
+2025-09-30 04:45:35,629 - [INFO] - 
+======================================================================
+2025-09-30 04:45:35,629 - [INFO] - Propiedad: LOTE (ID origen: 10044)
+2025-09-30 04:45:36,404 - [INFO] -    + Partner existente (Nombre): ARGEMIRO HOYOS -> 8212
+2025-09-30 04:45:36,791 - [INFO] - 
+Total campos a copiar: 109
+2025-09-30 04:45:36,791 - [INFO] - Resumen:
+2025-09-30 04:45:36,791 - [INFO] -   Propietario: 8212
+2025-09-30 04:45:36,791 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:45:36,791 - [INFO] -   Area: 704.32 m2
+2025-09-30 04:45:36,792 - [INFO] -   Habitaciones: 0 | Banos: 0
+2025-09-30 04:45:36,792 - [INFO] -   Arriendo: $0
+2025-09-30 04:45:36,792 - [INFO] -   Venta: $352,000,000
+2025-09-30 04:45:36,792 - [INFO] - 
+Creando en destino con 109 campos...
+2025-09-30 04:45:37,141 - [INFO] - OK! Propiedad creada: LOTE -> ID [639]
+2025-09-30 04:45:37,141 - [INFO] - 
+[99/2498]
+2025-09-30 04:45:37,141 - [INFO] - 
+======================================================================
+2025-09-30 04:45:37,141 - [INFO] - Propiedad: CASA (ID origen: 10045)
+2025-09-30 04:45:38,010 - [INFO] -    + Partner existente (Nombre): DABEIBA ROSA HERNADEZ DE FUENTE -> 8442
+2025-09-30 04:45:38,405 - [INFO] - 
+Total campos a copiar: 108
+2025-09-30 04:45:38,405 - [INFO] - Resumen:
+2025-09-30 04:45:38,405 - [INFO] -   Propietario: 8442
+2025-09-30 04:45:38,405 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:45:38,405 - [INFO] -   Area: 300.0 m2
+2025-09-30 04:45:38,405 - [INFO] -   Habitaciones: 4 | Banos: 3
+2025-09-30 04:45:38,405 - [INFO] -   Arriendo: $0
+2025-09-30 04:45:38,405 - [INFO] -   Venta: $480,000,000
+2025-09-30 04:45:38,405 - [INFO] - 
+Creando en destino con 108 campos...
+2025-09-30 04:45:38,760 - [INFO] - OK! Propiedad creada: CASA -> ID [640]
+2025-09-30 04:45:38,760 - [INFO] - 
+[100/2498]
+2025-09-30 04:45:38,760 - [INFO] - 
+======================================================================
+2025-09-30 04:45:38,761 - [INFO] - Propiedad: OFICINA (ID origen: 10046)
+2025-09-30 04:45:39,491 - [INFO] - 
+Total campos a copiar: 109
+2025-09-30 04:45:39,491 - [INFO] - Resumen:
+2025-09-30 04:45:39,491 - [INFO] -   Propietario: 9300
+2025-09-30 04:45:39,491 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:45:39,491 - [INFO] -   Area: 50.0 m2
+2025-09-30 04:45:39,491 - [INFO] -   Habitaciones: 0 | Banos: 0
+2025-09-30 04:45:39,491 - [INFO] -   Arriendo: $800,000
+2025-09-30 04:45:39,491 - [INFO] -   Venta: $0
+2025-09-30 04:45:39,491 - [INFO] - 
+Creando en destino con 109 campos...
+2025-09-30 04:45:39,852 - [INFO] - OK! Propiedad creada: OFICINA -> ID [641]
+2025-09-30 04:45:39,852 - [INFO] - 
+[101/2498]
+2025-09-30 04:45:39,852 - [INFO] - 
+======================================================================
+2025-09-30 04:45:39,852 - [INFO] - Propiedad: LOTE (ID origen: 10047)
+2025-09-30 04:45:40,646 - [INFO] -    + Partner existente (Nombre): LUIS ARMANDO CABRALES SOLANO -> 9339
+2025-09-30 04:45:41,038 - [INFO] - 
+Total campos a copiar: 107
+2025-09-30 04:45:41,038 - [INFO] - Resumen:
+2025-09-30 04:45:41,038 - [INFO] -   Propietario: 9339
+2025-09-30 04:45:41,038 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad SAN BERNARDO DEL VIENTO [X], Barrio N/A [X]
+2025-09-30 04:45:41,038 - [INFO] -   Area: 2437.0 m2
+2025-09-30 04:45:41,038 - [INFO] -   Habitaciones: 0 | Banos: 0
+2025-09-30 04:45:41,038 - [INFO] -   Arriendo: $0
+2025-09-30 04:45:41,038 - [INFO] -   Venta: $600,000,000
+2025-09-30 04:45:41,038 - [INFO] - 
+Creando en destino con 107 campos...
+2025-09-30 04:45:41,368 - [INFO] - OK! Propiedad creada: LOTE -> ID [642]
+2025-09-30 04:45:41,368 - [INFO] - 
+[102/2498]
+2025-09-30 04:45:41,368 - [INFO] - 
+======================================================================
+2025-09-30 04:45:41,368 - [INFO] - Propiedad: CASA (ID origen: 10048)
+2025-09-30 04:45:42,126 - [INFO] -    + Partner existente (Nombre): DORA MARIA LOPEZ MEJIA -> 8534
+2025-09-30 04:45:42,316 - [INFO] -    ? Ciudad 'MONTERÍA (230017)' no encontrada, buscando por barrio 'pasatiempo [MONTERÍA - Córdoba CO] '...
+2025-09-30 04:45:42,712 - [INFO] - 
+Total campos a copiar: 108
+2025-09-30 04:45:42,712 - [INFO] - Resumen:
+2025-09-30 04:45:42,712 - [INFO] -   Propietario: 8534
+2025-09-30 04:45:42,712 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio pasatiempo [MONTERÍA - Córdoba CO]  [X]
+2025-09-30 04:45:42,712 - [INFO] -   Area: 300.0 m2
+2025-09-30 04:45:42,712 - [INFO] -   Habitaciones: 4 | Banos: 4
+2025-09-30 04:45:42,712 - [INFO] -   Arriendo: $0
+2025-09-30 04:45:42,712 - [INFO] -   Venta: $600,000,000
+2025-09-30 04:45:42,712 - [INFO] -   Amenidades: Garage
+2025-09-30 04:45:42,712 - [INFO] - 
+Creando en destino con 108 campos...
+2025-09-30 04:45:43,017 - [INFO] - OK! Propiedad creada: CASA -> ID [643]
+2025-09-30 04:45:43,017 - [INFO] - 
+[103/2498]
+2025-09-30 04:45:43,017 - [INFO] - 
+======================================================================
+2025-09-30 04:45:43,017 - [INFO] - Propiedad: LOCAL (ID origen: 10049)
+2025-09-30 04:45:43,786 - [INFO] -    + Partner existente (Nombre): DIANA MARIA BURGOS MONTES -> 8506
+2025-09-30 04:45:44,174 - [INFO] - 
+Total campos a copiar: 108
+2025-09-30 04:45:44,174 - [INFO] - Resumen:
+2025-09-30 04:45:44,175 - [INFO] -   Propietario: 8506
+2025-09-30 04:45:44,175 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:45:44,175 - [INFO] -   Area: 30.0 m2
+2025-09-30 04:45:44,175 - [INFO] -   Habitaciones: 0 | Banos: 1
+2025-09-30 04:45:44,175 - [INFO] -   Arriendo: $600,000
+2025-09-30 04:45:44,175 - [INFO] -   Venta: $0
+2025-09-30 04:45:44,175 - [INFO] - 
+Creando en destino con 108 campos...
+2025-09-30 04:45:44,481 - [INFO] - OK! Propiedad creada: LOCAL -> ID [644]
+2025-09-30 04:45:44,482 - [INFO] - 
+[104/2498]
+2025-09-30 04:45:44,482 - [INFO] - 
+======================================================================
+2025-09-30 04:45:44,482 - [INFO] - Propiedad: CASA (ID origen: 10050)
+2025-09-30 04:45:45,285 - [INFO] -    + Partner existente (Nombre): ANUNCCIACION DEL CARMEN GONZALEZ -> 8206
+2025-09-30 04:45:45,704 - [INFO] - 
+Total campos a copiar: 108
+2025-09-30 04:45:45,704 - [INFO] - Resumen:
+2025-09-30 04:45:45,704 - [INFO] -   Propietario: 8206
+2025-09-30 04:45:45,705 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:45:45,705 - [INFO] -   Area: 200.0 m2
+2025-09-30 04:45:45,705 - [INFO] -   Habitaciones: 4 | Banos: 3
+2025-09-30 04:45:45,705 - [INFO] -   Arriendo: $0
+2025-09-30 04:45:45,706 - [INFO] -   Venta: $220,000,000
+2025-09-30 04:45:45,706 - [INFO] -   Amenidades: Garage
+2025-09-30 04:45:45,706 - [INFO] - 
+Creando en destino con 108 campos...
+2025-09-30 04:45:46,063 - [INFO] - OK! Propiedad creada: CASA -> ID [645]
+2025-09-30 04:45:46,063 - [INFO] - 
+[105/2498]
+2025-09-30 04:45:46,064 - [INFO] - 
+======================================================================
+2025-09-30 04:45:46,064 - [INFO] - Propiedad: LOCAL (ID origen: 10051)
+2025-09-30 04:45:46,856 - [INFO] -    + Partner existente (Nombre): HERNAN RAMON RODRIGUEZ MARTINEZ -> 8885
+2025-09-30 04:45:47,056 - [INFO] -    ? Ciudad 'MONTERÍA (230017)' no encontrada, buscando por barrio 'el centro [MONTERÍA - Córdoba CO] '...
+2025-09-30 04:45:47,455 - [INFO] - 
+Total campos a copiar: 108
+2025-09-30 04:45:47,455 - [INFO] - Resumen:
+2025-09-30 04:45:47,455 - [INFO] -   Propietario: 8885
+2025-09-30 04:45:47,455 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio el centro [MONTERÍA - Córdoba CO]  [X]
+2025-09-30 04:45:47,455 - [INFO] -   Area: 80.0 m2
+2025-09-30 04:45:47,455 - [INFO] -   Habitaciones: 0 | Banos: 1
+2025-09-30 04:45:47,455 - [INFO] -   Arriendo: $1,500,000
+2025-09-30 04:45:47,455 - [INFO] -   Venta: $0
+2025-09-30 04:45:47,455 - [INFO] - 
+Creando en destino con 108 campos...
+2025-09-30 04:45:47,762 - [INFO] - OK! Propiedad creada: LOCAL -> ID [646]
+2025-09-30 04:45:47,762 - [INFO] - 
+[106/2498]
+2025-09-30 04:45:47,762 - [INFO] - 
+======================================================================
+2025-09-30 04:45:47,762 - [INFO] - Propiedad: LOCAL (ID origen: 10052)
+2025-09-30 04:45:48,526 - [INFO] -    + Partner existente (Nombre): LINEY CECILIA VEGA DE ESPINOSA -> 9282
+2025-09-30 04:45:48,925 - [INFO] - 
+Total campos a copiar: 108
+2025-09-30 04:45:48,925 - [INFO] - Resumen:
+2025-09-30 04:45:48,925 - [INFO] -   Propietario: 9282
+2025-09-30 04:45:48,925 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:45:48,925 - [INFO] -   Area: 25.0 m2
+2025-09-30 04:45:48,925 - [INFO] -   Habitaciones: 0 | Banos: 1
+2025-09-30 04:45:48,925 - [INFO] -   Arriendo: $1,350,000
+2025-09-30 04:45:48,926 - [INFO] -   Venta: $0
+2025-09-30 04:45:48,926 - [INFO] - 
+Creando en destino con 108 campos...
+2025-09-30 04:45:49,230 - [INFO] - OK! Propiedad creada: LOCAL -> ID [647]
+2025-09-30 04:45:49,230 - [INFO] - 
+[107/2498]
+2025-09-30 04:45:49,230 - [INFO] - 
+======================================================================
+2025-09-30 04:45:49,230 - [INFO] - Propiedad: APARTAMENTO (ID origen: 10053)
+2025-09-30 04:45:49,849 - [INFO] - 
+Total campos a copiar: 109
+2025-09-30 04:45:49,849 - [INFO] - Resumen:
+2025-09-30 04:45:49,849 - [INFO] -   Propietario: 9282
+2025-09-30 04:45:49,849 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:45:49,849 - [INFO] -   Area: 90.0 m2
+2025-09-30 04:45:49,849 - [INFO] -   Habitaciones: 3 | Banos: 2
+2025-09-30 04:45:49,849 - [INFO] -   Arriendo: $0
+2025-09-30 04:45:49,849 - [INFO] -   Venta: $205,500,000
+2025-09-30 04:45:49,849 - [INFO] - 
+Creando en destino con 109 campos...
+2025-09-30 04:45:50,154 - [INFO] - OK! Propiedad creada: APARTAMENTO -> ID [648]
+2025-09-30 04:45:50,155 - [INFO] - 
+[108/2498]
+2025-09-30 04:45:50,155 - [INFO] - 
+======================================================================
+2025-09-30 04:45:50,155 - [INFO] - Propiedad: APARTAMENTO (ID origen: 10054)
+2025-09-30 04:45:50,786 - [INFO] - 
+Total campos a copiar: 109
+2025-09-30 04:45:50,786 - [INFO] - Resumen:
+2025-09-30 04:45:50,786 - [INFO] -   Propietario: 9282
+2025-09-30 04:45:50,786 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:45:50,786 - [INFO] -   Area: 90.0 m2
+2025-09-30 04:45:50,787 - [INFO] -   Habitaciones: 3 | Banos: 2
+2025-09-30 04:45:50,787 - [INFO] -   Arriendo: $0
+2025-09-30 04:45:50,787 - [INFO] -   Venta: $205,500,000
+2025-09-30 04:45:50,787 - [INFO] - 
+Creando en destino con 109 campos...
+2025-09-30 04:45:51,099 - [INFO] - OK! Propiedad creada: APARTAMENTO -> ID [649]
+2025-09-30 04:45:51,100 - [INFO] - 
+[109/2498]
+2025-09-30 04:45:51,100 - [INFO] - 
+======================================================================
+2025-09-30 04:45:51,100 - [INFO] - Propiedad: APARTAMENTO (ID origen: 10055)
+2025-09-30 04:45:51,720 - [INFO] - 
+Total campos a copiar: 109
+2025-09-30 04:45:51,720 - [INFO] - Resumen:
+2025-09-30 04:45:51,720 - [INFO] -   Propietario: 9282
+2025-09-30 04:45:51,721 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:45:51,721 - [INFO] -   Area: 60.0 m2
+2025-09-30 04:45:51,721 - [INFO] -   Habitaciones: 1 | Banos: 1
+2025-09-30 04:45:51,721 - [INFO] -   Arriendo: $0
+2025-09-30 04:45:51,721 - [INFO] -   Venta: $142,500,000
+2025-09-30 04:45:51,721 - [INFO] - 
+Creando en destino con 109 campos...
+2025-09-30 04:45:52,027 - [INFO] - OK! Propiedad creada: APARTAMENTO -> ID [650]
+2025-09-30 04:45:52,027 - [INFO] - 
+[110/2498]
+2025-09-30 04:45:52,027 - [INFO] - 
+======================================================================
+2025-09-30 04:45:52,027 - [INFO] - Propiedad: OFICINA (ID origen: 10056)
+2025-09-30 04:45:52,672 - [INFO] - 
+Total campos a copiar: 108
+2025-09-30 04:45:52,672 - [INFO] - Resumen:
+2025-09-30 04:45:52,672 - [INFO] -   Propietario: 8885
+2025-09-30 04:45:52,672 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:45:52,672 - [INFO] -   Area: 0.0 m2
+2025-09-30 04:45:52,674 - [INFO] -   Habitaciones: 0 | Banos: 0
+2025-09-30 04:45:52,674 - [INFO] -   Arriendo: $800,000
+2025-09-30 04:45:52,674 - [INFO] -   Venta: $0
+2025-09-30 04:45:52,674 - [INFO] - 
+Creando en destino con 108 campos...
+2025-09-30 04:45:52,964 - [INFO] - OK! Propiedad creada: OFICINA -> ID [651]
+2025-09-30 04:45:52,965 - [INFO] - 
+[111/2498]
+2025-09-30 04:45:52,965 - [INFO] - 
+======================================================================
+2025-09-30 04:45:52,965 - [INFO] - Propiedad: OFICINA (ID origen: 10057)
+2025-09-30 04:45:53,594 - [INFO] - 
+Total campos a copiar: 108
+2025-09-30 04:45:53,595 - [INFO] - Resumen:
+2025-09-30 04:45:53,595 - [INFO] -   Propietario: 8885
+2025-09-30 04:45:53,595 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:45:53,595 - [INFO] -   Area: 0.0 m2
+2025-09-30 04:45:53,595 - [INFO] -   Habitaciones: 0 | Banos: 1
+2025-09-30 04:45:53,595 - [INFO] -   Arriendo: $800,000
+2025-09-30 04:45:53,595 - [INFO] -   Venta: $0
+2025-09-30 04:45:53,595 - [INFO] - 
+Creando en destino con 108 campos...
+2025-09-30 04:45:53,906 - [INFO] - OK! Propiedad creada: OFICINA -> ID [652]
+2025-09-30 04:45:53,906 - [INFO] - 
+[112/2498]
+2025-09-30 04:45:53,906 - [INFO] - 
+======================================================================
+2025-09-30 04:45:53,906 - [INFO] - Propiedad: OFICINA (ID origen: 10058)
+2025-09-30 04:45:54,524 - [INFO] - 
+Total campos a copiar: 108
+2025-09-30 04:45:54,524 - [INFO] - Resumen:
+2025-09-30 04:45:54,524 - [INFO] -   Propietario: 8885
+2025-09-30 04:45:54,524 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:45:54,524 - [INFO] -   Area: 0.0 m2
+2025-09-30 04:45:54,524 - [INFO] -   Habitaciones: 0 | Banos: 1
+2025-09-30 04:45:54,524 - [INFO] -   Arriendo: $800,000
+2025-09-30 04:45:54,524 - [INFO] -   Venta: $0
+2025-09-30 04:45:54,524 - [INFO] - 
+Creando en destino con 108 campos...
+2025-09-30 04:45:54,830 - [INFO] - OK! Propiedad creada: OFICINA -> ID [653]
+2025-09-30 04:45:54,831 - [INFO] - 
+[113/2498]
+2025-09-30 04:45:54,831 - [INFO] - 
+======================================================================
+2025-09-30 04:45:54,831 - [INFO] - Propiedad: OFICINA (ID origen: 10059)
+2025-09-30 04:45:55,450 - [INFO] - 
+Total campos a copiar: 108
+2025-09-30 04:45:55,451 - [INFO] - Resumen:
+2025-09-30 04:45:55,451 - [INFO] -   Propietario: 8885
+2025-09-30 04:45:55,451 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:45:55,451 - [INFO] -   Area: 0.0 m2
+2025-09-30 04:45:55,451 - [INFO] -   Habitaciones: 0 | Banos: 1
+2025-09-30 04:45:55,451 - [INFO] -   Arriendo: $800,000
+2025-09-30 04:45:55,451 - [INFO] -   Venta: $0
+2025-09-30 04:45:55,451 - [INFO] - 
+Creando en destino con 108 campos...
+2025-09-30 04:45:55,758 - [INFO] - OK! Propiedad creada: OFICINA -> ID [654]
+2025-09-30 04:45:55,758 - [INFO] - 
+[114/2498]
+2025-09-30 04:45:55,758 - [INFO] - 
+======================================================================
+2025-09-30 04:45:55,758 - [INFO] - Propiedad: OFICINA (ID origen: 10060)
+2025-09-30 04:45:56,422 - [INFO] - 
+Total campos a copiar: 108
+2025-09-30 04:45:56,422 - [INFO] - Resumen:
+2025-09-30 04:45:56,422 - [INFO] -   Propietario: 8885
+2025-09-30 04:45:56,422 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:45:56,422 - [INFO] -   Area: 0.0 m2
+2025-09-30 04:45:56,422 - [INFO] -   Habitaciones: 0 | Banos: 1
+2025-09-30 04:45:56,422 - [INFO] -   Arriendo: $800,000
+2025-09-30 04:45:56,422 - [INFO] -   Venta: $0
+2025-09-30 04:45:56,422 - [INFO] - 
+Creando en destino con 108 campos...
+2025-09-30 04:45:56,729 - [INFO] - OK! Propiedad creada: OFICINA -> ID [655]
+2025-09-30 04:45:56,730 - [INFO] - 
+[115/2498]
+2025-09-30 04:45:56,730 - [INFO] - 
+======================================================================
+2025-09-30 04:45:56,730 - [INFO] - Propiedad: OFICINA (ID origen: 10061)
+2025-09-30 04:45:57,347 - [INFO] - 
+Total campos a copiar: 108
+2025-09-30 04:45:57,348 - [INFO] - Resumen:
+2025-09-30 04:45:57,348 - [INFO] -   Propietario: 8885
+2025-09-30 04:45:57,348 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:45:57,348 - [INFO] -   Area: 0.0 m2
+2025-09-30 04:45:57,348 - [INFO] -   Habitaciones: 0 | Banos: 1
+2025-09-30 04:45:57,348 - [INFO] -   Arriendo: $800,000
+2025-09-30 04:45:57,348 - [INFO] -   Venta: $0
+2025-09-30 04:45:57,348 - [INFO] - 
+Creando en destino con 108 campos...
+2025-09-30 04:45:57,654 - [INFO] - OK! Propiedad creada: OFICINA -> ID [656]
+2025-09-30 04:45:57,654 - [INFO] - 
+[116/2498]
+2025-09-30 04:45:57,654 - [INFO] - 
+======================================================================
+2025-09-30 04:45:57,654 - [INFO] - Propiedad: OFICINA (ID origen: 10062)
+2025-09-30 04:45:58,276 - [INFO] - 
+Total campos a copiar: 107
+2025-09-30 04:45:58,277 - [INFO] - Resumen:
+2025-09-30 04:45:58,277 - [INFO] -   Propietario: 8885
+2025-09-30 04:45:58,277 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:45:58,277 - [INFO] -   Area: 0.0 m2
+2025-09-30 04:45:58,277 - [INFO] -   Habitaciones: 0 | Banos: 1
+2025-09-30 04:45:58,277 - [INFO] -   Arriendo: $800,000
+2025-09-30 04:45:58,277 - [INFO] -   Venta: $0
+2025-09-30 04:45:58,277 - [INFO] - 
+Creando en destino con 107 campos...
+2025-09-30 04:45:58,580 - [INFO] - OK! Propiedad creada: OFICINA -> ID [657]
+2025-09-30 04:45:58,580 - [INFO] - 
+[117/2498]
+2025-09-30 04:45:58,580 - [INFO] - 
+======================================================================
+2025-09-30 04:45:58,580 - [INFO] - Propiedad: OFICINA (ID origen: 10063)
+2025-09-30 04:45:59,208 - [INFO] - 
+Total campos a copiar: 108
+2025-09-30 04:45:59,208 - [INFO] - Resumen:
+2025-09-30 04:45:59,209 - [INFO] -   Propietario: 8885
+2025-09-30 04:45:59,209 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:45:59,209 - [INFO] -   Area: 0.0 m2
+2025-09-30 04:45:59,209 - [INFO] -   Habitaciones: 0 | Banos: 1
+2025-09-30 04:45:59,209 - [INFO] -   Arriendo: $800,000
+2025-09-30 04:45:59,209 - [INFO] -   Venta: $0
+2025-09-30 04:45:59,209 - [INFO] - 
+Creando en destino con 108 campos...
+2025-09-30 04:45:59,621 - [INFO] - OK! Propiedad creada: OFICINA -> ID [658]
+2025-09-30 04:45:59,621 - [INFO] - 
+[118/2498]
+2025-09-30 04:45:59,621 - [INFO] - 
+======================================================================
+2025-09-30 04:45:59,621 - [INFO] - Propiedad: OFICINA (ID origen: 10064)
+2025-09-30 04:46:00,264 - [INFO] - 
+Total campos a copiar: 108
+2025-09-30 04:46:00,264 - [INFO] - Resumen:
+2025-09-30 04:46:00,264 - [INFO] -   Propietario: 8885
+2025-09-30 04:46:00,264 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:46:00,264 - [INFO] -   Area: 0.0 m2
+2025-09-30 04:46:00,264 - [INFO] -   Habitaciones: 0 | Banos: 1
+2025-09-30 04:46:00,264 - [INFO] -   Arriendo: $800,000
+2025-09-30 04:46:00,264 - [INFO] -   Venta: $0
+2025-09-30 04:46:00,264 - [INFO] - 
+Creando en destino con 108 campos...
+2025-09-30 04:46:00,571 - [INFO] - OK! Propiedad creada: OFICINA -> ID [659]
+2025-09-30 04:46:00,572 - [INFO] - 
+[119/2498]
+2025-09-30 04:46:00,572 - [INFO] - 
+======================================================================
+2025-09-30 04:46:00,572 - [INFO] - Propiedad: OFICINA (ID origen: 10065)
+2025-09-30 04:46:01,218 - [INFO] - 
+Total campos a copiar: 108
+2025-09-30 04:46:01,218 - [INFO] - Resumen:
+2025-09-30 04:46:01,218 - [INFO] -   Propietario: 8885
+2025-09-30 04:46:01,218 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:46:01,218 - [INFO] -   Area: 0.0 m2
+2025-09-30 04:46:01,219 - [INFO] -   Habitaciones: 0 | Banos: 1
+2025-09-30 04:46:01,219 - [INFO] -   Arriendo: $800,000
+2025-09-30 04:46:01,219 - [INFO] -   Venta: $0
+2025-09-30 04:46:01,219 - [INFO] - 
+Creando en destino con 108 campos...
+2025-09-30 04:46:01,531 - [INFO] - OK! Propiedad creada: OFICINA -> ID [660]
+2025-09-30 04:46:01,531 - [INFO] - 
+[120/2498]
+2025-09-30 04:46:01,531 - [INFO] - 
+======================================================================
+2025-09-30 04:46:01,531 - [INFO] - Propiedad: OFICINA (ID origen: 10066)
+2025-09-30 04:46:02,150 - [INFO] - 
+Total campos a copiar: 108
+2025-09-30 04:46:02,150 - [INFO] - Resumen:
+2025-09-30 04:46:02,150 - [INFO] -   Propietario: 8885
+2025-09-30 04:46:02,150 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:46:02,151 - [INFO] -   Area: 0.0 m2
+2025-09-30 04:46:02,151 - [INFO] -   Habitaciones: 0 | Banos: 1
+2025-09-30 04:46:02,151 - [INFO] -   Arriendo: $800,000
+2025-09-30 04:46:02,151 - [INFO] -   Venta: $0
+2025-09-30 04:46:02,151 - [INFO] - 
+Creando en destino con 108 campos...
+2025-09-30 04:46:02,469 - [INFO] - OK! Propiedad creada: OFICINA -> ID [661]
+2025-09-30 04:46:02,469 - [INFO] - 
+[121/2498]
+2025-09-30 04:46:02,469 - [INFO] - 
+======================================================================
+2025-09-30 04:46:02,469 - [INFO] - Propiedad: OFICINA (ID origen: 10067)
+2025-09-30 04:46:03,174 - [INFO] - 
+Total campos a copiar: 108
+2025-09-30 04:46:03,174 - [INFO] - Resumen:
+2025-09-30 04:46:03,174 - [INFO] -   Propietario: 8885
+2025-09-30 04:46:03,174 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:46:03,175 - [INFO] -   Area: 0.0 m2
+2025-09-30 04:46:03,175 - [INFO] -   Habitaciones: 0 | Banos: 1
+2025-09-30 04:46:03,175 - [INFO] -   Arriendo: $800,000
+2025-09-30 04:46:03,175 - [INFO] -   Venta: $0
+2025-09-30 04:46:03,175 - [INFO] - 
+Creando en destino con 108 campos...
+2025-09-30 04:46:03,526 - [INFO] - OK! Propiedad creada: OFICINA -> ID [662]
+2025-09-30 04:46:03,526 - [INFO] - 
+[122/2498]
+2025-09-30 04:46:03,526 - [INFO] - 
+======================================================================
+2025-09-30 04:46:03,527 - [INFO] - Propiedad: OFICINA (ID origen: 10068)
+2025-09-30 04:46:04,289 - [INFO] - 
+Total campos a copiar: 107
+2025-09-30 04:46:04,289 - [INFO] - Resumen:
+2025-09-30 04:46:04,289 - [INFO] -   Propietario: 8885
+2025-09-30 04:46:04,289 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:46:04,289 - [INFO] -   Area: 0.0 m2
+2025-09-30 04:46:04,289 - [INFO] -   Habitaciones: 0 | Banos: 1
+2025-09-30 04:46:04,289 - [INFO] -   Arriendo: $800,000
+2025-09-30 04:46:04,289 - [INFO] -   Venta: $0
+2025-09-30 04:46:04,289 - [INFO] - 
+Creando en destino con 107 campos...
+2025-09-30 04:46:04,656 - [INFO] - OK! Propiedad creada: OFICINA -> ID [663]
+2025-09-30 04:46:04,656 - [INFO] - 
+[123/2498]
+2025-09-30 04:46:04,656 - [INFO] - 
+======================================================================
+2025-09-30 04:46:04,656 - [INFO] - Propiedad: OFICINA (ID origen: 10069)
+2025-09-30 04:46:05,470 - [INFO] - 
+Total campos a copiar: 108
+2025-09-30 04:46:05,470 - [INFO] - Resumen:
+2025-09-30 04:46:05,470 - [INFO] -   Propietario: 8885
+2025-09-30 04:46:05,470 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:46:05,471 - [INFO] -   Area: 0.0 m2
+2025-09-30 04:46:05,471 - [INFO] -   Habitaciones: 0 | Banos: 1
+2025-09-30 04:46:05,471 - [INFO] -   Arriendo: $800,000
+2025-09-30 04:46:05,471 - [INFO] -   Venta: $0
+2025-09-30 04:46:05,471 - [INFO] - 
+Creando en destino con 108 campos...
+2025-09-30 04:46:05,809 - [INFO] - OK! Propiedad creada: OFICINA -> ID [664]
+2025-09-30 04:46:05,809 - [INFO] - 
+[124/2498]
+2025-09-30 04:46:05,809 - [INFO] - 
+======================================================================
+2025-09-30 04:46:05,809 - [INFO] - Propiedad: OFICINA (ID origen: 10070)
+2025-09-30 04:46:06,457 - [INFO] - 
+Total campos a copiar: 108
+2025-09-30 04:46:06,457 - [INFO] - Resumen:
+2025-09-30 04:46:06,457 - [INFO] -   Propietario: 8885
+2025-09-30 04:46:06,457 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:46:06,457 - [INFO] -   Area: 0.0 m2
+2025-09-30 04:46:06,457 - [INFO] -   Habitaciones: 0 | Banos: 1
+2025-09-30 04:46:06,457 - [INFO] -   Arriendo: $800,000
+2025-09-30 04:46:06,458 - [INFO] -   Venta: $0
+2025-09-30 04:46:06,458 - [INFO] - 
+Creando en destino con 108 campos...
+2025-09-30 04:46:06,758 - [INFO] - OK! Propiedad creada: OFICINA -> ID [665]
+2025-09-30 04:46:06,758 - [INFO] - 
+[125/2498]
+2025-09-30 04:46:06,758 - [INFO] - 
+======================================================================
+2025-09-30 04:46:06,758 - [INFO] - Propiedad: OFICINA (ID origen: 10071)
+2025-09-30 04:46:07,378 - [INFO] - 
+Total campos a copiar: 108
+2025-09-30 04:46:07,378 - [INFO] - Resumen:
+2025-09-30 04:46:07,379 - [INFO] -   Propietario: 8885
+2025-09-30 04:46:07,379 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:46:07,379 - [INFO] -   Area: 0.0 m2
+2025-09-30 04:46:07,379 - [INFO] -   Habitaciones: 0 | Banos: 1
+2025-09-30 04:46:07,379 - [INFO] -   Arriendo: $800,000
+2025-09-30 04:46:07,379 - [INFO] -   Venta: $0
+2025-09-30 04:46:07,379 - [INFO] - 
+Creando en destino con 108 campos...
+2025-09-30 04:46:07,690 - [INFO] - OK! Propiedad creada: OFICINA -> ID [666]
+2025-09-30 04:46:07,690 - [INFO] - 
+[126/2498]
+2025-09-30 04:46:07,690 - [INFO] - 
+======================================================================
+2025-09-30 04:46:07,690 - [INFO] - Propiedad: OFICINA (ID origen: 10072)
+2025-09-30 04:46:08,426 - [INFO] - 
+Total campos a copiar: 108
+2025-09-30 04:46:08,426 - [INFO] - Resumen:
+2025-09-30 04:46:08,426 - [INFO] -   Propietario: 8885
+2025-09-30 04:46:08,426 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:46:08,426 - [INFO] -   Area: 0.0 m2
+2025-09-30 04:46:08,426 - [INFO] -   Habitaciones: 0 | Banos: 1
+2025-09-30 04:46:08,426 - [INFO] -   Arriendo: $800,000
+2025-09-30 04:46:08,427 - [INFO] -   Venta: $0
+2025-09-30 04:46:08,427 - [INFO] - 
+Creando en destino con 108 campos...
+2025-09-30 04:46:08,693 - [INFO] - OK! Propiedad creada: OFICINA -> ID [667]
+2025-09-30 04:46:08,694 - [INFO] - 
+[127/2498]
+2025-09-30 04:46:08,694 - [INFO] - 
+======================================================================
+2025-09-30 04:46:08,694 - [INFO] - Propiedad: OFICINA (ID origen: 10073)
+2025-09-30 04:46:09,314 - [INFO] - 
+Total campos a copiar: 108
+2025-09-30 04:46:09,314 - [INFO] - Resumen:
+2025-09-30 04:46:09,314 - [INFO] -   Propietario: 8885
+2025-09-30 04:46:09,314 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:46:09,314 - [INFO] -   Area: 0.0 m2
+2025-09-30 04:46:09,314 - [INFO] -   Habitaciones: 0 | Banos: 1
+2025-09-30 04:46:09,314 - [INFO] -   Arriendo: $800,000
+2025-09-30 04:46:09,315 - [INFO] -   Venta: $0
+2025-09-30 04:46:09,315 - [INFO] - 
+Creando en destino con 108 campos...
+2025-09-30 04:46:09,630 - [INFO] - OK! Propiedad creada: OFICINA -> ID [668]
+2025-09-30 04:46:09,631 - [INFO] - 
+[128/2498]
+2025-09-30 04:46:09,631 - [INFO] - 
+======================================================================
+2025-09-30 04:46:09,631 - [INFO] - Propiedad: EDIFICIO (ID origen: 10074)
+2025-09-30 04:46:10,265 - [INFO] - 
+Total campos a copiar: 108
+2025-09-30 04:46:10,265 - [INFO] - Resumen:
+2025-09-30 04:46:10,265 - [INFO] -   Propietario: 8865
+2025-09-30 04:46:10,265 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:46:10,265 - [INFO] -   Area: 700.0 m2
+2025-09-30 04:46:10,265 - [INFO] -   Habitaciones: 0 | Banos: 0
+2025-09-30 04:46:10,265 - [INFO] -   Arriendo: $0
+2025-09-30 04:46:10,265 - [INFO] -   Venta: $1,420,000,000
+2025-09-30 04:46:10,267 - [INFO] - 
+Creando en destino con 108 campos...
+2025-09-30 04:46:10,574 - [INFO] - OK! Propiedad creada: EDIFICIO -> ID [669]
+2025-09-30 04:46:10,575 - [INFO] - 
+[129/2498]
+2025-09-30 04:46:10,575 - [INFO] - 
+======================================================================
+2025-09-30 04:46:10,575 - [INFO] - Propiedad: APARTAMENTO (ID origen: 10075)
+2025-09-30 04:46:11,368 - [INFO] -    + Partner existente (Nombre): UDALGINA DEL ROSARIO VASQUEZ TRIVIÑO -> 10036
+2025-09-30 04:46:11,872 - [INFO] - 
+Total campos a copiar: 110
+2025-09-30 04:46:11,872 - [INFO] - Resumen:
+2025-09-30 04:46:11,872 - [INFO] -   Propietario: 10036
+2025-09-30 04:46:11,872 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:46:11,872 - [INFO] -   Area: 104.0 m2
+2025-09-30 04:46:11,872 - [INFO] -   Habitaciones: 3 | Banos: 2
+2025-09-30 04:46:11,872 - [INFO] -   Arriendo: $1,100,000
+2025-09-30 04:46:11,874 - [INFO] -   Venta: $0
+2025-09-30 04:46:11,874 - [INFO] - 
+Creando en destino con 110 campos...
+2025-09-30 04:46:12,363 - [INFO] - OK! Propiedad creada: APARTAMENTO -> ID [670]
+2025-09-30 04:46:12,363 - [INFO] - 
+[130/2498]
+2025-09-30 04:46:12,364 - [INFO] - 
+======================================================================
+2025-09-30 04:46:12,364 - [INFO] - Propiedad: APARTAMENTO (ID origen: 10076)
+2025-09-30 04:46:13,132 - [INFO] -    + Partner existente (Nombre): CESAR JAVIER CUADRADO BANDA -> 8397
+2025-09-30 04:46:13,539 - [INFO] - 
+Total campos a copiar: 110
+2025-09-30 04:46:13,539 - [INFO] - Resumen:
+2025-09-30 04:46:13,539 - [INFO] -   Propietario: 8397
+2025-09-30 04:46:13,539 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:46:13,540 - [INFO] -   Area: 90.0 m2
+2025-09-30 04:46:13,540 - [INFO] -   Habitaciones: 4 | Banos: 3
+2025-09-30 04:46:13,540 - [INFO] -   Arriendo: $1,100,000
+2025-09-30 04:46:13,540 - [INFO] -   Venta: $0
+2025-09-30 04:46:13,540 - [INFO] - 
+Creando en destino con 110 campos...
+2025-09-30 04:46:13,834 - [INFO] - OK! Propiedad creada: APARTAMENTO -> ID [671]
+2025-09-30 04:46:13,834 - [INFO] - 
+[131/2498]
+2025-09-30 04:46:13,834 - [INFO] - 
+======================================================================
+2025-09-30 04:46:13,834 - [INFO] - Propiedad: CASA (ID origen: 10077)
+2025-09-30 04:46:14,592 - [INFO] -    + Partner existente (Nombre): EVERLIDES GUARIN DE RUIZ -> 8694
+2025-09-30 04:46:14,991 - [INFO] - 
+Total campos a copiar: 107
+2025-09-30 04:46:14,991 - [INFO] - Resumen:
+2025-09-30 04:46:14,991 - [INFO] -   Propietario: 8694
+2025-09-30 04:46:14,991 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:46:14,991 - [INFO] -   Area: 450.0 m2
+2025-09-30 04:46:14,991 - [INFO] -   Habitaciones: 6 | Banos: 4
+2025-09-30 04:46:14,992 - [INFO] -   Arriendo: $0
+2025-09-30 04:46:14,992 - [INFO] -   Venta: $710,000,000
+2025-09-30 04:46:14,992 - [INFO] - 
+Creando en destino con 107 campos...
+2025-09-30 04:46:15,299 - [INFO] - OK! Propiedad creada: CASA -> ID [672]
+2025-09-30 04:46:15,299 - [INFO] - 
+[132/2498]
+2025-09-30 04:46:15,299 - [INFO] - 
+======================================================================
+2025-09-30 04:46:15,299 - [INFO] - Propiedad: CASA (ID origen: 10078)
+2025-09-30 04:46:15,914 - [INFO] - 
+Total campos a copiar: 107
+2025-09-30 04:46:15,915 - [INFO] - Resumen:
+2025-09-30 04:46:15,915 - [INFO] -   Propietario: 8694
+2025-09-30 04:46:15,915 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:46:15,915 - [INFO] -   Area: 450.0 m2
+2025-09-30 04:46:15,915 - [INFO] -   Habitaciones: 0 | Banos: 0
+2025-09-30 04:46:15,915 - [INFO] -   Arriendo: $4,000,000
+2025-09-30 04:46:15,915 - [INFO] -   Venta: $0
+2025-09-30 04:46:15,915 - [INFO] - 
+Creando en destino con 107 campos...
+2025-09-30 04:46:16,222 - [INFO] - OK! Propiedad creada: CASA -> ID [673]
+2025-09-30 04:46:16,223 - [INFO] - 
+[133/2498]
+2025-09-30 04:46:16,223 - [INFO] - 
+======================================================================
+2025-09-30 04:46:16,223 - [INFO] - Propiedad: CASA (ID origen: 10079)
+2025-09-30 04:46:16,985 - [INFO] -    + Partner existente (Nombre): JONES RAFAEL LLANOS AYOLA -> 9031
+2025-09-30 04:46:17,184 - [INFO] -    ? Ciudad 'MONTERÍA (230017)' no encontrada, buscando por barrio 'altos de alejandría [MONTERÍA - Córdoba CO] '...
+2025-09-30 04:46:17,585 - [INFO] - 
+Total campos a copiar: 108
+2025-09-30 04:46:17,585 - [INFO] - Resumen:
+2025-09-30 04:46:17,585 - [INFO] -   Propietario: 9031
+2025-09-30 04:46:17,585 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio altos de alejandría [MONTERÍA - Córdoba CO]  [X]
+2025-09-30 04:46:17,586 - [INFO] -   Area: 500.0 m2
+2025-09-30 04:46:17,586 - [INFO] -   Habitaciones: 5 | Banos: 4
+2025-09-30 04:46:17,586 - [INFO] -   Arriendo: $0
+2025-09-30 04:46:17,586 - [INFO] -   Venta: $1,300,000,000
+2025-09-30 04:46:17,586 - [INFO] -   Amenidades: Garage
+2025-09-30 04:46:17,586 - [INFO] - 
+Creando en destino con 108 campos...
+2025-09-30 04:46:17,886 - [INFO] - OK! Propiedad creada: CASA -> ID [674]
+2025-09-30 04:46:17,886 - [INFO] - 
+[134/2498]
+2025-09-30 04:46:17,886 - [INFO] - 
+======================================================================
+2025-09-30 04:46:17,886 - [INFO] - Propiedad: CASA (ID origen: 10080)
+2025-09-30 04:46:18,380 - [INFO] -    ? Ciudad 'MONTERÍA (230017)' no encontrada, buscando por barrio 'altos de alejandría [MONTERÍA - Córdoba CO] '...
+2025-09-30 04:46:18,714 - [INFO] - 
+Total campos a copiar: 109
+2025-09-30 04:46:18,714 - [INFO] - Resumen:
+2025-09-30 04:46:18,714 - [INFO] -   Propietario: 9031
+2025-09-30 04:46:18,714 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio altos de alejandría [MONTERÍA - Córdoba CO]  [X]
+2025-09-30 04:46:18,714 - [INFO] -   Area: 500.0 m2
+2025-09-30 04:46:18,714 - [INFO] -   Habitaciones: 5 | Banos: 4
+2025-09-30 04:46:18,714 - [INFO] -   Arriendo: $10,000,000
+2025-09-30 04:46:18,714 - [INFO] -   Venta: $0
+2025-09-30 04:46:18,714 - [INFO] -   Amenidades: Garage
+2025-09-30 04:46:18,714 - [INFO] - 
+Creando en destino con 109 campos...
+2025-09-30 04:46:19,017 - [INFO] - OK! Propiedad creada: CASA -> ID [675]
+2025-09-30 04:46:19,017 - [INFO] - 
+[135/2498]
+2025-09-30 04:46:19,017 - [INFO] - 
+======================================================================
+2025-09-30 04:46:19,017 - [INFO] - Propiedad: OFICINA (ID origen: 10081)
+2025-09-30 04:46:19,790 - [INFO] -    + Partner existente (Nombre): TEDDY VILLADIEGO DE FRANCIS -> 10017
+2025-09-30 04:46:20,179 - [INFO] - 
+Total campos a copiar: 108
+2025-09-30 04:46:20,181 - [INFO] - Resumen:
+2025-09-30 04:46:20,181 - [INFO] -   Propietario: 10017
+2025-09-30 04:46:20,181 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:46:20,181 - [INFO] -   Area: 40.0 m2
+2025-09-30 04:46:20,181 - [INFO] -   Habitaciones: 0 | Banos: 0
+2025-09-30 04:46:20,181 - [INFO] -   Arriendo: $504,201
+2025-09-30 04:46:20,181 - [INFO] -   Venta: $0
+2025-09-30 04:46:20,181 - [INFO] - 
+Creando en destino con 108 campos...
+2025-09-30 04:46:20,670 - [INFO] - OK! Propiedad creada: OFICINA -> ID [676]
+2025-09-30 04:46:20,670 - [INFO] - 
+[136/2498]
+2025-09-30 04:46:20,670 - [INFO] - 
+======================================================================
+2025-09-30 04:46:20,670 - [INFO] - Propiedad: CASA (ID origen: 10082)
+2025-09-30 04:46:21,432 - [INFO] -    + Partner existente (Nombre): MARY DEL SOCORRO ORTIZ HERRERA -> 9577
+2025-09-30 04:46:21,829 - [INFO] - 
+Total campos a copiar: 108
+2025-09-30 04:46:21,829 - [INFO] - Resumen:
+2025-09-30 04:46:21,829 - [INFO] -   Propietario: 9577
+2025-09-30 04:46:21,829 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:46:21,829 - [INFO] -   Area: 377.0 m2
+2025-09-30 04:46:21,829 - [INFO] -   Habitaciones: 3 | Banos: 2
+2025-09-30 04:46:21,829 - [INFO] -   Arriendo: $0
+2025-09-30 04:46:21,830 - [INFO] -   Venta: $455,000,000
+2025-09-30 04:46:21,830 - [INFO] -   Amenidades: Garage
+2025-09-30 04:46:21,830 - [INFO] - 
+Creando en destino con 108 campos...
+2025-09-30 04:46:22,153 - [INFO] - OK! Propiedad creada: CASA -> ID [677]
+2025-09-30 04:46:22,153 - [INFO] - 
+[137/2498]
+2025-09-30 04:46:22,153 - [INFO] - 
+======================================================================
+2025-09-30 04:46:22,153 - [INFO] - Propiedad: BODEGA (ID origen: 10083)
+2025-09-30 04:46:22,935 - [INFO] -    + Partner existente (Nombre): LIBARDO JOSE LOPÉZ JIMENEZ -> 9250
+2025-09-30 04:46:23,323 - [INFO] - 
+Total campos a copiar: 109
+2025-09-30 04:46:23,323 - [INFO] - Resumen:
+2025-09-30 04:46:23,323 - [INFO] -   Propietario: 9250
+2025-09-30 04:46:23,323 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:46:23,323 - [INFO] -   Area: 250.0 m2
+2025-09-30 04:46:23,323 - [INFO] -   Habitaciones: 0 | Banos: 1
+2025-09-30 04:46:23,323 - [INFO] -   Arriendo: $0
+2025-09-30 04:46:23,323 - [INFO] -   Venta: $600,000,000
+2025-09-30 04:46:23,323 - [INFO] - 
+Creando en destino con 109 campos...
+2025-09-30 04:46:23,627 - [INFO] - OK! Propiedad creada: BODEGA -> ID [678]
+2025-09-30 04:46:23,627 - [INFO] - 
+[138/2498]
+2025-09-30 04:46:23,627 - [INFO] - 
+======================================================================
+2025-09-30 04:46:23,627 - [INFO] - Propiedad: LOTE (ID origen: 10084)
+2025-09-30 04:46:24,389 - [INFO] -    + Partner existente (Nombre): FREDY JOSÉ GONZALEZ PÉREZ -> 8761
+2025-09-30 04:46:24,789 - [INFO] - 
+Total campos a copiar: 107
+2025-09-30 04:46:24,789 - [INFO] - Resumen:
+2025-09-30 04:46:24,789 - [INFO] -   Propietario: 8761
+2025-09-30 04:46:24,789 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:46:24,789 - [INFO] -   Area: 1476.0 m2
+2025-09-30 04:46:24,789 - [INFO] -   Habitaciones: 0 | Banos: 0
+2025-09-30 04:46:24,789 - [INFO] -   Arriendo: $0
+2025-09-30 04:46:24,790 - [INFO] -   Venta: $3,986,000,000
+2025-09-30 04:46:24,790 - [INFO] - 
+Creando en destino con 107 campos...
+2025-09-30 04:46:25,106 - [INFO] - OK! Propiedad creada: LOTE -> ID [679]
+2025-09-30 04:46:25,106 - [INFO] - 
+[139/2498]
+2025-09-30 04:46:25,106 - [INFO] - 
+======================================================================
+2025-09-30 04:46:25,106 - [INFO] - Propiedad: LOCAL (ID origen: 10085)
+2025-09-30 04:46:25,884 - [INFO] -    + Partner existente (Nombre): MAIKOL BUELVAS -> 9417
+2025-09-30 04:46:26,282 - [INFO] - 
+Total campos a copiar: 108
+2025-09-30 04:46:26,282 - [INFO] - Resumen:
+2025-09-30 04:46:26,282 - [INFO] -   Propietario: 9417
+2025-09-30 04:46:26,282 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:46:26,282 - [INFO] -   Area: 25.0 m2
+2025-09-30 04:46:26,282 - [INFO] -   Habitaciones: 0 | Banos: 1
+2025-09-30 04:46:26,284 - [INFO] -   Arriendo: $1,500,000
+2025-09-30 04:46:26,284 - [INFO] -   Venta: $0
+2025-09-30 04:46:26,284 - [INFO] - 
+Creando en destino con 108 campos...
+2025-09-30 04:46:26,587 - [INFO] - OK! Propiedad creada: LOCAL -> ID [680]
+2025-09-30 04:46:26,588 - [INFO] - 
+[140/2498]
+2025-09-30 04:46:26,588 - [INFO] - 
+======================================================================
+2025-09-30 04:46:26,588 - [INFO] - Propiedad: LOCAL (ID origen: 10086)
+2025-09-30 04:46:27,213 - [INFO] - 
+Total campos a copiar: 108
+2025-09-30 04:46:27,213 - [INFO] - Resumen:
+2025-09-30 04:46:27,213 - [INFO] -   Propietario: 9417
+2025-09-30 04:46:27,213 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:46:27,213 - [INFO] -   Area: 12.0 m2
+2025-09-30 04:46:27,213 - [INFO] -   Habitaciones: 0 | Banos: 1
+2025-09-30 04:46:27,213 - [INFO] -   Arriendo: $1,500,000
+2025-09-30 04:46:27,213 - [INFO] -   Venta: $0
+2025-09-30 04:46:27,213 - [INFO] - 
+Creando en destino con 108 campos...
+2025-09-30 04:46:27,507 - [INFO] - OK! Propiedad creada: LOCAL -> ID [681]
+2025-09-30 04:46:27,507 - [INFO] - 
+[141/2498]
+2025-09-30 04:46:27,507 - [INFO] - 
+======================================================================
+2025-09-30 04:46:27,507 - [INFO] - Propiedad: LOCAL (ID origen: 10087)
+2025-09-30 04:46:28,128 - [INFO] - 
+Total campos a copiar: 108
+2025-09-30 04:46:28,128 - [INFO] - Resumen:
+2025-09-30 04:46:28,128 - [INFO] -   Propietario: 9417
+2025-09-30 04:46:28,128 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:46:28,128 - [INFO] -   Area: 25.0 m2
+2025-09-30 04:46:28,128 - [INFO] -   Habitaciones: 0 | Banos: 1
+2025-09-30 04:46:28,128 - [INFO] -   Arriendo: $1,500,000
+2025-09-30 04:46:28,129 - [INFO] -   Venta: $0
+2025-09-30 04:46:28,129 - [INFO] - 
+Creando en destino con 108 campos...
+2025-09-30 04:46:28,429 - [INFO] - OK! Propiedad creada: LOCAL -> ID [682]
+2025-09-30 04:46:28,429 - [INFO] - 
+[142/2498]
+2025-09-30 04:46:28,429 - [INFO] - 
+======================================================================
+2025-09-30 04:46:28,430 - [INFO] - Propiedad: LOCAL (ID origen: 10088)
+2025-09-30 04:46:29,069 - [INFO] - 
+Total campos a copiar: 108
+2025-09-30 04:46:29,069 - [INFO] - Resumen:
+2025-09-30 04:46:29,069 - [INFO] -   Propietario: 9417
+2025-09-30 04:46:29,069 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:46:29,069 - [INFO] -   Area: 25.0 m2
+2025-09-30 04:46:29,069 - [INFO] -   Habitaciones: 0 | Banos: 1
+2025-09-30 04:46:29,070 - [INFO] -   Arriendo: $1,500,000
+2025-09-30 04:46:29,070 - [INFO] -   Venta: $0
+2025-09-30 04:46:29,070 - [INFO] - 
+Creando en destino con 108 campos...
+2025-09-30 04:46:29,411 - [INFO] - OK! Propiedad creada: LOCAL -> ID [683]
+2025-09-30 04:46:29,411 - [INFO] - 
+[143/2498]
+2025-09-30 04:46:29,411 - [INFO] - 
+======================================================================
+2025-09-30 04:46:29,411 - [INFO] - Propiedad: LOCAL (ID origen: 10089)
+2025-09-30 04:46:30,424 - [INFO] -    + Partner existente (Nombre): ALFONSO ALBERTO TAFUR NOVA -> 8073
+2025-09-30 04:46:30,810 - [INFO] - 
+Total campos a copiar: 110
+2025-09-30 04:46:30,810 - [INFO] - Resumen:
+2025-09-30 04:46:30,810 - [INFO] -   Propietario: 8073
+2025-09-30 04:46:30,810 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:46:30,810 - [INFO] -   Area: 77.0 m2
+2025-09-30 04:46:30,810 - [INFO] -   Habitaciones: 0 | Banos: 1
+2025-09-30 04:46:30,810 - [INFO] -   Arriendo: $1,200,000
+2025-09-30 04:46:30,810 - [INFO] -   Venta: $0
+2025-09-30 04:46:30,810 - [INFO] - 
+Creando en destino con 110 campos...
+2025-09-30 04:46:31,305 - [INFO] - OK! Propiedad creada: LOCAL -> ID [684]
+2025-09-30 04:46:31,305 - [INFO] - 
+[144/2498]
+2025-09-30 04:46:31,305 - [INFO] - 
+======================================================================
+2025-09-30 04:46:31,305 - [INFO] - Propiedad: OFICINA (ID origen: 10090)
+2025-09-30 04:46:32,592 - [INFO] -    + Partner existente (Nombre): MARIA DEL PILAR BURGOS DE LA ESPRIELLA -> 9489
+2025-09-30 04:46:33,194 - [INFO] - 
+Total campos a copiar: 110
+2025-09-30 04:46:33,194 - [INFO] - Resumen:
+2025-09-30 04:46:33,194 - [INFO] -   Propietario: 9489
+2025-09-30 04:46:33,194 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:46:33,194 - [INFO] -   Area: 68.0 m2
+2025-09-30 04:46:33,194 - [INFO] -   Habitaciones: 0 | Banos: 1
+2025-09-30 04:46:33,195 - [INFO] -   Arriendo: $0
+2025-09-30 04:46:33,195 - [INFO] -   Venta: $320,000,000
+2025-09-30 04:46:33,195 - [INFO] - 
+Creando en destino con 110 campos...
+2025-09-30 04:46:33,532 - [INFO] - OK! Propiedad creada: OFICINA -> ID [685]
+2025-09-30 04:46:33,532 - [INFO] - 
+[145/2498]
+2025-09-30 04:46:33,532 - [INFO] - 
+======================================================================
+2025-09-30 04:46:33,532 - [INFO] - Propiedad: APARTAMENTO (ID origen: 10091)
+2025-09-30 04:46:34,284 - [INFO] -    + Partner existente (Nombre): ADA LUZ HOYOS ZAPA -> 8023
+2025-09-30 04:46:34,684 - [INFO] - 
+Total campos a copiar: 111
+2025-09-30 04:46:34,684 - [INFO] - Resumen:
+2025-09-30 04:46:34,684 - [INFO] -   Propietario: 8023
+2025-09-30 04:46:34,684 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:46:34,684 - [INFO] -   Area: 73.0 m2
+2025-09-30 04:46:34,684 - [INFO] -   Habitaciones: 2 | Banos: 2
+2025-09-30 04:46:34,684 - [INFO] -   Arriendo: $0
+2025-09-30 04:46:34,684 - [INFO] -   Venta: $160,000,000
+2025-09-30 04:46:34,684 - [INFO] - 
+Creando en destino con 111 campos...
+2025-09-30 04:46:34,985 - [INFO] - OK! Propiedad creada: APARTAMENTO -> ID [686]
+2025-09-30 04:46:34,986 - [INFO] - 
+[146/2498]
+2025-09-30 04:46:34,986 - [INFO] - 
+======================================================================
+2025-09-30 04:46:34,986 - [INFO] - Propiedad: CASA (ID origen: 10092)
+2025-09-30 04:46:35,764 - [INFO] -    + Partner existente (Nombre): JUDITH RESTREPO DEL TORO -> 9157
+2025-09-30 04:46:36,152 - [INFO] - 
+Total campos a copiar: 108
+2025-09-30 04:46:36,153 - [INFO] - Resumen:
+2025-09-30 04:46:36,153 - [INFO] -   Propietario: 9157
+2025-09-30 04:46:36,153 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:46:36,153 - [INFO] -   Area: 509.0 m2
+2025-09-30 04:46:36,153 - [INFO] -   Habitaciones: 5 | Banos: 4
+2025-09-30 04:46:36,153 - [INFO] -   Arriendo: $0
+2025-09-30 04:46:36,153 - [INFO] -   Venta: $700,000,000
+2025-09-30 04:46:36,153 - [INFO] -   Amenidades: Garage
+2025-09-30 04:46:36,153 - [INFO] - 
+Creando en destino con 108 campos...
+2025-09-30 04:46:36,452 - [INFO] - OK! Propiedad creada: CASA -> ID [687]
+2025-09-30 04:46:36,453 - [INFO] - 
+[147/2498]
+2025-09-30 04:46:36,453 - [INFO] - 
+======================================================================
+2025-09-30 04:46:36,453 - [INFO] - Propiedad: CASA (ID origen: 10093)
+2025-09-30 04:46:37,219 - [INFO] -    + Partner existente (Nombre): RAFAEL MONTES -> 9829
+2025-09-30 04:46:37,607 - [INFO] - 
+Total campos a copiar: 109
+2025-09-30 04:46:37,607 - [INFO] - Resumen:
+2025-09-30 04:46:37,607 - [INFO] -   Propietario: 9829
+2025-09-30 04:46:37,607 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Cereté [X], Barrio N/A [X]
+2025-09-30 04:46:37,608 - [INFO] -   Area: 1800.0 m2
+2025-09-30 04:46:37,608 - [INFO] -   Habitaciones: 3 | Banos: 3
+2025-09-30 04:46:37,608 - [INFO] -   Arriendo: $0
+2025-09-30 04:46:37,608 - [INFO] -   Venta: $580,000,000
+2025-09-30 04:46:37,608 - [INFO] -   Amenidades: Garage
+2025-09-30 04:46:37,608 - [INFO] - 
+Creando en destino con 109 campos...
+2025-09-30 04:46:37,908 - [INFO] - OK! Propiedad creada: CASA -> ID [688]
+2025-09-30 04:46:37,908 - [INFO] - 
+[148/2498]
+2025-09-30 04:46:37,908 - [INFO] - 
+======================================================================
+2025-09-30 04:46:37,908 - [INFO] - Propiedad: FINCA (ID origen: 10094)
+2025-09-30 04:46:38,679 - [INFO] -    + Partner existente (Nombre): ARNOLD GUSTAVO ARTEAGA NEGRETE -> 8223
+2025-09-30 04:46:39,075 - [INFO] - 
+Total campos a copiar: 107
+2025-09-30 04:46:39,075 - [INFO] - Resumen:
+2025-09-30 04:46:39,075 - [INFO] -   Propietario: 8223
+2025-09-30 04:46:39,075 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:46:39,075 - [INFO] -   Area: 30000.0 m2
+2025-09-30 04:46:39,075 - [INFO] -   Habitaciones: 0 | Banos: 1
+2025-09-30 04:46:39,075 - [INFO] -   Arriendo: $0
+2025-09-30 04:46:39,075 - [INFO] -   Venta: $110,000,000
+2025-09-30 04:46:39,075 - [INFO] - 
+Creando en destino con 107 campos...
+2025-09-30 04:46:39,382 - [INFO] - OK! Propiedad creada: FINCA -> ID [689]
+2025-09-30 04:46:39,382 - [INFO] - 
+[149/2498]
+2025-09-30 04:46:39,382 - [INFO] - 
+======================================================================
+2025-09-30 04:46:39,382 - [INFO] - Propiedad: CASA (ID origen: 10095)
+2025-09-30 04:46:40,167 - [INFO] -    + Partner existente (Nombre): FREDY SARMIENTO OROZCO -> 8762
+2025-09-30 04:46:40,371 - [INFO] -    ? Ciudad 'MONTERÍA (230017)' no encontrada, buscando por barrio 'pasatiempo [MONTERÍA - Córdoba CO] '...
+2025-09-30 04:46:40,765 - [INFO] - 
+Total campos a copiar: 107
+2025-09-30 04:46:40,765 - [INFO] - Resumen:
+2025-09-30 04:46:40,765 - [INFO] -   Propietario: 8762
+2025-09-30 04:46:40,765 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio pasatiempo [MONTERÍA - Córdoba CO]  [X]
+2025-09-30 04:46:40,765 - [INFO] -   Area: 400.0 m2
+2025-09-30 04:46:40,767 - [INFO] -   Habitaciones: 4 | Banos: 4
+2025-09-30 04:46:40,767 - [INFO] -   Arriendo: $0
+2025-09-30 04:46:40,767 - [INFO] -   Venta: $700,000,000
+2025-09-30 04:46:40,767 - [INFO] -   Amenidades: Garage
+2025-09-30 04:46:40,767 - [INFO] - 
+Creando en destino con 107 campos...
+2025-09-30 04:46:41,067 - [INFO] - OK! Propiedad creada: CASA -> ID [690]
+2025-09-30 04:46:41,067 - [INFO] - 
+[150/2498]
+2025-09-30 04:46:41,067 - [INFO] - 
+======================================================================
+2025-09-30 04:46:41,067 - [INFO] - Propiedad: CASA (ID origen: 10096)
+2025-09-30 04:46:41,681 - [INFO] - 
+Total campos a copiar: 108
+2025-09-30 04:46:41,681 - [INFO] - Resumen:
+2025-09-30 04:46:41,681 - [INFO] -   Propietario: 8762
+2025-09-30 04:46:41,681 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:46:41,681 - [INFO] -   Area: 400.0 m2
+2025-09-30 04:46:41,681 - [INFO] -   Habitaciones: 4 | Banos: 4
+2025-09-30 04:46:41,681 - [INFO] -   Arriendo: $4,500,000
+2025-09-30 04:46:41,681 - [INFO] -   Venta: $0
+2025-09-30 04:46:41,681 - [INFO] -   Amenidades: Garage
+2025-09-30 04:46:41,681 - [INFO] - 
+Creando en destino con 108 campos...
+2025-09-30 04:46:42,002 - [INFO] - OK! Propiedad creada: CASA -> ID [691]
+2025-09-30 04:46:42,002 - [INFO] - 
+[151/2498]
+2025-09-30 04:46:42,002 - [INFO] - 
+======================================================================
+2025-09-30 04:46:42,002 - [INFO] - Propiedad: APARTAMENTO (ID origen: 10097)
+2025-09-30 04:46:42,805 - [INFO] -    + Partner existente (Nombre): YICELA CAROLINA URBIÑA NAVAS -> 10102
+2025-09-30 04:46:43,202 - [INFO] - 
+Total campos a copiar: 108
+2025-09-30 04:46:43,202 - [INFO] - Resumen:
+2025-09-30 04:46:43,202 - [INFO] -   Propietario: 10102
+2025-09-30 04:46:43,202 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:46:43,202 - [INFO] -   Area: 143.0 m2
+2025-09-30 04:46:43,202 - [INFO] -   Habitaciones: 3 | Banos: 3
+2025-09-30 04:46:43,202 - [INFO] -   Arriendo: $0
+2025-09-30 04:46:43,202 - [INFO] -   Venta: $285,000,000
+2025-09-30 04:46:43,202 - [INFO] - 
+Creando en destino con 108 campos...
+2025-09-30 04:46:43,518 - [INFO] - OK! Propiedad creada: APARTAMENTO -> ID [692]
+2025-09-30 04:46:43,518 - [INFO] - 
+[152/2498]
+2025-09-30 04:46:43,518 - [INFO] - 
+======================================================================
+2025-09-30 04:46:43,518 - [INFO] - Propiedad: CASA FINCA (ID origen: 10098)
+2025-09-30 04:46:44,270 - [INFO] -    + Partner existente (Nombre): RUBEN DARIO PRIOLÓ SÁNCHEZ -> 9937
+2025-09-30 04:46:44,869 - [INFO] - 
+Total campos a copiar: 110
+2025-09-30 04:46:44,870 - [INFO] - Resumen:
+2025-09-30 04:46:44,870 - [INFO] -   Propietario: 9937
+2025-09-30 04:46:44,870 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:46:44,870 - [INFO] -   Area: 7000.0 m2
+2025-09-30 04:46:44,870 - [INFO] -   Habitaciones: 0 | Banos: 0
+2025-09-30 04:46:44,870 - [INFO] -   Arriendo: $0
+2025-09-30 04:46:44,870 - [INFO] -   Venta: $220,000,000
+2025-09-30 04:46:44,870 - [INFO] - 
+Creando en destino con 110 campos...
+2025-09-30 04:46:45,178 - [INFO] - OK! Propiedad creada: CASA FINCA -> ID [693]
+2025-09-30 04:46:45,178 - [INFO] - 
+[153/2498]
+2025-09-30 04:46:45,178 - [INFO] - 
+======================================================================
+2025-09-30 04:46:45,178 - [INFO] - Propiedad: LOTE (ID origen: 10099)
+2025-09-30 04:46:45,945 - [INFO] -    + Partner existente (Nombre): PEDRO JUAN ROJAS CARRASCAL -> 9788
+2025-09-30 04:46:46,339 - [INFO] - 
+Total campos a copiar: 108
+2025-09-30 04:46:46,339 - [INFO] - Resumen:
+2025-09-30 04:46:46,339 - [INFO] -   Propietario: 9788
+2025-09-30 04:46:46,339 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:46:46,339 - [INFO] -   Area: 170.0 m2
+2025-09-30 04:46:46,339 - [INFO] -   Habitaciones: 0 | Banos: 0
+2025-09-30 04:46:46,339 - [INFO] -   Arriendo: $2,000,000
+2025-09-30 04:46:46,339 - [INFO] -   Venta: $0
+2025-09-30 04:46:46,339 - [INFO] - 
+Creando en destino con 108 campos...
+2025-09-30 04:46:46,640 - [INFO] - OK! Propiedad creada: LOTE -> ID [694]
+2025-09-30 04:46:46,640 - [INFO] - 
+[154/2498]
+2025-09-30 04:46:46,640 - [INFO] - 
+======================================================================
+2025-09-30 04:46:46,640 - [INFO] - Propiedad: LOTE (ID origen: 10100)
+2025-09-30 04:46:47,286 - [INFO] - 
+Total campos a copiar: 108
+2025-09-30 04:46:47,286 - [INFO] - Resumen:
+2025-09-30 04:46:47,286 - [INFO] -   Propietario: 9788
+2025-09-30 04:46:47,286 - [INFO] -   Ubicacion: Depto Córdoba CO (CO) [X], Ciudad Montería [X], Barrio N/A [X]
+2025-09-30 04:46:47,286 - [INFO] -   Area: 150.0 m2
+2025-09-30 04:46:47,286 - [INFO] -   Habitaciones: 0 | Banos: 0
+2025-09-30 04:46:47,286 - [INFO] -   Arriendo: $0
+2025-09-30 04:46:47,286 - [INFO] -   Venta: $121,000,000
+2025-09-30 04:46:47,286 - [INFO] - 
+Creando en destino con 108 campos...

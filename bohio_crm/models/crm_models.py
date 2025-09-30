@@ -1,0 +1,1394 @@
+from odoo import models, fields, api, _, tools
+from odoo.exceptions import ValidationError
+from datetime import datetime, timedelta
+from dateutil.relativedelta import relativedelta
+import json
+
+
+class CrmLead(models.Model):
+    """CRM Lead con extensiones para negocio inmobiliario"""
+    _inherit = 'crm.lead'
+
+    # ===============================
+    # CAMPOS PRINCIPALES
+    # ===============================
+
+    # Información del cliente
+    client_type = fields.Selection([
+        ('owner', 'Propietario'),
+        ('tenant', 'Arrendatario'),
+        ('buyer', 'Comprador'),
+        ('seller', 'Vendedor'),
+        ('investor', 'Inversionista'),
+        ('other', 'Otro'),
+    ], string='Tipo de Cliente', tracking=True)
+
+    service_interested = fields.Selection([
+        ('sale', 'Venta'),
+        ('rent', 'Arriendo'),
+        ('projects', 'Proyectos'),
+        ('consign', 'Consignar Inmueble'),
+        ('legal', 'Servicios Jurídicos'),
+        ('marketing', 'Marketing Inmobiliario'),
+        ('corporate', 'Negocios Corporativos'),
+        ('valuation', 'Avalúos'),
+    ], string='Servicio de Interés', tracking=True)
+
+    referred_by_partner_id = fields.Many2one('res.partner', 'Referido Por', tracking=True)
+    project_id = fields.Many2one('project.worksite', 'Proyecto Inmobiliario', tracking=True)
+
+    # Propiedades
+    compared_properties_ids = fields.Many2many(
+        'product.template', 'crm_lead_property_compare_rel', 'lead_id', 'property_id',
+        string='Propiedades a Comparar', domain="[('is_property', '=', True), ('state', '=', 'free')]",
+        help='Máximo 4 propiedades para comparar'
+    )
+    property_ids = fields.Many2many(
+        'product.template', 'crm_lead_property_interest_rel', 'lead_id', 'property_id',
+        string='Propiedades de Interés', domain=[('is_property', '=', True)]
+    )
+
+    # Preferencias de búsqueda
+    budget_min = fields.Monetary('Presupuesto Mínimo', currency_field='company_currency', tracking=True)
+    budget_max = fields.Monetary('Presupuesto Máximo', currency_field='company_currency', tracking=True)
+    desired_neighborhood = fields.Char('Barrio Deseado', tracking=True)
+    desired_city = fields.Char('Ciudad Deseada', tracking=True)
+    desired_property_type_id = fields.Many2one('property.type', 'Tipo de Propiedad Deseada', tracking=True)
+    num_bedrooms_min = fields.Integer('Habitaciones Mínimas', tracking=True)
+    num_bedrooms_max = fields.Integer('Habitaciones Máximas', tracking=True)
+    min_bedrooms = fields.Integer('Habitaciones Mínimas', tracking=True)
+    ideal_bedrooms = fields.Integer('Habitaciones Ideales', tracking=True)
+    num_bathrooms_min = fields.Integer('Baños Mínimos', tracking=True)
+    min_bathrooms = fields.Integer('Baños Mínimos', tracking=True)
+    property_area_min = fields.Float('Área Mínima (m²)', tracking=True)
+    property_area_max = fields.Float('Área Máxima (m²)', tracking=True)
+    min_area = fields.Float('Área Mínima (m²)', tracking=True)
+    max_area = fields.Float('Área Máxima (m²)', tracking=True)
+
+    # Información adicional
+    num_occupants = fields.Integer('Número de Personas', tracking=True)
+    number_of_occupants = fields.Integer('Número de Ocupantes', tracking=True)
+    has_pets = fields.Boolean('Tiene Mascotas', tracking=True)
+    pet_type = fields.Selection([
+        ('dog', 'Perro'), ('cat', 'Gato'), ('both', 'Perro y Gato'), ('other', 'Otra Mascota')
+    ], string='Tipo de Mascota', tracking=True)
+    requires_parking = fields.Boolean('Requiere Parqueadero', tracking=True)
+    parking_spots = fields.Integer('Número de Parqueaderos', tracking=True, default=1)
+    occupation = fields.Char('Ocupación', tracking=True)
+    monthly_income = fields.Monetary('Ingresos Mensuales', tracking=True, currency_field='company_currency')
+
+    # Amenidades
+    requires_common_areas = fields.Boolean('Requiere Zonas Comunes', tracking=True)
+    requires_gym = fields.Boolean('Requiere Gimnasio', tracking=True)
+    requires_pool = fields.Boolean('Requiere Piscina', tracking=True)
+    requires_security = fields.Boolean('Requiere Seguridad 24/7', tracking=True)
+    requires_elevator = fields.Boolean('Requiere Ascensor', tracking=True)
+
+    property_purpose = fields.Selection([
+        ('residence', 'Vivienda Permanente'),
+        ('office', 'Oficina/Comercial'),
+        ('vacation', 'Vacacional'),
+        ('investment', 'Inversión'),
+    ], string='Propósito del Inmueble', tracking=True)
+    is_for_office = fields.Boolean('Para Uso Comercial/Oficina', tracking=True)
+    is_for_vacation = fields.Boolean('Para Uso Vacacional', tracking=True)
+
+    # Información contractual
+    contract_start_date = fields.Date('Fecha Inicio Estimada', tracking=True)
+    contract_duration_months = fields.Integer('Duración Estimada (meses)', tracking=True)
+    contract_end_date = fields.Date('Fecha Fin Estimada', compute='_compute_contract_end_date', store=True)
+    commission_percentage = fields.Float('% Comisión', default=10.0)
+
+    # PQRS
+    pqrs_type = fields.Selection([
+        ('petition', 'Petición'), ('complaint', 'Queja'), ('claim', 'Reclamo'), ('suggestion', 'Sugerencia')
+    ], string='Tipo PQRS')
+    pqrs_description = fields.Text('Descripción PQRS', tracking=True)
+    pqrs_status = fields.Selection([
+        ('received', 'Recibido'), ('processing', 'En Proceso'), ('resolved', 'Resuelto'), ('closed', 'Cerrado')
+    ], string='Estado PQRS', default='received')
+    helpdesk_ticket_id = fields.Many2one('helpdesk.ticket', string='Ticket Helpdesk')
+    response_deadline = fields.Datetime('Fecha Límite Respuesta', compute='_compute_response_deadline', store=True)
+
+    # Portal
+    portal_visible = fields.Boolean('Visible en Portal', default=True, tracking=True)
+    show_in_portal = fields.Boolean('Mostrar en Portal', compute='_compute_show_in_portal', store=True)
+
+    # Recomendaciones
+    recommended_properties_ids = fields.Many2many(
+        'product.template',
+        'crm_lead_property_recommended_rel',
+        'lead_id',
+        'property_id',
+        string='Propiedades Recomendadas',
+        compute='_compute_recommended_properties',
+        store=False
+    )
+    recommendation_status = fields.Selection([
+        ('pending', 'Pendiente'),
+        ('generated', 'Generadas'),
+        ('viewed', 'Vistas por Cliente'),
+        ('selected', 'Cliente Seleccionó'),
+    ], string='Estado Recomendaciones', default='pending', tracking=True)
+    recommendation_count = fields.Integer('Número de Recomendaciones', compute='_compute_recommendation_count', store=True)
+
+    # ===============================
+    # CAMPOS CALCULADOS
+    # ===============================
+
+    compared_properties_count = fields.Integer('Cantidad en Comparación', compute='_compute_compared_properties_count', store=True)
+    can_add_property = fields.Boolean('Puede Agregar Propiedad', compute='_compute_compared_properties_count', store=True)
+    estimated_monthly_rent = fields.Monetary('Canon Mensual Estimado', currency_field='company_currency', compute='_compute_estimated_amounts', store=True)
+    estimated_total_amount = fields.Monetary('Monto Total Estimado', compute='_compute_estimated_amounts', currency_field='company_currency', store=True)
+    estimated_commission = fields.Monetary('Comisión Estimada', compute='_compute_estimated_amounts', currency_field='company_currency', store=True)
+
+    # Métricas financieras
+    contract_id = fields.Many2one('property.contract', 'Contrato Generado', readonly=True)
+    total_invoiced = fields.Monetary('Total Facturado', currency_field='company_currency', compute='_compute_financial_metrics', store=True)
+    total_credit_notes = fields.Monetary('Notas de Crédito', currency_field='company_currency', compute='_compute_financial_metrics', store=True)
+    net_invoiced = fields.Monetary('Facturación Neta', currency_field='company_currency', compute='_compute_financial_metrics', store=True)
+    total_paid = fields.Monetary('Total Pagado', currency_field='company_currency', compute='_compute_financial_metrics', store=True)
+    total_pending = fields.Monetary('Total Pendiente', currency_field='company_currency', compute='_compute_financial_metrics', store=True)
+    payment_percentage = fields.Float('% Pagado', compute='_compute_financial_metrics', store=True)
+
+    # Dashboard
+    kanban_dashboard = fields.Text(compute='_compute_kanban_dashboard')
+    dashboard_data = fields.Json('Dashboard Data', compute='_compute_dashboard_data')
+    property_recommendations_data = fields.Json('Recommendations Data', compute='_compute_property_recommendations_data')
+    comparison_data = fields.Json('Comparison Data', compute='_compute_comparison_data')
+
+    # Campos adicionales para métricas
+    partner_contracts_count = fields.Integer('Cantidad de Contratos', compute='_compute_partner_contracts_count', store=True)
+    partner_active_contracts_count = fields.Integer('Contratos Activos', compute='_compute_partner_contracts_count', store=True)
+    days_to_close = fields.Integer('Días para Cierre', compute='_compute_days_to_close', store=True)
+    days_open = fields.Integer('Días Abierto', compute='_compute_days_open', store=True)
+
+    # ===============================
+    # MÉTODOS CALCULADOS
+    # ===============================
+
+    @api.depends('compared_properties_ids')
+    def _compute_compared_properties_count(self):
+        for lead in self:
+            count = len(lead.compared_properties_ids)
+            lead.compared_properties_count = count
+            lead.can_add_property = count < 4
+
+    @api.depends('contract_start_date', 'contract_duration_months')
+    def _compute_contract_end_date(self):
+        for lead in self:
+            if lead.contract_start_date and lead.contract_duration_months:
+                lead.contract_end_date = lead.contract_start_date + relativedelta(months=lead.contract_duration_months)
+            else:
+                lead.contract_end_date = False
+
+    @api.depends('budget_min', 'budget_max', 'contract_duration_months', 'commission_percentage', 'service_interested')
+    def _compute_estimated_amounts(self):
+        for lead in self:
+            if lead.service_interested == 'rent':
+                budget_avg = ((lead.budget_min or 0) + (lead.budget_max or 0)) / 2 if lead.budget_max else lead.budget_min or 0
+                lead.estimated_monthly_rent = budget_avg
+                if lead.contract_duration_months:
+                    lead.estimated_total_amount = budget_avg * lead.contract_duration_months
+                    lead.estimated_commission = lead.estimated_total_amount * (lead.commission_percentage / 100)
+                else:
+                    lead.estimated_total_amount = budget_avg
+                    lead.estimated_commission = 0.0
+            elif lead.service_interested == 'sale':
+                budget_avg = ((lead.budget_min or 0) + (lead.budget_max or 0)) / 2 if lead.budget_max else lead.budget_min or 0
+                lead.estimated_monthly_rent = 0.0
+                lead.estimated_total_amount = budget_avg
+                lead.estimated_commission = budget_avg * (lead.commission_percentage / 100)
+            else:
+                lead.estimated_monthly_rent = 0.0
+                lead.estimated_total_amount = 0.0
+                lead.estimated_commission = 0.0
+
+    @api.depends('stage_id', 'portal_visible')
+    def _compute_show_in_portal(self):
+        for lead in self:
+            if not lead.portal_visible:
+                lead.show_in_portal = False
+            elif lead.stage_id:
+                lead.show_in_portal = lead.stage_id.fold == False and not lead.stage_id.is_won
+            else:
+                lead.show_in_portal = lead.portal_visible
+
+    @api.depends('pqrs_type', 'create_date')
+    def _compute_response_deadline(self):
+        for lead in self:
+            if lead.pqrs_type and lead.create_date:
+                deadlines = {'petition': 15, 'complaint': 15, 'claim': 15, 'suggestion': 30}
+                days = deadlines.get(lead.pqrs_type, 15)
+                lead.response_deadline = fields.Datetime.from_string(lead.create_date) + timedelta(days=days)
+            else:
+                lead.response_deadline = False
+
+    @api.depends('partner_id', 'contract_id')
+    def _compute_financial_metrics(self):
+        AccountMove = self.env['account.move']
+        for lead in self:
+            if not lead.partner_id:
+                lead.update({
+                    'total_invoiced': 0.0, 'total_credit_notes': 0.0, 'net_invoiced': 0.0,
+                    'total_paid': 0.0, 'total_pending': 0.0, 'payment_percentage': 0.0
+                })
+                continue
+
+            invoices = AccountMove.search_read(
+                domain=[('partner_id', '=', lead.partner_id.id), ('state', '=', 'posted')],
+                fields=['amount_total', 'amount_residual', 'move_type', 'payment_state']
+            )
+
+            total_inv = sum(inv['amount_total'] for inv in invoices if inv['move_type'] == 'out_invoice')
+            total_credit = sum(inv['amount_total'] for inv in invoices if inv['move_type'] == 'out_refund')
+            net_inv = total_inv - total_credit
+            total_pending = sum(inv['amount_residual'] for inv in invoices if inv['move_type'] == 'out_invoice')
+            total_paid = total_inv - total_pending
+
+            lead.update({
+                'total_invoiced': total_inv,
+                'total_credit_notes': total_credit,
+                'net_invoiced': net_inv,
+                'total_paid': total_paid,
+                'total_pending': total_pending,
+                'payment_percentage': (total_paid / total_inv * 100) if total_inv > 0 else 0.0
+            })
+
+    def _compute_kanban_dashboard(self):
+        for lead in self:
+            dashboard_data = self.get_crm_dashboard_data(show_all=False, period='month', service_filter='all')
+            lead.kanban_dashboard = json.dumps(dashboard_data)
+
+    @api.depends('partner_id', 'service_interested', 'estimated_total_amount', 'days_open', 'compared_properties_count')
+    def _compute_dashboard_data(self):
+        """Calcular datos para dashboard estilizado"""
+        for lead in self:
+            # Datos principales del lead
+            lead_data = {
+                'client_info': {
+                    'name': lead.partner_id.name if lead.partner_id else 'Cliente Potencial',
+                    'type': dict(lead._fields['client_type'].selection).get(lead.client_type, 'No definido') if lead.client_type else 'No definido',
+                    'service': dict(lead._fields['service_interested'].selection).get(lead.service_interested, 'No definido') if lead.service_interested else 'No definido',
+                },
+                'financial_info': {
+                    'estimated_amount': lead.estimated_total_amount or 0,
+                    'estimated_commission': lead.estimated_commission or 0,
+                    'budget_range': f"${lead.budget_min:,.0f} - ${lead.budget_max:,.0f}" if lead.budget_min and lead.budget_max else 'No definido',
+                },
+                'metrics': {
+                    'days_open': lead.days_open,
+                    'days_to_close': lead.days_to_close,
+                    'probability': lead.probability,
+                    'contracts_count': lead.partner_contracts_count,
+                    'compared_properties': lead.compared_properties_count,
+                },
+                'preferences': {
+                    'neighborhood': lead.desired_neighborhood or 'Cualquiera',
+                    'property_type': lead.desired_property_type_id.name if lead.desired_property_type_id else 'Cualquiera',
+                    'bedrooms': f"{lead.num_bedrooms_min}-{lead.num_bedrooms_max}" if lead.num_bedrooms_min and lead.num_bedrooms_max else 'Flexible',
+                    'area': f"{lead.property_area_min}-{lead.property_area_max} m²" if lead.property_area_min and lead.property_area_max else 'Flexible',
+                }
+            }
+            lead.dashboard_data = lead_data
+
+    @api.depends('compared_properties_ids')
+    def _compute_property_recommendations_data(self):
+        """Calcular datos de recomendaciones"""
+        for lead in self:
+            if not lead.service_interested or lead.service_interested not in ['rent', 'sale']:
+                lead.property_recommendations_data = {'recommendations': [], 'count': 0}
+                continue
+
+            # Generar recomendaciones basadas en criterios
+            domain = [('is_property', '=', True), ('state', '=', 'free')]
+
+            if lead.service_interested == 'rent':
+                domain.append(('type_service', '=', 'for_tenancy'))
+            elif lead.service_interested == 'sale':
+                domain.append(('type_service', '=', 'for_sale'))
+
+            if lead.desired_property_type_id:
+                domain.append(('property_type_id', '=', lead.desired_property_type_id.id))
+
+            properties = self.env['product.template'].search(domain, limit=10)
+
+            recommendations = []
+            for prop in properties:
+                score = 0
+                # Cálculo de score basado en criterios
+                if lead.desired_neighborhood and prop.neighborhood:
+                    if lead.desired_neighborhood.lower() in prop.neighborhood.lower():
+                        score += 50
+
+                if lead.budget_min and lead.budget_max:
+                    budget_avg = (lead.budget_min + lead.budget_max) / 2
+                    prop_price = prop.rent_value_from if lead.service_interested == 'rent' else prop.sale_value_from
+                    if prop_price and abs(prop_price - budget_avg) / budget_avg < 0.2:
+                        score += 30
+
+                recommendations.append({
+                    'id': prop.id,
+                    'name': prop.name,
+                    'score': score,
+                    'price': prop.rent_value_from if lead.service_interested == 'rent' else prop.sale_value_from,
+                    'neighborhood': prop.neighborhood or 'No especificado',
+                    'bedrooms': prop.num_bedrooms or 0,
+                    'area': prop.property_area or 0,
+                    'image_url': f'/web/image/product.template/{prop.id}/image_1920' if prop.image_1920 else None,
+                })
+
+            # Ordenar por score
+            recommendations.sort(key=lambda x: x['score'], reverse=True)
+
+            lead.property_recommendations_data = {
+                'recommendations': recommendations[:6],  # Top 6
+                'count': len(recommendations),
+                'criteria_match': {
+                    'neighborhood_match': bool(lead.desired_neighborhood),
+                    'budget_defined': bool(lead.budget_min and lead.budget_max),
+                    'type_defined': bool(lead.desired_property_type_id),
+                }
+            }
+
+    @api.depends('compared_properties_ids')
+    def _compute_comparison_data(self):
+        """Calcular datos para comparador de propiedades"""
+        for lead in self:
+            compared_props = []
+            for prop in lead.compared_properties_ids:
+                prop_data = {
+                    'id': prop.id,
+                    'name': prop.name,
+                    'price': prop.rent_value_from if lead.service_interested == 'rent' else prop.sale_value_from,
+                    'neighborhood': prop.neighborhood or 'No especificado',
+                    'bedrooms': prop.num_bedrooms or 0,
+                    'bathrooms': prop.num_bathrooms or 0,
+                    'area': prop.property_area or 0,
+                    'parking': prop.num_parking or 0,
+                    'latitude': prop.latitude,
+                    'longitude': prop.longitude,
+                    'address': prop.street or '',
+                    'municipality': prop.municipality or '',
+                    'image_url': f'/web/image/product.template/{prop.id}/image_1920' if prop.image_1920 else None,
+                    'features': {
+                        'pool': bool(prop.pools),
+                        'gym': bool(prop.gym),
+                        'security': bool(prop.security),
+                        'elevator': bool(prop.elevator),
+                    }
+                }
+                compared_props.append(prop_data)
+
+            lead.comparison_data = {
+                'properties': compared_props,
+                'count': len(compared_props),
+                'can_add_more': len(compared_props) < 4,
+                'comparison_ready': len(compared_props) >= 2,
+            }
+
+    @api.depends('partner_id')
+    def _compute_partner_contracts_count(self):
+        for lead in self:
+            if lead.partner_id:
+                contracts = self.env['property.contract'].search([('partner_id', '=', lead.partner_id.id)])
+                lead.partner_contracts_count = len(contracts)
+                lead.partner_active_contracts_count = len(contracts.filtered(lambda c: c.state == 'active'))
+            else:
+                lead.partner_contracts_count = 0
+                lead.partner_active_contracts_count = 0
+
+    @api.depends('date_deadline')
+    def _compute_days_to_close(self):
+        today = fields.Date.today()
+        for lead in self:
+            if lead.date_deadline:
+                delta = lead.date_deadline - today
+                lead.days_to_close = delta.days
+            else:
+                lead.days_to_close = 0
+
+    @api.depends('create_date')
+    def _compute_days_open(self):
+        today = fields.Datetime.now()
+        for lead in self:
+            if lead.create_date:
+                delta = today - lead.create_date
+                lead.days_open = delta.days
+            else:
+                lead.days_open = 0
+
+    @api.depends('desired_neighborhood', 'desired_property_type_id', 'budget_min', 'budget_max',
+                 'num_bedrooms_min', 'num_bedrooms_max', 'num_bathrooms_min', 'property_area_min',
+                 'property_area_max', 'has_pets', 'requires_common_areas', 'property_purpose', 'service_interested')
+    def _compute_recommended_properties(self):
+        """Calcular propiedades recomendadas"""
+        for lead in self:
+            if not lead.service_interested or lead.service_interested not in ['rent', 'sale']:
+                lead.recommended_properties_ids = [(5, 0, 0)]
+                continue
+
+            domain = [('is_property', '=', True), ('state', '=', 'free')]
+
+            if lead.service_interested == 'rent':
+                domain.append(('type_service', '=', 'for_tenancy'))
+            elif lead.service_interested == 'sale':
+                domain.append(('type_service', '=', 'for_sale'))
+
+            if lead.desired_property_type_id:
+                domain.append(('property_type_id', '=', lead.desired_property_type_id.id))
+
+            if lead.desired_neighborhood:
+                domain.append(('neighborhood', 'ilike', lead.desired_neighborhood))
+
+            properties = self.env['product.template'].search(domain, limit=50)
+
+            # Algoritmo de scoring
+            scored_properties = []
+            for prop in properties:
+                score = 0
+
+                if lead.desired_neighborhood and prop.neighborhood and \
+                   lead.desired_neighborhood.lower() in prop.neighborhood.lower():
+                    score += 50
+
+                if lead.desired_property_type_id and prop.property_type_id == lead.desired_property_type_id:
+                    score += 40
+
+                if lead.budget_min and lead.budget_max:
+                    budget_avg = (lead.budget_min + lead.budget_max) / 2
+                    prop_price = prop.rent_value_from if lead.service_interested == 'rent' else prop.sale_value_from
+                    if prop_price:
+                        price_diff_pct = abs(prop_price - budget_avg) / budget_avg * 100
+                        if price_diff_pct < 10:
+                            score += 30
+                        elif price_diff_pct < 20:
+                            score += 20
+
+                scored_properties.append((prop.id, score))
+
+            scored_properties.sort(key=lambda x: x[1], reverse=True)
+            top_4_ids = [p[0] for p in scored_properties[:4]]
+
+            lead.recommended_properties_ids = [(6, 0, top_4_ids)]
+
+    @api.depends('recommended_properties_ids')
+    def _compute_recommendation_count(self):
+        """Calcular número de recomendaciones"""
+        for lead in self:
+            lead.recommendation_count = len(lead.recommended_properties_ids)
+
+    # ===============================
+    # VALIDACIONES
+    # ===============================
+
+    @api.constrains('compared_properties_ids')
+    def _check_compared_properties_limit(self):
+        for lead in self:
+            if len(lead.compared_properties_ids) > 4:
+                raise ValidationError(_('Solo puede comparar un máximo de 4 propiedades a la vez.'))
+
+    # ===============================
+    # MÉTODOS DE NEGOCIO
+    # ===============================
+
+    @api.model
+    def create(self, vals):
+        # Asignación automática a equipo inmobiliario
+        if vals.get('service_interested') in ['rent', 'sale', 'projects']:
+            real_estate_team = self.env['crm.team'].search([
+                '|', ('name', 'ilike', 'inmobiliaria'), ('name', 'ilike', 'real estate')
+            ], limit=1)
+            if real_estate_team:
+                vals['team_id'] = real_estate_team.id
+
+        # Creación automática de ticket PQRS
+        if vals.get('pqrs_type') and 'helpdesk.ticket' in self.env:
+            helpdesk_vals = {
+                'name': vals.get('name', 'PQRS'),
+                'partner_id': vals.get('partner_id'),
+                'description': vals.get('description', ''),
+                'priority': '2' if vals.get('pqrs_type') in ['complaint', 'claim'] else '1',
+            }
+            ticket = self.env['helpdesk.ticket'].sudo().create(helpdesk_vals)
+            vals['helpdesk_ticket_id'] = ticket.id
+
+        return super().create(vals)
+
+    def action_close_lead_with_contract(self):
+        """Cerrar oportunidad creando contrato"""
+        self.ensure_one()
+        if not self.compared_properties_ids:
+            raise ValidationError(_('Debe seleccionar la propiedad para generar el contrato.'))
+
+        property_selected = self.compared_properties_ids[0]
+        contract_vals = {
+            'name': f'Contrato - {self.name}',
+            'partner_id': self.partner_id.id if self.partner_id else False,
+            'property_id': property_selected.id,
+            'contract_type': 'is_rental' if self.service_interested == 'rent' else 'is_ownership',
+            'date_from': self.contract_start_date or fields.Date.today(),
+            'date_to': self.contract_end_date or fields.Date.today(),
+            'rental_fee': self.estimated_monthly_rent if self.service_interested == 'rent' else 0.0,
+        }
+
+        contract = self.env['property.contract'].create(contract_vals)
+        self.write({
+            'contract_id': contract.id,
+            'stage_id': self.env.ref('crm.stage_lead4', raise_if_not_found=False).id or self.stage_id.id,
+            'probability': 100,
+        })
+
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Contrato Creado',
+            'view_mode': 'form',
+            'res_model': 'property.contract',
+            'res_id': contract.id,
+            'target': 'current',
+        }
+
+    def action_view_compared_properties(self):
+        """Ver propiedades en comparación"""
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Propiedades en Comparación',
+            'view_mode': 'kanban,list,form',
+            'res_model': 'product.template',
+            'domain': [('id', 'in', self.compared_properties_ids.ids)],
+            'context': {'default_is_property': True},
+            'target': 'current',
+        }
+
+    def action_view_partner_contracts(self):
+        """Ver contratos del cliente"""
+        self.ensure_one()
+        if not self.partner_id:
+            return {'type': 'ir.actions.act_window_close'}
+
+        return {
+            'type': 'ir.actions.act_window',
+            'name': f'Contratos de {self.partner_id.name}',
+            'view_mode': 'list,form',
+            'res_model': 'property.contract',
+            'domain': [('partner_id', '=', self.partner_id.id)],
+            'context': {'default_partner_id': self.partner_id.id},
+            'target': 'current',
+        }
+
+    def action_view_recommended_properties(self):
+        """Ver propiedades recomendadas"""
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': f'Propiedades Recomendadas ({len(self.property_ids)})',
+            'view_mode': 'kanban,list,form',
+            'res_model': 'product.template',
+            'domain': [('id', 'in', self.property_ids.ids)],
+            'context': {'create': False},
+            'target': 'current',
+        }
+
+    def action_add_to_comparison(self, property_id=None):
+        """Agregar propiedad al comparador"""
+        self.ensure_one()
+
+        # Si no viene property_id como parámetro, buscar en contexto
+        if not property_id:
+            property_id = self.env.context.get('property_to_add')
+
+        if not property_id:
+            raise ValidationError(_('No se especificó la propiedad a agregar.'))
+
+        if len(self.compared_properties_ids) >= 4:
+            raise ValidationError(_('Ya tiene 4 propiedades en comparación. Elimine una para agregar otra.'))
+
+        prop = self.env['product.template'].browse(property_id)
+
+        # Validar que no esté ya agregada
+        if prop.id in self.compared_properties_ids.ids:
+            return {
+                'type': 'ir.actions.client',
+                'tag': 'display_notification',
+                'params': {
+                    'title': _('Ya Agregada'),
+                    'message': _('Esta propiedad ya está en la comparación.'),
+                    'type': 'info',
+                    'sticky': False,
+                }
+            }
+
+        self.compared_properties_ids = [(4, prop.id)]
+
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'display_notification',
+            'params': {
+                'title': _('Propiedad Agregada'),
+                'message': _('Propiedad "%s" agregada al comparador (%d/4)') % (prop.name, len(self.compared_properties_ids)),
+                'type': 'success',
+                'sticky': False,
+            }
+        }
+
+    def action_print_comparison(self):
+        """Imprimir comparación de propiedades"""
+        self.ensure_one()
+        if not self.compared_properties_ids:
+            raise ValidationError(_('Debe seleccionar al menos 2 propiedades para comparar.'))
+
+        return self.env.ref('bohio_crm.property_comparison_report').report_action(self)
+
+    def action_schedule_activity(self):
+        """Programar nueva actividad"""
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Nueva Actividad',
+            'res_model': 'mail.activity',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {
+                'default_res_model': 'crm.lead',
+                'default_res_id': self.id,
+                'default_user_id': self.user_id.id,
+            }
+        }
+
+    def action_schedule_call(self):
+        """Programar llamada"""
+        self.ensure_one()
+        activity_type = self.env.ref('mail.mail_activity_data_call', raise_if_not_found=False)
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Programar Llamada',
+            'res_model': 'mail.activity',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {
+                'default_res_model': 'crm.lead',
+                'default_res_id': self.id,
+                'default_activity_type_id': activity_type.id if activity_type else 1,
+                'default_summary': f'Llamada a {self.partner_id.name if self.partner_id else self.name}',
+                'default_user_id': self.user_id.id,
+            }
+        }
+
+    def action_schedule_meeting(self):
+        """Programar reunión"""
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Agendar Cita',
+            'res_model': 'calendar.event',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {
+                'default_partner_ids': [[6, 0, [self.partner_id.id]]] if self.partner_id else [],
+                'default_name': f'Cita - {self.name}',
+                'default_user_id': self.user_id.id,
+            }
+        }
+
+    def action_send_email(self):
+        """Enviar email"""
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Enviar Email',
+            'res_model': 'mail.compose.message',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {
+                'default_model': 'crm.lead',
+                'default_res_id': self.id,
+                'default_composition_mode': 'comment',
+                'default_partner_ids': [[6, 0, [self.partner_id.id]]] if self.partner_id else [],
+            }
+        }
+
+    def action_share_whatsapp(self):
+        """Compartir por WhatsApp"""
+        self.ensure_one()
+        if not self.partner_id:
+            raise ValidationError(_('No hay cliente asociado para enviar WhatsApp.'))
+
+        phone = self.phone or self.mobile
+        if not phone:
+            raise ValidationError(_('El cliente no tiene teléfono registrado.'))
+
+        message = f'Hola {self.partner_id.name}, te contacto sobre la oportunidad {self.name}'
+        whatsapp_url = f'https://wa.me/{phone.replace("+", "").replace(" ", "")}?text={message}'
+
+        return {
+            'type': 'ir.actions.act_url',
+            'url': whatsapp_url,
+            'target': 'new',
+        }
+
+    def action_generate_contract(self):
+        """Generar contrato - usar método existente"""
+        return self.action_close_lead_with_contract()
+
+    def action_print_timeline(self):
+        """Imprimir vista timeline"""
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'display_notification',
+            'params': {
+                'title': _('Timeline'),
+                'message': _('Función de impresión del timeline en desarrollo'),
+                'type': 'info',
+                'sticky': False,
+            }
+        }
+
+    def action_expand_comparison(self):
+        """Expandir comparación - usar método existente"""
+        return self.action_view_compared_properties()
+
+    def action_create_task(self):
+        """Crear nueva tarea"""
+        self.ensure_one()
+        task_type = self.env.ref('mail.mail_activity_data_todo', raise_if_not_found=False)
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Nueva Tarea',
+            'res_model': 'mail.activity',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {
+                'default_res_model': 'crm.lead',
+                'default_res_id': self.id,
+                'default_activity_type_id': task_type.id if task_type else 1,
+                'default_user_id': self.user_id.id,
+            }
+        }
+
+    def action_generate_comparison_report(self):
+        """Generar reporte de comparación de propiedades"""
+        self.ensure_one()
+        if not self.compared_properties_ids:
+            raise ValidationError(_('No hay propiedades para comparar.'))
+
+        return self.env.ref('bohio_crm.property_comparison_report').report_action(self)
+
+    def action_view_recommended_properties(self):
+        """Ver propiedades recomendadas generadas"""
+        self.ensure_one()
+        self._compute_recommended_properties()
+
+        if not self.recommended_properties_ids:
+            return {
+                'type': 'ir.actions.client',
+                'tag': 'display_notification',
+                'params': {
+                    'title': _('Sin Recomendaciones'),
+                    'message': _('No se encontraron propiedades que coincidan con los criterios especificados.'),
+                    'type': 'warning',
+                    'sticky': False,
+                }
+            }
+
+        self.recommendation_status = 'generated'
+
+        return {
+            'type': 'ir.actions.act_window',
+            'name': f'Propiedades Recomendadas ({len(self.recommended_properties_ids)})',
+            'view_mode': 'kanban,list,form',
+            'res_model': 'product.template',
+            'domain': [('id', 'in', self.recommended_properties_ids.ids)],
+            'context': {
+                'create': False,
+                'default_type_service': 'for_tenancy' if self.service_interested == 'rent' else 'for_sale',
+            }
+        }
+
+    def action_generate_recommendations(self):
+        """Generar recomendaciones de propiedades"""
+        self.ensure_one()
+        self._compute_recommended_properties()
+        self.write({'recommendation_status': 'generated'})
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'display_notification',
+            'params': {
+                'message': f'Se generaron {self.recommendation_count} recomendaciones',
+                'type': 'success',
+                'sticky': False,
+            }
+        }
+
+    def action_refresh_recommendations(self):
+        """Actualizar recomendaciones de propiedades (alias de action_generate_recommendations)"""
+        return self.action_generate_recommendations()
+
+    def action_set_won(self):
+        """Marcar oportunidad como ganada"""
+        self.ensure_one()
+        won_stage = self.env['crm.stage'].search([
+            ('is_won', '=', True),
+            '|', ('team_id', '=', False), ('team_id', '=', self.team_id.id)
+        ], limit=1)
+
+        if won_stage:
+            self.write({
+                'stage_id': won_stage.id,
+                'probability': 100,
+                'active': True,
+            })
+
+        return {'type': 'ir.actions.act_window_close'}
+
+    def action_set_lost(self):
+        """Marcar oportunidad como perdida"""
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Marcar como Perdida'),
+            'res_model': 'crm.lead.lost',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {
+                'default_lead_id': self.id,
+            }
+        }
+
+    # ===============================
+    # MÉTODOS DE DASHBOARD
+    # ===============================
+
+    @api.model
+    def get_crm_dashboard_data(self, show_all=True, period='month', service_filter='all'):
+        """Obtener datos del dashboard CRM"""
+        company = self.env.company
+        currency = company.currency_id
+        user = self.env.user
+
+        today = fields.Date.today()
+        if period == 'week':
+            start_date = today - timedelta(days=today.weekday())
+            prev_start = start_date - timedelta(days=7)
+        elif period == 'month':
+            start_date = today.replace(day=1)
+            prev_start = (start_date - timedelta(days=1)).replace(day=1)
+        elif period == 'quarter':
+            quarter = (today.month - 1) // 3
+            start_date = today.replace(month=quarter * 3 + 1, day=1)
+            prev_start = (start_date - timedelta(days=1)).replace(day=1)
+            prev_start = prev_start.replace(month=((prev_start.month - 1) // 3) * 3 + 1, day=1)
+        else:
+            start_date = today.replace(month=1, day=1)
+            prev_start = start_date.replace(year=start_date.year - 1)
+
+        domain = [('type', '=', 'opportunity')]
+        if not show_all:
+            domain.append(('user_id', '=', user.id))
+        if service_filter and service_filter != 'all':
+            domain.append(('service_interested', '=', service_filter))
+
+        # Métricas de contratos
+        PropertyContract = self.env['property.contract']
+        contract_domain = [('state', '=', 'active')]
+        if not show_all:
+            contract_domain.append(('user_id', '=', user.id))
+
+        active_contracts = PropertyContract.search_count(contract_domain)
+        active_contract_records = PropertyContract.search(contract_domain)
+        recurring_revenue = sum(active_contract_records.mapped('rental_fee'))
+
+        # Métricas de oportunidades
+        new_opportunities = self.search_count(domain + [
+            ('create_date', '>=', start_date),
+            ('create_date', '<=', datetime.combine(today, datetime.max.time()))
+        ])
+
+        # Métricas de propiedades
+        Product = self.env['product.template']
+        property_domain = [('is_property', '=', True)]
+        properties_available = Product.search_count(property_domain + [('state', '=', 'free')])
+        properties_rented = Product.search_count(property_domain + [('state', '=', 'on_lease')])
+        properties_total = Product.search_count(property_domain)
+
+        # Actividades y citas
+        CalendarEvent = self.env['calendar.event']
+        appointment_domain = [('start', '>=', datetime.now())]
+        if not show_all:
+            appointment_domain.append(('user_id', '=', user.id))
+        pending_appointments = CalendarEvent.search_count(appointment_domain)
+
+        Activity = self.env['mail.activity']
+        activity_domain = []
+        if not show_all:
+            activity_domain.append(('user_id', '=', user.id))
+        pending_activities = Activity.search_count(activity_domain)
+
+        return {
+            'metrics': {
+                'active_contracts': active_contracts,
+                'recurring_revenue': recurring_revenue,
+                'new_opportunities': new_opportunities,
+                'properties_available': properties_available,
+                'properties_rented': properties_rented,
+                'properties_total': properties_total,
+                'pending_appointments': pending_appointments,
+                'pending_activities': pending_activities,
+                'currency_id': currency.id,
+                'occupancy_rate': f"{round((properties_rented / properties_total * 100) if properties_total else 0)}%",
+            },
+            'user_info': {
+                'name': user.name,
+                'title': user.function or '',
+                'avatar': f'/web/image?model=res.users&id={user.id}&field=avatar_128'
+            }
+        }
+
+    def _calculate_growth(self, current, previous):
+        """Calcular porcentaje de crecimiento"""
+        if previous == 0:
+            return '+100%' if current > 0 else '0%'
+        growth = ((current - previous) / previous) * 100
+        sign = '+' if growth > 0 else ''
+        return f"{sign}{round(growth)}%"
+
+
+class CrmTeam(models.Model):
+    """Equipos CRM con métricas de recaudo"""
+    _inherit = 'crm.team'
+
+    show_payment_metrics = fields.Boolean('Mostrar Métricas de Pagos', default=False)
+    total_invoiced_month = fields.Monetary('Facturado del Mes', currency_field='currency_id', compute='_compute_invoice_metrics')
+    total_credit_notes_month = fields.Monetary('Notas Crédito del Mes', currency_field='currency_id', compute='_compute_invoice_metrics')
+    net_invoiced_month = fields.Monetary('Facturación Neta del Mes', currency_field='currency_id', compute='_compute_invoice_metrics')
+    total_collected_month = fields.Monetary('Recaudo del Mes', currency_field='currency_id', compute='_compute_payment_metrics')
+    expected_collection_month = fields.Monetary('Recaudo Esperado', currency_field='currency_id', compute='_compute_payment_metrics')
+    collection_vs_expected = fields.Float('% Recaudo vs Esperado', compute='_compute_payment_metrics')
+    total_paid_owners_month = fields.Monetary('Pagado a Propietarios', currency_field='currency_id', compute='_compute_payment_metrics')
+    pending_owner_payments = fields.Monetary('Pendiente Pagar Propietarios', currency_field='currency_id', compute='_compute_payment_metrics')
+
+    @api.depends('member_ids')
+    def _compute_invoice_metrics(self):
+        """Calcular métricas de facturación"""
+        AccountMove = self.env['account.move']
+        today = fields.Date.today()
+        first_day = today.replace(day=1)
+
+        for team in self:
+            if not team.show_payment_metrics or not team.member_ids:
+                team.update({'total_invoiced_month': 0.0, 'total_credit_notes_month': 0.0, 'net_invoiced_month': 0.0})
+                continue
+
+            invoices = AccountMove.search_read(
+                domain=[
+                    ('invoice_user_id', 'in', team.member_ids.ids),
+                    ('invoice_date', '>=', first_day),
+                    ('invoice_date', '<=', today),
+                    ('state', '=', 'posted'),
+                    ('move_type', 'in', ['out_invoice', 'out_refund'])
+                ],
+                fields=['amount_total', 'move_type']
+            )
+
+            total_inv = sum(inv['amount_total'] for inv in invoices if inv['move_type'] == 'out_invoice')
+            total_credit = sum(inv['amount_total'] for inv in invoices if inv['move_type'] == 'out_refund')
+
+            team.update({
+                'total_invoiced_month': total_inv,
+                'total_credit_notes_month': total_credit,
+                'net_invoiced_month': total_inv - total_credit
+            })
+
+    @api.depends('member_ids')
+    def _compute_payment_metrics(self):
+        """Calcular métricas de recaudo"""
+        AccountPayment = self.env['account.payment']
+        PropertyContract = self.env['property.contract']
+        today = fields.Date.today()
+        first_day = today.replace(day=1)
+
+        for team in self:
+            if not team.show_payment_metrics or not team.member_ids:
+                team.update({
+                    'total_collected_month': 0.0, 'expected_collection_month': 0.0,
+                    'collection_vs_expected': 0.0, 'total_paid_owners_month': 0.0, 'pending_owner_payments': 0.0
+                })
+                continue
+
+            # Recaudo esperado
+            active_contracts = PropertyContract.search_read(
+                domain=[('user_id', 'in', team.member_ids.ids), ('state', '=', 'active'), ('contract_type', '=', 'is_rental')],
+                fields=['rental_fee']
+            )
+            expected_collection = sum(c['rental_fee'] for c in active_contracts)
+
+            # Recaudo real
+            collected_payments = AccountPayment.search_read(
+                domain=[('payment_type', '=', 'inbound'), ('state', '=', 'posted'), ('date', '>=', first_day), ('date', '<=', today)],
+                fields=['amount']
+            )
+            total_collected = sum(p['amount'] for p in collected_payments)
+
+            # Pagos a propietarios
+            owner_payments = AccountPayment.search_read(
+                domain=[('payment_type', '=', 'outbound'), ('state', '=', 'posted'), ('date', '>=', first_day), ('date', '<=', today)],
+                fields=['amount']
+            )
+            total_paid_owners = sum(p['amount'] for p in owner_payments)
+
+            team.update({
+                'total_collected_month': total_collected,
+                'expected_collection_month': expected_collection,
+                'collection_vs_expected': (total_collected / expected_collection * 100) if expected_collection > 0 else 0.0,
+                'total_paid_owners_month': total_paid_owners,
+                'pending_owner_payments': total_collected - total_paid_owners
+            })
+
+
+class CrmDashboard(models.Model):
+    """Dashboard CRM para análisis"""
+    _name = 'bohio.crm.dashboard'
+    _description = 'CRM Dashboard Bohio'
+    _auto = False
+    _order = 'priority desc, id desc'
+
+    name = fields.Char('Nombre')
+    stage_id = fields.Many2one('crm.stage', 'Etapa')
+    partner_id = fields.Many2one('res.partner', 'Cliente')
+    user_id = fields.Many2one('res.users', 'Vendedor')
+    expected_revenue = fields.Monetary('Ingreso Esperado', currency_field='company_currency_id')
+    company_currency_id = fields.Many2one('res.currency', related='company_id.currency_id', readonly=True)
+    company_id = fields.Many2one('res.company', 'Compañía', default=lambda self: self.env.company)
+    probability = fields.Float('Probabilidad')
+    date_deadline = fields.Date('Fecha Cierre Esperada')
+    priority = fields.Selection([('0', 'Baja'), ('1', 'Media'), ('2', 'Alta'), ('3', 'Muy Alta')], default='1', string="Prioridad")
+    lead_type = fields.Selection([('lead', 'Lead'), ('opportunity', 'Oportunidad')], string='Tipo')
+    active = fields.Boolean('Activo', default=True)
+
+    def init(self):
+        tools.drop_view_if_exists(self.env.cr, self._table)
+        self.env.cr.execute(f"""
+            CREATE OR REPLACE VIEW {self._table} AS (
+                SELECT
+                    l.id as id,
+                    l.name as name,
+                    l.stage_id as stage_id,
+                    l.partner_id as partner_id,
+                    l.user_id as user_id,
+                    l.expected_revenue as expected_revenue,
+                    l.company_id as company_id,
+                    l.probability as probability,
+                    l.date_deadline as date_deadline,
+                    l.priority as priority,
+                    l.type as lead_type,
+                    l.active as active
+                FROM crm_lead l
+                WHERE l.active = true
+            )
+        """)
+
+
+class CrmAnalytics(models.Model):
+    """Analytics Dashboard Inmobiliario"""
+    _name = 'bohio.crm.analytics'
+    _description = 'Analytics Dashboard Inmobiliario'
+
+    name = fields.Char('Dashboard', default='Análisis Inmobiliario')
+
+    @api.model
+    def get_dashboard_data(self, team_id=None, period_start=None, period_end=None):
+        """Obtener datos del dashboard analytics"""
+        user = self.env.user
+        has_all_teams_access = user.has_group('sales_team.group_sale_manager')
+
+        if not period_start:
+            period_start = fields.Date.today().replace(day=1)
+        if not period_end:
+            period_end = fields.Date.today()
+
+        domain = []
+        if team_id:
+            domain.append(('team_id', '=', int(team_id)))
+        elif not has_all_teams_access:
+            user_teams = self.env['crm.team'].search([('member_ids', 'in', user.id)])
+            if user_teams:
+                domain.append(('team_id', 'in', user_teams.ids))
+
+        return {
+            'kpi_cards': self._get_kpi_cards(domain, period_start, period_end, has_all_teams_access),
+            'revenue_chart': self._get_revenue_by_service_chart(domain, period_start, period_end),
+            'properties_breakdown': self._get_properties_breakdown(),
+            'top_performers': self._get_top_performers(domain, period_start, period_end),
+            'period': {'start': period_start.strftime('%Y-%m-%d'), 'end': period_end.strftime('%Y-%m-%d')},
+            'has_all_teams_access': has_all_teams_access,
+        }
+
+    def _get_kpi_cards(self, domain, start, end, show_all):
+        """KPI Cards básicos"""
+        Lead = self.env['crm.lead']
+        time_domain = domain + [('create_date', '>=', start), ('create_date', '<=', end)]
+        new_opportunities = Lead.search_count(time_domain + [('type', '=', 'opportunity')])
+
+        return [
+            {'label': 'Nuevas Oportunidades', 'value': new_opportunities, 'icon': 'fa-star', 'color': 'primary'},
+        ]
+
+    def _get_revenue_by_service_chart(self, domain, start, end):
+        """Gráfico de ingresos por servicio"""
+        Lead = self.env['crm.lead']
+        services = ['sale', 'rent', 'projects', 'consign', 'legal', 'marketing']
+        data, labels, colors = [], [], []
+
+        for service in services:
+            service_domain = domain + [('service_interested', '=', service), ('create_date', '>=', start), ('create_date', '<=', end)]
+            leads = Lead.search_read(domain=service_domain, fields=['expected_revenue'])
+            revenue = sum(l['expected_revenue'] for l in leads)
+            if revenue > 0:
+                data.append(revenue)
+                labels.append(service.title())
+                colors.append('#FF6384')
+
+        return {'type': 'doughnut', 'title': 'Ingresos por Servicio', 'labels': labels, 'datasets': [{'data': data, 'backgroundColor': colors}]}
+
+    def _get_properties_breakdown(self):
+        """Breakdown de propiedades"""
+        return {'type': 'bar', 'title': 'Propiedades por Tipo', 'labels': [], 'datasets': []}
+
+    def _get_top_performers(self, domain, start, end):
+        """Top performers"""
+        return []
+
+
+# Agregar métodos del timeline al CrmLead
+CrmLead.get_timeline_data = lambda self: self._get_timeline_data_impl()
+CrmLead.action_search_more_properties = lambda self: self._action_search_more_properties_impl()
+
+def _get_timeline_data_impl(self):
+    """Obtener datos del timeline para la vista"""
+    self.ensure_one()
+
+    timeline_items = []
+
+    # Obtener actividades
+    activities = self.env['mail.activity'].search([
+        ('res_model', '=', 'crm.lead'),
+        ('res_id', '=', self.id)
+    ], order='date_deadline desc')
+
+    for activity in activities:
+        timeline_items.append({
+            'type': 'activity',
+            'icon': 'calendar',
+            'color': '#9b59b6',
+            'title': f'Actividad: {activity.activity_type_id.name}',
+            'content': activity.summary or 'Sin descripción',
+            'time': activity.date_deadline.strftime('%d %b, %H:%M') if activity.date_deadline else '-',
+            'user': activity.user_id.name,
+        })
+
+    # Obtener mensajes
+    messages = self.env['mail.message'].search([
+        ('model', '=', 'crm.lead'),
+        ('res_id', '=', self.id),
+        ('message_type', 'in', ['email', 'comment'])
+    ], limit=10, order='date desc')
+
+    for message in messages:
+        msg_type = 'email' if message.message_type == 'email' else 'note'
+        timeline_items.append({
+            'type': msg_type,
+            'icon': 'envelope' if msg_type == 'email' else 'comment',
+            'color': '#e74c3c' if msg_type == 'email' else '#3498db',
+            'title': f'{msg_type.title()}: {message.subject or "Sin asunto"}',
+            'content': message.body or 'Sin contenido',
+            'time': message.date.strftime('%d %b, %H:%M') if message.date else '-',
+            'user': message.author_id.name if message.author_id else 'Sistema',
+        })
+
+    # Ordenar por fecha
+    timeline_items.sort(key=lambda x: x['time'], reverse=True)
+    return timeline_items[:15]
+
+def _action_search_more_properties_impl(self):
+    """Buscar más propiedades"""
+    self.ensure_one()
+
+    domain = [('is_property', '=', True), ('state', '=', 'free')]
+
+    if self.service_interested == 'rent':
+        domain.append(('type_service', '=', 'for_tenancy'))
+    elif self.service_interested == 'sale':
+        domain.append(('type_service', '=', 'for_sale'))
+
+    if self.desired_property_type_id:
+        domain.append(('property_type_id', '=', self.desired_property_type_id.id))
+
+    return {
+        'type': 'ir.actions.act_window',
+        'name': 'Propiedades Disponibles',
+        'view_mode': 'kanban,list,form',
+        'res_model': 'product.template',
+        'domain': domain,
+        'context': {
+            'search_default_available': 1,
+            'lead_id': self.id,
+        },
+        'target': 'current',
+    }
+
+# ===============================
+# MÉTODOS PARA MÉTRICAS
+# ===============================
+
+
+def _log_stage_change_impl(self, new_stage_id):
+    """Log cambio de etapa para analytics"""
+    self.ensure_one()
+    # Crear log de cambio de etapa (silencioso)
+    try:
+        old_stage = self.stage_id.name if self.stage_id else 'Unknown'
+        new_stage = self.env['crm.stage'].browse(new_stage_id).name if new_stage_id else 'Unknown'
+
+        self.message_post(
+            body=f"Stage changed from {old_stage} to {new_stage}",
+            message_type='notification',
+            subtype_id=self.env.ref('mail.mt_note').id,
+        )
+    except:
+        # Silent fail for logging
+        pass
+
+def _get_metrics_summary_impl(self, domain=None):
+    """Obtener resumen de métricas"""
+    if not domain:
+        domain = [('type', '=', 'opportunity')]
+
+    # Verificar permisos de usuario
+    if not self.env.user.has_group('sales_team.group_sale_salesman'):
+        domain.append(('user_id', '=', self.env.user.id))
+
+    leads = self.search(domain)
+
+    total_revenue = sum(leads.mapped('expected_revenue'))
+    total_recurring = sum(leads.mapped('recurring_revenue'))
+    avg_probability = sum(leads.mapped('probability')) / len(leads) if leads else 0
+    won_leads = leads.filtered(lambda l: l.stage_id.is_won)
+    conversion_rate = (len(won_leads) / len(leads) * 100) if leads else 0
+
+    return {
+        'total_opportunities': len(leads),
+        'total_revenue': total_revenue,
+        'total_recurring': total_recurring,
+        'avg_probability': avg_probability,
+        'conversion_rate': conversion_rate,
+        'won_opportunities': len(won_leads),
+    }
+
+def _get_user_accessible_domain_impl(self):
+    """Obtener dominio accesible para el usuario"""
+    base_domain = [('type', '=', 'opportunity')]
+
+    # Si no es manager, solo ver sus propias oportunidades
+    if not self.env.user.has_group('sales_team.group_sale_manager'):
+        if self.env.user.has_group('sales_team.group_sale_salesman'):
+            # Vendedor: sus oportunidades + las de su equipo si es líder
+            user_teams = self.env['crm.team'].search([
+                '|',
+                ('user_id', '=', self.env.user.id),  # Es líder del equipo
+                ('member_ids', 'in', self.env.user.id)  # Es miembro del equipo
+            ])
+            if user_teams:
+                base_domain.append('|')
+                base_domain.append(('user_id', '=', self.env.user.id))
+                base_domain.append(('team_id', 'in', user_teams.ids))
+            else:
+                base_domain.append(('user_id', '=', self.env.user.id))
+        else:
+            # Usuario sin permisos de ventas: solo sus registros
+            base_domain.append(('user_id', '=', self.env.user.id))
+
+    return base_domain
+
+def _search_read_with_permissions_impl(self, domain=None, fields=None, offset=0, limit=None, order=None):
+    """Search read respetando permisos de usuario"""
+    if domain is None:
+        domain = []
+
+    # Combinar dominio con restricciones de usuario
+    user_domain = self._get_user_accessible_domain()
+    combined_domain = user_domain + domain
+
+    return super(CrmLead, self).search_read(combined_domain, fields, offset, limit, order)
+
+def _action_make_call_impl(self):
+    """Acción para realizar una llamada telefónica"""
+    self.ensure_one()
+
+    # Crear actividad de llamada
+    activity_type = self.env.ref('mail.mail_activity_data_call', raise_if_not_found=False)
+    if not activity_type:
+        activity_type = self.env['mail.activity.type'].search([('category', '=', 'phonecall')], limit=1)
+
+    if activity_type:
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Programar Llamada'),
+            'res_model': 'mail.activity',
+            'view_mode': 'form',
+            'views': [(False, 'form')],
+            'target': 'new',
+            'context': {
+                'default_res_model': self._name,
+                'default_res_id': self.id,
+                'default_activity_type_id': activity_type.id,
+                'default_summary': f'Llamar a {self.partner_id.name or self.email_from}',
+                'default_phone': self.phone or self.mobile,
+            }
+        }
+
+    # Si no hay tipo de actividad, mostrar mensaje
+    return {
+        'type': 'ir.actions.client',
+        'tag': 'display_notification',
+        'params': {
+            'title': _('Llamar'),
+            'message': _('Teléfono: %s') % (self.phone or self.mobile or _('No disponible')),
+            'type': 'info',
+            'sticky': False,
+        }
+    }
+
+def _action_send_email_impl(self):
+    """Acción para enviar un email"""
+    self.ensure_one()
+
+    template_id = self.env.ref('crm.crm_lead_mail_template', raise_if_not_found=False)
+
+    return {
+        'type': 'ir.actions.act_window',
+        'name': _('Enviar Email'),
+        'res_model': 'mail.compose.message',
+        'view_mode': 'form',
+        'views': [(False, 'form')],
+        'target': 'new',
+        'context': {
+            'default_model': self._name,
+            'default_res_ids': self.ids,
+            'default_template_id': template_id.id if template_id else False,
+            'default_composition_mode': 'comment',
+            'default_email_from': self.user_id.email,
+            'default_partner_ids': [(4, self.partner_id.id)] if self.partner_id else [],
+            'force_email': True,
+        }
+    }
+
+# Asignar implementaciones
+CrmLead._get_timeline_data_impl = _get_timeline_data_impl
+CrmLead._action_search_more_properties_impl = _action_search_more_properties_impl
+CrmLead.log_stage_change = _log_stage_change_impl
+CrmLead.get_metrics_summary = _get_metrics_summary_impl
+CrmLead._get_user_accessible_domain = _get_user_accessible_domain_impl
+CrmLead.search_read_with_permissions = _search_read_with_permissions_impl
+CrmLead.action_make_call = _action_make_call_impl
+CrmLead.action_send_email = _action_send_email_impl

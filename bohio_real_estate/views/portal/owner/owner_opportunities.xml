@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="mybohio_owner_opportunities" name="BOHIO Owner Opportunities">
+        <t t-call="bohio_real_estate.mybohio_portal_layout">
+            <div class="mybohio-opportunities-owner">
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <h2>Mis Oportunidades</h2>
+                        <p class="text-muted">Seguimiento de solicitudes y propuestas</p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <t t-foreach="opportunities" t-as="opp">
+                        <div class="col-md-6 mb-3">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-start mb-3">
+                                        <h5 class="card-title" t-field="opp.name"/>
+                                        <span t-att-class="'badge bg-%s' % ('success' if opp.stage_id.is_won else 'primary')"
+                                              t-field="opp.stage_id.name"/>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <small class="text-muted">Fecha Creación</small><br/>
+                                        <strong t-esc="opp.create_date.strftime('%d/%m/%Y') if opp.create_date else ''"/>
+                                    </div>
+
+                                    <t t-if="opp.description">
+                                        <div class="mb-3">
+                                            <small class="text-muted">Descripción</small><br/>
+                                            <p t-field="opp.description"/>
+                                        </div>
+                                    </t>
+
+                                    <a t-att-href="'/mybohio/owner/opportunity/%s' % opp.id" class="btn btn-outline-primary btn-sm">
+                                        <i class="fa fa-eye"></i> Ver Detalle
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+
+                <t t-if="pager">
+                    <t t-call="portal.pager"/>
+                </t>
+
+                <t t-if="not opportunities">
+                    <div class="alert alert-info text-center">
+                        <i class="fa fa-info-circle"></i> No hay oportunidades activas
+                    </div>
+                </t>
+            </div>
+        </t>
+    </template>
+
+    <template id="mybohio_owner_opportunity_detail" name="BOHIO Owner Opportunity Detail">
+        <t t-call="bohio_real_estate.mybohio_portal_layout">
+            <div class="mybohio-opportunity-detail">
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="/mybohio/owner">Dashboard</a></li>
+                                <li class="breadcrumb-item"><a href="/mybohio/owner/opportunities">Oportunidades</a></li>
+                                <li class="breadcrumb-item active" t-field="opportunity.name"/>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="card">
+                            <div class="card-body">
+                                <h3 t-field="opportunity.name"/>
+
+                                <div class="row mt-4">
+                                    <div class="col-md-6">
+                                        <p><strong>Etapa Actual:</strong><br/>
+                                            <span t-att-class="'badge bg-%s fs-6' % ('success' if opportunity.stage_id.is_won else 'primary')"
+                                                  t-field="opportunity.stage_id.name"/>
+                                        </p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p><strong>Fecha:</strong><br/>
+                                            <t t-esc="opportunity.create_date.strftime('%d/%m/%Y')"/>
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <t t-if="opportunity.description">
+                                    <div class="mt-3">
+                                        <h5>Descripción</h5>
+                                        <p t-field="opportunity.description"/>
+                                    </div>
+                                </t>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

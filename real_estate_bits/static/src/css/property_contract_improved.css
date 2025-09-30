@@ -1,0 +1,255 @@
+/* ============================================
+   VISTA MEJORADA DE CONTRATO
+   Colores Bohio: #ff1d25 (rojo) y #000000 (negro)
+   ============================================ */
+
+/* Card de Presentación Principal */
+.o_contract_presentation_card {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border: 3px solid #ff1d25;
+    border-radius: 12px;
+    padding: 20px;
+    margin: 20px 0;
+    box-shadow: 0 4px 12px rgba(255, 29, 37, 0.15);
+}
+
+.o_card_section {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    margin-bottom: 15px;
+}
+
+.o_card_section .card-header {
+    background: linear-gradient(135deg, #000000 0%, #333333 100%);
+    color: white;
+    padding: 12px 15px;
+    border-radius: 8px 8px 0 0;
+    border-bottom: 3px solid #ff1d25;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.o_card_section .card-header h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.o_card_section .card-body {
+    padding: 15px;
+}
+
+.o_client_card .card-header {
+    background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%);
+}
+
+.o_property_card .card-header {
+    background: linear-gradient(135deg, #50c878 0%, #3fa463 100%);
+}
+
+/* Campos grandes y destacados */
+.o_field_large .o_field_widget {
+    font-size: 18px !important;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.o_field_large label.o_form_label {
+    font-size: 12px;
+    text-transform: uppercase;
+    color: #95a5a6;
+    margin-bottom: 5px;
+}
+
+.o_field_medium .o_field_widget {
+    font-size: 14px;
+}
+
+/* Barra de Resumen Financiero */
+.o_financial_summary_bar {
+    background: white;
+    border: 2px solid #e9ecef;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.o_summary_metric {
+    text-align: center;
+    padding: 15px;
+    border-radius: 8px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.o_summary_metric:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+}
+
+.o_summary_metric label,
+.o_summary_metric .metric-label {
+    display: block;
+    font-size: 11px;
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+    color: #7f8c8d;
+}
+
+.o_summary_metric .metric-value {
+    font-size: 24px;
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+.metric-primary {
+    background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%);
+    border-left: 4px solid #ff1d25;
+}
+
+.metric-primary label,
+.metric-primary .metric-value {
+    color: white;
+}
+
+.metric-success {
+    background: linear-gradient(135deg, #50c878 0%, #3fa463 100%);
+    border-left: 4px solid #ff1d25;
+}
+
+.metric-success label,
+.metric-success .metric-value {
+    color: white;
+}
+
+.metric-info {
+    background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+    border-left: 4px solid #000000;
+}
+
+.metric-info label,
+.metric-info .metric-value {
+    color: white;
+}
+
+.metric-warning {
+    background: linear-gradient(135deg, #f39c12 0%, #d68910 100%);
+    border-left: 4px solid #000000;
+}
+
+.metric-warning label,
+.metric-warning .metric-value {
+    color: white;
+}
+
+/* Panel de Control de Líneas */
+.o_lines_control_panel {
+    background: #f8f9fa;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    border-left: 4px solid #ff1d25;
+}
+
+.o_lines_control_panel button {
+    margin-right: 10px;
+}
+
+/* Estilos de Notebook */
+.o_notebook .nav-link {
+    border-bottom: 3px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.o_notebook .nav-link:hover {
+    border-bottom-color: #ff1d25;
+}
+
+.o_notebook .nav-link.active {
+    border-bottom-color: #ff1d25;
+    color: #ff1d25;
+    font-weight: 600;
+}
+
+/* Alertas personalizadas */
+.alert-info {
+    background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+    border-left: 4px solid #2196f3;
+    color: #1565c0;
+}
+
+/* Botones de estado en líneas */
+.o_list_table button[name="action_terminate_line"] {
+    background: #e74c3c;
+    color: white;
+    border: none;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: background 0.3s ease;
+}
+
+.o_list_table button[name="action_terminate_line"]:hover {
+    background: #c0392b;
+}
+
+.o_list_table button[name="create_invoice_line"] {
+    background: #3498db;
+    color: white;
+    border: none;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: background 0.3s ease;
+}
+
+.o_list_table button[name="create_invoice_line"]:hover {
+    background: #2980b9;
+}
+
+/* Estados con badges mejorados */
+.badge {
+    padding: 6px 12px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 11px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .o_contract_presentation_card .row {
+        flex-direction: column;
+    }
+
+    .o_financial_summary_bar .row {
+        flex-direction: column;
+    }
+
+    .o_summary_metric {
+        margin-bottom: 15px;
+    }
+}
+
+/* Smart buttons mejorados */
+.oe_stat_button {
+    border-left: 3px solid #ff1d25;
+    transition: all 0.3s ease;
+}
+
+.oe_stat_button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(255, 29, 37, 0.2);
+}
+
+/* Títulos de grupo */
+.o_horizontal_separator {
+    color: #000000;
+    font-weight: 600;
+    border-bottom: 2px solid #ff1d25;
+    padding-bottom: 5px;
+    margin-bottom: 15px;
+}

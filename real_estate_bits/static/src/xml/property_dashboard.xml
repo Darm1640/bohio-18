@@ -4,85 +4,114 @@
     <t t-name="real_estate_bits.PropertyDashboard" owl="1">
         <div class="o_property_dashboard">
             <div class="container-fluid p-3">
-                <!-- Header -->
-                <div class="row mb-4">
+                <!-- User Info Card -->
+                <div class="row mb-3">
                     <div class="col-12">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <h2 class="text-primary">
-                                <i class="fa fa-home me-2"/>Dashboard Inmobiliario
-                            </h2>
-                            <button class="btn btn-primary" t-on-click="onViewAllProperties">
-                                <i class="fa fa-list me-2"/>Ver Todas las Propiedades
-                            </button>
+                        <div class="user-info-card">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div class="d-flex align-items-center">
+                                    <img t-att-src="state.dashboardData.user_info.avatar_url || '/web/static/img/user_menu_avatar.png'"
+                                         class="user-avatar me-3"
+                                         alt="Avatar"/>
+                                    <div>
+                                        <h4 class="user-name mb-1">
+                                            <i class="fa fa-user-circle me-2"/>
+                                            <t t-esc="state.dashboardData.user_info.name || 'Usuario'"/>
+                                        </h4>
+                                        <p class="user-role mb-0">
+                                            <i class="fa fa-briefcase me-1"/>
+                                            <t t-esc="state.dashboardData.user_info.job_title || 'Puesto no definido'"/>
+                                        </p>
+                                        <p class="user-email mb-0">
+                                            <i class="fa fa-envelope me-1"/>
+                                            <t t-esc="state.dashboardData.user_info.email || ''"/>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="text-end">
+                                    <button class="btn btn-outline-primary" t-on-click="onViewAllProperties">
+                                        <i class="fa fa-list me-2"/>Ver Todas las Propiedades
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- KPIs Cards -->
+                <!-- Header -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <h2 style="color:white;text-shadow:2px 2px 4px rgba(0,0,0,0.3);">
+                            <i class="fa fa-home me-2"/>Dashboard Inmobiliario
+                        </h2>
+                    </div>
+                </div>
+
+                <!-- KPIs Cards con Gradientes -->
                 <div class="row mb-4">
                     <div class="col-lg-3 col-md-6 mb-3">
-                        <div class="card shadow-sm">
+                        <div class="card shadow-sm kpi-card-1">
                             <div class="card-body">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div>
-                                        <h6 class="text-muted mb-1">Total Propiedades</h6>
-                                        <h3 class="mb-0 text-primary">
+                                        <h6 class="mb-1" style="color:rgba(255,255,255,0.9);">Total Propiedades</h6>
+                                        <h3 class="mb-0">
                                             <t t-esc="state.dashboardData.properties_by_status &amp;&amp; state.dashboardData.properties_by_status.length ? state.dashboardData.properties_by_status.reduce((sum, s) => sum + s.count, 0) : 0"/>
                                         </h3>
                                     </div>
-                                    <div class="text-primary">
-                                        <i class="fa fa-building fa-2x"/>
+                                    <div style="opacity:0.8;">
+                                        <i class="fa fa-building fa-3x"/>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-6 mb-3">
-                        <div class="card shadow-sm">
+                        <div class="card shadow-sm kpi-card-2">
                             <div class="card-body">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div>
-                                        <h6 class="text-muted mb-1">Barrios Activos</h6>
-                                        <h3 class="mb-0 text-success">
+                                        <h6 class="mb-1" style="color:rgba(255,255,255,0.9);">Barrios Activos</h6>
+                                        <h3 class="mb-0">
                                             <t t-esc="state.dashboardData.properties_by_region ? state.dashboardData.properties_by_region.length : 0"/>
                                         </h3>
                                     </div>
-                                    <div class="text-success">
-                                        <i class="fa fa-map-marker fa-2x"/>
+                                    <div style="opacity:0.8;">
+                                        <i class="fa fa-map-marker fa-3x"/>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-6 mb-3">
-                        <div class="card shadow-sm">
+                        <div class="card shadow-sm kpi-card-3">
                             <div class="card-body">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div>
-                                        <h6 class="text-muted mb-1">Ingreso Mensual Esperado</h6>
-                                        <h3 class="mb-0 text-warning">
+                                        <h6 class="mb-1" style="color:rgba(255,255,255,0.9);">Ingreso Mensual</h6>
+                                        <h3 class="mb-0">
                                             <t t-esc="formatCurrency(state.dashboardData.expected_income &amp;&amp; state.dashboardData.expected_income.length ? state.dashboardData.expected_income.reduce((sum, i) => sum + (i.monthly_income || 0), 0) : 0)"/>
                                         </h3>
                                     </div>
-                                    <div class="text-warning">
-                                        <i class="fa fa-dollar fa-2x"/>
+                                    <div style="opacity:0.8;">
+                                        <i class="fa fa-dollar fa-3x"/>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-6 mb-3">
-                        <div class="card shadow-sm">
+                        <div class="card shadow-sm kpi-card-4">
                             <div class="card-body">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div>
-                                        <h6 class="text-muted mb-1">Vendedores Activos</h6>
-                                        <h3 class="mb-0 text-info">
+                                        <h6 class="mb-1" style="color:rgba(255,255,255,0.9);">Vendedores</h6>
+                                        <h3 class="mb-0">
                                             <t t-esc="state.dashboardData.properties_by_salesperson ? state.dashboardData.properties_by_salesperson.length : 0"/>
                                         </h3>
                                     </div>
-                                    <div class="text-info">
-                                        <i class="fa fa-users fa-2x"/>
+                                    <div style="opacity:0.8;">
+                                        <i class="fa fa-users fa-3x"/>
                                     </div>
                                 </div>
                             </div>
@@ -122,7 +151,7 @@
                                     <i class="fa fa-clock-o me-2"/>Actividades Recientes
                                 </h5>
                             </div>
-                            <div class="card-body" style="max-height: 460px; overflow-y: auto;">
+                            <div class="card-body activities-scroll">
                                 <div class="list-group list-group-flush">
                                     <t t-foreach="state.dashboardData.recent_activities" t-as="activity" t-key="activity_index">
                                         <div class="list-group-item px-0">

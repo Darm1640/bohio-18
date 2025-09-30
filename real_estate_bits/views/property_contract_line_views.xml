@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="utf-8"?>
+<data>
+
+    <!-- Vista para Wizard Agregar Línea -->
+    <record id="view_property_contract_add_line_wizard_form" model="ir.ui.view">
+        <field name="name">property.contract.add.line.wizard.form</field>
+        <field name="model">property.contract.add.line.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Agregar Propiedad al Contrato" class="o_survey_form o_form_nosheet">
+                <div class="o_form_sheet">
+                    <!-- Header tipo Survey -->
+                    <div class="o_survey_nav pt16 mb-4">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-lg-12 text-center">
+                                    <h1 class="o_survey_main_title pt-4">
+                                        <i class="fa fa-plus-circle"/> Agregar Propiedad al Contrato
+                                    </h1>
+                                    <p class="lead text-muted">
+                                        Configure la nueva propiedad para el contrato multi-propiedad
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Información de la Propiedad -->
+                    <div class="o_survey_question mb-4">
+                        <h3 class="o_survey_question_title"><i class="fa fa-building"/> ¿Qué propiedad desea agregar?</h3>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="property_id" class="fw-bold o_form_label">Propiedad</label>
+                                <field name="property_id" class="form-control"
+                                       placeholder="Seleccione la propiedad..."/>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="suggested_rental_fee" class="fw-bold o_form_label">Canon Sugerido</label>
+                                <field name="suggested_rental_fee" widget="monetary" readonly="1"/>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="final_rental_fee" class="fw-bold o_form_label">Canon Final</label>
+                                <field name="final_rental_fee" widget="monetary" readonly="1" class="fw-bold"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Configuración de Fechas -->
+                    <div class="o_survey_question mb-4">
+                        <h3 class="o_survey_question_title"><i class="fa fa-calendar"/> ¿Cuándo estará activa esta propiedad?</h3>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="date_from" class="fw-bold o_form_label">Fecha de Inicio</label>
+                                <field name="date_from" class="form-control"/>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="date_to" class="fw-bold o_form_label">Fecha de Fin</label>
+                                <field name="date_to" class="form-control"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Configuración de Canon -->
+                    <div class="o_survey_question mb-4">
+                        <h3 class="o_survey_question_title"><i class="fa fa-calculator"/> ¿Cómo calcular el canon de esta propiedad?</h3>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <field name="calculation_method" widget="radio" class="o_survey_form_field_radio"/>
+                            </div>
+                            <div class="col-md-6">
+                                <!-- Monto Manual -->
+                                <div invisible="calculation_method != 'manual_amount'">
+                                    <label for="manual_rental_fee" class="fw-bold o_form_label">Canon Manual</label>
+                                    <field name="manual_rental_fee" widget="monetary" class="form-control"/>
+                                </div>
+
+                                <!-- Porcentaje del Contrato -->
+                                <div invisible="calculation_method != 'percentage_of_contract'">
+                                    <label for="percentage_of_contract" class="fw-bold o_form_label">Porcentaje del Contrato (%)</label>
+                                    <field name="percentage_of_contract" widget="percentage" class="form-control"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Vista Previa -->
+                    <div class="alert alert-info" role="alert">
+                        <h5><i class="fa fa-info-circle"/> Vista Previa</h5>
+                        <p><strong>Propiedad:</strong> <field name="property_id" readonly="1" style="background: transparent; border: none;"/></p>
+                        <p><strong>Período:</strong> <field name="date_from" readonly="1" style="background: transparent; border: none;"/> - <field name="date_to" readonly="1" style="background: transparent; border: none;"/></p>
+                        <p><strong>Canon Final:</strong> <field name="final_rental_fee" widget="monetary" readonly="1" style="background: transparent; border: none; font-weight: bold;"/></p>
+                    </div>
+                </div>
+
+                <footer>
+                    <button name="action_add_line" type="object" string="Agregar Propiedad" class="btn-primary"/>
+                    <button special="cancel" string="Cancelar" class="btn-secondary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Vista para Wizard Terminar Línea -->
+    <record id="view_property_contract_terminate_line_wizard_form" model="ir.ui.view">
+        <field name="name">property.contract.terminate.line.wizard.form</field>
+        <field name="model">property.contract.terminate.line.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Terminar Propiedad del Contrato" class="o_survey_form o_form_nosheet">
+                <div class="o_form_sheet">
+                    <!-- Header tipo Survey -->
+                    <div class="o_survey_nav pt16 mb-4">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-lg-12 text-center">
+                                    <h1 class="o_survey_main_title pt-4">
+                                        <i class="fa fa-times-circle"/> Terminar Propiedad del Contrato
+                                    </h1>
+                                    <p class="lead text-muted">
+                                        Configure la terminación de una propiedad específica
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Selección de Línea -->
+                    <div class="o_survey_question mb-4">
+                        <h3 class="o_survey_question_title"><i class="fa fa-list"/> ¿Qué propiedad desea terminar?</h3>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <label for="contract_line_id" class="fw-bold o_form_label">Línea de Contrato</label>
+                                <field name="contract_line_id" class="form-control"/>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="current_total_rental" class="fw-bold o_form_label">Canon Actual</label>
+                                <field name="current_total_rental" widget="monetary" readonly="1"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Configuración de Terminación -->
+                    <div class="o_survey_question mb-4">
+                        <h3 class="o_survey_question_title"><i class="fa fa-calendar"/> ¿Cuándo y por qué termina?</h3>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label for="termination_date" class="fw-bold o_form_label">Fecha de Terminación</label>
+                                <field name="termination_date" class="form-control"/>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="termination_reason" class="fw-bold o_form_label">Motivo</label>
+                                <field name="termination_reason" class="form-control"/>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="rental_after_termination" class="fw-bold o_form_label">Canon Después</label>
+                                <field name="rental_after_termination" widget="monetary" readonly="1"/>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-12">
+                                <label for="notes" class="fw-bold o_form_label">Observaciones</label>
+                                <field name="notes" placeholder="Notas adicionales sobre la terminación..."/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Impacto Financiero -->
+                    <div class="o_survey_question mb-4">
+                        <h3 class="o_survey_question_title"><i class="fa fa-bar-chart"/> Impacto en el Contrato</h3>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="text-center p-3 border rounded bg-primary text-white">
+                                    <div class="fs-3 fw-bold">
+                                        <field name="current_total_rental" widget="monetary"/>
+                                    </div>
+                                    <div class="fs-6">Canon Actual</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="text-center p-3 border rounded bg-danger text-white">
+                                    <div class="fs-3 fw-bold">
+                                        <field name="impact_amount" widget="monetary"/>
+                                    </div>
+                                    <div class="fs-6">Reducción</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="text-center p-3 border rounded bg-warning text-dark">
+                                    <div class="fs-3 fw-bold">
+                                        <field name="impact_percentage" widget="percentage"/>
+                                    </div>
+                                    <div class="fs-6">% Impacto</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="text-center p-3 border rounded bg-success text-white">
+                                    <div class="fs-3 fw-bold">
+                                        <field name="rental_after_termination" widget="monetary"/>
+                                    </div>
+                                    <div class="fs-6">Canon Final</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-warning" role="alert">
+                        <strong><i class="fa fa-exclamation-triangle"/> Atención:</strong>
+                        Al terminar esta línea, se recalcularán automáticamente todas las cuotas futuras
+                        del contrato con el nuevo canon total.
+                    </div>
+                </div>
+
+                <footer>
+                    <button name="action_terminate_line" type="object" string="Terminar Línea" class="btn-danger"/>
+                    <button special="cancel" string="Cancelar" class="btn-secondary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Vista para Wizard Terminación Individual -->
+    <record id="view_property_contract_line_termination_wizard_form" model="ir.ui.view">
+        <field name="name">property.contract.line.termination.wizard.form</field>
+        <field name="model">property.contract.line.termination.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Terminar Línea de Contrato" class="o_form_nosheet">
+                <div class="o_form_sheet">
+                    <div class="text-center mb-4">
+                        <h2><i class="fa fa-stop-circle"/> Terminar Línea de Contrato</h2>
+                    </div>
+
+                    <group>
+                        <field name="termination_date"/>
+                        <field name="termination_reason"/>
+                        <field name="notes" placeholder="Observaciones..."/>
+                    </group>
+
+                    <group string="Impacto Financiero">
+                        <field name="current_rental_fee" widget="monetary" readonly="1"/>
+                        <field name="total_contract_rental" widget="monetary" readonly="1"/>
+                        <field name="remaining_rental_after" widget="monetary" readonly="1"/>
+                    </group>
+                </div>
+
+                <footer>
+                    <button name="action_terminate" type="object" string="Terminar" class="btn-danger"/>
+                    <button special="cancel" string="Cancelar" class="btn-secondary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Vista para Wizard Extensión -->
+    <record id="view_property_contract_line_extension_wizard_form" model="ir.ui.view">
+        <field name="name">property.contract.line.extension.wizard.form</field>
+        <field name="model">property.contract.line.extension.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Extender Línea de Contrato" class="o_form_nosheet">
+                <div class="o_form_sheet">
+                    <div class="text-center mb-4">
+                        <h2><i class="fa fa-calendar-plus-o"/> Extender Línea de Contrato</h2>
+                    </div>
+
+                    <group>
+                        <field name="new_end_date"/>
+                        <field name="adjust_rental_fee"/>
+                        <field name="new_rental_fee" invisible="not adjust_rental_fee" widget="monetary"/>
+                    </group>
+                </div>
+
+                <footer>
+                    <button name="action_extend" type="object" string="Extender" class="btn-primary"/>
+                    <button special="cancel" string="Cancelar" class="btn-secondary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Vista List para Líneas de Contrato -->
+    <record id="view_property_contract_line_tree" model="ir.ui.view">
+        <field name="name">property.contract.line.list</field>
+        <field name="model">property.contract.line</field>
+        <field name="arch" type="xml">
+            <list string="Líneas de Contrato Multi-Propiedad"
+                  decoration-success="state == 'active'"
+                  decoration-muted="state in ['draft', 'cancelled']"
+                  decoration-danger="state == 'terminated'">
+
+                <field name="sequence" widget="handle"/>
+                <field name="contract_id"/>
+                <field name="property_id"/>
+                <field name="property_code"/>
+                <field name="region_id"/>
+                <field name="date_from"/>
+                <field name="date_to"/>
+                <field name="date_end_real" invisible="not date_end_real"/>
+                <field name="rental_fee" widget="monetary" sum="Total Canon"/>
+                <field name="rental_fee_percentage" widget="percentage"/>
+                <field name="state" widget="badge"
+                       decoration-success="state == 'active'"
+                       decoration-muted="state in ['draft', 'cancelled']"
+                       decoration-danger="state == 'terminated'"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Vista Form para Línea Individual -->
+    <record id="view_property_contract_line_form" model="ir.ui.view">
+        <field name="name">property.contract.line.form</field>
+        <field name="model">property.contract.line</field>
+        <field name="arch" type="xml">
+            <form string="Línea de Contrato Multi-Propiedad">
+                <header>
+                    <button name="action_terminate_line" type="object" string="Terminar"
+                            class="btn-warning" invisible="state != 'active'"/>
+                    <button name="action_extend_line" type="object" string="Extender"
+                            class="btn-info" invisible="state != 'active'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,active,terminated"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="contract_id" readonly="1"/>
+                            <field name="property_id"/>
+                            <field name="property_code" readonly="1"/>
+                            <field name="property_area" readonly="1"/>
+                            <field name="region_id" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="date_from"/>
+                            <field name="date_to"/>
+                            <field name="date_end_real" readonly="1" invisible="not date_end_real"/>
+                            <field name="rental_fee" widget="monetary"/>
+                            <field name="rental_fee_percentage" widget="percentage" readonly="1"/>
+                        </group>
+                    </group>
+
+                    <group string="Configuración">
+                        <field name="apply_increment"/>
+                        <field name="prorate_on_changes"/>
+                    </group>
+
+                    <group string="Información de Terminación" invisible="state != 'terminated'">
+                        <field name="termination_reason" readonly="1"/>
+                        <field name="termination_notes" readonly="1"/>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- Acción para Líneas de Contrato -->
+    <record id="action_property_contract_line" model="ir.actions.act_window">
+        <field name="name">Líneas de Contrato Multi-Propiedad</field>
+        <field name="res_model">property.contract.line</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No hay líneas de contrato
+            </p>
+            <p>
+                Las líneas de contrato permiten manejar múltiples propiedades
+                en un solo contrato con facturación consolidada.
+            </p>
+        </field>
+    </record>
+
+</data>

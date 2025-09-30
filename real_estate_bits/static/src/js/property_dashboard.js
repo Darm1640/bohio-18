@@ -297,8 +297,9 @@ export class PropertyDashboard extends Component {
         const mapData = this.state.dashboardData.map_data;
         const regionData = this.state.dashboardData.properties_by_region;
 
-        // Crear mapa centrado en Colombia por defecto
-        const map = L.map(this.mapRef.el).setView([4.570868, -74.297333], 6);
+        // Crear mapa centrado en Montería, Córdoba
+        const map = L.map(this.mapRef.el).setView([8.7574, -75.8814], 13);
+        this.map = map; // Guardar referencia para filtros
 
         // Agregar capa de mapa
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -306,51 +307,168 @@ export class PropertyDashboard extends Component {
             maxZoom: 19
         }).addTo(map);
 
-        // Agregar marcadores de barrios con cantidad de propiedades
-        regionData.forEach(region => {
-            if (region.latitude && region.longitude) {
-                const marker = L.circleMarker([region.latitude, region.longitude], {
-                    radius: Math.min(20, 5 + region.property_count),
-                    fillColor: this.getColorByCount(region.property_count),
-                    color: '#000',
-                    weight: 1,
+        // Agregar marcador de Montería, Córdoba
+        L.marker([8.7574, -75.8814], {
+            icon: L.divIcon({
+                className: 'monteria-marker',
+                html: '<div style="background:linear-gradient(135deg, #667eea 0%, #764ba2 100%);color:white;padding:8px 15px;border-radius:10px;font-weight:bold;box-shadow:0 2px 10px rgba(0,0,0,0.3);white-space:nowrap;">📍 Montería, Córdoba</div>',
+                iconSize: [180, 40],
+                iconAnchor: [90, 40]
+            })
+        }).addTo(map).bindPopup(`
+            <div class="map-popup">
+                <h6>Montería, Córdoba</h6>
+                <p><strong>Ciudad base</strong></p>
+                <p>Centro de operaciones inmobiliarias</p>
+            </div>
+        `);
+
+        // Grupos de capas para filtros
+        this.propertyLayers = L.layerGroup().addTo(map);
+        this.regionLayers = L.layerGroup().addTo(map);
+        this.projectLayers = L.layerGroup().addTo(map);
+
+        // Agregar marcadores de propiedades individuales
+        mapData.forEach(property => {
+            if (property.latitude && property.longitude) {
+                const marker = L.circleMarker([property.latitude, property.longitude], {
+                    radius: 8,
+                    fillColor: this.getPropertyColorByStatus(property.property_status),
+                    color: '#fff',
+                    weight: 2,
                     opacity: 1,
-                    fillOpacity: 0.7
-                }).addTo(map);
+                    fillOpacity: 0.8
+                }).addTo(this.propertyLayers);
 
                 marker.bindPopup(`
                     <div class="map-popup">
-                        <h6>${region.region_name}</h6>
-                        <p>Propiedades: <strong>${region.property_count}</strong></p>
-                        <p>Valor total: <strong>$${(region.total_value || 0).toFixed(0)}</strong></p>
-                        <p>Precio promedio: <strong>$${(region.avg_price || 0).toFixed(0)}</strong></p>
+                        <h6>${property.name}</h6>
+                        <p><strong>Tipo:</strong> ${property.type_name || 'N/A'}</p>
+                        <p><strong>Precio:</strong> ${this.formatCurrency(property.list_price || 0)}</p>
+                        <p><strong>Estado:</strong> <span class="badge ${this.getStatusClass(property.property_status)}">${this.getStatusLabel(property.property_status)}</span></p>
+                        <p><strong>Barrio:</strong> ${property.region_name || 'Sin ubicación'}</p>
+                        <button onclick="odoo.__DEBUG__.services['action'].doAction({type:'ir.actions.act_window',res_model:'product.template',res_id:${property.id},views:[[false,'form']]});" class="btn btn-sm btn-primary mt-2">Ver Detalles</button>
                     </div>
                 `);
             }
         });
 
-        // Si hay datos de ubicación, ajustar el zoom
-        if (regionData.length > 0) {
-            const bounds = [];
-            regionData.forEach(region => {
-                if (region.latitude && region.longitude) {
-                    bounds.push([region.latitude, region.longitude]);
-                }
-            });
-            if (bounds.length > 0) {
-                map.fitBounds(bounds);
+        // Agregar círculos para barrios con cantidad de propiedades
+        regionData.forEach(region => {
+            if (region.latitude && region.longitude) {
+                const circleMarker = L.circleMarker([region.latitude, region.longitude], {
+                    radius: Math.min(30, 10 + (region.property_count * 1.5)),
+                    fillColor: this.getColorByCount(region.property_count),
+                    color: '#fff',
+                    weight: 3,
+                    opacity: 1,
+                    fillOpacity: 0.4
+                }).addTo(this.regionLayers);
+
+                circleMarker.bindPopup(`
+                    <div class="map-popup">
+                        <h6>🏘️ ${region.region_name}</h6>
+                        <p><strong>Propiedades:</strong> ${region.property_count}</p>
+                        <p><strong>Valor total:</strong> ${this.formatCurrency(region.total_value || 0)}</p>
+                        <p><strong>Precio promedio:</strong> ${this.formatCurrency(region.avg_price || 0)}</p>
+                    </div>
+                `);
             }
-        }
+        });
+
+        // Agregar control de capas
+        const overlays = {
+            "Propiedades": this.propertyLayers,
+            "Barrios": this.regionLayers,
+            "Proyectos": this.projectLayers
+        };
+        L.control.layers(null, overlays, {position: 'topright'}).addTo(map);
 
         this.state.mapLoaded = true;
+
+        // Cargar proyectos después
+        this.loadProjectsOnMap();
+    }
+
+    async loadProjectsOnMap() {
+        try {
+            // Obtener proyectos con sus propiedades
+            const projects = await this.orm.searchRead(
+                "project.worksite",
+                [],
+                ["name", "region_id"]
+            );
+
+            // Obtener propiedades para contar unidades por proyecto
+            const properties = await this.orm.searchRead(
+                "product.template",
+                [["is_property", "=", true], ["project_worksite_id", "!=", false]],
+                ["project_worksite_id"]
+            );
+
+            // Contar propiedades por proyecto
+            const projectCounts = {};
+            properties.forEach(prop => {
+                if (prop.project_worksite_id) {
+                    const projectId = prop.project_worksite_id[0];
+                    projectCounts[projectId] = (projectCounts[projectId] || 0) + 1;
+                }
+            });
+
+            // Obtener coordenadas de las regiones de los proyectos
+            for (const project of projects) {
+                if (project.region_id) {
+                    const regions = await this.orm.searchRead(
+                        "region.region",
+                        [["id", "=", project.region_id[0]]],
+                        ["latitude", "longitude"]
+                    );
+
+                    if (regions.length > 0 && regions[0].latitude && regions[0].longitude) {
+                        const unitCount = projectCounts[project.id] || 0;
+
+                        const projectMarker = L.marker([regions[0].latitude, regions[0].longitude], {
+                            icon: L.divIcon({
+                                className: 'project-marker',
+                                html: `<div style="background:linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);color:#2c3e50;padding:6px 12px;border-radius:8px;font-weight:bold;box-shadow:0 2px 8px rgba(0,0,0,0.2);white-space:nowrap;border:2px solid white;">🏢 ${unitCount}</div>`,
+                                iconSize: [60, 30],
+                                iconAnchor: [30, 30]
+                            })
+                        }).addTo(this.projectLayers);
+
+                        projectMarker.bindPopup(`
+                            <div class="map-popup">
+                                <h6>🏢 ${project.name}</h6>
+                                <p><strong>Unidades:</strong> ${unitCount}</p>
+                                <p><strong>Tipo:</strong> Proyecto Inmobiliario</p>
+                                <button onclick="odoo.__DEBUG__.services['action'].doAction({type:'ir.actions.act_window',res_model:'project.worksite',res_id:${project.id},views:[[false,'form']]});" class="btn btn-sm btn-success mt-2">Ver Proyecto</button>
+                            </div>
+                        `);
+                    }
+                }
+            }
+        } catch (error) {
+            console.error("Error loading projects on map:", error);
+        }
+    }
+
+    getPropertyColorByStatus(status) {
+        const colors = {
+            'new': '#667eea',
+            'available': '#11998e',
+            'booked': '#f093fb',
+            'rented': '#30cfd0',
+            'sold': '#fa709a'
+        };
+        return colors[status] || '#6c757d';
     }
 
     getColorByCount(count) {
-        if (count > 50) return '#ff0000';
-        if (count > 30) return '#ff6600';
-        if (count > 15) return '#ffcc00';
-        if (count > 5) return '#99ff00';
-        return '#00ff00';
+        if (count > 50) return '#fa709a';
+        if (count > 30) return '#f093fb';
+        if (count > 15) return '#667eea';
+        if (count > 5) return '#30cfd0';
+        return '#11998e';
     }
 
     async onSalespersonClick(ev, salesperson) {

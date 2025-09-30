@@ -1,0 +1,135 @@
+/* ============================================
+   KANBAN DE CONTRATOS
+   Colores Bohio: #ff1d25 (rojo) y #000000 (negro)
+   ============================================ */
+
+.o_contract_kanban {
+    background: #f8f9fa;
+}
+
+.o_contract_kanban_card {
+    border: none !important;
+    border-radius: 10px !important;
+    background: white;
+    padding: 15px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+    border-left: 4px solid #ff1d25 !important;
+}
+
+.o_contract_kanban_card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(255, 29, 37, 0.2);
+}
+
+/* Header de la card */
+.o_kanban_card_header {
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 10px;
+}
+
+.o_kanban_record_title {
+    color: #2c3e50;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.o_kanban_record_subtitle {
+    color: #95a5a6;
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+/* Información del cliente */
+.o_contract_client_info .client-name {
+    color: #34495e;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.o_contract_client_info i {
+    margin-right: 6px;
+}
+
+/* Fechas */
+.o_contract_dates {
+    background: #f8f9fa;
+    padding: 8px;
+    border-radius: 6px;
+    border-left: 3px solid #3498db;
+}
+
+.o_contract_dates i {
+    margin-right: 4px;
+}
+
+/* Métricas Financieras */
+.o_contract_metrics {
+    margin-top: 12px;
+}
+
+.metric-small {
+    padding: 8px;
+    border-radius: 6px;
+    text-align: center;
+    color: white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.metric-small.bg-primary {
+    background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%);
+    border-left: 3px solid #ff1d25;
+}
+
+.metric-small.bg-success {
+    background: linear-gradient(135deg, #50c878 0%, #3fa463 100%);
+    border-left: 3px solid #ff1d25;
+}
+
+.metric-small .label {
+    font-size: 10px;
+    text-transform: uppercase;
+    opacity: 0.9;
+    font-weight: 600;
+}
+
+.metric-small .value {
+    font-size: 14px;
+    font-weight: bold;
+    margin-top: 2px;
+}
+
+.metric-balance {
+    background: linear-gradient(135deg, #f39c12 0%, #d68910 100%);
+    color: white;
+    padding: 6px 10px;
+    border-radius: 6px;
+    text-align: center;
+    font-size: 12px;
+    border: 2px solid #ff1d25;
+}
+
+/* Footer */
+.o_kanban_card_footer {
+    border-top: 1px solid #f0f0f0;
+    padding-top: 10px;
+}
+
+/* Dropdown */
+.o_dropdown_kanban .dropdown-menu .dropdown-item i {
+    margin-right: 8px;
+    color: #ff1d25;
+}
+
+.o_dropdown_kanban .dropdown-menu .dropdown-item:hover {
+    background: #fff5f5;
+    color: #ff1d25;
+}
+
+/* Badges */
+.badge {
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 10px;
+}
