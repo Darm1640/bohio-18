@@ -1263,7 +1263,7 @@ class Property(models.Model):
                 order.user_consing_id = (
                     order.partner_id.user_id.partner_id
                     or order.partner_id.commercial_partner_id.user_id.partner_id
-                    or (self.has_groups('sales_team.group_sale_salesman') and self.env.user.partner_id)
+
                 )
 
     @api.depends('email_from')
