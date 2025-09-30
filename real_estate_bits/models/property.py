@@ -1318,7 +1318,7 @@ class Property(models.Model):
         lang_codes = [code for code in self.mapped('partner_id.lang') if code]
         if lang_codes:
             lang_id_by_code = dict(
-                (code, self.env['res.lang']._lang_get_id(code))
+                (code, self.env['res.lang']._lang_get(code))
                 for code in lang_codes
             )
         else:
