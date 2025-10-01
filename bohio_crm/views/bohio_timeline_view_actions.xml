@@ -9,42 +9,6 @@
         <field name="context">{}</field>
     </record>
 
-    <!-- BUTTON EN TREE VIEW: Abrir Timeline desde lista -->
-    <record id="view_crm_lead_tree_timeline_button" model="ir.ui.view">
-        <field name="name">crm.lead.tree.timeline.button</field>
-        <field name="model">crm.lead</field>
-        <field name="inherit_id" ref="crm.crm_case_tree_view_oppor"/>
-        <field name="arch" type="xml">
-            <xpath expr="//tree" position="attributes">
-                <attribute name="decoration-info">probability &gt; 70</attribute>
-                <attribute name="decoration-warning">probability &gt; 40 and probability &lt;= 70</attribute>
-                <attribute name="decoration-danger">probability &lt;= 40</attribute>
-            </xpath>
-            <xpath expr="//field[@name='name']" position="after">
-                <button name="action_open_timeline_view"
-                        string="Timeline"
-                        type="object"
-                        icon="fa-clock-o"
-                        class="btn-primary"/>
-            </xpath>
-        </field>
-    </record>
-
-    <!-- BUTTON EN FORM VIEW: Abrir Timeline desde formulario -->
-    <record id="view_crm_lead_form_timeline_button" model="ir.ui.view">
-        <field name="name">crm.lead.form.timeline.button</field>
-        <field name="model">crm.lead</field>
-        <field name="inherit_id" ref="crm.crm_lead_view_form"/>
-        <field name="arch" type="xml">
-            <xpath expr="//header/button[@name='action_schedule_meeting']" position="after">
-                <button name="action_open_timeline_view"
-                        string="Vista Timeline"
-                        type="object"
-                        icon="fa-clock-o"
-                        class="btn-info"/>
-            </xpath>
-        </field>
-    </record>
 
     <!-- MENU ITEM: Acceso directo desde menú CRM -->
     <menuitem id="menu_crm_timeline_view"
