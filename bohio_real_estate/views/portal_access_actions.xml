@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Acción para acceder al portal como usuario -->
+    <record id="action_access_portal_mybohio" model="ir.actions.act_url">
+        <field name="name">Mi Portal BOHIO</field>
+        <field name="url">/mybohio</field>
+        <field name="target">new</field>
+    </record>
+
+    <!-- Menú raíz para Portal BOHIO -->
+    <menuitem
+        id="menu_bohio_portal_root"
+        name="Portal BOHIO"
+        sequence="90"
+        web_icon="bohio_real_estate,static/description/icon.png"
+        groups="base.group_user"/>
+
+    <!-- Menú de acceso al portal -->
+    <menuitem
+        id="menu_access_portal_mybohio"
+        name="Ver Mi Portal"
+        action="action_access_portal_mybohio"
+        parent="menu_bohio_portal_root"
+        sequence="10"
+        groups="base.group_user"/>
+</odoo>

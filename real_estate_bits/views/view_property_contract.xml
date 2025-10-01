@@ -25,7 +25,7 @@
             <field name="model">property.contract</field>
             <field name="priority">1</field>
             <field name="arch" type="xml">
-                <form string="Contrato de Arrendamiento" class="o_contract_form">
+                <form string="Contrato de Arrendamiento" >
                     <header>
                         <button name="action_calculate" type="object" string="Calcular Líneas"
                                 class="btn-info"
@@ -41,7 +41,7 @@
                                statusbar_visible="draft,confirmed,cancel"/>
                     </header>
 
-                    <sheet class="o_contract_sheet">
+                    <sheet>
                         <!-- Smart Buttons -->
                         <div class="oe_button_box" name="button_box">
                             <button name="view_vouchers" type="object" class="oe_stat_button" icon="fa-money">
@@ -69,15 +69,15 @@
                         <!-- ============================================
                              CARD DE PRESENTACIÓN: CLIENTE Y PROPIEDAD
                              ============================================ -->
-                        <div class="o_contract_presentation_card">
+                        <div >
                             <div class="row">
                                 <!-- CLIENTE (INQUILINO) -->
                                 <div class="col-lg-6">
-                                    <div class="o_card_section o_client_card">
-                                        <div class="card-header">
+                                    <div >
+                                        <div >
                                             <h3><i class="fa fa-user-circle text-primary"/> INQUILINO</h3>
                                         </div>
-                                        <div class="card-body">
+                                        <div >
                                             <div class="o_field_large">
                                                 <label for="partner_id" class="o_form_label fw-bold">Nombre:</label>
                                                 <field name="partner_id" required="True"
@@ -97,13 +97,13 @@
 
                                 <!-- PROPIEDAD(ES) -->
                                 <div class="col-lg-6">
-                                    <div class="o_card_section o_property_card">
-                                        <div class="card-header">
+                                    <div >
+                                        <div >
                                             <h3><i class="fa fa-building text-success"/> PROPIEDAD(ES)</h3>
                                             <field name="is_multi_property" readonly="state != 'draft'"
                                                    widget="boolean_toggle" string="Multi-Propiedad"/>
                                         </div>
-                                        <div class="card-body">
+                                        <div >
                                             <!-- PROPIEDAD ÚNICA -->
                                             <div invisible="is_multi_property">
                                                 <div class="o_field_large">
@@ -156,36 +156,36 @@
                         <!-- ============================================
                              RESUMEN FINANCIERO DESTACADO
                              ============================================ -->
-                        <div class="o_financial_summary_bar">
+                        <div >
                             <div class="row">
                                 <div class="col-lg-3">
-                                    <div class="o_summary_metric metric-primary">
-                                        <span class="metric-label">Canon Mensual</span>
-                                        <div class="metric-value">
+                                    <div >
+                                        <span >Canon Mensual</span>
+                                        <div >
                                             <field name="rental_fee" widget="monetary" readonly="state != 'draft'"/>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-lg-3">
-                                    <div class="o_summary_metric metric-success">
-                                        <span class="metric-label">Total Contrato</span>
-                                        <div class="metric-value">
+                                    <div >
+                                        <span >Total Contrato</span>
+                                        <div >
                                             <field name="amount_total" widget="monetary" readonly="1"/>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-lg-3">
-                                    <div class="o_summary_metric metric-info">
-                                        <span class="metric-label">Pagado</span>
-                                        <div class="metric-value">
+                                    <div >
+                                        <span >Pagado</span>
+                                        <div >
                                             <field name="paid" widget="monetary" readonly="1"/>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-lg-3">
-                                    <div class="o_summary_metric metric-warning">
-                                        <span class="metric-label">Saldo</span>
-                                        <div class="metric-value">
+                                    <div >
+                                        <span >Saldo</span>
+                                        <div >
                                             <field name="balance" widget="monetary" readonly="1"/>
                                         </div>
                                     </div>
@@ -226,8 +226,8 @@
                             <group>
                                 <field name="region_id" readonly="state != 'draft'"/>
                                 <field name="project_id" readonly="state != 'draft'"/>
-                                <field name="contract_scenery_id" required="True" readonly="state != 'draft'"/>
                                 <field name="rental_agreement" required="1" readonly="state != 'draft'"/>
+                                <field name="contract_scenery_id" required="True" readonly="state != 'draft'"/>
                             </group>
                             <group>
                                 <field name="deposit" readonly="state != 'draft'"/>
@@ -322,17 +322,16 @@
                             <page string="Incrementos y Ajustes" name="increments">
                                 <group string="Configuración de Incrementos">
                                     <group>
-                                        <field name="apply_increment" readonly="state != 'draft'"/>
-                                        <field name="increment_percentage"
-                                               readonly="state != 'draft' or not apply_increment"
-                                               invisible="not apply_increment"/>
-                                        <field name="increment_recurring_interval"
-                                               readonly="state != 'draft' or not apply_increment"
-                                               invisible="not apply_increment"/>
+                                        <field name="increment_percentage" readonly="state != 'draft'"/>
+                                        <field name="increment_period" readonly="state != 'draft'"/>
+                                        <field name="increment_recurring_interval" readonly="state != 'draft'"/>
                                     </group>
-                                    <group>
+                                    <group string="Intereses por Mora">
                                         <field name="apply_interest" readonly="state != 'draft'"/>
                                         <field name="interest_rate"
+                                               readonly="state != 'draft' or not apply_interest"
+                                               invisible="not apply_interest"/>
+                                        <field name="interest_method"
                                                readonly="state != 'draft' or not apply_interest"
                                                invisible="not apply_interest"/>
                                         <field name="interest_days_grace"
@@ -346,10 +345,10 @@
                             <page string="Notas de Débito" name="debit_notes">
                                 <field name="debit_line_ids" nolabel="1">
                                     <list editable="bottom">
+                                        <field name="sequence" widget="handle"/>
                                         <field name="name"/>
-                                        <field name="date"/>
-                                        <field name="amount" widget="monetary"/>
-                                        <field name="state" widget="badge"/>
+                                        <field name="value_amount" string="% a Aplicar"/>
+                                        <field name="nb_days" string="Días después"/>
                                     </list>
                                 </field>
                             </page>
