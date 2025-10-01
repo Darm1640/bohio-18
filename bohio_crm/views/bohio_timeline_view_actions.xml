@@ -21,7 +21,6 @@
     <!-- MENU ITEM: Acceso desde menú raíz de propiedades -->
     <menuitem id="menu_property_timeline_view"
               name="Timeline CRM"
-              parent="real_estate_bits.menu_property_root"
               action="action_crm_lead_timeline_view"
               sequence="25"
               groups="base.group_user"/>
