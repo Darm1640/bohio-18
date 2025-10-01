@@ -3,7 +3,7 @@ from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
 
 class PaymentOperationType(models.Model):
-    _name = 'account.payment.operation.type'
+    _name = 'payment.operation.type'
     _description = 'Tipo de Operación de Pago'
     _order = 'sequence, name'
     _rec_name = 'name'
