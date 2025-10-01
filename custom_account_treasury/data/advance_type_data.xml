@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Esta función crea los tipos de anticipo predeterminados después de la instalación -->
+        <!-- Se ejecuta como función post_init_hook para asegurar que las cuentas existan -->
+
+        <!-- Secuencias para tipos de anticipo -->
+        <record id="seq_advance_type_customer" model="ir.sequence">
+            <field name="name">Secuencia Anticipo Cliente</field>
+            <field name="code">advance.type.customer</field>
+            <field name="prefix">ANT-CLI/%(year)s/</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+        <record id="seq_advance_type_supplier" model="ir.sequence">
+            <field name="name">Secuencia Anticipo Proveedor</field>
+            <field name="code">advance.type.supplier</field>
+            <field name="prefix">ANT-PROV/%(year)s/</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+        <record id="seq_advance_type_employee" model="ir.sequence">
+            <field name="name">Secuencia Anticipo Empleado</field>
+            <field name="code">advance.type.employee</field>
+            <field name="prefix">ANT-EMP/%(year)s/</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+    </data>
+</odoo>

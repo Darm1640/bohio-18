@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- Secuencia para anticipos de clientes -->
+        <record id="seq_advance_request_customer" model="ir.sequence">
+            <field name="name">Anticipo de Cliente</field>
+            <field name="code">advance.request.customer</field>
+            <field name="prefix">ANT/CLI/%(year)s/</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+        <!-- Secuencia para anticipos a proveedores -->
+        <record id="seq_advance_request_supplier" model="ir.sequence">
+            <field name="name">Anticipo a Proveedor</field>
+            <field name="code">advance.request.supplier</field>
+            <field name="prefix">ANT/PROV/%(year)s/</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+        <!-- Secuencia para otros anticipos -->
+        <record id="seq_advance_request_other" model="ir.sequence">
+            <field name="name">Otros Anticipos</field>
+            <field name="code">advance.request.other</field>
+            <field name="prefix">ANT/%(year)s/</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+        <!-- Tipos de anticipo predeterminados -->
+        <!-- NOTA: Los tipos se crearán mediante script de instalación para configurar cuentas correctamente -->
+        <!-- Los siguientes registros están comentados temporalmente
+        <record id="advance_type_sale" model="advance.type">
+            <field name="name">Anticipo de Venta</field>
+            <field name="code">SALE_ADVANCE</field>
+            <field name="sequence">10</field>
+            <field name="active">True</field>
+        </record>
+
+        <record id="advance_type_purchase" model="advance.type">
+            <field name="name">Anticipo a Proveedor</field>
+            <field name="code">PURCHASE_ADVANCE</field>
+            <field name="sequence">20</field>
+            <field name="active">True</field>
+        </record>
+
+        <record id="advance_type_employee" model="advance.type">
+            <field name="name">Anticipo a Empleado</field>
+            <field name="code">EMPLOYEE_ADVANCE</field>
+            <field name="sequence">30</field>
+            <field name="active">True</field>
+        </record>
+        -->
+
+        <!-- Etapas predeterminadas para anticipos de clientes -->
+        <record id="stage_customer_new" model="advance.request.stage">
+            <field name="name">Nueva</field>
+            <field name="sequence">10</field>
+            <field name="is_default">True</field>
+            <field name="fold">False</field>
+        </record>
+
+        <record id="stage_customer_validation" model="advance.request.stage">
+            <field name="name">En Validación</field>
+            <field name="sequence">20</field>
+            <field name="fold">False</field>
+        </record>
+
+        <record id="stage_customer_approved" model="advance.request.stage">
+            <field name="name">Aprobado</field>
+            <field name="sequence">30</field>
+            <field name="fold">False</field>
+        </record>
+
+        <record id="stage_customer_payment" model="advance.request.stage">
+            <field name="name">En Proceso de Pago</field>
+            <field name="sequence">40</field>
+            <field name="fold">False</field>
+        </record>
+
+        <record id="stage_customer_done" model="advance.request.stage">
+            <field name="name">Completado</field>
+            <field name="sequence">50</field>
+            <field name="is_done">True</field>
+            <field name="fold">True</field>
+        </record>
+
+        <!-- Etapas predeterminadas para anticipos a proveedores -->
+        <record id="stage_supplier_new" model="advance.request.stage">
+            <field name="name">Nueva</field>
+            <field name="sequence">10</field>
+            <field name="is_default">True</field>
+            <field name="fold">False</field>
+        </record>
+
+        <record id="stage_supplier_validation" model="advance.request.stage">
+            <field name="name">En Validación</field>
+            <field name="sequence">20</field>
+            <field name="fold">False</field>
+        </record>
+
+        <record id="stage_supplier_approved" model="advance.request.stage">
+            <field name="name">Aprobado</field>
+            <field name="sequence">30</field>
+            <field name="fold">False</field>
+        </record>
+
+        <record id="stage_supplier_payment" model="advance.request.stage">
+            <field name="name">Programado para Pago</field>
+            <field name="sequence">40</field>
+            <field name="fold">False</field>
+        </record>
+
+        <record id="stage_supplier_done" model="advance.request.stage">
+            <field name="name">Pagado</field>
+            <field name="sequence">50</field>
+            <field name="is_done">True</field>
+            <field name="fold">True</field>
+        </record>
+
+    </data>
+</odoo>

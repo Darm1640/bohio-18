@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Tipos de Operación de Salida -->
+    <record id="operation_type_supplier_payment" model="account.payment.operation.type">
+        <field name="name">Pago a Proveedores</field>
+        <field name="code">PAG-PROV</field>
+        <field name="payment_type">outbound</field>
+        <field name="sequence">10</field>
+        <field name="description">Pagos regulares a proveedores por bienes y servicios</field>
+        <field name="sequence_id" ref="sequence_payment_operation_exit"/>
+        <field name="company_ids" eval="[(6, 0, [ref('base.main_company')])]"/>
+    </record>
+
+    <record id="operation_type_employee_advance" model="account.payment.operation.type">
+        <field name="name">Anticipo a Empleados</field>
+        <field name="code">ANT-EMP</field>
+        <field name="payment_type">outbound</field>
+        <field name="sequence">20</field>
+        <field name="description">Anticipos de nómina y préstamos a empleados</field>
+        <field name="require_approval">True</field>
+        <field name="approval_amount">1000000</field>
+        <field name="sequence_id" ref="sequence_payment_operation_exit"/>
+        <field name="company_ids" eval="[(6, 0, [ref('base.main_company')])]"/>
+    </record>
+
+    <record id="operation_type_expense_reimbursement" model="account.payment.operation.type">
+        <field name="name">Reembolso de Gastos</field>
+        <field name="code">REIMB</field>
+        <field name="payment_type">outbound</field>
+        <field name="sequence">30</field>
+        <field name="description">Reembolsos de gastos a empleados y terceros</field>
+        <field name="sequence_id" ref="sequence_payment_operation_exit"/>
+        <field name="company_ids" eval="[(6, 0, [ref('base.main_company')])]"/>
+    </record>
+
+    <!-- Tipos de Operación de Entrada -->
+    <record id="operation_type_customer_collection" model="account.payment.operation.type">
+        <field name="name">Cobro a Clientes</field>
+        <field name="code">COB-CLI</field>
+        <field name="payment_type">inbound</field>
+        <field name="sequence">40</field>
+        <field name="description">Cobros regulares de facturas de venta</field>
+        <field name="sequence_id" ref="sequence_payment_operation_entry"/>
+        <field name="company_ids" eval="[(6, 0, [ref('base.main_company')])]"/>
+    </record>
+
+    <record id="operation_type_customer_advance" model="account.payment.operation.type">
+        <field name="name">Anticipo de Clientes</field>
+        <field name="code">ANT-CLI</field>
+        <field name="payment_type">inbound</field>
+        <field name="sequence">50</field>
+        <field name="description">Anticipos recibidos de clientes</field>
+        <field name="sequence_id" ref="sequence_payment_operation_entry"/>
+        <field name="company_ids" eval="[(6, 0, [ref('base.main_company')])]"/>
+    </record>
+
+    <record id="operation_type_other_income" model="account.payment.operation.type">
+        <field name="name">Otros Ingresos</field>
+        <field name="code">OTR-ING</field>
+        <field name="payment_type">inbound</field>
+        <field name="sequence">60</field>
+        <field name="description">Ingresos no operacionales y otros cobros</field>
+        <field name="sequence_id" ref="sequence_payment_operation_entry"/>
+        <field name="company_ids" eval="[(6, 0, [ref('base.main_company')])]"/>
+    </record>
+
+    <!-- Tipos de Operación de Transferencia -->
+    <record id="operation_type_bank_transfer" model="account.payment.operation.type">
+        <field name="name">Transferencia Bancaria</field>
+        <field name="code">TRANSF</field>
+        <field name="payment_type">transfer</field>
+        <field name="sequence">70</field>
+        <field name="description">Transferencias entre cuentas bancarias propias</field>
+        <field name="company_ids" eval="[(6, 0, [ref('base.main_company')])]"/>
+    </record>
+</odoo>

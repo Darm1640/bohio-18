@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Reporte de Asiento Contable -->
+    <template id="report_account_move_document">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <!-- Header -->
+                <div class="header" style="font-family: 'Helvetica', Arial, sans-serif; font-size: 11px;">
+                    <div class="row mb-3" style="border-bottom: 2px solid #000; padding-bottom: 10px;">
+                        <div class="col-3">
+                            <img t-if="o.company_id.logo" t-att-src="image_data_uri(o.company_id.logo)" class="img-fluid" style="max-height: 60px;" alt="Logo"/>
+                        </div>
+                        <div class="col-6 text-center">
+                            <h5 class="font-weight-bold mb-1">
+                                <span t-field="o.company_id.name"/>
+                            </h5>
+                            <p class="mb-0">NIT: <span t-field="o.company_id.partner_id.vat"/></p>
+                            <h6 class="mt-2">COMPROBANTE DE DIARIO</h6>
+                        </div>
+                        <div class="col-3 text-end">
+                            <div style="border: 1px solid #000; padding: 10px;">
+                                <h6 class="mb-1">No. <span t-field="o.name"/></h6>
+                                <p class="mb-0">Fecha: <span t-field="o.date" t-options="{'format':'dd/MM/yyyy'}"/></p>
+                                <p class="mb-0">
+                                    <t t-if="o.state == 'posted'">
+                                        <span class="badge bg-success">Contabilizado</span>
+                                    </t>
+                                    <t t-else="">
+                                        <span class="badge bg-warning">Borrador</span>
+                                    </t>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="article container-fluid p-0" style="font-family: 'Helvetica', Arial, sans-serif; font-size: 11px;">
+
+                    <!-- Información del Asiento -->
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <table class="table table-sm table-bordered">
+                                <tr>
+                                    <td style="width: 15%; background-color: #f0f0f0;"><strong>Diario:</strong></td>
+                                    <td style="width: 35%;"><span t-field="o.journal_id.name"/></td>
+                                    <td style="width: 15%; background-color: #f0f0f0;"><strong>Referencia:</strong></td>
+                                    <td style="width: 35%;"><span t-field="o.ref"/></td>
+                                </tr>
+                                <tr>
+                                    <td style="background-color: #f0f0f0;"><strong>Tipo:</strong></td>
+                                    <td>
+                                        <t t-if="o.move_type == 'entry'">Asiento Contable</t>
+                                        <t t-elif="o.move_type == 'out_invoice'">Factura de Cliente</t>
+                                        <t t-elif="o.move_type == 'in_invoice'">Factura de Proveedor</t>
+                                        <t t-elif="o.move_type == 'out_refund'">Nota de Crédito Cliente</t>
+                                        <t t-elif="o.move_type == 'in_refund'">Nota de Crédito Proveedor</t>
+                                    </td>
+                                    <td style="background-color: #f0f0f0;"><strong>Período:</strong></td>
+                                    <td><span t-field="o.date" t-options="{'format':'MMMM yyyy'}"/></td>
+                                </tr>
+                                <tr t-if="o.partner_id">
+                                    <td style="background-color: #f0f0f0;"><strong>Tercero:</strong></td>
+                                    <td colspan="3">
+                                        <span t-field="o.partner_id.name"/>
+                                        <t t-if="o.partner_id.vat"> - NIT: <span t-field="o.partner_id.vat"/></t>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Líneas del Asiento -->
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <table class="table table-sm table-bordered">
+                                <thead style="background-color: #e9ecef;">
+                                    <tr>
+                                        <th style="width: 10%;">Cuenta</th>
+                                        <th style="width: 25%;">Nombre Cuenta</th>
+                                        <th style="width: 25%;">Etiqueta</th>
+                                        <th style="width: 10%;">Analítica</th>
+                                        <th style="width: 10%;">Tercero</th>
+                                        <th style="width: 10%; text-align: right;">Débito</th>
+                                        <th style="width: 10%; text-align: right;">Crédito</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-set="total_debit" t-value="0"/>
+                                    <t t-set="total_credit" t-value="0"/>
+                                    <t t-foreach="o.line_ids.sorted(lambda l: (l.debit == 0, l.account_id.code))" t-as="line">
+                                        <tr>
+                                            <td><span t-field="line.account_id.code"/></td>
+                                            <td><span t-field="line.account_id.name"/></td>
+                                            <td><span t-field="line.name"/></td>
+                                            <td>
+                                                <t t-if="line.analytic_distribution">
+                                                    <t t-foreach="line.analytic_distribution.items()" t-as="analytic">
+                                                        <span t-esc="line.company_id.env['account.analytic.account'].browse(int(analytic[0])).name"/>
+                                                        <t t-if="not analytic_last">, </t>
+                                                    </t>
+                                                </t>
+                                            </td>
+                                            <td>
+                                                <t t-if="line.partner_id">
+                                                    <span t-field="line.partner_id.name"/>
+                                                </t>
+                                            </td>
+                                            <td style="text-align: right;">
+                                                <t t-if="line.debit">
+                                                    <span t-field="line.debit" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                                                    <t t-set="total_debit" t-value="total_debit + line.debit"/>
+                                                </t>
+                                            </td>
+                                            <td style="text-align: right;">
+                                                <t t-if="line.credit">
+                                                    <span t-field="line.credit" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                                                    <t t-set="total_credit" t-value="total_credit + line.credit"/>
+                                                </t>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                    <!-- Totales -->
+                                    <tr style="background-color: #e9ecef; font-weight: bold;">
+                                        <td colspan="5" style="text-align: right;">TOTALES:</td>
+                                        <td style="text-align: right;">
+                                            <span t-esc="total_debit" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                                        </td>
+                                        <td style="text-align: right;">
+                                            <span t-esc="total_credit" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Narración -->
+                    <t t-if="o.narration">
+                        <div class="row mb-3">
+                            <div class="col-12">
+                                <div style="border: 1px solid #dee2e6; padding: 10px; background-color: #f8f9fa;">
+                                    <strong>Descripción:</strong>
+                                    <p style="margin-top: 5px; white-space: pre-wrap;"><span t-field="o.narration"/></p>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+
+                    <!-- Firmas -->
+                    <div class="row mt-5">
+                        <div class="col-3 text-center">
+                            <div style="border-top: 1px solid #000; padding-top: 5px;">
+                                <p class="mb-0">Elaborado por</p>
+                                <p style="font-size: 10px;"><span t-field="o.create_uid.name"/></p>
+                            </div>
+                        </div>
+                        <div class="col-3 text-center">
+                            <div style="border-top: 1px solid #000; padding-top: 5px;">
+                                <p class="mb-0">Revisado por</p>
+                                <p style="font-size: 10px;">Contabilidad</p>
+                            </div>
+                        </div>
+                        <div class="col-3 text-center">
+                            <div style="border-top: 1px solid #000; padding-top: 5px;">
+                                <p class="mb-0">Aprobado por</p>
+                                <p style="font-size: 10px;">Gerencia</p>
+                            </div>
+                        </div>
+                        <div class="col-3 text-center">
+                            <div style="border-top: 1px solid #000; padding-top: 5px;">
+                                <p class="mb-0">Contabilizado por</p>
+                                <p style="font-size: 10px;">
+                                    <t t-if="o.state == 'posted' and o.write_uid">
+                                        <span t-field="o.write_uid.name"/>
+                                    </t>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Footer -->
+                    <div class="row mt-3">
+                        <div class="col-12">
+                            <p style="font-size: 9px; text-align: center; color: #666;">
+                                Página <span class="page"/> de <span class="topage"/> -
+                                Impreso el <span t-esc="datetime.datetime.now().strftime('%d/%m/%Y %H:%M:%S')"/>
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Footer -->
+                <div class="footer" style="font-family: 'Helvetica', Arial, sans-serif; font-size: 11px; margin-top: 20px;">
+                    <hr style="margin-top: 10px; margin-bottom: 5px; border-color: #000;"/>
+                    <div class="row">
+                        <div class="col-12 text-center">
+                            <p style="font-size: 10px; margin: 0;">
+                                Página <span class="page"/> de <span class="topage"/>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <!-- Registro del reporte de asiento -->
+    <record id="action_report_account_move" model="ir.actions.report">
+        <field name="name">Comprobante de Diario</field>
+        <field name="model">account.move</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">custom_account_treasury.report_account_move_document</field>
+        <field name="report_file">custom_account_treasury.report_account_move_document</field>
+        <field name="print_report_name">'Asiento - %s' % (object.name)</field>
+        <field name="binding_model_id" ref="account.model_account_move"/>
+        <field name="binding_type">report</field>
+    </record>
+</odoo>

@@ -15,5 +15,13 @@
             <field name="domain">www.bohio.com.co</field>
         </record>
 
+        <!-- Página de Inicio -->
+        <record id="website_page_home_bohio" model="website.page">
+            <field name="name">BOHIO Home</field>
+            <field name="url">/</field>
+            <field name="is_published">True</field>
+            <field name="view_id" ref="bohio_homepage"/>
+        </record>
+
     </data>
 </odoo>

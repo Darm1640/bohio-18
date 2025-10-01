@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form_treasury" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.treasury</field>
+        <field name="model">res.config.settings</field>
+        <field name="priority" eval="10"/>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="inside">
+                <app data-string="Tesorería" string="Tesorería" name="custom_account_treasury" groups="custom_account_treasury.group_treasury_manager">
+                    <block title="Configuración de Anticipos" name="treasury_advances_setting">
+                        <setting string="Gestión de Anticipos" help="Configura la gestión de anticipos de clientes y proveedores">
+                            <div class="content-group">
+                                <div class="row mt16">
+                                    <label for="treasury_default_customer_advance_account_id" string="Cuenta de Anticipos de Clientes" class="col-lg-3"/>
+                                    <field name="treasury_default_customer_advance_account_id"/>
+                                </div>
+                                <div class="row">
+                                    <label for="treasury_default_supplier_advance_account_id" string="Cuenta de Anticipos a Proveedores" class="col-lg-3"/>
+                                    <field name="treasury_default_supplier_advance_account_id"/>
+                                </div>
+                                <div class="row">
+                                    <label for="treasury_auto_apply_advances" class="col-lg-3"/>
+                                    <field name="treasury_auto_apply_advances"/>
+                                </div>
+                            </div>
+                        </setting>
+                    </block>
+
+                    <block title="Multi-Tercero" name="treasury_multi_partner_setting">
+                        <setting string="Funcionalidad Multi-Tercero" help="Permite asignar diferentes terceros por línea en facturas">
+                            <field name="treasury_enable_multi_partner"/>
+                            <div class="content-group" invisible="not treasury_enable_multi_partner">
+                                <div class="row mt16">
+                                    <label for="treasury_multi_partner_default" class="col-lg-3"/>
+                                    <field name="treasury_multi_partner_default"/>
+                                </div>
+                            </div>
+                        </setting>
+                    </block>
+
+                   
+                </app>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Action para abrir configuración -->
+    <record id="action_treasury_config_settings" model="ir.actions.act_window">
+        <field name="name">Configuración de Tesorería</field>
+        <field name="res_model">res.config.settings</field>
+        <field name="view_mode">form</field>
+        <field name="target">inline</field>
+        <field name="context">{'module': 'custom_account_treasury'}</field>
+    </record>
+</odoo>

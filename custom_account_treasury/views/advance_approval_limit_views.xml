@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Vista List de Límites de Aprobación -->
+    <record id="view_advance_approval_limit_list" model="ir.ui.view">
+        <field name="name">advance.approval.limit.list</field>
+        <field name="model">advance.approval.limit</field>
+        <field name="arch" type="xml">
+            <list string="Límites de Aprobación" editable="top">
+                <field name="user_id" widget="many2one_avatar_user"/>
+                <field name="approval_mode" widget="selection"/>
+                <field name="min_amount" widget="monetary"
+                       invisible="approval_mode == 'simple'"
+                       options="{'currency_field': 'currency_id'}"/>
+                <field name="max_amount" widget="monetary"
+                       invisible="approval_mode == 'simple'"
+                       options="{'currency_field': 'currency_id'}"/>
+                <field name="advance_type_ids" widget="many2many_tags"
+                       placeholder="Todos los tipos"
+                       optional="show"/>
+                <field name="partner_ids" widget="many2many_tags"
+                       placeholder="Todos los partners"
+                       optional="show"/>
+                <field name="stage_ids" widget="many2many_tags"
+                       placeholder="Todas las etapas"
+                       optional="show"/>
+                <field name="can_self_approve" widget="boolean_toggle"/>
+                <field name="require_two_approvals" widget="boolean_toggle"/>
+                <field name="delegate_user_id" widget="many2one_avatar_user"
+                       optional="show"/>
+                <field name="currency_id" column_invisible="1"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Vista Form de Límites de Aprobación -->
+    <record id="view_advance_approval_limit_form" model="ir.ui.view">
+        <field name="name">advance.approval.limit.form</field>
+        <field name="model">advance.approval.limit</field>
+        <field name="arch" type="xml">
+            <form string="Límite de Aprobación">
+                <sheet>
+                    <widget name="web_ribbon" title="Archivado"
+                            bg_color="text-bg-danger"
+                            invisible="active"/>
+
+                    <div class="oe_title">
+                        <label for="user_id"/>
+                        <h1>
+                            <field name="user_id" widget="many2one_avatar_user"
+                                   placeholder="Seleccionar usuario..."/>
+                        </h1>
+                    </div>
+
+                    <group>
+                        <group string="Configuración de Aprobación">
+                            <field name="approval_mode" widget="radio"/>
+                            <field name="min_amount" widget="monetary"
+                                   invisible="approval_mode == 'simple'"
+                                   options="{'currency_field': 'currency_id'}"/>
+                            <field name="max_amount" widget="monetary"
+                                   invisible="approval_mode == 'simple'"
+                                   options="{'currency_field': 'currency_id'}"/>
+                            <field name="currency_id" groups="base.group_multi_currency"/>
+                        </group>
+                        <group string="Opciones">
+                            <field name="can_self_approve"/>
+                            <field name="require_two_approvals"/>
+                            <field name="active"/>
+                        </group>
+                    </group>
+
+                    <group string="Delegación" invisible="not delegate_user_id">
+                        <group>
+                            <field name="delegate_user_id" widget="many2one_avatar_user"/>
+                            <field name="delegate_from"/>
+                            <field name="delegate_to"/>
+                        </group>
+                        <group>
+                            <field name="delegate_reason"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Restricciones" name="restrictions">
+                            <group>
+                                <group>
+                                    <field name="advance_type_ids" widget="many2many_tags">
+                                        <list>
+                                            <field name="name"/>
+                                            <field name="code"/>
+                                        </list>
+                                    </field>
+                                    <field name="partner_ids" widget="many2many_tags">
+                                        <list>
+                                            <field name="name"/>
+                                            <field name="ref"/>
+                                        </list>
+                                    </field>
+                                </group>
+                                <group>
+                                    <field name="stage_ids" widget="many2many_tags">
+                                        <list>
+                                            <field name="name"/>
+                                            <field name="code"/>
+                                        </list>
+                                    </field>
+                                    <field name="partner_category_ids" widget="many2many_tags">
+                                        <list>
+                                            <field name="name"/>
+                                        </list>
+                                    </field>
+                                </group>
+                            </group>
+                        </page>
+
+                        <page string="Configuración Jerárquica" name="hierarchy"
+                              invisible="approval_mode != 'hierarchical'">
+                            <group>
+                                <field name="approval_level"/>
+                                <field name="escalate_to_user_id" widget="many2one_avatar_user"/>
+                                <field name="escalate_after_days"/>
+                                <field name="auto_approve_if_no_response"/>
+                            </group>
+                        </page>
+
+                        <page string="Notas" name="notes">
+                            <field name="notes" placeholder="Notas adicionales sobre este límite de aprobación..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- Vista Search de Límites de Aprobación -->
+    <record id="view_advance_approval_limit_search" model="ir.ui.view">
+        <field name="name">advance.approval.limit.search</field>
+        <field name="model">advance.approval.limit</field>
+        <field name="arch" type="xml">
+            <search string="Buscar Límites de Aprobación">
+                <field name="user_id"/>
+                <field name="delegate_user_id"/>
+                <field name="advance_type_ids"/>
+                <separator/>
+                <filter string="Activos" name="active"
+                        domain="[('active', '=', True)]"/>
+                <filter string="Con Delegación" name="delegated"
+                        domain="[('delegate_user_id', '!=', False)]"/>
+                <filter string="Aprobación Simple" name="simple"
+                        domain="[('approval_mode', '=', 'simple')]"/>
+                <filter string="Con Límite de Monto" name="with_limit"
+                        domain="[('approval_mode', '=', 'amount_limit')]"/>
+                <filter string="Jerárquico" name="hierarchical"
+                        domain="[('approval_mode', '=', 'hierarchical')]"/>
+                <filter string="Auto-aprobación" name="self_approve"
+                        domain="[('can_self_approve', '=', True)]"/>
+                <separator/>
+                <group expand="0" string="Agrupar por">
+                    <filter string="Usuario" name="group_user"
+                            context="{'group_by': 'user_id'}"/>
+                    <filter string="Modo de Aprobación" name="group_mode"
+                            context="{'group_by': 'approval_mode'}"/>
+                    <filter string="Estado" name="group_active"
+                            context="{'group_by': 'active'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Vista Kanban de Límites de Aprobación -->
+    <record id="view_advance_approval_limit_kanban" model="ir.ui.view">
+        <field name="name">advance.approval.limit.kanban</field>
+        <field name="model">advance.approval.limit</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_mobile">
+                <field name="user_id"/>
+                <field name="approval_mode"/>
+                <field name="min_amount"/>
+                <field name="max_amount"/>
+                <field name="currency_id"/>
+                <field name="active"/>
+                <field name="can_self_approve"/>
+                <templates>
+                    <t t-name="card">
+                        <main>
+                            <div class="o_kanban_record_top mb-2">
+                                <div class="o_kanban_record_headings">
+                                    <strong class="o_kanban_record_title">
+                                        <field name="user_id" widget="many2one_avatar_user"/>
+                                    </strong>
+                                </div>
+                                <div class="o_dropdown_kanban dropdown">
+                                    <a role="button" class="dropdown-toggle o-no-caret btn"
+                                       data-bs-toggle="dropdown" aria-label="Dropdown menu"
+                                       title="Opciones" data-bs-display="static">
+                                        <span class="fa fa-ellipsis-v"/>
+                                    </a>
+                                    <div class="dropdown-menu" role="menu">
+                                        <a type="open" role="menuitem" class="dropdown-item">
+                                            <i class="fa fa-external-link"/> Abrir
+                                        </a>
+                                        <a type="edit" role="menuitem" class="dropdown-item">
+                                            <i class="fa fa-pencil"/> Editar
+                                        </a>
+                                        <a type="delete" role="menuitem" class="dropdown-item">
+                                            <i class="fa fa-trash"/> Eliminar
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="o_kanban_record_body">
+                                <div t-if="record.approval_mode.raw_value == 'simple'"
+                                     class="text-center mb-2">
+                                    <span class="badge rounded-pill text-bg-info">
+                                        <i class="fa fa-check"/> Aprobación Simple
+                                    </span>
+                                </div>
+                                <div t-if="record.approval_mode.raw_value == 'amount_limit'"
+                                     class="text-center mb-2">
+                                    <span class="badge rounded-pill text-bg-warning">
+                                        <i class="fa fa-dollar"/> Con Límite
+                                    </span>
+                                    <div class="mt-2">
+                                        <field name="min_amount" widget="monetary"/> -
+                                        <field name="max_amount" widget="monetary"/>
+                                    </div>
+                                </div>
+                                <div t-if="record.approval_mode.raw_value == 'hierarchical'"
+                                     class="text-center mb-2">
+                                    <span class="badge rounded-pill text-bg-primary">
+                                        <i class="fa fa-sitemap"/> Jerárquico
+                                    </span>
+                                </div>
+
+                                <div class="o_kanban_record_bottom mt-2">
+                                    <div class="oe_kanban_bottom_left">
+                                        <span t-if="record.can_self_approve.raw_value"
+                                              class="badge rounded-pill text-bg-success"
+                                              title="Puede auto-aprobar">
+                                            <i class="fa fa-user-check"/> Auto
+                                        </span>
+                                        <span t-if="!record.active.raw_value"
+                                              class="badge rounded-pill text-bg-danger">
+                                            <i class="fa fa-archive"/> Inactivo
+                                        </span>
+                                    </div>
+                                    <div class="oe_kanban_bottom_right">
+                                        <field name="delegate_user_id" widget="many2one_avatar_user"
+                                               t-if="record.delegate_user_id.raw_value"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </main>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Acción Principal -->
+    <record id="action_advance_approval_limit" model="ir.actions.act_window">
+        <field name="name">Límites de Aprobación</field>
+        <field name="res_model">advance.approval.limit</field>
+        <field name="view_mode">list,kanban,form</field>
+        <field name="search_view_id" ref="view_advance_approval_limit_search"/>
+        <field name="context">{'search_default_active': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Configurar límites de aprobación
+            </p>
+            <p>
+                Define quién puede aprobar anticipos y hasta qué montos.
+                Puedes configurar aprobación simple, con límites de monto o jerárquica.
+            </p>
+        </field>
+    </record>
+
+    <!-- Menú -->
+    <menuitem id="menu_advance_approval_limits"
+              name="Límites de Aprobación"
+              parent="custom_account_treasury.menu_treasury_configuration"
+              action="action_advance_approval_limit"
+              sequence="30"/>
+
+</odoo>

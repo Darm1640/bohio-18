@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Actualizar métodos de pago existentes con códigos de tesorería -->
+
+    <!-- Manual/Cash -->
+    <function model="account.payment.method" name="search">
+        <value eval="[('code', '=', 'manual')]"/>
+    </function>
+    <function model="account.payment.method" name="write">
+        <value eval="[ref('account.account_payment_method_manual_in')]"/>
+        <value eval="{'treasury_code': 'EFE', 'use_treasury_numbering': True}"/>
+    </function>
+
+    <function model="account.payment.method" name="write">
+        <value eval="[ref('account.account_payment_method_manual_out')]"/>
+        <value eval="{'treasury_code': 'EFE', 'use_treasury_numbering': True}"/>
+    </function>
+
+    <!-- Check -->
+    <function model="account.payment.method" name="search">
+        <value eval="[('code', '=', 'check_printing')]"/>
+    </function>
+    <function model="account.payment.method" name="write">
+        <value eval="[ref('account_check_printing.account_payment_method_check')]" on_error="ignore"/>
+        <value eval="{'treasury_code': 'CHQ', 'use_treasury_numbering': True}"/>
+    </function>
+
+    <!-- Electronic/Transfer -->
+    <function model="account.payment.method" name="search">
+        <value eval="[('code', '=', 'electronic')]"/>
+    </function>
+    <function model="account.payment.method" name="write">
+        <value eval="[]"/>
+        <value eval="{'treasury_code': 'TRANSF', 'use_treasury_numbering': True}"/>
+        <value eval="{'domain': [('code', '=', 'electronic')]}"/>
+    </function>
+
+</odoo>

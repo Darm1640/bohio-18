@@ -1,0 +1,410 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Report de Solicitud de Anticipo -->
+    <template id="report_advance_request_document">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <div class="article container-fluid p-0" style="font-family: 'Helvetica', Arial, sans-serif; font-size: 10px; line-height: 1.1;">
+
+                    <!-- Header -->
+                    <div class="row header mb-3" style="border-bottom: 1px solid #000; padding-bottom: 10px;">
+                        <div class="col-3 text-start">
+                            <img t-if="o.company_id.logo" t-att-src="image_data_uri(o.company_id.logo)" class="img-fluid" style="max-height: 80px;" alt="Logo"/>
+                        </div>
+                        <div class="col-6 text-center">
+                            <h5 class="font-weight-bold mb-1">
+                                <span t-field="o.company_id.name"/>
+                            </h5>
+                            <p class="mb-0" style="font-size: 10px;">NIT:
+                                <span t-field="o.company_id.partner_id.vat"/>
+                            </p>
+                            <p class="mb-0" style="font-size: 10px; line-height: 1.1">
+                                <span t-field="o.company_id.street"/>
+                                <t t-if="o.company_id.city"> - <span t-field="o.company_id.city"/></t>
+                            </p>
+                            <p class="mb-0" style="font-size: 10px; line-height: 1.1">
+                                <span t-field="o.company_id.email"/>
+                                <t t-if="o.company_id.phone"> - <span t-field="o.company_id.phone"/></t>
+                            </p>
+                        </div>
+                        <div class="col-3 text-end">
+                            <div style="background: #f0f0f0; padding: 10px; border-radius: 5px; border: 1px solid #ddd;">
+                                <div style="font-size: 13px; font-weight: bold; text-transform: uppercase; margin-bottom: 5px;">
+                                    SOLICITUD DE ANTICIPO
+                                </div>
+                                <p class="mb-1" style="font-size: 10px;">No. <span t-field="o.name"/></p>
+                                <p class="mb-1" style="font-size: 10px;">FECHA: <span t-field="o.date_request" t-options="{'format':'dd/MM/yyyy'}"/></p>
+                                <p class="mb-0" style="font-size: 10px;">ESTADO:
+                                    <t t-if="o.state == 'draft'">BORRADOR</t>
+                                    <t t-elif="o.state == 'pending'">PENDIENTE</t>
+                                    <t t-elif="o.state == 'approved'">APROBADO</t>
+                                    <t t-elif="o.state == 'paid'">PAGADO</t>
+                                    <t t-elif="o.state == 'reconciled'">APLICADO</t>
+                                    <t t-else="">CANCELADO</t>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Información del Solicitante -->
+                    <div class="mb-3">
+                        <div class="py-2 px-3" style="background-color: #f0f0f0; border-radius: 5px; border: 1px solid #ddd; font-weight: bold;">
+                            INFORMACIÓN DEL SOLICITANTE
+                        </div>
+                        <table class="table table-sm table-borderless" style="line-height: 1; margin-top: 10px;">
+                            <tr>
+                                <th class="table-light" style="width: 15%; background-color: #f0f0f0;">TIPO:</th>
+                                <td style="width: 35%;">
+                                    <t t-if="o.request_type == 'customer'">ANTICIPO DE CLIENTE</t>
+                                    <t t-elif="o.request_type == 'supplier'">ANTICIPO A PROVEEDOR</t>
+                                    <t t-else="">OTRO ANTICIPO</t>
+                                </td>
+                                <th class="table-light" style="width: 15%; background-color: #f0f0f0;">RESPONSABLE:</th>
+                                <td style="width: 35%;">
+                                    <span t-field="o.user_id.name"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="table-light" style="background-color: #f0f0f0;">NOMBRE:</th>
+                                <td>
+                                    <span t-field="o.partner_id.name"/>
+                                </td>
+                                <th class="table-light" style="background-color: #f0f0f0;">IDENTIFICACIÓN:</th>
+                                <td>
+                                    <t t-if="o.partner_id.vat">
+                                        NIT - <span t-field="o.partner_id.vat"/>
+                                    </t>
+                                    <t t-else="">N/A</t>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="table-light" style="background-color: #f0f0f0;">TELÉFONO:</th>
+                                <td>
+                                    <span t-field="o.partner_id.phone"/>
+                                </td>
+                                <th class="table-light" style="background-color: #f0f0f0;">EMAIL:</th>
+                                <td>
+                                    <span t-field="o.partner_id.email"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="table-light" style="background-color: #f0f0f0;">DIRECCIÓN:</th>
+                                <td colspan="3">
+                                    <span t-field="o.partner_id.street"/>
+                                    <t t-if="o.partner_id.city"> - <span t-field="o.partner_id.city"/></t>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <!-- Información del Anticipo -->
+                    <div class="row mb-3">
+                        <div class="col-6">
+                            <div class="py-2 px-3" style="background-color: #f0f0f0; border-radius: 5px; border: 1px solid #ddd; font-weight: bold;">
+                                DETALLES DEL ANTICIPO
+                            </div>
+                            <table class="table table-sm table-borderless" style="line-height: 1; margin-top: 10px;">
+                                <tr>
+                                    <th class="table-light" style="width: 40%; background-color: #f0f0f0;">TIPO ANTICIPO:</th>
+                                    <td style="font-weight: bold;">
+                                        <span t-field="o.advance_type_id.name"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="table-light" style="background-color: #f0f0f0;">FECHA SOLICITUD:</th>
+                                    <td>
+                                        <span t-field="o.date_request" t-options="{'format':'dd/MM/yyyy'}"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="table-light" style="background-color: #f0f0f0;">FECHA VENCIMIENTO:</th>
+                                    <td>
+                                        <span t-field="o.date_due" t-options="{'format':'dd/MM/yyyy'}"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="table-light" style="background-color: #f0f0f0;">MONEDA:</th>
+                                    <td>
+                                        <span t-field="o.currency_id.name"/>
+                                    </td>
+                                </tr>
+                                <tr t-if="o.advance_type_id.payment_term_id">
+                                    <th class="table-light" style="background-color: #f0f0f0;">PLAZO PAGO:</th>
+                                    <td>
+                                        <span t-field="o.advance_type_id.payment_term_id.name"/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-6">
+                            <div class="py-2 px-3" style="background-color: #f0f0f0; border-radius: 5px; border: 1px solid #ddd; font-weight: bold;">
+                                DOCUMENTOS RELACIONADOS
+                            </div>
+                            <table class="table table-sm table-borderless" style="line-height: 1; margin-top: 10px;">
+                                <tr t-if="o.sale_order_id">
+                                    <th class="table-light" style="width: 40%; background-color: #f0f0f0;">ORDEN VENTA:</th>
+                                    <td>
+                                        <span t-field="o.sale_order_id.name"/>
+                                    </td>
+                                </tr>
+                                <tr t-if="o.purchase_order_id">
+                                    <th class="table-light" style="width: 40%; background-color: #f0f0f0;">ORDEN COMPRA:</th>
+                                    <td>
+                                        <span t-field="o.purchase_order_id.name"/>
+                                    </td>
+                                </tr>
+                                <tr t-if="o.move_id">
+                                    <th class="table-light" style="background-color: #f0f0f0;">ASIENTO CONTABLE:</th>
+                                    <td>
+                                        <span t-field="o.move_id.name"/>
+                                    </td>
+                                </tr>
+                                <tr t-if="o.payment_ids">
+                                    <th class="table-light" style="background-color: #f0f0f0;">PAGOS:</th>
+                                    <td>
+                                        <t t-foreach="o.payment_ids" t-as="payment">
+                                            <span t-field="payment.name"/>
+                                            <t t-if="not payment_last">, </t>
+                                        </t>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="table-light" style="background-color: #f0f0f0;">ETAPA ACTUAL:</th>
+                                    <td style="font-weight: bold;">
+                                        <span t-field="o.stage_id.name"/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Detalle de Montos -->
+                    <div class="mb-3">
+                        <div class="py-2 px-3" style="background-color: #f0f0f0; border-radius: 5px; border: 1px solid #ddd; font-weight: bold;">
+                            RESUMEN DE MONTOS
+                        </div>
+                        <table class="table table-sm" style="border: 1px solid #000; font-size: 9px; margin-top: 10px;">
+                            <thead style="background-color: #f0f0f0;">
+                                <tr>
+                                    <th style="border: 1px solid #000; padding: 6px 3px; text-align: center;">CONCEPTO</th>
+                                    <th style="border: 1px solid #000; padding: 6px 3px; text-align: right;">MONTO</th>
+                                    <th style="border: 1px solid #000; padding: 6px 3px; text-align: center;">ESTADO</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="border: 1px solid #eee; padding: 3px;">Monto Solicitado</td>
+                                    <td style="border: 1px solid #eee; padding: 3px; text-align: right;">
+                                        <span t-field="o.amount_requested" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                                    </td>
+                                    <td style="border: 1px solid #eee; padding: 3px; text-align: center;">Original</td>
+                                </tr>
+                                <tr>
+                                    <td style="border: 1px solid #eee; padding: 3px;">Monto Aprobado</td>
+                                    <td style="border: 1px solid #eee; padding: 3px; text-align: right;">
+                                        <span t-field="o.amount_approved" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                                    </td>
+                                    <td style="border: 1px solid #eee; padding: 3px; text-align: center;">
+                                        <t t-if="o.amount_approved &gt; 0">Aprobado</t>
+                                        <t t-else="">Pendiente</t>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="border: 1px solid #eee; padding: 3px;">Monto Pagado</td>
+                                    <td style="border: 1px solid #eee; padding: 3px; text-align: right;">
+                                        <span t-field="o.amount_paid" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                                    </td>
+                                    <td style="border: 1px solid #eee; padding: 3px; text-align: center;">
+                                        <t t-if="o.amount_paid &gt; 0">Pagado</t>
+                                        <t t-else="">Sin Pagar</t>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="border: 1px solid #eee; padding: 3px;">Monto Aplicado</td>
+                                    <td style="border: 1px solid #eee; padding: 3px; text-align: right;">
+                                        <span t-field="o.amount_applied" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                                    </td>
+                                    <td style="border: 1px solid #eee; padding: 3px; text-align: center;">
+                                        <t t-if="o.amount_applied &gt; 0">Aplicado</t>
+                                        <t t-else="">Sin Aplicar</t>
+                                    </td>
+                                </tr>
+                                <tr style="background-color: #f0f0f0; font-weight: bold;">
+                                    <td style="border: 1px solid #000; padding: 6px;">SALDO PENDIENTE</td>
+                                    <td style="border: 1px solid #000; padding: 6px; text-align: right;">
+                                        <span t-field="o.balance_pending" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                                    </td>
+                                    <td style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                        <t t-if="o.balance_pending == 0">Completado</t>
+                                        <t t-else="">Pendiente</t>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Información Adicional según tipo -->
+                    <t t-if="o.request_type == 'customer' and o.requires_guarantee">
+                        <div class="mb-3">
+                            <div class="py-2 px-3" style="background-color: #ffc107; border-radius: 5px; border: 1px solid #ddd; font-weight: bold;">
+                                INFORMACIÓN DE GARANTÍA
+                            </div>
+                            <table class="table table-sm table-borderless" style="line-height: 1; margin-top: 10px;">
+                                <tr>
+                                    <th class="table-light" style="width: 25%; background-color: #f0f0f0;">TIPO GARANTÍA:</th>
+                                    <td style="width: 75%;">
+                                        <span t-field="o.guarantee_type"/>
+                                    </td>
+                                </tr>
+                                <tr t-if="o.guarantee_description">
+                                    <th class="table-light" style="background-color: #f0f0f0;">DESCRIPCIÓN:</th>
+                                    <td>
+                                        <span t-field="o.guarantee_description"/>
+                                    </td>
+                                </tr>
+                                <tr t-if="o.guarantee_amount">
+                                    <th class="table-light" style="background-color: #f0f0f0;">MONTO GARANTÍA:</th>
+                                    <td>
+                                        <span t-field="o.guarantee_amount" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </t>
+
+                    <!-- Líneas de Aplicación (si existen) -->
+                    <t t-if="o.reconcile_line_ids">
+                        <div class="mb-3">
+                            <div class="py-2 px-3" style="background-color: #f0f0f0; border-radius: 5px; border: 1px solid #ddd; font-weight: bold;">
+                                APLICACIONES DEL ANTICIPO
+                            </div>
+                            <table class="table table-sm" style="border: 1px solid #000; font-size: 9px; margin-top: 10px;">
+                                <thead style="background-color: #f0f0f0;">
+                                    <tr>
+                                        <th style="border: 1px solid #000; padding: 6px 3px;">DOCUMENTO</th>
+                                        <th style="border: 1px solid #000; padding: 6px 3px;">FECHA</th>
+                                        <th style="border: 1px solid #000; padding: 6px 3px; text-align: right;">MONTO DOC.</th>
+                                        <th style="border: 1px solid #000; padding: 6px 3px; text-align: right;">MONTO APLICADO</th>
+                                        <th style="border: 1px solid #000; padding: 6px 3px; text-align: right;">SALDO</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="o.reconcile_line_ids" t-as="line">
+                                        <tr>
+                                            <td style="border: 1px solid #eee; padding: 3px;">
+                                                <span t-field="line.invoice_id.name"/>
+                                            </td>
+                                            <td style="border: 1px solid #eee; padding: 3px;">
+                                                <span t-field="line.date" t-options="{'format':'dd/MM/yy'}"/>
+                                            </td>
+                                            <td style="border: 1px solid #eee; padding: 3px; text-align: right;">
+                                                <span t-field="line.invoice_amount" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                                            </td>
+                                            <td style="border: 1px solid #eee; padding: 3px; text-align: right;">
+                                                <span t-field="line.amount_applied" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                                            </td>
+                                            <td style="border: 1px solid #eee; padding: 3px; text-align: right;">
+                                                <span t-field="line.balance" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </div>
+                    </t>
+
+                    <!-- Resumen Total -->
+                    <div style="margin: 15px 0; border: 2px solid #000; border-radius: 5px; padding: 15px; position: relative;">
+                        <div style="position: absolute; top: -10px; left: 15px; background: white; padding: 0 10px; font-weight: bold;">
+                            VALOR DEL ANTICIPO
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div style="font-size: 20px; font-weight: bold;">
+                                <span t-field="o.amount_requested" t-options="{'widget': 'monetary', 'display_currency': False}"/>
+                            </div>
+                            <div style="font-size: 10px; font-style: italic; text-align: right; width: 60%;">
+                                <span t-esc="o.amount_in_words"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Descripción/Notas -->
+                    <t t-if="o.description">
+                        <div class="mb-3">
+                            <div class="py-2 px-3" style="background-color: #f0f0f0; border-radius: 5px; border: 1px solid #ddd; font-weight: bold;">
+                                DESCRIPCIÓN / JUSTIFICACIÓN
+                            </div>
+                            <div style="background: #f8f8f8; padding: 10px; border: 1px solid #ddd; border-radius: 5px; margin-top: 10px;">
+                                <p style="margin: 0; font-size: 10px; white-space: pre-wrap;">
+                                    <span t-field="o.description"/>
+                                </p>
+                            </div>
+                        </div>
+                    </t>
+
+                    <!-- Firmas -->
+                    <div class="row mt-5" style="padding-top: 30px;">
+                        <div class="col-4 text-center">
+                            <div style="border-top: 1px solid #000; padding-top: 5px;">
+                                <p style="margin: 0; font-size: 10px;">SOLICITADO POR</p>
+                                <p style="margin: 0; font-size: 9px;"><span t-field="o.user_id.name"/></p>
+                            </div>
+                        </div>
+                        <div class="col-4 text-center">
+                            <div style="border-top: 1px solid #000; padding-top: 5px;">
+                                <p style="margin: 0; font-size: 10px;">APROBADO POR</p>
+                                <p style="margin: 0; font-size: 9px;">
+                                    <t t-if="o.approved_by">
+                                        <span t-field="o.approved_by.name"/>
+                                    </t>
+                                    <t t-else="">_______________</t>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-4 text-center">
+                            <div style="border-top: 1px solid #000; padding-top: 5px;">
+                                <p style="margin: 0; font-size: 10px;">RECIBIDO POR</p>
+                                <p style="margin: 0; font-size: 9px;">_______________</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Footer -->
+                    <div class="footer" style="margin-top: 20px; padding-top: 10px; border-top: 1px solid #000; font-size: 9px; color: #666;">
+                        <div class="row">
+                            <div class="col-4">
+                                <div><strong>Generado por:</strong> <span t-field="o.create_uid.name"/></div>
+                                <div><strong>Fecha/Hora:</strong> <span t-field="o.create_date" t-options="{'format': 'dd/MM/yyyy HH:mm:ss'}"/></div>
+                            </div>
+                            <div class="col-4 text-center">
+                                <div>Para cualquier inquietud comunicarse con tesorería</div>
+                            </div>
+                            <div class="col-4 text-end">
+                                <div><strong>Página:</strong> <span class="page"/> de <span class="topage"/></div>
+                                <div><strong>Estado:</strong>
+                                    <t t-if="o.state == 'paid'">Pagado</t>
+                                    <t t-elif="o.state == 'reconciled'">Aplicado</t>
+                                    <t t-elif="o.state == 'approved'">Aprobado</t>
+                                    <t t-else="">Pendiente</t>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <!-- Registro del reporte -->
+    <record id="action_report_advance_request" model="ir.actions.report">
+        <field name="name">Solicitud de Anticipo</field>
+        <field name="model">advance.request</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">custom_account_treasury.report_advance_request_document</field>
+        <field name="report_file">custom_account_treasury.report_advance_request_document</field>
+        <field name="print_report_name">'Anticipo - %s' % (object.name)</field>
+        <field name="binding_model_id" ref="custom_account_treasury.model_advance_request"/>
+        <field name="binding_type">report</field>
+    </record>
+</odoo>

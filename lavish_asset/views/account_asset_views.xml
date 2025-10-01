@@ -1,0 +1,629 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_account_asset_form_niif_inherit" model="ir.ui.view">
+        <field name="name">account.asset.form.niif.inherit</field>
+        <field name="model">account.asset</field>
+        <field name="inherit_id" ref="account_asset.view_account_asset_form"/>
+        <field name="arch" type="xml">
+            
+            <xpath expr="//field[@name='company_id'][1]" position="after">
+                <field name="accounting_framework" invisible="1"/>
+                <field name="state_niif" invisible="1"/>
+                <field name="method_niif" invisible="1"/>
+                <field name="depreciation_entries_count_niif" invisible="1"/>
+                <field name="total_depreciation_entries_count_niif" invisible="1"/>
+            </xpath>
+<!--             
+            <xpath expr="//group[field[@name='method_period']][1]/.." position="after">
+                <group invisible="state != 'model' or accounting_framework not in ('niif', 'dual')">
+                    <group string="Método de Depreciación NIIF">
+                        <field name="method_niif" required="1" readonly="state not in ['draft', 'model']"/>
+                        <field name="method_progress_factor_niif" widget="percentage" invisible="method_niif == 'linear'" readonly="state not in ['draft', 'model']" required="method_niif in ('degressive', 'degressive_then_linear')"/>
+                        <label for="method_number_niif" string="Duración"/>
+                        <div class="o_row">
+                            <field name="method_number_niif" required="1" readonly="state not in ['draft', 'model']"/>
+                            <field name="method_period_niif" required="1" readonly="state not in ['draft', 'model']" nolabel="1"/>
+                        </div>
+                        <field name="prorata_computation_type_niif" readonly="state not in ['draft', 'model']"/>
+                        <label for="salvage_value_pct" invisible="accounting_framework != 'dual'"/>
+                        <div invisible="accounting_framework != 'dual'">
+                            <field name="salvage_value_pct" widget="percentage" class="oe_inline"/>
+                        </div>
+                    </group>
+                    <group string="Contabilidad NIIF">
+                        <field name="company_id" options="{'no_create': True}" groups="base.group_multi_company" readonly="state != 'draft'"/>
+                        <field
+                            name="account_asset_niif_id"
+                            domain="[
+                                ('company_ids', 'parent_of', company_id),
+                                ('account_type', 'in', (
+                                    'asset_fixed',
+                                    'asset_non_current',
+                                    'asset_current')
+                                ),
+                            ]"
+                            context="{
+                                'default_account_type': 'asset_fixed',
+                                'hide_model_on_account': state == 'model' and not id,
+                                'account_type_domain': [('account_type', 'in', (
+                                    'asset_fixed',
+                                    'asset_non_current'))]}"
+                            groups="base.group_no_one"
+                            invisible="not display_account_asset_id"
+                            readonly="state == 'close'"/>
+                        <field
+                            name="account_depreciation_niif_id"
+                            domain="[
+                                ('company_ids', 'parent_of', company_id),
+                                ('account_type', 'in', (
+                                    'asset_fixed',
+                                    'asset_non_current',
+                                    'asset_current')
+                                ),
+                            ]"
+                            context="{
+                                'default_account_type': 'asset_non_current',
+                                'hide_model_on_account': state == 'model' and not id,
+                                'account_type_domain': [('account_type', 'in', (
+                                    'asset_fixed',
+                                    'asset_non_current'))]}"
+                            required="1"
+                            readonly="state == 'close'"/>
+                        <field
+                            name="account_expense_niif_id"
+                            domain="[
+                                ('company_ids', 'parent_of', company_id),
+                                ('account_type', 'in', (
+                                    'expense_depreciation',
+                                    'expense')
+                                ),
+                            ]"
+                            context="{
+                                'default_account_type': 'expense_depreciation',
+                                'default_tax_ids': [],
+                                'hide_model_on_account': state == 'model' and not id,
+                                'account_type_domain': [('account_type', 'in', (
+                                    'expense_depreciation',
+                                    'expense'))]}"
+                            required="1"
+                            readonly="state == 'close'"/>
+                        <field name="journal_niif_id" required="1" readonly="state not in ['draft', 'model']"/>
+                    </group>
+                </group>
+            </xpath> -->
+            
+            <!-- Ocultar páginas de contabilidad LOCAL cuando es solo NIIF -->
+            <xpath expr="//page[@name='main_page']" position="attributes">
+                <attribute name="invisible">accounting_framework == 'niif'</attribute>
+            </xpath>
+
+            <xpath expr="//page[@name='depreciation_board']" position="attributes">
+                <attribute name="invisible">accounting_framework == 'niif' or total_depreciation_entries_count == 0</attribute>
+            </xpath>
+
+            <!-- Extender botones del header -->
+            <xpath expr="//header" position="inside">
+                <!-- Botones NIIF para activos normales -->
+                <button name="validate_niif"
+                        invisible="accounting_framework not in ('niif', 'dual') or state_niif != 'draft' or state == 'model'"
+                        string="Confirmar NIIF"
+                        type="object"
+                        class="oe_highlight"
+                        data-hotkey="shift+q"/>
+
+                <button name="compute_depreciation_board_niif"
+                        type="object"
+                        string="Computar NIIF"
+                        invisible="accounting_framework not in ('niif', 'dual') or state_niif != 'draft' or state == 'model'"
+                        data-hotkey="shift+d"/>
+                        
+                <button name="set_to_draft_niif" 
+                        string="Borrador NIIF" 
+                        type="object" 
+                        invisible="accounting_framework not in ('niif', 'dual') or depreciation_move_niif_ids or state_niif not in ['open', 'cancelled'] or state == 'model'"/>
+                        
+                <button name="set_to_running_niif" 
+                        string="Reactivar NIIF" 
+                        type="object" 
+                        invisible="accounting_framework not in ('niif', 'dual') or state_niif != 'close' or state == 'model'"/>
+                        
+                <button name="resume_after_pause_niif" 
+                        string="Reanudar NIIF" 
+                        type="object" 
+                        class="oe_highlight" 
+                        invisible="accounting_framework not in ('niif', 'dual') or state_niif != 'paused' or state == 'model'"/>
+                        
+                <button name="action_asset_modify_niif" 
+                        invisible="accounting_framework not in ('niif', 'dual') or state_niif != 'open' or state == 'model'" 
+                        string="Modificar NIIF" 
+                        type="object" 
+                        data-hotkey="shift+e" 
+                        class="oe_highlight"/>
+                        
+                <button name="set_to_cancelled_niif" 
+                        string="Cancelar NIIF" 
+                        type="object" 
+                        invisible="accounting_framework not in ('niif', 'dual') or state_niif != 'open' or state == 'model'" 
+                        data-hotkey="shift+x"/>
+                        
+                <!-- Estado NIIF para activos normales -->
+                <field name="state_niif" 
+                       widget="statusbar" 
+                       statusbar_visible="draft,open" 
+                       invisible="accounting_framework not in ('niif', 'dual') or state == 'model'"/>
+            </xpath>
+            
+            <!-- Agregar botón de estadísticas NIIF en button_box -->
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <!-- Botón principal de asientos NIIF -->
+                <button class="oe_stat_button"
+                        name="open_entries_niif"
+                        type="object"
+                        icon="fa-bars"
+                        data-hotkey="shift+p"
+                        invisible="state == 'model' or accounting_framework not in ('niif', 'dual') or total_depreciation_entries_count_niif == 0">
+                    <div class="o_field_widget o_stat_info">
+                        <span class="o_stat_value">
+                            <field name="depreciation_entries_count_niif" widget="integer"/>
+                            <span invisible="total_depreciation_entries_count_niif == depreciation_entries_count_niif">
+                                / <field name="total_depreciation_entries_count_niif" widget="integer"/>
+                            </span>
+                        </span>
+                        <span class="o_stat_text">Asientos NIIF</span>
+                    </div>
+                </button>
+
+                <!-- Botón de valor depreciado NIIF -->
+                <button class="oe_stat_button"
+                        name="action_view_depreciated_values_niif"
+                        type="object"
+                        icon="fa-line-chart"
+                        invisible="state == 'model' or accounting_framework not in ('niif', 'dual') or state_niif not in ('open', 'paused', 'close')">
+                    <div class="o_field_widget o_stat_info">
+                        <span class="o_stat_value">
+                            <field name="asset_depreciated_value_niif" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                        </span>
+                        <span class="o_stat_text">Depreciado NIIF</span>
+                    </div>
+                </button>
+
+                <!-- Botón de valor en libros NIIF -->
+                <button class="oe_stat_button"
+                        name="action_view_book_value_niif"
+                        type="object"
+                        icon="fa-book"
+                        invisible="state == 'model' or accounting_framework not in ('niif', 'dual') or state_niif not in ('open', 'paused', 'close')">
+                    <div class="o_field_widget o_stat_info">
+                        <span class="o_stat_value">
+                            <field name="book_value_niif" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                        </span>
+                        <span class="o_stat_text">Valor Libros NIIF</span>
+                    </div>
+                </button>
+            </xpath>
+            
+            <!-- Agregar selector de marco contable después del título -->
+            <xpath expr="//div[@class='oe_title']/h1" position="after">
+                <group invisible="state != 'draft' or state == 'model'" class="mt-3">
+                    <field name="accounting_framework" 
+                           widget="radio" 
+                           options="{'horizontal': true}"
+                           readonly="state != 'draft'"/>
+                </group>
+            </xpath>
+            
+            <!-- Agregar páginas del notebook para activos (no modelos) -->
+            <xpath expr="//notebook[page[@name='main_page']]" position="inside">
+                <!-- Página NIIF principal (no para modelos) -->
+                <page string="Activo NIIF" name="main_page_niif" invisible="accounting_framework not in ('niif', 'dual')">
+                    <group>
+                        <field name="active" invisible="1"/>
+                        <field name="asset_properties" columns="2"/>
+                        <group string="Valores del Activo NIIF" name="asset_values_niif">
+                            <field name="original_value_niif" widget="monetary" options="{'currency_field': 'currency_id'}" readonly="state_niif != 'draft'" required="accounting_framework in ('niif', 'dual')"/>
+                            <field name="gross_increase_value" widget="monetary" invisible="gross_increase_value == 0" options="{'currency_field': 'currency_id'}"/>
+                            <field name="acquisition_date_niif" readonly="state_niif != 'draft'" required="accounting_framework in ('niif', 'dual')"/>
+                            <field  name="model_id"
+                                    string="Modelo Activo NIIF"
+                                    domain="[('state', '=', 'model'), ('accounting_framework', 'in', ('niif', 'dual'))]"
+                                    options="{'no_quick_create': True}"
+                                    context="{
+                                        'default_state': 'model',
+                                        'default_accounting_framework': accounting_framework,
+                                        'default_account_asset_id': account_asset_niif_id,
+                                        'default_account_depreciation_id': account_depreciation_niif_id,
+                                        'default_account_depreciation_expense_id': account_expense_niif_id
+                                    }" readonly="state_niif != 'draft'"/>
+                            <field name="asset_group_id"/>
+                        </group>
+                        <group string="Valores Actuales NIIF" name="current_values_niif">
+                            <field name="salvage_value_niif" widget="monetary" options="{'currency_field': 'currency_id'}" readonly="state_niif != 'draft'"/>
+                            <label for="book_value_niif"/>
+                            <span>
+                                <field name="book_value_niif" class="oe_inline" widget="monetary" required="accounting_framework in ('niif', 'dual')" options="{'currency_field': 'currency_id'}"/>
+                                <span invisible="salvage_value_niif == 0">
+                                    (incl.
+                                    <field name="value_residual_niif" nolabel="1" force_save="1" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                     depreciable)
+                                </span>
+                            </span>
+                        </group>
+                        <group string="Método de Depreciación NIIF">
+                            <field name="method_niif" required="accounting_framework in ('niif', 'dual')" readonly="state_niif not in ['draft', 'model']"/>
+                            <field name="method_progress_factor_niif" widget="percentage" invisible="method_niif == 'linear'" readonly="state_niif not in ['draft', 'model']" required="method_niif in ('degressive', 'degressive_then_linear') and accounting_framework in ('niif', 'dual')"/>
+                            <label for="method_number_niif" string="Duración"/>
+                            <div class="o_row">
+                                <field name="method_number_niif" required="accounting_framework in ('niif', 'dual')" readonly="state_niif not in ['draft', 'model']" class="oe_inline"/>
+                                <field name="method_period_niif" required="accounting_framework in ('niif', 'dual')" readonly="state_niif not in ['draft', 'model']" nolabel="1"/>
+                            </div>
+                            <field name="prorata_computation_type_niif" readonly="state_niif not in ['draft', 'model']"/>
+                            <field name="prorata_date_niif" invisible="prorata_computation_type_niif == 'none'" readonly="state_niif != 'draft'"/>
+                        </group>
+                        <group string="Contabilidad NIIF">
+                            <field name="company_id" options="{'no_create': True}" groups="base.group_multi_company" readonly="state != 'draft'"/>
+                            <field
+                                name="account_asset_niif_id"
+                                domain="[
+                                    ('company_ids', 'parent_of', company_id),
+                                    ('account_type', 'in', (
+                                        'asset_fixed',
+                                        'asset_non_current',
+                                        'asset_current')
+                                    ),
+                                ]"
+                                context="{
+                                    'default_account_type': 'asset_fixed',
+                                    'hide_model_on_account': state == 'model' and not id,
+                                    'account_type_domain': [('account_type', 'in', (
+                                        'asset_fixed',
+                                        'asset_non_current'))]}"
+                                invisible="not display_account_asset_id"
+                                required="display_account_asset_id and accounting_framework in ('niif', 'dual')"
+                                readonly="state_niif == 'close'"/>
+                            <field
+                                name="account_depreciation_niif_id"
+                                domain="[
+                                    ('company_ids', 'parent_of', company_id),
+                                    ('account_type', 'in', (
+                                        'asset_fixed',
+                                        'asset_non_current',
+                                        'asset_current')
+                                    ),
+                                ]"
+                                context="{
+                                    'default_account_type': 'asset_non_current',
+                                    'hide_model_on_account': state == 'model' and not id,
+                                    'account_type_domain': [('account_type', 'in', (
+                                        'asset_fixed',
+                                        'asset_non_current'))]}"
+                                required="accounting_framework in ('niif', 'dual')"
+                                readonly="state_niif == 'close'"/>
+                            <field
+                                name="account_expense_niif_id"
+                                domain="[
+                                    ('company_ids', 'parent_of', company_id),
+                                    ('account_type', 'in', (
+                                        'expense_depreciation',
+                                        'expense')
+                                    ),
+                                ]"
+                                context="{
+                                    'default_account_type': 'expense_depreciation',
+                                    'hide_model_on_account': state == 'model' and not id,
+                                    'account_type_domain': [('account_type', 'in', (
+                                        'expense_depreciation',
+                                        'expense'))]}"
+                                required="accounting_framework in ('niif', 'dual')"
+                                readonly="state_niif == 'close'"/>
+                            <field name="journal_niif_id" required="accounting_framework in ('niif', 'dual')" readonly="state_niif not in ['draft', 'model']"/>
+                            <field name="analytic_distribution" groups="analytic.group_analytic_accounting" widget="analytic_distribution"
+                                   options="{'account_field': 'account_expense_niif_id', 'business_domain': 'general'}"
+                                   readonly="0"/>
+                        </group>
+                        <group string="Valor en Importación NIIF">
+                            <field name="already_depreciated_amount_import_niif" string="Monto Depreciado" readonly="state_niif != 'draft'"/>
+                        </group>
+                    </group>
+                </page>
+                
+                <page string="Tabla Depreciación NIIF" name="depreciation_board_niif" invisible="accounting_framework not in ('niif', 'dual') or total_depreciation_entries_count_niif == 0">
+                    <field name="depreciation_move_niif_ids" mode="list" options="{'reload_whole_on_button': true}" readonly="state_niif not in ['draft', 'open', 'paused']">
+                        <list string="Líneas de Depreciación NIIF" decoration-info="state == 'draft'" decoration-muted="state == 'cancel'" decoration-success="asset_move_type == 'depreciation'" decoration-warning="asset_move_type in ('sale', 'disposal')" decoration-danger="asset_move_type in ('negative_revaluation')" decoration-primary="asset_move_type == 'positive_revaluation'" create="0" default_order="date asc, id asc" editable="top">
+                            <field name="currency_id" column_invisible="True" readonly="state in ['cancel', 'posted']"/>
+                            <field name="date" string="Fecha Depreciación" readonly="state in ['cancel', 'posted']"/>
+                            <field name="asset_move_type" string="Tipo Operación" widget="badge" decoration-success="asset_move_type == 'depreciation'" decoration-warning="asset_move_type in ('sale', 'disposal')" decoration-danger="asset_move_type == 'negative_revaluation'" decoration-primary="asset_move_type == 'positive_revaluation'"/>
+                            <field name="ref" invisible="0"/>
+                            <field name="reversal_move_ids" widget="deprec_lines_reversed" nolabel="1"/>
+                            <field name="depreciation_value" widget="monetary" string="Depreciación" options="{'currency_field': 'currency_id'}" readonly="state == 'posted'"/>
+                            <field name="asset_depreciated_value_niif" readonly="1" force_save="1" widget="monetary" options="{'currency_field': 'currency_id'}" string="Acumulado NIIF"/>
+                            <field name="asset_remaining_value_niif" readonly="1" widget="monetary" force_save="1" options="{'currency_field': 'currency_id'}" string="Valor Residual NIIF"/>
+                            <field name="name" readonly="1" string="Asiento Contable" widget="open_move_widget"/>
+                            <field name="state" column_invisible="True"/>
+                            <field name="is_niif_depreciation" column_invisible="True"/>
+                        </list>
+                    </field>
+                </page>
+                
+                <!-- Página adicional información -->
+                <page string="Información Adicional NIIF" name="additional_info_niif" invisible="accounting_framework not in ('niif', 'dual')">
+                    <group>
+                        <group string="Producto y Serie">
+                            <field name="asset_type_niif"  readonly="state != 'draft'"/>
+                            <field name="product_id" domain="[('type', '=', 'consu')]" readonly="state != 'draft'"/>
+                            <field name="serial_number" readonly="state != 'draft'"/>
+                        </group>
+                        <group string="Clasificación UVT" invisible="not is_minor_asset">
+                            <field name="is_minor_asset" readonly="1"/>
+                            <field name="uvt_value" readonly="state != 'draft'"/>
+                            <field name="uvt_threshold" readonly="state != 'draft'"/>
+                            <field name="tax_value" widget="monetary" options="{'currency_field': 'currency_id'}" readonly="1"/>
+                        </group>
+                    </group>
+                    <group string="Ajustes NIIF" invisible="accounting_framework not in ('niif', 'dual')">
+                        <group>
+                            <field name="impairment_amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            <field name="revaluation_amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+    
+    <!-- Vista de lista extendida con columnas NIIF -->
+    <record model="ir.ui.view" id="view_account_asset_tree_niif_inherit">
+        <field name="name">account.asset.list.niif.inherit</field>
+        <field name="model">account.asset</field>
+        <field name="inherit_id" ref="account_asset.view_account_asset_tree"/>
+        <field name="arch" type="xml">
+            <field name="state" position="after">
+                <field name="accounting_framework" optional="show" widget="badge" decoration-info="accounting_framework == 'local'" decoration-success="accounting_framework == 'niif'" decoration-warning="accounting_framework == 'dual'"/>
+                <field name="state_niif" optional="show" invisible="accounting_framework not in ('niif', 'dual')"/>
+                <field name="book_value_niif" widget="monetary" optional="hide" invisible="accounting_framework not in ('niif', 'dual')"/>
+                <field name="value_residual_niif" widget="monetary" optional="hide" invisible="accounting_framework not in ('niif', 'dual')"/>
+            </field>
+        </field>
+    </record>
+    
+    <!-- Vista de lista para modelos con NIIF -->
+    <record model="ir.ui.view" id="view_account_asset_model_tree_niif_inherit">
+        <field name="name">account.asset.model.list.niif.inherit</field>
+        <field name="model">account.asset</field>
+        <field name="inherit_id" ref="account_asset.view_account_asset_model_tree"/>
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="accounting_framework" widget="badge"/>
+            </field>
+            <field name="method_period" position="after">
+                <field name="method_niif" string="Método NIIF" readonly="state not in ['draft', 'model']" invisible="accounting_framework not in ('niif', 'dual')"/>
+                <field name="method_number_niif" string="Depreciaciones NIIF" readonly="state not in ['draft', 'model']" invisible="accounting_framework not in ('niif', 'dual')"/>
+                <field name="method_period_niif" string="Periodo NIIF" readonly="state not in ['draft', 'model']" invisible="accounting_framework not in ('niif', 'dual')"/>
+            </field>
+        </field>
+    </record>
+    
+    <!-- Vista de búsqueda extendida -->
+    <record id="view_account_asset_search_niif_inherit" model="ir.ui.view">
+        <field name="name">account.asset.search.niif.inherit</field>
+        <field name="model">account.asset</field>
+        <field name="inherit_id" ref="account_asset.view_account_asset_search"/>
+        <field name="arch" type="xml">
+            <filter name="current" position="after">
+                <separator/>
+                <filter string="LOCAL Activos" name="local_active" domain="[('state','=', 'open')]" help="Activos LOCAL activos"/>
+                <filter string="NIIF Activos" name="niif_active" domain="[('accounting_framework','in', ('niif','dual')), ('state_niif','=', 'open')]" help="Activos NIIF activos"/>
+                <filter string="NIIF Borrador" name="niif_draft" domain="[('accounting_framework','in', ('niif','dual')), ('state_niif','=', 'draft')]" help="Activos NIIF en borrador"/>
+                <separator/>
+                <filter string="Solo LOCAL" name="only_local" domain="[('accounting_framework','=', 'local')]"/>
+                <filter string="Solo NIIF" name="only_niif" domain="[('accounting_framework','=', 'niif')]"/>
+                <filter string="DUAL" name="dual" domain="[('accounting_framework','=', 'dual')]"/>
+            </filter>
+            <filter name="model" position="after">
+                <filter string="Marco Contable" name="group_accounting_framework" domain="[]" context="{'group_by':'accounting_framework'}"/>
+            </filter>
+        </field>
+    </record>
+    
+    <!-- Vista de búsqueda para modelos con NIIF -->
+    <record id="view_account_asset_model_search_niif_inherit" model="ir.ui.view">
+        <field name="name">account.asset.model.search.niif.inherit</field>
+        <field name="model">account.asset</field>
+        <field name="inherit_id" ref="account_asset.view_account_asset_model_search"/>
+        <field name="arch" type="xml">
+            <filter name="archived" position="before">
+                <separator/>
+                <filter string="Modelos LOCAL" name="model_local" domain="[('accounting_framework','=', 'local')]"/>
+                <filter string="Modelos NIIF" name="model_niif" domain="[('accounting_framework','=', 'niif')]"/>
+                <filter string="Modelos DUAL" name="model_dual" domain="[('accounting_framework','=', 'dual')]"/>
+            </filter>
+            <filter name="journal_id" position="after">
+                <filter string="Marco Contable" name="group_framework" domain="[]" context="{'group_by':'accounting_framework'}"/>
+            </filter>
+        </field>
+    </record>
+    
+    <!-- Vista del wizard de modificación extendida -->
+    <record id="asset_modify_form_niif_inherit" model="ir.ui.view">
+        <field name="name">asset.modify.form.niif.inherit</field>
+        <field name="model">asset.modify</field>
+        <field name="inherit_id" ref="account_asset.asset_modify_form"/>
+        <field name="arch" type="xml">
+            <!-- Agregar campos invisibles -->
+            <xpath expr="//field[@name='asset_id']" position="after">
+                <field name="accounting_framework" invisible="1"/>
+                <field name="state_niif" invisible="1"/>
+            </xpath>
+            
+            <!-- Agregar selector de alcance después del campo de fecha -->
+            <xpath expr="//field[@name='date']" position="after">
+                <field name="modify_scope" 
+                       widget="radio" 
+                       options="{'horizontal': true}"
+                       invisible="accounting_framework not in ('niif', 'dual')"/>
+            </xpath>
+            
+            <!-- Agregar campos NIIF después de los campos LOCAL -->
+            <xpath expr="//field[@name='salvage_value']/.." position="after">
+                <group string="Valores NIIF" invisible="accounting_framework not in ('niif', 'dual') or modify_scope == 'local'">
+                    <field name="value_residual_niif" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                    <field name="salvage_value_niif" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                </group>
+            </xpath>
+            
+            <xpath expr="//field[@name='method_period']/.." position="after">
+                <group string="Depreciación NIIF" invisible="accounting_framework not in ('niif', 'dual') or modify_scope == 'local'">
+                    <field name="method_niif"/>
+                    <field name="method_progress_factor_niif" widget="percentage" invisible="method_niif == 'linear'" required="method_niif in ('degressive', 'degressive_then_linear')"/>
+                    <label for="method_number_niif" string="Duración"/>
+                    <div class="o_row">
+                        <field name="method_number_niif" class="oe_inline"/>
+                        <field name="method_period_niif" nolabel="1"/>
+                    </div>
+                </group>
+            </xpath>
+            
+            <!-- Agregar cuentas NIIF -->
+            <xpath expr="//field[@name='account_depreciation_expense_id']/.." position="after">
+                <group string="Cuentas NIIF" invisible="accounting_framework not in ('niif', 'dual') or modify_scope == 'local'">
+                    <field name="account_asset_niif_id" domain="[('deprecated', '=', False)]"/>
+                    <field name="account_asset_counterpart_niif_id" domain="[('deprecated', '=', False)]"/>
+                    <field name="account_depreciation_niif_id" domain="[('deprecated', '=', False)]"/>
+                    <field name="account_expense_niif_id" domain="[('deprecated', '=', False)]"/>
+                    <field name="journal_niif_id" domain="[('type', '=', 'general')]"/>
+                </group>
+            </xpath>
+            
+            <!-- Agregar cuentas de ganancia/pérdida NIIF -->
+            <xpath expr="//field[@name='loss_account_id']/.." position="after">
+                <group invisible="accounting_framework not in ('niif', 'dual') or modify_action not in ('sell_niif', 'dispose_niif', 'sell', 'dispose')">
+                    <field name="gain_account_niif_id" 
+                           string="Cuenta Ganancia NIIF"
+                           domain="[('deprecated', '=', False)]" 
+                           invisible="gain_or_loss != 'gain' or modify_scope == 'local'" 
+                           required="gain_or_loss == 'gain' and modify_scope in ('both', 'niif')"/>
+                    <field name="loss_account_niif_id" 
+                           string="Cuenta Pérdida NIIF"
+                           domain="[('deprecated', '=', False)]" 
+                           invisible="gain_or_loss != 'loss' or modify_scope == 'local'" 
+                           required="gain_or_loss == 'loss' and modify_scope in ('both', 'niif')"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Vista heredada de account.move para mostrar campos NIIF -->
+    <record id="view_account_move_form_niif_inherit" model="ir.ui.view">
+        <field name="name">account.move.form.niif.inherit</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <!-- Agregar campos ocultos necesarios -->
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="asset_niif_id" invisible="1"/>
+                <field name="is_niif_depreciation" invisible="1"/>
+                <field name="asset_move_type" invisible="1"/>
+            </xpath>
+
+            <!-- Agregar botón para ver activo NIIF en button box -->
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_open_asset_niif"
+                        class="oe_stat_button"
+                        icon="fa-cube"
+                        type="object"
+                        invisible="not asset_niif_id">
+                    <div class="o_field_widget o_stat_info">
+                        <span class="o_stat_text">Activo NIIF</span>
+                    </div>
+                </button>
+            </xpath>
+
+            <!-- Agregar badge con tipo de operación en el header -->
+            <xpath expr="//field[@name='state']" position="before">
+                <field name="asset_move_type"
+                       widget="badge"
+                       invisible="not asset_move_type"
+                       decoration-success="asset_move_type == 'depreciation'"
+                       decoration-warning="asset_move_type in ('sale', 'disposal')"
+                       decoration-danger="asset_move_type == 'negative_revaluation'"
+                       decoration-primary="asset_move_type == 'positive_revaluation'"/>
+            </xpath>
+
+            <!-- Agregar información NIIF en las líneas del movimiento -->
+            <xpath expr="//field[@name='line_ids']/list/field[@name='account_id']" position="after">
+                <field name="account_niif_id"
+                       string="Cuenta NIIF"
+                       optional="hide"
+                       widget="account_autocomplete"
+                       domain="[('is_niif_account', '=', True), ('deprecated', '=', False)]"
+                       readonly="parent.state != 'draft'"/>
+                <field name="not_map_niif"
+                       string="No Mapear"
+                       widget="boolean_toggle"
+                       optional="hide"/>
+                <field name="niif_exclude"
+                       string="Excluir NIIF"
+                       widget="boolean_toggle"
+                       optional="hide"/>
+            </xpath>
+
+            <!-- Agregar pestaña con información NIIF si el movimiento es de activo -->
+            <xpath expr="//notebook" position="inside">
+                <page string="Información NIIF" name="niif_info" invisible="not asset_niif_id and not is_niif_depreciation">
+                    <group>
+                        <group string="Activo NIIF">
+                            <field name="asset_niif_id" readonly="1" widget="many2one_avatar"/>
+                            <field name="is_niif_depreciation" readonly="1"/>
+                            <field name="asset_move_type" readonly="1" widget="selection"/>
+                        </group>
+                        <group string="Valores NIIF">
+                            <field name="depreciation_value" widget="monetary" readonly="1"/>
+                            <field name="asset_depreciated_value_niif" widget="monetary" readonly="1"/>
+                            <field name="asset_remaining_value_niif" widget="monetary" readonly="1"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Vista de lista para movimientos con campos NIIF -->
+    <record id="view_account_move_tree_niif_inherit" model="ir.ui.view">
+        <field name="name">account.move.list.niif.inherit</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_tree"/>
+        <field name="arch" type="xml">
+            <field name="state" position="before">
+                <field name="asset_niif_id" optional="hide" string="Activo NIIF"/>
+                <field name="asset_move_type"
+                       optional="show"
+                       widget="badge"
+                       decoration-success="asset_move_type == 'depreciation'"
+                       decoration-warning="asset_move_type in ('sale', 'disposal')"
+                       decoration-danger="asset_move_type == 'negative_revaluation'"
+                       decoration-primary="asset_move_type == 'positive_revaluation'"/>
+                <field name="is_niif_depreciation" optional="hide" widget="boolean"/>
+            </field>
+        </field>
+    </record>
+
+    <!-- Vista de búsqueda extendida para movimientos con filtros NIIF -->
+    <record id="view_account_move_search_niif_inherit" model="ir.ui.view">
+        <field name="name">account.move.search.niif.inherit</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_account_move_filter"/>
+        <field name="arch" type="xml">
+            <!-- Agregar filtros NIIF -->
+            <filter name="posted" position="after">
+                <separator/>
+                <filter string="Depreciación NIIF" name="niif_depreciation" domain="[('is_niif_depreciation', '=', True)]"/>
+                <filter string="Con Activo NIIF" name="has_niif_asset" domain="[('asset_niif_id', '!=', False)]"/>
+                <separator/>
+                <filter string="Depreciación" name="type_depreciation" domain="[('asset_move_type', '=', 'depreciation')]"/>
+                <filter string="Venta" name="type_sale" domain="[('asset_move_type', '=', 'sale')]"/>
+                <filter string="Disposición" name="type_disposal" domain="[('asset_move_type', '=', 'disposal')]"/>
+                <filter string="Revaluación +" name="type_positive_reval" domain="[('asset_move_type', '=', 'positive_revaluation')]"/>
+                <filter string="Revaluación -" name="type_negative_reval" domain="[('asset_move_type', '=', 'negative_revaluation')]"/>
+            </filter>
+        </field>
+    </record>
+</odoo>

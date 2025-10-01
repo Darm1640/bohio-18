@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Carta de Solicitud de Anticipo -->
+    <template id="report_advance_request_letter">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <!-- Header -->
+                <div class="header" style="font-family: 'Times New Roman', serif;">
+                    <hr style="margin-top: 10px; margin-bottom: 0px; border-color: #000;"/>
+                </div>
+
+                <div class="article container-fluid p-4" style="font-family: 'Times New Roman', serif; font-size: 12px; line-height: 1.6;">
+
+                    <!-- Membrete -->
+                    <div class="row mb-5">
+                        <div class="col-12 text-center">
+                            <img t-if="o.company_id.logo" t-att-src="image_data_uri(o.company_id.logo)" class="img-fluid" style="max-height: 100px;" alt="Logo"/>
+                            <h5 class="mt-3 mb-1"><span t-field="o.company_id.name"/></h5>
+                            <p class="mb-0">NIT: <span t-field="o.company_id.partner_id.vat"/></p>
+                            <p class="mb-0">
+                                <span t-field="o.company_id.street"/>
+                                <t t-if="o.company_id.city">, <span t-field="o.company_id.city"/></t>
+                            </p>
+                            <p>
+                                Tel: <span t-field="o.company_id.phone"/> -
+                                Email: <span t-field="o.company_id.email"/>
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Fecha y Ciudad -->
+                    <div class="row mb-4">
+                        <div class="col-12 text-end">
+                            <p>
+                                <span t-field="o.company_id.city"/>,
+                                <span t-field="o.date_request" t-options="{'format': 'd \'de\' MMMM \'de\' yyyy'}"/>
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Destinatario -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <p class="mb-1">Señores</p>
+                            <p class="mb-1"><strong>DEPARTAMENTO DE TESORERÍA</strong></p>
+                            <p class="mb-1"><span t-field="o.company_id.name"/></p>
+                            <p>Ciudad</p>
+                        </div>
+                    </div>
+
+                    <!-- Referencia -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <p><strong>REF: SOLICITUD DE ANTICIPO No. <span t-field="o.name"/></strong></p>
+                        </div>
+                    </div>
+
+                    <!-- Saludo -->
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <p>Respetados señores:</p>
+                        </div>
+                    </div>
+
+                    <!-- Cuerpo de la carta según tipo -->
+                    <div class="row mb-4">
+                        <div class="col-12" style="text-align: justify;">
+                            <t t-if="o.request_type == 'customer'">
+                                <p>
+                                    Por medio de la presente, me permito solicitar formalmente la aprobación de un anticipo
+                                    por parte del cliente <strong><span t-field="o.partner_id.name"/></strong>,
+                                    identificado con NIT <strong><span t-field="o.partner_id.vat"/></strong>,
+                                    por un valor de <strong><span t-field="o.currency_id.symbol"/>
+                                    <span t-field="o.amount_requested" t-options="{'widget': 'monetary', 'display_currency': False}"/></strong>
+                                    (<span t-esc="o.amount_in_words"/>).
+                                </p>
+                                <p t-if="o.sale_order_id">
+                                    Este anticipo corresponde a la orden de venta <strong><span t-field="o.sale_order_id.name"/></strong>,
+                                    la cual tiene un valor total de <span t-field="o.sale_order_id.amount_total" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>.
+                                </p>
+                            </t>
+
+                            <t t-elif="o.request_type == 'supplier'">
+                                <p>
+                                    Por medio de la presente, me permito solicitar formalmente la autorización para realizar
+                                    un anticipo al proveedor <strong><span t-field="o.partner_id.name"/></strong>,
+                                    identificado con NIT <strong><span t-field="o.partner_id.vat"/></strong>,
+                                    por un valor de <strong><span t-field="o.currency_id.symbol"/>
+                                    <span t-field="o.amount_requested" t-options="{'widget': 'monetary', 'display_currency': False}"/></strong>
+                                    (<span t-esc="o.amount_in_words"/>).
+                                </p>
+                                <p t-if="o.purchase_order_id">
+                                    Este anticipo corresponde a la orden de compra <strong><span t-field="o.purchase_order_id.name"/></strong>,
+                                    la cual tiene un valor total de <span t-field="o.purchase_order_id.amount_total" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>.
+                                </p>
+                            </t>
+
+                            <t t-else="">
+                                <p>
+                                    Por medio de la presente, me permito solicitar formalmente la aprobación de un anticipo
+                                    para <strong><span t-field="o.partner_id.name"/></strong>,
+                                    por un valor de <strong><span t-field="o.currency_id.symbol"/>
+                                    <span t-field="o.amount_requested" t-options="{'widget': 'monetary', 'display_currency': False}"/></strong>
+                                    (<span t-esc="o.amount_in_words"/>).
+                                </p>
+                            </t>
+
+                            <!-- Justificación -->
+                            <p t-if="o.description">
+                                <strong>Justificación:</strong><br/>
+                                <span t-field="o.description" style="white-space: pre-wrap;"/>
+                            </p>
+
+                            <!-- Condiciones de pago -->
+                            <p>
+                                <strong>Condiciones del anticipo:</strong>
+                            </p>
+                            <ul>
+                                <li>Tipo de anticipo: <span t-field="o.advance_type_id.name"/></li>
+                                <li>Fecha de solicitud: <span t-field="o.date_request" t-options="{'format':'dd/MM/yyyy'}"/></li>
+                                <li>Fecha de vencimiento: <span t-field="o.date_due" t-options="{'format':'dd/MM/yyyy'}"/></li>
+                                <li t-if="o.advance_type_id.payment_term_id">Términos de pago: <span t-field="o.advance_type_id.payment_term_id.name"/></li>
+                                <li t-if="o.requires_guarantee">
+                                    Garantía requerida: <span t-field="o.guarantee_type"/>
+                                    <t t-if="o.guarantee_amount"> por valor de
+                                        <span t-field="o.guarantee_amount" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                                    </t>
+                                </li>
+                            </ul>
+
+                            <!-- Aplicación del anticipo -->
+                            <t t-if="o.request_type in ['customer', 'supplier']">
+                                <p>
+                                    El anticipo será aplicado contra las facturas que se generen de la operación comercial,
+                                    de acuerdo con los procedimientos establecidos por la empresa y siguiendo los lineamientos
+                                    de control interno vigentes.
+                                </p>
+                            </t>
+
+                            <!-- Cierre -->
+                            <p>
+                                Agradezco su atención a esta solicitud y quedo atento a cualquier información adicional
+                                que se requiera para el procesamiento de la misma.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Despedida -->
+                    <div class="row mb-5">
+                        <div class="col-12">
+                            <p class="mb-5">Cordialmente,</p>
+                            <br/><br/>
+                            <p class="mb-0">_______________________________</p>
+                            <p class="mb-0"><strong><span t-field="o.user_id.name"/></strong></p>
+                            <p class="mb-0"><span t-field="o.user_id.function"/></p>
+                            <p class="mb-0">Email: <span t-field="o.user_id.email"/></p>
+                            <t t-if="o.user_id.phone">
+                                <p class="mb-0">Tel: <span t-field="o.user_id.phone"/></p>
+                            </t>
+                        </div>
+                    </div>
+
+                    <!-- Anexos -->
+                    <div class="row">
+                        <div class="col-12">
+                            <p style="font-size: 10px;">
+                                <strong>Anexos:</strong><br/>
+                                <t t-if="o.sale_order_id">- Orden de Venta No. <span t-field="o.sale_order_id.name"/><br/></t>
+                                <t t-if="o.purchase_order_id">- Orden de Compra No. <span t-field="o.purchase_order_id.name"/><br/></t>
+                                - Documentación soporte del tercero<br/>
+                                <t t-if="o.attachment_ids">
+                                    <t t-foreach="o.attachment_ids" t-as="att">
+                                        - <span t-field="att.name"/><br/>
+                                    </t>
+                                </t>
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Copia -->
+                    <div class="row mt-3">
+                        <div class="col-12">
+                            <p style="font-size: 10px;">
+                                <strong>C.C.:</strong> Archivo, Contabilidad
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Footer -->
+                <div class="footer" style="font-family: 'Times New Roman', serif; margin-top: 20px;">
+                    <hr style="margin-top: 10px; margin-bottom: 5px; border-color: #000;"/>
+                    <div class="row">
+                        <div class="col-12 text-center">
+                            <p style="font-size: 10px; margin: 0;">
+                                Página <span class="page"/> de <span class="topage"/>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <!-- Registro del reporte de carta -->
+    <record id="action_report_advance_request_letter" model="ir.actions.report">
+        <field name="name">Carta de Solicitud de Anticipo</field>
+        <field name="model">advance.request</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">custom_account_treasury.report_advance_request_letter</field>
+        <field name="report_file">custom_account_treasury.report_advance_request_letter</field>
+        <field name="print_report_name">'Carta Anticipo - %s' % (object.name)</field>
+        <field name="binding_model_id" ref="custom_account_treasury.model_advance_request"/>
+        <field name="binding_type">report</field>
+    </record>
+</odoo>

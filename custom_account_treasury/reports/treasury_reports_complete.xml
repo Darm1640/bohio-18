@@ -1,0 +1,507 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ============================================================ -->
+    <!-- ESTILOS CSS COMPARTIDOS PARA TODOS LOS REPORTES -->
+    <!-- ============================================================ -->
+    <template id="treasury_report_styles">
+        <style>
+            /* Estilos generales Odoo 18 */
+            .o_treasury_report {
+                font-family: 'Segoe UI', 'Arial', sans-serif;
+                color: #333;
+                line-height: 1.6;
+            }
+
+            /* Headers mejorados */
+            .o_treasury_header {
+                border-bottom: 3px solid #2c3e50;
+                padding-bottom: 15px;
+                margin-bottom: 20px;
+            }
+
+            .o_treasury_title {
+                color: #2c3e50;
+                font-weight: 600;
+                letter-spacing: 0.5px;
+            }
+
+            /* Tablas mejoradas */
+            .o_treasury_table {
+                border-collapse: separate;
+                border-spacing: 0;
+                border-radius: 8px;
+                overflow: hidden;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+
+            .o_treasury_table thead {
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+            }
+
+            .o_treasury_table th {
+                padding: 12px;
+                font-weight: 600;
+                text-align: left;
+            }
+
+            .o_treasury_table td {
+                padding: 10px;
+                border-bottom: 1px solid #e9ecef;
+            }
+
+            /* Badges de impuestos mejorados */
+            .tax_badge_iva {
+                background: linear-gradient(135deg, #667eea, #764ba2);
+                color: white;
+                padding: 4px 8px;
+                border-radius: 4px;
+                font-size: 11px;
+                font-weight: 600;
+            }
+
+            .tax_badge_retefuente {
+                background: linear-gradient(135deg, #f093fb, #f5576c);
+                color: white;
+                padding: 4px 8px;
+                border-radius: 4px;
+                font-size: 11px;
+                font-weight: 600;
+            }
+
+            .tax_badge_reteica {
+                background: linear-gradient(135deg, #4facfe, #00f2fe);
+                color: white;
+                padding: 4px 8px;
+                border-radius: 4px;
+                font-size: 11px;
+                font-weight: 600;
+            }
+
+            .tax_badge_reteiva {
+                background: linear-gradient(135deg, #43e97b, #38f9d7);
+                color: white;
+                padding: 4px 8px;
+                border-radius: 4px;
+                font-size: 11px;
+                font-weight: 600;
+            }
+
+            /* Totales destacados */
+            .o_treasury_total_box {
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+                padding: 20px;
+                border-radius: 10px;
+                text-align: center;
+                box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            }
+
+            .o_treasury_total_amount {
+                font-size: 32px;
+                font-weight: 700;
+                margin: 10px 0;
+            }
+
+            /* Firmas mejoradas */
+            .o_treasury_signature {
+                border-top: 2px solid #2c3e50;
+                padding-top: 10px;
+                margin-top: 60px;
+                text-align: center;
+            }
+
+            /* Estados con colores */
+            .o_state_draft {
+                background: #6c757d;
+                color: white;
+                padding: 3px 8px;
+                border-radius: 3px;
+            }
+
+            .o_state_posted {
+                background: #28a745;
+                color: white;
+                padding: 3px 8px;
+                border-radius: 3px;
+            }
+
+            .o_state_cancelled {
+                background: #dc3545;
+                color: white;
+                padding: 3px 8px;
+                border-radius: 3px;
+            }
+
+            /* Print specific */
+            @media print {
+                .o_treasury_table {
+                    box-shadow: none;
+                }
+                .page-break {
+                    page-break-after: always;
+                }
+            }
+        </style>
+    </template>
+
+    <!-- ============================================================ -->
+    <!-- HEADER CORPORATIVO REUTILIZABLE -->
+    <!-- ============================================================ -->
+    <template id="treasury_report_header">
+        <div class="o_treasury_header">
+            <div class="row">
+                <div class="col-3">
+                    <img t-if="company.logo"
+                         t-att-src="image_data_uri(company.logo)"
+                         style="max-height: 80px;"
+                         alt="Logo"/>
+                </div>
+                <div class="col-6 text-center">
+                    <h5 class="mb-1 o_treasury_title"><strong t-field="company.name"/></h5>
+                    <small class="text-muted">
+                        <t t-if="company.partner_id.vat">
+                            NIT: <span t-field="company.partner_id.vat"/><br/>
+                        </t>
+                        <t t-if="company.partner_id.street">
+                            <span t-field="company.partner_id.street"/><br/>
+                        </t>
+                        <t t-if="company.partner_id.city">
+                            <span t-field="company.partner_id.city"/>
+                            <t t-if="company.partner_id.state_id">
+                                , <span t-field="company.partner_id.state_id.name"/>
+                            </t>
+                            <br/>
+                        </t>
+                        <t t-if="company.partner_id.phone">
+                            Tel: <span t-field="company.partner_id.phone"/>
+                        </t>
+                        <t t-if="company.partner_id.email">
+                            | <span t-field="company.partner_id.email"/>
+                        </t>
+                    </small>
+                </div>
+                <div class="col-3 text-right">
+                    <div class="border border-dark rounded p-2 bg-light">
+                        <h6 class="mb-1" t-esc="doc_title"/>
+                        <h5 class="text-danger mb-0">
+                            No. <span t-esc="doc_number"/>
+                        </h5>
+                        <small class="text-muted">
+                            Fecha: <span t-esc="doc_date" t-options="{'widget': 'date'}"/>
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- ============================================================ -->
+    <!-- TEMPLATE DE ANÁLISIS DE IMPUESTOS MEJORADO -->
+    <!-- ============================================================ -->
+    <template id="treasury_tax_analysis">
+        <t t-if="move and move.line_ids">
+            <div class="row mb-3">
+                <div class="col-12">
+                    <h6 class="o_treasury_title">
+                        <i class="fa fa-calculator"/> ANÁLISIS DETALLADO DE IMPUESTOS Y RETENCIONES
+                    </h6>
+                    <table class="table table-sm o_treasury_table">
+                        <thead>
+                            <tr>
+                                <th style="width: 10%;">Documento</th>
+                                <th style="width: 25%;">Concepto</th>
+                                <th style="width: 12%;">Tipo</th>
+                                <th class="text-right" style="width: 15%;">Base</th>
+                                <th class="text-center" style="width: 8%;">Tarifa</th>
+                                <th class="text-right" style="width: 15%;">Valor</th>
+                                <th style="width: 15%;">Cuenta</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Variables para totales -->
+                            <t t-set="total_iva" t-value="0"/>
+                            <t t-set="total_retefuente" t-value="0"/>
+                            <t t-set="total_reteica" t-value="0"/>
+                            <t t-set="total_reteiva" t-value="0"/>
+                            <t t-set="total_inc" t-value="0"/>
+                            <t t-set="total_otros" t-value="0"/>
+
+                            <!-- Líneas de impuestos -->
+                            <t t-foreach="move.line_ids.filtered(lambda l: l.tax_line_id)" t-as="tax_line">
+                                <tr>
+                                    <td>
+                                        <small><span t-field="tax_line.move_id.name"/></small>
+                                    </td>
+                                    <td>
+                                        <span t-field="tax_line.tax_line_id.name"/>
+                                        <t t-if="tax_line.name and tax_line.name != '/'">
+                                            <br/><small class="text-muted" t-field="tax_line.name"/>
+                                        </t>
+                                    </td>
+                                    <td>
+                                        <!-- Clasificación automática del impuesto -->
+                                        <t t-set="tax_name" t-value="tax_line.tax_line_id.name.upper()"/>
+                                        <t t-if="'IVA' in tax_name or 'VAT' in tax_name">
+                                            <span class="tax_badge_iva">IVA</span>
+                                            <t t-set="total_iva" t-value="total_iva + abs(tax_line.balance)"/>
+                                        </t>
+                                        <t t-elif="'RETEFUENTE' in tax_name or 'RENTA' in tax_name">
+                                            <span class="tax_badge_retefuente">ReteFuente</span>
+                                            <t t-set="total_retefuente" t-value="total_retefuente + abs(tax_line.balance)"/>
+                                        </t>
+                                        <t t-elif="'RETEICA' in tax_name or ('ICA' in tax_name and 'RETE' in tax_name)">
+                                            <span class="tax_badge_reteica">ReteICA</span>
+                                            <t t-set="total_reteica" t-value="total_reteica + abs(tax_line.balance)"/>
+                                        </t>
+                                        <t t-elif="'RETEIVA' in tax_name">
+                                            <span class="tax_badge_reteiva">ReteIVA</span>
+                                            <t t-set="total_reteiva" t-value="total_reteiva + abs(tax_line.balance)"/>
+                                        </t>
+                                        <t t-elif="'INC' in tax_name or 'CONSUMO' in tax_name">
+                                            <span class="badge badge-danger">INC</span>
+                                            <t t-set="total_inc" t-value="total_inc + abs(tax_line.balance)"/>
+                                        </t>
+                                        <t t-else="">
+                                            <span class="badge badge-secondary">Otro</span>
+                                            <t t-set="total_otros" t-value="total_otros + abs(tax_line.balance)"/>
+                                        </t>
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-field="tax_line.tax_base_amount"
+                                              t-options='{"widget": "monetary", "display_currency": move.currency_id}'/>
+                                    </td>
+                                    <td class="text-center">
+                                        <small><span t-field="tax_line.tax_line_id.amount"/>%</small>
+                                    </td>
+                                    <td class="text-right">
+                                        <strong>
+                                            <span t-esc="abs(tax_line.balance)"
+                                                  t-options='{"widget": "monetary", "display_currency": move.currency_id}'/>
+                                        </strong>
+                                    </td>
+                                    <td>
+                                        <small>
+                                            <span t-field="tax_line.account_id.code"/>
+                                        </small>
+                                    </td>
+                                </tr>
+                            </t>
+
+                            <!-- Líneas con impuestos aplicados -->
+                            <t t-foreach="move.line_ids.filtered(lambda l: l.tax_ids and not l.tax_line_id)" t-as="line">
+                                <tr style="background-color: #f8f9fa;">
+                                    <td colspan="7">
+                                        <small>
+                                            <i class="fa fa-info-circle text-info"/>
+                                            Base imponible: <span t-field="line.name"/> -
+                                            Valor: <span t-field="line.price_subtotal"
+                                                        t-options='{"widget": "monetary", "display_currency": move.currency_id}'/>
+                                            - Impuestos aplicados:
+                                            <t t-foreach="line.tax_ids" t-as="tax">
+                                                <span class="badge badge-info" t-field="tax.name"/>
+                                            </t>
+                                        </small>
+                                    </td>
+                                </tr>
+                            </t>
+                        </tbody>
+                        <tfoot>
+                            <!-- Resumen de totales por tipo -->
+                            <tr style="background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);">
+                                <td colspan="5" class="text-right"><strong>RESUMEN POR TIPO DE IMPUESTO:</strong></td>
+                                <td colspan="2">
+                                    <table class="table table-sm mb-0">
+                                        <t t-if="total_iva > 0">
+                                            <tr>
+                                                <td>IVA:</td>
+                                                <td class="text-right">
+                                                    <strong t-esc="total_iva"
+                                                            t-options='{"widget": "monetary", "display_currency": move.currency_id}'/>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                        <t t-if="total_retefuente > 0">
+                                            <tr>
+                                                <td>ReteFuente:</td>
+                                                <td class="text-right">
+                                                    <strong t-esc="total_retefuente"
+                                                            t-options='{"widget": "monetary", "display_currency": move.currency_id}'/>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                        <t t-if="total_reteica > 0">
+                                            <tr>
+                                                <td>ReteICA:</td>
+                                                <td class="text-right">
+                                                    <strong t-esc="total_reteica"
+                                                            t-options='{"widget": "monetary", "display_currency": move.currency_id}'/>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                        <t t-if="total_reteiva > 0">
+                                            <tr>
+                                                <td>ReteIVA:</td>
+                                                <td class="text-right">
+                                                    <strong t-esc="total_reteiva"
+                                                            t-options='{"widget": "monetary", "display_currency": move.currency_id}'/>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                        <t t-if="total_inc > 0">
+                                            <tr>
+                                                <td>INC:</td>
+                                                <td class="text-right">
+                                                    <strong t-esc="total_inc"
+                                                            t-options='{"widget": "monetary", "display_currency": move.currency_id}'/>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                        <t t-if="total_otros > 0">
+                                            <tr>
+                                                <td>Otros:</td>
+                                                <td class="text-right">
+                                                    <strong t-esc="total_otros"
+                                                            t-options='{"widget": "monetary", "display_currency": move.currency_id}'/>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                        <tr style="border-top: 2px solid #667eea;">
+                                            <td><strong>TOTAL:</strong></td>
+                                            <td class="text-right">
+                                                <strong class="text-primary"
+                                                        t-esc="total_iva + total_retefuente + total_reteica + total_reteiva + total_inc + total_otros"
+                                                        t-options='{"widget": "monetary", "display_currency": move.currency_id}'/>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- ============================================================ -->
+    <!-- TEMPLATE DE FIRMAS MEJORADO -->
+    <!-- ============================================================ -->
+    <template id="treasury_signatures">
+        <div class="row mt-5">
+            <div class="col-4">
+                <div class="o_treasury_signature">
+                    <strong>ELABORADO POR</strong>
+                    <div class="mt-2">
+                        <small class="text-muted">
+                            <span t-esc="elaborated_by"/><br/>
+                            <span t-esc="elaborated_date" t-options="{'widget': 'datetime'}"/>
+                        </small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="o_treasury_signature">
+                    <strong>REVISADO POR</strong>
+                    <div class="mt-2">
+                        <small class="text-muted">
+                            <t t-if="reviewed_by">
+                                <span t-esc="reviewed_by"/><br/>
+                                <span t-esc="reviewed_date" t-options="{'widget': 'datetime'}"/>
+                            </t>
+                            <t t-else="">
+                                Contabilidad<br/>
+                                _______________
+                            </t>
+                        </small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="o_treasury_signature">
+                    <strong>RECIBIDO POR</strong>
+                    <div class="mt-2">
+                        <small class="text-muted">
+                            <t t-if="received_by">
+                                <span t-esc="received_by"/><br/>
+                                C.C./NIT: <span t-esc="received_id"/>
+                            </t>
+                            <t t-else="">
+                                _______________<br/>
+                                C.C./NIT: _______________
+                            </t>
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- ============================================================ -->
+    <!-- SECCION DE AJUSTES Y DIFERENCIAS CONTABLES -->
+    <!-- ============================================================ -->
+    <template id="treasury_adjustments_section">
+        <t t-if="adjustments">
+            <div class="row mb-3">
+                <div class="col-12">
+                    <h6 class="o_treasury_title">
+                        <i class="fa fa-balance-scale"/> AJUSTES Y DIFERENCIAS CONTABLES
+                    </h6>
+                    <table class="table table-sm o_treasury_table">
+                        <thead>
+                            <tr>
+                                <th>Tipo de Ajuste</th>
+                                <th>Descripción</th>
+                                <th>Cuenta</th>
+                                <th class="text-right">Debe</th>
+                                <th class="text-right">Haber</th>
+                                <th class="text-right">Diferencia</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="adjustments" t-as="adj">
+                                <tr>
+                                    <td>
+                                        <t t-if="adj.get('type') == 'exchange'">
+                                            <span class="badge badge-info">Dif. Cambio</span>
+                                        </t>
+                                        <t t-elif="adj.get('type') == 'rounding'">
+                                            <span class="badge badge-warning">Redondeo</span>
+                                        </t>
+                                        <t t-elif="adj.get('type') == 'discount'">
+                                            <span class="badge badge-success">Descuento</span>
+                                        </t>
+                                        <t t-else="">
+                                            <span class="badge badge-secondary">Otro</span>
+                                        </t>
+                                    </td>
+                                    <td><span t-esc="adj.get('description')"/></td>
+                                    <td>
+                                        <small>
+                                            <span t-esc="adj.get('account_code')"/> -
+                                            <span t-esc="adj.get('account_name')"/>
+                                        </small>
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-esc="adj.get('debit', 0)"
+                                              t-options='{"widget": "monetary", "display_currency": currency}'/>
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-esc="adj.get('credit', 0)"
+                                              t-options='{"widget": "monetary", "display_currency": currency}'/>
+                                    </td>
+                                    <td class="text-right">
+                                        <t t-set="diff" t-value="adj.get('debit', 0) - adj.get('credit', 0)"/>
+                                        <span t-esc="diff"
+                                              t-options='{"widget": "monetary", "display_currency": currency}'
+                                              t-att-class="'text-success' if diff > 0 else 'text-danger' if diff &lt; 0 else ''"/>
+                                    </td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

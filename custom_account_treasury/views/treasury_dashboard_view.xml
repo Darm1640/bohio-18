@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Dashboard de Tesorería -->
+    <record id="view_treasury_dashboard_kanban" model="ir.ui.view">
+        <field name="name">treasury.dashboard.kanban</field>
+        <field name="model">account.journal</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_dashboard o_treasury_kanban" create="0">
+                <field name="name"/>
+                <field name="type"/>
+                <field name="color"/>
+                <field name="unreconciled_advance_count"/>
+                <field name="kanban_dashboard"/>
+                <field name="show_on_dashboard"/>
+                <field name="currency_id"/>
+                <templates>
+                    <t t-name="card">
+                        <div t-attf-class="o_kanban_color_#{record.color.raw_value} #{kanban_color(record.color.raw_value)}">
+                            <div class="o_kanban_card_header">
+                                <div class="o_kanban_card_header_title">
+                                    <div class="o_primary">
+                                        <field name="name"/>
+                                    </div>
+                                    <div class="o_secondary">
+                                        <field name="type" widget="badge"/>
+                                    </div>
+                                </div>
+                                <div class="o_kanban_manage_button_section">
+                                    <a class="o_kanban_manage_toggle_button" href="#">
+                                        <i class="fa fa-ellipsis-v"/>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="o_kanban_card_content">
+                                <div class="o_kanban_primary_left">
+                                    <button t-if="record.type.raw_value == 'bank'"
+                                            class="btn btn-primary"
+                                            name="open_action"
+                                            type="object">
+                                        <span>Nuevo Pago</span>
+                                    </button>
+                                    <button t-if="record.type.raw_value == 'cash'"
+                                            class="btn btn-primary"
+                                            name="open_action"
+                                            type="object">
+                                        <span>Nueva Operación</span>
+                                    </button>
+                                </div>
+
+                                <!-- Métricas principales -->
+                                <div class="row mt-3">
+                                    <div class="col-6">
+                                        <div class="o_kanban_card_metric">
+                                            <span class="o_value" t-esc="record.kanban_dashboard.value.number_to_reconcile"/>
+                                            <span class="o_label">Por Conciliar</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="o_kanban_card_metric">
+                                            <span class="o_value" t-esc="record.unreconciled_advance_count.value"/>
+                                            <span class="o_label">Anticipos</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Balance -->
+                                <div class="o_kanban_card_lower_content mt-3">
+                                    <div class="row">
+                                        <div class="col-12 text-center">
+                                            <strong>Saldo:</strong>
+                                            <field name="bank_balance" widget="monetary"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Menú desplegable -->
+                            <div class="o_kanban_card_manage_pane dropdown-menu" role="menu">
+                                <div class="col-xs-12 o_kanban_card_manage_section">
+                                    <h5>Acciones</h5>
+                                    <div role="menuitem">
+                                        <a name="open_action" type="object">Ver Transacciones</a>
+                                    </div>
+                                    <div role="menuitem">
+                                        <a name="action_view_unreconciled_advances" type="object">
+                                            Anticipos Sin Conciliar
+                                        </a>
+                                    </div>
+                                    <div t-if="record.type.raw_value == 'bank'">
+                                        <div role="menuitem">
+                                            <a name="action_create_new" type="object">Extracto Bancario</a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-xs-12 o_kanban_card_manage_section">
+                                    <h5>Reportes</h5>
+                                    <div role="menuitem">
+                                        <a name="open_report" type="object">Flujo de Caja</a>
+                                    </div>
+                                    <div role="menuitem">
+                                        <a name="open_report" type="object">Antigüedad</a>
+                                    </div>
+                                </div>
+
+                                <div t-if="widget.editable" class="col-xs-12 o_kanban_card_manage_section">
+                                    <h5>Configuración</h5>
+                                    <div role="menuitem">
+                                        <a name="action_configure_journal" type="object">Configurar Diario</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Acción para el Dashboard -->
+    <record id="action_treasury_dashboard" model="ir.actions.act_window">
+        <field name="name">Tablero de Tesorería</field>
+        <field name="res_model">account.journal</field>
+        <field name="view_mode">kanban</field>
+        <field name="view_id" ref="view_treasury_dashboard_kanban"/>
+        <field name="domain">[('type', 'in', ['bank', 'cash'])]</field>
+        <field name="context">{'search_default_dashboard': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Configure sus diarios bancarios y de efectivo
+            </p>
+        </field>
+    </record>
+
+    <!-- Menú para el Dashboard -->
+    <menuitem id="menu_treasury_dashboard"
+              name="Tablero"
+              parent="custom_account_treasury.menu_treasury"
+              action="action_treasury_dashboard"
+              sequence="1"
+              groups="custom_account_treasury.group_treasury_user"/>
+
+    <!-- Vista Gráfica de Flujo de Caja -->
+    <record id="view_treasury_cashflow_graph" model="ir.ui.view">
+        <field name="name">treasury.cashflow.graph</field>
+        <field name="model">account.payment</field>
+        <field name="arch" type="xml">
+            <graph string="Flujo de Caja" type="line" sample="1">
+                <field name="date"/>
+                <field name="amount" type="measure"/>
+                <field name="payment_type" type="row"/>
+            </graph>
+        </field>
+    </record>
+
+    <!-- Vista Pivot para Análisis -->
+    <record id="view_treasury_analysis_pivot" model="ir.ui.view">
+        <field name="name">treasury.analysis.pivot</field>
+        <field name="model">account.payment</field>
+        <field name="arch" type="xml">
+            <pivot string="Análisis de Tesorería">
+                <field name="partner_id" type="row"/>
+                <field name="date" interval="month" type="col"/>
+                <field name="amount" type="measure"/>
+                <field name="payment_type" type="col"/>
+            </pivot>
+        </field>
+    </record>
+
+    <!-- Acción para Análisis de Flujo -->
+    <record id="action_treasury_cashflow" model="ir.actions.act_window">
+        <field name="name">Flujo de Caja</field>
+        <field name="res_model">account.payment</field>
+        <field name="view_mode">graph,pivot,list</field>
+        <field name="domain">[('state', '=', 'posted')]</field>
+        <field name="context">{'search_default_last_month': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Analice el flujo de caja de su empresa
+            </p>
+            <p>
+                Visualice entradas y salidas de efectivo, identifique tendencias
+                y tome decisiones informadas sobre la gestión de tesorería.
+            </p>
+        </field>
+    </record>
+
+    <!-- Menú para Flujo de Caja -->
+    <menuitem id="menu_treasury_cashflow"
+              name="Flujo de Caja"
+              parent="custom_account_treasury.menu_treasury_reports"
+              action="action_treasury_cashflow"
+              sequence="10"
+              groups="custom_account_treasury.group_treasury_user"/>
+
+    <!-- Acciones Rápidas -->
+    <record id="action_quick_payment_customer" model="ir.actions.act_window">
+        <field name="name">Registrar Cobro</field>
+        <field name="res_model">account.payment</field>
+        <field name="view_mode">form</field>
+        <field name="context">{
+            'default_payment_type': 'inbound',
+            'default_partner_type': 'customer'
+        }</field>
+        <field name="target">new</field>
+    </record>
+
+    <record id="action_quick_payment_supplier" model="ir.actions.act_window">
+        <field name="name">Registrar Pago</field>
+        <field name="res_model">account.payment</field>
+        <field name="view_mode">form</field>
+        <field name="context">{
+            'default_payment_type': 'outbound',
+            'default_partner_type': 'supplier'
+        }</field>
+        <field name="target">new</field>
+    </record>
+
+    <record id="action_quick_advance_request" model="ir.actions.act_window">
+        <field name="name">Nuevo Anticipo</field>
+        <field name="res_model">advance.request</field>
+        <field name="view_mode">form</field>
+        <field name="context">{
+            'default_stage_id': 1
+        }</field>
+        <field name="target">new</field>
+    </record>
+
+    <!-- Menús de Acciones Rápidas -->
+    <menuitem id="menu_treasury_quick_actions"
+              name="Acciones Rápidas"
+              parent="custom_account_treasury.menu_treasury"
+              sequence="5"/>
+
+    <menuitem id="menu_quick_payment_customer"
+              name="➕ Cobro Rápido"
+              parent="menu_treasury_quick_actions"
+              action="action_quick_payment_customer"
+              sequence="1"/>
+
+    <menuitem id="menu_quick_payment_supplier"
+              name="➕ Pago Rápido"
+              parent="menu_treasury_quick_actions"
+              action="action_quick_payment_supplier"
+              sequence="2"/>
+
+    <menuitem id="menu_quick_advance"
+              name="➕ Anticipo Rápido"
+              parent="menu_treasury_quick_actions"
+              action="action_quick_advance_request"
+              sequence="3"/>
+
+</odoo>

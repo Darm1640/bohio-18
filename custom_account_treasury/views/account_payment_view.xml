@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Vista Form de Payment con campos de modo y impuestos -->
+        <record id="view_account_payment_form_inherit_treasury" model="ir.ui.view">
+            <field name="name">account.payment.form.inherit.treasury</field>
+            <field name="model">account.payment</field>
+            <field name="inherit_id" ref="account.view_account_payment_form"/>
+            <field name="arch" type="xml">
+                <!-- Agregar campo de modo de líneas después del campo amount -->
+                <xpath expr="//field[@name='amount']" position="after">
+                    <field name="payment_line_mode" widget="radio" options="{'horizontal': true}"
+                           invisible="not payment_line_ids"/>
+                    <field name="create_transfer_entry" invisible="not payment_line_ids"/>
+                </xpath>
+
+                <!-- Agregar configuración de tipo de cambio manual -->
+                <xpath expr="//field[@name='currency_id']" position="after">
+                    <field name="manual_currency_rate_active" invisible="currency_id == company_currency_id"/>
+                    <field name="current_exchange_rate"
+                           invisible="not manual_currency_rate_active"
+                           required="manual_currency_rate_active"/>
+                    <field name="exchange_diff_type"
+                           invisible="not manual_currency_rate_active"/>
+                </xpath>
+
+                <!-- Pestaña de líneas de detalle de pago -->
+                <xpath expr="//sheet" position="inside">
+                    <notebook>
+                        <page string="Líneas de Pago" name="payment_lines" invisible="not payment_line_ids">
+                            <field name="payment_line_ids" context="{'default_payment_id': id}">
+                                <list editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="move_line_id" optional="show"
+                                           domain="[('reconciled', '=', False), ('partner_id', '=', parent.partner_id)]"/>
+                                    <field name="invoice_id" optional="show" readonly="1"/>
+                                    <field name="partner_id" optional="show"/>
+                                    <field name="account_id" required="1"/>
+                                    <field name="name" optional="show"/>
+                                    <field name="payment_amount" sum="Total"/>
+                                    <field name="manual_tax"/>
+                                    <field name="tax_ids" widget="many2many_tags"
+                                           options="{'no_create': True}"
+                                           domain="[('type_tax_use', 'in', ['sale', 'purchase'])]"
+                                           invisible="reverse_tax"/>
+                                    <field name="reverse_tax_ids" widget="many2many_tags"
+                                           options="{'no_create': True}"
+                                           domain="[('type_tax_use', 'in', ['sale', 'purchase'])]"
+                                           invisible="not reverse_tax"/>
+                                    <field name="reverse_tax" invisible="1"/>
+                                    <field name="auto_tax_line" invisible="1"/>
+                                    <field name="debit" sum="Total Débito" optional="show"/>
+                                    <field name="credit" sum="Total Crédito" optional="show"/>
+                                    <field name="balance" sum="Balance" optional="hide"/>
+                                    <field name="currency_id" optional="hide" groups="base.group_multi_currency"/>
+                                    <field name="amount_currency" optional="hide" groups="base.group_multi_currency"/>
+                                    <field name="analytic_distribution" widget="analytic_distribution" optional="hide"
+                                           groups="analytic.group_analytic_accounting"/>
+                                    <field name="display_type" invisible="1"/>
+                                    <field name="is_main" invisible="1"/>
+                                </list>
+                            </field>
+                            <group>
+                                <group>
+                                    <field name="payment_difference_line" readonly="1"/>
+                                </group>
+                                <group>
+                                    <field name="writeoff_account_id"
+                                           invisible="payment_difference_line == 0"
+                                           required="payment_difference_line != 0"/>
+                                    <field name="writeoff_label"
+                                           invisible="payment_difference_line == 0"/>
+                                </group>
+                            </group>
+                        </page>
+
+                        <!-- Pestaña de anticipos -->
+                        <page string="Anticipo" name="advance_page" invisible="not advance">
+                            <group>
+                                <group>
+                                    <field name="advance"/>
+                                    <field name="advance_type_id"
+                                           invisible="not advance"
+                                           required="advance"
+                                           context="{'default_company_ids': [(4, company_id)]}"/>
+                                    <field name="code_advance" readonly="1" invisible="not advance"/>
+                                </group>
+                                <group>
+                                    <field name="is_document_cross"/>
+                                    <field name="advance_payment_account_id"
+                                           invisible="not advance"
+                                           readonly="advance_type_id"/>
+                                </group>
+                            </group>
+                        </page>
+
+                        <!-- Pestaña de búsqueda de documentos -->
+                        <page string="Buscar Documentos" name="search_documents">
+                            <group>
+                                <field name="customer_invoice_ids"
+                                       widget="many2many_tags"
+                                       invisible="partner_type != 'customer'"
+                                       context="{'default_partner_id': partner_id}"
+                                       domain="[('partner_id', '=', partner_id), ('state', '=', 'posted'), ('payment_state', '!=', 'paid')]"/>
+                                <field name="supplier_invoice_ids"
+                                       widget="many2many_tags"
+                                       invisible="partner_type != 'supplier'"
+                                       context="{'default_partner_id': partner_id}"
+                                       domain="[('partner_id', '=', partner_id), ('state', '=', 'posted'), ('payment_state', '!=', 'paid')]"/>
+                                <field name="account_move_payment_ids"
+                                       widget="many2many_tags"
+                                       context="{'default_partner_id': partner_id}"
+                                       domain="[('partner_id', '=', partner_id), ('reconciled', '=', False)]"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- Vista de lista para líneas de detalle de pago -->
+        <record id="view_account_payment_detail_list" model="ir.ui.view">
+            <field name="name">account.payment.detail.list</field>
+            <field name="model">account.payment.detail</field>
+            <field name="arch" type="xml">
+                <list string="Líneas de Detalle de Pago" editable="bottom">
+                    <field name="sequence" widget="handle"/>
+                    <field name="payment_id" invisible="context.get('default_payment_id')"/>
+                    <field name="move_line_id"/>
+                    <field name="invoice_id"/>
+                    <field name="partner_id"/>
+                    <field name="account_id"/>
+                    <field name="name"/>
+                    <field name="payment_amount" sum="Total"/>
+                    <field name="tax_ids" widget="many2many_tags"/>
+                    <field name="debit" sum="Total Débito"/>
+                    <field name="credit" sum="Total Crédito"/>
+                    <field name="currency_id" groups="base.group_multi_currency"/>
+                </list>
+            </field>
+        </record>
+    </data>
+</odoo>

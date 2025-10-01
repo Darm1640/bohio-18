@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Vista Form -->
+    <record id="view_payment_operation_type_form" model="ir.ui.view">
+        <field name="name">account.payment.operation.type.form</field>
+        <field name="model">account.payment.operation.type</field>
+        <field name="arch" type="xml">
+            <form string="Tipo de Operación de Pago">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" icon="fa-list" type="action"
+                                name="%(account.action_account_payments_payable)d"
+                                context="{'search_default_operation_type_id': id}"
+                                invisible="not id">
+                            <div class="o_stat_info">
+                                <span class="o_stat_text">Pagos</span>
+                            </div>
+                        </button>
+                    </div>
+                    <widget name="web_ribbon" title="Archivado" bg_color="bg-danger" invisible="active"/>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1>
+                            <field name="name" placeholder="Ej: Pago a Proveedores"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group name="main_info">
+                            <field name="code" placeholder="Ej: PAG-PROV"/>
+                            <field name="payment_type"/>
+                            <field name="sequence"/>
+                            <field name="active"/>
+                        </group>
+                        <group name="sequence_info">
+                            <field name="sequence_id"
+                                   context="{'default_name': 'Secuencia ' + name if name else 'Nueva Secuencia',
+                                            'default_prefix': code + '/' if code else 'OP/',
+                                            'default_use_date_range': True}"/>
+                            <field name="color" widget="color_picker"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Configuración" name="configuration">
+                            <group>
+                                <group string="Restricciones">
+                                    <field name="journal_ids" widget="many2many_tags"
+                                           options="{'no_create': True}"/>
+                                    <field name="account_ids" widget="many2many_tags"
+                                           options="{'no_create': True}"/>
+                                </group>
+                                <group string="Aprobación">
+                                    <field name="require_approval"/>
+                                    <field name="approval_amount"
+                                           invisible="not require_approval"
+                                           widget="monetary"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Compañías" name="companies">
+                            <field name="company_ids">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="currency_id"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Descripción" name="description">
+                            <field name="description" placeholder="Describa el propósito y uso de este tipo de operación..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Vista List -->
+    <record id="view_payment_operation_type_list" model="ir.ui.view">
+        <field name="name">account.payment.operation.type.list</field>
+        <field name="model">account.payment.operation.type</field>
+        <field name="arch" type="xml">
+            <list string="Tipos de Operación" multi_edit="1">
+                <field name="sequence" widget="handle"/>
+                <field name="code"/>
+                <field name="name"/>
+                <field name="payment_type"/>
+                <field name="sequence_id"/>
+                <field name="require_approval"/>
+                <field name="company_ids" widget="many2many_tags" optional="hide"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Vista Kanban -->
+    <record id="view_payment_operation_type_kanban" model="ir.ui.view">
+        <field name="name">account.payment.operation.type.kanban</field>
+        <field name="model">account.payment.operation.type</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_mobile">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="payment_type"/>
+                <field name="color"/>
+                <field name="active"/>
+                <templates>
+                    <t t-name="card">
+                        <main t-attf-class="oe_kanban_color_#{kanban_getcolor(color)}" style="height: 150px;">
+                            <div class="o_kanban_record_top">
+                                <div class="o_kanban_record_headings">
+                                    <strong class="o_kanban_record_title">
+                                        <field name="name"/>
+                                    </strong>
+                                </div>
+                                <div class="o_dropdown_kanban dropdown">
+                                    <a role="button" class="dropdown-toggle o-no-caret btn"
+                                       data-bs-toggle="dropdown" aria-label="Menú desplegable" title="Menú desplegable">
+                                        <span class="fa fa-ellipsis-v"/>
+                                    </a>
+                                    <div class="dropdown-menu" role="menu">
+                                        <a type="edit" class="dropdown-item">Editar</a>
+                                        <a type="delete" class="dropdown-item">Eliminar</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="o_kanban_record_body">
+                                <div class="text-muted">
+                                    <span class="badge badge-primary">
+                                        <field name="code"/>
+                                    </span>
+                                    <span class="badge badge-secondary ms-2">
+                                        <field name="payment_type"/>
+                                    </span>
+                                </div>
+                                <div class="mt-2">
+                                    <field name="sequence_id"/>
+                                </div>
+                            </div>
+                            <div class="o_kanban_record_bottom">
+                                <div class="oe_kanban_bottom_left">
+                                    <field name="active" widget="boolean" invisible="active"/>
+                                    <span t-if="!record.active.raw_value" class="text-danger">
+                                        <i class="fa fa-archive"/> Archivado
+                                    </span>
+                                </div>
+                                <div class="oe_kanban_bottom_right">
+                                    <field name="company_ids" widget="many2many_tags"/>
+                                </div>
+                            </div>
+                        </main>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Vista Search -->
+    <record id="view_payment_operation_type_search" model="ir.ui.view">
+        <field name="name">account.payment.operation.type.search</field>
+        <field name="model">account.payment.operation.type</field>
+        <field name="arch" type="xml">
+            <search string="Buscar Tipo de Operación">
+                <field name="name" string="Tipo de Operación"/>
+                <field name="code"/>
+                <separator/>
+                <filter string="Entrada" name="inbound" domain="[('payment_type', '=', 'inbound')]"/>
+                <filter string="Salida" name="outbound" domain="[('payment_type', '=', 'outbound')]"/>
+                <filter string="Transferencia" name="transfer" domain="[('payment_type', '=', 'transfer')]"/>
+                <separator/>
+                <filter string="Requiere Aprobación" name="require_approval"
+                        domain="[('require_approval', '=', True)]"/>
+                <separator/>
+                <filter string="Activos" name="active" domain="[('active', '=', True)]"/>
+                <filter string="Archivados" name="archived" domain="[('active', '=', False)]"/>
+                <group expand="0" string="Agrupar por">
+                    <filter string="Tipo de Pago" name="group_payment_type" domain="[]"
+                            context="{'group_by': 'payment_type'}"/>
+                    <filter string="Estado" name="group_active" domain="[]"
+                            context="{'group_by': 'active'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Acción -->
+    <record id="action_payment_operation_type" model="ir.actions.act_window">
+        <field name="name">Tipos de Operación</field>
+        <field name="res_model">account.payment.operation.type</field>
+        <field name="view_mode">list,kanban,form</field>
+        <field name="context">{'search_default_active': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Crear un Tipo de Operación de Pago
+            </p>
+            <p>
+                Los tipos de operación permiten clasificar y numerar los pagos
+                con secuencias independientes según su naturaleza.
+            </p>
+        </field>
+    </record>
+
+    <!-- Menú -->
+    <menuitem id="menu_payment_operation_type"
+              name="Tipos de Operación"
+              parent="custom_account_treasury.menu_treasury_configuration"
+              action="action_payment_operation_type"
+              sequence="5"/>
+
+    <!-- Herencia de vista de Payment para agregar el campo -->
+    <record id="view_account_payment_form_operation_type" model="ir.ui.view">
+        <field name="name">account.payment.form.operation.type</field>
+        <field name="model">account.payment</field>
+        <field name="inherit_id" ref="account.view_account_payment_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='date']" position="after">
+                <field name="operation_type_id"
+                       options="{'no_create': True, 'no_open': True}"/>
+                <field name="operation_number"
+                       invisible="not operation_number"
+                       readonly="1"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Herencia de vista lista de Payment -->
+    <record id="view_account_payment_list_operation_type" model="ir.ui.view">
+        <field name="name">account.payment.list.operation.type</field>
+        <field name="model">account.payment</field>
+        <field name="inherit_id" ref="account.view_account_payment_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="operation_number" optional="show"/>
+                <field name="operation_type_id" optional="hide"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

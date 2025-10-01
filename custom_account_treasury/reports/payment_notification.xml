@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Template Principal de Notificación de Pago -->
+    <template id="report_payment_notification">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <!-- Encabezado con información de empresa y destinatario -->
+                        <div class="row mb-4">
+                            <div class="col-6">
+                                <address t-field="o.company_id.partner_id"
+                                        t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": true}'/>
+                            </div>
+                            <div class="col-6 text-end">
+                                <h3>
+                                    <t t-if="o.payment_type == 'outbound'">Notificación de Pago</t>
+                                    <t t-else="">Notificación de Cobro</t>
+                                </h3>
+                                <p class="mb-1">
+                                    <strong>Número:</strong>
+                                    <span t-field="o.treasury_receipt_number" t-if="o.treasury_receipt_number"/>
+                                    <span t-field="o.name" t-else=""/>
+                                </p>
+                                <p><strong>Fecha:</strong> <span t-field="o.date"/></p>
+                            </div>
+                        </div>
+
+                        <!-- Destinatario -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <div style="border-left: 4px solid #007bff; padding-left: 15px;">
+                                    <h5>Destinatario:</h5>
+                                    <address t-field="o.partner_id"
+                                            t-options='{"widget": "contact", "fields": ["address", "name", "phone", "email"], "no_marker": true}'/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Información Principal del Pago -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <table class="table table-sm table-bordered">
+                                    <tbody>
+                                        <tr>
+                                            <td class="text-nowrap" style="width: 25%;"><strong>Método de Pago:</strong></td>
+                                            <td><span t-field="o.payment_method_id.name"/></td>
+                                            <td class="text-nowrap" style="width: 25%;"><strong>Referencia:</strong></td>
+                                            <td><span t-field="o.payment_reference" t-if="o.payment_reference"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Diario:</strong></td>
+                                            <td><span t-field="o.journal_id.name"/></td>
+                                            <td><strong>Moneda:</strong></td>
+                                            <td><span t-field="o.currency_id.name"/></td>
+                                        </tr>
+                                        <tr t-if="o.memo">
+                                            <td><strong>Concepto:</strong></td>
+                                            <td colspan="3"><span t-field="o.memo"/></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Detalle de Documentos (si existen líneas de pago) -->
+                        <t t-if="o.payment_line_ids">
+                            <div class="row mb-4">
+                                <div class="col-12">
+                                    <h5>Detalle de Documentos Aplicados</h5>
+                                    <table class="table table-sm table-striped">
+                                        <thead style="background-color: #f8f9fa;">
+                                            <tr>
+                                                <th>Documento</th>
+                                                <th>Cuenta</th>
+                                                <th class="text-end">Monto Original</th>
+                                                <th class="text-end">Monto Aplicado</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <t t-foreach="o.payment_line_ids.filtered(lambda l: not l.is_main and l.display_type not in ['asset_cash', 'advance', 'counterpart'])" t-as="line">
+                                                <tr>
+                                                    <td>
+                                                        <t t-if="line.invoice_id">
+                                                            <span t-field="line.invoice_id.name"/>
+                                                        </t>
+                                                        <t t-elif="line.move_line_id">
+                                                            <span t-field="line.move_line_id.move_id.name"/>
+                                                        </t>
+                                                        <t t-else="">
+                                                            <span t-field="line.name"/>
+                                                        </t>
+                                                    </td>
+                                                    <td><span t-field="line.account_id.code"/> - <span t-field="line.account_id.name"/></td>
+                                                    <td class="text-end">
+                                                        <t t-if="line.invoice_id">
+                                                            <span t-field="line.invoice_id.amount_total"
+                                                                  t-options='{"widget": "monetary", "display_currency": line.invoice_id.currency_id}'/>
+                                                        </t>
+                                                    </td>
+                                                    <td class="text-end">
+                                                        <span t-field="line.payment_amount"
+                                                              t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                                    </td>
+                                                </tr>
+                                            </t>
+                                        </tbody>
+                                        <tfoot style="background-color: #f8f9fa;">
+                                            <tr>
+                                                <td colspan="3" class="text-end"><strong>Total Aplicado:</strong></td>
+                                                <td class="text-end">
+                                                    <strong>
+                                                        <span t-field="o.amount"
+                                                              t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                                    </strong>
+                                                </td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                        </t>
+
+                        <!-- Monto Total (cuando no hay detalle) -->
+                        <t t-else="">
+                            <div class="row mb-4">
+                                <div class="col-12">
+                                    <div class="alert alert-info text-center">
+                                        <h4 class="mb-3">Monto Total del Pago</h4>
+                                        <h2 style="color: #007bff;">
+                                            <span t-field="o.amount"
+                                                  t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                        </h2>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+
+                        <!-- Información de Anticipo -->
+                        <t t-if="o.advance">
+                            <div class="row mb-4">
+                                <div class="col-12">
+                                    <div class="alert alert-warning">
+                                        <h5><i class="fa fa-info-circle"/> Información de Anticipo</h5>
+                                        <table class="table table-sm mb-0">
+                                            <tr t-if="o.code_advance">
+                                                <td style="width: 30%;"><strong>Número de Anticipo:</strong></td>
+                                                <td><span t-field="o.code_advance"/></td>
+                                            </tr>
+                                            <tr t-if="o.advance_type_id">
+                                                <td><strong>Tipo de Anticipo:</strong></td>
+                                                <td><span t-field="o.advance_type_id.name"/></td>
+                                            </tr>
+                                            <tr t-if="o.advance_payment_account_id">
+                                                <td><strong>Cuenta de Anticipo:</strong></td>
+                                                <td>
+                                                    <span t-field="o.advance_payment_account_id.code"/> -
+                                                    <span t-field="o.advance_payment_account_id.name"/>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+
+                        <!-- Información Contable -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h5>Información Contable</h5>
+                                <table class="table table-sm">
+                                    <tr>
+                                        <td style="width: 30%;"><strong>Asiento Contable:</strong></td>
+                                        <td>
+                                            <span t-field="o.move_id.name" t-if="o.move_id"/>
+                                            <span t-if="not o.move_id" class="text-muted">Pendiente</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Cuenta Bancaria:</strong></td>
+                                        <td>
+                                            <span t-field="o.outstanding_account_id.code"/> -
+                                            <span t-field="o.outstanding_account_id.name"/>
+                                        </td>
+                                    </tr>
+                                    <tr t-if="o.destination_account_id">
+                                        <td><strong>Cuenta Destino:</strong></td>
+                                        <td>
+                                            <span t-field="o.destination_account_id.code"/> -
+                                            <span t-field="o.destination_account_id.name"/>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Notas y Observaciones -->
+                        <t t-if="o.narration">
+                            <div class="row mb-4">
+                                <div class="col-12">
+                                    <h5>Notas:</h5>
+                                    <div style="border: 1px solid #dee2e6; border-radius: 5px; padding: 10px; background-color: #f8f9fa;">
+                                        <span t-field="o.narration"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+
+                        <!-- Firmas -->
+                        <div class="row mt-5">
+                            <div class="col-6 text-center">
+                                <div style="border-top: 2px solid #333; width: 80%; margin: 0 auto;">
+                                    <p class="mt-2 mb-0"><strong>Elaborado por</strong></p>
+                                    <p class="text-muted small"><span t-field="o.create_uid.name"/></p>
+                                </div>
+                            </div>
+                            <div class="col-6 text-center">
+                                <div style="border-top: 2px solid #333; width: 80%; margin: 0 auto;">
+                                    <p class="mt-2 mb-0"><strong>Aprobado por</strong></p>
+                                    <p class="text-muted small">___________________</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Footer con información adicional -->
+                        <div class="row mt-4">
+                            <div class="col-12 text-center text-muted small">
+                                <p>
+                                    Documento generado el <span t-esc="datetime.datetime.now().strftime('%d/%m/%Y %H:%M')"/>
+                                    | Estado: <span t-field="o.state"/>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <!-- Definición del reporte -->
+    <record id="action_report_payment_notification" model="ir.actions.report">
+        <field name="name">Notificación de Pago</field>
+        <field name="model">account.payment</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">custom_account_treasury.report_payment_notification</field>
+        <field name="report_file">payment_notification</field>
+        <field name="print_report_name">'Notificación - %s' % (object.name or 'Pago')</field>
+        <field name="binding_model_id" ref="account.model_account_payment"/>
+        <field name="binding_type">report</field>
+        <field name="paperformat_id" ref="base.paperformat_euro"/>
+    </record>
+
+    <!-- Menú de acción en la vista de pago -->
+    <record id="account_payment_view_form_inherit_notification" model="ir.ui.view">
+        <field name="name">account.payment.form.inherit.notification</field>
+        <field name="model">account.payment</field>
+        <field name="inherit_id" ref="account.view_account_payment_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="%(action_report_payment_notification)d"
+                        type="action"
+                        string="Imprimir Notificación"
+                        class="btn-secondary"
+                        invisible="state == 'draft'"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

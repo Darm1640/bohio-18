@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates>
+    <t t-name="bohio_crm.TimelineView">
+        <div class="o_bohio_timeline_view h-100 overflow-auto">
+
+            <!-- FIXED ACTION BAR (sticky top) -->
+            <div class="o_bohio_action_bar sticky-top bg-white border-bottom shadow-sm p-2">
+                <div class="d-flex flex-wrap gap-2 align-items-center">
+                    <button class="btn btn-primary btn-sm" t-on-click="createActivity">
+                        <i class="fa fa-plus"/> Actividad
+                    </button>
+                    <button class="btn btn-secondary btn-sm" t-on-click="scheduleCall">
+                        <i class="fa fa-phone"/> Llamada
+                    </button>
+                    <button class="btn btn-secondary btn-sm" t-on-click="scheduleMeeting">
+                        <i class="fa fa-calendar"/> Cita
+                    </button>
+                    <button class="btn btn-secondary btn-sm" t-on-click="sendEmail">
+                        <i class="fa fa-envelope"/> Email
+                    </button>
+                    <button class="btn btn-success btn-sm" t-on-click="sendWhatsApp">
+                        <i class="fab fa-whatsapp"/> WhatsApp
+                    </button>
+                    <button class="btn btn-success btn-sm" t-on-click="generateContract"
+                            t-if="state.opportunityData.stage_is_won">
+                        <i class="fa fa-file-contract"/> Contrato
+                    </button>
+                    <button class="btn btn-secondary btn-sm" t-on-click="compareProperties">
+                        <i class="fa fa-chart-bar"/> Comparar
+                    </button>
+                    <button class="btn btn-secondary btn-sm" t-on-click="printView">
+                        <i class="fa fa-print"/> Imprimir
+                    </button>
+                </div>
+            </div>
+
+            <!-- MAIN CONTENT -->
+            <div class="container-fluid p-3">
+
+                <!-- STAGE PROGRESS BAR -->
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <div class="o_bohio_stage_progress d-flex justify-content-between position-relative">
+                            <t t-foreach="state.opportunityData.stage_history || []" t-as="stage" t-key="stage.id">
+                                <div class="o_stage_item text-center flex-fill"
+                                     t-att-class="{'o_stage_completed': stage.is_completed, 'o_stage_active': stage.is_current}">
+                                    <div class="o_stage_circle rounded-circle mx-auto mb-2 d-flex align-items-center justify-content-center"
+                                         style="width: 40px; height: 40px;">
+                                        <i t-if="stage.is_completed" class="fa fa-check"/>
+                                        <i t-elif="stage.is_current" class="fa fa-dot-circle"/>
+                                        <i t-else="" t-att-class="'fa fa-' + stage.icon"/>
+                                    </div>
+                                    <div class="small fw-bold" t-esc="stage.name"/>
+                                    <div class="text-muted" style="font-size: 11px;" t-esc="stage.days_label"/>
+                                    <div t-if="stage.days_remaining" class="text-danger" style="font-size: 10px;">
+                                        Faltan: <t t-esc="stage.days_remaining"/> días
+                                    </div>
+                                </div>
+                            </t>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- METRICS BAR -->
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <div class="row g-3 text-center">
+                            <div class="col-6 col-md-3">
+                                <div class="h3 mb-1 fw-bold text-primary">
+                                    <t t-esc="state.opportunityData.expected_revenue_formatted"/>
+                                </div>
+                                <div class="text-muted small text-uppercase">Valor Esperado</div>
+                            </div>
+                            <div class="col-6 col-md-3">
+                                <div class="h3 mb-1 fw-bold text-primary">
+                                    <t t-esc="state.opportunityData.recurring_revenue_formatted"/>
+                                </div>
+                                <div class="text-muted small text-uppercase">Recurrente/Mes</div>
+                            </div>
+                            <div class="col-6 col-md-3">
+                                <div class="h3 mb-1 fw-bold text-success">
+                                    <t t-esc="totalRevenue"/>
+                                </div>
+                                <div class="text-muted small text-uppercase">Total Estimado</div>
+                            </div>
+                            <div class="col-6 col-md-3">
+                                <div class="h3 mb-1 fw-bold text-info">
+                                    <t t-esc="state.opportunityData.commission_percent"/>%
+                                </div>
+                                <div class="text-muted small text-uppercase">% Comisión</div>
+                            </div>
+                            <div class="col-6 col-md-3">
+                                <div class="h3 mb-1 fw-bold text-info">
+                                    <t t-esc="commissionAmount"/>
+                                </div>
+                                <div class="text-muted small text-uppercase">Comisión Total</div>
+                            </div>
+                            <div class="col-6 col-md-3">
+                                <div class="h3 mb-1 fw-bold">
+                                    <t t-esc="state.opportunityData.probability"/>%
+                                </div>
+                                <div class="text-muted small text-uppercase">Probabilidad</div>
+                            </div>
+                            <div class="col-6 col-md-3">
+                                <div class="h3 mb-1 fw-bold">
+                                    <t t-esc="state.opportunityData.days_in_pipeline"/>
+                                </div>
+                                <div class="text-muted small text-uppercase">Días Pipeline</div>
+                            </div>
+                            <div class="col-6 col-md-3">
+                                <div class="h3 mb-1 fw-bold text-warning">
+                                    <t t-esc="state.opportunityData.ai_score"/>%
+                                </div>
+                                <div class="text-muted small text-uppercase">Score IA</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CLIENT SECTION -->
+                <div class="card mb-3">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="o_avatar rounded-circle bg-primary text-white d-flex align-items-center justify-content-center"
+                                 style="width: 45px; height: 45px; font-size: 18px; font-weight: bold;">
+                                <t t-esc="state.opportunityData.partner_initials"/>
+                            </div>
+                            <div>
+                                <div class="fw-bold"><t t-esc="state.opportunityData.partner_name"/></div>
+                                <div class="text-muted small">
+                                    <t t-esc="state.opportunityData.customer_type"/>
+                                    <span t-if="state.opportunityData.referral_partner">
+                                        | Referido por: <t t-esc="state.opportunityData.referral_partner"/>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="btn btn-sm btn-light" t-on-click="toggleClientFields">
+                            <i t-att-class="state.clientFieldsExpanded ? 'fa fa-chevron-up' : 'fa fa-chevron-down'"/>
+                            <t t-if="state.clientFieldsExpanded">Contraer</t>
+                            <t t-else="">Expandir</t>
+                        </button>
+                    </div>
+                    <div class="card-body" t-if="state.clientFieldsExpanded">
+                        <div class="row g-3">
+                            <div class="col-md-4" t-if="state.opportunityData.phone">
+                                <label class="text-muted small text-uppercase">Teléfono</label>
+                                <div><t t-esc="state.opportunityData.phone"/></div>
+                            </div>
+                            <div class="col-md-4" t-if="state.opportunityData.email">
+                                <label class="text-muted small text-uppercase">Email</label>
+                                <div><t t-esc="state.opportunityData.email"/></div>
+                            </div>
+                            <div class="col-md-4" t-if="state.opportunityData.partner_vat">
+                                <label class="text-muted small text-uppercase">Identificación</label>
+                                <div><t t-esc="state.opportunityData.partner_vat"/></div>
+                            </div>
+                            <div class="col-md-4" t-if="state.opportunityData.min_budget">
+                                <label class="text-muted small text-uppercase">Presupuesto</label>
+                                <div>
+                                    <t t-esc="state.opportunityData.min_budget_formatted"/> -
+                                    <t t-esc="state.opportunityData.max_budget_formatted"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AI RECOMMENDATIONS WIDGET -->
+                <div class="card mb-3 border-primary" style="background: #f0f9ff;">
+                    <div class="card-header bg-transparent d-flex justify-content-between align-items-center">
+                        <div class="fw-bold">
+                            <i class="fa fa-magic text-primary"/> Propiedades Recomendadas (IA)
+                        </div>
+                        <button class="btn btn-sm btn-primary" t-on-click="refreshRecommendations">
+                            <i class="fa fa-sync"/> Actualizar
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <t t-foreach="state.recommendedProperties" t-as="property" t-key="property.id">
+                                <div class="col-md-6 col-lg-3">
+                                    <div class="card h-100 hover-shadow" style="cursor: pointer;"
+                                         t-on-click="() => this.addToComparison(property.id)">
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-between mb-2">
+                                                <span class="badge bg-success">
+                                                    <t t-esc="property.match_score"/>% Match
+                                                </span>
+                                            </div>
+                                            <h6 class="card-title" t-esc="property.name"/>
+                                            <div class="small text-muted">
+                                                <div><t t-esc="property.area"/> m² | <t t-esc="property.price_formatted"/></div>
+                                                <div><t t-esc="property.bedrooms"/> hab | <t t-esc="property.bathrooms"/> baños</div>
+                                                <div><t t-esc="property.neighborhood"/> | <t t-esc="property.view_type"/></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </t>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MAIN LAYOUT: 3 COLUMNS -->
+                <div class="row g-3">
+
+                    <!-- LEFT: COMPARISON PROPERTIES -->
+                    <div class="col-lg-3">
+                        <div class="card">
+                            <div class="card-header">
+                                <i class="fa fa-home"/> Comparación (<t t-esc="state.comparisonProperties.length"/>)
+                            </div>
+                            <div class="card-body p-2" style="max-height: 600px; overflow-y: auto;">
+                                <t t-foreach="state.comparisonProperties" t-as="property" t-key="property.id">
+                                    <div class="card mb-2 border" t-att-class="{'border-primary': property.is_selected}">
+                                        <div class="card-body p-2">
+                                            <h6 class="small fw-bold mb-1" t-esc="property.name"/>
+                                            <div class="small text-muted" style="font-size: 11px; line-height: 1.4;">
+                                                <div><t t-esc="property.area"/> m² | <t t-esc="property.price_formatted"/></div>
+                                                <div><t t-esc="property.bedrooms"/> hab | <t t-esc="property.bathrooms"/> baños</div>
+                                                <div><t t-esc="property.floor"/> | <t t-esc="property.view_type"/></div>
+                                            </div>
+                                            <div class="d-flex gap-1 mt-2">
+                                                <button class="btn btn-sm btn-light flex-fill"
+                                                        t-on-click="() => this.viewProperty(property.id)">
+                                                    Ver
+                                                </button>
+                                                <button class="btn btn-sm btn-light flex-fill"
+                                                        t-on-click="() => this.removeFromComparison(property.id)">
+                                                    Quitar
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </t>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CENTER: CHATTER (nativo de Odoo con scroll propio) -->
+                    <div class="col-lg-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <i class="fa fa-comments"/> Timeline de Actividades
+                            </div>
+                            <div class="card-body p-0">
+                                <!-- Aquí se monta el chatter nativo con scroll propio -->
+                                <div class="o_chatter_container" style="height: 600px; overflow-y: auto;">
+                                    <div t-ref="chatterContainer" class="o_chatter"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- RIGHT: TASKS/ACTIVITIES -->
+                    <div class="col-lg-3">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <span><i class="fa fa-tasks"/> Tareas Pendientes</span>
+                                <button class="btn btn-sm btn-primary" t-on-click="createActivity">
+                                    <i class="fa fa-plus"/>
+                                </button>
+                            </div>
+                            <div class="card-body p-2" style="max-height: 600px; overflow-y: auto;">
+                                <t t-foreach="state.opportunityData.activities || []" t-as="activity" t-key="activity.id">
+                                    <div class="card mb-2 border-start border-3" t-att-class="'border-' + activity.activity_state">
+                                        <div class="card-body p-2">
+                                            <div class="small fw-bold mb-1" t-esc="activity.summary"/>
+                                            <div class="text-muted" style="font-size: 11px;">
+                                                <div><i class="fa fa-user"/> <t t-esc="activity.user_name"/></div>
+                                                <div><i class="fa fa-calendar"/> <t t-esc="activity.date_deadline"/></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </t>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </t>
+</templates>

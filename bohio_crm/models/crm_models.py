@@ -99,6 +99,239 @@ class CrmLead(models.Model):
     contract_end_date = fields.Date('Fecha Fin Estimada', compute='_compute_contract_end_date', store=True)
     commission_percentage = fields.Float('% Comisión', default=10.0)
 
+    # ===============================
+    # MÉTODOS PARA TIMELINE VIEW
+    # ===============================
+
+    def action_open_timeline_view(self):
+        """Abrir vista timeline para esta oportunidad"""
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'bohio_timeline_view',
+            'name': f'Timeline - {self.name}',
+            'context': {
+                'active_id': self.id,
+                'active_model': 'crm.lead',
+            },
+            'target': 'current',
+        }
+
+    def get_timeline_view_data(self):
+        """Obtener datos para la vista timeline"""
+        self.ensure_one()
+
+        # Obtener historial de etapas
+        stage_history = self._get_stage_history()
+
+        # Obtener propiedades recomendadas
+        recommended_properties = self._get_ai_recommendations()
+
+        # Obtener propiedades en comparación
+        comparison_properties = self._get_comparison_properties()
+
+        # Obtener actividades pendientes
+        activities = self._get_pending_activities()
+
+        # Calcular métricas
+        recurring_revenue = self.recurring_revenue if hasattr(self, 'recurring_revenue') else 0
+        total_revenue = self.expected_revenue + (recurring_revenue * 12)
+        commission_amount = total_revenue * (self.commission_percentage / 100)
+
+        return {
+            'id': self.id,
+            'name': self.name,
+            'partner_id': [self.partner_id.id, self.partner_id.name] if self.partner_id else [False, ''],
+            'partner_name': self.partner_name or self.partner_id.name or '',
+            'partner_initials': self._get_partner_initials(),
+            'phone': self.phone or self.partner_id.phone or '',
+            'partner_phone': self.partner_id.phone or '',
+            'email': self.email_from or self.partner_id.email or '',
+            'partner_vat': self.partner_id.vat or '',
+            'customer_type': dict(self._fields['client_type'].selection).get(self.client_type, ''),
+            'referral_partner': self.referred_by_partner_id.name if self.referred_by_partner_id else '',
+            'min_budget': self.budget_min or 0,
+            'max_budget': self.budget_max or 0,
+            'min_budget_formatted': self._format_currency(self.budget_min),
+            'max_budget_formatted': self._format_currency(self.budget_max),
+
+            # Métricas
+            'expected_revenue': self.expected_revenue,
+            'expected_revenue_formatted': self._format_currency(self.expected_revenue),
+            'recurring_revenue': recurring_revenue,
+            'recurring_revenue_formatted': self._format_currency(recurring_revenue),
+            'total_revenue': total_revenue,
+            'commission_percent': self.commission_percentage,
+            'commission_amount': commission_amount,
+            'probability': self.probability,
+            'days_in_pipeline': self._compute_days_in_pipeline(),
+            'ai_score': self._calculate_ai_score(),
+
+            # Estado
+            'stage_is_won': self.stage_id.is_won if self.stage_id else False,
+            'stage_history': stage_history,
+            'recommended_properties': recommended_properties,
+            'comparison_properties': comparison_properties,
+            'activities': activities,
+        }
+
+    def _get_partner_initials(self):
+        """Obtener iniciales del contacto"""
+        if not self.partner_name and not self.partner_id:
+            return 'NN'
+        name = self.partner_name or self.partner_id.name
+        parts = name.split()
+        if len(parts) >= 2:
+            return f"{parts[0][0]}{parts[1][0]}".upper()
+        return name[0:2].upper()
+
+    def _format_currency(self, amount):
+        """Formatear moneda"""
+        if not amount:
+            return '$0'
+        return f"${amount:,.0f}"
+
+    def _get_stage_history(self):
+        """Obtener historial de etapas con iconos y tiempos"""
+        stages = self.env['crm.stage'].search([('team_id', '=', False)], order='sequence')
+        current_stage_sequence = self.stage_id.sequence if self.stage_id else 0
+
+        history = []
+        for stage in stages:
+            # Calcular días en esta etapa (simplificado)
+            days_in_stage = 0
+            days_label = '-'
+
+            is_completed = stage.sequence < current_stage_sequence
+            is_current = stage.id == self.stage_id.id
+
+            if is_completed:
+                days_label = f"{days_in_stage or 3} días"
+            elif is_current:
+                days_label = f"{days_in_stage or 7} días actual"
+
+            # Mapeo de iconos por etapa
+            icon_map = {
+                'new': 'star',
+                'qualified': 'check-circle',
+                'proposition': 'file-text',
+                'negotiation': 'handshake',
+                'won': 'trophy',
+            }
+
+            history.append({
+                'id': stage.id,
+                'name': stage.name,
+                'sequence': stage.sequence,
+                'is_completed': is_completed,
+                'is_current': is_current,
+                'days_label': days_label,
+                'days_remaining': 3 if is_current else None,
+                'icon': icon_map.get(stage.fold, 'circle'),
+            })
+
+        return history
+
+    def _get_ai_recommendations(self):
+        """Obtener propiedades recomendadas por IA (simplificado)"""
+        properties = self.env['product.template'].search([
+            ('is_property', '=', True),
+            ('state', '=', 'free'),
+        ], limit=4)
+
+        result = []
+        for idx, prop in enumerate(properties):
+            # Score simulado (en producción sería calculado por IA)
+            match_score = 95 - (idx * 3)
+
+            result.append({
+                'id': prop.id,
+                'name': prop.name,
+                'area': prop.property_area if hasattr(prop, 'property_area') else 0,
+                'price_formatted': self._format_currency(prop.list_price),
+                'bedrooms': prop.bedroom_count if hasattr(prop, 'bedroom_count') else 0,
+                'bathrooms': prop.bathroom_count if hasattr(prop, 'bathroom_count') else 0,
+                'neighborhood': prop.neighborhood if hasattr(prop, 'neighborhood') else '',
+                'view_type': 'Vista Mar',
+                'match_score': match_score,
+            })
+
+        return result
+
+    def _get_comparison_properties(self):
+        """Obtener propiedades en comparación"""
+        result = []
+        for prop in self.compared_properties_ids:
+            result.append({
+                'id': prop.id,
+                'name': prop.name,
+                'area': prop.property_area if hasattr(prop, 'property_area') else 0,
+                'price_formatted': self._format_currency(prop.list_price),
+                'bedrooms': prop.bedroom_count if hasattr(prop, 'bedroom_count') else 0,
+                'bathrooms': prop.bathroom_count if hasattr(prop, 'bathroom_count') else 0,
+                'floor': 'Piso 5',
+                'view_type': 'Vista mar',
+                'is_selected': prop == self.compared_properties_ids[0] if self.compared_properties_ids else False,
+            })
+        return result
+
+    def _get_pending_activities(self):
+        """Obtener actividades pendientes"""
+        activities = self.env['mail.activity'].search([
+            ('res_id', '=', self.id),
+            ('res_model', '=', 'crm.lead'),
+        ], order='date_deadline')
+
+        result = []
+        for activity in activities:
+            result.append({
+                'id': activity.id,
+                'summary': activity.summary or activity.activity_type_id.name,
+                'user_name': activity.user_id.name,
+                'date_deadline': activity.date_deadline.strftime('%d/%m/%Y') if activity.date_deadline else '',
+                'activity_state': activity.state,
+            })
+        return result
+
+    def _compute_days_in_pipeline(self):
+        """Calcular días en el pipeline"""
+        if not self.create_date:
+            return 0
+        delta = datetime.now() - self.create_date
+        return delta.days
+
+    def _calculate_ai_score(self):
+        """Calcular score de IA (simplificado)"""
+        score = 50
+        if self.probability:
+            score += self.probability * 0.3
+        if self.expected_revenue:
+            score += 10
+        if self.partner_id:
+            score += 10
+        return min(int(score), 100)
+
+    def get_ai_recommendations(self):
+        """Actualizar recomendaciones de IA"""
+        self.ensure_one()
+        return self._get_ai_recommendations()
+
+    def add_property_to_comparison(self, property_id):
+        """Agregar propiedad a comparación"""
+        self.ensure_one()
+        if len(self.compared_properties_ids) >= 4:
+            raise ValidationError(_('Solo se pueden comparar hasta 4 propiedades'))
+
+        property_obj = self.env['product.template'].browse(property_id)
+        self.compared_properties_ids = [(4, property_obj.id)]
+        return True
+
+    def remove_property_from_comparison(self, property_id):
+        """Remover propiedad de comparación"""
+        self.ensure_one()
+        self.compared_properties_ids = [(3, property_id)]
+        return True
+
     # PQRS
     pqrs_type = fields.Selection([
         ('petition', 'Petición'), ('complaint', 'Queja'), ('claim', 'Reclamo'), ('suggestion', 'Sugerencia')
@@ -859,6 +1092,106 @@ class CrmLead(models.Model):
     # ===============================
     # MÉTODOS DE DASHBOARD
     # ===============================
+
+    @api.model
+    def retrieve_dashboard(self):
+        """Obtener datos del dashboard para vista kanban"""
+        user = self.env.user
+        today = fields.Date.today()
+        seven_days_ago = today - timedelta(days=7)
+
+        # Todas las oportunidades
+        all_new = self.search_count([
+            ('type', '=', 'opportunity'),
+            ('stage_id.is_won', '=', False),
+            ('probability', '<', 20)
+        ])
+        all_qualified = self.search_count([
+            ('type', '=', 'opportunity'),
+            ('stage_id.is_won', '=', False),
+            ('probability', '>=', 20),
+            ('probability', '<', 70)
+        ])
+        all_proposal = self.search_count([
+            ('type', '=', 'opportunity'),
+            ('stage_id.is_won', '=', False),
+            ('probability', '>=', 70)
+        ])
+
+        # Mis oportunidades
+        my_new = self.search_count([
+            ('type', '=', 'opportunity'),
+            ('user_id', '=', user.id),
+            ('stage_id.is_won', '=', False),
+            ('probability', '<', 20)
+        ])
+        my_qualified = self.search_count([
+            ('type', '=', 'opportunity'),
+            ('user_id', '=', user.id),
+            ('stage_id.is_won', '=', False),
+            ('probability', '>=', 20),
+            ('probability', '<', 70)
+        ])
+        my_proposal = self.search_count([
+            ('type', '=', 'opportunity'),
+            ('user_id', '=', user.id),
+            ('stage_id.is_won', '=', False),
+            ('probability', '>=', 70)
+        ])
+
+        # Valor promedio de negocios
+        all_opps = self.search([
+            ('type', '=', 'opportunity'),
+            ('stage_id.is_won', '=', False)
+        ])
+        avg_deal = sum(all_opps.mapped('expected_revenue')) / len(all_opps) if all_opps else 0
+        company = self.env.company
+        avg_deal_value = f"{company.currency_id.symbol}{avg_deal:,.0f}"
+
+        # Ganadas últimos 7 días
+        won_last_7_days = self.search_count([
+            ('type', '=', 'opportunity'),
+            ('stage_id.is_won', '=', True),
+            ('date_closed', '>=', seven_days_ago),
+            ('date_closed', '<=', today)
+        ])
+
+        # Días promedio para cierre
+        won_opps = self.search([
+            ('type', '=', 'opportunity'),
+            ('stage_id.is_won', '=', True),
+            ('date_closed', '!=', False)
+        ], limit=50)
+
+        days_list = []
+        for opp in won_opps:
+            if opp.create_date and opp.date_closed:
+                delta = opp.date_closed - opp.create_date.date()
+                days_list.append(delta.days)
+
+        avg_days = sum(days_list) / len(days_list) if days_list else 0
+        avg_days_to_close = f"{int(avg_days)} días"
+
+        # Oportunidades activas
+        active_opportunities = self.search_count([
+            ('type', '=', 'opportunity'),
+            ('stage_id.is_won', '=', False),
+            ('active', '=', True)
+        ])
+
+        return {
+            'all_new': all_new,
+            'all_qualified': all_qualified,
+            'all_proposal': all_proposal,
+            'my_new': my_new,
+            'my_qualified': my_qualified,
+            'my_proposal': my_proposal,
+            'avg_deal_value': avg_deal_value,
+            'won_last_7_days': won_last_7_days,
+            'avg_days_to_close': avg_days_to_close,
+            'active_opportunities': active_opportunities,
+            'user_id': user.id,
+        }
 
     @api.model
     def get_crm_dashboard_data(self, show_all=True, period='month', service_filter='all'):

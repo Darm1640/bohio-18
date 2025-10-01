@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Inherit Payment Register Form -->
+    <record id="view_account_payment_register_form_inherit" model="ir.ui.view">
+        <field name="name">account.payment.register.form.inherit</field>
+        <field name="model">account.payment.register</field>
+        <field name="inherit_id" ref="account.view_account_payment_register_form"/>
+        <field name="arch" type="xml">
+            <!-- Add internal transfer fields -->
+            <field name="journal_id" position="after">
+                <field name="is_internal_transfer" invisible="1"/>
+                <field name="destination_journal_id"
+                       invisible="not is_internal_transfer"
+                       required="is_internal_transfer"/>
+            </field>
+
+            <!-- Add manual exchange rate fields -->
+            <field name="currency_id" position="after">
+                <field name="company_currency_id" invisible="1"/>
+                <field name="manual_currency_rate_active"
+                       invisible="currency_id == company_currency_id"/>
+                <field name="current_exchange_rate"
+                       invisible="not manual_currency_rate_active"
+                       required="manual_currency_rate_active"/>
+                <field name="exchange_diff_type"
+                       invisible="not manual_currency_rate_active"/>
+            </field>
+
+            <!-- Add payment lines option -->
+            <field name="amount" position="before">
+                <field name="use_payment_lines" string="Crear Líneas de Pago Detalladas"/>
+            </field>
+
+            <!-- Add advance payment fields -->
+            <field name="partner_id" position="after">
+                <field name="is_advance_payment" string="Es Anticipo"/>
+                <field name="advance_type_id"
+                       invisible="not is_advance_payment"
+                       domain="[('company_ids', 'in', company_id)]"/>
+                <field name="advance_account_id"
+                       invisible="not is_advance_payment"/>
+                <field name="create_advance_for_excess"
+                       invisible="payment_difference &lt;= 0"
+                       string="Crear Anticipo con Excedente"/>
+            </field>
+
+            <!-- Add force account fields -->
+            <field name="partner_type" position="after">
+                <field name="force_destination_account" string="Forzar Cuenta Destino"/>
+                <field name="forced_destination_account_id"
+                       invisible="not force_destination_account"
+                       required="force_destination_account"/>
+                <field name="create_cross_entry" string="Crear Solo Cruce (Sin Pago)"/>
+            </field>
+
+            <!-- Add tax adjustment fields -->
+            <!-- Add payment lines tree view -->
+            <xpath expr="//group" position="after">
+                <notebook invisible="not use_payment_lines">
+                    <page string="Líneas de Pago" name="payment_lines">
+                        <field name="payment_line_ids">
+                            <list string="Líneas de Pago" editable="bottom">
+                                <field name="invoice_id" readonly="1" optional="show"/>
+                                <field name="partner_id" readonly="1" optional="show"/>
+                                <field name="name" readonly="1"/>
+                                <field name="invoice_currency_id" column_invisible="1"/>
+                                <field name="invoice_amount" readonly="1" optional="hide"/>
+                                <field name="currency_id" column_invisible="1"/>
+                                <field name="amount_residual" readonly="1"/>
+                                <field name="payment_amount" sum="Total a Pagar"/>
+                                <field name="is_partial" readonly="1"/>
+                                <!-- <field name="move_line_id" column_invisible="1"/> -->
+                                <field name="account_id" column_invisible="1"/>
+                            </list>
+                        </field>
+                        <group class="oe_subtotal_footer">
+                            <field name="amount" widget="monetary"
+                                   options="{'currency_field': 'currency_id'}"/>
+                        </group>
+                    </page>
+                    <page string="Líneas Adicionales" name="additional_lines">
+                        <field name="additional_line_ids">
+                            <list string="Líneas Adicionales" editable="bottom">
+                                <field name="account_id" required="1"/>
+                                <field name="partner_id"/>
+                                <field name="name" required="1"/>
+                                <field name="currency_id" column_invisible="1"/>
+                                <field name="amount" sum="Total Adicional"/>
+                                <field name="analytic_distribution" widget="analytic_distribution" optional="hide"/>
+                                <field name="tax_ids" widget="many2many_tags" optional="hide"/>
+                            </list>
+                        </field>
+                        <button name="action_add_additional_line"
+                                string="Agregar Línea Adicional"
+                                type="object"
+                                class="btn-link"/>
+                    </page>
+                    <page string="Facturas Proveedor" name="supplier_invoices"
+                          invisible="partner_type != 'supplier'">
+                        <button name="action_load_supplier_invoices"
+                                string="Cargar Facturas Pendientes"
+                                type="object"
+                                class="btn-primary"/>
+                    </page>
+                </notebook>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Payment Lines Form View (for popup editing) -->
+    <record id="view_payment_register_line_form" model="ir.ui.view">
+        <field name="name">account.payment.register.line.form</field>
+        <field name="model">account.payment.register.line</field>
+        <field name="arch" type="xml">
+            <form string="Payment Line">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="invoice_id" readonly="1"/>
+                            <field name="partner_id" readonly="1"/>
+                            <field name="name"/>
+                        </group>
+                        <group>
+                            <field name="invoice_currency_id" invisible="1"/>
+                            <field name="invoice_amount" readonly="1"/>
+                            <field name="currency_id" invisible="1"/>
+                            <field name="amount_residual" readonly="1"/>
+                            <field name="payment_amount"/>
+                            <field name="is_partial" readonly="1"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action to open payment register with enhancements -->
+    <record id="action_account_payment_register_extended" model="ir.actions.act_window">
+        <field name="name">Register Payment (Extended)</field>
+        <field name="res_model">account.payment.register</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_account_payment_register_form_inherit"/>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="account.model_account_move"/>
+        <field name="binding_view_types">list,form</field>
+    </record>
+</odoo>

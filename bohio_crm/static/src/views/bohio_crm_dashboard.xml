@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates>
+    <t t-name="bohio_crm.BohioCRMDashboard">
+        <div class="o_purchase_dashboard mb-3">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-header bg-white border-0">
+                            <h5 class="mb-0">Todas las Oportunidades</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row text-center">
+                                <div class="col-4">
+                                    <a href="#" class="text-decoration-none" t-on-click="setSearchContext" filter_name="new">
+                                        <div class="p-3 bg-light rounded">
+                                            <div class="fs-3 fw-bold text-primary" t-esc="crmData.all_new"/>
+                                            <small class="text-muted">Nuevas</small>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="col-4">
+                                    <a href="#" class="text-decoration-none" t-on-click="setSearchContext" filter_name="qualified">
+                                        <div class="p-3 bg-light rounded">
+                                            <div class="fs-3 fw-bold text-info" t-esc="crmData.all_qualified"/>
+                                            <small class="text-muted">Calificadas</small>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="col-4">
+                                    <a href="#" class="text-decoration-none" t-on-click="setSearchContext" filter_name="proposal">
+                                        <div class="p-3 bg-light rounded">
+                                            <div class="fs-3 fw-bold text-warning" t-esc="crmData.all_proposal"/>
+                                            <small class="text-muted">Propuestas</small>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-header bg-white border-0">
+                            <h5 class="mb-0">Mis Oportunidades</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row text-center">
+                                <div class="col-4">
+                                    <a href="#" class="text-decoration-none" t-on-click="setSearchContext" filter_name="my_new">
+                                        <div class="p-3 bg-light rounded">
+                                            <div class="fs-3 fw-bold text-primary" t-esc="crmData.my_new"/>
+                                            <small class="text-muted">Nuevas</small>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="col-4">
+                                    <a href="#" class="text-decoration-none" t-on-click="setSearchContext" filter_name="my_qualified">
+                                        <div class="p-3 bg-light rounded">
+                                            <div class="fs-3 fw-bold text-info" t-esc="crmData.my_qualified"/>
+                                            <small class="text-muted">Calificadas</small>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="col-4">
+                                    <a href="#" class="text-decoration-none" t-on-click="setSearchContext" filter_name="my_proposal">
+                                        <div class="p-3 bg-light rounded">
+                                            <div class="fs-3 fw-bold text-warning" t-esc="crmData.my_proposal"/>
+                                            <small class="text-muted">Propuestas</small>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-3">
+                <div class="col-lg-3 col-6">
+                    <div class="card border-0 shadow-sm text-center">
+                        <div class="card-body">
+                            <div class="fs-4 fw-bold text-success" t-esc="crmData.avg_deal_value"/>
+                            <small class="text-muted">Valor Prom. Negocio</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-6">
+                    <div class="card border-0 shadow-sm text-center">
+                        <div class="card-body">
+                            <div class="fs-4 fw-bold text-success" t-esc="crmData.won_last_7_days"/>
+                            <small class="text-muted">Ganadas Últimos 7 Días</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-6">
+                    <div class="card border-0 shadow-sm text-center">
+                        <div class="card-body">
+                            <div class="fs-4 fw-bold text-primary" t-esc="crmData.avg_days_to_close"/>
+                            <small class="text-muted">Días Prom. Cierre</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-6">
+                    <div class="card border-0 shadow-sm text-center">
+                        <div class="card-body">
+                            <div class="fs-4 fw-bold text-info" t-esc="crmData.active_opportunities"/>
+                            <small class="text-muted">Oportunidades Activas</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>

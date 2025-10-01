@@ -1,0 +1,63 @@
+/* Dashboard Vendedor - Estilos */
+.hover-shadow {
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.hover-shadow:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2) !important;
+}
+
+.bg-gradient-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+}
+
+.bg-gradient-success {
+    background: linear-gradient(135deg, #48c6ef 0%, #6f86d6 100%) !important;
+}
+
+.bg-gradient-info {
+    background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%) !important;
+}
+
+.bg-gradient-warning {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%) !important;
+}
+
+.bg-gradient-dark {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+}
+
+/* Kanban Dashboard Header */
+.o_bohio_crm_kanban .o_kanban_header {
+    background-color: #f8f9fa;
+    border-bottom: 2px solid #dee2e6;
+}
+
+.o_bohio_crm_kanban .dashboard-metric-card {
+    transition: all 0.2s ease;
+}
+
+.o_bohio_crm_kanban .dashboard-metric-card:hover {
+    transform: scale(1.05);
+}
+
+/* Cards de Oportunidades */
+.o_bohio_kanban_card {
+    transition: box-shadow 0.2s ease;
+}
+
+.o_bohio_kanban_card:hover {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+/* Progress bars mejoradas */
+.progress-bar-animated {
+    animation: progress-bar-stripes 1s linear infinite;
+}
+
+@keyframes progress-bar-stripes {
+    0% { background-position: 1rem 0; }
+    100% { background-position: 0 0; }
+}

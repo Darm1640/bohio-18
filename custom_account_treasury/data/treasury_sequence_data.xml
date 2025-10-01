@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- Secuencias para Recibos de Tesorería por Tipo -->
+
+        <!-- Secuencia para Recibos de Ingreso (Cobros) -->
+        <record id="seq_treasury_receipt_inbound" model="ir.sequence">
+            <field name="name">(OPINF) Recibo de Ingreso Tesorería</field>
+            <field name="code">treasury.receipt.inbound</field>
+            <field name="prefix">RC/%(year)s/</field>
+            <field name="padding">6</field>
+            <field name="company_id" eval="False"/>
+            <field name="use_date_range">True</field>
+        </record>
+
+        <!-- Secuencia para Comprobantes de Egreso (Pagos) -->
+        <record id="seq_treasury_receipt_outbound" model="ir.sequence">
+            <field name="name">(OPEXF) Comprobante de Egreso Tesorería</field>
+            <field name="code">treasury.receipt.outbound</field>
+            <field name="prefix">CE/%(year)s/</field>
+            <field name="padding">6</field>
+            <field name="company_id" eval="False"/>
+            <field name="use_date_range">True</field>
+        </record>
+
+        <!-- Secuencia para Transferencias Internas -->
+        <record id="seq_treasury_receipt_transfer" model="ir.sequence">
+            <field name="name">(OPTINT) Transferencia Interna Tesorería</field>
+            <field name="code">treasury.receipt.transfer</field>
+            <field name="prefix">TI/%(year)s/</field>
+            <field name="padding">6</field>
+            <field name="company_id" eval="False"/>
+            <field name="use_date_range">True</field>
+        </record>
+
+        <!-- Secuencias por Método de Pago -->
+
+        <!-- Secuencia para Pagos en Efectivo -->
+        <record id="seq_treasury_cash_payment" model="ir.sequence">
+            <field name="name">(OPCASH) Pago en Efectivo</field>
+            <field name="code">treasury.payment.cash</field>
+            <field name="prefix">EFE/%(year)s/%(month)s/</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+            <field name="use_date_range">True</field>
+        </record>
+
+        <!-- Secuencia para Cheques -->
+        <record id="seq_treasury_check_payment" model="ir.sequence">
+            <field name="name">(OPCHECK) Pago con Cheque</field>
+            <field name="code">treasury.payment.check</field>
+            <field name="prefix">CHQ/%(year)s/%(month)s/</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+            <field name="use_date_range">True</field>
+        </record>
+
+        <!-- Secuencia para Transferencias Bancarias -->
+        <record id="seq_treasury_bank_transfer" model="ir.sequence">
+            <field name="name">(OPBANK) Transferencia Bancaria</field>
+            <field name="code">treasury.payment.transfer</field>
+            <field name="prefix">TB/%(year)s/%(month)s/</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+            <field name="use_date_range">True</field>
+        </record>
+
+    </data>
+</odoo>

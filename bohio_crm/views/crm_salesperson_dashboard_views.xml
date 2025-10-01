@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Vista Form Dashboard Vendedor -->
+        <record id="view_crm_salesperson_dashboard_form" model="ir.ui.view">
+            <field name="name">crm.salesperson.dashboard.form</field>
+            <field name="model">crm.salesperson.dashboard</field>
+            <field name="arch" type="xml">
+                <form string="Dashboard del Vendedor" create="false" delete="false" edit="false">
+                    <sheet>
+                        <field name="user_id" invisible="1"/>
+                        <field name="dashboard_data" invisible="1"/>
+
+                        <div class="oe_title mb-3">
+                            <h1><field name="name" readonly="1"/></h1>
+                        </div>
+
+                        <!-- Dashboard Data - Renderizado con widget HTML -->
+                        <field name="dashboard_data" widget="html"/>
+
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Acción para Dashboard Vendedor -->
+        <record id="action_crm_salesperson_dashboard" model="ir.actions.act_window">
+            <field name="name">Mi Dashboard</field>
+            <field name="res_model">crm.salesperson.dashboard</field>
+            <field name="view_mode">form</field>
+            <field name="target">current</field>
+            <field name="context">{
+                'default_user_id': uid,
+                'create': False,
+                'delete': False,
+                'edit': False,
+            }</field>
+            <field name="domain">[('user_id', '=', uid)]</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    ¡Bienvenido a tu Dashboard!
+                </p>
+                <p>
+                    Aquí encontrarás todas tus métricas de ventas y rendimiento.
+                </p>
+            </field>
+        </record>
+
+    </data>
+</odoo>

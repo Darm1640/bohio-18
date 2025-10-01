@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Reporte Simple de Recibo de Pago -->
+    <template id="report_payment_receipt_simple">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <!-- Header -->
+                <div class="header" style="font-family: 'Arial', sans-serif;">
+                    <div class="row">
+                        <div class="col-12">
+                            <hr style="margin-top: 10px; margin-bottom: 0px; border-color: #000;"/>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="article container-fluid p-4" style="font-family: 'Arial', sans-serif;">
+
+                    <!-- Título del Documento -->
+                    <div class="row mb-4">
+                        <div class="col-12 text-center">
+                            <h3 class="mb-2">
+                                <t t-if="o.payment_type == 'outbound'">COMPROBANTE DE EGRESO</t>
+                                <t t-else="">RECIBO DE INGRESO</t>
+                            </h3>
+                            <h4 style="color: #666;">No. <span t-field="o.treasury_receipt_number" t-if="o.treasury_receipt_number"/><span t-field="o.name" t-else=""/></h4>
+                        </div>
+                    </div>
+
+                    <!-- Información Básica -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <table class="table table-borderless">
+                                <tr>
+                                    <td style="width: 20%;"><strong>FECHA:</strong></td>
+                                    <td style="width: 30%;"><span t-field="o.date" t-options="{'format':'dd/MM/yyyy'}"/></td>
+                                    <td style="width: 20%;"><strong>BENEFICIARIO:</strong></td>
+                                    <td style="width: 30%;"><span t-field="o.partner_id.name"/></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>IDENTIFICACIÓN:</strong></td>
+                                    <td><span t-field="o.partner_id.vat"/></td>
+                                    <td><strong>CONCEPTO:</strong></td>
+                                    <td><span t-field="o.memo"/></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Monto Principal -->
+                    <div class="row mb-5">
+                        <div class="col-12">
+                            <div style="border: 2px solid #333; border-radius: 10px; padding: 20px; background-color: #f8f9fa;">
+                                <div class="text-center">
+                                    <h5 class="mb-3">VALOR DEL PAGO</h5>
+                                    <h2 style="font-size: 36px; color: #333;">
+                                        <span t-field="o.currency_id.symbol"/>
+                                        <span t-field="o.amount" t-options="{'widget': 'monetary', 'display_currency': False}"/>
+                                    </h2>
+                                    <p style="font-style: italic; color: #666;">
+                                        <span t-esc="o.currency_id.amount_to_text(o.amount)"/>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Forma de Pago -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <table class="table table-bordered">
+                                <tr>
+                                    <td style="width: 30%; background-color: #f0f0f0;"><strong>FORMA DE PAGO:</strong></td>
+                                    <td><span t-field="o.payment_method_line_id.name"/></td>
+                                </tr>
+                                <tr t-if="o.payment_method_line_id.payment_method_id.code == 'check_printing'">
+                                    <td style="background-color: #f0f0f0;"><strong>NO. CHEQUE:</strong></td>
+                                    <td><span t-field="o.check_number"/></td>
+                                </tr>
+                                <tr>
+                                    <td style="background-color: #f0f0f0;"><strong>BANCO:</strong></td>
+                                    <td><span t-field="o.journal_id.bank_account_id.bank_id.name"/></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Firmas -->
+                    <div class="row mt-5" style="padding-top: 50px;">
+                        <div class="col-4 text-center">
+                            <div style="border-top: 2px solid #333; padding-top: 10px;">
+                                <p class="mb-0"><strong>ELABORADO POR</strong></p>
+                                <p style="font-size: 12px; color: #666;">
+                                    <span t-field="o.create_uid.name"/>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-4 text-center">
+                            <div style="border-top: 2px solid #333; padding-top: 10px;">
+                                <p class="mb-0"><strong>APROBADO POR</strong></p>
+                                <p style="font-size: 12px; color: #666;">
+                                    Tesorería
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-4 text-center">
+                            <div style="border-top: 2px solid #333; padding-top: 10px;">
+                                <p class="mb-0"><strong>RECIBIDO POR</strong></p>
+                                <p style="font-size: 12px; color: #666;">
+                                    C.C./NIT: ________________
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Footer Mínimo -->
+                    <div class="row mt-4">
+                        <div class="col-12 text-center">
+                            <p style="font-size: 10px; color: #999;">
+                                Impreso: <span t-esc="datetime.datetime.now().strftime('%d/%m/%Y %H:%M')"/>
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Footer -->
+                <div class="footer" style="font-family: 'Arial', sans-serif; margin-top: 20px;">
+                    <hr style="margin-top: 10px; margin-bottom: 5px; border-color: #000;"/>
+                    <div class="row">
+                        <div class="col-12 text-center">
+                            <p style="font-size: 10px; margin: 0;">
+                                Página <span class="page"/> de <span class="topage"/>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <!-- Registro del reporte simple -->
+    <record id="action_report_payment_receipt_simple" model="ir.actions.report">
+        <field name="name">Recibo de Pago (Simple)</field>
+        <field name="model">account.payment</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">custom_account_treasury.report_payment_receipt_simple</field>
+        <field name="report_file">custom_account_treasury.report_payment_receipt_simple</field>
+        <field name="print_report_name">'Recibo - %s' % (object.name)</field>
+        <field name="binding_model_id" ref="account.model_account_payment"/>
+        <field name="binding_type">report</field>
+    </record>
+</odoo>
