@@ -57,6 +57,10 @@
             'bohio_crm/static/src/views/bohio_crm_kanbanview.js',
             'bohio_crm/static/src/views/bohio_crm_kanbanview.xml',
 
+            # Salesperson Dashboard
+            'bohio_crm/static/src/js/crm_salesperson_dashboard.js',
+            'bohio_crm/static/src/xml/crm_salesperson_dashboard.xml',
+
             # Timeline View
             'bohio_crm/static/src/components/timeline_view/bohio_timeline_view.scss',
             'bohio_crm/static/src/components/timeline_view/bohio_timeline_view.js',

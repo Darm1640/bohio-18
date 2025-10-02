@@ -74,12 +74,13 @@ class PropertyImage(models.Model):
                 if other_covers:
                     raise ValidationError(_('Solo puede haber una imagen de portada por propiedad.'))
 
-    @api.model
-    def create(self, vals):
-        result = super().create(vals)
-        if result.is_cover and result.property_id:
-            result.property_id.image_1920 = result.image_1920
-        return result
+    @api.model_create_multi
+    def create(self, vals_list):
+        results = super().create(vals_list)
+        for result in results:
+            if result.is_cover and result.property_id:
+                result.property_id.image_1920 = result.image_1920
+        return results
 
     def write(self, vals):
         result = super().write(vals)
