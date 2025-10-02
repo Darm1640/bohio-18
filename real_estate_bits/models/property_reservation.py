@@ -21,9 +21,11 @@ class PropertyReservation(models.Model):
             rec.contract_count_rent = len(contract_ids.filtered(lambda x: x.contract_type == "is_rental"))
 
     def _deposit_count(self):
-        payment_obj = self.env["account.payment"]
+        """Cuenta los pagos/depósitos relacionados a la reserva"""
         for rec in self:
-            rec.deposit_count = len(payment_obj.search([("reservation_id", "=", rec.id)]))
+            rec.deposit_count = self.env["account.payment"].search_count([
+                ("reservation_id", "=", rec.id)
+            ])
 
     account_income = fields.Many2one("account.account", "Cuenta de Ingresos")
 
@@ -168,12 +170,17 @@ class PropertyReservation(models.Model):
         }
 
     def view_deposits(self):
-        payment_obj = self.env["account.payment"]
-        payment_ids = payment_obj.search([("reservation_id", "=", self.id)])
+        """Vista de depósitos/pagos de la reserva"""
+        # Usar search_read para obtener solo IDs
+        payments_data = self.env["account.payment"].search_read(
+            [("reservation_id", "=", self.id)],
+            ['id']
+        )
+        payment_ids = [p['id'] for p in payments_data]
 
         return {
-            "name": _("Deposits"),
-            "domain": [("id", "in", payment_ids.ids)],
+            "name": _("Depósitos"),
+            "domain": [("id", "in", payment_ids)],
             "view_type": "form",
             "view_mode": "list,form",
             "res_model": "account.payment",
@@ -278,11 +285,17 @@ class PropertyReservation(models.Model):
         }
 
     def view_contract_own(self):
-        own_ids = self.env["property.contract"].search(
-            [("reservation_id", "=", self.id), ('contract_type', '=', 'is_ownership')])
+        """Vista de contratos de propiedad (ownership)"""
+        # Usar search_read para obtener solo IDs
+        contracts_data = self.env["property.contract"].search_read(
+            [("reservation_id", "=", self.id), ('contract_type', '=', 'is_ownership')],
+            ['id']
+        )
+        contract_ids = [c['id'] for c in contracts_data]
+
         return {
-            "name": _("Ownership Contract"),
-            "domain": [("id", "in", own_ids.ids)],
+            "name": _("Contrato de Propiedad"),
+            "domain": [("id", "in", contract_ids)],
             "view_type": "form",
             "view_mode": "list,form",
             "res_model": "property.contract",
@@ -293,11 +306,17 @@ class PropertyReservation(models.Model):
         }
 
     def view_contract_rent(self):
-        rent_ids = self.env["property.contract"].search(
-            [("reservation_id", "=", self.id), ('contract_type', '=', "is_rental")])
+        """Vista de contratos de arrendamiento"""
+        # Usar search_read para obtener solo IDs
+        contracts_data = self.env["property.contract"].search_read(
+            [("reservation_id", "=", self.id), ('contract_type', '=', "is_rental")],
+            ['id']
+        )
+        contract_ids = [c['id'] for c in contracts_data]
+
         return {
-            "name": _("Rental Contract"),
-            "domain": [("id", "in", rent_ids.ids)],
+            "name": _("Contrato de Arrendamiento"),
+            "domain": [("id", "in", contract_ids)],
             "view_type": "form",
             "view_mode": "list,form",
             "res_model": "property.contract",

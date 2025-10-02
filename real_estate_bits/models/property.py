@@ -1195,15 +1195,18 @@ class Property(models.Model):
     # =================== MÉTODOS EXISTENTES ===================
     
     def _maintenance_count(self):
-        maintenance_obj = self.env['repair.order']
+        """Cuenta las órdenes de mantenimiento relacionadas a la propiedad"""
         for unit in self:
-            maintenance_ids = maintenance_obj.search([('product_id.product_tmpl_id', '=', unit.id)])
-            unit.maintenance_count = len(maintenance_ids)
+            unit.maintenance_count = self.env['repair.order'].search_count([
+                ('product_id.product_tmpl_id', '=', unit.id)
+            ])
 
     def _reservation_count(self):
-        reservation_obj = self.env["property.reservation"]
+        """Cuenta las reservas relacionadas a la propiedad"""
         for property_id in self:
-            property_id.reservation_count = len(reservation_obj.search([("property_id", "=", property_id.id)]))
+            property_id.reservation_count = self.env["property.reservation"].search_count([
+                ("property_id", "=", property_id.id)
+            ])
 
     @api.depends('name', 'default_code', 'street', 'city', 'department', 
                  'municipality', 'neighborhood', 'region_id.name')
@@ -1334,10 +1337,17 @@ class Property(models.Model):
         }
 
     def view_maintenance(self):
-        maintenance_ids = self.env['repair.order'].search([('product_id.product_tmpl_id', 'in', self.ids)])
+        """Vista de órdenes de mantenimiento de la propiedad"""
+        # Usar search_read para obtener solo IDs
+        maintenance_data = self.env['repair.order'].search_read(
+            [('product_id.product_tmpl_id', 'in', self.ids)],
+            ['id']
+        )
+        maintenance_ids = [m['id'] for m in maintenance_data]
+
         return {
             'name': _('Solicitudes de Mantenimiento'),
-            'domain': [('id', 'in', maintenance_ids.ids)],
+            'domain': [('id', 'in', maintenance_ids)],
             'view_type': 'form',
             'view_mode': 'list,form',
             'res_model': 'repair.order',
@@ -1348,14 +1358,17 @@ class Property(models.Model):
         }
 
     def view_reservations(self):
-        reservation_obj = self.env["property.reservation"]
-        reservations_ids = reservation_obj.search([("property_id", "=", self.ids)])
-        reservations = []
-        for obj in reservations_ids:
-            reservations.append(obj.id)
+        """Vista de reservas de la propiedad"""
+        # Usar search_read para obtener solo IDs
+        reservations_data = self.env["property.reservation"].search_read(
+            [("property_id", "=", self.ids)],
+            ['id']
+        )
+        reservation_ids = [r['id'] for r in reservations_data]
+
         return {
             "name": _("Reservas"),
-            "domain": [("id", "in", reservations)],
+            "domain": [("id", "in", reservation_ids)],
             "view_type": "form",
             "view_mode": "list,form",
             "res_model": "property.reservation",

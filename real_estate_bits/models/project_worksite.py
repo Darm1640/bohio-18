@@ -444,8 +444,10 @@ class Project(models.Model):
         for rec in self:
             obj_ids = rec + rec.child_ids
             domain = [("project_worksite_id", "in", obj_ids.ids)]
-            rec.property_ids = self.env["product.template"].search(domain)
-            rec.property_count = self.env["product.template"].search_count(domain)
+            properties = self.env["product.template"].search_read(domain, ['id'])
+            property_ids = [p['id'] for p in properties]
+            rec.property_ids = [(6, 0, property_ids)]
+            rec.property_count = len(property_ids)
 
     def _compute_is_readonly(self):
         for rec in self:
@@ -600,17 +602,24 @@ class Project(models.Model):
             self.property_ids = [(6, 0, props)]
 
     def _maintenance_count(self):
-        maintenance_obj = self.env['repair.order']
+        """Cuenta las órdenes de mantenimiento del proyecto"""
         for project in self:
-            maintenance_ids = maintenance_obj.search([('project_id', '=', project.id)])
-            project.maintenance_count = len(maintenance_ids)
+            project.maintenance_count = self.env['repair.order'].search_count([
+                ('project_id', '=', project.id)
+            ])
 
     def view_maintenance(self):
-        maintenance_ids = self.env['repair.order'].search([('project_id', 'in', self.ids)])
+        """Vista de órdenes de mantenimiento del proyecto"""
+        # Usar search_read para obtener solo IDs
+        maintenance_data = self.env['repair.order'].search_read(
+            [('project_id', 'in', self.ids)],
+            ['id']
+        )
+        maintenance_ids = [m['id'] for m in maintenance_data]
 
         return {
-            'name': _('Maintenance Requests'),
-            'domain': [('id', 'in', maintenance_ids.ids)],
+            'name': _('Órdenes de Mantenimiento'),
+            'domain': [('id', 'in', maintenance_ids)],
             'view_type': 'form',
             'view_mode': 'list,form',
             'res_model': 'repair.order',

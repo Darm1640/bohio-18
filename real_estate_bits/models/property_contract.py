@@ -471,37 +471,58 @@ class Contract(models.Model):
         MEJORADO: Considera contratos multi-propiedad y multi-propietario.
         """
         try:
-            rental_pool = self.env["loan.line"]
-            rental_line_ids = rental_pool.search([
+            # Buscar cuotas pendientes de facturar
+            rental_line_ids = self.env["loan.line"].search([
                 ("contract_id.state", "=", "confirmed"),
-                ("date", "<=", fields.Date.today())
+                ("date", "<=", fields.Date.today()),
+                ("invoice_id", "=", False)  # Solo cuotas sin factura
             ])
-            account_move_obj = self.env["account.move"]
-            journal_pool = self.env["account.journal"]
-            journal = journal_pool.search([("type", "=", "sale")], limit=1)
 
+            if not rental_line_ids:
+                _logger.info("No hay cuotas pendientes de facturar")
+                return True
+
+            # Obtener diario de ventas
+            journal = self.env["account.journal"].search([("type", "=", "sale")], limit=1)
+            if not journal:
+                raise UserError(_("No se encontró un diario de ventas configurado"))
+
+            # Procesar cada línea de cuota
+            invoices_created = 0
             for line in rental_line_ids:
-                if not line.invoice_id:
-                    contract = line.contract_id
+                contract = line.contract_id
 
-                    if contract.is_multi_property and contract.contract_line_ids:
-                        self._create_invoice_multi_property(line, contract, journal)
-                    elif contract.property_id.is_multi_owner and contract.owners_lines:
-                        self._create_invoice_multi_owner(line, contract, journal)
-                    else:
-                        # Caso estándar: Un propietario
-                        self._create_invoice_single_owner(line, contract, journal)
+                if contract.is_multi_property and contract.contract_line_ids:
+                    self._create_invoice_multi_property(line, contract, journal)
+                    invoices_created += 1
+                elif contract.property_id and contract.property_id.is_multi_owner and contract.owners_lines:
+                    self._create_invoice_multi_owner(line, contract, journal)
+                    invoices_created += 1
+                else:
+                    # Caso estándar: Un propietario
+                    self._create_invoice_single_owner(line, contract, journal)
+                    invoices_created += 1
+
+            _logger.info(f"Se crearon {invoices_created} facturas automáticas")
+            return True
+
+        except UserError:
+            raise
         except Exception as e:
-            _logger.error(f"Error en auto_rental_invoice: {str(e)}")
-            return "Error Interno"
+            _logger.error(f"Error en auto_rental_invoice: {str(e)}", exc_info=True)
+            raise UserError(_("Error al crear facturas automáticas: %s") % str(e))
 
     def _create_invoice_single_owner(self, line, contract, journal):
         """Crear factura estándar para un solo propietario"""
+        # Generar código de codificación
+        auto_code = self.env['account.move'].generate_auto_invoice_code(contract, line)
+
         inv_dict = {
             "journal_id": journal.id,
             "partner_id": contract.partner_id.id,
             "move_type": "out_invoice",
             "rental_line_id": line.id,
+            "auto_invoice_code": auto_code,
             "invoice_date_due": line.date,
             "ref": f"{contract.name} - {line.name}",
         }
@@ -533,11 +554,15 @@ class Contract(models.Model):
             # Calcular monto proporcional
             owner_amount = line.amount * (owner_line.ownership_percentage / 100.0)
 
+            # Generar código de codificación
+            auto_code = self.env['account.move'].generate_auto_invoice_code(contract, line, owner=owner_line)
+
             inv_dict = {
                 "journal_id": journal.id,
                 "partner_id": owner_line.partner_id.id,  # Factura al propietario
                 "move_type": "out_invoice",
                 "rental_line_id": line.id,
+                "auto_invoice_code": auto_code,
                 "invoice_date_due": line.date,
                 "ref": f"{contract.name} - {line.name} - Propietario: {owner_line.partner_id.name}",
             }
@@ -611,11 +636,17 @@ class Contract(models.Model):
 
                     owner_amount = line_amount * (owner_line.ownership_percentage / 100.0)
 
+                    # Generar código de codificación para multi-propiedad con multi-owner
+                    auto_code = self.env['account.move'].generate_auto_invoice_code(
+                        contract, line, property_line=contract_line
+                    )
+
                     inv_dict = {
                         "journal_id": journal.id,
                         "partner_id": owner_line.partner_id.id,
                         "move_type": "out_invoice",
                         "rental_line_id": line.id,
+                        "auto_invoice_code": auto_code,
                         "invoice_date_due": line.date,
                         "ref": f"{contract.name} - {property_obj.name} - {owner_line.partner_id.name}",
                     }
@@ -652,11 +683,17 @@ class Contract(models.Model):
                     _logger.warning(f"Propiedad {property_obj.name} no tiene propietario definido")
                     continue
 
+                # Generar código de codificación para multi-propiedad con single-owner
+                auto_code = self.env['account.move'].generate_auto_invoice_code(
+                    contract, line, property_line=contract_line
+                )
+
                 inv_dict = {
                     "journal_id": journal.id,
                     "partner_id": owner_id.id,
                     "move_type": "out_invoice",
                     "rental_line_id": line.id,
+                    "auto_invoice_code": auto_code,
                     "invoice_date_due": line.date,
                     "ref": f"{contract.name} - {property_obj.name}",
                 }
