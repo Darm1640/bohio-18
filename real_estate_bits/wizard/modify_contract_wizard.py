@@ -15,7 +15,15 @@ class ModifyContractWizard(models.TransientModel):
     name = fields.Text(string='Observaciones')
 
     # Tipo de modificación (como Asset)
-    modify_action = fields.Selection(selection="_get_selection_modify_options", string="Acción", required=True)
+    modify_action = fields.Selection([
+        ('extend', 'Extender'),
+        ('renew', 'Renovar'),
+        ('modify_amount', 'Cambiar Monto'),
+        ('modify_dates', 'Cambiar Fechas'),
+        ('pause', 'Suspender'),
+        ('cancel', 'Cancelar'),
+        ('resume', 'Reactivar'),
+    ], string="Acción", required=True)
 
     # Fechas
     date = fields.Date(default=lambda self: fields.Date.today(), string='Fecha Efectiva')
@@ -69,18 +77,6 @@ class ModifyContractWizard(models.TransientModel):
             defaults['contract_id'] = self.env.context.get('active_id')
         return defaults
 
-    @api.model
-    def _get_selection_modify_options(self):
-        """Opciones de modificación disponibles (como Asset)"""
-        return [
-            ('extend', _("Extender")),
-            ('renew', _("Renovar")),
-            ('modify_amount', _("Cambiar Monto")),
-            ('modify_dates', _("Cambiar Fechas")),
-            ('pause', _("Suspender")),
-            ('cancel', _("Cancelar")),
-            ('resume', _("Reactivar")),
-        ]
 
     @api.depends('contract_id.loan_line_ids.payment_state', 'contract_id.loan_line_ids.amount')
     def _compute_pending_info(self):
@@ -247,12 +243,23 @@ class ModifyContractWizard(models.TransientModel):
         if 'date_to' in contract_vals:
             changes_text.append(f"Fecha fin: {old_values['date_to']} → {contract_vals['date_to']}")
 
+        # Diccionario de acciones para el mensaje
+        action_labels = {
+            'extend': _('Extender'),
+            'renew': _('Renovar'),
+            'modify_amount': _('Cambiar Monto'),
+            'modify_dates': _('Cambiar Fechas'),
+            'pause': _('Suspender'),
+            'cancel': _('Cancelar'),
+            'resume': _('Reactivar'),
+        }
+
         contract.message_post(
             body=_(
                 "Contrato modificado - %(action)s<br/>"
                 "Cambios: %(changes)s<br/>"
                 "Motivo: %(reason)s",
-                action=dict(self._get_selection_modify_options()).get(self.modify_action),
+                action=action_labels.get(self.modify_action, self.modify_action),
                 changes="<br/>".join(changes_text),
                 reason=self.reason
             )
