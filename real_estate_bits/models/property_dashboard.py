@@ -490,8 +490,8 @@ class PropertyDashboard(models.AbstractModel):
         if filters.get('property_type'):
             where_conditions.append(f"pc.type = '{filters['property_type']}'")
 
-        if filters.get('state'):
-            where_conditions.append(f"pc.state = '{filters['state']}'")
+        if filters.get('contract_state'):
+            where_conditions.append(f"pc.state = '{filters['contract_state']}'")
 
         if filters.get('salesperson_id') and not is_salesperson_only:
             where_conditions.append(f"pc.user_id = {filters['salesperson_id']}")
