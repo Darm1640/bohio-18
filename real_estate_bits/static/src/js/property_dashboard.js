@@ -801,14 +801,16 @@ export class PropertyDashboard extends Component {
     }
 
     async onFilterChange(filterType, value) {
-        this.state.contractFilters[filterType] = value;
+        // Access contractFilters from state object
+        const filters = this.state.contractFilters;
+        filters[filterType] = value;
 
         // Llamar al backend con los filtros
         try {
             const filteredData = await this.orm.call(
                 "property.dashboard",
                 "get_filtered_contracts_data",
-                [this.state.contractFilters]
+                [filters]
             );
 
             // Actualizar datos del dashboard con los resultados filtrados
