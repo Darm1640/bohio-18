@@ -15,7 +15,7 @@
         <menuitem id="menu_crm_my_dashboard"
                   name="Mi Dashboard"
                   parent="menu_bohio_crm_root"
-                  action="action_crm_salesperson_dashboard"
+                  action="action_crm_salesperson_dashboard_client"
                   sequence="1"
                   groups="sales_team.group_sale_salesman"/>
 

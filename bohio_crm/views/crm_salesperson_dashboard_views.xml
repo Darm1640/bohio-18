@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <!-- Dashboard Action -->
-        <record id="action_crm_salesperson_dashboard" model="ir.actions.client">
+        <!-- Eliminar la acción antigua si existe -->
+        <delete id="action_crm_salesperson_dashboard" model="ir.actions.act_window" search="[('name', '=', 'Mi Dashboard')]"/>
+
+        <!-- Dashboard Action Cliente -->
+        <record id="action_crm_salesperson_dashboard_client" model="ir.actions.client">
             <field name="name">Dashboard CRM</field>
             <field name="tag">crm_salesperson_dashboard</field>
             <field name="target">main</field>
