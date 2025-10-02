@@ -102,6 +102,7 @@ class Contract(models.Model):
     user_id = fields.Many2one("res.users", "Vendedor", default=lambda self: self.env.user)
     partner_id = fields.Many2one("res.partner", "Inquilino O Propietario", required=True)
     company_id = fields.Many2one("res.company", string="Compañía", default=lambda self: self.env.company)
+    currency_id = fields.Many2one('res.currency', string='Moneda', related='company_id.currency_id', store=True, readonly=True)
     
     # FECHAS PRINCIPALES (Limpiar redundancias)
     date_from = fields.Date("Fecha de Inicio", required=True, default=fields.Date.context_today, tracking=True)
