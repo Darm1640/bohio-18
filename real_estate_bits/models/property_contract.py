@@ -242,41 +242,79 @@ class Contract(models.Model):
 
     prorata_computation_type = fields.Selection([
         ('none', 'Sin Prorrateo'),
-        ('constant_periods', 'Períodos Constantes'),
-        ('daily_computation', 'Basado en Días')
-    ], string="Tipo de Cálculo", required=True, default='daily_computation', tracking=True,
-       help="Método para calcular el prorrateo del primer y último período")
-    
+        ('constant_periods', 'Períodos Constantes (360 días)'),
+        ('daily_computation', 'Basado en Días Reales')
+    ], string="Método de Prorrateo", required=True, default='daily_computation', tracking=True,
+       help="""Método para calcular el prorrateo del primer y último período:
+
+• Sin Prorrateo: Se cobra el valor completo del canon mensual sin importar los días del período.
+  Ejemplo: Si inicia el 15, cobra el 100% del canon ese mes.
+
+• Períodos Constantes (360 días): Usa el método bancario de 360 días (12 meses × 30 días).
+  Ejemplo: Canon $1,000 del 15-30 = $1,000 × (16/30) = $533.33
+  Ideal para cálculos financieros estandarizados.
+
+• Basado en Días Reales: Calcula proporcionalmente según días calendario del mes.
+  Ejemplo: Canon $1,000 en febrero (28 días) del 15-28 = $1,000 × (14/28) = $500.00
+  Más preciso para contratos que inician/terminan a mitad de mes.""")
+
+    # Campos computados para información del prorrateo
+    prorate_info_first = fields.Char(
+        string='Info Primer Período',
+        compute='_compute_prorate_info',
+        store=False,
+        help='Información calculada del prorrateo del primer período'
+    )
+    prorate_info_last = fields.Char(
+        string='Info Último Período',
+        compute='_compute_prorate_info',
+        store=False,
+        help='Información calculada del prorrateo del último período'
+    )
+
     deposit = fields.Float("Depósito")
     deposit_return_status = fields.Selection([
-        ('is_deposit_return_manually', 'Devolución de Depósito Manual'), 
+        ('is_deposit_return_manually', 'Devolución de Depósito Manual'),
         ('is_deposit_return_from_installment', 'Devolución de Depósito Desde Cuota')
     ], default='is_deposit_return_manually', string="Estado de Devolución de Depósito")
-    
+
     rental_agreement = fields.Selection(
-        selection=[("per_sft", "Por SFT"), ("fixed", "Monto Fijo")],  
+        selection=[("per_sft", "Por SFT"), ("fixed", "Monto Fijo")],
         default="per_sft",
         string="Acuerdo de Alquiler"
     )
-    
+
     increment_recurring_interval = fields.Integer("Intervalo de Incremento Recurrente")
     increment_period = fields.Selection([
-        ("months", "Meses"), 
+        ("months", "Meses"),
         ("years", "Años")
     ], string="Recurrencia de Incremento", required=True, default="years", tracking=True)
     increment_percentage = fields.Float("Porcentaje de Incremento")
-    
+
     prorate_first_period = fields.Boolean(
-        "Prorratear Períodos",
+        "Prorratear Primer y Último Período",
         default=True,
         tracking=True,
-        help="Si está activo, el primer y último período se prorratearan según los días reales"
+        help="""Activar para calcular proporcionalmente el canon del primer y último período según los días reales del contrato.
+
+Ejemplo con Canon de $1,000:
+✓ Activado: Contrato del 15 al 30 = $1,000 × (16 días/30 días) = $533.33
+✗ Desactivado: Contrato del 15 al 30 = $1,000 (monto completo)
+
+Recomendado: ACTIVAR para contratos que no inician el día 1 del mes."""
     )
     billing_date = fields.Integer(
         "Día de Facturación",
         default=1,
         tracking=True,
-        help="Día del mes en que se genera la factura (1-31)"
+        help="""Día del mes en que se generan las facturas automáticas (1-31).
+
+Ejemplos:
+• 1 = Facturas se generan el primer día de cada mes
+• 15 = Facturas se generan el día 15 de cada mes
+• 30 = Facturas se generan el día 30 (o último día si el mes tiene menos días)
+
+Nota: Si el día no existe en el mes (ej: 31 en febrero), se usa el último día del mes."""
     )
     is_escenary_propiedad = fields.Boolean("Usar Escenario de Propiedad", default=False, tracking=True)
     
@@ -791,6 +829,82 @@ class Contract(models.Model):
                     rec.color = 3  # Amarillo - 60-90 días
                 else:
                     rec.color = 10  # Verde - Más de 90 días
+
+    @api.depends('date_from', 'date_to', 'rental_fee', 'prorata_computation_type', 'prorate_first_period', 'periodicity')
+    def _compute_prorate_info(self):
+        """Calcula información del prorrateo para el primer y último período"""
+        for contract in self:
+            # Inicializar campos vacíos
+            contract.prorate_info_first = ''
+            contract.prorate_info_last = ''
+
+            # Validar que existan los campos necesarios
+            if not contract.date_from or not contract.date_to or not contract.rental_fee:
+                continue
+
+            # Si no hay prorrateo, indicarlo
+            if not contract.prorate_first_period or contract.prorata_computation_type == 'none':
+                contract.prorate_info_first = 'Sin prorrateo - Se cobra el valor completo'
+                contract.prorate_info_last = 'Sin prorrateo - Se cobra el valor completo'
+                continue
+
+            # Calcular primer período
+            period_months = int(contract.periodicity) if contract.periodicity else 1
+            first_period_end = contract._get_period_end_date(contract.date_from, period_months, contract.date_to)
+
+            # Información del primer período
+            if contract.prorata_computation_type == 'daily_computation':
+                # Basado en días reales
+                days_in_period = (first_period_end - contract.date_from).days + 1
+                total_days_in_month = monthrange(contract.date_from.year, contract.date_from.month)[1]
+                prorated_amount = contract.rental_fee * (days_in_period / total_days_in_month)
+                contract.prorate_info_first = (
+                    f'Días reales: {days_in_period} días de {total_days_in_month} días del mes\n'
+                    f'Cálculo: ${contract.rental_fee:,.2f} × ({days_in_period}/{total_days_in_month}) = '
+                    f'${prorated_amount:,.2f}'
+                )
+            elif contract.prorata_computation_type == 'constant_periods':
+                # Método 360 días
+                days_360 = days360(contract.date_from, first_period_end)
+                prorated_amount = (contract.rental_fee / 30) * days_360
+                contract.prorate_info_first = (
+                    f'Método 360 días: {days_360} días de 30 días\n'
+                    f'Cálculo: (${contract.rental_fee:,.2f} / 30) × {days_360} = '
+                    f'${prorated_amount:,.2f}'
+                )
+
+            # Calcular último período
+            # Encontrar el inicio del último período
+            current_date = contract.date_from
+            last_period_start = contract.date_from
+
+            while current_date < contract.date_to:
+                period_end = contract._get_period_end_date(current_date, period_months, contract.date_to)
+                if period_end >= contract.date_to:
+                    last_period_start = current_date
+                    break
+                current_date = period_end + relativedelta(days=1)
+
+            # Información del último período
+            if contract.prorata_computation_type == 'daily_computation':
+                # Basado en días reales
+                days_in_period = (contract.date_to - last_period_start).days + 1
+                total_days_in_month = monthrange(last_period_start.year, last_period_start.month)[1]
+                prorated_amount = contract.rental_fee * (days_in_period / total_days_in_month)
+                contract.prorate_info_last = (
+                    f'Días reales: {days_in_period} días de {total_days_in_month} días del mes\n'
+                    f'Cálculo: ${contract.rental_fee:,.2f} × ({days_in_period}/{total_days_in_month}) = '
+                    f'${prorated_amount:,.2f}'
+                )
+            elif contract.prorata_computation_type == 'constant_periods':
+                # Método 360 días
+                days_360 = days360(last_period_start, contract.date_to)
+                prorated_amount = (contract.rental_fee / 30) * days_360
+                contract.prorate_info_last = (
+                    f'Método 360 días: {days_360} días de 30 días\n'
+                    f'Cálculo: (${contract.rental_fee:,.2f} / 30) × {days_360} = '
+                    f'${prorated_amount:,.2f}'
+                )
 
     @api.constrains("recurring_interval")
     def _check_recurring_interval(self):

@@ -254,6 +254,26 @@
                         </group>
 
                         <!-- ============================================
+                             INFORMACIÓN DE PRORRATEO
+                             ============================================ -->
+                        <group string="Información de Prorrateo" invisible="not prorate_first_period or prorata_computation_type == 'none'">
+                            <group>
+                                <field name="prorate_first_period" readonly="state != 'draft'" invisible="1"/>
+                                <field name="prorata_computation_type" readonly="state != 'draft'" invisible="1"/>
+                                <label for="prorate_info_first" string="Primer Período"/>
+                                <div class="text-muted">
+                                    <field name="prorate_info_first" readonly="1" nolabel="1" widget="text"/>
+                                </div>
+                            </group>
+                            <group>
+                                <label for="prorate_info_last" string="Último Período"/>
+                                <div class="text-muted">
+                                    <field name="prorate_info_last" readonly="1" nolabel="1" widget="text"/>
+                                </div>
+                            </group>
+                        </group>
+
+                        <!-- ============================================
                              CONFIGURACIÓN DE FIRMA Y COTIZACIÓN
                              ============================================ -->
                         <group string="Gestión de Firma y Cotización">

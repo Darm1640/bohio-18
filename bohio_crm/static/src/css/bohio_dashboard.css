@@ -131,3 +131,54 @@
 .opacity-50 {
     opacity: 0.5;
 }
+
+/* Scrollbar personalizado para dashboard CRM */
+.o_crm_dashboard_container {
+    scrollbar-width: thin;
+    scrollbar-color: #888 #f1f1f1;
+    -webkit-overflow-scrolling: touch;
+}
+
+.o_crm_dashboard_container::-webkit-scrollbar {
+    width: 10px;
+}
+
+.o_crm_dashboard_container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 5px;
+}
+
+.o_crm_dashboard_container::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 5px;
+}
+
+.o_crm_dashboard_container::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+}
+
+/* Estilos para el mapa de oportunidades */
+.map-popup {
+    padding: 5px;
+    min-width: 200px;
+}
+
+.map-popup h6 {
+    margin-bottom: 10px;
+    color: #333;
+    font-weight: bold;
+}
+
+.map-popup p {
+    margin: 5px 0;
+    font-size: 13px;
+}
+
+.map-popup .btn {
+    margin-top: 8px;
+}
+
+/* Marcadores de mapa personalizados */
+.monteria-marker {
+    z-index: 1000;
+}
