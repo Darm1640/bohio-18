@@ -450,15 +450,20 @@ class Contract(models.Model):
             rec.amount_total = amount_total
 
     def _voucher_count(self):
-        voucher_obj = self.env["account.payment"]
+        """Cuenta los pagos relacionados al contrato"""
         for rec in self:
-            voucher_ids = voucher_obj.search([("contract_ids", "in", rec.id)])
-            rec.voucher_count = len(voucher_ids)
+            # Contar pagos usando search_count
+            rec.voucher_count = self.env["account.payment"].search_count([
+                ("contract_ids", "in", rec.id)
+            ])
 
     def _entry_count(self):
-        move_obj = self.env["account.move"]
-        move_ids = move_obj.search([("rental_id", "in", self.ids)])
-        self.entry_count = len(move_ids)
+        """Cuenta las facturas relacionadas al contrato"""
+        for rec in self:
+            # Contar facturas usando search_count con rental_id
+            rec.entry_count = self.env["account.move"].search_count([
+                ("rental_id", "=", rec.id)
+            ])
 
     def auto_rental_invoice(self):
         """
@@ -479,12 +484,9 @@ class Contract(models.Model):
                 if not line.invoice_id:
                     contract = line.contract_id
 
-                    # LÓGICA MEJORADA: Verificar si es multi-propiedad con multi-propietario
                     if contract.is_multi_property and contract.contract_line_ids:
-                        # Multi-propiedad: Crear facturas por propietario
                         self._create_invoice_multi_property(line, contract, journal)
                     elif contract.property_id.is_multi_owner and contract.owners_lines:
-                        # Propiedad única con múltiples propietarios
                         self._create_invoice_multi_owner(line, contract, journal)
                     else:
                         # Caso estándar: Un propietario

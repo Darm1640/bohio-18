@@ -41,8 +41,30 @@
                 <!-- Header -->
                 <div class="row mb-4">
                     <div class="col-12">
-                        <h2 style="color:white;text-shadow:2px 2px 4px rgba(0,0,0,0.3);">
-                            <i class="fa fa-home me-2"/>Dashboard Inmobiliario
+                        <h2 style="color:white;text-shadow:2px 2px 4px rgba(0,0,0,0.3);display:flex;align-items:center;gap:12px;">
+                            <!-- Logo Bohío -->
+                            <svg width="60" height="60" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style="filter: drop-shadow(3px 3px 6px rgba(0,0,0,0.4));">
+                                <!-- Parte superior del logo (techo) -->
+                                <polygon points="100,30 30,80 30,100 50,100 50,80 100,50 150,80 150,100 170,100 170,80"
+                                         fill="#E31E24"
+                                         stroke="#E31E24"
+                                         stroke-width="2"/>
+
+                                <!-- Parte inferior (rombo) -->
+                                <polygon points="100,130 70,150 100,170 130,150"
+                                         fill="#E31E24"
+                                         stroke="#E31E24"
+                                         stroke-width="2"/>
+
+                                <!-- Texto "Oportunidad" -->
+                                <text x="100" y="195"
+                                      font-family="Arial, sans-serif"
+                                      font-size="14"
+                                      font-weight="bold"
+                                      fill="white"
+                                      text-anchor="middle">Oportunidad</text>
+                            </svg>
+                            Dashboard Inmobiliario
                         </h2>
                     </div>
                 </div>
@@ -455,7 +477,26 @@
                                             <tr>
                                                 <th>Vendedor</th>
                                                 <th>Total Propiedades</th>
-                                                <th>Vendidas</th>
+                                                <th>
+                                                    <!-- Logo dorado para Vendidas -->
+                                                    <svg width="20" height="20" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style="vertical-align:middle;margin-right:6px;">
+                                                        <polygon points="100,30 30,80 30,100 50,100 50,80 100,50 150,80 150,100 170,100 170,80"
+                                                                 fill="url(#goldGradient1)"
+                                                                 stroke="#DAA520"
+                                                                 stroke-width="2"/>
+                                                        <polygon points="100,130 70,150 100,170 130,150"
+                                                                 fill="url(#goldGradient1)"
+                                                                 stroke="#DAA520"
+                                                                 stroke-width="2"/>
+                                                        <defs>
+                                                            <linearGradient id="goldGradient1" x1="0%" y1="0%" x2="0%" y2="100%">
+                                                                <stop offset="0%" style="stop-color:#FFD700;stop-opacity:1" />
+                                                                <stop offset="100%" style="stop-color:#DAA520;stop-opacity:1" />
+                                                            </linearGradient>
+                                                        </defs>
+                                                    </svg>
+                                                    Vendidas
+                                                </th>
                                                 <th>Alquiladas</th>
                                                 <th>Valor Total</th>
                                                 <th>Acciones</th>

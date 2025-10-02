@@ -104,9 +104,13 @@ class PropertyDashboard(models.AbstractModel):
         """Obtiene información del usuario actual"""
         user = self.env.user
         partner = user.partner_id
+        company = user.company_id
 
         # Obtener la imagen del usuario (avatar)
         avatar_url = '/web/image?model=res.partner&id=%s&field=avatar_128' % partner.id if partner.avatar_128 else '/web/static/img/placeholder.png'
+
+        # Obtener logo de la empresa
+        company_logo = '/web/image?model=res.company&id=%s&field=logo' % company.id if company and company.logo else None
 
         # Obtener el puesto de trabajo (job position)
         job_title = partner.function or 'Usuario'
@@ -116,27 +120,30 @@ class PropertyDashboard(models.AbstractModel):
             'email': user.email or '',
             'avatar_url': avatar_url,
             'job_title': job_title,
-            'company': user.company_id.name if user.company_id else '',
+            'company': company.name if company else '',
+            'company_logo': company_logo,
             'groups': [g.name for g in user.groups_id[:5]],  # Primeros 5 grupos
         }
 
     def _get_properties_by_status(self):
-        """Obtiene propiedades agrupadas por estado"""
-        properties = self.env['product.template'].search([('is_property', '=', True)])
-        status_data = {}
+        """Obtiene propiedades agrupadas por estado usando read_group"""
+        domain = [('is_property', '=', True)]
+        groups = self.env['product.template']._read_group(
+            domain,
+            ['property_status', 'list_price:sum'],
+            ['property_status']
+        )
 
-        for prop in properties:
-            status = prop.property_status or 'sin_estado'
-            if status not in status_data:
-                status_data[status] = {
-                    'count': 0,
-                    'total_value': 0,
-                    'label': self._get_status_label(status)
-                }
-            status_data[status]['count'] += 1
-            status_data[status]['total_value'] += prop.list_price
+        result = []
+        for group in groups:
+            status = group['property_status'] or 'sin_estado'
+            result.append({
+                'count': group['property_status_count'],
+                'total_value': group['list_price'] or 0,
+                'label': self._get_status_label(status)
+            })
 
-        return list(status_data.values())
+        return result
 
     def _get_properties_by_region(self):
         """Obtiene propiedades agrupadas por barrio/región"""
@@ -246,11 +253,11 @@ class PropertyDashboard(models.AbstractModel):
                 pt.id,
                 pt.name,
                 pt.list_price,
-                pt.property_status,
+                COALESCE(pt.property_status, 'available') as property_status,
                 COALESCE(pt.latitude, rr.latitude) as latitude,
                 COALESCE(pt.longitude, rr.longitude) as longitude,
-                rr.name as region_name,
-                ptype.name as type_name
+                COALESCE(rr.name, 'Sin barrio') as region_name,
+                COALESCE(ptype.name, 'Sin tipo') as type_name
             FROM product_template pt
             LEFT JOIN region_region rr ON pt.region_id = rr.id
             LEFT JOIN property_type ptype ON pt.property_type_id = ptype.id

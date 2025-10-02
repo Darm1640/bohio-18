@@ -349,16 +349,24 @@ export class PropertyDashboard extends Component {
                     fillOpacity: 0.8
                 }).addTo(this.propertyLayers);
 
-                marker.bindPopup(`
-                    <div class="map-popup">
-                        <h6>${property.name}</h6>
-                        <p><strong>Tipo:</strong> ${property.type_name || 'N/A'}</p>
-                        <p><strong>Precio:</strong> ${this.formatCurrency(property.list_price || 0)}</p>
-                        <p><strong>Estado:</strong> <span class="badge ${this.getStatusClass(property.property_status)}">${this.getStatusLabel(property.property_status)}</span></p>
-                        <p><strong>Barrio:</strong> ${property.region_name || 'Sin ubicación'}</p>
-                        <button onclick="odoo.__DEBUG__.services['action'].doAction({type:'ir.actions.act_window',res_model:'product.template',res_id:${property.id},views:[[false,'form']]});" class="btn btn-sm btn-primary mt-2">Ver Detalles</button>
-                    </div>
-                `);
+                const popupContent = document.createElement('div');
+                popupContent.className = 'map-popup';
+                popupContent.innerHTML = `
+                    <h6>${property.name}</h6>
+                    <p><strong>Tipo:</strong> ${property.type_name || 'N/A'}</p>
+                    <p><strong>Precio:</strong> ${this.formatCurrency(property.list_price || 0)}</p>
+                    <p><strong>Estado:</strong> <span class="badge ${this.getStatusClass(property.property_status)}">${this.getStatusLabel(property.property_status)}</span></p>
+                    <p><strong>Barrio:</strong> ${property.region_name || 'Sin ubicación'}</p>
+                    <button class="btn btn-sm btn-primary mt-2 view-property-btn">Ver Detalles</button>
+                `;
+
+                // Agregar evento al botón
+                const viewBtn = popupContent.querySelector('.view-property-btn');
+                viewBtn.addEventListener('click', () => {
+                    this.onPropertyClick(property.id);
+                });
+
+                marker.bindPopup(popupContent);
             }
         });
         console.log('Marcadores de propiedades agregados:', propertyMarkersAdded);
@@ -449,14 +457,27 @@ export class PropertyDashboard extends Component {
                             })
                         }).addTo(this.projectLayers);
 
-                        projectMarker.bindPopup(`
-                            <div class="map-popup">
-                                <h6>🏢 ${project.name}</h6>
-                                <p><strong>Unidades:</strong> ${unitCount}</p>
-                                <p><strong>Tipo:</strong> Proyecto Inmobiliario</p>
-                                <button onclick="odoo.__DEBUG__.services['action'].doAction({type:'ir.actions.act_window',res_model:'project.worksite',res_id:${project.id},views:[[false,'form']]});" class="btn btn-sm btn-success mt-2">Ver Proyecto</button>
-                            </div>
-                        `);
+                        const projectPopup = document.createElement('div');
+                        projectPopup.className = 'map-popup';
+                        projectPopup.innerHTML = `
+                            <h6>🏢 ${project.name}</h6>
+                            <p><strong>Unidades:</strong> ${unitCount}</p>
+                            <p><strong>Tipo:</strong> Proyecto Inmobiliario</p>
+                            <button class="btn btn-sm btn-success mt-2 view-project-btn">Ver Proyecto</button>
+                        `;
+
+                        const viewProjectBtn = projectPopup.querySelector('.view-project-btn');
+                        viewProjectBtn.addEventListener('click', () => {
+                            this.action.doAction({
+                                type: 'ir.actions.act_window',
+                                res_model: 'project.worksite',
+                                res_id: project.id,
+                                views: [[false, 'form']],
+                                target: 'current',
+                            });
+                        });
+
+                        projectMarker.bindPopup(projectPopup);
                     }
                 }
             }
@@ -557,7 +578,7 @@ export class PropertyDashboard extends Component {
             'rented': 'Alquilado',
             'sold': 'Vendido'
         };
-        return labels[status] || status;
+        return labels[status] || (status ? status : 'Sin estado');
     }
 
     renderContractStatusChart() {

@@ -442,9 +442,10 @@ class Project(models.Model):
 
     def _compute_property_count(self):
         for rec in self:
-            obj_ids = self + self.child_ids
-            rec.property_ids = self.env["product.template"].search([("project_worksite_id", "in", obj_ids.ids)])
-            rec.property_count = len(self.env["product.template"].search([("project_worksite_id", "in", obj_ids.ids)]))
+            obj_ids = rec + rec.child_ids
+            domain = [("project_worksite_id", "in", obj_ids.ids)]
+            rec.property_ids = self.env["product.template"].search(domain)
+            rec.property_count = self.env["product.template"].search_count(domain)
 
     def _compute_is_readonly(self):
         for rec in self:
