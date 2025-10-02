@@ -39,7 +39,7 @@ export class PropertyDashboard extends Component {
                 period: 'month',
                 contract_type: '',
                 property_type: '',
-                state: ''
+                contract_state: ''
             },
             showContractsSection: true
         });

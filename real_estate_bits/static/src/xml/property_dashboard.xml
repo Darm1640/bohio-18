@@ -290,7 +290,7 @@
                                         </div>
                                         <div class="col-md-3">
                                             <label class="form-label">Estado</label>
-                                            <select class="form-select form-select-sm" t-on-change="(ev) => onFilterChange('state', ev.target.value)">
+                                            <select class="form-select form-select-sm" t-on-change="(ev) => onFilterChange('contract_state', ev.target.value)">
                                                 <option value="">Todos</option>
                                                 <option value="draft">Borrador</option>
                                                 <option value="confirmed">Confirmado</option>
