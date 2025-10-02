@@ -5,30 +5,25 @@ from odoo.exceptions import ValidationError
 class IrAttachment(models.Model):
     _inherit = 'ir.attachment'
 
-    document_type = fields.Selection([
-        ('legal', 'Legal'),
-        ('technical', 'Técnico'),
-        ('commercial', 'Comercial'),
-        ('photo', 'Fotografía'),
-        ('plan', 'Plano'),
-        ('certificate', 'Certificado'),
-        ('contract', 'Contrato'),
-        ('brochure', 'Folleto'),
-        ('other', 'Otro')
-    ], string='Tipo Documento', default='other')
-
-    is_property_document = fields.Boolean('Es Documento de Propiedad', default=False)
-    is_brochure = fields.Boolean('Es Folleto', default=False)
-    document_sequence = fields.Integer('Secuencia', default=10)
-
-    expiration_date = fields.Date('Fecha Vencimiento')
-    is_expired = fields.Boolean('Vencido', compute='_compute_is_expired', store=True)
-
-    @api.depends('expiration_date')
-    def _compute_is_expired(self):
-        today = fields.Date.today()
-        for doc in self:
-            doc.is_expired = doc.expiration_date and doc.expiration_date < today if doc.expiration_date else False
+    # Extender el campo document_type definido en real_estate_bits
+    document_type = fields.Selection(
+        selection_add=[
+            ('invoice', 'Factura'),
+            ('payment', 'Comprobante de Pago'),
+            ('receipt', 'Recibo'),
+            ('tax_document', 'Documento Tributario'),
+            ('identification', 'Identificación'),
+            ('insurance', 'Seguro'),
+        ],
+        ondelete={
+            'invoice': 'set default',
+            'payment': 'set default',
+            'receipt': 'set default',
+            'tax_document': 'set default',
+            'identification': 'set default',
+            'insurance': 'set default',
+        }
+    )
 
 
 class PropertyImage(models.Model):

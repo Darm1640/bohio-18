@@ -504,8 +504,8 @@ class Property(models.Model):
                                index='trigram', tracking=30, readonly=False, store=True)
     email_from = fields.Char('Email', tracking=40, index='trigram', readonly=False, store=True)
     email_normalized = fields.Char(index='trigram')
-    email_domain_criterion = fields.Char(string='Criterio de Dominio de Email', index='btree_not_null', 
-                                        store=True, unaccent=False)
+    email_domain_criterion = fields.Char(string='Criterio de Dominio de Email', index='btree_not_null',
+                                        store=True)
     phone = fields.Char('Teléfono', tracking=50, compute='_compute_phone', inverse='_inverse_phone', 
                        readonly=False, store=True)
     mobile = fields.Char('Móvil', compute='_compute_mobile', readonly=False, store=True, tracking=True)
