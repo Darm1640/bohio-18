@@ -297,6 +297,13 @@ export class PropertyDashboard extends Component {
         const mapData = this.state.dashboardData.map_data;
         const regionData = this.state.dashboardData.properties_by_region;
 
+        // Debug: Verificar datos del mapa
+        console.log('=== DEBUG MAPA ===');
+        console.log('Propiedades para mapa:', mapData.length);
+        console.log('Regiones para mapa:', regionData.length);
+        console.log('Primera propiedad:', mapData[0]);
+        console.log('Primera región:', regionData[0]);
+
         // Crear mapa centrado en Montería, Córdoba
         const map = L.map(this.mapRef.el).setView([8.7574, -75.8814], 13);
         this.map = map; // Guardar referencia para filtros
@@ -329,8 +336,10 @@ export class PropertyDashboard extends Component {
         this.projectLayers = L.layerGroup().addTo(map);
 
         // Agregar marcadores de propiedades individuales
+        let propertyMarkersAdded = 0;
         mapData.forEach(property => {
             if (property.latitude && property.longitude) {
+                propertyMarkersAdded++;
                 const marker = L.circleMarker([property.latitude, property.longitude], {
                     radius: 8,
                     fillColor: this.getPropertyColorByStatus(property.property_status),
@@ -352,10 +361,13 @@ export class PropertyDashboard extends Component {
                 `);
             }
         });
+        console.log('Marcadores de propiedades agregados:', propertyMarkersAdded);
 
         // Agregar círculos para barrios con cantidad de propiedades
+        let regionMarkersAdded = 0;
         regionData.forEach(region => {
             if (region.latitude && region.longitude) {
+                regionMarkersAdded++;
                 const circleMarker = L.circleMarker([region.latitude, region.longitude], {
                     radius: Math.min(30, 10 + (region.property_count * 1.5)),
                     fillColor: this.getColorByCount(region.property_count),
@@ -375,6 +387,7 @@ export class PropertyDashboard extends Component {
                 `);
             }
         });
+        console.log('Marcadores de regiones agregados:', regionMarkersAdded);
 
         // Agregar control de capas
         const overlays = {

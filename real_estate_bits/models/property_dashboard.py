@@ -182,16 +182,16 @@ class PropertyDashboard(models.AbstractModel):
                 pt.name,
                 pt.list_price,
                 pt.property_status,
-                rr.latitude,
-                rr.longitude,
+                COALESCE(pt.latitude, rr.latitude) as latitude,
+                COALESCE(pt.longitude, rr.longitude) as longitude,
                 rr.name as region_name,
                 ptype.name as type_name
             FROM product_template pt
             LEFT JOIN region_region rr ON pt.region_id = rr.id
             LEFT JOIN property_type ptype ON pt.property_type_id = ptype.id
             WHERE pt.is_property = true
-                AND rr.latitude IS NOT NULL
-                AND rr.longitude IS NOT NULL
+                AND (pt.latitude IS NOT NULL OR rr.latitude IS NOT NULL)
+                AND (pt.longitude IS NOT NULL OR rr.longitude IS NOT NULL)
             LIMIT 500
         """
         self.env.cr.execute(query)
