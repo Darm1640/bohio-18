@@ -453,7 +453,20 @@ class Property(models.Model):
         store=True, readonly=False, precompute=True, index=True,
         tracking=2,
     )
-    
+
+    # =================== VENDEDORES EXCLUSIVOS ===================
+    exclusive_salesperson_ids = fields.Many2many(
+        comodel_name='res.users',
+        relation='property_exclusive_salesperson_rel',
+        column1='property_id',
+        column2='user_id',
+        string="Vendedores Exclusivos",
+        domain=[('share', '=', False)],  # Solo usuarios internos
+        tracking=True,
+        help="Vendedores que tienen acceso exclusivo para vender esta propiedad. "
+             "Útil para asignar propiedades específicas a ciertos agentes."
+    )
+
     # =================== OWNERS ===================
     owners_lines = fields.One2many('contract.owner.partner', 'product_id', string="Propietarios")
     is_multi_owner = fields.Boolean(default=False, string="¿Múltiples Propietarios?", tracking=True)

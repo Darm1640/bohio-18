@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ACTION PARA IMPRIMIR COTIZACIÓN -->
+    <record id="action_report_contract_quotation" model="ir.actions.report">
+        <field name="name">Cotización de Contrato</field>
+        <field name="model">property.contract</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">real_estate_bits.report_contract_quotation_document</field>
+        <field name="report_file">real_estate_bits.report_contract_quotation_document</field>
+        <field name="binding_model_id" ref="model_property_contract"/>
+        <field name="binding_type">report</field>
+        <field name="print_report_name">'Cotización - %s' % (object.name)</field>
+    </record>
+
+    <!-- TEMPLATE PRINCIPAL DEL REPORTE -->
+    <template id="report_contract_quotation_document">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <!-- ENCABEZADO -->
+                        <div class="text-center mb-4">
+                            <h2>COTIZACIÓN DE ARRENDAMIENTO</h2>
+                            <p class="text-muted">Documento N°: <span t-field="o.name"/></p>
+                        </div>
+
+                        <!-- INFORMACIÓN DEL CLIENTE -->
+                        <div class="row mb-3">
+                            <div class="col-12">
+                                <h4 class="mb-2">Información del Cliente</h4>
+                                <table class="table table-sm table-borderless">
+                                    <tr>
+                                        <td style="width: 30%;"><strong>Nombre:</strong></td>
+                                        <td><span t-field="o.partner_id.name"/></td>
+                                    </tr>
+                                    <tr t-if="o.partner_id.vat">
+                                        <td><strong>Identificación:</strong></td>
+                                        <td><span t-field="o.partner_id.vat"/></td>
+                                    </tr>
+                                    <tr t-if="o.partner_id.phone">
+                                        <td><strong>Teléfono:</strong></td>
+                                        <td><span t-field="o.partner_id.phone"/></td>
+                                    </tr>
+                                    <tr t-if="o.partner_id.email">
+                                        <td><strong>Email:</strong></td>
+                                        <td><span t-field="o.partner_id.email"/></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <hr/>
+
+                        <!-- INFORMACIÓN DE LA PROPIEDAD -->
+                        <div class="row mb-3">
+                            <div class="col-12">
+                                <h4 class="mb-2">Detalles de la Propiedad</h4>
+                                <table class="table table-sm table-borderless">
+                                    <tr t-if="o.property_id">
+                                        <td style="width: 30%;"><strong>Propiedad:</strong></td>
+                                        <td><span t-field="o.property_id.name"/></td>
+                                    </tr>
+                                    <tr t-if="o.property_id.street">
+                                        <td><strong>Dirección:</strong></td>
+                                        <td><span t-field="o.property_id.street"/></td>
+                                    </tr>
+                                    <tr t-if="o.type">
+                                        <td><strong>Tipo:</strong></td>
+                                        <td><span t-field="o.type"/></td>
+                                    </tr>
+                                    <tr t-if="o.property_id.property_area">
+                                        <td><strong>Área:</strong></td>
+                                        <td>
+                                            <span t-field="o.property_id.property_area"/>
+                                            <span t-field="o.property_id.unit_label"/>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <hr/>
+
+                        <!-- CONDICIONES DEL CONTRATO -->
+                        <div class="row mb-3">
+                            <div class="col-12">
+                                <h4 class="mb-2">Condiciones del Arrendamiento</h4>
+                                <table class="table table-sm table-borderless">
+                                    <tr>
+                                        <td style="width: 30%;"><strong>Fecha de Inicio:</strong></td>
+                                        <td><span t-field="o.date_from" t-options='{"widget": "date"}'/></td>
+                                    </tr>
+                                    <tr t-if="o.date_to">
+                                        <td><strong>Fecha de Fin:</strong></td>
+                                        <td><span t-field="o.date_to" t-options='{"widget": "date"}'/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Periodicidad de Pago:</strong></td>
+                                        <td>
+                                            Cada <span t-field="o.recurring_interval"/>
+                                            <t t-if="o.recurring_interval == 1">mes</t>
+                                            <t t-else="">meses</t>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <hr/>
+
+                        <!-- VALORES (SIN COMISIONES) -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h4 class="mb-2">Valores</h4>
+                                <table class="table table-sm">
+                                    <thead class="bg-light">
+                                        <tr>
+                                            <th>Concepto</th>
+                                            <th class="text-end">Valor</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Canon de Arrendamiento Mensual</td>
+                                            <td class="text-end">
+                                                <span t-field="o.rental_fee"
+                                                      t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                            </td>
+                                        </tr>
+                                        <tr t-if="o.deposit > 0">
+                                            <td>Depósito en Garantía</td>
+                                            <td class="text-end">
+                                                <span t-field="o.deposit"
+                                                      t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                            </td>
+                                        </tr>
+                                        <tr t-if="o.insurance_fee > 0">
+                                            <td>Seguro</td>
+                                            <td class="text-end">
+                                                <span t-field="o.insurance_fee"
+                                                      t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                            </td>
+                                        </tr>
+                                        <tr t-if="o.maintenance > 0">
+                                            <td>Administración/Mantenimiento</td>
+                                            <td class="text-end">
+                                                <span t-field="o.maintenance"
+                                                      t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- PLAN DE PAGOS - VERSIÓN CON TABLA DETALLADA -->
+                        <div class="row mb-4" t-if="o.loan_line_ids and o.show_payment_schedule">
+                            <div class="col-12">
+                                <h4 class="mb-2">Plan de Pagos Detallado</h4>
+                                <table class="table table-sm table-striped">
+                                    <thead class="bg-light">
+                                        <tr>
+                                            <th class="text-center">#</th>
+                                            <th>Fecha de Pago</th>
+                                            <th class="text-end">Monto</th>
+                                            <th class="text-center">Estado</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr t-foreach="o.loan_line_ids" t-as="line">
+                                            <td class="text-center"><span t-esc="line_index + 1"/></td>
+                                            <td><span t-field="line.date" t-options='{"widget": "date"}'/></td>
+                                            <td class="text-end">
+                                                <span t-field="line.amount"
+                                                      t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                            </td>
+                                            <td class="text-center">
+                                                <span class="badge bg-secondary">Pendiente</span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot class="bg-light">
+                                        <tr>
+                                            <td colspan="2" class="text-end"><strong>Total:</strong></td>
+                                            <td class="text-end">
+                                                <strong>
+                                                    <span t-esc="sum(o.loan_line_ids.mapped('amount'))"
+                                                          t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                                </strong>
+                                            </td>
+                                            <td></td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- PLAN DE PAGOS - VERSIÓN SIN TABLA (SOLO TOTALES) -->
+                        <div class="row mb-4" t-if="o.loan_line_ids and not o.show_payment_schedule">
+                            <div class="col-12">
+                                <h4 class="mb-2">Plan de Pagos</h4>
+                                <table class="table table-sm table-borderless">
+                                    <tr>
+                                        <td style="width: 40%;"><strong>Total de cuotas:</strong></td>
+                                        <td><span t-esc="len(o.loan_line_ids)"/> cuotas</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Primera cuota:</strong></td>
+                                        <td><span t-field="o.first_invoice_date" t-options='{"widget": "date"}'/></td>
+                                    </tr>
+                                    <tr t-if="o.date_to">
+                                        <td><strong>Última cuota:</strong></td>
+                                        <td><span t-field="o.date_to" t-options='{"widget": "date"}'/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Monto total del contrato:</strong></td>
+                                        <td>
+                                            <strong>
+                                                <span t-esc="sum(o.loan_line_ids.mapped('amount'))"
+                                                      t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                            </strong>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <hr/>
+
+                        <!-- PIE DE PÁGINA CON NOTAS -->
+                        <div class="row mt-4">
+                            <div class="col-12">
+                                <p class="text-muted small">
+                                    <strong>Nota:</strong> Esta cotización tiene una validez de 15 días calendario
+                                    a partir de la fecha de emisión. Los valores están sujetos a disponibilidad
+                                    de la propiedad al momento de la firma del contrato.
+                                </p>
+                                <p class="text-muted small mt-2">
+                                    Fecha de emisión: <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%d/%m/%Y')"/>
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- FIRMA (OPCIONAL) -->
+                        <div class="row mt-5">
+                            <div class="col-6">
+                                <div class="text-center">
+                                    <p>_________________________</p>
+                                    <p class="mb-0"><strong>Firma del Cliente</strong></p>
+                                    <p class="text-muted small"><span t-field="o.partner_id.name"/></p>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="text-center">
+                                    <p>_________________________</p>
+                                    <p class="mb-0"><strong>Firma del Asesor</strong></p>
+                                    <p class="text-muted small"><span t-field="o.user_id.name"/></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

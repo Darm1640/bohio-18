@@ -36,6 +36,7 @@
         "views/bohio_mass_payment_views.xml",
         "views/bohio_debit_note_wizard_views.xml",
         "views/property_contract_line_views.xml",
+        "reports/contract_quotation_report.xml",
         "static/src/xml/home.xml",
 
     ],

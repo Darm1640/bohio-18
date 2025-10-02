@@ -837,20 +837,19 @@ export class PropertyDashboard extends Component {
     async onFilterChange(filterType, value) {
         // Safety check: ensure state and contractFilters are initialized
         if (!this.state || !this.state.contractFilters) {
-            console.error('State or contractFilters not initialized');
+            console.error('State or contractFilters not initialized', this.state);
             return;
         }
 
-        // Access contractFilters from state object
-        const filters = this.state.contractFilters;
-        filters[filterType] = value;
+        // Update the filter value in state
+        this.state.contractFilters[filterType] = value;
 
         // Llamar al backend con los filtros
         try {
             const filteredData = await this.orm.call(
                 "property.dashboard",
                 "get_filtered_contracts_data",
-                [filters]
+                [this.state.contractFilters]
             );
 
             // Actualizar datos del dashboard con los resultados filtrados

@@ -6,6 +6,9 @@ from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
 import json
 import base64
+import logging
+
+_logger = logging.getLogger(__name__)
 
 
 class BohioPortal(CustomerPortal):
@@ -28,6 +31,14 @@ class BohioPortal(CustomerPortal):
             ('partner_id', '=', partner.id),
             ('owners_lines.partner_id', '=', partner.id)
         ])
+
+        _logger.info(f"Portal Owner Debug - Partner ID: {partner.id}, Partner Name: {partner.name}")
+        _logger.info(f"Portal Owner Debug - Properties found: {len(owned_properties)}")
+        _logger.info(f"Portal Owner Debug - Property IDs: {owned_properties.ids}")
+
+        # Verificar total de propiedades en el sistema
+        total_properties = request.env['product.template'].sudo().search_count([('is_property', '=', True)])
+        _logger.info(f"Portal Owner Debug - Total properties in system: {total_properties}")
 
         # Verificar si es arrendatario
         tenant_contracts = request.env['property.contract'].search([
@@ -177,6 +188,23 @@ class BohioPortal(CustomerPortal):
         ])
         commission_total = sum(invoices.mapped('amount_total'))
 
+        # Ingresos por tipo de propiedad
+        income_by_type = {}
+        for contract in active_contracts:
+            prop = contract.property_id
+            if prop and prop.property_type_id:
+                type_name = prop.property_type_id.name
+                if type_name not in income_by_type:
+                    income_by_type[type_name] = {
+                        'count': 0,
+                        'total_income': 0.0
+                    }
+                income_by_type[type_name]['count'] += 1
+                income_by_type[type_name]['total_income'] += contract.rent or 0
+
+        # Promedio de pagos
+        avg_payment = income_received / len(all_payments_month) if len(all_payments_month) > 0 else 0
+
         return {
             'total_properties': total_properties,
             'occupied_properties': occupied_count,
@@ -188,6 +216,8 @@ class BohioPortal(CustomerPortal):
             'active_contracts': len(active_contracts),
             'commission_total': commission_total,
             'payments_this_month': len(all_payments_month),
+            'income_by_type': income_by_type,
+            'avg_payment': avg_payment,
         }
 
     @http.route('/mybohio/owner/properties', type='http', auth='user', website=True)

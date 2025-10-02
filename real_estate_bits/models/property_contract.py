@@ -129,11 +129,33 @@ class Contract(models.Model):
     )
     
     state = fields.Selection([
-        ("draft", "Borrador"),
+        ("quotation", "Cotización"),
+        ("draft", "Pre-Contrato"),
+        ("pending_signature", "Pendiente de Firma"),
         ("confirmed", "Confirmado"),
         ("renew", "Renovado"),
         ("cancel", "Cancelado")
-    ], "Estado", default=lambda *a: "draft")
+    ], "Estado", default=lambda *a: "quotation")
+
+    signature_state = fields.Selection([
+        ("not_required", "No Requerida"),
+        ("pending", "Pendiente"),
+        ("signed", "Firmado"),
+        ("rejected", "Rechazado")
+    ], string="Estado de Firma", default="pending", tracking=True)
+
+    skip_signature = fields.Boolean(
+        string="Omitir Firma",
+        default=False,
+        tracking=True,
+        help="Si está activado, el contrato no requiere firma digital"
+    )
+
+    show_payment_schedule = fields.Boolean(
+        string="Mostrar Tabla de Pagos en Cotización",
+        default=False,
+        help="Si está activado, la cotización mostrará la tabla detallada de pagos mes a mes"
+    )
 
     color = fields.Integer(
         string="Color",
@@ -1040,6 +1062,75 @@ class Contract(models.Model):
 
 
 
+    @api.onchange('skip_signature')
+    def _onchange_skip_signature(self):
+        """Actualizar estado de firma cuando se marca/desmarca omitir firma"""
+        if self.skip_signature:
+            self.signature_state = 'not_required'
+        else:
+            if self.signature_state == 'not_required':
+                self.signature_state = 'pending'
+
+    def action_quotation_to_draft(self):
+        """Convertir cotización a pre-contrato"""
+        for contract in self:
+            if contract.state != 'quotation':
+                raise ValidationError(_("Solo se pueden convertir cotizaciones a pre-contrato"))
+
+            # Validaciones básicas
+            if not contract.partner_id:
+                raise ValidationError(_("Debe especificar un cliente/inquilino"))
+            if not contract.property_id and not contract.contract_line_ids:
+                raise ValidationError(_("Debe especificar al menos una propiedad"))
+
+            contract.write({'state': 'draft'})
+            contract.message_post(body=_("Cotización convertida a pre-contrato"))
+
+    def action_back_to_quotation(self):
+        """Regresar a cotización"""
+        for contract in self:
+            if contract.state not in ('draft', 'pending_signature'):
+                raise ValidationError(_("Solo se pueden regresar a cotización contratos en pre-contrato o pendientes de firma"))
+
+            contract.write({'state': 'quotation'})
+            contract.message_post(body=_("Contrato regresado a cotización"))
+
+    def action_send_for_signature(self):
+        """Enviar contrato para firma"""
+        for contract in self:
+            if contract.skip_signature:
+                raise ValidationError(_("Este contrato está configurado para omitir la firma"))
+
+            # Validaciones básicas
+            if not contract.partner_id:
+                raise ValidationError(_("Debe especificar un cliente/inquilino"))
+            if not contract.property_id:
+                raise ValidationError(_("Debe especificar una propiedad"))
+
+            contract.write({
+                'state': 'pending_signature',
+                'signature_state': 'pending'
+            })
+
+            contract.message_post(
+                body=_("Contrato enviado para firma al cliente %s") % contract.partner_id.name
+            )
+
+    def action_mark_signed(self):
+        """Marcar contrato como firmado"""
+        for contract in self:
+            contract.write({'signature_state': 'signed'})
+            contract.message_post(body=_("Contrato firmado correctamente"))
+
+    def action_reject_signature(self):
+        """Rechazar firma del contrato"""
+        for contract in self:
+            contract.write({
+                'signature_state': 'rejected',
+                'state': 'draft'
+            })
+            contract.message_post(body=_("Firma del contrato rechazada"))
+
     def action_confirm(self):
         for contract_id in self:
             # Validaciones antes de confirmar
@@ -1051,6 +1142,13 @@ class Contract(models.Model):
 
             if not contract_id.property_id:
                 raise ValidationError(_("Debe especificar una propiedad"))
+
+            # Validar firma si es requerida
+            if not contract_id.skip_signature and contract_id.signature_state != 'signed':
+                raise ValidationError(_(
+                    "El contrato debe estar firmado antes de confirmarse. "
+                    "Estado de firma actual: %s"
+                ) % dict(contract_id._fields['signature_state'].selection).get(contract_id.signature_state))
 
             # Verificar contratos activos para la misma propiedad
             overlapping_contracts = self.env['property.contract'].search([

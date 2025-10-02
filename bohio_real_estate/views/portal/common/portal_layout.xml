@@ -10,8 +10,10 @@
                     <div class="col-lg-2 mybohio-sidebar bg-light vh-100 position-fixed">
                         <div class="p-3">
                             <div class="mybohio-logo mb-4 text-center">
-                                <h3 class="text-primary">BOHIO</h3>
-                                <small class="text-muted">Portal Cliente</small>
+                                <h3 class="text-danger fw-bold">BOHIO</h3>
+                                <small class="text-muted">Montería, Córdoba</small>
+                                <br/>
+                                <small class="text-danger"><strong>Centro de operaciones inmobiliarias</strong></small>
                             </div>
 
                             <!-- Menú Propietario -->

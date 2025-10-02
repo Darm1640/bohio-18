@@ -27,18 +27,33 @@
             <field name="arch" type="xml">
                 <form string="Contrato de Arrendamiento" >
                     <header>
+                        <button name="action_quotation_to_draft" type="object" string="Convertir a Pre-Contrato"
+                                class="btn-primary oe_highlight"
+                                invisible="state != 'quotation'"/>
+                        <button name="action_back_to_quotation" type="object" string="Regresar a Cotización"
+                                class="btn-secondary"
+                                invisible="state not in ('draft', 'pending_signature')"/>
                         <button name="action_calculate" type="object" string="Calcular Líneas"
                                 class="btn-info"
-                                invisible="state in ('cancel','confirmed','renew')"/>
+                                invisible="state in ('cancel','confirmed','renew','quotation')"/>
+                        <button name="action_send_for_signature" type="object" string="Enviar para Firma"
+                                class="btn-warning"
+                                invisible="state != 'draft' or skip_signature"/>
+                        <button name="action_mark_signed" type="object" string="Marcar como Firmado"
+                                class="btn-success"
+                                invisible="state != 'pending_signature' or signature_state != 'pending'"/>
+                        <button name="action_reject_signature" type="object" string="Rechazar Firma"
+                                class="btn-danger"
+                                invisible="state != 'pending_signature'"/>
                         <button name="action_confirm" type="object" string="Confirmar Contrato"
                                 class="btn-success oe_highlight"
-                                invisible="state in ('cancel','confirmed','renew')"/>
+                                invisible="state in ('cancel','confirmed','renew','quotation')"/>
                         <button name="%(real_estate_bits.action_modify_contract_wizard)d" type="action"
                                 string="Modificar Contrato"
                                 class="btn-primary"
                                 invisible="state not in ('confirmed', 'draft')"/>
                         <field name="state" widget="statusbar" options="{'clickable': '1'}"
-                               statusbar_visible="draft,confirmed,cancel"/>
+                               statusbar_visible="quotation,draft,pending_signature,confirmed,cancel"/>
                     </header>
 
                     <sheet>
@@ -235,6 +250,24 @@
                                 <field name="maintenance" readonly="state != 'draft'"/>
                                 <field name="commission_percentage" readonly="state != 'draft'"/>
                                 <field name="total_commission" readonly="1"/>
+                            </group>
+                        </group>
+
+                        <!-- ============================================
+                             CONFIGURACIÓN DE FIRMA Y COTIZACIÓN
+                             ============================================ -->
+                        <group string="Gestión de Firma y Cotización">
+                            <group>
+                                <field name="skip_signature" readonly="state not in ('draft', 'pending_signature')"/>
+                                <field name="signature_state" readonly="1"
+                                       decoration-warning="signature_state == 'pending'"
+                                       decoration-success="signature_state == 'signed'"
+                                       decoration-danger="signature_state == 'rejected'"
+                                       decoration-muted="signature_state == 'not_required'"
+                                       widget="badge"/>
+                            </group>
+                            <group>
+                                <field name="show_payment_schedule"/>
                             </group>
                         </group>
 

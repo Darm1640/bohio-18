@@ -132,6 +132,74 @@
                     </div>
                 </t>
 
+                <!-- Ingresos por Tipo de Propiedad y Promedio de Pagos -->
+                <div class="row mb-4">
+                    <!-- Ingresos por Tipo -->
+                    <div class="col-md-8">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="mb-0"><i class="fa fa-chart-bar"></i> Ingresos por Tipo de Propiedad</h5>
+                            </div>
+                            <div class="card-body">
+                                <t t-if="metrics['income_by_type']">
+                                    <div class="table-responsive">
+                                        <table class="table table-sm">
+                                            <thead>
+                                                <tr>
+                                                    <th>Tipo de Propiedad</th>
+                                                    <th class="text-center">Cantidad</th>
+                                                    <th class="text-end">Ingreso Mensual</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <t t-foreach="metrics['income_by_type'].items()" t-as="type_data">
+                                                    <tr>
+                                                        <td>
+                                                            <i t-att-class="'fa fa-%s text-primary me-2' % ('building' if type_data[0] in ['Apartamento', 'Casa'] else 'home' if type_data[0] == 'Lote' else 'warehouse')"></i>
+                                                            <t t-esc="type_data[0]"/>
+                                                        </td>
+                                                        <td class="text-center">
+                                                            <span class="badge bg-info" t-esc="type_data[1]['count']"/>
+                                                        </td>
+                                                        <td class="text-end">
+                                                            <strong class="text-success">$<t t-esc="'{:,.0f}'.format(type_data[1]['total_income'])"/></strong>
+                                                        </td>
+                                                    </tr>
+                                                </t>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </t>
+                                <t t-else="">
+                                    <p class="text-muted text-center py-3">No hay contratos activos</p>
+                                </t>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Promedio de Pagos -->
+                    <div class="col-md-4">
+                        <div class="card h-100">
+                            <div class="card-header">
+                                <h5 class="mb-0"><i class="fa fa-calculator"></i> Promedio de Pagos</h5>
+                            </div>
+                            <div class="card-body text-center">
+                                <h2 class="text-primary mb-3">
+                                    $<t t-esc="'{:,.0f}'.format(metrics['avg_payment'])"/>
+                                </h2>
+                                <p class="text-muted mb-0">Promedio por pago recibido</p>
+                                <hr/>
+                                <div class="mt-3">
+                                    <small class="text-muted">
+                                        <i class="fa fa-info-circle"></i>
+                                        Basado en <strong t-esc="metrics['payments_this_month']"/> pago(s) este mes
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Propiedades Recientes -->
                 <div class="row mb-4">
                     <div class="col-md-8">
@@ -141,25 +209,38 @@
                                 <a href="/mybohio/owner/properties" class="btn btn-sm btn-outline-primary">Ver Todas</a>
                             </div>
                             <div class="card-body">
-                                <div class="list-group list-group-flush">
-                                    <t t-foreach="properties[:5]" t-as="prop">
-                                        <a t-att-href="'/mybohio/owner/property/%s' % prop.id" class="list-group-item list-group-item-action">
-                                            <div class="d-flex w-100 justify-content-between align-items-center">
-                                                <div>
-                                                    <h6 class="mb-1" t-field="prop.name"/>
-                                                    <small class="text-muted">
-                                                        <i class="fa fa-map-marker"></i>
-                                                        <t t-esc="prop.city_id.name if prop.city_id else prop.city"/>
-                                                    </small>
+                                <div class="row g-3">
+                                    <t t-foreach="properties[:6]" t-as="prop">
+                                        <div class="col-md-6">
+                                            <a t-att-href="'/mybohio/owner/property/%s' % prop.id" class="text-decoration-none">
+                                                <div class="card h-100 property-card shadow-sm">
+                                                    <div class="card-body">
+                                                        <h6 class="mb-2 fw-bold text-dark" t-field="prop.name"/>
+                                                        <div class="d-flex align-items-center mb-2">
+                                                            <i t-att-class="'fa fa-%s text-primary me-2' % ('building' if prop.property_type_id.name in ['Apartamento', 'Casa'] else 'home' if prop.property_type_id.name == 'Lote' else 'warehouse')"></i>
+                                                            <small class="text-muted" t-esc="prop.property_type_id.name if prop.property_type_id else 'Sin tipo'"/>
+                                                        </div>
+                                                        <div class="mb-2">
+                                                            <t t-if="prop.rental_price and prop.rental_price > 0">
+                                                                <strong class="text-success">Arriendo: $<t t-esc="'{:,.0f}'.format(prop.rental_price)"/></strong>
+                                                            </t>
+                                                            <t t-elif="prop.list_price and prop.list_price > 0">
+                                                                <strong class="text-primary">Venta: $<t t-esc="'{:,.0f}'.format(prop.list_price)"/></strong>
+                                                            </t>
+                                                            <t t-else="">
+                                                                <span class="text-muted">Precio no definido</span>
+                                                            </t>
+                                                        </div>
+                                                        <div>
+                                                            <small class="text-muted">
+                                                                <i class="fa fa-map-marker-alt"></i>
+                                                                <t t-esc="prop.region_id.name if prop.region_id else 'Sin barrio'"/>
+                                                            </small>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                <div class="text-end">
-                                                    <span t-if="prop.managed_by_bohio" class="badge bg-info">Administrado por BOHIO</span>
-                                                    <t t-else="">
-                                                        <span class="badge bg-success">Propia</span>
-                                                    </t>
-                                                </div>
-                                            </div>
-                                        </a>
+                                            </a>
+                                        </div>
                                     </t>
                                 </div>
                             </div>
