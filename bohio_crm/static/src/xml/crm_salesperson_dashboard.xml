@@ -15,13 +15,13 @@
                     <!-- Filters Bar with Horizontal Scroll -->
                     <div class="card mb-4">
                         <div class="card-body p-2">
-                            <div class="d-flex align-items-center gap-2" style="overflow-x: auto; white-space: nowrap; scrollbar-width: thin;">
-                                <div class="flex-shrink-0">
+                            <div class="d-flex align-items-center gap-2 filters-scroll-container">
+                                <div class="flex-shrink-0 filter-item">
                                     <i class="fa fa-filter text-muted"/> <strong>Filtros:</strong>
                                 </div>
 
                                 <!-- Period Filter -->
-                                <div class="flex-shrink-0">
+                                <div class="flex-shrink-0 filter-item">
                                     <select class="form-select form-select-sm" style="min-width: 150px;" t-on-change="(ev) => this.onFilterChange('period', ev.target.value)">
                                         <option value="today">Hoy</option>
                                         <option value="week">Esta Semana</option>
@@ -33,7 +33,7 @@
                                 </div>
 
                                 <!-- Status Filter -->
-                                <div class="flex-shrink-0">
+                                <div class="flex-shrink-0 filter-item">
                                     <select class="form-select form-select-sm" style="min-width: 150px;" t-on-change="(ev) => this.onFilterChange('status', ev.target.value)">
                                         <option value="">Todos los Estados</option>
                                         <option value="available">Disponible</option>
@@ -44,7 +44,7 @@
                                 </div>
 
                                 <!-- Property Type Filter -->
-                                <div class="flex-shrink-0">
+                                <div class="flex-shrink-0 filter-item">
                                     <select class="form-select form-select-sm" style="min-width: 150px;" t-on-change="(ev) => this.onFilterChange('property_type', ev.target.value)">
                                         <option value="">Todos los Tipos</option>
                                         <option value="apartment">Apartamento</option>
@@ -56,7 +56,7 @@
                                 </div>
 
                                 <!-- Price Range Filter -->
-                                <div class="flex-shrink-0">
+                                <div class="flex-shrink-0 filter-item">
                                     <select class="form-select form-select-sm" style="min-width: 150px;" t-on-change="(ev) => this.onFilterChange('price_range', ev.target.value)">
                                         <option value="">Todos los Precios</option>
                                         <option value="0-100000">$0 - $100,000</option>
@@ -68,7 +68,7 @@
                                 </div>
 
                                 <!-- Contract Status Filter -->
-                                <div class="flex-shrink-0">
+                                <div class="flex-shrink-0 filter-item">
                                     <select class="form-select form-select-sm" style="min-width: 150px;" t-on-change="(ev) => this.onFilterChange('contract_status', ev.target.value)">
                                         <option value="">Todos los Contratos</option>
                                         <option value="quotation">Cotización</option>
@@ -80,7 +80,7 @@
                                 </div>
 
                                 <!-- Region Filter -->
-                                <div class="flex-shrink-0">
+                                <div class="flex-shrink-0 filter-item">
                                     <select class="form-select form-select-sm" style="min-width: 150px;" t-on-change="(ev) => this.onFilterChange('region', ev.target.value)">
                                         <option value="">Todas las Regiones</option>
                                         <t t-if="state.dashboardData.regions">
@@ -92,7 +92,7 @@
                                 </div>
 
                                 <!-- Reset Filters Button -->
-                                <div class="flex-shrink-0 ms-auto">
+                                <div class="flex-shrink-0 filter-item ms-auto">
                                     <button class="btn btn-sm btn-outline-secondary" t-on-click="() => this.resetFilters()">
                                         <i class="fa fa-refresh"/> Limpiar
                                     </button>
