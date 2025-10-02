@@ -11,6 +11,13 @@ class PropertyDashboard(models.AbstractModel):
     @api.model
     def get_dashboard_data(self):
         """Obtiene todos los datos necesarios para el dashboard"""
+        # Verificar si el usuario es solo vendedor
+        user = self.env.user
+        is_salesperson_only = user.has_group('sales_team.group_sale_salesman') and not user.has_group('sales_team.group_sale_salesman_all_leads')
+
+        user_info = self._get_user_info()
+        user_info['is_salesperson_only'] = is_salesperson_only
+
         data = {
             'properties_by_status': self._get_properties_by_status(),
             'properties_by_region': self._get_properties_by_region(),
@@ -19,7 +26,12 @@ class PropertyDashboard(models.AbstractModel):
             'properties_by_type': self._get_properties_by_type(),
             'recent_activities': self._get_recent_activities(),
             'map_data': self._get_map_data(),
-            'user_info': self._get_user_info(),
+            'user_info': user_info,
+            'contracts_data': self._get_contracts_data(is_salesperson_only),
+            'contracts_by_status': self._get_contracts_by_status(is_salesperson_only),
+            'monthly_billing': self._get_monthly_billing(is_salesperson_only),
+            'payment_collection': self._get_payment_collection(is_salesperson_only),
+            'new_contracts_month': self._get_new_contracts_month(is_salesperson_only),
         }
         return data
 

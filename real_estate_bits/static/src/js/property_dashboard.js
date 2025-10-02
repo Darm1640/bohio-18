@@ -801,6 +801,12 @@ export class PropertyDashboard extends Component {
     }
 
     async onFilterChange(filterType, value) {
+        // Safety check: ensure state and contractFilters are initialized
+        if (!this.state || !this.state.contractFilters) {
+            console.error('State or contractFilters not initialized');
+            return;
+        }
+
         // Access contractFilters from state object
         const filters = this.state.contractFilters;
         filters[filterType] = value;
