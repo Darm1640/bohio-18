@@ -10,7 +10,7 @@ from .project_worksite import PROJECT_WORKSITE_TYPE
 
 class PropertyReservation(models.Model):
     _name = "property.reservation"
-    _description = "Property Reservation"
+    _description = "Reserva de Propiedad"
     _inherit = ["mail.thread", "mail.activity.mixin"]
 
     def _contract_count(self):
@@ -25,12 +25,12 @@ class PropertyReservation(models.Model):
         for rec in self:
             rec.deposit_count = len(payment_obj.search([("reservation_id", "=", rec.id)]))
 
-    account_income = fields.Many2one("account.account", "Income Account")
+    account_income = fields.Many2one("account.account", "Cuenta de Ingresos")
 
-    contract_count_own = fields.Integer(compute="_contract_count", string="Sales")
-    contract_count_rent = fields.Integer(compute="_contract_count", string="Rentals")
+    contract_count_own = fields.Integer(compute="_contract_count", string="Ventas")
+    contract_count_rent = fields.Integer(compute="_contract_count", string="Arrendamientos")
 
-    deposit_count = fields.Integer(compute="_deposit_count", string="Deposits")
+    deposit_count = fields.Integer(compute="_deposit_count", string="Depósitos")
 
     # RELACIÓN CON CONTRATO CREADO
     contract_id = fields.Many2one(
@@ -55,56 +55,56 @@ class PropertyReservation(models.Model):
     )
 
     # Reservation Info
-    name = fields.Char("Name", size=64, default='New')
-    booking_type = fields.Selection([('is_rental', 'Rental'), ('is_ownership', 'Ownership')], default='is_rental')
-    date = fields.Datetime("Reservation Date", default=fields.Datetime.now())
-    maintenance_deposit = fields.Float(string="Maintenance Deposit", required=False)
-    payment_type = fields.Selection(string="Payment Type", selection=[("cash", "Case"),
-                                                                      ("debit", "Debit")], required=False)
-    date_payment = fields.Date("First Payment Date")
+    name = fields.Char("Nombre", size=64, default='New')
+    booking_type = fields.Selection([('is_rental', 'Arrendamiento'), ('is_ownership', 'Propiedad')], default='is_rental')
+    date = fields.Datetime("Fecha de Reserva", default=fields.Datetime.now())
+    maintenance_deposit = fields.Float(string="Depósito de Mantenimiento", required=False)
+    payment_type = fields.Selection(string="Tipo de Pago", selection=[("cash", "Efectivo"),
+                                                                      ("debit", "Débito")], required=False)
+    date_payment = fields.Date("Fecha Primer Pago")
 
     # Project Info
-    project_id = fields.Many2one("project.worksite", "Project")
-    project_code = fields.Char("Project Code", related='project_id.default_code', store=True)
+    project_id = fields.Many2one("project.worksite", "Proyecto")
+    project_code = fields.Char("Código de Proyecto", related='project_id.default_code', store=True)
 
     # Property Info
-    type = fields.Selection(selection=PROJECT_WORKSITE_TYPE + [('shop', 'Shop')], string="Project Type")
-    property_id = fields.Many2one("product.template", "Property", required=True,
+    type = fields.Selection(selection=PROJECT_WORKSITE_TYPE + [('shop', 'Local')], string="Tipo de Proyecto")
+    property_id = fields.Many2one("product.template", "Propiedad", required=True,
                                   domain=[("is_property", "=", True), ("state", "=", "free")])
-    property_code = fields.Char("Property Code", related='property_id.default_code', store=True)
+    property_code = fields.Char("Código de Propiedad", related='property_id.default_code', store=True)
     property_price_type = fields.Selection(related='property_id.property_price_type', store=True)
-    price_per_m = fields.Float('Price Per m²', related='property_id.price_per_unit', store=True)
-    property_area = fields.Float("Property Area", related='property_id.property_area', store=True)
-    floor = fields.Integer("Floor", related='property_id.floor', store=True)
-    address = fields.Char("Address", related='property_id.address', store=True)
-    net_price = fields.Float("Selling Price")
+    price_per_m = fields.Float('Precio Por m²', related='property_id.price_per_unit', store=True)
+    property_area = fields.Float("Área de la Propiedad", related='property_id.property_area', store=True)
+    floor = fields.Integer("Piso", related='property_id.floor', store=True)
+    address = fields.Char("Dirección", related='property_id.address', store=True)
+    net_price = fields.Float("Precio de Venta")
 
-    template_id = fields.Many2one("installment.template", "Payment Template")
-    contract_id = fields.Many2one("property.contract", "Property Contract")
+    template_id = fields.Many2one("installment.template", "Plantilla de Pago")
+    contract_id = fields.Many2one("property.contract", "Contrato de Propiedad")
 
-    property_type_id = fields.Many2one("property.type", "Property Type", related='property_id.property_type_id',
+    property_type_id = fields.Many2one("property.type", "Tipo de Propiedad", related='property_id.property_type_id',
                                        store=True)
-    region_id = fields.Many2one("region.region", "Region")
-    user_id = fields.Many2one("res.users", "Responsible", default=lambda self: self.env.user)
-    partner_id = fields.Many2one("res.partner", "Customer")
+    region_id = fields.Many2one("region.region", "Barrio")
+    user_id = fields.Many2one("res.users", "Responsable", default=lambda self: self.env.user)
+    partner_id = fields.Many2one("res.partner", "Cliente")
     loan_line_ids = fields.One2many("loan.line", "reservation_id")
-    state = fields.Selection([("draft", "Draft"), ("confirmed", "Confirmed"), ("contracted", "Contracted"),
-                              ("canceled", "Canceled")], "Status", default="draft")
-    company_id = fields.Many2one("res.company", string="Company", default=lambda self: self.env.company)
-    deposit = fields.Float("Deposit", digits=(16, 2), )
-    advance_payment_type = fields.Selection([("percentage", "Percentage"), ("amount", "Amount")],
-                                            "Advance Payment Type")
+    state = fields.Selection([("draft", "Borrador"), ("confirmed", "Confirmado"), ("contracted", "Contratado"),
+                              ("canceled", "Cancelado")], "Estado", default="draft")
+    company_id = fields.Many2one("res.company", string="Compañía", default=lambda self: self.env.company)
+    deposit = fields.Float("Depósito", digits=(16, 2), )
+    advance_payment_type = fields.Selection([("percentage", "Porcentaje"), ("amount", "Monto")],
+                                            "Tipo de Pago Anticipado")
 
-    advance_payment = fields.Float("Advance Payment")
+    advance_payment = fields.Float("Pago Anticipado")
 
     channel_partner_id = fields.Many2one("res.partner")
-    channel_partner_commission = fields.Float("Commission")
-    commission_status = fields.Selection([("percentage", "Percentage"), ("amount", "Amount")], default="percentage")
+    channel_partner_commission = fields.Float("Comisión")
+    commission_status = fields.Selection([("percentage", "Porcentaje"), ("amount", "Monto")], default="percentage")
     commission_base_amount_selection = fields.Selection(
-        [("sales_price", "Sales Price"), ("tax_base_amount", "Tax Base Amount")],
-        default="sales_price", string="Commission Base Amount Selection")
-    commission_base_amount = fields.Float("Commission Base Amount", compute="_compute_commission" ,store=True)
-    total_commission = fields.Float("Total Commission", compute="_compute_commission", store=True)
+        [("sales_price", "Precio de Venta"), ("tax_base_amount", "Monto Base de Impuesto")],
+        default="sales_price", string="Selección de Monto Base de Comisión")
+    commission_base_amount = fields.Float("Monto Base de Comisión", compute="_compute_commission" ,store=True)
+    total_commission = fields.Float("Comisión Total", compute="_compute_commission", store=True)
 
     @api.depends('commission_base_amount_selection', 'commission_status', 'commission_base_amount',
                  'channel_partner_commission')
@@ -122,7 +122,7 @@ class PropertyReservation(models.Model):
     def unlink(self):
         for rec in self:
             if rec.state != "draft":
-                raise UserError(_("You can not delete a reservation not in draft state"))
+                raise UserError(_("No puede eliminar una reserva que no esté en estado borrador"))
         super(PropertyReservation, self).unlink()
 
     @api.onchange("property_id")
@@ -147,10 +147,10 @@ class PropertyReservation(models.Model):
 
     def action_receive_deposit(self):
         if not self.deposit:
-            raise UserError(_("Please set the deposit amount!"))
+            raise UserError(_("¡Por favor establezca el monto del depósito!"))
 
         return {
-            "name": _("Payment"),
+            "name": _("Pago"),
             "view_type": "form",
             "view_mode": "form",
             "res_model": "account.payment",

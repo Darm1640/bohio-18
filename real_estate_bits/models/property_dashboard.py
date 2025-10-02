@@ -11,6 +11,9 @@ class PropertyDashboard(models.AbstractModel):
     @api.model
     def get_dashboard_data(self):
         """Obtiene todos los datos necesarios para el dashboard"""
+        import logging
+        _logger = logging.getLogger(__name__)
+
         # Verificar si el usuario es solo vendedor
         user = self.env.user
         is_salesperson_only = user.has_group('sales_team.group_sale_salesman') and not user.has_group('sales_team.group_sale_salesman_all_leads')
@@ -19,20 +22,82 @@ class PropertyDashboard(models.AbstractModel):
         user_info['is_salesperson_only'] = is_salesperson_only
 
         data = {
-            'properties_by_status': self._get_properties_by_status(),
-            'properties_by_region': self._get_properties_by_region(),
-            'expected_income': self._get_expected_income(),
-            'properties_by_salesperson': self._get_properties_by_salesperson(),
-            'properties_by_type': self._get_properties_by_type(),
-            'recent_activities': self._get_recent_activities(),
-            'map_data': self._get_map_data(),
+            'properties_by_status': [],
+            'properties_by_region': [],
+            'expected_income': [],
+            'properties_by_salesperson': [],
+            'properties_by_type': [],
+            'recent_activities': [],
+            'map_data': [],
             'user_info': user_info,
-            'contracts_data': self._get_contracts_data(is_salesperson_only),
-            'contracts_by_status': self._get_contracts_by_status(is_salesperson_only),
-            'monthly_billing': self._get_monthly_billing(is_salesperson_only),
-            'payment_collection': self._get_payment_collection(is_salesperson_only),
-            'new_contracts_month': self._get_new_contracts_month(is_salesperson_only),
+            'contracts_data': {},
+            'contracts_by_status': [],
+            'monthly_billing': [],
+            'payment_collection': [],
+            'new_contracts_month': [],
         }
+
+        # Cargar cada sección con manejo de errores
+        try:
+            data['properties_by_status'] = self._get_properties_by_status()
+        except Exception as e:
+            _logger.error(f"Error loading properties_by_status: {e}")
+
+        try:
+            data['properties_by_region'] = self._get_properties_by_region()
+        except Exception as e:
+            _logger.error(f"Error loading properties_by_region: {e}")
+
+        try:
+            data['expected_income'] = self._get_expected_income()
+        except Exception as e:
+            _logger.error(f"Error loading expected_income: {e}")
+
+        try:
+            data['properties_by_salesperson'] = self._get_properties_by_salesperson()
+        except Exception as e:
+            _logger.error(f"Error loading properties_by_salesperson: {e}")
+
+        try:
+            data['properties_by_type'] = self._get_properties_by_type()
+        except Exception as e:
+            _logger.error(f"Error loading properties_by_type: {e}")
+
+        try:
+            data['recent_activities'] = self._get_recent_activities()
+        except Exception as e:
+            _logger.error(f"Error loading recent_activities: {e}")
+
+        try:
+            data['map_data'] = self._get_map_data()
+        except Exception as e:
+            _logger.error(f"Error loading map_data: {e}")
+
+        try:
+            data['contracts_data'] = self._get_contracts_data(is_salesperson_only)
+        except Exception as e:
+            _logger.error(f"Error loading contracts_data: {e}")
+
+        try:
+            data['contracts_by_status'] = self._get_contracts_by_status(is_salesperson_only)
+        except Exception as e:
+            _logger.error(f"Error loading contracts_by_status: {e}")
+
+        try:
+            data['monthly_billing'] = self._get_monthly_billing(is_salesperson_only)
+        except Exception as e:
+            _logger.error(f"Error loading monthly_billing: {e}")
+
+        try:
+            data['payment_collection'] = self._get_payment_collection(is_salesperson_only)
+        except Exception as e:
+            _logger.error(f"Error loading payment_collection: {e}")
+
+        try:
+            data['new_contracts_month'] = self._get_new_contracts_month(is_salesperson_only)
+        except Exception as e:
+            _logger.error(f"Error loading new_contracts_month: {e}")
+
         return data
 
     def _get_user_info(self):
@@ -239,21 +304,22 @@ class PropertyDashboard(models.AbstractModel):
         """Obtiene datos generales de contratos"""
         where_clause = ""
         if is_salesperson_only:
-            where_clause = f"WHERE pc.user_id = {self.env.user.id}"
+            where_clause = f"AND pc.user_id = {self.env.user.id}"
 
         query = f"""
             SELECT
-                COUNT(*) as total_contracts,
-                COUNT(CASE WHEN pc.state = 'draft' THEN 1 END) as draft_count,
-                COUNT(CASE WHEN pc.state = 'confirmed' THEN 1 END) as confirmed_count,
-                COUNT(CASE WHEN pc.state = 'renew' THEN 1 END) as renewed_count,
-                COUNT(CASE WHEN pc.state = 'cancel' THEN 1 END) as cancelled_count,
-                COUNT(CASE WHEN pc.contract_type = 'is_rental' THEN 1 END) as rental_count,
-                COUNT(CASE WHEN pc.contract_type = 'is_ownership' THEN 1 END) as ownership_count,
-                SUM(pc.rental_fee) as total_rental_fee,
-                SUM(pc.amount_total) as total_contract_value
+                COUNT(DISTINCT pc.id) as total_contracts,
+                COUNT(DISTINCT CASE WHEN pc.state = 'draft' THEN pc.id END) as draft_count,
+                COUNT(DISTINCT CASE WHEN pc.state = 'confirmed' THEN pc.id END) as confirmed_count,
+                COUNT(DISTINCT CASE WHEN pc.state = 'renew' THEN pc.id END) as renewed_count,
+                COUNT(DISTINCT CASE WHEN pc.state = 'cancel' THEN pc.id END) as cancelled_count,
+                COUNT(DISTINCT CASE WHEN pc.contract_type = 'is_rental' THEN pc.id END) as rental_count,
+                COUNT(DISTINCT CASE WHEN pc.contract_type = 'is_ownership' THEN pc.id END) as ownership_count,
+                SUM(DISTINCT pc.rental_fee) as total_rental_fee,
+                COALESCE(SUM(ll.amount), 0) as total_contract_value
             FROM property_contract pc
-            {where_clause}
+            LEFT JOIN loan_line ll ON ll.contract_id = pc.id
+            WHERE 1=1 {where_clause}
         """
         self.env.cr.execute(query)
         return self.env.cr.dictfetchone()
@@ -262,17 +328,18 @@ class PropertyDashboard(models.AbstractModel):
         """Obtiene contratos agrupados por estado"""
         where_clause = ""
         if is_salesperson_only:
-            where_clause = f"WHERE pc.user_id = {self.env.user.id}"
+            where_clause = f"AND pc.user_id = {self.env.user.id}"
 
         query = f"""
             SELECT
                 pc.state,
-                COUNT(*) as count,
+                COUNT(DISTINCT pc.id) as count,
                 SUM(pc.rental_fee) as total_rental,
-                SUM(pc.amount_total) as total_value,
+                COALESCE(SUM(ll.amount), 0) as total_value,
                 AVG(pc.rental_fee) as avg_rental
             FROM property_contract pc
-            {where_clause}
+            LEFT JOIN loan_line ll ON ll.contract_id = pc.id
+            WHERE 1=1 {where_clause}
             GROUP BY pc.state
             ORDER BY count DESC
         """
@@ -327,15 +394,16 @@ class PropertyDashboard(models.AbstractModel):
             SELECT
                 pc.contract_type,
                 COUNT(DISTINCT pc.id) as contract_count,
-                SUM(pc.paid) as total_paid,
-                SUM(pc.balance) as total_balance,
-                SUM(pc.amount_total) as total_expected,
+                COALESCE(SUM(CASE WHEN ll.payment_state = 'paid' THEN ll.amount ELSE 0 END), 0) as total_paid,
+                COALESCE(SUM(ll.amount_residual), 0) as total_balance,
+                COALESCE(SUM(ll.amount), 0) as total_expected,
                 CASE
-                    WHEN SUM(pc.amount_total) > 0
-                    THEN (SUM(pc.paid) / SUM(pc.amount_total) * 100)
+                    WHEN SUM(ll.amount) > 0
+                    THEN (SUM(CASE WHEN ll.payment_state = 'paid' THEN ll.amount ELSE 0 END) / SUM(ll.amount) * 100)
                     ELSE 0
                 END as collection_percentage
             FROM property_contract pc
+            LEFT JOIN loan_line ll ON ll.contract_id = pc.id
             {where_clause}
             GROUP BY pc.contract_type
         """
@@ -360,7 +428,6 @@ class PropertyDashboard(models.AbstractModel):
                 pc.contract_type,
                 pc.state,
                 pc.rental_fee,
-                pc.amount_total,
                 pc.date_from,
                 pc.date_to,
                 ru.name as salesperson_name
@@ -434,9 +501,9 @@ class PropertyDashboard(models.AbstractModel):
                 pc.date_from,
                 pc.date_to,
                 pc.rental_fee,
-                pc.amount_total,
-                pc.paid,
-                pc.balance,
+                COALESCE(SUM(ll.amount), 0) as amount_total,
+                COALESCE(SUM(CASE WHEN ll.payment_state = 'paid' THEN ll.amount ELSE 0 END), 0) as paid,
+                COALESCE(SUM(ll.amount_residual), 0) as balance,
                 rp.name as partner_name,
                 pt.name as property_name,
                 ru.name as salesperson_name,
@@ -449,8 +516,7 @@ class PropertyDashboard(models.AbstractModel):
             LEFT JOIN loan_line ll ON ll.contract_id = pc.id
             {where_clause}
             GROUP BY pc.id, pc.name, pc.contract_type, pc.state, pc.date_from, pc.date_to,
-                     pc.rental_fee, pc.amount_total, pc.paid, pc.balance,
-                     rp.name, pt.name, ru.name
+                     pc.rental_fee, rp.name, pt.name, ru.name
             ORDER BY pc.date_from DESC
         """
 
@@ -466,13 +532,14 @@ class PropertyDashboard(models.AbstractModel):
         # Obtener resumen estadístico
         summary_query = f"""
             SELECT
-                COUNT(*) as total_contracts,
-                SUM(pc.rental_fee) as total_rental_fee,
-                SUM(pc.amount_total) as total_value,
-                SUM(pc.paid) as total_collected,
-                SUM(pc.balance) as total_pending
+                COUNT(DISTINCT pc.id) as total_contracts,
+                SUM(DISTINCT pc.rental_fee) as total_rental_fee,
+                COALESCE(SUM(ll.amount), 0) as total_value,
+                COALESCE(SUM(CASE WHEN ll.payment_state = 'paid' THEN ll.amount ELSE 0 END), 0) as total_collected,
+                COALESCE(SUM(ll.amount_residual), 0) as total_pending
             FROM property_contract pc
             LEFT JOIN product_template pt ON pc.property_id = pt.id
+            LEFT JOIN loan_line ll ON ll.contract_id = pc.id
             {where_clause}
         """
 

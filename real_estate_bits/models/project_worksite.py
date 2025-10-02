@@ -13,80 +13,80 @@ import random
 import ast
 
 PROJECT_WORKSITE_TYPE = [
-    ("tower", "Tower"),
+    ("tower", "Torre"),
     ("villa", "Villa"),
-    ("commercial", "Commercial (Mall)"),
-    ("plots", "Open Plots"),
-    ("warehouse", "Warehouse"),
+    ("commercial", "Comercial (Centro Comercial)"),
+    ("plots", "Lotes Abiertos"),
+    ("warehouse", "Bodega"),
 ]
 
 
 class Project(models.Model):
     _name = "project.worksite"
-    _description = "Project Worksite"
+    _description = "Proyecto Inmobiliario"
     _inherit = ["mail.thread", "mail.activity.mixin"]
     _order = "sequence, id"
 
     def set_is_enabled(self):
         self.write({'is_enabled': not self.is_enabled})
 
-    image_1920 = fields.Image("Image", max_width=1920, max_height=1920)
+    image_1920 = fields.Image("Imagen", max_width=1920, max_height=1920)
     is_enabled = fields.Boolean(default=True)
     is_sub_enabled = fields.Boolean(related="parent_id.is_enabled")
     # Project Fields
-    name = fields.Char("Name", size=64, required=True)
-    active = fields.Boolean("Active", default=True, )
+    name = fields.Char("Nombre", size=64, required=True)
+    active = fields.Boolean("Activo", default=True, )
 
-    default_code = fields.Char("Code", size=16)
+    default_code = fields.Char("Código", size=16)
     sequence = fields.Integer(default=10, index=True)
 
-    partner_id = fields.Many2one("res.partner", "Owner")
-    region_id = fields.Many2one("region.region", "Region")
+    partner_id = fields.Many2one("res.partner", "Propietario")
+    region_id = fields.Many2one("region.region", "Barrio")
 
-    address = fields.Char("Address")
+    address = fields.Char("Dirección")
     street = fields.Char(related="region_id.street", store=True)
     street2 = fields.Char(related="region_id.street2", store=True)
     zip = fields.Char(related="region_id.zipcode", store=True)
     city = fields.Char(related="region_id.city_id.name", store=True)
-    state_id = fields.Many2one("res.country.state", string="State", ondelete="restrict",
+    state_id = fields.Many2one("res.country.state", string="Departamento", ondelete="restrict",
                                related="region_id.state_id", store=True, )
-    country_id = fields.Many2one("res.country", string="Country", ondelete="restrict",
+    country_id = fields.Many2one("res.country", string="País", ondelete="restrict",
                                  related="region_id.country_id", store=True, )
-    country_code = fields.Char(related="country_id.code", string="Country Code", store=True)
+    country_code = fields.Char(related="country_id.code", string="Código País", store=True)
 
-    note = fields.Html("Notes")
-    description = fields.Text("Description")
+    note = fields.Html("Notas")
+    description = fields.Text("Descripción")
 
-    license_code = fields.Char("License Code", size=16)
-    license_date = fields.Date("License Date")
-    date_added = fields.Date("Date Added to Notarization")
-    license_location = fields.Char("License Notarization")
+    license_code = fields.Char("Código de Licencia", size=16)
+    license_date = fields.Date("Fecha de Licencia")
+    date_added = fields.Date("Fecha Agregada a Notarización")
+    license_location = fields.Char("Notarización de Licencia")
 
     utility_ids = fields.One2many("property.utilities", "project_id")
-    maintenance_type = fields.Selection(selection=[("fix", "Fix Cost"), ("sft", "Per SFT")], default="fix")
+    maintenance_type = fields.Selection(selection=[("fix", "Costo Fijo"), ("sft", "Por Unidad")], default="fix")
     maintenance_charges = fields.Float()
-    maintenance_count = fields.Integer(compute='_maintenance_count', string='Maintenance Count')
+    maintenance_count = fields.Integer(compute='_maintenance_count', string='Cantidad de Mantenimientos')
 
     # Project
-    construction_date = fields.Date("Construction Date")
-    purchase_date = fields.Date("Purchase Date")
-    launch_date = fields.Date("Launching Date")
+    construction_date = fields.Date("Fecha de Construcción")
+    purchase_date = fields.Date("Fecha de Compra")
+    launch_date = fields.Date("Fecha de Lanzamiento")
 
-    no_of_floors = fields.Integer("# Floors")
-    no_of_shops = fields.Integer("# Shops")
-    no_of_towers = fields.Integer("# Towers")
-    no_of_villa = fields.Integer("# Villa")
-    no_of_property = fields.Integer("# Total Numbers of Property")
+    no_of_floors = fields.Integer("# Pisos")
+    no_of_shops = fields.Integer("# Locales")
+    no_of_towers = fields.Integer("# Torres")
+    no_of_villa = fields.Integer("# Villas")
+    no_of_property = fields.Integer("# Total de Propiedades")
 
-    parent_id = fields.Many2one("project.worksite", "Main Property")
-    child_ids = fields.One2many("project.worksite", "parent_id", "Sub Property")
+    parent_id = fields.Many2one("project.worksite", "Proyecto Principal")
+    child_ids = fields.One2many("project.worksite", "parent_id", "Subproyectos")
 
     # property_plan_ids MOVED to property_attachments.py
     amenities_ids = fields.Many2many("project.amenities", "project_worksite_amenities_rel", "pid", "aid")
 
-    company_id = fields.Many2one("res.company", string="Company", default=lambda self: self.env.company)
+    company_id = fields.Many2one("res.company", string="Compañía", default=lambda self: self.env.company)
     property_ids = fields.Many2many("product.template", "property_worksite_product_template_rel", 'p_id', 'pw_id',
-                                    string="Properties")
+                                    string="Propiedades")
     # property_ids = fields.Many2many("product.template",
     #                                     string="Properties")
 
@@ -100,27 +100,27 @@ class Project(models.Model):
     visible_button_property = fields.Boolean(compute="_compute_visible_button")
     visible_button_project = fields.Boolean(compute="_compute_visible_button")
 
-    project_size = fields.Float("Project Size (Sq. ft)", digits=(16, 8))
-    unit_of_measure = fields.Selection([("m", "m²"), ("yard", "Yard²")], default="m", required=True)
-    converted_area = fields.Float("Converted Size", digits=(16, 8))
+    project_size = fields.Float("Tamaño del Proyecto (m²)", digits=(16, 8))
+    unit_of_measure = fields.Selection([("m", "m²"), ("yard", "Yarda²")], default="m", required=True)
+    converted_area = fields.Float("Área Convertida", digits=(16, 8))
 
     # Project
     project_type = fields.Selection(selection=PROJECT_WORKSITE_TYPE, default="tower", )
-    net_price = fields.Float("Cost Price", compute="_calc_price", store=True)
-    price_before_discount = fields.Float("Price Before Discount", compute="_calc_price", store=True)
+    net_price = fields.Float("Precio Neto", compute="_calc_price", store=True)
+    price_before_discount = fields.Float("Precio Antes del Descuento", compute="_calc_price", store=True)
 
     # Property
-    props_per_floors = fields.Integer("Property per Floor")
-    floor = fields.Integer("Floor")
-    project_area = fields.Float("Project Area m²")
+    props_per_floors = fields.Integer("Propiedades por Piso")
+    floor = fields.Integer("Piso")
+    project_area = fields.Float("Área del Proyecto m²")
 
-    discount_type = fields.Selection([("percentage", "Percentage"), ("amount", "Amount")])
-    discount = fields.Float("Discount")
+    discount_type = fields.Selection([("percentage", "Porcentaje"), ("amount", "Monto")])
+    discount = fields.Float("Descuento")
 
-    property_price_type = fields.Selection(selection=[("fix", "Fix Cost"), ("sft", "Per SFT")], default="sft")
-    price_per_m = fields.Float("Price Per m²", )
-    property_area = fields.Float("Property Area")
-    property_type_id = fields.Many2one("property.type", "Property Type")
+    property_price_type = fields.Selection(selection=[("fix", "Costo Fijo"), ("sft", "Por Unidad")], default="sft")
+    price_per_m = fields.Float("Precio Por m²", )
+    property_area = fields.Float("Área de la Propiedad")
+    property_type_id = fields.Many2one("property.type", "Tipo de Propiedad")
 
     total_area = fields.Float(compute="_compute_total_area")
     sold_area = fields.Float(compute="_compute_total_area")
@@ -138,11 +138,11 @@ class Project(models.Model):
         (
             "unique_project_worksite_code",
             "UNIQUE (default_code,region_id)",
-            "Project Worksite code must be unique!",
+            "¡El código del proyecto debe ser único!",
         ),
     ]
 
-    color = fields.Integer("Color Index", default=0)
+    color = fields.Integer("Índice de Color", default=0)
     kanban_dashboard = fields.Text(compute='_kanban_dashboard')
     kanban_dashboard_graph = fields.Text(compute='_kanban_dashboard_graph')
 
@@ -361,9 +361,9 @@ class Project(models.Model):
     def unlink(self):
         for rec in self:
             if not rec.parent_id and rec.child_ids:
-                raise UserError(_("Please Delete Sub Project First!"))
+                raise UserError(_("¡Por favor elimine primero los subproyectos!"))
             elif rec.parent_id and rec.property_ids:
-                raise UserError(_("Please Delete Property First!"))
+                raise UserError(_("¡Por favor elimine primero las propiedades!"))
             else:
                 return super(Project, self).unlink()
 

@@ -451,8 +451,9 @@ class Contract(models.Model):
 
     def _voucher_count(self):
         voucher_obj = self.env["account.payment"]
-        voucher_ids = voucher_obj.search([("real_estate_ref", "ilike", self.name)])
-        self.voucher_count = len(voucher_ids)
+        for rec in self:
+            voucher_ids = voucher_obj.search([("contract_ids", "in", rec.id)])
+            rec.voucher_count = len(voucher_ids)
 
     def _entry_count(self):
         move_obj = self.env["account.move"]
@@ -1058,15 +1059,12 @@ class Contract(models.Model):
             super(Contract, rec).unlink()
 
     def view_vouchers(self):
-        vouchers = []
         voucher_obj = self.env["account.payment"]
-        voucher_ids = voucher_obj.search([("real_estate_ref", "=", self.name)])
-        for obj in voucher_ids:
-            vouchers.append(obj.id)
+        voucher_ids = voucher_obj.search([("contract_ids", "in", self.id)])
 
         return {
             "name": _("Recibos"),
-            "domain": [("id", "in", vouchers)],
+            "domain": [("id", "in", voucher_ids.ids)],
             "view_type": "form",
             "view_mode": "list,form",
             "res_model": "account.payment",

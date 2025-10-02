@@ -10,32 +10,32 @@ from odoo.tools.translate import _
 
 class LoanLine(models.Model):
     _name = "loan.line"
-    _description = "Loan Line"
+    _description = "Línea de Cuota"
     _order = "id"
 
-    name = fields.Char("Name")
-    date = fields.Date("Date")
+    name = fields.Char("Nombre")
+    date = fields.Date("Fecha")
     serial = fields.Integer("#")
-    amount = fields.Float("Payment", digits=(16, 2))
-    paid = fields.Boolean("Paid")
-    company_id = fields.Many2one("res.company", string="Company", default=lambda self: self.env.company)
+    amount = fields.Float("Pago", digits=(16, 2))
+    paid = fields.Boolean("Pagado")
+    company_id = fields.Many2one("res.company", string="Compañía", default=lambda self: self.env.company)
 
     reservation_id = fields.Many2one("property.reservation", "", ondelete="cascade", readonly=True)
     contract_id = fields.Many2one("property.contract", "", ondelete="cascade", readonly=True)
 
-    partner_id = fields.Many2one('res.partner', string="Partner")
-    region_id = fields.Many2one('region.region', string="Region")
-    project_id = fields.Many2one('project.worksite', string="Project")
-    property_id = fields.Many2one('product.template', string="Property")
-    user_id = fields.Many2one('res.users', string="User")
+    partner_id = fields.Many2one('res.partner', string="Tercero")
+    region_id = fields.Many2one('region.region', string="Barrio")
+    project_id = fields.Many2one('project.worksite', string="Proyecto")
+    property_id = fields.Many2one('product.template', string="Propiedad")
+    user_id = fields.Many2one('res.users', string="Usuario")
 
     journal_id = fields.Many2one('account.journal')
-    invoice_id = fields.Many2one("account.move", string="Invoice", )
+    invoice_id = fields.Many2one("account.move", string="Factura", )
     payment_state = fields.Selection(related="invoice_id.payment_state", readonly=True)
     invoice_state = fields.Selection(related="invoice_id.state", readonly=True)
     amount_residual = fields.Monetary(related="invoice_id.amount_residual", readonly=True)
     currency_id = fields.Many2one(related="invoice_id.currency_id", readonly=True)
-    tax_ids = fields.Many2many("account.tax", string="Tax")
+    tax_ids = fields.Many2many("account.tax", string="Impuestos")
     commission = fields.Float("Comisión", digits=(16, 2))
     commission_percentage = fields.Float("% Comisión", default=8.0)
     commission_invoice_ids = fields.Many2many('account.move', string='Facturas de Comisión', copy=False)
