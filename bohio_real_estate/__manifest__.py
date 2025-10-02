@@ -67,7 +67,8 @@
         'static/description/banner.jpg',
     ],
     'installable': True,
-    'application': False,
+    'application': True,
     'auto_install': False,
     'license': 'LGPL-3',
+    'web_icon': 'bohio_real_estate/static/description/icon.png',
 }

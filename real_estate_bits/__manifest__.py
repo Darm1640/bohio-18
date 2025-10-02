@@ -74,4 +74,5 @@
     "license": "LGPL-3",
     "auto_install": False,
     "application": True,
+    'web_icon': 'real_estate_bits/static/description/icon.png',
 }
