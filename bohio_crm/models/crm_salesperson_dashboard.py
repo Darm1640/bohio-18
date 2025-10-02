@@ -39,6 +39,8 @@ class CRMSalespersonDashboard(models.AbstractModel):
             'forecast_data': self._get_financial_forecast(is_manager),
             'expenses_summary': self._get_expenses_summary(is_manager),
             'income_vs_collection': self._get_income_vs_collection(is_manager),
+            'recent_properties': self._get_recent_properties(is_manager),
+            'map_data': self._get_properties_map_data(is_manager),
             'user_info': {
                 'name': user.name,
                 'is_manager': is_manager,
@@ -537,3 +539,80 @@ class CRMSalespersonDashboard(models.AbstractModel):
             'invoice_id': invoice.id,
             'invoice_number': invoice.name,
         }
+
+    # =================== PROPIEDADES ===================
+
+    def _get_recent_properties(self, is_manager=False):
+        """Obtiene las 10 propiedades más recientes"""
+        domain = [('is_property', '=', True)]
+
+        if not is_manager:
+            domain.append(('user_consing_id', '=', self.env.user.id))
+
+        properties = self.env['product.template'].search(
+            domain,
+            limit=10,
+            order='create_date desc'
+        )
+
+        result = []
+        for prop in properties:
+            # Construir URL de imagen
+            image_url = f'/web/image/product.template/{prop.id}/image_128' if prop.image_128 else False
+
+            # Determinar ubicación
+            location_parts = []
+            if prop.region_id:
+                location_parts.append(prop.region_id.name)
+            if prop.city_id:
+                location_parts.append(prop.city_id.name)
+            location = ', '.join(location_parts) if location_parts else 'Sin ubicación'
+
+            result.append({
+                'id': prop.id,
+                'name': prop.name,
+                'default_code': prop.default_code,
+                'price': prop.list_price,
+                'status': prop.property_status or 'available',
+                'location': location,
+                'image_url': image_url,
+            })
+
+        return result
+
+    def _get_properties_map_data(self, is_manager=False):
+        """Obtiene datos de propiedades para mostrar en el mapa"""
+        domain = [
+            ('is_property', '=', True),
+            '|',
+            ('latitude', '!=', False),
+            ('region_id.latitude', '!=', False)
+        ]
+
+        if not is_manager:
+            domain.append(('user_consing_id', '=', self.env.user.id))
+
+        properties = self.env['product.template'].search(domain, limit=100)
+
+        result = []
+        for prop in properties:
+            # Usar latitud/longitud de la propiedad o del barrio
+            latitude = prop.latitude or (prop.region_id.latitude if prop.region_id else False)
+            longitude = prop.longitude or (prop.region_id.longitude if prop.region_id else False)
+
+            if not latitude or not longitude:
+                continue
+
+            result.append({
+                'id': prop.id,
+                'name': prop.name,
+                'latitude': float(latitude),
+                'longitude': float(longitude),
+                'price': prop.list_price,
+                'status': prop.property_status or 'available',
+                'address': prop.street or '',
+                'region': prop.region_id.name if prop.region_id else '',
+                'image_url': f'/web/image/product.template/{prop.id}/image_128' if prop.image_128 else False,
+            })
+
+        return result
