@@ -179,7 +179,9 @@ class CRMSalespersonDashboard(models.AbstractModel):
                 days_in_stage = []
                 for opp in stage_opps_with_dates:
                     if opp.date_open:
-                        days = (datetime.now().date() - opp.date_open).days
+                        # Convertir ambos a date para evitar TypeError
+                        date_open = opp.date_open.date() if isinstance(opp.date_open, datetime) else opp.date_open
+                        days = (datetime.now().date() - date_open).days
                         days_in_stage.append(days)
                 if days_in_stage:
                     avg_days_in_stage = sum(days_in_stage) / len(days_in_stage)

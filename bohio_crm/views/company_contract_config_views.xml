@@ -129,7 +129,7 @@
                         </div>
 
                         <!-- Información actual del contrato -->
-                        <div class="alert alert-info">
+                        <div class="alert alert-info" role="alert">
                             <h5><i class="fa fa-info-circle"></i> Información Actual</h5>
                             <div class="row">
                                 <div class="col-md-3">
@@ -185,8 +185,8 @@
                             <field name="suspension_end" required="operation_type == 'suspend'"/>
                         </group>
 
-                        <div class="alert alert-warning" invisible="operation_type != 'cancel' or pending_invoices == 0">
-                            <i class="fa fa-warning"></i> <strong>Advertencia:</strong>
+                        <div class="alert alert-warning" role="alert" invisible="operation_type != 'cancel' or pending_invoices == 0">
+                            <i class="fa fa-warning" title="Advertencia"></i> <strong>Advertencia:</strong>
                             Este contrato tiene facturas pendientes. La cancelación requerirá aprobación.
                         </div>
                     </sheet>

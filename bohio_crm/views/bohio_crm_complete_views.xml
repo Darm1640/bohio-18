@@ -63,7 +63,7 @@
 
                             <!-- Cliente -->
                             <div class="mb-2">
-                                <i class="fa fa-user text-primary me-1"/>
+                                <i class="fa fa-user text-primary me-1" title="Cliente"/>
                                 <field name="partner_id"/>
                             </div>
 
@@ -99,7 +99,7 @@
                             <t t-if="record.project_id.raw_value">
                                 <div class="mb-1">
                                     <span class="badge bg-secondary">
-                                        <i class="fa fa-building-o me-1"/>
+                                        <i class="fa fa-building-o me-1" title="Proyecto"/>
                                         <field name="project_id"/>
                                     </span>
                                 </div>

@@ -221,14 +221,7 @@
                 </div>
 
                 <!-- Notas adicionales -->
-                <t t-if="doc.get('notes')">
-                    <div class="row mt-4">
-                        <div class="col-12">
-                            <h4 style="color: #8B4513;">Notas Adicionales</h4>
-                            <p><t t-esc="doc.get('notes')"/></p>
-                        </div>
-                    </div>
-                </t>
+                <!-- Notes section removed as it's not part of the property model -->
 
                 <!-- Footer con información de contacto -->
                 <div class="row mt-5" style="border-top: 2px solid #8B4513; padding-top: 20px;">

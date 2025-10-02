@@ -40,8 +40,8 @@ class ContractScenery(models.Model):
         store=True,
         readonly=True,
     )
-    code = fields.Char(string='Codigo Escenario', required=True, tracking=True)
-    name = fields.Char(string='Nombre', required=True, tracking=True)
+    code = fields.Char(string='Codigo Escenario', required=True)
+    name = fields.Char(string='Nombre', required=True)
     description = fields.Html(string='Descripción')
 
     income_account_inq = fields.Many2one(

@@ -449,11 +449,12 @@ class PropertyDashboard(models.AbstractModel):
                 pc.rental_fee,
                 pc.date_from,
                 pc.date_to,
-                ru.name as salesperson_name
+                rp_user.name as salesperson_name
             FROM property_contract pc
             LEFT JOIN res_partner rp ON pc.partner_id = rp.id
             LEFT JOIN product_template pt ON pc.property_id = pt.id
             LEFT JOIN res_users ru ON pc.user_id = ru.id
+            LEFT JOIN res_partner rp_user ON ru.partner_id = rp_user.id
             {where_clause}
             ORDER BY pc.create_date DESC
             LIMIT 20
@@ -525,17 +526,18 @@ class PropertyDashboard(models.AbstractModel):
                 COALESCE(SUM(ll.amount_residual), 0) as balance,
                 rp.name as partner_name,
                 pt.name as property_name,
-                ru.name as salesperson_name,
+                rp_user.name as salesperson_name,
                 COUNT(ll.id) as payment_count,
                 COUNT(CASE WHEN ll.payment_state = 'paid' THEN 1 END) as paid_installments
             FROM property_contract pc
             LEFT JOIN res_partner rp ON pc.partner_id = rp.id
             LEFT JOIN product_template pt ON pc.property_id = pt.id
             LEFT JOIN res_users ru ON pc.user_id = ru.id
+            LEFT JOIN res_partner rp_user ON ru.partner_id = rp_user.id
             LEFT JOIN loan_line ll ON ll.contract_id = pc.id
             {where_clause}
             GROUP BY pc.id, pc.name, pc.contract_type, pc.state, pc.date_from, pc.date_to,
-                     pc.rental_fee, rp.name, pt.name, ru.name
+                     pc.rental_fee, rp.name, pt.name, rp_user.name
             ORDER BY pc.date_from DESC
         """
 
