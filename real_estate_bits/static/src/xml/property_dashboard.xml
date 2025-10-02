@@ -273,7 +273,7 @@
                                     <div class="row mb-3">
                                         <div class="col-md-3">
                                             <label class="form-label">Período</label>
-                                            <select class="form-select form-select-sm" t-on-change="(ev) => onFilterChange('period', ev.target.value)">
+                                            <select class="form-select form-select-sm" t-on-change="(ev) => this.onFilterChange('period', ev.target.value)">
                                                 <option value="month">Mes Actual</option>
                                                 <option value="quarter">Trimestre</option>
                                                 <option value="year">Año</option>
@@ -282,7 +282,7 @@
                                         </div>
                                         <div class="col-md-3">
                                             <label class="form-label">Tipo de Contrato</label>
-                                            <select class="form-select form-select-sm" t-on-change="(ev) => onFilterChange('contract_type', ev.target.value)">
+                                            <select class="form-select form-select-sm" t-on-change="(ev) => this.onFilterChange('contract_type', ev.target.value)">
                                                 <option value="">Todos</option>
                                                 <option value="is_rental">Arrendamiento</option>
                                                 <option value="is_ownership">Propiedad</option>
@@ -290,7 +290,7 @@
                                         </div>
                                         <div class="col-md-3">
                                             <label class="form-label">Estado</label>
-                                            <select class="form-select form-select-sm" t-on-change="(ev) => onFilterChange('contract_state', ev.target.value)">
+                                            <select class="form-select form-select-sm" t-on-change="(ev) => this.onFilterChange('contract_state', ev.target.value)">
                                                 <option value="">Todos</option>
                                                 <option value="draft">Borrador</option>
                                                 <option value="confirmed">Confirmado</option>
@@ -300,7 +300,7 @@
                                         </div>
                                         <div class="col-md-3">
                                             <label class="form-label">Tipo de Propiedad</label>
-                                            <select class="form-select form-select-sm" t-on-change="(ev) => onFilterChange('property_type', ev.target.value)">
+                                            <select class="form-select form-select-sm" t-on-change="(ev) => this.onFilterChange('property_type', ev.target.value)">
                                                 <option value="">Todos</option>
                                                 <option value="apartment">Apartamento</option>
                                                 <option value="house">Casa</option>

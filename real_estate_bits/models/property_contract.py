@@ -1214,15 +1214,16 @@ class Contract(models.Model):
         }
 
     def view_entries(self):
-        entries = []
-        entry_obj = self.env["account.move"]
-        entry_ids = entry_obj.search([("rental_id", "in", self.ids)])
-        for obj in entry_ids:
-            entries.append(obj.id)
+        # Obtener facturas a través de loan.line
+        loan_lines = self.env["loan.line"].search([
+            ("contract_id", "in", self.ids),
+            ("invoice_id", "!=", False)
+        ])
+        invoice_ids = loan_lines.mapped('invoice_id.id')
 
         return {
             "name": _("Asientos Contables"),
-            "domain": [("id", "in", entries)],
+            "domain": [("id", "in", invoice_ids)],
             "view_type": "form",
             "view_mode": "list,form",
             "res_model": "account.move",
