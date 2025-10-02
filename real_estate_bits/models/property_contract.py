@@ -482,10 +482,13 @@ class Contract(models.Model):
     def _entry_count(self):
         """Cuenta las facturas relacionadas al contrato"""
         for rec in self:
-            # Contar facturas usando search_count con rental_id
-            rec.entry_count = self.env["account.move"].search_count([
-                ("rental_id", "=", rec.id)
+            # Contar facturas a través de loan.line
+            loan_lines = self.env["loan.line"].search([
+                ("contract_id", "=", rec.id),
+                ("invoice_id", "!=", False)
             ])
+            # Obtener facturas únicas
+            rec.entry_count = len(loan_lines.mapped('invoice_id'))
 
     def auto_rental_invoice(self):
         """
