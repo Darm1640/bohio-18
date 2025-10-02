@@ -109,3 +109,25 @@
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0,0,0,0.15);
 }
+
+/* Tarjetas KPI clicables */
+.o_crm_salesperson_dashboard .card[style*="cursor: pointer"]:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+}
+
+.o_crm_salesperson_dashboard .card[style*="cursor: pointer"]:active {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+/* Items de lista clicables */
+.o_crm_salesperson_dashboard .list-group-item[style*="cursor: pointer"]:hover {
+    background-color: #f8f9fa;
+    transition: background-color 0.2s;
+}
+
+/* Opacidad para iconos */
+.opacity-50 {
+    opacity: 0.5;
+}

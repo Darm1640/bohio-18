@@ -93,6 +93,86 @@ export class CrmSalespersonDashboard extends Component {
             type: "info"
         });
     }
+
+    // =================== MÉTODOS DE NAVEGACIÓN ===================
+
+    onViewOpportunities() {
+        this.action.doAction({
+            name: _t("Oportunidades"),
+            type: 'ir.actions.act_window',
+            res_model: 'crm.lead',
+            views: [[false, 'kanban'], [false, 'list'], [false, 'form']],
+            domain: [['type', '=', 'opportunity']],
+            context: { default_type: 'opportunity' }
+        });
+    }
+
+    onViewWonOpportunities() {
+        this.action.doAction({
+            name: _t("Oportunidades Ganadas"),
+            type: 'ir.actions.act_window',
+            res_model: 'crm.lead',
+            views: [[false, 'list'], [false, 'form']],
+            domain: [['type', '=', 'opportunity'], ['stage_id.is_won', '=', true]],
+        });
+    }
+
+    onViewPipeline() {
+        this.action.doAction({
+            name: _t("Pipeline"),
+            type: 'ir.actions.act_window',
+            res_model: 'crm.lead',
+            views: [[false, 'kanban'], [false, 'list'], [false, 'form']],
+            domain: [['type', '=', 'opportunity'], ['active', '=', true]],
+        });
+    }
+
+    onViewContracts() {
+        this.action.doAction({
+            name: _t("Contratos"),
+            type: 'ir.actions.act_window',
+            res_model: 'property.contract',
+            views: [[false, 'list'], [false, 'form']],
+            domain: [],
+        });
+    }
+
+    onViewProperties() {
+        this.action.doAction({
+            name: _t("Propiedades"),
+            type: 'ir.actions.act_window',
+            res_model: 'product.template',
+            views: [[false, 'kanban'], [false, 'list'], [false, 'form']],
+            domain: [['is_property', '=', true]],
+        });
+    }
+
+    onViewProperty(propertyId) {
+        this.action.doAction({
+            type: 'ir.actions.act_window',
+            res_model: 'product.template',
+            res_id: propertyId,
+            views: [[false, 'form']],
+            target: 'current',
+        });
+    }
+
+    onViewMessages() {
+        this.action.doAction({
+            name: _t("Mensajes"),
+            type: 'ir.actions.act_window',
+            res_model: 'mail.message',
+            views: [[false, 'list'], [false, 'form']],
+            domain: [['model', '=', 'crm.lead']],
+        });
+    }
+
+    onViewForecast() {
+        // Mostrar proyección financiera en detalle
+        this.notification.add(_t("Proyección financiera mostrada en el dashboard"), {
+            type: "info"
+        });
+    }
 }
 
 // Registrar el componente en el registry de acciones

@@ -69,6 +69,7 @@ class ModifyContractWizard(models.TransientModel):
             defaults['contract_id'] = self.env.context.get('active_id')
         return defaults
 
+    @api.model
     def _get_selection_modify_options(self):
         """Opciones de modificación disponibles (como Asset)"""
         return [
