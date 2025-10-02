@@ -191,7 +191,6 @@ class CRMSalespersonDashboard(models.AbstractModel):
                 'stage_id': stage.id,
                 'count': count,
                 'total_value': total_value,
-                'probability': stage.probability,
                 'is_won': stage.is_won,
                 'avg_days_in_stage': round(avg_days_in_stage, 1),
                 'conversion_rate': (count / prev_count * 100) if prev_count and prev_count > 0 else 100,
