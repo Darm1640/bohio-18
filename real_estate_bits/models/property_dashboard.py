@@ -126,20 +126,30 @@ class PropertyDashboard(models.AbstractModel):
         }
 
     def _get_properties_by_status(self):
-        """Obtiene propiedades agrupadas por estado usando read_group"""
+        """Obtiene propiedades agrupadas por estado"""
         domain = [('is_property', '=', True)]
-        groups = self.env['product.template']._read_group(
+
+        # Usar read_group sin agregaciones especiales
+        groups = self.env['product.template'].read_group(
             domain,
-            ['property_status', 'list_price:sum'],
+            ['property_status'],
             ['property_status']
         )
 
         result = []
         for group in groups:
             status = group['property_status'] or 'sin_estado'
+
+            # Calcular total_value manualmente
+            properties = self.env['product.template'].search([
+                ('is_property', '=', True),
+                ('property_status', '=', status)
+            ])
+            total_value = sum(properties.mapped('list_price'))
+
             result.append({
                 'count': group['property_status_count'],
-                'total_value': group['list_price'] or 0,
+                'total_value': total_value,
                 'label': self._get_status_label(status)
             })
 
@@ -380,10 +390,11 @@ class PropertyDashboard(models.AbstractModel):
                 ll.date,
                 COUNT(*) as invoice_count,
                 SUM(ll.amount) as total_amount,
-                COUNT(CASE WHEN ll.payment_state = 'paid' THEN 1 END) as paid_count,
-                SUM(CASE WHEN ll.payment_state = 'paid' THEN ll.amount ELSE 0 END) as paid_amount
+                COUNT(CASE WHEN am.payment_state = 'paid' THEN 1 END) as paid_count,
+                SUM(CASE WHEN am.payment_state = 'paid' THEN ll.amount ELSE 0 END) as paid_amount
             FROM loan_line ll
             INNER JOIN property_contract pc ON ll.contract_id = pc.id
+            LEFT JOIN account_move am ON ll.invoice_id = am.id
             {where_clause}
             GROUP BY ll.date
             ORDER BY ll.date
@@ -401,16 +412,17 @@ class PropertyDashboard(models.AbstractModel):
             SELECT
                 pc.contract_type,
                 COUNT(DISTINCT pc.id) as contract_count,
-                COALESCE(SUM(CASE WHEN ll.payment_state = 'paid' THEN ll.amount ELSE 0 END), 0) as total_paid,
-                COALESCE(SUM(ll.amount_residual), 0) as total_balance,
+                COALESCE(SUM(CASE WHEN am.payment_state = 'paid' THEN ll.amount ELSE 0 END), 0) as total_paid,
+                COALESCE(SUM(am.amount_residual), 0) as total_balance,
                 COALESCE(SUM(ll.amount), 0) as total_expected,
                 CASE
                     WHEN SUM(ll.amount) > 0
-                    THEN (SUM(CASE WHEN ll.payment_state = 'paid' THEN ll.amount ELSE 0 END) / SUM(ll.amount) * 100)
+                    THEN (SUM(CASE WHEN am.payment_state = 'paid' THEN ll.amount ELSE 0 END) / SUM(ll.amount) * 100)
                     ELSE 0
                 END as collection_percentage
             FROM property_contract pc
             LEFT JOIN loan_line ll ON ll.contract_id = pc.id
+            LEFT JOIN account_move am ON ll.invoice_id = am.id
             {where_clause}
             GROUP BY pc.contract_type
         """
