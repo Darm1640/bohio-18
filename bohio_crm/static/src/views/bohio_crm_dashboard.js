@@ -47,9 +47,14 @@ export class BohioCRMDashBoard extends Component {
             context['search_default_' + filter_value] = true;
         }
 
-        this.env.searchModel.setDomainParts({ crm_dashboard: { domain } });
-        if (Object.keys(context).length) {
-            this.env.searchModel.context = context;
-        }
+        // Odoo 18: Usar action.doAction en lugar de searchModel.setDomainParts
+        this.action.doAction({
+            type: "ir.actions.act_window",
+            name: "CRM Leads",
+            res_model: "crm.lead",
+            views: [[false, "list"], [false, "kanban"], [false, "form"]],
+            domain: domain,
+            context: context,
+        });
     }
 }
