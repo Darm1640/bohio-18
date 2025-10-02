@@ -170,13 +170,14 @@ class PropertyContractLine(models.Model):
             )
         )
 
-    @api.model
-    def create(self, vals):
-        line = super().create(vals)
+    @api.model_create_multi
+    def create(self, vals_list):
+        lines = super().create(vals_list)
         # Activar automáticamente si el contrato está confirmado
-        if line.contract_id.state == 'confirmed':
-            line.state = 'active'
-        return line
+        for line in lines:
+            if line.contract_id.state == 'confirmed':
+                line.state = 'active'
+        return lines
 
     def write(self, vals):
         result = super().write(vals)

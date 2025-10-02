@@ -133,15 +133,16 @@ class ContractOwnerPartner(models.Model):
             if record.ownership_percentage < 0 or record.ownership_percentage > 100:
                 raise UserError("El porcentaje de propiedad debe estar entre 0 y 100")
 
-    @api.model
-    def create(self, vals):
-        if vals.get('is_main_owner') and vals.get('product_id'):
-            existing_main = self.search([
-                ('product_id', '=', vals['product_id']),
-                ('is_main_owner', '=', True)
-            ])
-            existing_main.write({'is_main_owner': False})
-        return super().create(vals)
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if vals.get('is_main_owner') and vals.get('product_id'):
+                existing_main = self.search([
+                    ('product_id', '=', vals['product_id']),
+                    ('is_main_owner', '=', True)
+                ])
+                existing_main.write({'is_main_owner': False})
+        return super().create(vals_list)
 
     @api.depends('product_id', 'partner_id', 'ownership_percentage')
     def _compute_display_name(self):

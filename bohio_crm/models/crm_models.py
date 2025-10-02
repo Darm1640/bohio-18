@@ -725,28 +725,29 @@ class CrmLead(models.Model):
     # MÉTODOS DE NEGOCIO
     # ===============================
 
-    @api.model
-    def create(self, vals):
-        # Asignación automática a equipo inmobiliario
-        if vals.get('service_interested') in ['rent', 'sale', 'projects']:
-            real_estate_team = self.env['crm.team'].search([
-                '|', ('name', 'ilike', 'inmobiliaria'), ('name', 'ilike', 'real estate')
-            ], limit=1)
-            if real_estate_team:
-                vals['team_id'] = real_estate_team.id
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            # Asignación automática a equipo inmobiliario
+            if vals.get('service_interested') in ['rent', 'sale', 'projects']:
+                real_estate_team = self.env['crm.team'].search([
+                    '|', ('name', 'ilike', 'inmobiliaria'), ('name', 'ilike', 'real estate')
+                ], limit=1)
+                if real_estate_team:
+                    vals['team_id'] = real_estate_team.id
 
-        # Creación automática de ticket PQRS
-        if vals.get('pqrs_type') and 'helpdesk.ticket' in self.env:
-            helpdesk_vals = {
-                'name': vals.get('name', 'PQRS'),
-                'partner_id': vals.get('partner_id'),
-                'description': vals.get('description', ''),
-                'priority': '2' if vals.get('pqrs_type') in ['complaint', 'claim'] else '1',
-            }
-            ticket = self.env['helpdesk.ticket'].sudo().create(helpdesk_vals)
-            vals['helpdesk_ticket_id'] = ticket.id
+            # Creación automática de ticket PQRS
+            if vals.get('pqrs_type') and 'helpdesk.ticket' in self.env:
+                helpdesk_vals = {
+                    'name': vals.get('name', 'PQRS'),
+                    'partner_id': vals.get('partner_id'),
+                    'description': vals.get('description', ''),
+                    'priority': '2' if vals.get('pqrs_type') in ['complaint', 'claim'] else '1',
+                }
+                ticket = self.env['helpdesk.ticket'].sudo().create(helpdesk_vals)
+                vals['helpdesk_ticket_id'] = ticket.id
 
-        return super().create(vals)
+        return super().create(vals_list)
 
     def action_close_lead_with_contract(self):
         """Cerrar oportunidad creando contrato"""

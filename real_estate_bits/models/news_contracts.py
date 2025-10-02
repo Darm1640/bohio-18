@@ -66,11 +66,12 @@ class PropertyContractNovedad(models.Model):
                 if porc != 100:
                     raise ValidationError(_("La distribucion entre el arrendatario y propietario debe ser igual al 100%"))
 
-    @api.model
-    def create(self, vals):
-        if vals.get('name', '/') == '/':
-            vals['name'] = self.env['ir.sequence'].next_by_code('property.contract.novedad.seq') or '/'
-        return super(PropertyContractNovedad, self).create(vals)
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if vals.get('name', '/') == '/':
+                vals['name'] = self.env['ir.sequence'].next_by_code('property.contract.novedad.seq') or '/'
+        return super(PropertyContractNovedad, self).create(vals_list)
 
     def action_confirm(self):
         self.ensure_one()

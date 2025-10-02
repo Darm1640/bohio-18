@@ -77,11 +77,12 @@ class BohioMassPayment(models.Model):
     separate_payments = fields.Boolean('Pagos Separados por Propietario',
                                        default=True, help='Crear un pago separado por cada propietario')
 
-    @api.model
-    def create(self, vals):
-        if vals.get('name', '/') == '/':
-            vals['name'] = self.env['ir.sequence'].next_by_code('bohio.mass.payment') or '/'
-        return super().create(vals)
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if vals.get('name', '/') == '/':
+                vals['name'] = self.env['ir.sequence'].next_by_code('bohio.mass.payment') or '/'
+        return super().create(vals_list)
 
     @api.depends('simulation_line_ids.canon_amount', 'simulation_line_ids.commission_amount',
                  'simulation_line_ids.tax_amount', 'simulation_line_ids.novelty_amount',
@@ -724,11 +725,12 @@ class BohioDebitNote(models.Model):
     currency_id = fields.Many2one('res.currency', default=lambda self: self.env.company.currency_id)
     company_id = fields.Many2one('res.company', default=lambda self: self.env.company)
 
-    @api.model
-    def create(self, vals):
-        if vals.get('name', '/') == '/':
-            vals['name'] = self.env['ir.sequence'].next_by_code('bohio.debit.note') or '/'
-        return super().create(vals)
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if vals.get('name', '/') == '/':
+                vals['name'] = self.env['ir.sequence'].next_by_code('bohio.debit.note') or '/'
+        return super().create(vals_list)
 
     @api.depends('base_amount', 'rate')
     def _compute_amount(self):

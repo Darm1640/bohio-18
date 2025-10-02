@@ -1528,12 +1528,13 @@ class Property(models.Model):
 
         return True
 
-    @api.model
-    def create(self, vals):
-        record = super(Property, self).create(vals)
-        record._handle_main_owner_and_billing_address()
-        record._auto_associate_partner_by_vat()
-        return record
+    @api.model_create_multi
+    def create(self, vals_list):
+        records = super(Property, self).create(vals_list)
+        for record in records:
+            record._handle_main_owner_and_billing_address()
+            record._auto_associate_partner_by_vat()
+        return records
 
     def write(self, vals):
         result = super(Property, self).write(vals)
@@ -1721,15 +1722,16 @@ class ContractOwnerPartner(models.Model):
             if record.ownership_percentage < 0 or record.ownership_percentage > 100:
                 raise UserError("El porcentaje de propiedad debe estar entre 0 y 100")
 
-    @api.model
-    def create(self, vals):
-        if vals.get('is_main_owner') and vals.get('product_id'):
-            existing_main = self.search([
-                ('product_id', '=', vals['product_id']),
-                ('is_main_owner', '=', True)
-            ])
-            existing_main.write({'is_main_owner': False})
-        return super().create(vals)   
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if vals.get('is_main_owner') and vals.get('product_id'):
+                existing_main = self.search([
+                    ('product_id', '=', vals['product_id']),
+                    ('is_main_owner', '=', True)
+                ])
+                existing_main.write({'is_main_owner': False})
+        return super().create(vals_list)   
     
 
     @api.depends('product_id', 'partner_id', 'ownership_percentage')

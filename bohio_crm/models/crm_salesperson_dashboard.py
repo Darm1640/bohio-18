@@ -16,7 +16,7 @@ except ImportError:
     pd = None
 
 
-class CRMSalespersonDashboard(models.TransientModel):
+class CRMSalespersonDashboard(models.AbstractModel):
     _name = 'crm.salesperson.dashboard'
     _description = 'Dashboard CRM con Proyección Financiera y Análisis de Embudo'
 
