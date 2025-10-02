@@ -12,6 +12,95 @@
                 <div class="container-fluid p-4">
                     <h1 class="mb-4">Dashboard CRM - Vendedor</h1>
 
+                    <!-- Filters Bar with Horizontal Scroll -->
+                    <div class="card mb-4">
+                        <div class="card-body p-2">
+                            <div class="d-flex align-items-center gap-2" style="overflow-x: auto; white-space: nowrap; scrollbar-width: thin;">
+                                <div class="flex-shrink-0">
+                                    <i class="fa fa-filter text-muted"/> <strong>Filtros:</strong>
+                                </div>
+
+                                <!-- Period Filter -->
+                                <div class="flex-shrink-0">
+                                    <select class="form-select form-select-sm" style="min-width: 150px;" t-on-change="(ev) => this.onFilterChange('period', ev.target.value)">
+                                        <option value="today">Hoy</option>
+                                        <option value="week">Esta Semana</option>
+                                        <option value="month" selected="selected">Este Mes</option>
+                                        <option value="quarter">Este Trimestre</option>
+                                        <option value="year">Este Año</option>
+                                        <option value="all">Todo el Tiempo</option>
+                                    </select>
+                                </div>
+
+                                <!-- Status Filter -->
+                                <div class="flex-shrink-0">
+                                    <select class="form-select form-select-sm" style="min-width: 150px;" t-on-change="(ev) => this.onFilterChange('status', ev.target.value)">
+                                        <option value="">Todos los Estados</option>
+                                        <option value="available">Disponible</option>
+                                        <option value="rented">Alquilada</option>
+                                        <option value="sold">Vendida</option>
+                                        <option value="booked">Reservada</option>
+                                    </select>
+                                </div>
+
+                                <!-- Property Type Filter -->
+                                <div class="flex-shrink-0">
+                                    <select class="form-select form-select-sm" style="min-width: 150px;" t-on-change="(ev) => this.onFilterChange('property_type', ev.target.value)">
+                                        <option value="">Todos los Tipos</option>
+                                        <option value="apartment">Apartamento</option>
+                                        <option value="house">Casa</option>
+                                        <option value="office">Oficina</option>
+                                        <option value="land">Terreno</option>
+                                        <option value="warehouse">Bodega</option>
+                                    </select>
+                                </div>
+
+                                <!-- Price Range Filter -->
+                                <div class="flex-shrink-0">
+                                    <select class="form-select form-select-sm" style="min-width: 150px;" t-on-change="(ev) => this.onFilterChange('price_range', ev.target.value)">
+                                        <option value="">Todos los Precios</option>
+                                        <option value="0-100000">$0 - $100,000</option>
+                                        <option value="100000-300000">$100K - $300K</option>
+                                        <option value="300000-500000">$300K - $500K</option>
+                                        <option value="500000-1000000">$500K - $1M</option>
+                                        <option value="1000000+">$1M+</option>
+                                    </select>
+                                </div>
+
+                                <!-- Contract Status Filter -->
+                                <div class="flex-shrink-0">
+                                    <select class="form-select form-select-sm" style="min-width: 150px;" t-on-change="(ev) => this.onFilterChange('contract_status', ev.target.value)">
+                                        <option value="">Todos los Contratos</option>
+                                        <option value="quotation">Cotización</option>
+                                        <option value="draft">Pre-Contrato</option>
+                                        <option value="pending_signature">Pendiente Firma</option>
+                                        <option value="confirmed">Confirmado</option>
+                                        <option value="cancel">Cancelado</option>
+                                    </select>
+                                </div>
+
+                                <!-- Region Filter -->
+                                <div class="flex-shrink-0">
+                                    <select class="form-select form-select-sm" style="min-width: 150px;" t-on-change="(ev) => this.onFilterChange('region', ev.target.value)">
+                                        <option value="">Todas las Regiones</option>
+                                        <t t-if="state.dashboardData.regions">
+                                            <t t-foreach="state.dashboardData.regions" t-as="region" t-key="region.id">
+                                                <option t-att-value="region.id"><t t-esc="region.name"/></option>
+                                            </t>
+                                        </t>
+                                    </select>
+                                </div>
+
+                                <!-- Reset Filters Button -->
+                                <div class="flex-shrink-0 ms-auto">
+                                    <button class="btn btn-sm btn-outline-secondary" t-on-click="() => this.resetFilters()">
+                                        <i class="fa fa-refresh"/> Limpiar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- KPIs Row -->
                     <div class="row mb-4">
                         <div class="col-md-3">

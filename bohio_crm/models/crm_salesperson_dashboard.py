@@ -23,9 +23,10 @@ class CRMSalespersonDashboard(models.AbstractModel):
     # =================== MÉTODOS PRINCIPALES ===================
 
     @api.model
-    def get_dashboard_data(self):
+    def get_dashboard_data(self, filters=None):
         """Obtiene todos los datos del dashboard incluyendo proyecciones"""
         user = self.env.user
+        filters = filters or {}
 
         # Determinar si es vendedor individual o gerente
         is_manager = user.has_group('sales_team.group_sale_manager')
@@ -41,6 +42,11 @@ class CRMSalespersonDashboard(models.AbstractModel):
             'income_vs_collection': self._get_income_vs_collection(is_manager),
             'recent_properties': self._get_recent_properties(is_manager),
             'map_data': self._get_properties_map_data(is_manager),
+            'regions': self._get_regions(),
+            'total_opportunities': self._get_total_opportunities(is_manager),
+            'won_opportunities': self._get_won_opportunities(is_manager),
+            'pipeline_value': self._get_pipeline_value(is_manager),
+            'conversion_rate': self._get_conversion_rate(is_manager),
             'user_info': {
                 'name': user.name,
                 'is_manager': is_manager,
@@ -616,3 +622,36 @@ class CRMSalespersonDashboard(models.AbstractModel):
             })
 
         return result
+
+    def _get_regions(self):
+        """Obtiene lista de regiones para el filtro"""
+        regions = self.env['region.region'].search([], order='name')
+        return [{'id': r.id, 'name': r.name} for r in regions]
+
+    def _get_total_opportunities(self, is_manager=False):
+        """Obtiene el total de oportunidades"""
+        domain = [('type', '=', 'opportunity')]
+        if not is_manager:
+            domain.append(('user_id', '=', self.env.user.id))
+        return self.env['crm.lead'].search_count(domain)
+
+    def _get_won_opportunities(self, is_manager=False):
+        """Obtiene oportunidades ganadas"""
+        domain = [('type', '=', 'opportunity'), ('stage_id.is_won', '=', True)]
+        if not is_manager:
+            domain.append(('user_id', '=', self.env.user.id))
+        return self.env['crm.lead'].search_count(domain)
+
+    def _get_pipeline_value(self, is_manager=False):
+        """Obtiene valor total del pipeline"""
+        domain = [('type', '=', 'opportunity'), ('stage_id.is_won', '=', False), ('active', '=', True)]
+        if not is_manager:
+            domain.append(('user_id', '=', self.env.user.id))
+        opportunities = self.env['crm.lead'].search(domain)
+        return sum(opportunities.mapped('expected_revenue'))
+
+    def _get_conversion_rate(self, is_manager=False):
+        """Calcula la tasa de conversión"""
+        total = self._get_total_opportunities(is_manager)
+        won = self._get_won_opportunities(is_manager)
+        return round((won / total * 100) if total > 0 else 0, 1)
