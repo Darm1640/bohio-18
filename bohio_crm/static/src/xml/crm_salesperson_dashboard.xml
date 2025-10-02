@@ -15,10 +15,14 @@
                     <!-- Filters Bar with Horizontal Scroll -->
                     <div class="card mb-4">
                         <div class="card-body p-2">
-                            <div class="d-flex align-items-center gap-2" style="overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch; padding-bottom: 8px;">
+                            <div class="d-flex align-items-center gap-2" style="overflow-x: scroll; overflow-y: hidden; -webkit-overflow-scrolling: touch; padding-bottom: 8px; white-space: nowrap;">
                                 <style>
+                                    .o_crm_salesperson_dashboard .card-body > div {
+                                        scrollbar-width: thin;
+                                        scrollbar-color: #888 #f1f1f1;
+                                    }
                                     .o_crm_salesperson_dashboard .card-body > div::-webkit-scrollbar {
-                                        height: 8px;
+                                        height: 10px;
                                     }
                                     .o_crm_salesperson_dashboard .card-body > div::-webkit-scrollbar-track {
                                         background: #f1f1f1;
@@ -38,7 +42,7 @@
 
                                 <!-- Period Filter -->
                                 <div class="flex-shrink-0 filter-item">
-                                    <select class="form-select form-select-sm" style="min-width: 150px;" t-on-change="(ev) => this.onFilterChange('period', ev.target.value)">
+                                    <select class="form-select form-select-sm" style="min-width: 180px;" t-on-change="(ev) => this.onFilterChange('period', ev.target.value)">
                                         <option value="today">Hoy</option>
                                         <option value="week">Esta Semana</option>
                                         <option value="month" selected="selected">Este Mes</option>
@@ -50,7 +54,7 @@
 
                                 <!-- Status Filter -->
                                 <div class="flex-shrink-0 filter-item">
-                                    <select class="form-select form-select-sm" style="min-width: 150px;" t-on-change="(ev) => this.onFilterChange('status', ev.target.value)">
+                                    <select class="form-select form-select-sm" style="min-width: 180px;" t-on-change="(ev) => this.onFilterChange('status', ev.target.value)">
                                         <option value="">Todos los Estados</option>
                                         <option value="available">Disponible</option>
                                         <option value="rented">Alquilada</option>
@@ -61,7 +65,7 @@
 
                                 <!-- Property Type Filter -->
                                 <div class="flex-shrink-0 filter-item">
-                                    <select class="form-select form-select-sm" style="min-width: 150px;" t-on-change="(ev) => this.onFilterChange('property_type', ev.target.value)">
+                                    <select class="form-select form-select-sm" style="min-width: 180px;" t-on-change="(ev) => this.onFilterChange('property_type', ev.target.value)">
                                         <option value="">Todos los Tipos</option>
                                         <option value="apartment">Apartamento</option>
                                         <option value="house">Casa</option>
@@ -73,7 +77,7 @@
 
                                 <!-- Price Range Filter -->
                                 <div class="flex-shrink-0 filter-item">
-                                    <select class="form-select form-select-sm" style="min-width: 150px;" t-on-change="(ev) => this.onFilterChange('price_range', ev.target.value)">
+                                    <select class="form-select form-select-sm" style="min-width: 180px;" t-on-change="(ev) => this.onFilterChange('price_range', ev.target.value)">
                                         <option value="">Todos los Precios</option>
                                         <option value="0-100000">$0 - $100,000</option>
                                         <option value="100000-300000">$100K - $300K</option>
@@ -85,7 +89,7 @@
 
                                 <!-- Contract Status Filter -->
                                 <div class="flex-shrink-0 filter-item">
-                                    <select class="form-select form-select-sm" style="min-width: 150px;" t-on-change="(ev) => this.onFilterChange('contract_status', ev.target.value)">
+                                    <select class="form-select form-select-sm" style="min-width: 200px;" t-on-change="(ev) => this.onFilterChange('contract_status', ev.target.value)">
                                         <option value="">Todos los Contratos</option>
                                         <option value="quotation">Cotización</option>
                                         <option value="draft">Pre-Contrato</option>
@@ -97,7 +101,7 @@
 
                                 <!-- Region Filter -->
                                 <div class="flex-shrink-0 filter-item">
-                                    <select class="form-select form-select-sm" style="min-width: 150px;" t-on-change="(ev) => this.onFilterChange('region', ev.target.value)">
+                                    <select class="form-select form-select-sm" style="min-width: 180px;" t-on-change="(ev) => this.onFilterChange('region', ev.target.value)">
                                         <option value="">Todas las Regiones</option>
                                         <t t-if="state.dashboardData.regions and state.dashboardData.regions.length">
                                             <t t-foreach="state.dashboardData.regions" t-as="region" t-key="region_index">
