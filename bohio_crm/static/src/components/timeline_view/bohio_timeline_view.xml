@@ -6,6 +6,9 @@
             <!-- LEFT SIDEBAR: OPPORTUNITIES LIST -->
             <div class="o_opportunities_sidebar bg-light border-end" style="width: 300px; flex-shrink: 0; overflow-y: auto;">
                 <div class="sticky-top bg-light p-2 border-bottom">
+                    <button class="btn btn-primary btn-sm w-100 mb-2" t-on-click="createNewOpportunity">
+                        <i class="fa fa-plus"/> Nueva Oportunidad
+                    </button>
                     <input type="text" class="form-control form-control-sm mb-2"
                            placeholder="Buscar oportunidades..."
                            t-model="state.searchQuery"
@@ -52,43 +55,140 @@
             <div class="flex-fill overflow-auto">
                 <!-- FIXED ACTION BAR (sticky top) -->
                 <div class="o_bohio_action_bar sticky-top bg-white border-bottom shadow-sm p-2">
-                    <div class="d-flex flex-wrap gap-2 align-items-center">
-                        <button class="btn btn-primary btn-sm" t-on-click="editOpportunity">
-                            <i class="fa fa-edit"/> Editar
-                        </button>
-                        <button class="btn btn-primary btn-sm" t-on-click="createActivity">
-                            <i class="fa fa-plus"/> Actividad
-                        </button>
-                        <button class="btn btn-secondary btn-sm" t-on-click="scheduleCall">
-                            <i class="fa fa-phone"/> Llamada
-                        </button>
-                        <button class="btn btn-secondary btn-sm" t-on-click="scheduleMeeting">
-                            <i class="fa fa-calendar"/> Cita
-                        </button>
-                        <button class="btn btn-secondary btn-sm" t-on-click="sendEmail">
-                            <i class="fa fa-envelope"/> Email
-                        </button>
-                        <button class="btn btn-success btn-sm" t-on-click="sendWhatsApp">
-                            <i class="fab fa-whatsapp"/> WhatsApp
-                        </button>
-                        <button class="btn btn-info btn-sm" t-on-click="generateQuote">
-                            <i class="fa fa-file-invoice"/> Cotizar
-                        </button>
-                        <button class="btn btn-success btn-sm" t-on-click="generateContract"
-                                t-if="state.opportunityData.stage_is_won">
-                            <i class="fa fa-file-contract"/> Contrato
-                        </button>
-                        <button class="btn btn-secondary btn-sm" t-on-click="compareProperties">
-                            <i class="fa fa-chart-bar"/> Comparar
-                        </button>
-                        <button class="btn btn-secondary btn-sm" t-on-click="printView">
-                            <i class="fa fa-print"/> Imprimir
-                        </button>
+                    <div class="d-flex flex-wrap gap-2 align-items-center justify-content-between">
+                        <div class="d-flex flex-wrap gap-2">
+                            <!-- Botones de edición/guardado -->
+                            <button class="btn btn-success btn-sm" t-on-click="createNewOpportunity">
+                                <i class="fa fa-plus"/> Nuevo
+                            </button>
+                            <button class="btn btn-primary btn-sm" t-if="!state.isEditMode" t-on-click="enableEditMode">
+                                <i class="fa fa-edit"/> Editar
+                            </button>
+                            <button class="btn btn-success btn-sm" t-if="state.isEditMode" t-on-click="saveAllChanges">
+                                <i class="fa fa-save"/> Guardar
+                            </button>
+                            <button class="btn btn-secondary btn-sm" t-if="state.isEditMode" t-on-click="cancelEditMode">
+                                <i class="fa fa-times"/> Cancelar
+                            </button>
+
+                            <!-- Separador visual -->
+                            <div class="vr" t-if="!state.isEditMode"/>
+
+                            <!-- Botones de acción (solo si no está en modo edición) -->
+                            <t t-if="!state.isEditMode">
+                                <button class="btn btn-primary btn-sm" t-on-click="createActivity">
+                                    <i class="fa fa-plus"/> Actividad
+                                </button>
+                                <button class="btn btn-secondary btn-sm" t-on-click="scheduleCall">
+                                    <i class="fa fa-phone"/> Llamada
+                                </button>
+                                <button class="btn btn-secondary btn-sm" t-on-click="scheduleMeeting">
+                                    <i class="fa fa-calendar"/> Cita
+                                </button>
+                                <button class="btn btn-secondary btn-sm" t-on-click="sendEmail">
+                                    <i class="fa fa-envelope"/> Email
+                                </button>
+                                <button class="btn btn-success btn-sm" t-on-click="sendWhatsApp">
+                                    <i class="fab fa-whatsapp"/> WhatsApp
+                                </button>
+                                <button class="btn btn-info btn-sm" t-on-click="generateQuote">
+                                    <i class="fa fa-file-invoice"/> Cotizar
+                                </button>
+                                <button class="btn btn-success btn-sm" t-on-click="generateContract"
+                                        t-if="state.opportunityData.stage_is_won">
+                                    <i class="fa fa-file-contract"/> Contrato
+                                </button>
+                                <button class="btn btn-secondary btn-sm" t-on-click="compareProperties">
+                                    <i class="fa fa-chart-bar"/> Comparar
+                                </button>
+                                <button class="btn btn-secondary btn-sm" t-on-click="printView">
+                                    <i class="fa fa-print"/> Imprimir
+                                </button>
+                            </t>
+                        </div>
+
+                        <!-- Indicador de modo edición -->
+                        <div t-if="state.isEditMode">
+                            <span class="badge bg-warning text-dark">
+                                <i class="fa fa-edit"/> MODO EDICIÓN
+                            </span>
+                        </div>
                     </div>
                 </div>
 
             <!-- MAIN CONTENT -->
             <div class="container-fluid p-3">
+
+                <!-- INFORMACIÓN INICIAL - RESUMEN -->
+                <div class="card mb-3 border-info" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-md-8">
+                                <h4 class="mb-2">
+                                    <i class="fa fa-briefcase"/> <t t-esc="state.opportunityData.name || 'Nueva Oportunidad'"/>
+                                </h4>
+                                <div class="d-flex gap-3 flex-wrap">
+                                    <div>
+                                        <i class="fa fa-user"/> <strong>Cliente:</strong>
+                                        <t t-esc="state.opportunityData.partner_name || 'Sin asignar'"/>
+                                    </div>
+                                    <div>
+                                        <i class="fa fa-tag"/> <strong>Tipo:</strong>
+                                        <t t-esc="state.opportunityData.customer_type || 'No definido'"/>
+                                    </div>
+                                    <div>
+                                        <i class="fa fa-phone"/> <t t-esc="state.opportunityData.phone || 'Sin teléfono'"/>
+                                    </div>
+                                    <div>
+                                        <i class="fa fa-envelope"/> <t t-esc="state.opportunityData.email || 'Sin email'"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 text-end">
+                                <div class="mb-2">
+                                    <span class="badge bg-light text-dark fs-6">
+                                        Probabilidad: <t t-esc="state.opportunityData.probability || 0"/>%
+                                    </span>
+                                </div>
+                                <div class="h5 mb-0">
+                                    <i class="fa fa-dollar-sign"/>
+                                    <t t-esc="state.opportunityData.expected_revenue_formatted || '$0'"/>
+                                </div>
+                                <small>Ingreso Esperado</small>
+                            </div>
+                        </div>
+
+                        <!-- PROGRESO DE INFORMACIÓN -->
+                        <div class="mt-3">
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <small>Información Completada</small>
+                                <small><t t-esc="completionPercentage"/>%</small>
+                            </div>
+                            <div class="progress" style="height: 8px;">
+                                <div class="progress-bar bg-success" role="progressbar"
+                                     t-att-style="'width: ' + completionPercentage + '%'"/>
+                            </div>
+                            <div class="mt-2 d-flex gap-2 flex-wrap">
+                                <button class="btn btn-light btn-sm" t-if="!state.opportunityData.partner_id"
+                                        t-on-click="() => this.quickAddField('partner')">
+                                    <i class="fa fa-plus"/> Cliente
+                                </button>
+                                <button class="btn btn-light btn-sm" t-if="!state.opportunityData.service_interested"
+                                        t-on-click="() => this.quickAddField('service')">
+                                    <i class="fa fa-plus"/> Servicio
+                                </button>
+                                <button class="btn btn-light btn-sm" t-if="!state.opportunityData.budget_min"
+                                        t-on-click="() => this.quickAddField('budget')">
+                                    <i class="fa fa-plus"/> Presupuesto
+                                </button>
+                                <button class="btn btn-light btn-sm" t-if="state.comparisonProperties.length === 0"
+                                        t-on-click="() => this.quickAddField('properties')">
+                                    <i class="fa fa-plus"/> Propiedades
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <!-- STAGE PROGRESS BAR -->
                 <div class="card mb-3">
@@ -180,15 +280,16 @@
                             </div>
                             <div>
                                 <div class="fw-bold">
-                                    <t t-if="!state.editing.partner_name" t-esc="state.opportunityData.partner_name"/>
+                                    <t t-if="!state.isEditMode &amp;&amp; !state.editing.partner_name">
+                                        <span t-on-dblclick="() => this.enableFieldEdit('partner_name')"
+                                              style="cursor: pointer;"
+                                              title="Doble clic para editar"
+                                              t-esc="state.opportunityData.partner_name || 'Sin nombre'"/>
+                                    </t>
                                     <input t-else="" type="text" class="form-control form-control-sm d-inline-block"
                                            style="width: 200px;"
                                            t-model="state.opportunityData.partner_name"
-                                           t-on-blur="() => this.saveField('partner_name')"/>
-                                    <button class="btn btn-sm btn-link p-0 ms-1"
-                                            t-on-click="() => this.toggleEdit('partner_name')">
-                                        <i t-att-class="state.editing.partner_name ? 'fa fa-check text-success' : 'fa fa-edit'"/>
-                                    </button>
+                                           placeholder="Nombre del cliente"/>
                                 </div>
                                 <div class="text-muted small">
                                     <t t-esc="state.opportunityData.customer_type"/>
@@ -208,28 +309,28 @@
                         <div class="row g-3">
                             <div class="col-md-4">
                                 <label class="text-muted small text-uppercase">Teléfono</label>
-                                <div class="d-flex align-items-center gap-1">
-                                    <t t-if="!state.editing.phone" t-esc="state.opportunityData.phone || '-'"/>
+                                <div>
+                                    <span t-if="!state.isEditMode"
+                                          t-on-dblclick="() => this.enableFieldEdit('phone')"
+                                          style="cursor: pointer;"
+                                          title="Doble clic para editar"
+                                          t-esc="state.opportunityData.phone || '-'"/>
                                     <input t-else="" type="text" class="form-control form-control-sm"
                                            t-model="state.opportunityData.phone"
-                                           t-on-blur="() => this.saveField('phone')"/>
-                                    <button class="btn btn-sm btn-link p-0"
-                                            t-on-click="() => this.toggleEdit('phone')">
-                                        <i t-att-class="state.editing.phone ? 'fa fa-check text-success' : 'fa fa-edit'"/>
-                                    </button>
+                                           placeholder="Teléfono"/>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <label class="text-muted small text-uppercase">Email</label>
-                                <div class="d-flex align-items-center gap-1">
-                                    <t t-if="!state.editing.email" t-esc="state.opportunityData.email || '-'"/>
+                                <div>
+                                    <span t-if="!state.isEditMode"
+                                          t-on-dblclick="() => this.enableFieldEdit('email')"
+                                          style="cursor: pointer;"
+                                          title="Doble clic para editar"
+                                          t-esc="state.opportunityData.email || '-'"/>
                                     <input t-else="" type="email" class="form-control form-control-sm"
                                            t-model="state.opportunityData.email"
-                                           t-on-blur="() => this.saveField('email')"/>
-                                    <button class="btn btn-sm btn-link p-0"
-                                            t-on-click="() => this.toggleEdit('email')">
-                                        <i t-att-class="state.editing.email ? 'fa fa-check text-success' : 'fa fa-edit'"/>
-                                    </button>
+                                           placeholder="Email"/>
                                 </div>
                             </div>
                             <div class="col-md-4">
@@ -238,28 +339,28 @@
                             </div>
                             <div class="col-md-6">
                                 <label class="text-muted small text-uppercase">Presupuesto Mínimo</label>
-                                <div class="d-flex align-items-center gap-1">
-                                    <t t-if="!state.editing.budget_min" t-esc="state.opportunityData.min_budget_formatted"/>
+                                <div>
+                                    <span t-if="!state.isEditMode"
+                                          t-on-dblclick="() => this.enableFieldEdit('budget_min', 'clientFieldsExpanded')"
+                                          style="cursor: pointer;"
+                                          title="Doble clic para editar"
+                                          t-esc="state.opportunityData.min_budget_formatted || '$0'"/>
                                     <input t-else="" type="number" class="form-control form-control-sm"
                                            t-model="state.opportunityData.min_budget"
-                                           t-on-blur="() => this.saveField('budget_min')"/>
-                                    <button class="btn btn-sm btn-link p-0"
-                                            t-on-click="() => this.toggleEdit('budget_min')">
-                                        <i t-att-class="state.editing.budget_min ? 'fa fa-check text-success' : 'fa fa-edit'"/>
-                                    </button>
+                                           placeholder="Presupuesto mínimo"/>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <label class="text-muted small text-uppercase">Presupuesto Máximo</label>
-                                <div class="d-flex align-items-center gap-1">
-                                    <t t-if="!state.editing.budget_max" t-esc="state.opportunityData.max_budget_formatted"/>
+                                <div>
+                                    <span t-if="!state.isEditMode"
+                                          t-on-dblclick="() => this.enableFieldEdit('budget_max', 'clientFieldsExpanded')"
+                                          style="cursor: pointer;"
+                                          title="Doble clic para editar"
+                                          t-esc="state.opportunityData.max_budget_formatted || '$0'"/>
                                     <input t-else="" type="number" class="form-control form-control-sm"
                                            t-model="state.opportunityData.max_budget"
-                                           t-on-blur="() => this.saveField('budget_max')"/>
-                                    <button class="btn btn-sm btn-link p-0"
-                                            t-on-click="() => this.toggleEdit('budget_max')">
-                                        <i t-att-class="state.editing.budget_max ? 'fa fa-check text-success' : 'fa fa-edit'"/>
-                                    </button>
+                                           placeholder="Presupuesto máximo"/>
                                 </div>
                             </div>
                         </div>

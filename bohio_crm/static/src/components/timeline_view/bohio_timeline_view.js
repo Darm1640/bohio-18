@@ -30,6 +30,9 @@ class BohioTimelineView extends Component {
             filterService: '',
             // Edición inline
             editing: {},
+            // Modo edición global
+            isEditMode: false,
+            originalData: {},
         });
 
         onWillStart(async () => {
@@ -113,6 +116,18 @@ class BohioTimelineView extends Component {
     }
 
     // === ACTION BUTTONS ===
+    async createNewOpportunity() {
+        this.action.doAction({
+            type: 'ir.actions.act_window',
+            res_model: 'crm.lead',
+            views: [[false, 'form']],
+            target: 'current',
+            context: {
+                default_type: 'opportunity',
+            }
+        });
+    }
+
     async editOpportunity() {
         this.action.doAction({
             type: 'ir.actions.act_window',
@@ -299,6 +314,75 @@ class BohioTimelineView extends Component {
         });
     }
 
+    // === MODO EDICIÓN GLOBAL ===
+    enableEditMode() {
+        // Guardar copia de datos originales para poder cancelar
+        this.state.originalData = JSON.parse(JSON.stringify(this.state.opportunityData));
+        this.state.isEditMode = true;
+        // Expandir todas las secciones para facilitar edición
+        this.state.clientFieldsExpanded = true;
+        this.state.additionalInfoExpanded = true;
+        this.state.amenitiesExpanded = true;
+        this.state.contractInfoExpanded = true;
+    }
+
+    async saveAllChanges() {
+        const oppId = this.state.opportunityData.id;
+        const fieldsToSave = {
+            partner_name: this.state.opportunityData.partner_name,
+            phone: this.state.opportunityData.phone,
+            email_from: this.state.opportunityData.email,
+            budget_min: this.state.opportunityData.min_budget,
+            budget_max: this.state.opportunityData.max_budget,
+            number_of_occupants: this.state.opportunityData.number_of_occupants,
+            has_pets: this.state.opportunityData.has_pets,
+            pet_type: this.state.opportunityData.pet_type,
+            requires_parking: this.state.opportunityData.requires_parking,
+            parking_spots: this.state.opportunityData.parking_spots,
+            occupation: this.state.opportunityData.occupation,
+            monthly_income: this.state.opportunityData.monthly_income,
+            requires_common_areas: this.state.opportunityData.requires_common_areas,
+            requires_gym: this.state.opportunityData.requires_gym,
+            requires_pool: this.state.opportunityData.requires_pool,
+            requires_security: this.state.opportunityData.requires_security,
+            requires_elevator: this.state.opportunityData.requires_elevator,
+            property_purpose: this.state.opportunityData.property_purpose,
+            contract_start_date: this.state.opportunityData.contract_start_date,
+            contract_duration_months: this.state.opportunityData.contract_duration_months,
+            commission_percentage: this.state.opportunityData.commission_percentage,
+        };
+
+        try {
+            await this.orm.write('crm.lead', [oppId], fieldsToSave);
+            this.notification.add('Cambios guardados exitosamente', { type: 'success' });
+            this.state.isEditMode = false;
+            this.state.originalData = {};
+            await this.loadOpportunityData();
+        } catch (error) {
+            this.notification.add('Error al guardar: ' + error.message, { type: 'danger' });
+        }
+    }
+
+    cancelEditMode() {
+        // Restaurar datos originales
+        this.state.opportunityData = JSON.parse(JSON.stringify(this.state.originalData));
+        this.state.isEditMode = false;
+        this.state.originalData = {};
+        this.notification.add('Cambios cancelados', { type: 'info' });
+    }
+
+    enableFieldEdit(fieldName, sectionToExpand = null) {
+        // Activar modo edición global
+        if (!this.state.isEditMode) {
+            this.enableEditMode();
+        }
+
+        // Expandir sección específica si se proporciona
+        if (sectionToExpand) {
+            this.state[sectionToExpand] = true;
+        }
+    }
+
     // === UI ACTIONS ===
     toggleClientFields() {
         this.state.clientFieldsExpanded = !this.state.clientFieldsExpanded;
@@ -321,7 +405,65 @@ class BohioTimelineView extends Component {
         await this.loadOpportunityData();
     }
 
+    // === QUICK ADD ACTIONS ===
+    async quickAddField(fieldType) {
+        const oppId = this.state.opportunityData.id;
+
+        switch (fieldType) {
+            case 'partner':
+                this.toggleEdit('partner_name');
+                break;
+            case 'service':
+                // Abrir diálogo para seleccionar servicio
+                const services = [
+                    { value: 'sale', label: 'Venta' },
+                    { value: 'rent', label: 'Arriendo' },
+                    { value: 'projects', label: 'Proyectos' },
+                    { value: 'consign', label: 'Consignar Inmueble' },
+                ];
+                // Por ahora, expandir la sección de cliente
+                this.state.clientFieldsExpanded = true;
+                break;
+            case 'budget':
+                this.state.clientFieldsExpanded = true;
+                this.toggleEdit('budget_min');
+                break;
+            case 'properties':
+                this.action.doAction({
+                    type: 'ir.actions.act_window',
+                    res_model: 'product.template',
+                    name: 'Seleccionar Propiedades',
+                    views: [[false, 'kanban'], [false, 'list']],
+                    domain: [['is_property', '=', true], ['state', '=', 'free']],
+                    context: {
+                        lead_id: oppId,
+                    },
+                    target: 'current',
+                });
+                break;
+        }
+    }
+
     // === CALCULATIONS ===
+    get completionPercentage() {
+        const data = this.state.opportunityData;
+        let completed = 0;
+        const total = 10; // Total de campos importantes
+
+        if (data.partner_id && data.partner_id[0]) completed++;
+        if (data.service_interested) completed++;
+        if (data.budget_min) completed++;
+        if (data.phone) completed++;
+        if (data.email) completed++;
+        if (data.client_type) completed++;
+        if (this.state.comparisonProperties.length > 0) completed++;
+        if (data.number_of_occupants) completed++;
+        if (data.desired_neighborhood) completed++;
+        if (data.expected_revenue) completed++;
+
+        return Math.round((completed / total) * 100);
+    }
+
     get totalRevenue() {
         const expected = this.state.opportunityData.expected_revenue || 0;
         const recurring = (this.state.opportunityData.recurring_revenue || 0) * 12;
