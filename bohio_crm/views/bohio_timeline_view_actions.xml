@@ -19,25 +19,18 @@
 
 
 
-    <!-- MENU ITEM: Acceso directo desde menú CRM -->
+    <!-- MENU ITEM: Vista Rápida CRM (Original) -->
     <menuitem id="menu_crm_timeline_view"
-              name="Vista Timeline (Original)"
+              name="Vista Rápida CRM"
               parent="crm.crm_menu_sales"
               action="action_crm_lead_timeline_view"
               sequence="10"/>
 
-    <!-- MENU ITEM: Vista Timeline V2 -->
+    <!-- MENU ITEM: Vista Timeline (Principal) -->
     <menuitem id="menu_crm_timeline_view_v2"
-              name="Timeline V2 (Mejorada)"
+              name="Vista Timeline"
               parent="crm.crm_menu_sales"
               action="action_crm_lead_timeline_view_v2"
               sequence="11"/>
-
-    <!-- MENU ITEM: Acceso desde menú raíz de propiedades -->
-    <menuitem id="menu_property_timeline_view"
-              name="Timeline CRM"
-              action="action_crm_lead_timeline_view"
-              sequence="25"
-              groups="base.group_user"/>
 
 </odoo>

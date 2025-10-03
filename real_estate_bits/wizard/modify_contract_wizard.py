@@ -57,8 +57,8 @@ class ModifyContractWizard(models.TransientModel):
     # Información actual del contrato (como Asset)
     current_end_date = fields.Date(related='contract_id.date_to', readonly=True)
     current_rental_fee = fields.Float(related='contract_id.rental_fee', readonly=True)
-    currency_id = fields.Many2one(related='contract_id.company_id.currency_id')
-    company_id = fields.Many2one(related='contract_id.company_id')
+    currency_id = fields.Many2one('res.currency', related='contract_id.company_id.currency_id', readonly=True)
+    company_id = fields.Many2one('res.company', related='contract_id.company_id', readonly=True)
 
     # Campos calculados
     pending_amount = fields.Float('Monto Pendiente', compute='_compute_pending_info')

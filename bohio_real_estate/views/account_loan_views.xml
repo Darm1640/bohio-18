@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Vista formulario extendida de account.loan -->
+    <record id="view_account_loan_form_inherit" model="ir.ui.view">
+        <field name="name">account.loan.form.inherit</field>
+        <field name="model">account.loan</field>
+        <field name="inherit_id" ref="account_loans.account_loan_view_form"/>
+        <field name="arch" type="xml">
+            <!-- Agregar botones en header -->
+            <xpath expr="//header" position="inside">
+                <button name="action_generate_invoice"
+                        type="object"
+                        string="Generar Factura"
+                        class="btn-primary"
+                        invisible="state != 'open'"/>
+                <button name="action_view_invoices"
+                        type="object"
+                        string="Ver Facturas"
+                        class="btn-secondary"
+                        invisible="invoice_count == 0"/>
+            </xpath>
+
+            <!-- Agregar campos de contacto y tipo -->
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="partner_id" required="1"/>
+                <field name="loan_type" required="1"/>
+            </xpath>
+
+            <!-- Agregar página de Facturación -->
+            <xpath expr="//notebook" position="inside">
+                <page string="Facturación" name="invoicing">
+                    <group>
+                        <group string="Configuración de Facturación">
+                            <field name="payment_period"/>
+                            <field name="auto_generate_invoices"/>
+                            <field name="late_payment_rate"/>
+                        </group>
+                        <group string="Cargos Adicionales">
+                            <field name="admin_fee"/>
+                            <field name="insurance_fee"/>
+                        </group>
+                    </group>
+
+                    <group>
+                        <group string="Productos para Facturación">
+                            <field name="interest_product_id"/>
+                            <field name="late_fee_product_id"/>
+                            <field name="admin_fee_product_id"/>
+                            <field name="insurance_product_id"/>
+                        </group>
+                        <group string="Facturas Generadas">
+                            <field name="invoice_count"/>
+                            <button name="action_view_invoices"
+                                    type="object"
+                                    string="Ver Facturas"
+                                    class="oe_link"
+                                    invisible="invoice_count == 0"/>
+                        </group>
+                    </group>
+                </page>
+
+                <!-- Página de Pagos Especiales -->
+                <page string="Pagos Especiales" name="special_payments">
+                    <field name="special_payment_ids">
+                        <list string="Pagos Especiales" editable="bottom">
+                            <field name="date"/>
+                            <field name="name"/>
+                            <field name="payment_type"/>
+                            <field name="amount" widget="monetary"/>
+                            <field name="currency_id" column_invisible="1"/>
+                            <field name="state" widget="badge" decoration-info="state == 'draft'"
+                                   decoration-success="state == 'confirmed'"
+                                   decoration-warning="state == 'invoiced'"
+                                   decoration-muted="state == 'cancelled'"/>
+                            <field name="invoice_id" optional="hide"/>
+                            <button name="action_confirm" type="object" string="Confirmar"
+                                    icon="fa-check" invisible="state != 'draft'"/>
+                            <button name="action_generate_invoice" type="object" string="Facturar"
+                                    icon="fa-file-invoice" invisible="state != 'confirmed'"/>
+                            <button name="action_cancel" type="object" string="Cancelar"
+                                    icon="fa-times" invisible="state not in ('draft', 'confirmed')"/>
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Vista de lista extendida -->
+    <record id="view_account_loan_list_inherit" model="ir.ui.view">
+        <field name="name">account.loan.list.inherit</field>
+        <field name="model">account.loan</field>
+        <field name="inherit_id" ref="account_loans.account_loan_view_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="partner_id" optional="show"/>
+                <field name="loan_type" optional="show"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Filtros de búsqueda -->
+    <record id="view_account_loan_search_inherit" model="ir.ui.view">
+        <field name="name">account.loan.search.inherit</field>
+        <field name="model">account.loan</field>
+        <field name="inherit_id" ref="account_loans.account_loan_view_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search" position="inside">
+                <field name="partner_id"/>
+                <filter string="Préstamos Otorgados" name="given" domain="[('loan_type', '=', 'given')]"/>
+                <filter string="Préstamos Recibidos" name="received" domain="[('loan_type', '=', 'received')]"/>
+                <separator/>
+                <filter string="Con Facturación Auto" name="auto_invoicing" domain="[('auto_generate_invoices', '=', True)]"/>
+                <separator/>
+                <group expand="0" string="Agrupar Por">
+                    <filter string="Tipo de Préstamo" name="group_loan_type" context="{'group_by': 'loan_type'}"/>
+                    <filter string="Prestatario/Prestamista" name="group_partner" context="{'group_by': 'partner_id'}"/>
+                    <filter string="Período de Pago" name="group_period" context="{'group_by': 'payment_period'}"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Vista de facturas relacionadas -->
+    <record id="view_account_move_loan_list" model="ir.ui.view">
+        <field name="name">account.move.loan.list</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_invoice_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="loan_id" optional="hide"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

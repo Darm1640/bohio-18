@@ -98,12 +98,10 @@ class BohioPortal(CustomerPortal):
 
         metrics = self._calculate_owner_metrics(partner, properties, owner_contracts)
 
-        # Préstamos del propietario (si el módulo está instalado)
-        loans = False
-        if 'account.loan' in request.env:
-            loans = request.env['account.loan'].sudo().search([
-                ('partner_id', '=', partner.id)
-            ])
+        # Préstamos del propietario
+        loans = request.env['account.loan'].sudo().search([
+            ('partner_id', '=', partner.id)
+        ])
 
         # Oportunidades visibles en portal (solo nombre y etapa)
         opportunities = request.env['crm.lead'].search([
