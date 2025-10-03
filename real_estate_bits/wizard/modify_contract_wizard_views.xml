@@ -16,6 +16,10 @@
                     </header>
 
                     <sheet>
+                        <!-- Campos invisibles necesarios -->
+                        <field name="currency_id" invisible="1"/>
+                        <field name="company_id" invisible="1"/>
+
                         <div class="o_wizard_header">
                             <h2><i class="fa fa-edit"></i> Modificar Contrato</h2>
                             <h4 class="text-muted">
@@ -33,7 +37,7 @@
                                 </div>
                                 <div class="col-md-3">
                                     <strong>Canon Actual:</strong><br/>
-                                    <field name="current_rental_fee" widget="monetary" readonly="1"/>
+                                    <field name="current_rental_fee" widget="monetary" options="{'currency_field': 'currency_id'}" readonly="1"/>
                                 </div>
                                 <div class="col-md-3">
                                     <strong>Facturas Pendientes:</strong><br/>
@@ -41,7 +45,7 @@
                                 </div>
                                 <div class="col-md-3">
                                     <strong>Monto Pendiente:</strong><br/>
-                                    <field name="pending_amount" widget="monetary" readonly="1"/>
+                                    <field name="pending_amount" widget="monetary" options="{'currency_field': 'currency_id'}" readonly="1"/>
                                 </div>
                             </div>
                         </div>
@@ -65,19 +69,19 @@
 
                         <group string="Configuración de Renovación" invisible="modify_action != 'renew'">
                             <field name="new_end_date" required="modify_action == 'renew'"/>
-                            <field name="new_rental_fee"/>
+                            <field name="new_rental_fee" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                             <field name="copy_conditions"/>
                         </group>
 
                         <group string="Modificación de Monto" invisible="modify_action != 'modify_amount'">
                             <field name="rental_increase_percentage"/>
-                            <field name="new_rental_fee" required="modify_action == 'modify_amount'"/>
+                            <field name="new_rental_fee" widget="monetary" options="{'currency_field': 'currency_id'}" required="modify_action == 'modify_amount'"/>
                         </group>
 
                         <group string="Configuración de Cancelación" invisible="modify_action != 'cancel'">
                             <field name="cancellation_type" required="modify_action == 'cancel'"/>
                             <field name="apply_penalty"/>
-                            <field name="penalty_amount" invisible="not apply_penalty"/>
+                            <field name="penalty_amount" widget="monetary" options="{'currency_field': 'currency_id'}" invisible="not apply_penalty"/>
                         </group>
 
                         <group string="Configuración de Suspensión" invisible="modify_action != 'pause'">

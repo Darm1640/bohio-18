@@ -54,26 +54,111 @@
 
                                         <div class="col-md-6">
                                             <h5><i class="fa fa-info-circle text-primary"/> Características</h5>
-                                            <div class="row">
+
+                                            <!-- Características principales (siempre visibles si existen) -->
+                                            <div class="row mb-3">
                                                 <div class="col-6 mb-2" t-if="property.property_area">
-                                                    <i class="fa fa-arrows-alt"/> <strong t-esc="'%.0f' % property.property_area"/> m²
+                                                    <i class="fa fa-arrows-alt text-primary"/>
+                                                    <strong t-esc="'%.0f' % property.property_area"/> m²
+                                                    <small class="text-muted d-block">Área total</small>
                                                 </div>
                                                 <div class="col-6 mb-2" t-if="property.num_bedrooms">
-                                                    <i class="fa fa-bed"/> <strong t-esc="property.num_bedrooms"/> Habitaciones
+                                                    <i class="fa fa-bed text-primary"/>
+                                                    <strong t-esc="property.num_bedrooms"/>
+                                                    <small class="text-muted">Habitaciones</small>
                                                 </div>
                                                 <div class="col-6 mb-2" t-if="property.num_bathrooms">
-                                                    <i class="fa fa-bath"/> <strong t-esc="property.num_bathrooms"/> Baños
+                                                    <i class="fa fa-bath text-primary"/>
+                                                    <strong t-esc="property.num_bathrooms"/>
+                                                    <small class="text-muted">Baños</small>
                                                 </div>
-                                                <div class="col-6 mb-2" t-if="property.property_age">
-                                                    <i class="fa fa-calendar"/> <strong t-esc="property.property_age"/> años
-                                                </div>
-                                                <div class="col-6 mb-2" t-if="property.number_of_levels">
-                                                    <i class="fa fa-building"/> <strong t-esc="property.number_of_levels"/> Niveles
-                                                </div>
-                                                <div class="col-6 mb-2" t-if="property.floor_number">
-                                                    <i class="fa fa-layer-group"/> Piso <strong t-esc="property.floor_number"/>
+                                                <div class="col-6 mb-2" t-if="property.parking_spaces">
+                                                    <i class="fa fa-car text-primary"/>
+                                                    <strong t-esc="property.parking_spaces"/>
+                                                    <small class="text-muted">Parqueaderos</small>
                                                 </div>
                                             </div>
+
+                                            <!-- Características de edificio/estructura -->
+                                            <div class="row mb-2" t-if="property.property_age or property.number_of_levels or property.floor_number">
+                                                <div class="col-12">
+                                                    <h6 class="text-muted mb-2"><i class="fa fa-building"/> Edificación</h6>
+                                                </div>
+                                                <div class="col-6 mb-2" t-if="property.property_age">
+                                                    <i class="fa fa-calendar"/>
+                                                    <strong t-esc="property.property_age"/> años
+                                                </div>
+                                                <div class="col-6 mb-2" t-if="property.number_of_levels">
+                                                    <i class="fa fa-building"/>
+                                                    <strong t-esc="property.number_of_levels"/> Niveles
+                                                </div>
+                                                <div class="col-6 mb-2" t-if="property.floor_number">
+                                                    <i class="fa fa-layer-group"/>
+                                                    Piso <strong t-esc="property.floor_number"/>
+                                                </div>
+                                            </div>
+
+                                            <!-- Características adicionales según tipo -->
+                                            <t t-if="property.property_type_id">
+                                                <!-- Características para Apartamento/Casa (Residencial) -->
+                                                <t t-if="property.property_type_id.name in ['Apartamento', 'Casa', 'Apartaestudio']">
+                                                    <div class="row" t-if="property.balcony or property.terrace or property.closets">
+                                                        <div class="col-12">
+                                                            <h6 class="text-muted mb-2"><i class="fa fa-home"/> Adicionales</h6>
+                                                        </div>
+                                                        <div class="col-6 mb-2" t-if="property.balcony">
+                                                            <i class="fa fa-window-maximize text-success"/> Balcón
+                                                        </div>
+                                                        <div class="col-6 mb-2" t-if="property.terrace">
+                                                            <i class="fa fa-sun text-success"/> Terraza
+                                                        </div>
+                                                        <div class="col-6 mb-2" t-if="property.closets">
+                                                            <i class="fa fa-archive text-success"/> Closets
+                                                        </div>
+                                                    </div>
+                                                </t>
+
+                                                <!-- Características para Local Comercial/Bodega -->
+                                                <t t-if="property.property_type_id.name in ['Local Comercial', 'Bodega']">
+                                                    <div class="row" t-if="property.front_meters or property.ceiling_height or property.loading_dock">
+                                                        <div class="col-12">
+                                                            <h6 class="text-muted mb-2"><i class="fa fa-store"/> Comercial</h6>
+                                                        </div>
+                                                        <div class="col-6 mb-2" t-if="property.front_meters">
+                                                            <i class="fa fa-ruler-horizontal"/>
+                                                            <strong t-esc="property.front_meters"/> m frente
+                                                        </div>
+                                                        <div class="col-6 mb-2" t-if="property.ceiling_height">
+                                                            <i class="fa fa-ruler-vertical"/>
+                                                            <strong t-esc="property.ceiling_height"/> m altura
+                                                        </div>
+                                                        <div class="col-6 mb-2" t-if="property.loading_dock">
+                                                            <i class="fa fa-truck text-success"/> Muelle de carga
+                                                        </div>
+                                                    </div>
+                                                </t>
+
+                                                <!-- Características para Lote/Terreno -->
+                                                <t t-if="property.property_type_id.name in ['Lote', 'Terreno']">
+                                                    <div class="row" t-if="property.front_meters or property.depth_meters or property.land_use">
+                                                        <div class="col-12">
+                                                            <h6 class="text-muted mb-2"><i class="fa fa-map"/> Terreno</h6>
+                                                        </div>
+                                                        <div class="col-6 mb-2" t-if="property.front_meters">
+                                                            <i class="fa fa-ruler-horizontal"/>
+                                                            <strong t-esc="property.front_meters"/> m frente
+                                                        </div>
+                                                        <div class="col-6 mb-2" t-if="property.depth_meters">
+                                                            <i class="fa fa-ruler-vertical"/>
+                                                            <strong t-esc="property.depth_meters"/> m fondo
+                                                        </div>
+                                                        <div class="col-12 mb-2" t-if="property.land_use">
+                                                            <i class="fa fa-info-circle"/>
+                                                            Uso: <strong t-esc="property.land_use"/>
+                                                        </div>
+                                                    </div>
+                                                </t>
+                                            </t>
                                         </div>
                                     </div>
 

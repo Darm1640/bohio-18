@@ -105,12 +105,12 @@
                                             </div>
 
                                             <div class="col-md-2">
-                                                <input type="number" name="price_min" class="form-control"
+                                                <input type="number" name="price_min" id="price_min" class="form-control price-input"
                                                        t-att-value="price_min" placeholder="Precio Mín" min="0" step="1000000"/>
                                             </div>
 
                                             <div class="col-md-2">
-                                                <input type="number" name="price_max" class="form-control"
+                                                <input type="number" name="price_max" id="price_max" class="form-control price-input"
                                                        t-att-value="price_max" placeholder="Precio Máx" min="0" step="1000000"/>
                                             </div>
 
@@ -184,16 +184,77 @@
                                             </small>
                                         </p>
 
-                                        <div class="d-flex justify-content-between mb-2">
-                                            <span t-if="property.num_bedrooms">
-                                                <i class="fa fa-bed"/> <span t-esc="property.num_bedrooms"/> Hab
-                                            </span>
-                                            <span t-if="property.num_bathrooms">
-                                                <i class="fa fa-bath"/> <span t-esc="property.num_bathrooms"/> Baños
-                                            </span>
-                                            <span t-if="property.property_area">
-                                                <i class="fa fa-arrows-alt"/> <span t-esc="'%.0f' % property.property_area"/> m²
-                                            </span>
+                                        <!-- Características principales agrupadas -->
+                                        <div class="property-features mb-2">
+                                            <!-- Características comunes para todos -->
+                                            <div class="d-flex justify-content-between text-muted small">
+                                                <span t-if="property.property_area" class="feature-item">
+                                                    <i class="fa fa-arrows-alt text-primary"/> <strong t-esc="'%.0f' % property.property_area"/> m²
+                                                </span>
+                                                <span t-if="property.num_bedrooms" class="feature-item">
+                                                    <i class="fa fa-bed text-primary"/> <strong t-esc="property.num_bedrooms"/>
+                                                </span>
+                                                <span t-if="property.num_bathrooms" class="feature-item">
+                                                    <i class="fa fa-bath text-primary"/> <strong t-esc="property.num_bathrooms"/>
+                                                </span>
+                                                <span t-if="property.parking_spaces" class="feature-item">
+                                                    <i class="fa fa-car text-primary"/> <strong t-esc="property.parking_spaces"/>
+                                                </span>
+                                            </div>
+
+                                            <!-- Características específicas según tipo -->
+                                            <t t-if="property.property_type">
+                                                <!-- Apartamento, Casa, Apartaestudio -->
+                                                <t t-if="property.property_type in ['apartment', 'house', 'studio']">
+                                                    <div class="d-flex justify-content-between text-muted small mt-1" t-if="property.floor_number or property.balcony or property.stratum">
+                                                        <span t-if="property.floor_number" class="feature-item">
+                                                            <i class="fa fa-layer-group"/> Piso <strong t-esc="property.floor_number"/>
+                                                        </span>
+                                                        <span t-if="property.balcony" class="feature-item text-success">
+                                                            <i class="fa fa-window-maximize"/> Balcón
+                                                        </span>
+                                                        <span t-if="property.stratum" class="feature-item">
+                                                            <i class="fa fa-star"/> E<strong t-esc="property.stratum"/>
+                                                        </span>
+                                                    </div>
+                                                </t>
+
+                                                <!-- Local Comercial, Bodega -->
+                                                <t t-if="property.property_type in ['local', 'bodega']">
+                                                    <div class="d-flex justify-content-between text-muted small mt-1" t-if="property.front_meters or property.ceiling_height">
+                                                        <span t-if="property.front_meters" class="feature-item">
+                                                            <i class="fa fa-ruler-horizontal"/> <strong t-esc="property.front_meters"/>m frente
+                                                        </span>
+                                                        <span t-if="property.ceiling_height" class="feature-item">
+                                                            <i class="fa fa-ruler-vertical"/> <strong t-esc="property.ceiling_height"/>m altura
+                                                        </span>
+                                                    </div>
+                                                </t>
+
+                                                <!-- Lote, Parcela, Lote Campestre -->
+                                                <t t-if="property.property_type in ['lot', 'plot', 'country_lot']">
+                                                    <div class="d-flex justify-content-between text-muted small mt-1" t-if="property.front_meters or property.depth_meters">
+                                                        <span t-if="property.front_meters" class="feature-item">
+                                                            <i class="fa fa-ruler-horizontal"/> <strong t-esc="property.front_meters"/>m frente
+                                                        </span>
+                                                        <span t-if="property.depth_meters" class="feature-item">
+                                                            <i class="fa fa-ruler-vertical"/> <strong t-esc="property.depth_meters"/>m fondo
+                                                        </span>
+                                                    </div>
+                                                </t>
+
+                                                <!-- Oficina -->
+                                                <t t-if="property.property_type == 'office'">
+                                                    <div class="d-flex justify-content-between text-muted small mt-1" t-if="property.floor_number or property.num_offices">
+                                                        <span t-if="property.floor_number" class="feature-item">
+                                                            <i class="fa fa-layer-group"/> Piso <strong t-esc="property.floor_number"/>
+                                                        </span>
+                                                        <span t-if="property.num_offices" class="feature-item">
+                                                            <i class="fa fa-door-open"/> <strong t-esc="property.num_offices"/> oficinas
+                                                        </span>
+                                                    </div>
+                                                </t>
+                                            </t>
                                         </div>
 
                                         <h4 class="text-primary mb-3">
@@ -241,6 +302,59 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Script para sincronizar precios -->
+            <script type="text/javascript">
+                document.addEventListener('DOMContentLoaded', function() {
+                    const priceMin = document.getElementById('price_min');
+                    const priceMax = document.getElementById('price_max');
+
+                    if (priceMin &amp;&amp; priceMax) {
+                        // Función para sincronizar precios
+                        function syncPrices(sourceInput, targetInput) {
+                            const sourceValue = parseFloat(sourceInput.value) || 0;
+                            const targetValue = parseFloat(targetInput.value) || 0;
+
+                            // Si el campo origen tiene valor y el destino está vacío o es 0
+                            // copiar el valor del origen al destino
+                            if (sourceValue > 0 &amp;&amp; targetValue === 0) {
+                                targetInput.value = sourceValue;
+                            }
+                        }
+
+                        // Evento cuando el usuario ingresa precio mínimo
+                        priceMin.addEventListener('blur', function() {
+                            syncPrices(priceMin, priceMax);
+                        });
+
+                        // Evento cuando el usuario ingresa precio máximo
+                        priceMax.addEventListener('blur', function() {
+                            syncPrices(priceMax, priceMin);
+                        });
+
+                        // También sincronizar al cambiar (input event)
+                        priceMin.addEventListener('input', function() {
+                            const minValue = parseFloat(priceMin.value) || 0;
+                            const maxValue = parseFloat(priceMax.value) || 0;
+
+                            // Si min es mayor que max y max no está vacío, ajustar max
+                            if (minValue > 0 &amp;&amp; maxValue > 0 &amp;&amp; minValue > maxValue) {
+                                priceMax.value = minValue;
+                            }
+                        });
+
+                        priceMax.addEventListener('input', function() {
+                            const minValue = parseFloat(priceMin.value) || 0;
+                            const maxValue = parseFloat(priceMax.value) || 0;
+
+                            // Si max es menor que min y min no está vacío, ajustar min
+                            if (maxValue > 0 &amp;&amp; minValue > 0 &amp;&amp; maxValue &lt; minValue) {
+                                priceMin.value = maxValue;
+                            }
+                        });
+                    }
+                });
+            </script>
         </t>
     </template>
 </odoo>
