@@ -10,7 +10,7 @@
     <menuitem id="menu_bohio_loans"
               name="Préstamos"
               parent="menu_bohio_loans_root"
-              action="account_loans.action_account_loan"
+              action="account_loans.action_view_account_loans"
               sequence="1"/>
 
     <!-- Plantillas de Préstamo -->
