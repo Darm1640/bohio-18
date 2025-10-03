@@ -729,8 +729,10 @@
                                                        t-model="state.record.requires_pool"/>
                                                 <label class="form-check-label">
                                                     Piscina
-                                                    <span t-if="!state.isEditMode" class="badge bg-success ms-2" t-if="state.record.requires_pool">Sí</span>
-                                                    <span t-if="!state.isEditMode" class="badge bg-secondary ms-2" t-else="">No</span>
+                                                    <t t-if="!state.isEditMode">
+                                                        <span t-if="state.record.requires_pool" class="badge bg-success ms-2">Sí</span>
+                                                        <span t-else="" class="badge bg-secondary ms-2">No</span>
+                                                    </t>
                                                 </label>
                                             </div>
                                         </div>
@@ -743,8 +745,10 @@
                                                        t-model="state.record.requires_security"/>
                                                 <label class="form-check-label">
                                                     Seguridad 24/7
-                                                    <span t-if="!state.isEditMode" class="badge bg-success ms-2" t-if="state.record.requires_security">Sí</span>
-                                                    <span t-if="!state.isEditMode" class="badge bg-secondary ms-2" t-else="">No</span>
+                                                    <t t-if="!state.isEditMode">
+                                                        <span t-if="state.record.requires_security" class="badge bg-success ms-2">Sí</span>
+                                                        <span t-else="" class="badge bg-secondary ms-2">No</span>
+                                                    </t>
                                                 </label>
                                             </div>
                                         </div>
@@ -757,8 +761,10 @@
                                                        t-model="state.record.requires_elevator"/>
                                                 <label class="form-check-label">
                                                     Ascensor
-                                                    <span t-if="!state.isEditMode" class="badge bg-success ms-2" t-if="state.record.requires_elevator">Sí</span>
-                                                    <span t-if="!state.isEditMode" class="badge bg-secondary ms-2" t-else="">No</span>
+                                                    <t t-if="!state.isEditMode">
+                                                        <span t-if="state.record.requires_elevator" class="badge bg-success ms-2">Sí</span>
+                                                        <span t-else="" class="badge bg-secondary ms-2">No</span>
+                                                    </t>
                                                 </label>
                                             </div>
                                         </div>
