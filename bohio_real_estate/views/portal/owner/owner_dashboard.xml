@@ -221,8 +221,8 @@
                                                             <small class="text-muted" t-esc="prop.property_type_id.name if prop.property_type_id else 'Sin tipo'"/>
                                                         </div>
                                                         <div class="mb-2">
-                                                            <t t-if="prop.rental_price and prop.rental_price > 0">
-                                                                <strong class="text-success">Arriendo: $<t t-esc="'{:,.0f}'.format(prop.rental_price)"/></strong>
+                                                            <t t-if="prop.net_rental_price and prop.net_rental_price > 0">
+                                                                <strong class="text-success">Arriendo: $<t t-esc="'{:,.0f}'.format(prop.net_rental_price)"/></strong>
                                                             </t>
                                                             <t t-elif="prop.list_price and prop.list_price > 0">
                                                                 <strong class="text-primary">Venta: $<t t-esc="'{:,.0f}'.format(prop.list_price)"/></strong>

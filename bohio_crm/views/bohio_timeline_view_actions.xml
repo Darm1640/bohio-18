@@ -24,6 +24,7 @@
               name="Vista Rápida CRM"
               parent="crm.crm_menu_sales"
               action="action_crm_lead_timeline_view"
+              groups="base.group_user"
               sequence="10"/>
 
     <!-- MENU ITEM: Vista Timeline (Principal) -->
@@ -31,6 +32,7 @@
               name="Vista Timeline"
               parent="crm.crm_menu_sales"
               action="action_crm_lead_timeline_view_v2"
+              groups="base.group_user"
               sequence="11"/>
 
 </odoo>
