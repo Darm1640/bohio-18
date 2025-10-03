@@ -24,6 +24,19 @@
             <xpath expr="//field[@name='name']" position="after">
                 <field name="partner_id" required="1"/>
                 <field name="loan_type" required="1"/>
+                <field name="template_id" placeholder="Seleccionar plantilla..."
+                       domain="[('loan_type', '=', loan_type)]"
+                       context="{'default_loan_type': loan_type}"/>
+            </xpath>
+
+            <!-- Agregar botón para aplicar plantilla -->
+            <xpath expr="//header" position="inside">
+                <button name="action_apply_template"
+                        type="object"
+                        string="Aplicar Plantilla"
+                        class="btn-info"
+                        invisible="not template_id or state != 'draft'"
+                        help="Aplicar la configuración de la plantilla y crear pagos especiales predefinidos"/>
             </xpath>
 
             <!-- Agregar página de Facturación -->

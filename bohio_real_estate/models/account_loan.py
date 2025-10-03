@@ -99,10 +99,84 @@ class AccountLoan(models.Model):
         help='Cuotas extras, pagos anticipados, mora, ajustes, etc.'
     )
 
+    # Plantilla de préstamo
+    template_id = fields.Many2one(
+        'account.loan.template',
+        string='Plantilla',
+        help='Plantilla usada para crear este préstamo'
+    )
+
     @api.depends('invoice_ids')
     def _compute_invoice_count(self):
         for loan in self:
             loan.invoice_count = len(loan.invoice_ids)
+
+    @api.onchange('template_id')
+    def _onchange_template_id(self):
+        """Aplicar valores de la plantilla al préstamo"""
+        if self.template_id:
+            template = self.template_id
+
+            # Aplicar valores básicos
+            self.loan_type = template.loan_type
+            self.duration = template.duration
+            self.late_payment_rate = template.late_payment_rate
+            self.admin_fee = template.admin_fee
+            self.insurance_fee = template.insurance_fee
+            self.payment_period = template.payment_period
+            self.auto_generate_invoices = template.auto_generate_invoices
+            self.currency_id = template.currency_id
+
+            # Aplicar cuentas contables
+            if template.long_term_account_id:
+                self.long_term_account_id = template.long_term_account_id
+            if template.short_term_account_id:
+                self.short_term_account_id = template.short_term_account_id
+            if template.expense_account_id:
+                self.expense_account_id = template.expense_account_id
+            if template.journal_id:
+                self.journal_id = template.journal_id
+
+            # Aplicar productos
+            if template.interest_product_id:
+                self.interest_product_id = template.interest_product_id
+            if template.late_fee_product_id:
+                self.late_fee_product_id = template.late_fee_product_id
+            if template.admin_fee_product_id:
+                self.admin_fee_product_id = template.admin_fee_product_id
+            if template.insurance_product_id:
+                self.insurance_product_id = template.insurance_product_id
+
+    def action_apply_template(self):
+        """Aplicar plantilla y crear pagos especiales predefinidos"""
+        self.ensure_one()
+
+        if not self.template_id:
+            raise UserError(_('Debe seleccionar una plantilla primero'))
+
+        template = self.template_id
+
+        # Eliminar pagos especiales existentes si los hay
+        if self.special_payment_ids:
+            self.special_payment_ids.unlink()
+
+        # Crear pagos especiales desde la plantilla
+        for payment_template in template.default_special_payment_ids:
+            if payment_template.auto_create:
+                self.env['account.loan.special.payment'].create({
+                    'loan_id': self.id,
+                    'name': payment_template.name,
+                    'payment_type': payment_template.payment_type,
+                    'amount': payment_template.amount,
+                    'product_id': payment_template.product_id.id if payment_template.product_id else False,
+                    'notes': payment_template.notes,
+                })
+
+        self.message_post(
+            body=_('Plantilla "%s" aplicada correctamente. Se crearon %d pagos especiales.') % (
+                template.name, len(template.default_special_payment_ids.filtered('auto_create'))
+            )
+        )
 
     def action_generate_invoice(self):
         """Generar factura manual para el préstamo"""

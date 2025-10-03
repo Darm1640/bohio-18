@@ -26,6 +26,7 @@
         'security/ir.model.access.csv',
         'security/ir_rule.xml',
         'views/res_partner_views.xml',
+        'views/account_loan_template_views.xml',
         'views/account_loan_views.xml',
         'views/website_templates.xml',
         'views/portal_access_actions.xml',
