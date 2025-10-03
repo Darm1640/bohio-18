@@ -101,7 +101,7 @@
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="/mybohio/owner">Dashboard</a></li>
                                 <li class="breadcrumb-item"><a href="/mybohio/owner/properties">Propiedades</a></li>
-                                <li class="breadcrumb-item active" t-field="property.name"/>
+                                <li class="breadcrumb-item active" t-esc="property.name"/>
                             </ol>
                         </nav>
                     </div>
@@ -116,7 +116,7 @@
                             <div class="card-body">
                                 <div class="d-flex justify-content-between align-items-start mb-3">
                                     <div>
-                                        <h2 t-field="property.name"/>
+                                        <h2 t-esc="property.name"/>
                                         <p class="text-muted mb-0">
                                             <i class="fa fa-map-marker"></i>
                                             <t t-esc="property.address or property.street"/>
