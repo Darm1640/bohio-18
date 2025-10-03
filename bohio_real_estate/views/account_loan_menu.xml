@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Menú Principal BOHIO Préstamos -->
+    <menuitem id="menu_bohio_loans_root"
+              name="Préstamos BOHIO"
+              web_icon="bohio_real_estate,static/description/icon.png"
+              sequence="50"/>
+
+    <!-- Préstamos -->
+    <menuitem id="menu_bohio_loans"
+              name="Préstamos"
+              parent="menu_bohio_loans_root"
+              action="account_loans.action_account_loan"
+              sequence="1"/>
+
+    <!-- Plantillas de Préstamo -->
+    <menuitem id="menu_bohio_loan_templates"
+              name="Plantillas"
+              parent="menu_bohio_loans_root"
+              action="bohio_real_estate.action_account_loan_template"
+              sequence="5"/>
+
+    <!-- Pagos Especiales -->
+    <menuitem id="menu_bohio_loan_special_payments"
+              name="Pagos Especiales"
+              parent="menu_bohio_loans_root"
+              sequence="10"/>
+
+    <!-- Configuración -->
+    <menuitem id="menu_bohio_loans_config"
+              name="Configuración"
+              parent="menu_bohio_loans_root"
+              sequence="100"/>
+
+</odoo>

@@ -236,11 +236,4 @@
         </field>
     </record>
 
-    <!-- Menú -->
-    <menuitem id="menu_account_loan_template"
-              name="Plantillas de Préstamo"
-              parent="account_loans.menu_action_loans"
-              action="action_account_loan_template"
-              sequence="5"/>
-
 </odoo>

@@ -95,6 +95,12 @@ export class BohioTimelineViewV2 extends Component {
                 this.state.resId = this.state.opportunities[0].id;
                 await this._loadRecordData(this.state.resId);
             }
+        } catch (error) {
+            console.error("Error al cargar datos iniciales:", error);
+            this.notification.add(
+                `Error al cargar la vista: ${error.message || 'Error desconocido'}`,
+                { type: "danger" }
+            );
         } finally {
             this.state.isLoading = false;
         }
@@ -125,18 +131,18 @@ export class BohioTimelineViewV2 extends Component {
         this.state.isLoading = true;
         try {
             // Llamar al método del backend que retorna todos los datos
-            const data = await this.orm.call(
+            const result = await this.orm.call(
                 "crm.lead",
                 "get_timeline_view_data",
-                [resId]
+                [[resId]]  // Pasar como recordset
             );
 
-            // Almacenar en el estado reactivo
-            this.state.record = data;
+            // El método retorna un diccionario para un solo record
+            this.state.record = result;
 
             // Cargar propiedades
-            this.state.recommendedProperties = data.recommended_properties || [];
-            this.state.comparedProperties = data.comparison_properties || [];
+            this.state.recommendedProperties = result.recommended_properties || [];
+            this.state.comparedProperties = result.comparison_properties || [];
 
         } catch (error) {
             this.notification.add(

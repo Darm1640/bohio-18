@@ -28,6 +28,7 @@
         'views/res_partner_views.xml',
         'views/account_loan_template_views.xml',
         'views/account_loan_views.xml',
+        'views/account_loan_menu.xml',
         'views/website_templates.xml',
         'views/portal_access_actions.xml',
         'views/portal/common/portal_my_home.xml',
