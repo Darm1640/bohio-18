@@ -171,12 +171,30 @@ class CrmLead(models.Model):
             'partner_phone': self.partner_id.phone or '',
             'email': self.email_from or self.partner_id.email or '',
             'partner_vat': self.partner_id.vat or '',
+
+            # Tipo de cliente y servicio
+            'client_type': self.client_type or '',
             'customer_type': dict(self._fields['client_type'].selection).get(self.client_type, ''),
+            'service_interested': self.service_interested or '',
             'referral_partner': self.referred_by_partner_id.name if self.referred_by_partner_id else '',
+            'user_name': self.user_id.name if self.user_id else '',
+
+            # Presupuesto
             'min_budget': self.budget_min or 0,
             'max_budget': self.budget_max or 0,
             'min_budget_formatted': self._format_currency(self.budget_min),
             'max_budget_formatted': self._format_currency(self.budget_max),
+
+            # Preferencias de propiedad
+            'desired_city': self.desired_city or '',
+            'desired_neighborhood': self.desired_neighborhood or '',
+            'desired_property_type': self.desired_property_type_id.name if self.desired_property_type_id else '',
+            'min_bedrooms': self.min_bedrooms or 0,
+            'ideal_bedrooms': self.ideal_bedrooms or 0,
+            'min_bathrooms': self.min_bathrooms or 0,
+            'min_area': self.min_area or 0,
+            'max_area': self.max_area or 0,
+            'project_name': self.project_id.name if self.project_id else '',
 
             # Información adicional
             'number_of_occupants': self.number_of_occupants or 0,

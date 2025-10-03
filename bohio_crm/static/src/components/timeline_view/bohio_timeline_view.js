@@ -19,6 +19,7 @@ class BohioTimelineView extends Component {
             recommendedProperties: [],
             comparisonProperties: [],
             clientFieldsExpanded: false,
+            propertyPreferencesExpanded: false,
             additionalInfoExpanded: false,
             amenitiesExpanded: false,
             contractInfoExpanded: false,
@@ -314,6 +315,18 @@ class BohioTimelineView extends Component {
         });
     }
 
+    // === CAMBIO DE ETAPA ===
+    async changeStage(stageId) {
+        const oppId = this.state.opportunityData.id;
+        try {
+            await this.orm.write('crm.lead', [oppId], { stage_id: stageId });
+            this.notification.add('Etapa actualizada', { type: 'success' });
+            await this.loadOpportunityData();
+        } catch (error) {
+            this.notification.add('Error al cambiar etapa: ' + error.message, { type: 'danger' });
+        }
+    }
+
     // === MODO EDICIÓN GLOBAL ===
     enableEditMode() {
         // Guardar copia de datos originales para poder cancelar
@@ -321,6 +334,7 @@ class BohioTimelineView extends Component {
         this.state.isEditMode = true;
         // Expandir todas las secciones para facilitar edición
         this.state.clientFieldsExpanded = true;
+        this.state.propertyPreferencesExpanded = true;
         this.state.additionalInfoExpanded = true;
         this.state.amenitiesExpanded = true;
         this.state.contractInfoExpanded = true;
@@ -329,11 +343,32 @@ class BohioTimelineView extends Component {
     async saveAllChanges() {
         const oppId = this.state.opportunityData.id;
         const fieldsToSave = {
+            // Básicos
             partner_name: this.state.opportunityData.partner_name,
             phone: this.state.opportunityData.phone,
             email_from: this.state.opportunityData.email,
+            client_type: this.state.opportunityData.client_type,
+            service_interested: this.state.opportunityData.service_interested,
+
+            // Presupuesto
             budget_min: this.state.opportunityData.min_budget,
             budget_max: this.state.opportunityData.max_budget,
+
+            // Métricas
+            expected_revenue: this.state.opportunityData.expected_revenue,
+            probability: this.state.opportunityData.probability,
+            commission_percentage: this.state.opportunityData.commission_percent,
+
+            // Preferencias de propiedad
+            desired_city: this.state.opportunityData.desired_city,
+            desired_neighborhood: this.state.opportunityData.desired_neighborhood,
+            min_bedrooms: this.state.opportunityData.min_bedrooms,
+            ideal_bedrooms: this.state.opportunityData.ideal_bedrooms,
+            min_bathrooms: this.state.opportunityData.min_bathrooms,
+            min_area: this.state.opportunityData.min_area,
+            max_area: this.state.opportunityData.max_area,
+
+            // Información adicional
             number_of_occupants: this.state.opportunityData.number_of_occupants,
             has_pets: this.state.opportunityData.has_pets,
             pet_type: this.state.opportunityData.pet_type,
@@ -341,15 +376,18 @@ class BohioTimelineView extends Component {
             parking_spots: this.state.opportunityData.parking_spots,
             occupation: this.state.opportunityData.occupation,
             monthly_income: this.state.opportunityData.monthly_income,
+
+            // Amenidades
             requires_common_areas: this.state.opportunityData.requires_common_areas,
             requires_gym: this.state.opportunityData.requires_gym,
             requires_pool: this.state.opportunityData.requires_pool,
             requires_security: this.state.opportunityData.requires_security,
             requires_elevator: this.state.opportunityData.requires_elevator,
             property_purpose: this.state.opportunityData.property_purpose,
+
+            // Contractual
             contract_start_date: this.state.opportunityData.contract_start_date,
             contract_duration_months: this.state.opportunityData.contract_duration_months,
-            commission_percentage: this.state.opportunityData.commission_percentage,
         };
 
         try {
@@ -386,6 +424,10 @@ class BohioTimelineView extends Component {
     // === UI ACTIONS ===
     toggleClientFields() {
         this.state.clientFieldsExpanded = !this.state.clientFieldsExpanded;
+    }
+
+    togglePropertyPreferences() {
+        this.state.propertyPreferencesExpanded = !this.state.propertyPreferencesExpanded;
     }
 
     toggleAdditionalInfo() {
