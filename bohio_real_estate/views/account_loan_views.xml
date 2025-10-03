@@ -103,7 +103,7 @@
     <record id="view_account_loan_list_inherit" model="ir.ui.view">
         <field name="name">account.loan.list.inherit</field>
         <field name="model">account.loan</field>
-        <field name="inherit_id" ref="account_loans.account_loan_view_tree"/>
+        <field name="inherit_id" ref="account_loans.account_loan_list_view"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='name']" position="after">
                 <field name="partner_id" optional="show"/>
@@ -116,7 +116,7 @@
     <record id="view_account_loan_search_inherit" model="ir.ui.view">
         <field name="name">account.loan.search.inherit</field>
         <field name="model">account.loan</field>
-        <field name="inherit_id" ref="account_loans.account_loan_view_search"/>
+        <field name="inherit_id" ref="account_loans.account_loan_search_view"/>
         <field name="arch" type="xml">
             <xpath expr="//search" position="inside">
                 <field name="partner_id"/>
