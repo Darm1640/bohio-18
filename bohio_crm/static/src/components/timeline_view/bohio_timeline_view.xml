@@ -1,38 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
 <templates>
     <t t-name="bohio_crm.TimelineView">
-        <div class="o_bohio_timeline_view h-100 overflow-auto">
+        <div class="o_bohio_timeline_view h-100 d-flex">
 
-            <!-- FIXED ACTION BAR (sticky top) -->
-            <div class="o_bohio_action_bar sticky-top bg-white border-bottom shadow-sm p-2">
-                <div class="d-flex flex-wrap gap-2 align-items-center">
-                    <button class="btn btn-primary btn-sm" t-on-click="createActivity">
-                        <i class="fa fa-plus"/> Actividad
-                    </button>
-                    <button class="btn btn-secondary btn-sm" t-on-click="scheduleCall">
-                        <i class="fa fa-phone"/> Llamada
-                    </button>
-                    <button class="btn btn-secondary btn-sm" t-on-click="scheduleMeeting">
-                        <i class="fa fa-calendar"/> Cita
-                    </button>
-                    <button class="btn btn-secondary btn-sm" t-on-click="sendEmail">
-                        <i class="fa fa-envelope"/> Email
-                    </button>
-                    <button class="btn btn-success btn-sm" t-on-click="sendWhatsApp">
-                        <i class="fab fa-whatsapp"/> WhatsApp
-                    </button>
-                    <button class="btn btn-success btn-sm" t-on-click="generateContract"
-                            t-if="state.opportunityData.stage_is_won">
-                        <i class="fa fa-file-contract"/> Contrato
-                    </button>
-                    <button class="btn btn-secondary btn-sm" t-on-click="compareProperties">
-                        <i class="fa fa-chart-bar"/> Comparar
-                    </button>
-                    <button class="btn btn-secondary btn-sm" t-on-click="printView">
-                        <i class="fa fa-print"/> Imprimir
-                    </button>
+            <!-- LEFT SIDEBAR: OPPORTUNITIES LIST -->
+            <div class="o_opportunities_sidebar bg-light border-end" style="width: 300px; flex-shrink: 0; overflow-y: auto;">
+                <div class="sticky-top bg-light p-2 border-bottom">
+                    <input type="text" class="form-control form-control-sm mb-2"
+                           placeholder="Buscar oportunidades..."
+                           t-model="state.searchQuery"
+                           t-on-input="filterOpportunities"/>
+                    <select class="form-select form-select-sm" t-model="state.filterService" t-on-change="filterOpportunities">
+                        <option value="">Todos los servicios</option>
+                        <option value="sale">Venta</option>
+                        <option value="rent">Arriendo</option>
+                        <option value="projects">Proyectos</option>
+                        <option value="consign">Consignar</option>
+                    </select>
+                </div>
+                <div class="opportunities-list p-2">
+                    <t t-foreach="state.filteredOpportunities" t-as="opp" t-key="opp.id">
+                        <div class="opportunity-item card mb-2 cursor-pointer"
+                             t-att-class="{'border-primary': opp.id === state.selectedOpportunityId}"
+                             t-on-click="() => this.selectOpportunity(opp.id)">
+                            <div class="card-body p-2">
+                                <div class="d-flex align-items-center gap-2">
+                                    <div class="o_avatar rounded-circle bg-primary text-white d-flex align-items-center justify-content-center"
+                                         style="width: 32px; height: 32px; font-size: 12px;">
+                                        <t t-esc="opp.initials"/>
+                                    </div>
+                                    <div class="flex-fill" style="min-width: 0;">
+                                        <div class="small fw-bold text-truncate" t-esc="opp.name"/>
+                                        <div class="text-muted" style="font-size: 10px;">
+                                            <t t-esc="opp.partner_name"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-between mt-1">
+                                    <span class="badge bg-secondary" style="font-size: 9px;" t-esc="opp.stage_name"/>
+                                    <span class="badge bg-info" style="font-size: 9px;">
+                                        <t t-esc="opp.probability"/>%
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
                 </div>
             </div>
+
+            <!-- MAIN CONTENT AREA -->
+            <div class="flex-fill overflow-auto">
+                <!-- FIXED ACTION BAR (sticky top) -->
+                <div class="o_bohio_action_bar sticky-top bg-white border-bottom shadow-sm p-2">
+                    <div class="d-flex flex-wrap gap-2 align-items-center">
+                        <button class="btn btn-primary btn-sm" t-on-click="editOpportunity">
+                            <i class="fa fa-edit"/> Editar
+                        </button>
+                        <button class="btn btn-primary btn-sm" t-on-click="createActivity">
+                            <i class="fa fa-plus"/> Actividad
+                        </button>
+                        <button class="btn btn-secondary btn-sm" t-on-click="scheduleCall">
+                            <i class="fa fa-phone"/> Llamada
+                        </button>
+                        <button class="btn btn-secondary btn-sm" t-on-click="scheduleMeeting">
+                            <i class="fa fa-calendar"/> Cita
+                        </button>
+                        <button class="btn btn-secondary btn-sm" t-on-click="sendEmail">
+                            <i class="fa fa-envelope"/> Email
+                        </button>
+                        <button class="btn btn-success btn-sm" t-on-click="sendWhatsApp">
+                            <i class="fab fa-whatsapp"/> WhatsApp
+                        </button>
+                        <button class="btn btn-info btn-sm" t-on-click="generateQuote">
+                            <i class="fa fa-file-invoice"/> Cotizar
+                        </button>
+                        <button class="btn btn-success btn-sm" t-on-click="generateContract"
+                                t-if="state.opportunityData.stage_is_won">
+                            <i class="fa fa-file-contract"/> Contrato
+                        </button>
+                        <button class="btn btn-secondary btn-sm" t-on-click="compareProperties">
+                            <i class="fa fa-chart-bar"/> Comparar
+                        </button>
+                        <button class="btn btn-secondary btn-sm" t-on-click="printView">
+                            <i class="fa fa-print"/> Imprimir
+                        </button>
+                    </div>
+                </div>
 
             <!-- MAIN CONTENT -->
             <div class="container-fluid p-3">
@@ -117,7 +170,7 @@
                     </div>
                 </div>
 
-                <!-- CLIENT SECTION -->
+                <!-- CLIENT SECTION - EDITABLE -->
                 <div class="card mb-3">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <div class="d-flex align-items-center gap-3">
@@ -126,7 +179,17 @@
                                 <t t-esc="state.opportunityData.partner_initials"/>
                             </div>
                             <div>
-                                <div class="fw-bold"><t t-esc="state.opportunityData.partner_name"/></div>
+                                <div class="fw-bold">
+                                    <t t-if="!state.editing.partner_name" t-esc="state.opportunityData.partner_name"/>
+                                    <input t-else="" type="text" class="form-control form-control-sm d-inline-block"
+                                           style="width: 200px;"
+                                           t-model="state.opportunityData.partner_name"
+                                           t-on-blur="() => this.saveField('partner_name')"/>
+                                    <button class="btn btn-sm btn-link p-0 ms-1"
+                                            t-on-click="() => this.toggleEdit('partner_name')">
+                                        <i t-att-class="state.editing.partner_name ? 'fa fa-check text-success' : 'fa fa-edit'"/>
+                                    </button>
+                                </div>
                                 <div class="text-muted small">
                                     <t t-esc="state.opportunityData.customer_type"/>
                                     <span t-if="state.opportunityData.referral_partner">
@@ -143,23 +206,254 @@
                     </div>
                     <div class="card-body" t-if="state.clientFieldsExpanded">
                         <div class="row g-3">
-                            <div class="col-md-4" t-if="state.opportunityData.phone">
+                            <div class="col-md-4">
                                 <label class="text-muted small text-uppercase">Teléfono</label>
-                                <div><t t-esc="state.opportunityData.phone"/></div>
+                                <div class="d-flex align-items-center gap-1">
+                                    <t t-if="!state.editing.phone" t-esc="state.opportunityData.phone || '-'"/>
+                                    <input t-else="" type="text" class="form-control form-control-sm"
+                                           t-model="state.opportunityData.phone"
+                                           t-on-blur="() => this.saveField('phone')"/>
+                                    <button class="btn btn-sm btn-link p-0"
+                                            t-on-click="() => this.toggleEdit('phone')">
+                                        <i t-att-class="state.editing.phone ? 'fa fa-check text-success' : 'fa fa-edit'"/>
+                                    </button>
+                                </div>
                             </div>
-                            <div class="col-md-4" t-if="state.opportunityData.email">
+                            <div class="col-md-4">
                                 <label class="text-muted small text-uppercase">Email</label>
-                                <div><t t-esc="state.opportunityData.email"/></div>
+                                <div class="d-flex align-items-center gap-1">
+                                    <t t-if="!state.editing.email" t-esc="state.opportunityData.email || '-'"/>
+                                    <input t-else="" type="email" class="form-control form-control-sm"
+                                           t-model="state.opportunityData.email"
+                                           t-on-blur="() => this.saveField('email')"/>
+                                    <button class="btn btn-sm btn-link p-0"
+                                            t-on-click="() => this.toggleEdit('email')">
+                                        <i t-att-class="state.editing.email ? 'fa fa-check text-success' : 'fa fa-edit'"/>
+                                    </button>
+                                </div>
                             </div>
-                            <div class="col-md-4" t-if="state.opportunityData.partner_vat">
+                            <div class="col-md-4">
                                 <label class="text-muted small text-uppercase">Identificación</label>
-                                <div><t t-esc="state.opportunityData.partner_vat"/></div>
+                                <div><t t-esc="state.opportunityData.partner_vat || '-'"/></div>
                             </div>
-                            <div class="col-md-4" t-if="state.opportunityData.min_budget">
-                                <label class="text-muted small text-uppercase">Presupuesto</label>
-                                <div>
-                                    <t t-esc="state.opportunityData.min_budget_formatted"/> -
-                                    <t t-esc="state.opportunityData.max_budget_formatted"/>
+                            <div class="col-md-6">
+                                <label class="text-muted small text-uppercase">Presupuesto Mínimo</label>
+                                <div class="d-flex align-items-center gap-1">
+                                    <t t-if="!state.editing.budget_min" t-esc="state.opportunityData.min_budget_formatted"/>
+                                    <input t-else="" type="number" class="form-control form-control-sm"
+                                           t-model="state.opportunityData.min_budget"
+                                           t-on-blur="() => this.saveField('budget_min')"/>
+                                    <button class="btn btn-sm btn-link p-0"
+                                            t-on-click="() => this.toggleEdit('budget_min')">
+                                        <i t-att-class="state.editing.budget_min ? 'fa fa-check text-success' : 'fa fa-edit'"/>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="text-muted small text-uppercase">Presupuesto Máximo</label>
+                                <div class="d-flex align-items-center gap-1">
+                                    <t t-if="!state.editing.budget_max" t-esc="state.opportunityData.max_budget_formatted"/>
+                                    <input t-else="" type="number" class="form-control form-control-sm"
+                                           t-model="state.opportunityData.max_budget"
+                                           t-on-blur="() => this.saveField('budget_max')"/>
+                                    <button class="btn btn-sm btn-link p-0"
+                                            t-on-click="() => this.toggleEdit('budget_max')">
+                                        <i t-att-class="state.editing.budget_max ? 'fa fa-check text-success' : 'fa fa-edit'"/>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- INFORMACIÓN ADICIONAL - EDITABLE -->
+                <div class="card mb-3">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <span><i class="fa fa-info-circle"/> Información Adicional del Cliente</span>
+                        <button class="btn btn-sm btn-light" t-on-click="toggleAdditionalInfo">
+                            <i t-att-class="state.additionalInfoExpanded ? 'fa fa-chevron-up' : 'fa fa-chevron-down'"/>
+                        </button>
+                    </div>
+                    <div class="card-body" t-if="state.additionalInfoExpanded">
+                        <div class="row g-3">
+                            <div class="col-md-3">
+                                <label class="text-muted small text-uppercase">Núm. Ocupantes</label>
+                                <div class="d-flex align-items-center gap-1">
+                                    <t t-if="!state.editing.number_of_occupants" t-esc="state.opportunityData.number_of_occupants || '0'"/>
+                                    <input t-else="" type="number" class="form-control form-control-sm"
+                                           t-model="state.opportunityData.number_of_occupants"
+                                           t-on-blur="() => this.saveField('number_of_occupants')"/>
+                                    <button class="btn btn-sm btn-link p-0" t-on-click="() => this.toggleEdit('number_of_occupants')">
+                                        <i t-att-class="state.editing.number_of_occupants ? 'fa fa-check text-success' : 'fa fa-edit'"/>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="text-muted small text-uppercase">Tiene Mascotas</label>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox"
+                                           t-model="state.opportunityData.has_pets"
+                                           t-on-change="() => this.saveField('has_pets')"/>
+                                    <label class="form-check-label">
+                                        <t t-if="state.opportunityData.has_pets">Sí</t>
+                                        <t t-else="">No</t>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-3" t-if="state.opportunityData.has_pets">
+                                <label class="text-muted small text-uppercase">Tipo Mascota</label>
+                                <select class="form-select form-select-sm"
+                                        t-model="state.opportunityData.pet_type"
+                                        t-on-change="() => this.saveField('pet_type')">
+                                    <option value="">Seleccionar</option>
+                                    <option value="dog">Perro</option>
+                                    <option value="cat">Gato</option>
+                                    <option value="both">Perro y Gato</option>
+                                    <option value="other">Otra Mascota</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="text-muted small text-uppercase">Requiere Parqueadero</label>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox"
+                                           t-model="state.opportunityData.requires_parking"
+                                           t-on-change="() => this.saveField('requires_parking')"/>
+                                    <label class="form-check-label">
+                                        <t t-if="state.opportunityData.requires_parking">Sí</t>
+                                        <t t-else="">No</t>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-3" t-if="state.opportunityData.requires_parking">
+                                <label class="text-muted small text-uppercase">Espacios Parqueadero</label>
+                                <input type="number" class="form-control form-control-sm"
+                                       t-model="state.opportunityData.parking_spots"
+                                       t-on-blur="() => this.saveField('parking_spots')"/>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="text-muted small text-uppercase">Ocupación</label>
+                                <div class="d-flex align-items-center gap-1">
+                                    <t t-if="!state.editing.occupation" t-esc="state.opportunityData.occupation || '-'"/>
+                                    <input t-else="" type="text" class="form-control form-control-sm"
+                                           t-model="state.opportunityData.occupation"
+                                           t-on-blur="() => this.saveField('occupation')"/>
+                                    <button class="btn btn-sm btn-link p-0" t-on-click="() => this.toggleEdit('occupation')">
+                                        <i t-att-class="state.editing.occupation ? 'fa fa-check text-success' : 'fa fa-edit'"/>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="text-muted small text-uppercase">Ingresos Mensuales</label>
+                                <div class="d-flex align-items-center gap-1">
+                                    <t t-if="!state.editing.monthly_income" t-esc="state.opportunityData.monthly_income_formatted || '$0'"/>
+                                    <input t-else="" type="number" class="form-control form-control-sm"
+                                           t-model="state.opportunityData.monthly_income"
+                                           t-on-blur="() => this.saveField('monthly_income')"/>
+                                    <button class="btn btn-sm btn-link p-0" t-on-click="() => this.toggleEdit('monthly_income')">
+                                        <i t-att-class="state.editing.monthly_income ? 'fa fa-check text-success' : 'fa fa-edit'"/>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AMENIDADES - EDITABLE -->
+                <div class="card mb-3">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <span><i class="fa fa-building"/> Amenidades Requeridas</span>
+                        <button class="btn btn-sm btn-light" t-on-click="toggleAmenities">
+                            <i t-att-class="state.amenitiesExpanded ? 'fa fa-chevron-up' : 'fa fa-chevron-down'"/>
+                        </button>
+                    </div>
+                    <div class="card-body" t-if="state.amenitiesExpanded">
+                        <div class="row g-3">
+                            <div class="col-md-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox"
+                                           t-model="state.opportunityData.requires_common_areas"
+                                           t-on-change="() => this.saveField('requires_common_areas')"/>
+                                    <label class="form-check-label">Zonas Comunes</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox"
+                                           t-model="state.opportunityData.requires_gym"
+                                           t-on-change="() => this.saveField('requires_gym')"/>
+                                    <label class="form-check-label">Gimnasio</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox"
+                                           t-model="state.opportunityData.requires_pool"
+                                           t-on-change="() => this.saveField('requires_pool')"/>
+                                    <label class="form-check-label">Piscina</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox"
+                                           t-model="state.opportunityData.requires_security"
+                                           t-on-change="() => this.saveField('requires_security')"/>
+                                    <label class="form-check-label">Seguridad 24/7</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox"
+                                           t-model="state.opportunityData.requires_elevator"
+                                           t-on-change="() => this.saveField('requires_elevator')"/>
+                                    <label class="form-check-label">Ascensor</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="text-muted small text-uppercase">Propósito del Inmueble</label>
+                                <select class="form-select form-select-sm"
+                                        t-model="state.opportunityData.property_purpose"
+                                        t-on-change="() => this.saveField('property_purpose')">
+                                    <option value="">Seleccionar</option>
+                                    <option value="residence">Vivienda Permanente</option>
+                                    <option value="office">Oficina/Comercial</option>
+                                    <option value="vacation">Vacacional</option>
+                                    <option value="investment">Inversión</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- INFORMACIÓN CONTRACTUAL - EDITABLE -->
+                <div class="card mb-3">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <span><i class="fa fa-file-contract"/> Información Contractual</span>
+                        <button class="btn btn-sm btn-light" t-on-click="toggleContractInfo">
+                            <i t-att-class="state.contractInfoExpanded ? 'fa fa-chevron-up' : 'fa fa-chevron-down'"/>
+                        </button>
+                    </div>
+                    <div class="card-body" t-if="state.contractInfoExpanded">
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <label class="text-muted small text-uppercase">Fecha Inicio Estimada</label>
+                                <input type="date" class="form-control form-control-sm"
+                                       t-model="state.opportunityData.contract_start_date"
+                                       t-on-change="() => this.saveField('contract_start_date')"/>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="text-muted small text-uppercase">Duración (meses)</label>
+                                <input type="number" class="form-control form-control-sm"
+                                       t-model="state.opportunityData.contract_duration_months"
+                                       t-on-change="() => this.saveField('contract_duration_months')"/>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="text-muted small text-uppercase">% Comisión</label>
+                                <div class="input-group input-group-sm">
+                                    <input type="number" class="form-control"
+                                           t-model="state.opportunityData.commission_percentage"
+                                           t-on-change="() => this.saveField('commission_percentage')"
+                                           step="0.1"/>
+                                    <span class="input-group-text">%</span>
                                 </div>
                             </div>
                         </div>
@@ -282,6 +576,7 @@
 
             </div>
 
+            </div>
         </div>
     </t>
 </templates>

@@ -99,6 +99,29 @@ class CrmLead(models.Model):
     contract_end_date = fields.Date('Fecha Fin Estimada', compute='_compute_contract_end_date', store=True)
     commission_percentage = fields.Float('% Comisión', default=10.0)
 
+    # Geolocalización (basado en propiedades de interés)
+    partner_latitude = fields.Float(string='Latitud', compute='_compute_location', store=True)
+    partner_longitude = fields.Float(string='Longitud', compute='_compute_location', store=True)
+
+    # ===============================
+    # MÉTODOS COMPUTADOS
+    # ===============================
+
+    @api.depends('property_ids', 'property_ids.latitude', 'property_ids.longitude')
+    def _compute_location(self):
+        """Calcular ubicación promedio basada en propiedades de interés"""
+        for lead in self:
+            properties_with_location = lead.property_ids.filtered(lambda p: p.latitude and p.longitude)
+
+            if properties_with_location:
+                # Calcular promedio de latitud y longitud
+                lead.partner_latitude = sum(p.latitude for p in properties_with_location) / len(properties_with_location)
+                lead.partner_longitude = sum(p.longitude for p in properties_with_location) / len(properties_with_location)
+            else:
+                # Si no hay propiedades, usar ubicación del partner si existe
+                lead.partner_latitude = lead.partner_id.partner_latitude if lead.partner_id else 0.0
+                lead.partner_longitude = lead.partner_id.partner_longitude if lead.partner_id else 0.0
+
     # ===============================
     # MÉTODOS PARA TIMELINE VIEW
     # ===============================
@@ -154,6 +177,29 @@ class CrmLead(models.Model):
             'max_budget': self.budget_max or 0,
             'min_budget_formatted': self._format_currency(self.budget_min),
             'max_budget_formatted': self._format_currency(self.budget_max),
+
+            # Información adicional
+            'number_of_occupants': self.number_of_occupants or 0,
+            'has_pets': self.has_pets,
+            'pet_type': self.pet_type or '',
+            'requires_parking': self.requires_parking,
+            'parking_spots': self.parking_spots or 1,
+            'occupation': self.occupation or '',
+            'monthly_income': self.monthly_income or 0,
+            'monthly_income_formatted': self._format_currency(self.monthly_income),
+
+            # Amenidades
+            'requires_common_areas': self.requires_common_areas,
+            'requires_gym': self.requires_gym,
+            'requires_pool': self.requires_pool,
+            'requires_security': self.requires_security,
+            'requires_elevator': self.requires_elevator,
+            'property_purpose': self.property_purpose or '',
+
+            # Información contractual
+            'contract_start_date': self.contract_start_date.strftime('%Y-%m-%d') if self.contract_start_date else '',
+            'contract_duration_months': self.contract_duration_months or 0,
+            'commission_percentage': self.commission_percentage or 10.0,
 
             # Métricas
             'expected_revenue': self.expected_revenue,

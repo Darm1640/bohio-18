@@ -14,6 +14,7 @@ export class BohioCRMDashBoard extends Component {
 
         this.state = useState({
             mapLoaded: false,
+            mapCollapsed: false,
         });
 
         onWillStart(async () => {
@@ -187,5 +188,15 @@ export class BohioCRMDashBoard extends Component {
             views: [[false, 'form']],
             target: 'current',
         });
+    }
+
+    toggleMap() {
+        this.state.mapCollapsed = !this.state.mapCollapsed;
+        // Si se expande el mapa y no está cargado, inicializarlo
+        if (!this.state.mapCollapsed && !this.state.mapLoaded) {
+            setTimeout(() => {
+                this.initializeMap();
+            }, 100);
+        }
     }
 }

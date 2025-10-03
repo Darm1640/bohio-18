@@ -116,12 +116,14 @@
             <div class="row mt-3">
                 <div class="col-12">
                     <div class="card border-0 shadow-sm">
-                        <div class="card-header bg-primary text-white">
+                        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center"
+                             style="cursor: pointer;" t-on-click="toggleMap">
                             <h5 class="mb-0">
                                 <i class="fa fa-map-marker me-2"/>Mapa de Oportunidades Abiertas
                             </h5>
+                            <i class="fa" t-att-class="state.mapCollapsed ? 'fa-chevron-down' : 'fa-chevron-up'"/>
                         </div>
-                        <div class="card-body p-0">
+                        <div class="card-body p-0" t-if="!state.mapCollapsed">
                             <div t-ref="mapContainer" style="height: 500px; width: 100%;" class="position-relative">
                                 <t t-if="!state || !state.mapLoaded">
                                     <div class="d-flex justify-content-center align-items-center h-100">
