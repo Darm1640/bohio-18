@@ -697,8 +697,10 @@
                                                        t-model="state.record.requires_common_areas"/>
                                                 <label class="form-check-label">
                                                     Áreas Comunes
-                                                    <span t-if="!state.isEditMode and state.record.requires_common_areas" class="badge bg-success ms-2">Sí</span>
-                                                    <span t-if="!state.isEditMode and !state.record.requires_common_areas" class="badge bg-secondary ms-2">No</span>
+                                                    <t t-if="!state.isEditMode">
+                                                        <span t-if="state.record.requires_common_areas" class="badge bg-success ms-2">Sí</span>
+                                                        <span t-else="" class="badge bg-secondary ms-2">No</span>
+                                                    </t>
                                                 </label>
                                             </div>
                                         </div>
@@ -711,8 +713,10 @@
                                                        t-model="state.record.requires_gym"/>
                                                 <label class="form-check-label">
                                                     Gimnasio
-                                                    <span t-if="!state.isEditMode" class="badge bg-success ms-2" t-if="state.record.requires_gym">Sí</span>
-                                                    <span t-if="!state.isEditMode" class="badge bg-secondary ms-2" t-else="">No</span>
+                                                    <t t-if="!state.isEditMode">
+                                                        <span t-if="state.record.requires_gym" class="badge bg-success ms-2">Sí</span>
+                                                        <span t-else="" class="badge bg-secondary ms-2">No</span>
+                                                    </t>
                                                 </label>
                                             </div>
                                         </div>
