@@ -158,7 +158,7 @@ class BohioPortal(CustomerPortal):
 
         # Pagos de arrendatarios (contratos)
         tenant_payments_month = Payment.search([
-            ('contract_id', 'in', active_contracts.ids),
+            ('contract_ids', 'in', active_contracts.ids),
             ('date', '>=', first_day_month),
             ('date', '<=', last_day_month),
             ('state', '=', 'posted'),
@@ -172,7 +172,7 @@ class BohioPortal(CustomerPortal):
         pending_invoices = request.env['account.move'].sudo().search([
             '|',
             ('partner_id', '=', partner.id),
-            ('contract_id', 'in', active_contracts.ids),
+            ('rental_line_id.contract_id', 'in', active_contracts.ids),
             ('move_type', '=', 'out_invoice'),
             ('state', '=', 'posted'),
             ('payment_state', 'in', ['not_paid', 'partial'])
@@ -267,7 +267,7 @@ class BohioPortal(CustomerPortal):
 
         # Pagos recibidos de esta propiedad (del contrato)
         payments = request.env['account.payment'].sudo().search([
-            ('contract_id', '=', contract.id),
+            ('contract_ids', 'in', [contract.id]),
             ('payment_type', '=', 'inbound'),
             ('state', '=', 'posted')
         ], order='date desc', limit=20) if contract else []
@@ -369,7 +369,7 @@ class BohioPortal(CustomerPortal):
 
         # Pagos de arrendatarios (contratos)
         tenant_payments = Payment.search([
-            ('contract_id', 'in', contracts.ids),
+            ('contract_ids', 'in', contracts.ids),
             ('payment_type', '=', 'inbound'),
             ('state', '=', 'posted')
         ])
@@ -721,7 +721,7 @@ class BohioPortal(CustomerPortal):
 
         # Pagos del contrato
         payments = request.env['account.payment'].sudo().search([
-            ('contract_id', '=', contract.id),
+            ('contract_ids', 'in', [contract.id]),
             ('partner_id', '=', partner.id),
             ('state', '=', 'posted')
         ], order='date desc')
@@ -731,7 +731,7 @@ class BohioPortal(CustomerPortal):
         # Facturas pendientes del contrato
         pending_invoices = request.env['account.move'].sudo().search([
             ('partner_id', '=', partner.id),
-            ('contract_id', '=', contract.id),
+            ('rental_line_id.contract_id', '=', contract.id),
             ('move_type', '=', 'out_invoice'),
             ('state', '=', 'posted'),
             ('payment_state', 'in', ['not_paid', 'partial'])
