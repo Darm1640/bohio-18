@@ -266,13 +266,18 @@
 
                     </div>
 
-                    <!-- COLUMNA DERECHA: CHATTER NATIVO -->
-                    <div class="o_chatter_column bg-white border-start" style="width: 450px; flex-shrink: 0;">
+                    <!-- COLUMNA DERECHA: CHATTER NATIVO (TODO: Implementar) -->
+                    <div class="o_chatter_column bg-white border-start p-3" style="width: 450px; flex-shrink: 0;">
                         <t t-if="state.resId">
-                            <Chatter
-                                threadModel="'crm.lead'"
-                                threadId="state.resId"
-                                webRecord="state.record"/>
+                            <div class="alert alert-info">
+                                <h5>Chatter</h5>
+                                <p class="mb-0">El componente Chatter se integrará en la siguiente versión.</p>
+                                <p class="mb-0 mt-2">
+                                    <a href="#" class="btn btn-sm btn-primary" t-on-click="openFullForm">
+                                        Ver Formulario Completo
+                                    </a>
+                                </p>
+                            </div>
                         </t>
                     </div>
 

@@ -3,8 +3,6 @@
 import { Component, useState, onWillStart, onMounted } from "@odoo/owl";
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
-import { Chatter } from "@mail/core/web/chatter";
-import { FormViewDialog } from "@web/views/view_dialogs/form_view_dialog";
 
 /**
  * BOHIO TIMELINE VIEW V2
@@ -18,9 +16,9 @@ import { FormViewDialog } from "@web/views/view_dialogs/form_view_dialog";
  */
 export class BohioTimelineViewV2 extends Component {
     static template = "bohio_crm.TimelineViewV2";
-    static components = { Chatter, FormViewDialog };
+    static components = {};
     static props = {
-        resModel: String,
+        resModel: { type: String, optional: true },
         resId: { type: Number, optional: true },
         context: { type: Object, optional: true },
     };
