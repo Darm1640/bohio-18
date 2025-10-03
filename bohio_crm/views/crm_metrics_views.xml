@@ -16,6 +16,8 @@
                     <field name="client_type" string="Client Type" optional="hide"/>
                     <field name="service_interested" string="Service Interest" optional="hide"/>
                     <field name="property_ids" string="Properties" widget="many2many_tags" optional="hide"/>
+                    <field name="partner_latitude" string="Latitud" optional="hide" decoration-info="partner_latitude != 0"/>
+                    <field name="partner_longitude" string="Longitud" optional="hide" decoration-info="partner_longitude != 0"/>
                 </xpath>
             </field>
         </record>
@@ -37,6 +39,8 @@
                 <xpath expr="//field[@name='expected_revenue']" position="after">
                     <field name="client_type" string="Client Type" optional="show"/>
                     <field name="service_interested" string="Service Interest" optional="show"/>
+                    <field name="partner_latitude" string="Latitud" optional="hide" decoration-info="partner_latitude != 0"/>
+                    <field name="partner_longitude" string="Longitud" optional="hide" decoration-info="partner_longitude != 0"/>
                 </xpath>
             </field>
         </record>

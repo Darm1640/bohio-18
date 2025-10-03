@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="bohio_crm.TimelineViewV2">
+        <div class="o_bohio_timeline_view_v2 h-100 d-flex" t-att-class="{'o_edit_mode': state.isEditMode}">
+
+            <!-- ============================================ -->
+            <!-- LEFT SIDEBAR: LISTA DE OPORTUNIDADES -->
+            <!-- ============================================ -->
+            <div class="o_opportunities_sidebar bg-light border-end" style="width: 300px; flex-shrink: 0; overflow-y: auto;">
+
+                <!-- Header con búsqueda y filtros -->
+                <div class="sticky-top bg-light p-2 border-bottom">
+                    <button class="btn btn-success btn-sm w-100 mb-2" t-on-click="createNewOpportunity">
+                        <i class="fa fa-plus"/> Nueva Oportunidad
+                    </button>
+
+                    <input
+                        type="text"
+                        class="form-control form-control-sm mb-2"
+                        placeholder="Buscar..."
+                        t-model="state.searchQuery"
+                        t-on-input="filterOpportunities"/>
+
+                    <select
+                        class="form-select form-select-sm"
+                        t-model="state.filterService"
+                        t-on-change="filterOpportunities">
+                        <option value="">Todos los servicios</option>
+                        <option value="sale">Venta</option>
+                        <option value="rent">Arriendo</option>
+                        <option value="projects">Proyectos</option>
+                        <option value="consign">Consignar</option>
+                    </select>
+                </div>
+
+                <!-- Lista de oportunidades -->
+                <div class="opportunities-list p-2">
+                    <t t-foreach="state.filteredOpportunities" t-as="opp" t-key="opp.id">
+                        <div
+                            class="opportunity-item card mb-2 cursor-pointer"
+                            t-att-class="{'border-primary border-2': opp.id === state.resId}"
+                            t-on-click="() => this.selectOpportunity(opp.id)">
+                            <div class="card-body p-2">
+                                <div class="d-flex align-items-center gap-2 mb-2">
+                                    <div class="o_avatar rounded-circle bg-primary text-white d-flex align-items-center justify-content-center"
+                                         style="width: 32px; height: 32px; font-size: 12px;">
+                                        <t t-esc="opp.initials"/>
+                                    </div>
+                                    <div class="flex-fill" style="min-width: 0;">
+                                        <div class="small fw-bold text-truncate" t-esc="opp.name"/>
+                                        <div class="text-muted" style="font-size: 10px;">
+                                            <t t-esc="opp.partner_name || 'Sin cliente'"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <span class="badge bg-secondary" style="font-size: 9px;" t-esc="opp.stage_name"/>
+                                    <span class="badge bg-info" style="font-size: 9px;">
+                                        <t t-esc="opp.probability || 0"/>%
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+            </div>
+
+            <!-- ============================================ -->
+            <!-- MAIN CONTENT AREA -->
+            <!-- ============================================ -->
+            <div class="flex-fill overflow-auto">
+
+                <!-- Barra de acciones (sticky top) -->
+                <div class="o_action_bar sticky-top bg-white border-bottom shadow-sm p-2 d-flex justify-content-between align-items-center">
+                    <div class="d-flex flex-wrap gap-2">
+                        <!-- Botones de edición -->
+                        <button class="btn btn-primary btn-sm" t-if="!state.isEditMode" t-on-click="enableEditMode">
+                            <i class="fa fa-edit"/> Editar
+                        </button>
+                        <button class="btn btn-success btn-sm" t-if="state.isEditMode" t-on-click="saveAllChanges" t-att-disabled="state.isSaving">
+                            <i class="fa fa-save"/> Guardar
+                        </button>
+                        <button class="btn btn-secondary btn-sm" t-if="state.isEditMode" t-on-click="cancelEditMode">
+                            <i class="fa fa-times"/> Cancelar
+                        </button>
+
+                        <div class="vr" t-if="!state.isEditMode"/>
+
+                        <!-- Acciones (solo cuando no está editando) -->
+                        <t t-if="!state.isEditMode">
+                            <button class="btn btn-secondary btn-sm" t-on-click="openFullForm">
+                                <i class="fa fa-external-link-alt"/> Formulario Completo
+                            </button>
+                            <button class="btn btn-primary btn-sm" t-on-click="createActivity">
+                                <i class="fa fa-plus"/> Actividad
+                            </button>
+                            <button class="btn btn-info btn-sm" t-on-click="generateQuote">
+                                <i class="fa fa-file-invoice"/> Cotizar
+                            </button>
+                            <button class="btn btn-success btn-sm"
+                                    t-if="state.record?.stage_is_won"
+                                    t-on-click="generateContract">
+                                <i class="fa fa-file-contract"/> Contrato
+                            </button>
+                        </t>
+                    </div>
+
+                    <!-- Indicador de modo edición -->
+                    <div t-if="state.isEditMode">
+                        <span class="badge bg-warning text-dark">
+                            <i class="fa fa-edit"/> MODO EDICIÓN
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Contenido principal con chatter en el lado derecho -->
+                <div class="d-flex h-100">
+
+                    <!-- COLUMNA PRINCIPAL: Datos de la oportunidad -->
+                    <div class="flex-fill p-3" style="overflow-y: auto;">
+
+                        <t t-if="state.record">
+
+                            <!-- RESUMEN INICIAL -->
+                            <div class="card mb-3 border-info" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+                                <div class="card-body">
+                                    <div class="row align-items-center">
+                                        <div class="col-md-8">
+                                            <h4 class="mb-2">
+                                                <i class="fa fa-briefcase"/> <t t-esc="state.record.name || 'Nueva Oportunidad'"/>
+                                            </h4>
+                                            <div class="d-flex gap-3 flex-wrap">
+                                                <div>
+                                                    <i class="fa fa-user"/> <strong>Cliente:</strong>
+                                                    <t t-esc="state.record.partner_name || 'Sin asignar'"/>
+                                                </div>
+                                                <div>
+                                                    <i class="fa fa-tag"/> <strong>Tipo:</strong>
+                                                    <t t-esc="state.record.customer_type || 'No definido'"/>
+                                                </div>
+                                                <div>
+                                                    <i class="fa fa-phone"/> <t t-esc="state.record.phone || 'Sin teléfono'"/>
+                                                </div>
+                                                <div>
+                                                    <i class="fa fa-envelope"/> <t t-esc="state.record.email || 'Sin email'"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 text-end">
+                                            <div class="mb-2">
+                                                <span class="badge bg-light text-dark fs-6">
+                                                    Probabilidad: <t t-esc="state.record.probability || 0"/>%
+                                                </span>
+                                            </div>
+                                            <div class="h5 mb-0">
+                                                <i class="fa fa-dollar-sign"/>
+                                                <t t-esc="state.record.expected_revenue_formatted || '$0'"/>
+                                            </div>
+                                            <small>Ingreso Esperado</small>
+                                        </div>
+                                    </div>
+
+                                    <!-- PROGRESO DE INFORMACIÓN -->
+                                    <div class="mt-3">
+                                        <div class="d-flex justify-content-between align-items-center mb-1">
+                                            <small>Información Completada</small>
+                                            <small><t t-esc="completionPercentage"/>%</small>
+                                        </div>
+                                        <div class="progress" style="height: 8px;">
+                                            <div class="progress-bar bg-success" role="progressbar"
+                                                 t-att-style="'width: ' + completionPercentage + '%'"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- ETAPAS (Clickeables para cambiar) -->
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <div class="o_stage_progress d-flex justify-content-between position-relative">
+                                        <t t-foreach="state.record.stage_history || []" t-as="stage" t-key="stage.id">
+                                            <div class="o_stage_item text-center flex-fill"
+                                                 t-att-class="{'o_stage_completed': stage.is_completed, 'o_stage_active': stage.is_current}"
+                                                 t-on-click="() => this.changeStage(stage.id)"
+                                                 style="cursor: pointer;"
+                                                 t-att-title="'Cambiar a: ' + stage.name">
+                                                <div class="o_stage_circle rounded-circle mx-auto mb-2 d-flex align-items-center justify-content-center"
+                                                     style="width: 40px; height: 40px;">
+                                                    <i t-if="stage.is_completed" class="fa fa-check"/>
+                                                    <i t-elif="stage.is_current" class="fa fa-dot-circle"/>
+                                                    <i t-else="" t-att-class="'fa fa-' + stage.icon"/>
+                                                </div>
+                                                <div class="small fw-bold" t-esc="stage.name"/>
+                                                <div class="text-muted" style="font-size: 11px;" t-esc="stage.days_label"/>
+                                            </div>
+                                        </t>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- MÉTRICAS EDITABLES -->
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <div class="row g-3 text-center">
+                                        <div class="col-6 col-md-3">
+                                            <div class="h3 mb-1 fw-bold text-primary">
+                                                <span t-if="!state.isEditMode"
+                                                      t-on-dblclick="() => this.enableFieldEdit('expected_revenue')"
+                                                      style="cursor: pointer;"
+                                                      title="Doble clic para editar"
+                                                      t-esc="state.record.expected_revenue_formatted"/>
+                                                <input t-else="" type="number" class="form-control form-control-sm d-inline-block text-center"
+                                                       style="width: 120px;"
+                                                       t-model="state.record.expected_revenue"
+                                                       placeholder="Valor"/>
+                                            </div>
+                                            <div class="text-muted small text-uppercase">Valor Esperado</div>
+                                        </div>
+                                        <div class="col-6 col-md-3">
+                                            <div class="h3 mb-1 fw-bold text-success">
+                                                <t t-esc="totalRevenue"/>
+                                            </div>
+                                            <div class="text-muted small text-uppercase">Total Estimado</div>
+                                        </div>
+                                        <div class="col-6 col-md-3">
+                                            <div class="h3 mb-1 fw-bold">
+                                                <span t-if="!state.isEditMode"
+                                                      t-on-dblclick="() => this.enableFieldEdit('probability')"
+                                                      style="cursor: pointer;"
+                                                      title="Doble clic para editar">
+                                                    <t t-esc="state.record.probability"/>%
+                                                </span>
+                                                <input t-else="" type="number" class="form-control form-control-sm d-inline-block text-center"
+                                                       style="width: 80px;"
+                                                       t-model="state.record.probability"
+                                                       min="0" max="100"/>
+                                            </div>
+                                            <div class="text-muted small text-uppercase">Probabilidad</div>
+                                        </div>
+                                        <div class="col-6 col-md-3">
+                                            <div class="h3 mb-1 fw-bold text-info">
+                                                <t t-esc="commissionAmount"/>
+                                            </div>
+                                            <div class="text-muted small text-uppercase">Comisión</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- TODO: Agregar secciones expandibles aquí -->
+                            <!-- - Cliente (con dirección completa y contactos) -->
+                            <!-- - Preferencias de Propiedad -->
+                            <!-- - Información Adicional -->
+                            <!-- - Amenidades -->
+                            <!-- - Info Contractual -->
+
+                        </t>
+
+                        <!-- Loading state -->
+                        <div t-else="" class="text-center p-5">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Cargando...</span>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- COLUMNA DERECHA: CHATTER NATIVO -->
+                    <div class="o_chatter_column bg-white border-start" style="width: 450px; flex-shrink: 0;">
+                        <t t-if="state.resId">
+                            <Chatter
+                                threadModel="'crm.lead'"
+                                threadId="state.resId"
+                                webRecord="state.record"/>
+                        </t>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </t>
+
+</templates>

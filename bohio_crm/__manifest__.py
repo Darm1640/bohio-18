@@ -61,10 +61,14 @@
             'bohio_crm/static/src/js/crm_salesperson_dashboard.js',
             'bohio_crm/static/src/xml/crm_salesperson_dashboard.xml',
 
-            # Timeline View
+            # Timeline View (Original)
             'bohio_crm/static/src/components/timeline_view/bohio_timeline_view.scss',
             'bohio_crm/static/src/components/timeline_view/bohio_timeline_view.js',
             'bohio_crm/static/src/components/timeline_view/bohio_timeline_view.xml',
+
+            # Timeline View V2 (Mejorada con modelo reactivo y chatter nativo)
+            'bohio_crm/static/src/components/timeline_view_v2/bohio_timeline_view_v2.js',
+            'bohio_crm/static/src/components/timeline_view_v2/bohio_timeline_view_v2.xml',
         ],
     },
     'installable': True,

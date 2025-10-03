@@ -179,6 +179,28 @@ class CrmLead(models.Model):
             'referral_partner': self.referred_by_partner_id.name if self.referred_by_partner_id else '',
             'user_name': self.user_id.name if self.user_id else '',
 
+            # Información completa del cliente
+            'client_info': {
+                'is_company': self.partner_id.is_company if self.partner_id else False,
+                'street': self.partner_id.street or '',
+                'street2': self.partner_id.street2 or '',
+                'city': self.partner_id.city or '',
+                'state_id': self.partner_id.state_id.name if self.partner_id and self.partner_id.state_id else '',
+                'country_id': self.partner_id.country_id.name if self.partner_id and self.partner_id.country_id else '',
+                'zip': self.partner_id.zip or '',
+                # Contactos secundarios si es empresa
+                'contacts': [
+                    {
+                        'id': contact.id,
+                        'name': contact.name,
+                        'function': contact.function or '',
+                        'phone': contact.phone or contact.mobile or '',
+                        'email': contact.email or '',
+                    }
+                    for contact in self.partner_id.child_ids[:5]
+                ] if self.partner_id and self.partner_id.is_company else [],
+            },
+
             # Presupuesto
             'min_budget': self.budget_min or 0,
             'max_budget': self.budget_max or 0,
@@ -296,6 +318,32 @@ class CrmLead(models.Model):
 
         return history
 
+    def _get_property_price_info(self, prop):
+        """Obtener precio de propiedad según tipo de servicio"""
+        if self.service_interested == 'rent':
+            price = prop.rent_value_from if hasattr(prop, 'rent_value_from') else prop.list_price
+            return {
+                'price': price,
+                'price_formatted': self._format_currency(price),
+                'price_label': 'Arriendo/mes',
+                'price_field': 'rent_value_from',
+            }
+        elif self.service_interested == 'sale':
+            price = prop.sale_value_from if hasattr(prop, 'sale_value_from') else prop.list_price
+            return {
+                'price': price,
+                'price_formatted': self._format_currency(price),
+                'price_label': 'Venta',
+                'price_field': 'sale_value_from',
+            }
+        else:
+            return {
+                'price': prop.list_price,
+                'price_formatted': self._format_currency(prop.list_price),
+                'price_label': 'Precio',
+                'price_field': 'list_price',
+            }
+
     def _get_ai_recommendations(self):
         """Obtener propiedades recomendadas por IA (simplificado)"""
         properties = self.env['product.template'].search([
@@ -308,11 +356,16 @@ class CrmLead(models.Model):
             # Score simulado (en producción sería calculado por IA)
             match_score = 95 - (idx * 3)
 
+            # Obtener precio según tipo de servicio
+            price_info = self._get_property_price_info(prop)
+
             result.append({
                 'id': prop.id,
                 'name': prop.name,
                 'area': prop.property_area if hasattr(prop, 'property_area') else 0,
-                'price_formatted': self._format_currency(prop.list_price),
+                'price': price_info['price'],
+                'price_formatted': price_info['price_formatted'],
+                'price_label': price_info['price_label'],
                 'bedrooms': prop.bedroom_count if hasattr(prop, 'bedroom_count') else 0,
                 'bathrooms': prop.bathroom_count if hasattr(prop, 'bathroom_count') else 0,
                 'neighborhood': prop.neighborhood if hasattr(prop, 'neighborhood') else '',
@@ -326,11 +379,16 @@ class CrmLead(models.Model):
         """Obtener propiedades en comparación"""
         result = []
         for prop in self.compared_properties_ids:
+            # Obtener precio según tipo de servicio
+            price_info = self._get_property_price_info(prop)
+
             result.append({
                 'id': prop.id,
                 'name': prop.name,
                 'area': prop.property_area if hasattr(prop, 'property_area') else 0,
-                'price_formatted': self._format_currency(prop.list_price),
+                'price': price_info['price'],
+                'price_formatted': price_info['price_formatted'],
+                'price_label': price_info['price_label'],
                 'bedrooms': prop.bedroom_count if hasattr(prop, 'bedroom_count') else 0,
                 'bathrooms': prop.bathroom_count if hasattr(prop, 'bathroom_count') else 0,
                 'floor': 'Piso 5',
@@ -1244,6 +1302,16 @@ class CrmLead(models.Model):
             ('active', '=', True)
         ])
 
+        # Calcular comisión estimada BOHIO (todas las oportunidades activas)
+        total_commission = 0
+        for opp in all_opps:
+            # Usar commission_percentage del lead (default 10%)
+            commission_percent = opp.commission_percentage or 10.0
+            commission = (opp.expected_revenue * commission_percent) / 100
+            total_commission += commission
+
+        estimated_commission = f"{company.currency_id.symbol}{total_commission:,.0f}"
+
         return {
             'all_new': all_new,
             'all_qualified': all_qualified,
@@ -1252,7 +1320,7 @@ class CrmLead(models.Model):
             'my_qualified': my_qualified,
             'my_proposal': my_proposal,
             'avg_deal_value': avg_deal_value,
-            'won_last_7_days': won_last_7_days,
+            'estimated_commission': estimated_commission,
             'avg_days_to_close': avg_days_to_close,
             'active_opportunities': active_opportunities,
             'user_id': user.id,
