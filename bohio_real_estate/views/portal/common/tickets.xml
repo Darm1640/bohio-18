@@ -108,7 +108,7 @@
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="/mybohio/owner">Dashboard</a></li>
                                 <li class="breadcrumb-item"><a href="/mybohio/owner/tickets">PQRS</a></li>
-                                <li class="breadcrumb-item active" t-field="ticket.name"/>
+                                <li class="breadcrumb-item active" t-esc="ticket.name"/>
                             </ol>
                         </nav>
                     </div>

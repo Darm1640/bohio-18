@@ -64,7 +64,7 @@
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="/mybohio/owner">Dashboard</a></li>
                                 <li class="breadcrumb-item"><a href="/mybohio/owner/opportunities">Oportunidades</a></li>
-                                <li class="breadcrumb-item active" t-field="opportunity.name"/>
+                                <li class="breadcrumb-item active" t-esc="opportunity.name"/>
                             </ol>
                         </nav>
                     </div>

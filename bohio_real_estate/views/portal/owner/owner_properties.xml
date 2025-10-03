@@ -218,7 +218,7 @@
                                     <h6 class="mb-0"><i class="fa fa-check-circle"></i> Contrato Activo</h6>
                                 </div>
                                 <div class="card-body">
-                                    <p><strong>Arrendatario:</strong><br/><t t-field="contract.partner_id.name"/></p>
+                                    <p><strong>Arrendatario:</strong><br/><t t-esc="contract.partner_id.name"/></p>
                                     <p><strong>Renta Mensual:</strong><br/>
                                         <span class="h5">$<t t-esc="'{:,.0f}'.format(contract.rent or 0)"/></span>
                                     </p>

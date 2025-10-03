@@ -78,7 +78,7 @@
                                     <tbody>
                                         <t t-foreach="historical_contracts" t-as="contract">
                                             <tr>
-                                                <td><t t-field="contract.property_id.name"/></td>
+                                                <td><t t-esc="contract.property_id.name"/></td>
                                                 <td><small><t t-esc="contract.property_code"/></small></td>
                                                 <td><t t-esc="contract.date_from.strftime('%d/%m/%Y')"/></td>
                                                 <td><t t-esc="contract.date_to.strftime('%d/%m/%Y') if contract.date_to else '-'"/></td>
