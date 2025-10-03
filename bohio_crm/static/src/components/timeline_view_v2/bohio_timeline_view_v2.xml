@@ -248,12 +248,638 @@
                                 </div>
                             </div>
 
-                            <!-- TODO: Agregar secciones expandibles aquí -->
-                            <!-- - Cliente (con dirección completa y contactos) -->
-                            <!-- - Preferencias de Propiedad -->
-                            <!-- - Información Adicional -->
-                            <!-- - Amenidades -->
-                            <!-- - Info Contractual -->
+                            <!-- SECCIÓN: INFORMACIÓN DEL CLIENTE -->
+                            <div class="card mb-3">
+                                <div class="card-header bg-light cursor-pointer" t-on-click="() => this.toggleSection('client')">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <h6 class="mb-0">
+                                            <i class="fa fa-user"/> Información del Cliente
+                                        </h6>
+                                        <i t-att-class="state.sections.client ? 'fa fa-chevron-up' : 'fa fa-chevron-down'"/>
+                                    </div>
+                                </div>
+                                <div class="card-body" t-if="state.sections.client">
+                                    <div class="row g-3">
+                                        <!-- Nombre -->
+                                        <div class="col-md-6">
+                                            <label class="form-label">Nombre del Cliente</label>
+                                            <input t-if="state.isEditMode"
+                                                   type="text"
+                                                   class="form-control"
+                                                   t-model="state.record.partner_name"
+                                                   placeholder="Nombre completo"/>
+                                            <div t-else="" class="form-control-plaintext"
+                                                 t-on-dblclick="() => this.enableFieldEdit('partner_name', 'client')">
+                                                <t t-esc="state.record.partner_name || 'Sin asignar'"/>
+                                            </div>
+                                        </div>
+
+                                        <!-- Tipo de Cliente -->
+                                        <div class="col-md-6">
+                                            <label class="form-label">Tipo de Cliente</label>
+                                            <select t-if="state.isEditMode"
+                                                    class="form-select"
+                                                    t-model="state.record.client_type">
+                                                <option value="">Seleccionar...</option>
+                                                <option value="final">Cliente Final</option>
+                                                <option value="marketer">Comercializador</option>
+                                                <option value="distributor">Distribuidor</option>
+                                            </select>
+                                            <div t-else="" class="form-control-plaintext"
+                                                 t-on-dblclick="() => this.enableFieldEdit('client_type', 'client')">
+                                                <t t-esc="state.record.customer_type || 'No definido'"/>
+                                            </div>
+                                        </div>
+
+                                        <!-- Teléfono -->
+                                        <div class="col-md-6">
+                                            <label class="form-label">Teléfono</label>
+                                            <input t-if="state.isEditMode"
+                                                   type="tel"
+                                                   class="form-control"
+                                                   t-model="state.record.phone"
+                                                   placeholder="+57 300 123 4567"/>
+                                            <div t-else="" class="form-control-plaintext"
+                                                 t-on-dblclick="() => this.enableFieldEdit('phone', 'client')">
+                                                <t t-esc="state.record.phone || 'Sin teléfono'"/>
+                                            </div>
+                                        </div>
+
+                                        <!-- Email -->
+                                        <div class="col-md-6">
+                                            <label class="form-label">Email</label>
+                                            <input t-if="state.isEditMode"
+                                                   type="email"
+                                                   class="form-control"
+                                                   t-model="state.record.email"
+                                                   placeholder="cliente@ejemplo.com"/>
+                                            <div t-else="" class="form-control-plaintext"
+                                                 t-on-dblclick="() => this.enableFieldEdit('email', 'client')">
+                                                <t t-esc="state.record.email || 'Sin email'"/>
+                                            </div>
+                                        </div>
+
+                                        <!-- Dirección Completa (si existe client_info) -->
+                                        <t t-if="state.record.client_info">
+                                            <div class="col-12">
+                                                <hr/>
+                                                <h6 class="text-muted">Dirección</h6>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <label class="form-label">Calle</label>
+                                                <div class="form-control-plaintext">
+                                                    <t t-esc="state.record.client_info.street || '-'"/>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <label class="form-label">Calle 2</label>
+                                                <div class="form-control-plaintext">
+                                                    <t t-esc="state.record.client_info.street2 || '-'"/>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-4">
+                                                <label class="form-label">Ciudad</label>
+                                                <div class="form-control-plaintext">
+                                                    <t t-esc="state.record.client_info.city || '-'"/>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-4">
+                                                <label class="form-label">Departamento</label>
+                                                <div class="form-control-plaintext">
+                                                    <t t-esc="state.record.client_info.state_id || '-'"/>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-4">
+                                                <label class="form-label">País</label>
+                                                <div class="form-control-plaintext">
+                                                    <t t-esc="state.record.client_info.country_id || '-'"/>
+                                                </div>
+                                            </div>
+
+                                            <!-- Contactos si es empresa -->
+                                            <t t-if="state.record.client_info.is_company and state.record.client_info.contacts.length > 0">
+                                                <div class="col-12">
+                                                    <hr/>
+                                                    <h6 class="text-muted">Contactos de la Empresa</h6>
+                                                </div>
+                                                <div class="col-12">
+                                                    <div class="table-responsive">
+                                                        <table class="table table-sm table-striped">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Nombre</th>
+                                                                    <th>Cargo</th>
+                                                                    <th>Teléfono</th>
+                                                                    <th>Email</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <t t-foreach="state.record.client_info.contacts" t-as="contact" t-key="contact.id">
+                                                                    <tr>
+                                                                        <td><t t-esc="contact.name"/></td>
+                                                                        <td><t t-esc="contact.function || '-'"/></td>
+                                                                        <td><t t-esc="contact.phone || '-'"/></td>
+                                                                        <td><t t-esc="contact.email || '-'"/></td>
+                                                                    </tr>
+                                                                </t>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </t>
+                                        </t>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- SECCIÓN: PREFERENCIAS DE PROPIEDAD -->
+                            <div class="card mb-3">
+                                <div class="card-header bg-light cursor-pointer" t-on-click="() => this.toggleSection('preferences')">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <h6 class="mb-0">
+                                            <i class="fa fa-home"/> Preferencias de Propiedad
+                                        </h6>
+                                        <i t-att-class="state.sections.preferences ? 'fa fa-chevron-up' : 'fa fa-chevron-down'"/>
+                                    </div>
+                                </div>
+                                <div class="card-body" t-if="state.sections.preferences">
+                                    <div class="row g-3">
+                                        <!-- Servicio Interesado -->
+                                        <div class="col-md-6">
+                                            <label class="form-label">Servicio Interesado</label>
+                                            <select t-if="state.isEditMode"
+                                                    class="form-select"
+                                                    t-model="state.record.service_interested">
+                                                <option value="">Seleccionar...</option>
+                                                <option value="rent">Arriendo</option>
+                                                <option value="sale">Venta</option>
+                                                <option value="projects">Proyectos</option>
+                                                <option value="consign">Consignar</option>
+                                            </select>
+                                            <div t-else="" class="form-control-plaintext"
+                                                 t-on-dblclick="() => this.enableFieldEdit('service_interested', 'preferences')">
+                                                <t t-esc="state.record.service_interested || 'No definido'"/>
+                                            </div>
+                                        </div>
+
+                                        <!-- Presupuesto -->
+                                        <div class="col-md-3">
+                                            <label class="form-label">Presupuesto Mínimo</label>
+                                            <input t-if="state.isEditMode"
+                                                   type="number"
+                                                   class="form-control"
+                                                   t-model="state.record.min_budget"
+                                                   placeholder="0"/>
+                                            <div t-else="" class="form-control-plaintext"
+                                                 t-on-dblclick="() => this.enableFieldEdit('min_budget', 'preferences')">
+                                                <t t-esc="state.record.min_budget_formatted || '$0'"/>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-3">
+                                            <label class="form-label">Presupuesto Máximo</label>
+                                            <input t-if="state.isEditMode"
+                                                   type="number"
+                                                   class="form-control"
+                                                   t-model="state.record.max_budget"
+                                                   placeholder="0"/>
+                                            <div t-else="" class="form-control-plaintext"
+                                                 t-on-dblclick="() => this.enableFieldEdit('max_budget', 'preferences')">
+                                                <t t-esc="state.record.max_budget_formatted || '$0'"/>
+                                            </div>
+                                        </div>
+
+                                        <!-- Ciudad y Barrio -->
+                                        <div class="col-md-6">
+                                            <label class="form-label">Ciudad Deseada</label>
+                                            <input t-if="state.isEditMode"
+                                                   type="text"
+                                                   class="form-control"
+                                                   t-model="state.record.desired_city"
+                                                   placeholder="Ej: Barranquilla"/>
+                                            <div t-else="" class="form-control-plaintext"
+                                                 t-on-dblclick="() => this.enableFieldEdit('desired_city', 'preferences')">
+                                                <t t-esc="state.record.desired_city || '-'"/>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label class="form-label">Barrio Deseado</label>
+                                            <input t-if="state.isEditMode"
+                                                   type="text"
+                                                   class="form-control"
+                                                   t-model="state.record.desired_neighborhood"
+                                                   placeholder="Ej: El Prado"/>
+                                            <div t-else="" class="form-control-plaintext"
+                                                 t-on-dblclick="() => this.enableFieldEdit('desired_neighborhood', 'preferences')">
+                                                <t t-esc="state.record.desired_neighborhood || '-'"/>
+                                            </div>
+                                        </div>
+
+                                        <!-- Habitaciones y Baños -->
+                                        <div class="col-md-3">
+                                            <label class="form-label">Habitaciones Mín.</label>
+                                            <input t-if="state.isEditMode"
+                                                   type="number"
+                                                   class="form-control"
+                                                   t-model="state.record.min_bedrooms"
+                                                   placeholder="0"/>
+                                            <div t-else="" class="form-control-plaintext"
+                                                 t-on-dblclick="() => this.enableFieldEdit('min_bedrooms', 'preferences')">
+                                                <t t-esc="state.record.min_bedrooms || '0'"/>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-3">
+                                            <label class="form-label">Habitaciones Ideal</label>
+                                            <input t-if="state.isEditMode"
+                                                   type="number"
+                                                   class="form-control"
+                                                   t-model="state.record.ideal_bedrooms"
+                                                   placeholder="0"/>
+                                            <div t-else="" class="form-control-plaintext"
+                                                 t-on-dblclick="() => this.enableFieldEdit('ideal_bedrooms', 'preferences')">
+                                                <t t-esc="state.record.ideal_bedrooms || '0'"/>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-3">
+                                            <label class="form-label">Baños Mín.</label>
+                                            <input t-if="state.isEditMode"
+                                                   type="number"
+                                                   class="form-control"
+                                                   t-model="state.record.min_bathrooms"
+                                                   placeholder="0"/>
+                                            <div t-else="" class="form-control-plaintext"
+                                                 t-on-dblclick="() => this.enableFieldEdit('min_bathrooms', 'preferences')">
+                                                <t t-esc="state.record.min_bathrooms || '0'"/>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-3">
+                                            <label class="form-label">Baños Ideal</label>
+                                            <input t-if="state.isEditMode"
+                                                   type="number"
+                                                   class="form-control"
+                                                   t-model="state.record.ideal_bathrooms"
+                                                   placeholder="0"/>
+                                            <div t-else="" class="form-control-plaintext"
+                                                 t-on-dblclick="() => this.enableFieldEdit('ideal_bathrooms', 'preferences')">
+                                                <t t-esc="state.record.ideal_bathrooms || '0'"/>
+                                            </div>
+                                        </div>
+
+                                        <!-- Área -->
+                                        <div class="col-md-6">
+                                            <label class="form-label">Área Mínima (m²)</label>
+                                            <input t-if="state.isEditMode"
+                                                   type="number"
+                                                   class="form-control"
+                                                   t-model="state.record.min_area"
+                                                   placeholder="0"/>
+                                            <div t-else="" class="form-control-plaintext"
+                                                 t-on-dblclick="() => this.enableFieldEdit('min_area', 'preferences')">
+                                                <t t-esc="state.record.min_area || '0'"/> m²
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label class="form-label">Área Máxima (m²)</label>
+                                            <input t-if="state.isEditMode"
+                                                   type="number"
+                                                   class="form-control"
+                                                   t-model="state.record.max_area"
+                                                   placeholder="0"/>
+                                            <div t-else="" class="form-control-plaintext"
+                                                 t-on-dblclick="() => this.enableFieldEdit('max_area', 'preferences')">
+                                                <t t-esc="state.record.max_area || '0'"/> m²
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- SECCIÓN: INFORMACIÓN ADICIONAL -->
+                            <div class="card mb-3">
+                                <div class="card-header bg-light cursor-pointer" t-on-click="() => this.toggleSection('additionalInfo')">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <h6 class="mb-0">
+                                            <i class="fa fa-info-circle"/> Información Adicional
+                                        </h6>
+                                        <i t-att-class="state.sections.additionalInfo ? 'fa fa-chevron-up' : 'fa fa-chevron-down'"/>
+                                    </div>
+                                </div>
+                                <div class="card-body" t-if="state.sections.additionalInfo">
+                                    <div class="row g-3">
+                                        <!-- Ocupantes -->
+                                        <div class="col-md-4">
+                                            <label class="form-label">Número de Ocupantes</label>
+                                            <input t-if="state.isEditMode"
+                                                   type="number"
+                                                   class="form-control"
+                                                   t-model="state.record.number_of_occupants"
+                                                   placeholder="0"/>
+                                            <div t-else="" class="form-control-plaintext"
+                                                 t-on-dblclick="() => this.enableFieldEdit('number_of_occupants', 'additionalInfo')">
+                                                <t t-esc="state.record.number_of_occupants || '0'"/>
+                                            </div>
+                                        </div>
+
+                                        <!-- Mascotas -->
+                                        <div class="col-md-4">
+                                            <label class="form-label">Tiene Mascotas</label>
+                                            <select t-if="state.isEditMode"
+                                                    class="form-select"
+                                                    t-model="state.record.has_pets">
+                                                <option value="false">No</option>
+                                                <option value="true">Sí</option>
+                                            </select>
+                                            <div t-else="" class="form-control-plaintext"
+                                                 t-on-dblclick="() => this.enableFieldEdit('has_pets', 'additionalInfo')">
+                                                <t t-esc="state.record.has_pets ? 'Sí' : 'No'"/>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4" t-if="state.record.has_pets">
+                                            <label class="form-label">Tipo de Mascota</label>
+                                            <input t-if="state.isEditMode"
+                                                   type="text"
+                                                   class="form-control"
+                                                   t-model="state.record.pet_type"
+                                                   placeholder="Ej: Perro, Gato"/>
+                                            <div t-else="" class="form-control-plaintext"
+                                                 t-on-dblclick="() => this.enableFieldEdit('pet_type', 'additionalInfo')">
+                                                <t t-esc="state.record.pet_type || '-'"/>
+                                            </div>
+                                        </div>
+
+                                        <!-- Parqueadero -->
+                                        <div class="col-md-4">
+                                            <label class="form-label">Requiere Parqueadero</label>
+                                            <select t-if="state.isEditMode"
+                                                    class="form-select"
+                                                    t-model="state.record.requires_parking">
+                                                <option value="false">No</option>
+                                                <option value="true">Sí</option>
+                                            </select>
+                                            <div t-else="" class="form-control-plaintext"
+                                                 t-on-dblclick="() => this.enableFieldEdit('requires_parking', 'additionalInfo')">
+                                                <t t-esc="state.record.requires_parking ? 'Sí' : 'No'"/>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4" t-if="state.record.requires_parking">
+                                            <label class="form-label">Cantidad de Parqueaderos</label>
+                                            <input t-if="state.isEditMode"
+                                                   type="number"
+                                                   class="form-control"
+                                                   t-model="state.record.parking_spots"
+                                                   placeholder="0"/>
+                                            <div t-else="" class="form-control-plaintext"
+                                                 t-on-dblclick="() => this.enableFieldEdit('parking_spots', 'additionalInfo')">
+                                                <t t-esc="state.record.parking_spots || '0'"/>
+                                            </div>
+                                        </div>
+
+                                        <!-- Ocupación e Ingresos -->
+                                        <div class="col-md-6">
+                                            <label class="form-label">Ocupación</label>
+                                            <input t-if="state.isEditMode"
+                                                   type="text"
+                                                   class="form-control"
+                                                   t-model="state.record.occupation"
+                                                   placeholder="Ej: Ingeniero"/>
+                                            <div t-else="" class="form-control-plaintext"
+                                                 t-on-dblclick="() => this.enableFieldEdit('occupation', 'additionalInfo')">
+                                                <t t-esc="state.record.occupation || '-'"/>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label class="form-label">Ingresos Mensuales</label>
+                                            <input t-if="state.isEditMode"
+                                                   type="number"
+                                                   class="form-control"
+                                                   t-model="state.record.monthly_income"
+                                                   placeholder="0"/>
+                                            <div t-else="" class="form-control-plaintext"
+                                                 t-on-dblclick="() => this.enableFieldEdit('monthly_income', 'additionalInfo')">
+                                                <t t-esc="state.record.monthly_income_formatted || '$0'"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- SECCIÓN: AMENIDADES -->
+                            <div class="card mb-3">
+                                <div class="card-header bg-light cursor-pointer" t-on-click="() => this.toggleSection('amenities')">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <h6 class="mb-0">
+                                            <i class="fa fa-star"/> Amenidades Requeridas
+                                        </h6>
+                                        <i t-att-class="state.sections.amenities ? 'fa fa-chevron-up' : 'fa fa-chevron-down'"/>
+                                    </div>
+                                </div>
+                                <div class="card-body" t-if="state.sections.amenities">
+                                    <div class="row g-3">
+                                        <!-- Amenidades como checkboxes -->
+                                        <div class="col-md-4">
+                                            <div class="form-check">
+                                                <input t-if="state.isEditMode"
+                                                       class="form-check-input"
+                                                       type="checkbox"
+                                                       t-model="state.record.requires_common_areas"/>
+                                                <label class="form-check-label">
+                                                    Áreas Comunes
+                                                    <span t-if="!state.isEditMode" class="badge bg-success ms-2" t-if="state.record.requires_common_areas">Sí</span>
+                                                    <span t-if="!state.isEditMode" class="badge bg-secondary ms-2" t-else="">No</span>
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="form-check">
+                                                <input t-if="state.isEditMode"
+                                                       class="form-check-input"
+                                                       type="checkbox"
+                                                       t-model="state.record.requires_gym"/>
+                                                <label class="form-check-label">
+                                                    Gimnasio
+                                                    <span t-if="!state.isEditMode" class="badge bg-success ms-2" t-if="state.record.requires_gym">Sí</span>
+                                                    <span t-if="!state.isEditMode" class="badge bg-secondary ms-2" t-else="">No</span>
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="form-check">
+                                                <input t-if="state.isEditMode"
+                                                       class="form-check-input"
+                                                       type="checkbox"
+                                                       t-model="state.record.requires_pool"/>
+                                                <label class="form-check-label">
+                                                    Piscina
+                                                    <span t-if="!state.isEditMode" class="badge bg-success ms-2" t-if="state.record.requires_pool">Sí</span>
+                                                    <span t-if="!state.isEditMode" class="badge bg-secondary ms-2" t-else="">No</span>
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="form-check">
+                                                <input t-if="state.isEditMode"
+                                                       class="form-check-input"
+                                                       type="checkbox"
+                                                       t-model="state.record.requires_security"/>
+                                                <label class="form-check-label">
+                                                    Seguridad 24/7
+                                                    <span t-if="!state.isEditMode" class="badge bg-success ms-2" t-if="state.record.requires_security">Sí</span>
+                                                    <span t-if="!state.isEditMode" class="badge bg-secondary ms-2" t-else="">No</span>
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="form-check">
+                                                <input t-if="state.isEditMode"
+                                                       class="form-check-input"
+                                                       type="checkbox"
+                                                       t-model="state.record.requires_elevator"/>
+                                                <label class="form-check-label">
+                                                    Ascensor
+                                                    <span t-if="!state.isEditMode" class="badge bg-success ms-2" t-if="state.record.requires_elevator">Sí</span>
+                                                    <span t-if="!state.isEditMode" class="badge bg-secondary ms-2" t-else="">No</span>
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <!-- Propósito de la Propiedad -->
+                                        <div class="col-md-6">
+                                            <label class="form-label">Propósito de la Propiedad</label>
+                                            <select t-if="state.isEditMode"
+                                                    class="form-select"
+                                                    t-model="state.record.property_purpose">
+                                                <option value="">Seleccionar...</option>
+                                                <option value="housing">Vivienda</option>
+                                                <option value="investment">Inversión</option>
+                                                <option value="vacation">Vacacional</option>
+                                            </select>
+                                            <div t-else="" class="form-control-plaintext"
+                                                 t-on-dblclick="() => this.enableFieldEdit('property_purpose', 'amenities')">
+                                                <t t-esc="state.record.property_purpose || 'No definido'"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- SECCIÓN: INFORMACIÓN CONTRACTUAL -->
+                            <div class="card mb-3">
+                                <div class="card-header bg-light cursor-pointer" t-on-click="() => this.toggleSection('contract')">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <h6 class="mb-0">
+                                            <i class="fa fa-file-contract"/> Información Contractual
+                                        </h6>
+                                        <i t-att-class="state.sections.contract ? 'fa fa-chevron-up' : 'fa fa-chevron-down'"/>
+                                    </div>
+                                </div>
+                                <div class="card-body" t-if="state.sections.contract">
+                                    <div class="row g-3">
+                                        <!-- Fecha de Inicio -->
+                                        <div class="col-md-6">
+                                            <label class="form-label">Fecha de Inicio Deseada</label>
+                                            <input t-if="state.isEditMode"
+                                                   type="date"
+                                                   class="form-control"
+                                                   t-model="state.record.contract_start_date"/>
+                                            <div t-else="" class="form-control-plaintext"
+                                                 t-on-dblclick="() => this.enableFieldEdit('contract_start_date', 'contract')">
+                                                <t t-esc="state.record.contract_start_date || 'No definida'"/>
+                                            </div>
+                                        </div>
+
+                                        <!-- Duración del Contrato -->
+                                        <div class="col-md-6">
+                                            <label class="form-label">Duración del Contrato (meses)</label>
+                                            <input t-if="state.isEditMode"
+                                                   type="number"
+                                                   class="form-control"
+                                                   t-model="state.record.contract_duration_months"
+                                                   placeholder="12"/>
+                                            <div t-else="" class="form-control-plaintext"
+                                                 t-on-dblclick="() => this.enableFieldEdit('contract_duration_months', 'contract')">
+                                                <t t-esc="state.record.contract_duration_months || '0'"/> meses
+                                            </div>
+                                        </div>
+
+                                        <!-- Porcentaje de Comisión -->
+                                        <div class="col-md-6">
+                                            <label class="form-label">Porcentaje de Comisión (%)</label>
+                                            <input t-if="state.isEditMode"
+                                                   type="number"
+                                                   class="form-control"
+                                                   t-model="state.record.commission_percent"
+                                                   placeholder="5"
+                                                   step="0.1"/>
+                                            <div t-else="" class="form-control-plaintext"
+                                                 t-on-dblclick="() => this.enableFieldEdit('commission_percent', 'contract')">
+                                                <t t-esc="state.record.commission_percent || '0'"/>%
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- SECCIÓN: PROPIEDADES RECOMENDADAS -->
+                            <div class="card mb-3" t-if="state.recommendedProperties.length > 0">
+                                <div class="card-header bg-light">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <h6 class="mb-0">
+                                            <i class="fa fa-magic"/> Propiedades Recomendadas por IA
+                                        </h6>
+                                        <button class="btn btn-sm btn-outline-primary" t-on-click="refreshRecommendations">
+                                            <i class="fa fa-sync"/> Actualizar
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row g-3">
+                                        <t t-foreach="state.recommendedProperties" t-as="prop" t-key="prop.id">
+                                            <div class="col-md-6">
+                                                <div class="card border">
+                                                    <div class="card-body">
+                                                        <h6 class="card-title"><t t-esc="prop.name"/></h6>
+                                                        <p class="mb-1 small">
+                                                            <i class="fa fa-map-marker-alt"/> <t t-esc="prop.city || '-'"/>
+                                                        </p>
+                                                        <p class="mb-1">
+                                                            <strong class="text-primary"><t t-esc="prop.price_formatted"/></strong>
+                                                            <span class="text-muted small"> / <t t-esc="prop.price_label"/></span>
+                                                        </p>
+                                                        <p class="mb-2 small">
+                                                            <i class="fa fa-bed"/> <t t-esc="prop.bedrooms || 0"/> hab.
+                                                            | <i class="fa fa-bath"/> <t t-esc="prop.bathrooms || 0"/> baños
+                                                            | <t t-esc="prop.area || 0"/> m²
+                                                        </p>
+                                                        <div class="d-flex gap-2">
+                                                            <button class="btn btn-sm btn-outline-primary flex-fill"
+                                                                    t-on-click="() => this.addToComparison(prop.id)">
+                                                                <i class="fa fa-plus"/> Comparar
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </t>
+                                    </div>
+                                </div>
+                            </div>
 
                         </t>
 
@@ -266,18 +892,107 @@
 
                     </div>
 
-                    <!-- COLUMNA DERECHA: CHATTER NATIVO (TODO: Implementar) -->
-                    <div class="o_chatter_column bg-white border-start p-3" style="width: 450px; flex-shrink: 0;">
+                    <!-- COLUMNA DERECHA: PROPIEDADES COMPARADAS Y CHATTER -->
+                    <div class="o_chatter_column bg-white border-start p-3" style="width: 450px; flex-shrink: 0; overflow-y: auto;">
                         <t t-if="state.resId">
-                            <div class="alert alert-info">
-                                <h5>Chatter</h5>
-                                <p class="mb-0">El componente Chatter se integrará en la siguiente versión.</p>
-                                <p class="mb-0 mt-2">
-                                    <a href="#" class="btn btn-sm btn-primary" t-on-click="openFullForm">
-                                        Ver Formulario Completo
-                                    </a>
-                                </p>
+
+                            <!-- PROPIEDADES COMPARADAS -->
+                            <div class="card mb-3" t-if="state.comparedProperties.length > 0">
+                                <div class="card-header bg-primary text-white">
+                                    <h6 class="mb-0">
+                                        <i class="fa fa-balance-scale"/> Propiedades en Comparación
+                                    </h6>
+                                </div>
+                                <div class="card-body p-0">
+                                    <t t-foreach="state.comparedProperties" t-as="prop" t-key="prop.id">
+                                        <div class="border-bottom p-3">
+                                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                                <h6 class="mb-0 flex-fill"><t t-esc="prop.name"/></h6>
+                                                <button class="btn btn-sm btn-outline-danger"
+                                                        t-on-click="() => this.removeFromComparison(prop.id)"
+                                                        title="Quitar de comparación">
+                                                    <i class="fa fa-times"/>
+                                                </button>
+                                            </div>
+
+                                            <div class="mb-2">
+                                                <span class="badge bg-info"><t t-esc="prop.property_type || 'Propiedad'"/></span>
+                                            </div>
+
+                                            <p class="mb-1 small">
+                                                <i class="fa fa-map-marker-alt text-danger"/>
+                                                <t t-esc="prop.city || '-'"/>, <t t-esc="prop.neighborhood || '-'"/>
+                                            </p>
+
+                                            <p class="mb-2">
+                                                <strong class="text-success"><t t-esc="prop.price_formatted"/></strong>
+                                                <br/>
+                                                <span class="text-muted small"><t t-esc="prop.price_label"/></span>
+                                            </p>
+
+                                            <div class="row g-2 mb-2">
+                                                <div class="col-4 text-center">
+                                                    <div class="small text-muted">Habitaciones</div>
+                                                    <div class="fw-bold"><i class="fa fa-bed"/> <t t-esc="prop.bedrooms || 0"/></div>
+                                                </div>
+                                                <div class="col-4 text-center">
+                                                    <div class="small text-muted">Baños</div>
+                                                    <div class="fw-bold"><i class="fa fa-bath"/> <t t-esc="prop.bathrooms || 0"/></div>
+                                                </div>
+                                                <div class="col-4 text-center">
+                                                    <div class="small text-muted">Área</div>
+                                                    <div class="fw-bold"><t t-esc="prop.area || 0"/> m²</div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Características adicionales si existen -->
+                                            <div class="small" t-if="prop.features">
+                                                <div class="text-muted mb-1">Características:</div>
+                                                <div class="d-flex flex-wrap gap-1">
+                                                    <t t-foreach="prop.features" t-as="feature" t-key="feature">
+                                                        <span class="badge bg-light text-dark">
+                                                            <i class="fa fa-check text-success"/> <t t-esc="feature"/>
+                                                        </span>
+                                                    </t>
+                                                </div>
+                                            </div>
+
+                                            <!-- Botón para ver detalles -->
+                                            <div class="mt-2">
+                                                <button class="btn btn-sm btn-outline-primary w-100"
+                                                        t-on-click="() => this.viewPropertyDetails(prop.id)">
+                                                    <i class="fa fa-eye"/> Ver Detalles
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </t>
+                                </div>
                             </div>
+
+                            <!-- Mensaje cuando no hay propiedades comparadas -->
+                            <div class="alert alert-light" t-if="state.comparedProperties.length === 0">
+                                <h6 class="alert-heading">
+                                    <i class="fa fa-info-circle"/> Sin Propiedades para Comparar
+                                </h6>
+                                <p class="mb-2 small">Agrega propiedades desde las recomendaciones de IA para compararlas aquí.</p>
+                                <small class="text-muted">Máximo 4 propiedades</small>
+                            </div>
+
+                            <!-- CHATTER PLACEHOLDER -->
+                            <div class="card mb-3">
+                                <div class="card-header bg-light">
+                                    <h6 class="mb-0">
+                                        <i class="fa fa-comments"/> Actividades y Mensajes
+                                    </h6>
+                                </div>
+                                <div class="card-body">
+                                    <p class="mb-2 small text-muted">El componente Chatter nativo se integrará en la siguiente versión.</p>
+                                    <button class="btn btn-sm btn-primary w-100" t-on-click="openFullForm">
+                                        <i class="fa fa-external-link-alt"/> Ver Formulario Completo
+                                    </button>
+                                </div>
+                            </div>
+
                         </t>
                     </div>
 

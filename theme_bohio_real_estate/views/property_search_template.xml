@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Componente de Búsqueda de Propiedades -->
+    <template id="property_search_bar" name="Búsqueda de Propiedades">
+        <div class="bohio-search-container">
+            <form action="/properties" method="get" class="bohio-search-form">
+                <div class="search-fields-wrapper">
+                    <!-- Barrio / Ubicación -->
+                    <div class="search-field search-location">
+                        <i class="ri-map-pin-line"></i>
+                        <input type="text"
+                               name="neighborhood"
+                               placeholder="Barrio o ubicación"
+                               class="search-input"
+                               t-att-value="request.params.get('neighborhood', '')"/>
+                    </div>
+
+                    <!-- Habitaciones -->
+                    <div class="search-field search-bedrooms">
+                        <i class="ri-hotel-bed-line"></i>
+                        <select name="num_bedrooms" class="search-select">
+                            <option value="">Habitaciones</option>
+                            <option value="1" t-att-selected="request.params.get('num_bedrooms') == '1'">1+</option>
+                            <option value="2" t-att-selected="request.params.get('num_bedrooms') == '2'">2+</option>
+                            <option value="3" t-att-selected="request.params.get('num_bedrooms') == '3'">3+</option>
+                            <option value="4" t-att-selected="request.params.get('num_bedrooms') == '4'">4+</option>
+                            <option value="5" t-att-selected="request.params.get('num_bedrooms') == '5'">5+</option>
+                        </select>
+                    </div>
+
+                    <!-- Baños -->
+                    <div class="search-field search-bathrooms">
+                        <i class="ri-water-percent-line"></i>
+                        <select name="num_bathrooms" class="search-select">
+                            <option value="">Baños</option>
+                            <option value="1" t-att-selected="request.params.get('num_bathrooms') == '1'">1+</option>
+                            <option value="2" t-att-selected="request.params.get('num_bathrooms') == '2'">2+</option>
+                            <option value="3" t-att-selected="request.params.get('num_bathrooms') == '3'">3+</option>
+                            <option value="4" t-att-selected="request.params.get('num_bathrooms') == '4'">4+</option>
+                        </select>
+                    </div>
+
+                    <!-- Área mínima -->
+                    <div class="search-field search-area">
+                        <i class="ri-ruler-line"></i>
+                        <input type="number"
+                               name="min_area"
+                               placeholder="Área mín (m²)"
+                               class="search-input"
+                               min="0"
+                               t-att-value="request.params.get('min_area', '')"/>
+                    </div>
+
+                    <!-- Tipo de Servicio -->
+                    <div class="search-field search-service">
+                        <i class="ri-home-gear-line"></i>
+                        <select name="type_service" class="search-select">
+                            <option value="">Tipo</option>
+                            <option value="sale" t-att-selected="request.params.get('type_service') == 'sale'">Venta</option>
+                            <option value="rent" t-att-selected="request.params.get('type_service') == 'rent'">Arriendo</option>
+                            <option value="sale_rent" t-att-selected="request.params.get('type_service') == 'sale_rent'">Venta y Arriendo</option>
+                            <option value="vacation_rent" t-att-selected="request.params.get('type_service') == 'vacation_rent'">Arriendo Vacacional</option>
+                        </select>
+                    </div>
+
+                    <!-- Botón de Búsqueda -->
+                    <div class="search-button-wrapper">
+                        <button type="submit" class="btn btn-primary search-submit-btn">
+                            <i class="ri-search-line"></i>
+                            <span>Buscar</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Búsqueda Avanzada (Toggle) -->
+                <div class="advanced-search-toggle">
+                    <a href="#" class="toggle-advanced-link" data-bs-toggle="collapse" data-bs-target="#advancedSearch">
+                        <i class="ri-filter-3-line"></i>
+                        <span>Filtros Avanzados</span>
+                    </a>
+                </div>
+
+                <!-- Panel de Búsqueda Avanzada -->
+                <div id="advancedSearch" class="collapse advanced-search-panel">
+                    <div class="advanced-fields-grid">
+                        <!-- Rango de Precio -->
+                        <div class="advanced-field">
+                            <label>Precio</label>
+                            <div class="price-range">
+                                <input type="number" name="min_price" placeholder="Mínimo" class="form-control" t-att-value="request.params.get('min_price', '')"/>
+                                <span class="range-separator">-</span>
+                                <input type="number" name="max_price" placeholder="Máximo" class="form-control" t-att-value="request.params.get('max_price', '')"/>
+                            </div>
+                        </div>
+
+                        <!-- Tipo de Propiedad -->
+                        <div class="advanced-field">
+                            <label>Tipo de Propiedad</label>
+                            <select name="property_type" class="form-control">
+                                <option value="">Todos</option>
+                                <t t-foreach="request.env['property.type'].sudo().search([])" t-as="prop_type">
+                                    <option t-att-value="prop_type.id"
+                                            t-att-selected="request.params.get('property_type') == str(prop_type.id)"
+                                            t-out="prop_type.name"/>
+                                </t>
+                            </select>
+                        </div>
+
+                        <!-- Estrato -->
+                        <div class="advanced-field">
+                            <label>Estrato</label>
+                            <select name="stratum" class="form-control">
+                                <option value="">Todos</option>
+                                <option value="1" t-att-selected="request.params.get('stratum') == '1'">Estrato 1</option>
+                                <option value="2" t-att-selected="request.params.get('stratum') == '2'">Estrato 2</option>
+                                <option value="3" t-att-selected="request.params.get('stratum') == '3'">Estrato 3</option>
+                                <option value="4" t-att-selected="request.params.get('stratum') == '4'">Estrato 4</option>
+                                <option value="5" t-att-selected="request.params.get('stratum') == '5'">Estrato 5</option>
+                                <option value="6" t-att-selected="request.params.get('stratum') == '6'">Estrato 6</option>
+                            </select>
+                        </div>
+
+                        <!-- Estado del Inmueble -->
+                        <div class="advanced-field">
+                            <label>Estado del Inmueble</label>
+                            <select name="property_status" class="form-control">
+                                <option value="">Todos</option>
+                                <option value="new" t-att-selected="request.params.get('property_status') == 'new'">Nuevo</option>
+                                <option value="used" t-att-selected="request.params.get('property_status') == 'used'">Usado</option>
+                                <option value="remodeled" t-att-selected="request.params.get('property_status') == 'remodeled'">Remodelado</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </template>
+</odoo>

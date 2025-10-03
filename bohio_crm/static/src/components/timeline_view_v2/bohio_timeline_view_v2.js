@@ -461,14 +461,45 @@ export class BohioTimelineViewV2 extends Component {
             const recommendations = await this.orm.call(
                 "crm.lead",
                 "get_ai_recommendations",
-                [this.state.resId]
+                [[this.state.resId]]
             );
 
             this.state.recommendedProperties = recommendations;
+            this.notification.add("Recomendaciones actualizadas", { type: "success" });
 
         } catch (error) {
             this.notification.add(`Error: ${error.message}`, { type: "danger" });
         }
+    }
+
+    async removeFromComparison(propertyId) {
+        try {
+            // Remover de la lista de comparación
+            await this.orm.write(
+                "crm.lead",
+                [this.state.resId],
+                {
+                    compared_properties_ids: [[3, propertyId]]  // Comando 3 = unlink
+                }
+            );
+
+            // Recargar datos
+            await this._loadRecordData(this.state.resId);
+            this.notification.add("Propiedad removida de la comparación", { type: "success" });
+
+        } catch (error) {
+            this.notification.add(`Error: ${error.message}`, { type: "danger" });
+        }
+    }
+
+    async viewPropertyDetails(propertyId) {
+        this.action.doAction({
+            type: "ir.actions.act_window",
+            res_model: "product.template",
+            res_id: propertyId,
+            views: [[false, "form"]],
+            target: "new",
+        });
     }
 
     // ===================================

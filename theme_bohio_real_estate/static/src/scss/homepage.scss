@@ -1,0 +1,313 @@
+// Bohio Real Estate - Homepage Styles
+
+// Section Common
+.section-header {
+    margin-bottom: $spacer-xl;
+
+    .section-title {
+        font-size: $h2-font-size;
+        font-weight: 700;
+        color: $o-color-text-dark;
+        margin-bottom: $spacer-sm;
+    }
+
+    .section-subtitle {
+        font-size: $font-size-lg;
+        color: $o-color-text-light;
+        font-weight: 300;
+    }
+}
+
+// Featured Properties
+.featured-properties {
+    .properties-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: $spacer-lg;
+        margin-bottom: $spacer-xl;
+
+        @media (max-width: $breakpoint-md) {
+            grid-template-columns: 1fr;
+        }
+    }
+}
+
+// Property Card
+.property-card {
+    background: $o-bg-white;
+    border-radius: $border-radius-lg;
+    overflow: hidden;
+    box-shadow: $shadow-md;
+    transition: $transition-base;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    &:hover {
+        box-shadow: $shadow-lg;
+        transform: translateY(-8px);
+    }
+
+    .property-image {
+        position: relative;
+        width: 100%;
+        height: 240px;
+        overflow: hidden;
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: $transition-slow;
+        }
+
+        &:hover img {
+            transform: scale(1.1);
+        }
+
+        .property-badge {
+            position: absolute;
+            top: $spacer-md;
+            right: $spacer-md;
+
+            .badge {
+                padding: 0.5rem 1rem;
+                font-size: $font-size-sm;
+                font-weight: 600;
+                border-radius: $border-radius;
+
+                &.badge-primary {
+                    background: $o-color-primary;
+                    color: white;
+                }
+
+                &.badge-success {
+                    background: $o-success;
+                    color: white;
+                }
+
+                &.badge-info {
+                    background: $o-color-secondary;
+                    color: white;
+                }
+            }
+        }
+    }
+
+    .property-content {
+        padding: $spacer-lg;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+
+        .property-title {
+            font-size: $h5-font-size;
+            font-weight: 600;
+            margin-bottom: $spacer-sm;
+            line-height: 1.3;
+
+            a {
+                color: $o-color-text-dark;
+                text-decoration: none;
+                transition: $transition-base;
+
+                &:hover {
+                    color: $o-color-primary;
+                }
+            }
+        }
+
+        .property-location {
+            display: flex;
+            align-items: center;
+            gap: $spacer-xs;
+            color: $o-color-text-light;
+            font-size: $font-size-sm;
+            margin-bottom: $spacer-md;
+
+            i {
+                color: $o-color-secondary;
+            }
+        }
+
+        .property-features {
+            display: flex;
+            gap: $spacer-lg;
+            margin-bottom: $spacer-md;
+            padding-bottom: $spacer-md;
+            border-bottom: 1px solid $border-color;
+
+            .feature {
+                display: flex;
+                align-items: center;
+                gap: $spacer-xs;
+                color: $o-color-text-dark;
+                font-size: $font-size-sm;
+
+                i {
+                    color: $o-color-primary;
+                    font-size: 1.1rem;
+                }
+            }
+        }
+
+        .property-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+
+            .property-price {
+                .price-amount {
+                    font-size: $h4-font-size;
+                    font-weight: 700;
+                    color: $o-color-primary;
+                }
+            }
+
+            .btn-outline-primary {
+                border: 2px solid $o-color-primary;
+                color: $o-color-primary;
+                padding: 0.5rem 1rem;
+                border-radius: $border-radius;
+                font-weight: 600;
+                transition: $transition-base;
+
+                &:hover {
+                    background: $o-color-primary;
+                    color: white;
+                }
+            }
+        }
+    }
+}
+
+// Services Section
+.services-section {
+    background: $o-bg-light;
+
+    .services-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: $spacer-lg;
+
+        @media (max-width: $breakpoint-md) {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .service-card {
+        background: $o-bg-white;
+        padding: $spacer-xl;
+        border-radius: $border-radius-lg;
+        text-align: center;
+        box-shadow: $shadow-sm;
+        transition: $transition-base;
+
+        &:hover {
+            box-shadow: $shadow-lg;
+            transform: translateY(-4px);
+
+            .service-icon {
+                background: $o-color-primary;
+                color: white;
+            }
+        }
+
+        .service-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto $spacer-md;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: $o-bg-light;
+            border-radius: 50%;
+            transition: $transition-base;
+
+            i {
+                font-size: 2rem;
+                color: $o-color-primary;
+            }
+        }
+
+        .service-title {
+            font-size: $h5-font-size;
+            font-weight: 600;
+            margin-bottom: $spacer-sm;
+            color: $o-color-text-dark;
+        }
+
+        .service-description {
+            color: $o-color-text-light;
+            font-size: $font-size-base;
+            line-height: 1.6;
+        }
+    }
+}
+
+// CTA Section
+.cta-section {
+    background: linear-gradient(135deg, $o-color-primary, $o-color-secondary);
+    padding: 5rem 0;
+
+    .cta-content {
+        text-align: center;
+        color: white;
+
+        .cta-title {
+            font-size: $h1-font-size;
+            font-weight: 700;
+            margin-bottom: $spacer-md;
+
+            @media (max-width: $breakpoint-md) {
+                font-size: $h2-font-size;
+            }
+        }
+
+        .cta-description {
+            font-size: $font-size-lg;
+            margin-bottom: $spacer-xl;
+            opacity: 0.95;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: $spacer-md;
+            justify-content: center;
+            flex-wrap: wrap;
+
+            .btn-lg {
+                padding: 1rem 2rem;
+                font-size: $font-size-lg;
+                border-radius: $border-radius;
+                font-weight: 600;
+                transition: $transition-base;
+                display: inline-flex;
+                align-items: center;
+
+                &.btn-primary {
+                    background: white;
+                    color: $o-color-primary;
+                    border: 2px solid white;
+
+                    &:hover {
+                        background: transparent;
+                        color: white;
+                    }
+                }
+
+                &.btn-secondary {
+                    background: transparent;
+                    color: white;
+                    border: 2px solid white;
+
+                    &:hover {
+                        background: white;
+                        color: $o-color-primary;
+                    }
+                }
+            }
+        }
+    }
+}

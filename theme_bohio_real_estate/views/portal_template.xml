@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Portal Layout Override -->
+    <template id="portal_layout_inherited" inherit_id="portal.portal_layout">
+        <!-- Customize portal header -->
+        <xpath expr="//div[hasclass('o_portal_sidebar')]" position="attributes">
+            <attribute name="class" add="bohio-portal-sidebar" separator=" "/>
+        </xpath>
+
+        <xpath expr="//div[hasclass('o_portal_content')]" position="attributes">
+            <attribute name="class" add="bohio-portal-content" separator=" "/>
+        </xpath>
+    </template>
+
+    <!-- Portal My Home -->
+    <template id="portal_my_home_inherited" inherit_id="portal.portal_my_home">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="attributes">
+            <attribute name="class" add="bohio-portal-docs" separator=" "/>
+        </xpath>
+    </template>
+
+    <!-- Custom Portal Styles -->
+    <template id="portal_custom_css" inherit_id="portal.portal_layout">
+        <xpath expr="//head" position="inside">
+            <style type="text/css">
+                .bohio-portal-sidebar {
+                    background: var(--o-bg-light, #F9FAFB);
+                }
+
+                .bohio-portal-content {
+                    padding: 2rem;
+                }
+
+                .bohio-portal-docs .card {
+                    border-radius: 0.75rem;
+                    border: none;
+                    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+                    transition: all 0.3s ease-in-out;
+                }
+
+                .bohio-portal-docs .card:hover {
+                    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+                    transform: translateY(-4px);
+                }
+            </style>
+        </xpath>
+    </template>
+</odoo>

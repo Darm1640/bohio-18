@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Homepage Layout -->
+    <template id="homepage" name="Bohio Real Estate - Home">
+        <t t-call="website.layout">
+            <!-- Hero Section con Búsqueda -->
+            <section class="home-search-hero" t-attf-style="background-image: url('/theme_bohio_real_estate/static/src/img/home-banner.jpg');">
+                <div class="search-hero-content">
+                    <h1 class="hero-title">Encuentra Tu Hogar Ideal</h1>
+                    <p class="hero-subtitle">Miles de propiedades esperan por ti</p>
+
+                    <!-- Componente de Búsqueda -->
+                    <t t-call="theme_bohio_real_estate.property_search_bar"/>
+                </div>
+            </section>
+
+            <!-- Sección de Propiedades Destacadas -->
+            <section class="featured-properties section-lg">
+                <div class="container-bohio">
+                    <div class="section-header text-center">
+                        <h2 class="section-title">Propiedades Destacadas</h2>
+                        <p class="section-subtitle">Descubre las mejores opciones seleccionadas para ti</p>
+                    </div>
+
+                    <div class="properties-grid">
+                        <t t-set="featured_properties" t-value="request.env['product.template'].sudo().search([
+                            ('is_property', '=', True),
+                            ('state', '=', 'free')
+                        ], limit=6)"/>
+
+                        <t t-foreach="featured_properties" t-as="property">
+                            <t t-call="theme_bohio_real_estate.property_card">
+                                <t t-set="property" t-value="property"/>
+                            </t>
+                        </t>
+                    </div>
+
+                    <div class="text-center mt-4">
+                        <a href="/properties" class="btn btn-primary btn-lg">
+                            Ver Todas las Propiedades
+                            <i class="ri-arrow-right-line ms-2"></i>
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sección de Servicios -->
+            <section class="services-section section bg-light">
+                <div class="container-bohio">
+                    <div class="section-header text-center">
+                        <h2 class="section-title">Nuestros Servicios</h2>
+                        <p class="section-subtitle">Soluciones integrales para tus necesidades inmobiliarias</p>
+                    </div>
+
+                    <div class="services-grid">
+                        <div class="service-card">
+                            <div class="service-icon">
+                                <i class="ri-key-line"></i>
+                            </div>
+                            <h3 class="service-title">Venta de Propiedades</h3>
+                            <p class="service-description">Asesoría completa para comprar tu hogar ideal</p>
+                        </div>
+
+                        <div class="service-card">
+                            <div class="service-icon">
+                                <i class="ri-home-line"></i>
+                            </div>
+                            <h3 class="service-title">Arriendo</h3>
+                            <p class="service-description">Encuentra el lugar perfecto para arrendar</p>
+                        </div>
+
+                        <div class="service-card">
+                            <div class="service-icon">
+                                <i class="ri-hand-coin-line"></i>
+                            </div>
+                            <h3 class="service-title">Consigna tu Inmueble</h3>
+                            <p class="service-description">Confía tu propiedad a expertos</p>
+                        </div>
+
+                        <div class="service-card">
+                            <div class="service-icon">
+                                <i class="ri-scales-line"></i>
+                            </div>
+                            <h3 class="service-title">Servicios Jurídicos</h3>
+                            <p class="service-description">Asesoría legal especializada</p>
+                        </div>
+
+                        <div class="service-card">
+                            <div class="service-icon">
+                                <i class="ri-megaphone-line"></i>
+                            </div>
+                            <h3 class="service-title">Marketing Inmobiliario</h3>
+                            <p class="service-description">Promoción efectiva de tu propiedad</p>
+                        </div>
+
+                        <div class="service-card">
+                            <div class="service-icon">
+                                <i class="ri-briefcase-line"></i>
+                            </div>
+                            <h3 class="service-title">Negocios Corporativos</h3>
+                            <p class="service-description">Soluciones para empresas</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Call to Action -->
+            <section class="cta-section section">
+                <div class="container-bohio">
+                    <div class="cta-content">
+                        <h2 class="cta-title">¿Listo para encontrar tu nuevo hogar?</h2>
+                        <p class="cta-description">Contáctanos y te ayudaremos en cada paso del camino</p>
+                        <div class="cta-buttons">
+                            <a href="/contactus" class="btn btn-primary btn-lg">
+                                <i class="ri-mail-line me-2"></i>
+                                Contáctanos
+                            </a>
+                            <a href="/properties" class="btn btn-secondary btn-lg">
+                                <i class="ri-search-line me-2"></i>
+                                Ver Propiedades
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </t>
+    </template>
+
+    <!-- Property Card Component -->
+    <template id="property_card" name="Property Card">
+        <div class="property-card">
+            <div class="property-image">
+                <img t-att-src="'/web/image/product.template/%s/image_1920' % property.id"
+                     t-att-alt="property.name"
+                     class="img-fluid"/>
+                <div class="property-badge" t-if="property.type_service">
+                    <span class="badge badge-primary" t-if="property.type_service == 'sale'">Venta</span>
+                    <span class="badge badge-success" t-if="property.type_service == 'rent'">Arriendo</span>
+                    <span class="badge badge-info" t-if="property.type_service == 'sale_rent'">Venta/Arriendo</span>
+                </div>
+            </div>
+
+            <div class="property-content">
+                <h3 class="property-title">
+                    <a t-attf-href="/property/#{property.id}" t-out="property.name"/>
+                </h3>
+
+                <div class="property-location" t-if="property.neighborhood or property.city">
+                    <i class="ri-map-pin-line"></i>
+                    <span t-out="property.neighborhood or property.city"/>
+                </div>
+
+                <div class="property-features">
+                    <div class="feature" t-if="property.num_bedrooms">
+                        <i class="ri-hotel-bed-line"></i>
+                        <span t-out="property.num_bedrooms"/> Hab.
+                    </div>
+                    <div class="feature" t-if="property.num_bathrooms">
+                        <i class="ri-water-percent-line"></i>
+                        <span t-out="property.num_bathrooms"/> Baños
+                    </div>
+                    <div class="feature" t-if="property.property_area">
+                        <i class="ri-ruler-line"></i>
+                        <span t-out="'%.0f' % property.property_area"/> m²
+                    </div>
+                </div>
+
+                <div class="property-footer">
+                    <div class="property-price">
+                        <t t-if="property.list_price">
+                            <span class="price-amount">
+                                <t t-esc="property.currency_id.symbol or '$'"/>
+                                <t t-esc="'{:,.0f}'.format(property.list_price)"/>
+                            </span>
+                        </t>
+                    </div>
+                    <a t-attf-href="/property/#{property.id}" class="btn btn-sm btn-outline-primary">
+                        Ver Detalles
+                    </a>
+                </div>
+            </div>
+        </div>
+    </template>
+</odoo>

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Header Template -->
+    <template id="bohio_header" inherit_id="website.layout" name="Bohio Real Estate Header">
+        <xpath expr="//header" position="replace">
+            <header class="bohio-header">
+                <nav class="navbar navbar-expand-lg">
+                    <div class="container-bohio">
+                        <!-- Logo -->
+                        <a class="navbar-brand" href="/">
+                            <img src="/theme_bohio_real_estate/static/src/img/logo.png"
+                                 alt="Bohio Real Estate"
+                                 class="bohio-logo"
+                                 style="max-height: 60px;"/>
+                        </a>
+
+                        <!-- Mobile Toggle -->
+                        <button class="navbar-toggler" type="button"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#navbarMain"
+                                aria-controls="navbarMain"
+                                aria-expanded="false"
+                                aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+
+                        <!-- Navigation -->
+                        <div class="collapse navbar-collapse" id="navbarMain">
+                            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/">Inicio</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/properties">Propiedades</a>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" role="button"
+                                       data-bs-toggle="dropdown" aria-expanded="false">
+                                        Servicios
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="/services/sale">Venta</a></li>
+                                        <li><a class="dropdown-item" href="/services/rent">Arriendo</a></li>
+                                        <li><a class="dropdown-item" href="/services/consign">Consignar Inmueble</a></li>
+                                        <li><a class="dropdown-item" href="/services/legal">Servicios Jurídicos</a></li>
+                                        <li><a class="dropdown-item" href="/services/marketing">Marketing</a></li>
+                                    </ul>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/aboutus">Nosotros</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/contactus">Contacto</a>
+                                </li>
+
+                                <!-- User Menu -->
+                                <li class="nav-item dropdown" t-if="not user_id._is_public()">
+                                    <a class="nav-link dropdown-toggle" href="#" role="button"
+                                       data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="ri-user-line"></i>
+                                        <t t-out="user_id.name"/>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-menu-end">
+                                        <li><a class="dropdown-item" href="/my">Mi Portal</a></li>
+                                        <li><a class="dropdown-item" href="/my/account">Mi Cuenta</a></li>
+                                        <li><hr class="dropdown-divider"/></li>
+                                        <li><a class="dropdown-item" href="/web/session/logout">Cerrar Sesión</a></li>
+                                    </ul>
+                                </li>
+
+                                <!-- Login Button -->
+                                <li class="nav-item" t-if="user_id._is_public()">
+                                    <a class="btn btn-primary" href="/web/login">
+                                        <i class="ri-login-box-line me-2"></i>Ingresar
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+            </header>
+        </xpath>
+    </template>
+</odoo>

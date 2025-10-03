@@ -1,0 +1,95 @@
+// Bohio Real Estate - Header Styles
+
+.bohio-header {
+    background: $o-bg-white;
+    box-shadow: $shadow-md;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+
+    .navbar {
+        padding: $spacer-md 0;
+
+        .navbar-brand {
+            .bohio-logo {
+                max-height: 60px;
+                width: auto;
+            }
+        }
+
+        .navbar-nav {
+            .nav-link {
+                color: $o-color-text-dark;
+                font-weight: 600;
+                font-size: $font-size-base;
+                padding: $spacer-sm $spacer-md;
+                transition: $transition-base;
+                display: flex;
+                align-items: center;
+                gap: $spacer-xs;
+
+                &:hover, &.active {
+                    color: $o-color-primary;
+                }
+
+                i {
+                    font-size: 1.1rem;
+                }
+            }
+
+            .dropdown-menu {
+                border: none;
+                box-shadow: $shadow-lg;
+                border-radius: $border-radius;
+                padding: $spacer-sm;
+
+                .dropdown-item {
+                    border-radius: $border-radius-sm;
+                    padding: $spacer-sm $spacer-md;
+                    transition: $transition-base;
+
+                    &:hover {
+                        background: $o-color-primary;
+                        color: white;
+                    }
+                }
+            }
+        }
+
+        .btn-primary {
+            padding: $spacer-sm $spacer-lg;
+            border-radius: $border-radius;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+
+            &:hover {
+                transform: translateY(-2px);
+                box-shadow: $shadow-md;
+            }
+        }
+    }
+}
+
+// Mobile Styles
+@media (max-width: $breakpoint-lg) {
+    .bohio-header {
+        .navbar-collapse {
+            margin-top: $spacer-md;
+            padding-top: $spacer-md;
+            border-top: 1px solid $border-color;
+        }
+
+        .navbar-nav {
+            .nav-link {
+                padding: $spacer-md 0;
+            }
+
+            .btn-primary {
+                width: 100%;
+                justify-content: center;
+                margin-top: $spacer-md;
+            }
+        }
+    }
+}

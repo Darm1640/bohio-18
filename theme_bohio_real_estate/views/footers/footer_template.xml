@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Footer Template -->
+    <template id="bohio_footer" inherit_id="website.layout" name="Bohio Real Estate Footer">
+        <xpath expr="//footer" position="replace">
+            <footer class="bohio-footer">
+                <div class="footer-main">
+                    <div class="container-bohio">
+                        <div class="footer-grid">
+                            <!-- Company Info -->
+                            <div class="footer-column">
+                                <h5 class="footer-title">Bohio Real Estate</h5>
+                                <p class="footer-description">
+                                    Tu aliado en bienes raíces. Encuentra tu hogar ideal con nosotros.
+                                </p>
+                                <div class="footer-social">
+                                    <a href="#" class="social-link">
+                                        <i class="ri-facebook-fill"></i>
+                                    </a>
+                                    <a href="#" class="social-link">
+                                        <i class="ri-instagram-line"></i>
+                                    </a>
+                                    <a href="#" class="social-link">
+                                        <i class="ri-twitter-fill"></i>
+                                    </a>
+                                    <a href="#" class="social-link">
+                                        <i class="ri-linkedin-fill"></i>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <!-- Quick Links -->
+                            <div class="footer-column">
+                                <h5 class="footer-title">Enlaces Rápidos</h5>
+                                <ul class="footer-links">
+                                    <li><a href="/properties">Propiedades</a></li>
+                                    <li><a href="/services">Servicios</a></li>
+                                    <li><a href="/aboutus">Sobre Nosotros</a></li>
+                                    <li><a href="/blog">Blog</a></li>
+                                </ul>
+                            </div>
+
+                            <!-- Services -->
+                            <div class="footer-column">
+                                <h5 class="footer-title">Servicios</h5>
+                                <ul class="footer-links">
+                                    <li><a href="/services/sale">Venta de Propiedades</a></li>
+                                    <li><a href="/services/rent">Arriendo</a></li>
+                                    <li><a href="/services/consign">Consignar Inmueble</a></li>
+                                    <li><a href="/services/legal">Servicios Jurídicos</a></li>
+                                </ul>
+                            </div>
+
+                            <!-- Contact Info -->
+                            <div class="footer-column">
+                                <h5 class="footer-title">Contacto</h5>
+                                <ul class="footer-contact">
+                                    <li>
+                                        <i class="ri-map-pin-line"></i>
+                                        <span>Barranquilla, Colombia</span>
+                                    </li>
+                                    <li>
+                                        <i class="ri-phone-line"></i>
+                                        <span>+57 300 123 4567</span>
+                                    </li>
+                                    <li>
+                                        <i class="ri-mail-line"></i>
+                                        <span>info@bohio.com</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer Bottom -->
+                <div class="footer-bottom">
+                    <div class="container-bohio">
+                        <div class="footer-bottom-content">
+                            <p class="copyright">
+                                © <span t-out="datetime.datetime.now().year"/> Bohio Real Estate. Todos los derechos reservados.
+                            </p>
+                            <div class="footer-bottom-links">
+                                <a href="/privacy">Política de Privacidad</a>
+                                <a href="/terms">Términos y Condiciones</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </xpath>
+    </template>
+</odoo>

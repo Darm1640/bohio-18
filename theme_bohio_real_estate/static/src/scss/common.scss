@@ -1,0 +1,94 @@
+// Bohio Real Estate - Common Styles
+
+body {
+    font-family: $font-family-body;
+    font-size: $font-size-base;
+    color: $o-color-text-dark;
+    line-height: 1.6;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: $font-family-heading;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: $spacer-md;
+}
+
+h1 { font-size: $h1-font-size; }
+h2 { font-size: $h2-font-size; }
+h3 { font-size: $h3-font-size; }
+h4 { font-size: $h4-font-size; }
+h5 { font-size: $h5-font-size; }
+h6 { font-size: $h6-font-size; }
+
+// Buttons
+.btn {
+    font-family: $font-family-body;
+    font-weight: 600;
+    padding: 0.625rem 1.25rem;
+    border-radius: $border-radius;
+    transition: $transition-base;
+    border: none;
+    cursor: pointer;
+
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: $shadow-md;
+    }
+}
+
+.btn-primary {
+    background-color: $o-color-primary;
+    color: $o-color-text-white;
+
+    &:hover {
+        background-color: darken($o-color-primary, 10%);
+    }
+}
+
+.btn-secondary {
+    background-color: $o-color-secondary;
+    color: $o-color-text-white;
+
+    &:hover {
+        background-color: darken($o-color-secondary, 10%);
+    }
+}
+
+.btn-accent {
+    background-color: $o-color-accent;
+    color: $o-color-text-white;
+
+    &:hover {
+        background-color: darken($o-color-accent, 10%);
+    }
+}
+
+// Cards
+.card {
+    background: $o-bg-white;
+    border-radius: $border-radius-lg;
+    box-shadow: $shadow-md;
+    transition: $transition-base;
+
+    &:hover {
+        box-shadow: $shadow-lg;
+        transform: translateY(-4px);
+    }
+}
+
+// Container
+.container-bohio {
+    max-width: $container-max-width;
+    margin: 0 auto;
+    padding: 0 $spacer-md;
+}
+
+// Section Spacing
+.section {
+    padding: $spacer-xl 0;
+}
+
+.section-lg {
+    padding: 5rem 0;
+}
