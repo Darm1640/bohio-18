@@ -4,7 +4,7 @@
     <record id="view_account_loan_form_inherit" model="ir.ui.view">
         <field name="name">account.loan.form.inherit</field>
         <field name="model">account.loan</field>
-        <field name="inherit_id" ref="account_loans.account_loan_view_form"/>
+        <field name="inherit_id" ref="account_loans.account_loan_form_view"/>
         <field name="arch" type="xml">
             <!-- Agregar botones en header -->
             <xpath expr="//header" position="inside">
