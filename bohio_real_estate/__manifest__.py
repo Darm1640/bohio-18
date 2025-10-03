@@ -47,6 +47,11 @@
         'views/portal/tenant/tenant_documents.xml',
         'views/portal/common/tickets.xml',
         'views/portal/common/admin_portal_view.xml',
+        # Website Public Views
+        'views/properties_shop_template.xml',
+        'views/property_detail_template.xml',
+        'views/homepage/homepage.xml',
+        'views/portal_templates.xml',
     ],
     'assets': {
         'web.assets_frontend': [

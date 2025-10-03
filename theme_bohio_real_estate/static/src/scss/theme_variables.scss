@@ -26,11 +26,11 @@
 $font-family-heading: 'Arista Pro', sans-serif;
 $font-family-body: 'Ciutadella', sans-serif;
 
-// Font Sizes
-$font-size-base: 16px;
-$font-size-sm: 14px;
-$font-size-lg: 18px;
-$font-size-xl: 20px;
+// Font Sizes (en rem para compatibilidad con Bootstrap)
+$font-size-base: 1rem;      // 16px
+$font-size-sm: 0.875rem;    // 14px
+$font-size-lg: 1.125rem;    // 18px
+$font-size-xl: 1.25rem;     // 20px
 
 $h1-font-size: 2.5rem;  // 40px
 $h2-font-size: 2rem;    // 32px
@@ -58,13 +58,13 @@ $transition-base: all 0.3s ease-in-out;
 $transition-fast: all 0.15s ease-in-out;
 $transition-slow: all 0.45s ease-in-out;
 
-// Breakpoints
+// Breakpoints (usar los de Bootstrap directamente)
 $breakpoint-xs: 0;
-$breakpoint-sm: 576px;
-$breakpoint-md: 768px;
-$breakpoint-lg: 992px;
-$breakpoint-xl: 1200px;
-$breakpoint-xxl: 1400px;
+$breakpoint-sm: 36rem;     // 576px
+$breakpoint-md: 48rem;     // 768px
+$breakpoint-lg: 62rem;     // 992px
+$breakpoint-xl: 75rem;     // 1200px
+$breakpoint-xxl: 87.5rem;  // 1400px
 
 // Container Max Width
-$container-max-width: 1320px;
+$container-max-width: 82.5rem;  // 1320px
