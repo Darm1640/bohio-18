@@ -1,0 +1,379 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<template id="snazzy_checkout_breadcrumb" inherit_id="website_sale.checkout_layout" name="Snazzy Checkout Breadcrumb">
+		<xpath expr="//div[hasclass('o_website_sale_checkout')]" position="attributes">
+			<attribute name="t-att-xmlid">xmlid</attribute>
+		</xpath>
+		<xpath expr="//div[hasclass('o_website_sale_checkout')]" position="before">
+			<section class="cart_banner_cart pt32">
+				<div class="container">
+					<div class="cart_banner_description text-center">
+						<h4>
+							<t t-if="xmlid == 'website_sale.cart'">
+								Cart
+							</t>
+							<t t-if="xmlid == 'website_sale.checkout'">
+								Address
+							</t>
+							<t t-if="xmlid == 'website_sale.extra_info'">
+								Extra Info
+							</t>
+							<t t-if="xmlid == 'website_sale.payment'">
+								Payment
+							</t>
+							<t t-if="xmlid == 'website_sale.confirmation'">
+								Order Confirmation
+							</t>
+						</h4>
+						<ol class="breadcrumb justify-content-center mb-0 mb-md-3">
+							<li class="breadcrumb-item">
+								<a href="/">Home</a>
+							 </li>
+							<li class="breadcrumb-item active">
+								<t t-if="xmlid == 'website_sale.cart'">
+									Your Shopping Cart
+								</t>
+								<t t-if="xmlid == 'website_sale.checkout'">
+									Address
+								</t>
+								<t t-if="xmlid == 'website_sale.extra_info'">
+									Extra Info
+								</t>
+								<t t-if="xmlid == 'website_sale.payment'">
+									Payment
+								</t>
+								<t t-if="xmlid == 'website_sale.confirmation'">
+									Order Confirmation
+								</t>
+							</li>
+						</ol>
+					</div>
+				</div>
+			</section>
+		</xpath>
+	</template>
+
+	<template id="snazzy_navigation_buttons_inherit" inherit_id="website_sale.navigation_buttons" name="Snazzy Navigation Buttons">
+		<xpath expr="//a[hasclass('text-center')]" position="attributes">
+			<attribute name="class" add="btn btn-secondary" separator=" "></attribute>
+		</xpath>
+	</template>
+	<template id="snazzy_delivery_method_inherit" inherit_id="website_sale.delivery_method" name="Snazzy Delivery Method">
+		<xpath expr="//div[hasclass('gap-lg-3')]" position="attributes">
+			<attribute name="class" remove="flex-column flex-md-row" separator=" "></attribute>
+		</xpath>
+	</template>
+	<template id="snazzy_checkout_pages_banner_extra_info" inherit_id="website_sale.extra_info" name="snazzy Checkout Pages Banner Extra info">
+		<xpath expr="//h3[hasclass('mb-4')]" position="replace"></xpath>
+	</template>
+
+	<template id="snazzy_checkout_pages_banner_cart" inherit_id="website_sale.cart" name="snazzy Checkout Pages Banner Cart">
+		<xpath expr="//h3[hasclass('mb-4')]" position="replace"></xpath>
+	</template>
+
+	<template id="snazzy_cart_summary" inherit_id="website_sale.checkout_layout" name="snazzy Cart Summary">
+		<xpath expr="//div[hasclass('alert')]" position="attributes">
+			<attribute name="class" add="empty-cart-line" remove="alert-info" separator=" "></attribute>
+		</xpath>
+
+		<xpath expr="//div[@t-if='show_shorter_cart_summary']" position="attributes">
+			<attribute name="class" remove="offset-xl-1 col-lg-5" separator=" "></attribute>
+		</xpath>
+
+		<xpath expr="//div[hasclass('o_wsale_accordion')]" position="attributes">
+			<attribute name="class" remove="offset-xl-1 col-12 col-lg-5" add="col-12 mt-3 mt-xl-0" separator=" "></attribute>
+		</xpath>
+
+		<xpath expr="//div[contains(@t-attf-class,'oe_cart')]" position="attributes">
+			<attribute name="t-attf-class" add="col-xl-8" remove="col-lg-7" separator=" "></attribute>
+		</xpath>
+	</template>
+
+	<template id="snazzy_cart_lines" inherit_id="website_sale.cart_lines" name="snazzy Cart Lines">
+		<!-- empty cart "Your cart is empty!" page -->
+		<xpath expr="//div[hasclass('alert')]" position="attributes">
+			<attribute name="class" add="empty-cart-line" remove="alert-info" separator=" "></attribute>
+		</xpath>
+
+		<xpath expr="//div[@t-foreach='website_sale_order.website_order_line']" position="before">
+			<div class="d-flex cart_products_heading">
+				<div>Products</div>
+				<div class="flex-grow-1"></div>
+				<div class="d-flex justify-content-between qty_price_heading">
+					<div>Quantity</div>
+					<div>Price</div>
+				</div>
+			</div>
+		</xpath>
+
+		<xpath expr="//t[@t-if='line.product_id']" position="replace">
+			<t t-if="line.product_id">
+				<div class="d-flex flex-column flex-md-row flex-grow-1 gap-2 gap-md-3 align-items-md-center">
+					<img t-if="line._is_not_sellable_line() and line.product_id.image_128"
+						t-att-src="image_data_uri(line.product_id.image_128)"
+						class="o_image_64_max  img rounded"
+						t-att-alt="line.name_short"/>
+					<div t-else=""
+						t-field="line.product_id.image_128"
+						t-options="{'widget': 'image', 'qweb_img_responsive': False, 'class': 'o_image_64_max rounded'}"/>
+					<div class="flex-grow-1">
+						<t t-call="website_sale.cart_line_product_link">
+							<h6 t-field="line.name_short" class="d-inline align-top h6 fw-bold"/>
+						</t>
+						<t t-call="website_sale.cart_line_description_following_lines">
+							<t t-set="div_class" t-valuef="d-none d-md-block"/>
+						</t>
+					</div>
+				</div>
+				<div class="d-flex flex-column align-items-end">
+					<div t-attf-class="css_quantity input-group mb-2"
+						 name="website_sale_cart_line_quantity">
+						<t t-if="not line._is_not_sellable_line()">
+							<t t-if="show_qty">
+								<a href="#"
+								   class="js_add_cart_json btn btn-link d-inline-block border-end-0"
+								   aria-label="Remove one"
+								   title="Remove one">
+									<i class="position-relative z-index-1 fa fa-minus"/>
+								</a>
+								<input type="text"
+									   class="js_quantity quantity form-control border-start-0 border-end-0"
+									   t-att-data-line-id="line.id"
+									   t-att-data-product-id="line.product_id.id"
+									   t-att-value="int(line.product_uom_qty) == line.product_uom_qty and int(line.product_uom_qty) or line.product_uom_qty"/>
+								<t t-if="line._get_shop_warning(clear=False)">
+									<a href="#" class="btn btn-link">
+									<i class='fa fa-warning text-warning'
+									   t-att-title="line._get_shop_warning()"
+									   role="img"
+									   aria-label="Warning"/>
+									</a>
+								</t>
+								<a t-else=""
+								   href="#"
+								   class="js_add_cart_json d-inline-block float_left btn btn-link border-start-0"
+								   aria-label="Add one"
+								   title="Add one">
+									<i class="fa fa-plus position-relative z-index-1"/>
+								</a>
+							</t>
+							<t t-else="">
+								<input type="hidden"
+									   class="js_quantity form-control quantity"
+									   t-att-data-line-id="line.id"
+									   t-att-data-product-id="line.product_id.id"
+									   t-att-value="int(line.product_uom_qty) == line.product_uom_qty and int(line.product_uom_qty) or line.product_uom_qty"/>
+							</t>
+						</t>
+						<t t-else="">
+							<span class="w-100 text-muted" t-esc="int(line.product_uom_qty)"/>
+							<input type="hidden"
+								   class="js_quantity quantity form-control"
+								   t-att-data-line-id="line.id"
+								   t-att-data-product-id="line.product_id.id"
+								   t-att-value="line.product_uom_qty"/>
+						</t>
+					</div>
+					<div class="mb-0 h6 fw-bold text-end" name="website_sale_cart_line_price">
+						<t t-if="line.discount">
+							<del t-attf-class="#{'text-danger mr8'}"
+								 style="white-space: nowrap;"
+								 t-out="line.price_unit * line.product_uom_qty"
+								 t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
+						</t>
+						<t t-if="website.show_line_subtotals_tax_selection == 'tax_excluded'"
+						   t-set='product_price'
+						   t-value='line.price_subtotal'/>
+						<t t-else=""
+						   t-set='product_price'
+						   t-value='line.price_total'/>
+						<span t-out="product_price" style="white-space: nowrap;"
+							  t-options="{'widget': 'monetary', 'display_currency': website_sale_order.currency_id}"/>
+						<small t-if="not line._is_not_sellable_line() and line.product_id.base_unit_price"
+							   class="cart_product_base_unit_price d-block text-muted"
+							   groups="website_sale.group_show_uom_price">
+							<t t-call='website_sale.base_unit_price'>
+								<t t-set='product' t-value='line.product_id'/>
+								<t t-set='combination_info'
+								   t-value="{'base_unit_price':product._get_base_unit_price(product_price)}"/>
+							</t>
+						</small>
+					</div>
+					<div>
+						<a href='#'
+						class="js_delete_product d-inline-block small"
+						aria-label="Remove from cart"
+						title="Remove from cart"><i class="fa fa-trash-o"/></a>
+					</div>
+				</div>
+			</t>
+		</xpath>
+	</template>
+
+	<template id="snazzy_checkout_pages_banner_checkout" inherit_id="website_sale.checkout" name="snazzy Checkout Pages Banner Checkout">
+		<xpath expr="//div[@id='shop_checkout']" position="before">
+			<div class="store col-12">
+				<div class="row mt-3">
+					<div class="col-4">
+						<label class="switch">
+						<label for="delivery" class="text_delivery">Delivery</label>
+						<input
+							type="radio"
+							class="radio_delivery"
+							value="delivery"
+							name="store_address"
+							t-attf-checked="checked"
+							id="delivery"
+						/>
+						<span class="slider round" />
+						</label>
+					</div>
+					<div class="col-4">
+						<label class="switch">
+						<label for="pickup" card="text_pickup">Pickup</label>
+						<input
+							type="radio"
+							class="radio_pickup"
+							value="pickup"
+							name="store_address"
+							id="pickup"
+						/>
+						<span class="slider round" />
+						</label>
+					</div>
+				</div>
+				<div class="store_data d-none">
+					<div t-if="store_data" class="pickup_info mt16 mb64">
+						<div class="store_line">
+							<div class="container">
+								<div class="row">
+									<t t-foreach="store_data" t-as="line">
+										<div class="store-data col-md-4 mb-3 mb-md-0">
+										<input t-att-id="line.id" t-att-value="line.id" class="info_id d-none" name="info_id" />
+										<input
+											type="radio"
+											class="d-none"
+											name="pickup_address"
+											value=""
+											t-att-checked="order.store_location_id and order.store_location_id.id == line.id and 'checked'"
+											t-attf-id="store-#{line.id}"
+										/>
+										<label class="store-label p-3" t-attf-for="store-#{line.id}">
+											<div class="store-content">
+											<div class="store-details">
+												<div class="store-name">
+													<span t-out="line.name" />
+												</div>
+												<div class="store-address">
+													<p class="detail-info mb-0">
+														<span t-out="line.street" />,<span t-out="line.street2" />
+													</p>
+													<p class="detail-info">
+														<span t-out="line.city" />,<span t-out="line.zip" />
+													</p>
+												</div>
+											</div>
+											<div class="store-contact d-flex">
+												<t t-if="line.phone">
+												<div class="contact-phone">
+													<a t-attf-href="tel:#{line.phone}">
+													<span class="ri ri-phone-fill align-middle" />
+													</a>
+												</div>
+												</t>
+												<t t-if="line.email">
+												<div class="contact-email">
+													<a t-attf-href="mailto:#{line.email}">
+													<span class="ri ri-mail-fill align-middle" />
+													</a>
+												</div>
+												</t>
+												<t t-if="line.location_url">
+												<div class="contact-location">
+													<a t-attf-href="#{line.location_url}" target="_blank">
+													<span class="ri ri-map-pin-2-fill align-middle" />
+													</a>
+												</div>
+												</t>
+											</div>
+											</div>
+										</label>
+										</div>
+									</t>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="alert alert-warning" t-else=" ">
+						<strong>No Stores available for Order Pickup at the moment.</strong>
+					</div>
+				</div>
+			</div>
+		</xpath>
+	</template>
+
+	<template id="snazzy_cart_suggested_products" inherit_id="website_sale.suggested_products_list" name="snazzy Cart Suggested Products">
+		<xpath expr="//h5[@t-if='suggested_products']" position="attributes">
+			<attribute name="t-attf-class" add="snazzy_suggest_title mt32 text-muted" separator=" "></attribute>
+		</xpath>
+		<xpath expr="//div[@t-if='suggested_products']" position="attributes">
+			<attribute name="class" add="snazzy_suggest_table" remove="table-striped" separator=" "></attribute>
+		</xpath>
+	</template>
+
+	<template id="snazzy_checkout_pages_cart_lines_pages" inherit_id="website_sale.cart_lines" name="snazzy Cart Lines Pages">
+		<xpath expr="//div[contains(@t-attf-class,'css_quantity')]" position="replace">
+			<div class="css_quantity input-group mx-auto justify-content-center">
+				<t t-if="not line._is_not_sellable_line()">
+					<t t-if="show_qty">
+						<a t-attf-href="#" class="btn btn-link js_add_cart_json d-none d-md-inline-block" aria-label="Remove one" title="Remove one">
+							<i class="fa fa-minus"></i>
+						</a>
+						<input type="text" class="js_quantity form-control quantity" t-att-data-line-id="line.id" t-att-data-product-id="line.product_id.id" t-att-value="int(line.product_uom_qty) == line.product_uom_qty and int(line.product_uom_qty) or line.product_uom_qty" />
+						<t t-if="line._get_shop_warning(clear=False)">
+							<a t-attf-href="#" class="btn btn-link">
+							<i class='fa fa-warning text-warning' t-att-title="line._get_shop_warning()" role="img" aria-label="Warning"/>
+							</a>
+						</t>
+						<a t-else='' t-attf-href="#" class="btn btn-link float_left js_add_cart_json d-none d-md-inline-block" aria-label="Add one" title="Add one">
+							<i class="fa fa-plus"></i>
+						</a>
+					</t>
+					<t t-else="">
+						<input type="hidden" class="js_quantity form-control quantity" t-att-data-line-id="line.id" t-att-data-product-id="line.product_id.id" t-att-value="int(line.product_uom_qty) == line.product_uom_qty and int(line.product_uom_qty) or line.product_uom_qty" />
+					</t>
+				</t>
+				<t t-else="">
+					<span class="text-muted w-100" t-esc="int(line.product_uom_qty)"/>
+					<input type="hidden" class="js_quantity form-control quantity" t-att-data-line-id="line.id" t-att-data-product-id="line.product_id.id" t-att-value="line.product_uom_qty" />
+				</t>
+			</div>
+		</xpath>
+	</template>
+
+	<template id="snazzy_address_on_payment" inherit_id="website_sale.address_on_payment" name="snazzy Address On Payment">
+		<xpath expr="//div[hasclass('card')]" position="after">
+			<div t-if="order.store_location_id" class="pickup_location_details">
+				<h3 class="my-3 billing_and_shipping">Pickup Store:</h3>
+				<t t-set="location" t-value="order.store_location_id" />
+				<div class="card mt-1">
+				<div class="card-body" id="shipping_and_billing">
+					<div>
+					<span class="address-inline">
+						<t t-out="location.name" />,
+						<t t-if="location.street" t-out="location.street" />,
+						<t t-if="location.street2" t-out="location.street2">,</t>
+						<t t-if="location.city" t-out="location.city" /> <t
+						t-if="location.zip"
+						t-out="location.zip"
+						/>,
+						<t t-if="location.state_id.name " t-out="location.state_id.name">,</t>
+						<t t-if="location.country_id.name" t-out="location.country_id.name" />
+					</span>
+					</div>
+				</div>
+				</div>
+			</div>
+		</xpath>
+	</template>
+</odoo>

@@ -1,0 +1,383 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="theme_snazzy_electronic_homepage_two_template" model="ir.ui.view">
+        <field name="name">Theme Snazzy Electronic Homepage Two</field>
+        <field name="type">qweb</field>
+        <field name="key">website.theme_snazzy_electronic_homepage_two_template</field>
+        <field name="arch" type="xml">
+            <t name="Homepage One E-commerce" t-name="theme_snazzy.theme_snazzy_electronic_homepage_two_template">
+                <t t-call="website.layout">
+                    <div id="wrap" class="oe_structure oe_empty">
+                    
+                        <section class="biz_theme_snazzy_electronic_homepage_two_banner pb48 custom_padding_bottom">
+                            <section class="" style="background-color: #00000014;">
+                                <div class="container-fluid">
+                                    <section class="s_carousel_wrapper" data-vxml="001" data-name="Carousel">
+                                        <div class="s_carousel s_carousel_default carousel slide" data-bs-interval="3000" id="theme_snazzy_homepage_banner_two" style="background-image: none;">
+                                            <div class="carousel-indicators o_we_no_overlay">
+                                                <button data-bs-slide-to="0" class="active" data-bs-target="#theme_snazzy_homepage_banner_two"/>
+                                                <button data-bs-slide-to="1" data-bs-target="#theme_snazzy_homepage_banner_two"/>
+                                                <button data-bs-slide-to="2" data-bs-target="#theme_snazzy_homepage_banner_two"/>
+                                            </div>
+                                            <div class="carousel-inner">
+
+                                                <div class="carousel-item pt64 oe_img_bg o_bg_img_center o_colored_level active" data-name="Slide">
+                                                    <div class="container oe_unremovable">
+                                                        <div class="row align-items-center">
+                                                            <div class="col-lg-6">
+                                                                <div class="content">
+                                                                    <p>SUMMER 2023</p>
+                                                                    <h3>Samsung S22 Ultra</h3>
+                                                                    <h6>A Note worthy new Look</h6>
+                                                                    <a href="#" class="btn btn-secondary flat mt-3">Explore Now</a>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-6">
+                                                                <img class="img img-fluid mx-auto pt-5 pt-lg-4" src="/theme_snazzy/static/src/img/electronic_page_two_banner_one.png" loading="lazy"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="carousel-item pt64 oe_img_bg o_bg_img_center o_colored_level" data-name="Slide">
+                                                    <div class="container oe_unremovable">
+                                                        <div class="row align-items-center">
+                                                            <div class="col-lg-6">
+                                                                <div class="content">
+                                                                    <p>SUMMER 2023</p>
+                                                                    <h3>iPhone 15 Pro Max</h3>
+                                                                    <h6>A Note worthy new Look</h6>
+                                                                    <a href="#" class="btn btn-secondary flat mt-3">Explore Now</a>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-6">
+                                                                <img class="img img-fluid mx-auto pt-5 pt-lg-4" src="/theme_snazzy/static/src/img/electronic_page_two_banner_two.png" loading="lazy"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="carousel-item pt64 oe_img_bg o_bg_img_center o_colored_level" data-name="Slide">
+                                                    <div class="container oe_unremovable">
+                                                        <div class="row align-items-center">
+                                                            <div class="col-lg-6">
+                                                                <div class="content">
+                                                                    <p>SUMMER 2023</p>
+                                                                    <h3>Google Pixel 8 Pro</h3>
+                                                                    <h6>A Note worthy new Look</h6>
+                                                                    <a href="#" class="btn btn-secondary flat mt-3">Explore Now</a>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-6">
+                                                                <img class="img img-fluid mx-auto pt-5 pt-lg-4" src="/theme_snazzy/static/src/img/electronic_page_two_banner_three.png" loading="lazy"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <a class="carousel-control-prev o_not_editable o_we_no_overlay" data-bs-slide="prev" role="img" aria-label="Previous" title="Previous" href="#theme_snazzy_homepage_banner_two">
+                                                <span class="carousel-control-prev-icon"/>
+                                                <span class="visually-hidden o_default_snippet_text">Previous</span>
+                                            </a>
+                                            <a class="carousel-control-next o_not_editable o_we_no_overlay" data-bs-slide="next" role="img" aria-label="Next" title="Next" href="#theme_snazzy_homepage_banner_two">
+                                                <span class="carousel-control-next-icon"/>
+                                                <span class="visually-hidden o_default_snippet_text">Next</span>
+                                            </a>
+                                        </div>
+                                    </section>
+                                </div>
+                            </section>
+                        </section>
+                        <div class="oe_structure oe_empty"></div>
+
+                        <section class="biz_theme_snazzy_electronic_homepage_two_countdown_two_block">
+                            <div class="container">
+                                <div class="row align-items-center">
+                                    <div class="col-lg-5">
+                                        <img class="img img-fluid mx-auto" src="/theme_snazzy/static/src/img/page_one_earbuds_img.jpg" loading="lazy"/>
+                                    </div>
+                                    <div class="col-lg-5 offset-lg-2 text-center px-4">
+                                        <div class="text_content">
+                                            <h4 class="mb-3 custom_fw_300">Special Price</h4>
+                                            <h3 class="mb-4 custom_fw_300">AHA/BHA/PHA Pelling</h3>
+                                            <p class="small m-0 ps-4 pe-4 text-muted">Lorem Ipsum is simply dummy and industry of the printing and typesetting printing and typesetting industry. Lorem Ipsum </p>
+                                            <section class="s_countdown o_colored_level" data-display="dhms" data-end-action="nothing" data-size="120" data-layout="clean" data-layout-background="plain" data-progress-bar-style="surrounded" data-progress-bar-weight="thin" data-text-color="black" data-layout-background-color="#F4F4F4" data-progress-bar-color="o-color-1" data-snippet="s_countdown" data-end-time="1665793393.737599" data-name="Countdown" style="background-image: none;" data-original-title="" title="" aria-describedby="tooltip999124">
+                                                <div class="container">
+                                                    <div class="s_countdown_canvas_wrapper text-center d-flex justify-content-center"/>
+                                                </div>
+                                            </section>
+                                            <a href="#" class="btn btb-lg btn-secondary flat w-100"><p class="custom_fw_500 custom_font_size_18 m-0">Shop Now $25.00</p></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                        <div class="oe_structure oe_empty"></div>
+
+                        <section class="biz_theme_snazzy_electronic_homepage_two_limited_edition_two pb48 custom_padding_bottom">
+                            <section class="bg_image_padding o_bg_img_center pt128 pb128" style="background-image: url(/theme_snazzy/static/src/img/electronic_homepage_two_limited_edition_two_img_bg.jpg); background-position: top;">
+                                <div class="container">
+                                    <div class="justify-content-center">
+                                        <div class="row align-items-center">
+                                            <div class="offset-lg-6 col-lg-6 ">
+                                                <div class="bg-white text-center p-3">
+                                                    <div class="oe_structure oe_empty"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                        </section>
+                        <div class="oe_structure oe_empty"></div>
+
+                        <section class="biz_theme_snazzy_electronic_homepage_two_testimonial">
+                            <section class="pt64 pb64" style="">
+                                <div class="container">
+                                    <h1 class="text-center pt32 title_heading custom_fw_500">What People Are Saying</h1>
+                                    <section class="s_carousel_wrapper" data-vxml="001" data-name="Carousel">
+                                        <div class="s_carousel s_carousel_rounded carousel slide" data-bs-interval="10000" id="theme_snazzy_homepage_one_carousel_testimonial" style="background-image: none;">
+                                            <div class="carousel-indicators o_we_no_overlay d-flex align-items-center">
+                                                <button data-bs-slide-to="0" class="active" data-bs-target="#theme_snazzy_homepage_one_carousel_testimonial"/>
+                                                <button data-bs-slide-to="1" data-bs-target="#theme_snazzy_homepage_one_carousel_testimonial"/>
+                                                <button data-bs-slide-to="2" data-bs-target="#theme_snazzy_homepage_one_carousel_testimonial"/>
+                                            </div>
+                                            <div class="carousel-inner">
+
+                                                <div class="carousel-item pt64 pb64 oe_img_bg o_bg_img_center o_colored_level active" style="" data-name="Slide">
+                                                    <div class="container oe_unremovable">
+                                                        <div class="row content align-items-center justify-content-center">
+                                                            <div class="col-lg-5">
+                                                                <div class="d-flex align-items-center shadow p-4 mb-4 bg-white">
+                                                                    <div class="pe-4">
+                                                                        <img class="img img-fluid mx-auto" src="/theme_snazzy/static/src/img/customer_one.png" loading="lazy"/>
+                                                                    </div>
+                                                                    <div>
+                                                                        <div class="s_rating pb-2" data-vcss="001" data-icon="fa-star" data-snippet="s_rating" data-name="Rating">
+                                                                            <div class="s_rating_icons o_not_editable">
+                                                                                <span class="s_rating_active_icons">
+                                                                                    <i class="fa fa-star text-o-color-1"/>
+                                                                                    <i class="fa fa-star text-o-color-1"/>
+                                                                                    <i class="fa fa-star text-o-color-1"/>
+                                                                                </span>
+                                                                                <span class="s_rating_inactive_icons">
+                                                                                    <i class="fa fa-star-o text-o-color-1"/>
+                                                                                    <i class="fa fa-star-o text-o-color-1"/>
+                                                                                </span>
+                                                                            </div>
+                                                                        </div>
+                                                                        <p class="mb-2">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
+                                                                        <span class="">
+                                                                            <small class="fw-bold">James</small>
+                                                                            <small class="">James</small>
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-5">
+                                                                <div class="d-flex align-items-center shadow p-4 mb-4 bg-white">
+                                                                    <div class="pe-4">
+                                                                        <img class="img img-fluid mx-auto" src="/theme_snazzy/static/src/img/customer_one.png" loading="lazy"/>
+                                                                    </div>
+                                                                    <div>
+                                                                        <div class="s_rating pb-2" data-vcss="001" data-icon="fa-star" data-snippet="s_rating" data-name="Rating">
+                                                                            <div class="s_rating_icons o_not_editable">
+                                                                                <span class="s_rating_active_icons">
+                                                                                    <i class="fa fa-star text-o-color-1"/>
+                                                                                    <i class="fa fa-star text-o-color-1"/>
+                                                                                    <i class="fa fa-star text-o-color-1"/>
+                                                                                </span>
+                                                                                <span class="s_rating_inactive_icons">
+                                                                                    <i class="fa fa-star-o text-o-color-1"/>
+                                                                                    <i class="fa fa-star-o text-o-color-1"/>
+                                                                                </span>
+                                                                            </div>
+                                                                        </div>
+                                                                        <p class="mb-2">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
+                                                                        <span class="">
+                                                                            <small class="fw-bold">Robert</small>
+                                                                            <small class="">Robert</small>
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="carousel-item pt64 pb64 oe_img_bg o_bg_img_center o_colored_level" style="" data-name="Slide">
+                                                    <div class="container oe_unremovable">
+                                                        <div class="row content align-items-center justify-content-center">
+                                                            <div class="col-lg-5">
+                                                                <div class="d-flex align-items-center shadow p-4 mb-4 bg-white">
+                                                                    <div class="pe-4">
+                                                                        <img class="img img-fluid mx-auto" src="/theme_snazzy/static/src/img/customer_one.png" loading="lazy"/>
+                                                                    </div>
+                                                                    <div>
+                                                                        <div class="s_rating pb-2" data-vcss="001" data-icon="fa-star" data-snippet="s_rating" data-name="Rating">
+                                                                            <div class="s_rating_icons o_not_editable">
+                                                                                <span class="s_rating_active_icons">
+                                                                                    <i class="fa fa-star text-o-color-1"/>
+                                                                                    <i class="fa fa-star text-o-color-1"/>
+                                                                                    <i class="fa fa-star text-o-color-1"/>
+                                                                                </span>
+                                                                                <span class="s_rating_inactive_icons">
+                                                                                    <i class="fa fa-star-o text-o-color-1"/>
+                                                                                    <i class="fa fa-star-o text-o-color-1"/>
+                                                                                </span>
+                                                                            </div>
+                                                                        </div>
+                                                                        <p class="mb-2">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
+                                                                        <span class="">
+                                                                            <small class="fw-bold">John</small>
+                                                                            <small class="">John</small>
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-5">
+                                                                <div class="d-flex align-items-center shadow p-4 mb-4 bg-white">
+                                                                    <div class="pe-4">
+                                                                        <img class="img img-fluid mx-auto" src="/theme_snazzy/static/src/img/customer_one.png" loading="lazy"/>
+                                                                    </div>
+                                                                    <div>
+                                                                        <div class="s_rating pb-2" data-vcss="001" data-icon="fa-star" data-snippet="s_rating" data-name="Rating">
+                                                                            <div class="s_rating_icons o_not_editable">
+                                                                                <span class="s_rating_active_icons">
+                                                                                    <i class="fa fa-star text-o-color-1"/>
+                                                                                    <i class="fa fa-star text-o-color-1"/>
+                                                                                    <i class="fa fa-star text-o-color-1"/>
+                                                                                </span>
+                                                                                <span class="s_rating_inactive_icons">
+                                                                                    <i class="fa fa-star-o text-o-color-1"/>
+                                                                                    <i class="fa fa-star-o text-o-color-1"/>
+                                                                                </span>
+                                                                            </div>
+                                                                        </div>
+                                                                        <p class="mb-2">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
+                                                                        <span class="">
+                                                                            <small class="fw-bold">Michael</small>
+                                                                            <small class="">Michael</small>
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="carousel-item pt64 pb64 oe_img_bg o_bg_img_center o_colored_level" style="" data-name="Slide">
+                                                    <div class="container oe_unremovable">
+                                                        <div class="row content align-items-center justify-content-center">
+                                                            <div class="col-lg-5">
+                                                                <div class="d-flex align-items-center shadow p-4 mb-4 bg-white">
+                                                                    <div class="pe-4">
+                                                                        <img class="img img-fluid mx-auto" src="/theme_snazzy/static/src/img/customer_one.png" loading="lazy"/>
+                                                                    </div>
+                                                                    <div>
+                                                                        <div class="s_rating pb-2" data-vcss="001" data-icon="fa-star" data-snippet="s_rating" data-name="Rating">
+                                                                            <div class="s_rating_icons o_not_editable">
+                                                                                <span class="s_rating_active_icons">
+                                                                                    <i class="fa fa-star text-o-color-1"/>
+                                                                                    <i class="fa fa-star text-o-color-1"/>
+                                                                                    <i class="fa fa-star text-o-color-1"/>
+                                                                                </span>
+                                                                                <span class="s_rating_inactive_icons">
+                                                                                    <i class="fa fa-star-o text-o-color-1"/>
+                                                                                    <i class="fa fa-star-o text-o-color-1"/>
+                                                                                </span>
+                                                                            </div>
+                                                                        </div>
+                                                                        <p class="mb-2">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
+                                                                        <span class="">
+                                                                            <small class="fw-bold">David</small>
+                                                                            <small class="">David</small>
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-5">
+                                                                <div class="d-flex align-items-center shadow p-4 mb-4 bg-white">
+                                                                    <div class="pe-4">
+                                                                        <img class="img img-fluid mx-auto" src="/theme_snazzy/static/src/img/customer_one.png" loading="lazy"/>
+                                                                    </div>
+                                                                    <div>
+                                                                        <div class="s_rating pb-2" data-vcss="001" data-icon="fa-star" data-snippet="s_rating" data-name="Rating">
+                                                                            <div class="s_rating_icons o_not_editable">
+                                                                                <span class="s_rating_active_icons">
+                                                                                    <i class="fa fa-star text-o-color-1"/>
+                                                                                    <i class="fa fa-star text-o-color-1"/>
+                                                                                    <i class="fa fa-star text-o-color-1"/>
+                                                                                </span>
+                                                                                <span class="s_rating_inactive_icons">
+                                                                                    <i class="fa fa-star-o text-o-color-1"/>
+                                                                                    <i class="fa fa-star-o text-o-color-1"/>
+                                                                                </span>
+                                                                            </div>
+                                                                        </div>
+                                                                        <p class="mb-2">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
+                                                                        <span class="">
+                                                                            <small class="fw-bold">William</small>
+                                                                            <small class="">William</small>
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <a class="carousel-control-prev o_not_editable o_we_no_overlay" data-bs-slide="prev" role="img" aria-label="Previous" title="Previous" href="#theme_snazzy_homepage_one_carousel_testimonial">
+                                                <span class="carousel-control-prev-icon"/>
+                                                <span class="visually-hidden o_default_snippet_text">Previous</span>
+                                            </a>
+                                            <a class="carousel-control-next o_not_editable o_we_no_overlay" data-bs-slide="next" role="img" aria-label="Next" title="Next" href="#theme_snazzy_homepage_one_carousel_testimonial">
+                                                <span class="carousel-control-next-icon"/>
+                                                <span class="visually-hidden o_default_snippet_text">Next</span>
+                                            </a>
+                                        </div>
+                                    </section>
+
+                                </div>
+                            </section>
+                        </section>
+                        <div class="oe_structure oe_empty"></div>
+
+                        <section class="biz_theme_snazzy_electronic_homepage_two_news_letter">
+                            <section class="pt176 pb176" style="background-image: url(/theme_snazzy/static/src/img/electronic_page_two_news_letter.jpg); background-position: center;">
+                                <div class="container">
+                                   <div class="row">
+                                        <div class="col-lg-6">
+                                            <h4 class="text-secondary pb-4">Get Weekly update</h4>
+                                            <div class="yoga-subscribe  mx-auto">
+                                                <form class="input-group js_subscribe flex-column flex-md-row" data-list-id="1">
+                                                    <input type="email" name="email" class="js_subscribe_value form-control ps-2 ps-xl-3 border-0 bg-white w-100 mb-3 mb-md-0" placeholder="Enter your Email" />
+                                                    <span class="input-group-append ms-0 ms-md-3">
+                                                        <a role="button" href="#" class="btn btn-lg btn-secondary js_subscribe_btn h-100 py-2 py-md-3 px-0 px-md-5 d-none w-100 w-md-auto"><p class="custom_fw_500 custom_font_size_18 m-0">Subscribe</p></a>
+                                                        <a role="button" href="#" class="btn btn-lg btn-secondary js_subscribed_btn h-100 py-2 py-md-3 px-0 px-md-5 w-100 w-md-auto" disabled="disabled"><p class="custom_fw_500 custom_font_size_18 m-0">Thanks</p></a>
+                                                    </span>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                        </section>
+                        <div class="oe_structure oe_empty"></div>
+
+                    </div>
+                </t>
+            </t>
+        </field>
+    </record>
+
+    <record id="theme_snazzy_electronic_homepage_two_template_menu" model="website.page">
+        <field name="website_published">True</field>
+        <field name="url">/theme-snazzy-electronic-homepage-two</field>
+        <field name="view_id" ref="theme_snazzy_electronic_homepage_two_template" />
+    </record>
+
+</odoo>

@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+   <template id="theme_snazzy_header3" inherit_id="website.layout" name="Header Three" active="False">
+		<xpath expr="//header//nav" position="replace">
+			<nav data-name="Navbar" id="snazzy-header3" t-attf-class="snazzy_header shadow-sm snazzy_header_three navbar-light o_cc">
+				<div class="top-header d-none d-lg-block py-2 border-bottom">
+					<div class="container extended-container">
+						<div class="row justify-content-center">
+							<div class="col-md-12">
+								<div class="d-flex align-items-center justify-content-between">
+									<div class="left_content">
+										<ul class="nav navbar-nav flex-row justify-content-md-start">
+											<li class="nav-item">
+												<a href="#">About Us</a>
+											</li>
+											<li class="nav-item">
+												<a href="#">My Account</a>
+											</li>
+											<li class="nav-item">
+												<a href="#">Wishlist</a>
+											</li>
+											<li class="nav-item">
+												<a href="#">Order Tracking</a>
+											</li>
+										</ul>
+									</div>
+									<div t-if="is_view_active('website.header_text_element')" class="middle-content d-none d-xl-block">
+										<p class="mb-0 small text-primary">Trendy 25silver jewelry, save up 35% off today</p>
+									</div>
+									<div class="right_content d-flex justify-content-md-end align-items-center">
+										<div t-if="is_view_active('website.header_call_to_action')" class="contact-detail pe-3">
+											<span>Need help? Call Us:</span>
+											<a href="tel:+1 (650) 555-0111">+1 (650) 555-0111</a>
+										</div>
+										<t t-call="theme_snazzy.snazzy_header_social_links"/>
+										<!-- Language Selector -->
+										<t t-call="website.placeholder_header_language_selector">
+											<t t-set="_div_classes" t-valuef="my-auto ms-0"/>
+										</t>
+										<!-- Pricelist Selector -->
+										<t t-call="theme_snazzy.placeholder_snazzy_header_pricelist"/>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="middle-header">
+					<div class="container extended-container">
+						<div class="row justify-content-center gx-0">
+							<div class="col-md-12">
+								<div class="d-flex align-items-center justify-content-between">
+									<div class="header-logo d-flex d-lg-block align-items-center w-100 w-lg-auto">
+										<button type="button" id="show-sidebar" class="mobile-sidebar-toggle btn btn-sm btn-dark d-block d-lg-none">
+											<span class="ri ri-menu-line"></span>
+										</button>
+										<div class="snazzy-logo justify-content-md-start mx-auto mx-lg-0">
+											<t t-call="website.placeholder_header_brand"/>
+										</div>
+										<t t-call="theme_snazzy.snazzy_header_mobile_cart">
+											<t t-set="_class" t-value="'d-block d-lg-none'"/>
+										</t>
+									</div>
+									<div t-if="is_view_active('website.header_search_box')" class="header-search d-none d-lg-block ps-md-5">
+										<div class="bizople-search">
+											<div class="search">
+												<t t-call="theme_snazzy.snazzy_product_searchbar" />
+											</div>
+										</div>
+									</div>
+									
+									<div class="text-end right_icons d-none d-lg-flex align-items-md-center">
+										<div class="wishlist align-middle d-none d-lg-inline-block list-unstyled">
+											<t t-call="website_sale_wishlist.header_wishlist_link">
+												<t t-set="_icon" t-value="True"/>
+												<t t-set="_icon_color" t-value="''"/>
+												<t t-set="_item_class" t-value="'nav-item'"/>
+												<t t-set="_link_class" t-value="'nav-link'"/>
+											</t>
+										</div>
+										<div class="cart bizople-add-to-cart align-middle d-none d-lg-inline-block list-unstyled" id="">
+											<t t-set="website_sale_order" t-value="website.sale_get_order()" />
+											<t t-call="website_sale.header_cart_link">
+												<t t-set="_icon" t-value="True"/>
+												<t t-set="_icon_color" t-value="''"/>
+												<t t-set="_item_class" t-value="'nav-item'"/>
+												<t t-set="_link_class" t-value="'nav-link show_cart_sidebar'"/>
+											</t>
+										</div>
+										<t t-call="theme_snazzy.theme_snazzy_signin_main_template">
+											<t t-set="_myaccount_class" t-value="'align-items-center align-middle d-none d-md-inline-block'"/>
+											<t t-set="_icon" t-value="True"/>
+											<t t-set="_text" t-value="False"/>
+										</t>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="bottom-header d-none d-lg-block">
+					<div class="container extended-container">
+						<div class="row justify-content-center">
+							<div class="col-md-12">
+								<div class="row align-items-center m-0">
+									<div class="col-md-3 col-lg-2 p-md-0">
+										<div class="product-category">
+											
+										</div>
+									</div>
+									<div class="col-md-6 col-lg-7 col d-none d-md-block">
+										<!-- <nav class="navbar navbar-expand-md p-0" id="bizople-header-3">
+											<div class="collapse navbar-collapse" id="snazzy-header3">
+												
+												<t t-call="website.navbar_nav" id="top_menu">
+													<t t-set="_nav_class" t-valuef="me-auto"/>
+													<t t-foreach="website.menu_id.child_id" t-as="submenu">
+														<t t-call="website.submenu">
+															<t t-set="item_class" t-value="'nav-item'" />
+															<t t-set="link_class" t-value="'nav-link'" />
+														</t>
+													</t>
+												</t>
+											</div>
+										</nav> -->
+										<nav data-name="Navbar" aria-label="Main" class="navbar navbar-expand-md p-0" id="top_menu_collapse_mobile">
+											<div class="o_main_nav collapse navbar-collapse justify-content-center" id="o_main_nav">
+												
+												<t t-call="website.navbar_nav" id="top_menu">
+													<t t-set="_nav_class" t-valuef="me-auto"/>
+													<t t-foreach="website.menu_id.child_id" t-as="submenu">
+														<t t-call="website.submenu">
+															<t t-set="item_class" t-value="'nav-item'" />
+															<t t-set="link_class" t-value="'nav-link'" />
+														</t>
+													</t>
+												</t>
+											</div>
+										</nav>
+									</div>
+									<div class="header_auto_assignm col-md-3 col-lg-3 d-none d-md-block pe-0">
+										<t t-nocache="The query strings can change for the same page and the same rendering."
+											t-nocache-_btn_class="_btn_class">
+											<t t-set="aut_assign_categs"
+												t-value="website.get_auto_assign_category()" />
+											<t t-set="categ_count" t-value="1"></t>
+								
+											<t t-foreach="aut_assign_categs" t-as="aut_assign_categ" t-if="categ_count == 1">
+												<t t-set="categ_count" t-value="categ_count + 1"></t>
+												<div class="auto_assign_categ text-end">
+													<a t-attf-class="categ_link text-center #{_btn_class}" t-att-href="'/shop/category/%s' % slug(aut_assign_categ)">
+														<span class="ri ri-percent-line me-1"></span>
+														<span t-field="aut_assign_categ.name" />
+													</a>
+												</div>
+											</t>
+										</t>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="container">
+					<div class="mbl-search-box d-block d-lg-none">
+						<t t-call="theme_snazzy.snazzy_product_searchbar">
+							<t t-set="searchbar_classes" t-value="'d-block d-lg-none bizople-search mbl-search-bar'"/>
+						</t>
+					</div>
+					<t t-call="theme_snazzy.snazzy_mobile_categories"/>
+				</div>
+			</nav>
+		</xpath>
+		<xpath expr="//header" position="before">
+			<div class="d-block d-lg-none">
+				<t t-call="theme_snazzy.bizople_mobile_bottom_icon_bar"/>
+			</div>
+			<nav id="cart_sidebar" class="cart-sidebar bg-white">
+				<t t-call="theme_snazzy.cart_sidebar_content"/>
+			</nav>
+			<div class="cart_sidebar_backdrop"></div>
+		</xpath>
+	</template>
+
+	<template id="header3_product_category" inherit_id="theme_snazzy.theme_snazzy_header3" name="Show Header Product Category">
+		<xpath expr="//div[hasclass('product-category')]" postion="inside">
+	        <div class="dropdown">
+				<a href="#" class="dropdown-btn dropdown-toggle nav-link " data-bs-toggle="dropdown">
+	                <span class="ri ri-apps-2-fill align-middle me-2"/>
+	                <span class="d-none d-md-inline-block me-5">Categories</span>
+	            </a>
+	            <div class="dropdown-menu snazzy-header3-category" id="mbl-target">
+	                <t t-set="categories" t-value="website.get_categories() if website else None"/>
+	                <t t-if="categories">
+	                	<t t-set="count" t-value="0"/>
+                    	<div class="row no-gutters justify-content-center g-3">
+                    		<t t-foreach="categories['categories']" t-as="categ">
+                    			<t t-set="count" t-value="count + 1"/>
+                  				<t t-if="categ.child_id">
+                  					<t t-foreach="categ.child_id" t-as="cc">
+                  						<t t-set="count" t-value="count + 1"/>
+                  					</t>
+                  				</t>
+                  				<t t-call="theme_snazzy.header3-category-recursive"/>
+                    		</t>
+                    		<div class="col-md-6">
+								<li class="dropdown-submenu nav-item" t-if="not len(categories['categories']) &lt;= 5">
+									<a class="nav-link d-flex align-items-center" href="/category">
+										<span> Show More</span>
+										<span class="ri ri-arrow-right-line ms-auto"></span>
+									</a>
+								</li>
+						    </div>
+                      	</div>
+	                </t>
+	            </div>
+	        </div>
+	    </xpath>
+    </template>
+
+    <template id="header3-category-recursive" name="header6 Category Recursive">
+		<t t-if="count &lt; 11">
+	    	<div class="col-md-6">
+		        <a class="nav-link h-100" t-att-href="'/shop/category/%s' % (categ.id)">
+					<span t-if="categ.category_icon" class="cat-image" itemprop="image" t-field="categ.category_icon" t-options='{"widget": "image", "resize": None if image else "30x30"}' t-att-alt="categ.name" />
+		        	<span t-out="categ.name" class="cat-name ml4"/>
+		        </a>
+		    </div>
+		</t>
+        <t t-if="categ.child_id">
+            <t t-foreach="categ.child_id" t-as="categ">
+                <t t-call="theme_snazzy.header3-category-recursive"/>
+            </t>
+        </t>
+    </template>
+</odoo>

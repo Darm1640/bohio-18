@@ -1,0 +1,373 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+	<!-- dynamic config brand templates -->
+
+	<template id="dynamic_config_product_brand_style_1_grid" name="dynamic config product brand style 1 grid">
+		<div class="row">
+			<t t-if="item_per_row == 5">
+				<t t-set="biz_col_size_int" t-value="20"/>
+			</t>
+			<t t-else="">
+				<t t-set="biz_col_size" t-value="12 / item_per_row"/>
+				<t t-set="biz_col_size_int" t-value="int(biz_col_size)"/>
+			</t>
+			<t t-foreach="records" t-as="brand">
+				<div t-att-class="'col-lg-%s'%(biz_col_size_int)+' mb-3 col-md-6'">
+					<div class="brand_box style_1 h-100 d-flex flex-column justify-content-center">
+						<div class="image text-center">
+							<a t-attf-href="/shop?brand=#{brand.id}">
+								<img class="img img-fluid" t-attf-src="/web/image/product.brand/#{brand.id}/image"/>
+							</a>
+						</div>
+						<!-- <div class="info">
+							<h6 class="mb-0"><t t-out="brand.name"/></h6>
+						</div> -->
+					</div>
+				</div>
+			</t>
+		</div>
+	</template>
+
+	<template id="dynamic_config_product_brand_style_2_grid" name="dynamic config product brand style 2 grid">
+		<div class="row">
+			<t t-if="item_per_row == 5">
+				<t t-set="biz_col_size_int" t-value="20"/>
+			</t>
+			<t t-else="">
+				<t t-set="biz_col_size" t-value="12 / item_per_row"/>
+				<t t-set="biz_col_size_int" t-value="int(biz_col_size)"/>
+			</t>
+			<t t-foreach="records" t-as="brand">
+				<div t-att-class="'col-lg-%s'%(biz_col_size_int)+' mb-3 col-md-6'">
+					<div class="brand_box style_2 border p-3 h-100 d-flex flex-column justify-content-center">
+						<div class="image text-center">
+							<a t-attf-href="/shop?brand=#{brand.id}">
+								<img class="img img-fluid" t-attf-src="/web/image/product.brand/#{brand.id}/image"/>
+							</a>
+						</div>
+						<!-- <div class="info">
+							<h6 class="mb-0"><t t-out="brand.name"/></h6>
+						</div> -->
+					</div>
+				</div>
+			</t>
+		</div>
+	</template>
+
+	<template id="dynamic_config_product_brand_style_3_grid" name="dynamic config product brand style 3 grid">
+		<div class="row">
+			<t t-if="item_per_row == 5">
+				<t t-set="biz_col_size_int" t-value="20"/>
+			</t>
+			<t t-else="">
+				<t t-set="biz_col_size" t-value="12 / item_per_row"/>
+				<t t-set="biz_col_size_int" t-value="int(biz_col_size)"/>
+			</t>
+			<t t-foreach="records" t-as="brand">
+				<div t-att-class="'col-lg-%s'%(biz_col_size_int)+' mb-3 col-md-6'">
+					<div class="brand_box style_3 border p-3 h-100 d-flex flex-column justify-content-center">
+						<div class="image_wrapper p-3 text-center">
+							<a t-attf-href="/shop?brand=#{brand.id}">
+								<img class="img img-fluid" t-attf-src="/web/image/product.brand/#{brand.id}/image"/>
+							</a>
+						</div>
+						<div class="brand_info text-center">
+							<a class="text-decoration-none text-white" t-attf-href="/shop?brand=#{brand.id}">
+								<h6 class="mb-0 text-white"><t t-out="brand.name"/></h6>
+							</a>
+							<div class="brand_count mt-2 text-white">
+								<span t-out="brand.brand_count"/> items
+							</div>
+						</div>
+					</div>
+				</div>
+			</t>
+		</div>
+	</template>
+
+	<template id="dynamic_config_product_brand_style_4_grid" name="dynamic config product brand style 4 grid">
+		<div class="row">
+			<t t-if="item_per_row == 5">
+				<t t-set="biz_col_size_int" t-value="20"/>
+			</t>
+			<t t-else="">
+				<t t-set="biz_col_size" t-value="12 / item_per_row"/>
+				<t t-set="biz_col_size_int" t-value="int(biz_col_size)"/>
+			</t>
+			<t t-foreach="records" t-as="brand">
+				<div t-att-class="'col-lg-%s'%(biz_col_size_int)+' mb-3 col-md-6'">
+					<div class="brand_box style_4 border d-flex flex-column h-100 px-3 py-2">
+						<div class="image_wrapper text-center h-100 d-flex flex-column justify-content-center p-3">
+							<a t-attf-href="/shop?brand=#{brand.id}">
+								<img class="img img-fluid" t-attf-src="/web/image/product.brand/#{brand.id}/image"/>
+							</a>
+						</div>
+						<div class="brand_info text-center border-top d-flex align-items-center justify-content-between pt-2 mt-auto flex-wrap">
+							<a class="text-decoration-none" t-attf-href="/shop?brand=#{brand.id}">
+								<h6 class="mb-0 text-black"><t t-out="brand.name"/></h6>
+							</a>
+							<div class="brand_count small text-black">
+								<span t-out="brand.brand_count"/> items
+							</div>
+						</div>
+					</div>
+				</div>
+			</t>
+		</div>
+	</template>
+
+	<template id="dynamic_config_product_brand_style_5_grid" name="dynamic config product brand style 5 grid">
+		<div class="row">
+			<t t-if="item_per_row == 5">
+				<t t-set="biz_col_size_int" t-value="20"/>
+			</t>
+			<t t-else="">
+				<t t-set="biz_col_size" t-value="12 / item_per_row"/>
+				<t t-set="biz_col_size_int" t-value="int(biz_col_size)"/>
+			</t>
+			<t t-foreach="records" t-as="brand">
+				<div t-att-class="'col-lg-%s'%(biz_col_size_int)+' mb-3 col-md-6'">
+					<div class="brand_box style_5 border d-flex flex-column h-100">
+						<div class="image_wrapper text-center h-100 d-flex flex-column justify-content-center p-3">
+							<a t-attf-href="/shop?brand=#{brand.id}">
+								<img class="img img-fluid" t-attf-src="/web/image/product.brand/#{brand.id}/image"/>
+							</a>
+						</div>
+						<div class="brand_info text-center border-top py-1 mt-auto bg-primary">
+							<!-- <a class="text-decoration-none" t-attf-href="/shop?brand=#{brand.id}">
+								<h6 class="mb-0 text-white"><t t-out="brand.name"/></h6>
+							</a> -->
+							<div class="brand_count small text-white">
+								<span t-out="brand.brand_count"/> items
+							</div>
+						</div>
+					</div>
+				</div>
+			</t>
+		</div>
+	</template>
+
+	<template id="dynamic_config_product_brand_style_6_grid" name="dynamic config product brand style 6 grid">
+		<div class="row">
+			<t t-if="item_per_row == 5">
+				<t t-set="biz_col_size_int" t-value="20"/>
+			</t>
+			<t t-else="">
+				<t t-set="biz_col_size" t-value="12 / item_per_row"/>
+				<t t-set="biz_col_size_int" t-value="int(biz_col_size)"/>
+			</t>
+			<t t-foreach="records" t-as="brand">
+				<div t-att-class="'col-lg-%s'%(biz_col_size_int)+' mb-3 col-md-6'">
+					<div class="brand_box style_6 border d-flex flex-column h-100">
+						<div class="image_wrapper text-center h-100 d-flex flex-column justify-content-center p-3">
+							<a t-attf-href="/shop?brand=#{brand.id}">
+								<img class="img img-fluid" t-attf-src="/web/image/product.brand/#{brand.id}/image"/>
+							</a>
+						</div>
+						<div class="brand_info text-center border-top py-1 mt-auto bg-300">
+							<a class="text-decoration-none" t-attf-href="/shop?brand=#{brand.id}">
+								<h6 class="mb-0 text-black"><t t-out="brand.name"/></h6>
+							</a>
+							<div class="brand_count small text-black">
+								<span t-out="brand.brand_count"/> items
+							</div>
+						</div>
+					</div>
+				</div>
+			</t>
+		</div>
+	</template>
+
+	<template id="dynamic_config_product_brand_style_7_grid" name="dynamic config product brand style 7 grid">
+		<div class="row">
+			<t t-if="item_per_row == 5">
+				<t t-set="biz_col_size_int" t-value="20"/>
+			</t>
+			<t t-else="">
+				<t t-set="biz_col_size" t-value="12 / item_per_row"/>
+				<t t-set="biz_col_size_int" t-value="int(biz_col_size)"/>
+			</t>
+			<t t-foreach="records" t-as="brand">
+				<div t-att-class="'col-lg-%s'%(biz_col_size_int)+' mb-3 col-md-6'">
+					<div class="brand_box style_7 border d-flex align-items-center h-100 w-100">
+						<div class="image_wrapper text-center h-100 border-end p-3 me-3 w-50 d-flex flex-column justify-content-center">
+							<a t-attf-href="/shop?brand=#{brand.id}">
+								<img class="img img-fluid" t-attf-src="/web/image/product.brand/#{brand.id}/image"/>
+							</a>
+						</div>
+						<div class="brand_info">
+							<a class="text-decoration-none" t-attf-href="/shop?brand=#{brand.id}">
+								<h6 class="mb-0 text-black"><t t-out="brand.name"/></h6>
+							</a>
+							<div class="brand_count small text-black">
+								<span t-out="brand.brand_count"/> items
+							</div>
+						</div>
+					</div>
+				</div>
+			</t>
+		</div>
+	</template>
+
+	<!-- dynamic config brand slider templates -->
+
+	<template id="dynamic_config_product_brand_style_1_slider" name="dynamic config product brand style 1 slider">
+		<div id="configurator-slider" class="owl-carousel">
+			<t t-foreach="records" t-as="brand">
+				<!-- <div t-att-class="'col-lg-%s'%(biz_col_size_int)+' mb-3 col-md-6'"> -->
+					<div class="brand_box style_1 h-100 d-flex flex-column justify-content-center">
+						<div class="image text-center">
+							<a t-attf-href="/shop?brand=#{brand.id}">
+								<img class="img img-fluid w-auto d-inline-block w-auto d-inline-block" t-attf-src="/web/image/product.brand/#{brand.id}/image"/>
+							</a>
+						</div>
+						<!-- <div class="info">
+							<h6 class="mb-0"><t t-out="brand.name"/></h6>
+						</div> -->
+					</div>
+				<!-- </div> -->
+			</t>
+		</div>
+	</template>
+
+	<template id="dynamic_config_product_brand_style_2_slider" name="dynamic config product brand style 2 slider">
+		<div id="configurator-slider" class="owl-carousel">
+			<t t-foreach="records" t-as="brand">
+				<!-- <div t-att-class="'col-lg-%s'%(biz_col_size_int)+' mb-3 col-md-6'"> -->
+					<div class="brand_box style_2 border p-3 h-100 d-flex flex-column justify-content-center">
+						<div class="image text-center">
+							<a t-attf-href="/shop?brand=#{brand.id}">
+								<img class="img img-fluid w-auto d-inline-block" t-attf-src="/web/image/product.brand/#{brand.id}/image"/>
+							</a>
+						</div>
+						<!-- <div class="info">
+							<h6 class="mb-0"><t t-out="brand.name"/></h6>
+						</div> -->
+					</div>
+				<!-- </div> -->
+			</t>
+		</div>
+	</template>
+
+	<template id="dynamic_config_product_brand_style_3_slider" name="dynamic config product brand style 3 slider">
+		<div id="configurator-slider" class="owl-carousel">
+			<t t-foreach="records" t-as="brand">
+				<!-- <div t-att-class="'col-lg-%s'%(biz_col_size_int)+' mb-3 col-md-6'"> -->
+					<div class="brand_box style_3 border p-3 h-100 d-flex flex-column justify-content-center">
+						<div class="image_wrapper p-3 text-center">
+							<a t-attf-href="/shop?brand=#{brand.id}">
+								<img class="img img-fluid w-auto d-inline-block" t-attf-src="/web/image/product.brand/#{brand.id}/image"/>
+							</a>
+						</div>
+						<div class="brand_info text-center">
+							<a class="text-decoration-none text-white" t-attf-href="/shop?brand=#{brand.id}">
+								<h6 class="mb-0 text-white"><t t-out="brand.name"/></h6>
+							</a>
+							<div class="brand_count mt-2 text-white">
+								<span t-out="brand.brand_count"/> items
+							</div>
+						</div>
+					</div>
+				<!-- </div> -->
+			</t>
+		</div>
+	</template>
+
+	<template id="dynamic_config_product_brand_style_4_slider" name="dynamic config product brand style 4 slider">
+		<div id="configurator-slider" class="owl-carousel">
+			<t t-foreach="records" t-as="brand">
+				<!-- <div t-att-class="'col-lg-%s'%(biz_col_size_int)+' mb-3 col-md-6'"> -->
+					<div class="brand_box style_4 border d-flex flex-column h-100 px-3 py-2">
+						<div class="image_wrapper text-center h-100 d-flex flex-column justify-content-center p-3">
+							<a t-attf-href="/shop?brand=#{brand.id}">
+								<img class="img img-fluid w-auto d-inline-block" t-attf-src="/web/image/product.brand/#{brand.id}/image"/>
+							</a>
+						</div>
+						<div class="brand_info text-center border-top d-flex align-items-center justify-content-between pt-2 mt-auto flex-wrap">
+							<a class="text-decoration-none" t-attf-href="/shop?brand=#{brand.id}">
+								<h6 class="mb-0 text-black"><t t-out="brand.name"/></h6>
+							</a>
+							<div class="brand_count small text-black">
+								<span t-out="brand.brand_count"/> items
+							</div>
+						</div>
+					</div>
+				<!-- </div> -->
+			</t>
+		</div>
+	</template>
+
+	<template id="dynamic_config_product_brand_style_5_slider" name="dynamic config product brand style 5 slider">
+		<div id="configurator-slider" class="owl-carousel">
+			<t t-foreach="records" t-as="brand">
+				<!-- <div t-att-class="'col-lg-%s'%(biz_col_size_int)+' mb-3 col-md-6'"> -->
+					<div class="brand_box style_5 border d-flex flex-column h-100">
+						<div class="image_wrapper text-center h-100 d-flex flex-column justify-content-center p-3">
+							<a t-attf-href="/shop?brand=#{brand.id}">
+								<img class="img img-fluid w-auto d-inline-block" t-attf-src="/web/image/product.brand/#{brand.id}/image"/>
+							</a>
+						</div>
+						<div class="brand_info text-center border-top py-1 mt-auto bg-primary">
+							<!-- <a class="text-decoration-none" t-attf-href="/shop?brand=#{brand.id}">
+								<h6 class="mb-0 text-white"><t t-out="brand.name"/></h6>
+							</a> -->
+							<div class="brand_count small text-white">
+								<span t-out="brand.brand_count"/> items
+							</div>
+						</div>
+					</div>
+				<!-- </div> -->
+			</t>
+		</div>
+	</template>
+
+	<template id="dynamic_config_product_brand_style_6_slider" name="dynamic config product brand style 6 slider">
+		<div id="configurator-slider" class="owl-carousel">
+			<t t-foreach="records" t-as="brand">
+				<!-- <div t-att-class="'col-lg-%s'%(biz_col_size_int)+' mb-3 col-md-6'"> -->
+					<div class="brand_box style_6 border d-flex flex-column h-100">
+						<div class="image_wrapper text-center h-100 d-flex flex-column justify-content-center p-3">
+							<a t-attf-href="/shop?brand=#{brand.id}">
+								<img class="img img-fluid w-auto d-inline-block" t-attf-src="/web/image/product.brand/#{brand.id}/image"/>
+							</a>
+						</div>
+						<div class="brand_info text-center border-top py-1 mt-auto bg-300">
+							<a class="text-decoration-none" t-attf-href="/shop?brand=#{brand.id}">
+								<h6 class="mb-0 text-black"><t t-out="brand.name"/></h6>
+							</a>
+							<div class="brand_count small text-black">
+								<span t-out="brand.brand_count"/> items
+							</div>
+						</div>
+					</div>
+				<!-- </div> -->
+			</t>
+		</div>
+	</template>
+
+	<template id="dynamic_config_product_brand_style_7_slider" name="dynamic config product brand style 7 slider">
+		<div id="configurator-slider" class="owl-carousel">
+			<t t-foreach="records" t-as="brand">
+				<!-- <div t-att-class="'col-lg-%s'%(biz_col_size_int)+' mb-3 col-md-6'"> -->
+					<div class="brand_box style_7 border d-flex align-items-center h-100 w-100">
+						<div class="image_wrapper text-center h-100 border-end p-3 me-3 w-50 d-flex flex-column justify-content-center">
+							<a t-attf-href="/shop?brand=#{brand.id}">
+								<img class="img img-fluid w-auto d-inline-block" t-attf-src="/web/image/product.brand/#{brand.id}/image"/>
+							</a>
+						</div>
+						<div class="brand_info">
+							<a class="text-decoration-none" t-attf-href="/shop?brand=#{brand.id}">
+								<h6 class="mb-0 text-black"><t t-out="brand.name"/></h6>
+							</a>
+							<div class="brand_count small text-black">
+								<span t-out="brand.brand_count"/> items
+							</div>
+						</div>
+					</div>
+				<!-- </div> -->
+			</t>
+		</div>
+	</template>
+
+</odoo>

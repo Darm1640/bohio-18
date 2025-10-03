@@ -1,0 +1,58 @@
+@if o-website-value('footer-template') == "snazzy-footer-2"{
+    #footer_theme_common2{
+        background-color: $primary;
+        .top-footer{
+            .footer-links{
+                h6{
+                    font-weight: 500;
+                    text-transform: uppercase;
+                }
+            }
+            .block-footer{
+                .title-block-footer{
+                    .content-title{
+                        font-weight: 600 !important;
+                    }
+                }
+                .content-block-footer{
+                    .contact-list{
+                      padding-left: 0 !important;
+                       li{
+                        margin-bottom: 20px;
+                        color: inherit !important;
+                       } 
+                    } 
+                }
+            }
+            .block-subscribe-footer {
+                .input-group{
+                    border: 1px solid !important;
+                    border-color: inherit !important;
+                    height: 45px;
+                    .js_subscribe_value{
+                        width: 100%;
+                        border-radius: 0px !important;
+                        background-color: transparent !important;
+                        border: 0 !important;
+                        color: inherit !important;
+                    }
+                    input::placeholder { 
+                        color: inherit !important;
+                    }
+                    .input-group-append button{
+                        height: 45px !important;
+                        line-height: 35px !important;
+                        border-radius: 0px !important;
+                        background-color: transparent;
+                        border: 0 !important;
+                        color: inherit !important;
+                    }
+                }
+            }
+        }
+    }
+    .footer2_copyright{
+        background-color: $primary;
+    }
+    
+}

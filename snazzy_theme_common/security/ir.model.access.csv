@@ -1,0 +1,21 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_product_tab,access_product_tab,model_product_tab,base.group_user,1,1,1,1
+access_product_tab_website,access_product_tab_website,model_product_tab,,1,0,0,0
+access_product_brand,access_product_brand,model_product_brand,,1,1,1,1
+access_product_label_bizople,access_product_label_bizople,model_product_label_bizople,base.group_user,1,1,1,1
+access_product_label_bizople_website,access_product_label_bizople_website,model_product_label_bizople,,1,0,0,0
+
+access_stock_warehouse_public,stock.warehouse.public,stock.model_stock_warehouse,,1,0,0,0
+access_stock_location_public,stock.location.public,stock.model_stock_location,,1,0,0,0
+access_stock_quant_public,stock.quant public,stock.model_stock_quant,,1,0,0,0
+
+access_product_highlights,access_product_highlights,model_product_highlights,base.group_user,1,1,1,1
+access_product_highlights_public,access_product_highlights_public,model_product_highlights,base.group_public,1,0,0,0
+access_product_highlights_portal,access_product_highlights_portal,model_product_highlights,base.group_portal,1,0,0,0
+
+access_product_service,access_product_service,model_product_service,base.group_user,1,1,1,1
+access_product_service_public,access_product_service_public,model_product_service,base.group_public,1,0,0,0
+access_product_service_portal,access_product_service_portal,model_product_service,base.group_portal,1,0,0,0
+access_pwa_shortcuts,access_pwa_shortcuts,model_pwa_shortcuts,,1,1,1,1
+
+access_store_location,access_store_location,model_store_location,base.group_user,1,1,1,1

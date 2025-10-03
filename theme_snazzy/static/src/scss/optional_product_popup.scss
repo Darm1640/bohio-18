@@ -1,0 +1,170 @@
+.modal.o_legacy_dialog:not(.o_technical_modal){
+	.modal-dialog{
+		@media (max-width: 767.98px){
+			margin: 16px !important;
+		}
+	}
+	.modal-content{
+		background-color: #fff !important;
+        border-radius: 0;
+		.modal-header{
+            .modal-title{
+              font-size: 24px !important;
+            }
+			.btn-close{
+				box-shadow: none !important;
+			}
+		}
+		.modal-body{
+            tr{
+                display: flex;
+            }
+			td{
+				box-shadow: none !important;
+				width: 25%;
+				@media (max-width: 991.98px){
+					width: 50% !important;
+					text-align: left !important;
+				}
+				img{
+					max-width: 100px;
+					max-height: 100px;
+				}
+			}
+			thead{
+				display: none;
+			}
+			tbody{
+				border: none !important;
+				.o_total_row {
+                    justify-content: end !important;
+                    strong,span{
+						font-weight: 500 !important;
+					}
+				}
+                .js_add{
+                  border-radius: 0;
+                  font-size: 14px !important;
+                }
+				.td-product_name{
+					.product-name{
+						font-size: 16px !important;
+                        font-weight: 500 !important;
+					}
+					.variant_attribute .attribute_name:after{
+						display: none;
+					}
+					.css_attribute_color {
+						width: 25px !important;
+						height: 25px !important;
+						border-width: 3px !important;
+						&::before,&::after{
+							border-width: 0px !important;
+						}
+					}
+				}
+                .o_select_options{
+                    h4{
+                        font-size: 22px !important;
+                    }
+                }
+				.td-qty{
+                    .css_quantity{
+                        border: 1px solid $ptextcolor;
+                        align-items: center;
+                        input{
+                            font-size: 20px;
+                            width: 40px;
+                            margin: 0 !important;
+                        }
+                        input,.js_add_cart_json{
+                            border: none;
+                            box-shadow: none;
+                            .fa-plus {
+                                font-size: 14px !important;
+                                &::before {
+                                    font-family: 'remixicon' !important;
+                                    content: "\ea11" !important;
+                                }
+                            }
+                
+                            .fa-minus {
+                                font-size: 14px !important;
+                                &::before {
+                                    font-family: 'remixicon' !important;
+                                    content: "\f0fb" !important;
+                                }
+                            }
+                        }
+                        .js_add_cart_json{
+                            width: 32px;
+                            background-color: transparent !important;
+                            color: #1b1b1b !important;
+                        }
+                    }
+				}
+				.td-price{
+					flex-direction: row-reverse;
+					.oe_price {
+						color: var(--o-color-1);
+						font-size: 16px;
+						margin: 6px;
+					}
+
+				}
+			}
+		}
+		.modal-footer{
+            .btn{
+                border-radius: 0 !important;
+                font-size: 14px !important;
+                @media (max-width: 767.98px) {
+                    width: 100% !important;
+                }
+            }
+		}
+	}
+	.oe_advanced_configurator_modal{
+		.table > :not(caption) > * > * {
+			border-bottom-width: 0px !important;
+		}
+		.radio_input_value.o_variant_pills_input_value{
+			padding:4px 8px;
+		}
+		.js_add_cart_variants{
+			.variant_attribute {
+				flex-direction: column !important;
+				display: flex !important;
+				ul,.css_attribute_select{
+					margin-left:0 !important;
+				}
+                strong{
+                    font-weight: 500 !important;
+                }
+			}
+		}
+		
+	}
+	@media (max-width: 767.98px){
+		.modal-content .modal-body tr{
+			flex-flow:row wrap !important;
+			td.td-product_name{
+				width: 100% !important;
+				min-width: 100% !important;
+			}
+		}
+	}
+}
+
+.o_wsale_layout_list{
+    .modal.o_legacy_dialog:not(.o_technical_modal){
+        @media (min-width: 1200px){
+            tbody{
+                td {
+                    display: table-cell !important;
+                    width: 25% !important;
+                }
+            }
+        }
+    }
+}

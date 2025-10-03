@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<menuitem id="theme_snazzy_customization_menu" name="Bizople Theme Configuration" groups="base.group_system" action="sale.product_template_action" parent="website.menu_website_configuration" sequence="100"/>
+            
+	<menuitem id="menu_product_service_settings" name="Product Services" action="theme_snazzy.act_open_product_service_view" parent="theme_snazzy_customization_menu" sequence="40"/>
+
+	<menuitem id="menu_product_highlights_settings" name="Product Highlights" action="theme_snazzy.act_open_product_highlights_view" parent="theme_snazzy_customization_menu" sequence="50"/>
+	
+	<menuitem id="menu_product_brand" name="Product Brand" action="theme_snazzy.act_open_product_brand_view" parent="theme_snazzy_customization_menu" sequence="60" />
+
+	<menuitem id="menu_store_location" name="Store Location" action="theme_snazzy.store_location_act" parent="theme_snazzy_customization_menu" sequence="61" />
+
+	<menuitem id="menu_product_tab" name="Product Tabs" action="theme_snazzy.act_open_product_tab_view_bizople" parent="theme_snazzy_customization_menu" sequence="62" />
+
+	<menuitem id="menu_product_label_bizople" name="Product Label" action="theme_snazzy.act_open_product_label_view_bizople" parent="theme_snazzy_customization_menu" sequence="70" />
+
+	<menuitem id="menu_pwa_shortcuts" name="PWA Shortcuts" action="theme_snazzy.act_open_pwa_shortcuts_view" parent="theme_snazzy_customization_menu" sequence="74" />
+
+    <record model='ir.actions.act_url' id='action_snazzy_documentation'>
+		<field name='name'>Snazzy Documentation</field>
+		<field name='url'>https://www.bizople.com/snazzy-document</field>
+	</record>
+
+	<menuitem id="snazzy_documentation_menu" name="Snazzy Documentation" action="action_snazzy_documentation" parent="theme_snazzy_customization_menu" sequence="1" />
+</odoo>

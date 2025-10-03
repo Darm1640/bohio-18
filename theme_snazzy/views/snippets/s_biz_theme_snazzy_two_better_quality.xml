@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<template id="s_biz_theme_snazzy_homepage_two_better_quality" name=" Better Quality ">
+        <section class="biz_theme_snazzy_homepage_two_better_quality pt48 pb48 custom_padding_top custom_padding_bottom">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-5">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <img class="img img-fluid mx-auto w-100" src="/theme_snazzy/static/src/img/product_img_one.jpg" loading="lazy"/>
+                            </div>
+                            <div class="col-md-6 custom_padding_top_sm_down_15">
+                                <img class="img img-fluid mx-auto w-100" src="/theme_snazzy/static/src/img/product_img_two.jpg" loading="lazy"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="text-center custom_padding_top_lg_down_30">
+                            <h4>Walk in for better <span class="text-primary">quality</span></h4>
+                            <p class="m-0 custom_fw_500">Lorem Ipsum is simply dummy</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-5">
+                        <div class="row custom_padding_top_lg_down_30">
+                            <div class="col-md-6 ">
+                                <img class="img img-fluid mx-auto w-100" src="/theme_snazzy/static/src/img/product_img_three.jpg" loading="lazy"/>
+                            </div>
+                            <div class="col-md-6 custom_padding_top_sm_down_15">
+                                <img class="img img-fluid mx-auto w-100" src="/theme_snazzy/static/src/img/product_img_four.jpg" loading="lazy"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div class="oe_structure oe_empty"></div>
+	</template>
+</odoo>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<template id="s_biz_theme_snazzy_electronic_homepage_two_banner" name="Banner">
+        
+        <section class="biz_theme_snazzy_electronic_homepage_two_banner pb48 custom_padding_bottom">
+            <section class="" style="background-color: #00000014;">
+                <div class="container-fluid">
+                    <section class="s_carousel_wrapper" data-vxml="001"  data-name="Carousel">
+                        <div class="s_carousel s_carousel_default carousel slide" data-bs-interval="3000" id="theme_snazzy_homepage_banner_two_22" style="background-image: none;">
+                            <div class="carousel-indicators o_we_no_overlay">
+                                <button data-bs-slide-to="0" class="active" data-bs-target="#theme_snazzy_homepage_banner_two_22"/>
+                                <button data-bs-slide-to="1" data-bs-target="#theme_snazzy_homepage_banner_two_22"/>
+                                <button data-bs-slide-to="2" data-bs-target="#theme_snazzy_homepage_banner_two_22"/>
+                            </div>
+                            <div class="carousel-inner">
+
+                                <div class="carousel-item pt64 oe_img_bg o_bg_img_center o_colored_level active" data-name="Slide">
+                                    <div class="container oe_unremovable">
+                                        <div class="row align-items-center">
+                                            <div class="col-lg-6">
+                                                <div class="content">
+                                                    <p>SUMMER 2023</p>
+                                                    <h3>Samsung S22 Ultra</h3>
+                                                    <h6>A Note worthy new Look</h6>
+                                                    <a href="#" class="btn btn-secondary flat mt-3">Explore Now</a>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <img class="img img-fluid mx-auto pt-5 pt-lg-4" src="/theme_snazzy/static/src/img/electronic_page_two_banner_one.png" loading="lazy"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="carousel-item pt64 oe_img_bg o_bg_img_center o_colored_level" data-name="Slide">
+                                    <div class="container oe_unremovable">
+                                        <div class="row align-items-center">
+                                            <div class="col-lg-6">
+                                                <div class="content">
+                                                    <p>SUMMER 2023</p>
+                                                    <h3>iPhone 15 Pro Max</h3>
+                                                    <h6>A Note worthy new Look</h6>
+                                                    <a href="#" class="btn btn-secondary flat mt-3">Explore Now</a>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <img class="img img-fluid mx-auto pt-5 pt-lg-4" src="/theme_snazzy/static/src/img/electronic_page_two_banner_two.png" loading="lazy"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="carousel-item pt64 oe_img_bg o_bg_img_center o_colored_level" data-name="Slide">
+                                    <div class="container oe_unremovable">
+                                        <div class="row align-items-center">
+                                            <div class="col-lg-6">
+                                                <div class="content">
+                                                    <p>SUMMER 2023</p>
+                                                    <h3>Google Pixel 8 Pro</h3>
+                                                    <h6>A Note worthy new Look</h6>
+                                                    <a href="#" class="btn btn-secondary flat mt-3">Explore Now</a>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <img class="img img-fluid mx-auto pt-5 pt-lg-4" src="/theme_snazzy/static/src/img/electronic_page_two_banner_three.png" loading="lazy"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <a class="carousel-control-prev o_not_editable o_we_no_overlay" data-bs-slide="prev" role="img" aria-label="Previous" title="Previous" href="#theme_snazzy_homepage_banner_two_22">
+                                <span class="carousel-control-prev-icon"/>
+                                <span class="visually-hidden o_default_snippet_text">Previous</span>
+                            </a>
+                            <a class="carousel-control-next o_not_editable o_we_no_overlay" data-bs-slide="next" role="img" aria-label="Next" title="Next" href="#theme_snazzy_homepage_banner_two_22">
+                                <span class="carousel-control-next-icon"/>
+                                <span class="visually-hidden o_default_snippet_text">Next</span>
+                            </a>
+                        </div>
+                    </section>
+                </div>
+            </section>
+        </section>
+        <div class="oe_structure oe_empty"></div>
+
+	</template>
+</odoo>

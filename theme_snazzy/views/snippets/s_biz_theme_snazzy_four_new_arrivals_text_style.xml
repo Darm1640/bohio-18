@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<template id="s_biz_theme_snazzy_homepage_four_new_arrivals_text_style" name="New Arrivals">
+
+        <section class="biz_theme_snazzy_homepage_four_new_arrivals_text_style ">
+            <div class="slider_direction_snippet slider_direction_right_to_left">
+                <div class="container-fluid ps-0 pe-0">
+                    <div class="text_content_parent_class">
+                        <p> New Arrivals New Arrivals </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div class="oe_structure oe_empty"></div>
+
+	</template>
+</odoo>

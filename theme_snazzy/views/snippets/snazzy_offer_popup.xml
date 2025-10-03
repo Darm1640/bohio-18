@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="snazzy_offer_popup" name="Snazzy Offer Popup">
+        <section>
+            <div class="s_popup o_snippet_invisible" data-vcss="001">
+                <div class="modal fade s_popup_middle" style="background-color: var(--black-50) !important;" data-show-after="5000" data-display="afterDelay" data-consents-duration="7" data-bs-focus="false" data-bs-backdrop="false" tabindex="-1" role="dialog">
+                    <div class="modal-dialog d-flex">
+                        <div class="modal-content oe_structure">
+                            <div class="s_popup_close js_close_popup o_we_no_overlay o_not_editable" aria-label="Close">&#215;</div>
+                            <section class="snazzy-offer-blocks">
+                                <div class="container-fluid s_allow_columns">
+                                    <div class="row align-items-center">
+                                        <div class="col-lg-6 p-0">
+                                            <div class="popup-image">
+                                                <img src="/theme_snazzy/static/src/img/newsletter-bg.jpg" class="img img-fluid w-100"/>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 px-5">
+                                            <h4 class="text-center">Would You Like</h4>
+                                            <h3 class="text-center"><span class="text-primary">10%</span>OFF</h3>
+                                            <p class="text-center">Your first purchase ?</p>
+                                            <div class="offer-button-one mb-3">
+                                                <button type="button" href="#" class="btn btn-primary">Yes get my 10% off</button>
+                                            </div>
+                                            <div class="offer-button-two">
+                                                <button type="button" href="#" class="btn btn-custom">No,I don't want</button>
+                                            </div>
+                                        
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div class="oe_structure"></div>
+    </template>
+</odoo>

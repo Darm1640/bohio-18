@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<template id="s_biz_theme_snazzy_homepage_four_about_video" name="About Video">
+
+        <section class="biz_theme_snazzy_homepage_four_about_video pt48 custom_padding_top">
+            <section class="" style="background-image: url(/theme_snazzy/static/src/img/page_one_about_video_bg.jpg);">
+                <div class="container-fluid px-0">
+                    <div class="row align-items-center gx-0">
+                        <div class="offset-lg-1 col-lg-5">
+                            <section class="text-center pt128 pb128">
+                                <h2 class="w-lg-75 px-lg-5">The new generation of skin care</h2>
+                                <p class="w-lg-75">For the next generation of skin care. we are based on our principles and are sustainbillity to a new level</p>
+                            </section>
+                        </div>
+                        <div class="col-lg-6">
+                            <section class=" pt32 pb32 w-100">
+                            </section>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </section>
+        <div class="oe_structure oe_empty"></div>
+
+	</template>
+</odoo>

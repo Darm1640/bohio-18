@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<template id="theme_common_footer4" inherit_id="website.layout" name="Footer Four" active="False">
+       	<xpath expr="//div[@id='footer']" position="replace">
+            <div id="footer" class="oe_structure oe_structure_solo" t-ignore="true" t-if="not no_footer">
+                <section id="footer_theme_common4" class="footer_theme_common4 o_footer">
+                    <section class="top-footer pt48 pb48">
+                        <div class="container">
+                            <div class="newsletter-content text-center">
+                                <div class="footer-logo">
+                                    <a href="/" class="navbar-brand logo p-0 m-0">
+                                        <img src="/theme_snazzy/static/src/img/snazzy-logo.png" class="img-fluid"/>
+                                    </a>
+                                </div>
+                                <div class="footer-links">
+                                    <ul class="nav justify-content-center">
+                                        <li class="nav-item">
+                                            <a href="#" class="nav-link ">Home</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="#" class="nav-link ">Contact Us</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="#" class="nav-link ">About Us</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="#" class="nav-link ">Policy</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="#" class="nav-link ">FAQ</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="block-subscribe-footer w-lg-50 mx-auto">
+                                    <!-- <form class="input-group js_subscribe mt16" data-list-id="1">
+                                        <input type="email" name="email" class="js_subscribe_value form-control" placeholder="Email Address"/>
+                                        <span class="input-group-append">
+                                            <a role="button" href="#" class="btn btn-primary js_subscribe_btn h-100">Subscribe</a>
+                                            <a role="button" href="#" class="btn btn-success js_subscribed_btn h-100 d-none" disabled="disabled">Thanks</a>
+                                        </span>
+                                    </form> -->
+                                    <form class="s_newsletter_subscribe_form s_newsletter_list js_subscribe" data-vxml="001" data-list-id="2">
+                                        <div class="js_subscribed_wrap d-none">
+                                            <p class="h4-fs text-center text-success js_subscribed_btn"><i class="fa fa-check-circle-o" role="img"/>Thanks for registering!</p>
+                                        </div>
+                                        <div class="js_subscribe_wrap">
+                                            <div class="input-group">
+                                                <input type="email" name="email" class="js_subscribe_value form-control" placeholder="Enter Your Email"/>
+                                                <span class="input-group-append">
+                                                    <button role="button" class="btn btn-primary js_subscribe_btn h-100 o_submit">Subscribe</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="social-share d-flex align-items-center justify-content-center py-3">
+                                    <div class="s_social_media d-flex o_not_editable" data-snippet="s_social_media" data-name="Social Media" contenteditable="false">
+                                        <a href="/website/social/facebook" class="link s_social_media_facebook" target="_blank" aria-label="Facebook">
+                                            <i class="fa fa-facebook o_editable_media"/>
+                                        </a>
+                                        <a href="/website/social/twitter" class="link s_social_media_twitter" target="_blank" aria-label="X">
+                                            <i class="fa fa-twitter o_editable_media"/>
+                                        </a>
+                                        <a href="/website/social/linkedin" class="link s_social_media_linkedin" target="_blank" aria-label="LinkedIn">
+                                            <i class="fa fa-linkedin o_editable_media"/>
+                                        </a>
+                                        <a href="/website/social/youtube" class="link s_social_media_youtube" target="_blank" aria-label="Youtube">
+                                            <i class="fa fa-youtube-play o_editable_media"/>
+                                        </a>
+                                        <a href="/website/social/instagram" class="link s_social_media_instagram" target="_blank" aria-label="Instagram">
+                                            <i class="fa fa-instagram o_editable_media"/>
+                                        </a>
+                                        <a href="/website/social/github" class="link s_social_media_github" target="_blank" aria-label="Github">
+                                            <i class="fa fa-github o_editable_media"/>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </section>
+            </div>
+        </xpath>
+
+        <xpath expr="//div[hasclass('o_footer_copyright')]" position="replace">
+			<div t-if="not no_copyright" class="o_footer_copyright footer4_copyright">
+				<section class="copyright-section py-4">
+                    <div class="container">
+                        <div class="d-flex justify-content-center align-items-center">
+                            <p class="m-0 o_footer_copyright_name">All Rights Are Reserved By ©<span t-field="res_company.name" /> 2023</p>
+                        </div>
+                    </div>
+				</section>
+			</div>
+		</xpath>
+
+    </template>
+</odoo>

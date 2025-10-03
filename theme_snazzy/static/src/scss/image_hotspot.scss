@@ -1,0 +1,156 @@
+.image_hotspot {
+	.static_image_hotspot_info{
+		.info-box{
+			.hotspot-title{
+			    font-size: 14px;
+				color: #000000;
+			}
+		}
+		&:before{
+			content: " ";
+			width: 65px;
+			height: 45px;
+			transform: rotate(45deg) translateY(-50%);
+			background-color: inherit;
+			position: absolute;
+			top: 50%;
+			left: -20px;
+			z-index: -1;
+		}
+		max-width: 0px;
+		padding: 0px;
+		overflow: hidden;
+		left: 25px;
+	    top: 50%;
+	    transform: translateY(-50%);
+	}
+	
+}
+
+.o_editable {
+	.image_hotspot {
+		.static_image_hotspot_info{
+			&.show_edit{
+				padding: 0px !important;
+				overflow: visible;
+				max-width: 500px; 
+			}
+		}
+		.info-box{
+			padding: 16px !important;
+		}
+	}
+}
+.static_image_hotspot_info{
+	.info-box{
+		.hotspot-title{
+			font-size: 14px;
+			color: #000000;
+		}
+		.hotspot-link{
+			a{
+				position: absolute;
+				top: -1px;
+				right: -1px;
+				border-radius: 0px 0px 0px 10px !important;
+				padding: 3px 8px !important;
+			}
+		}
+		.snazzy-pro-label-disc{
+			border-radius: 25px !important;
+		}
+		.o_website_rating_static{
+			border-radius: 25px !important;
+		}
+	}
+}
+
+.static_image_hotspot_info, .dynamic_image_hotspot_info{
+	.info-box{
+		.hotspot-title{
+			font-size: 14px;
+			font-weight: 500;
+		}
+		.hotspot-sub-title{
+			font-size: 12px !important;
+			font-weight: 500;
+		}
+		.hotspot-price{
+			color: #E02B2B;
+		}
+		.hotspot-discount{
+			color: #626262 !important;
+		}
+		.hotspot-link{
+			a{
+				font-size: 12px;
+				font-weight: 500;
+				text-decoration: none !important;
+			}
+		}
+		p{
+			.discountedprice{
+			    font-size: 12px;
+			    color: #000000;
+			    font-weight: 700;
+			    margin-right: 5px;
+			}
+			.originalprice{
+			    font-size: 11px;
+			    font-weight: 700;
+			}
+			margin-bottom: 0;
+		}
+	}
+}
+
+.hotspot_info {
+	.fa, .ri, .ti, .lnr, .lni, .icon, .icofont{
+		&:after{
+			content: " ";
+			width: 20px;
+			height: 20px;
+			border-radius: 50%;
+			position: absolute;
+			left: 4px;
+			top: 4px;
+			bottom: 0;
+			right: 0;
+			background-color: inherit;
+			z-index: -1;
+			animation: scaleIn 2s infinite;
+		}
+	    width: 28px;
+	    height: 28px;
+	    line-height: 28px;
+      font-size: 14px;
+      border-radius: 50%;
+	    background-color: #ffffff;
+	    display: inline-block;
+	    vertical-align: middle;
+	    text-align: center;
+	}
+	cursor: pointer;
+	overflow: visible !important;
+
+}
+@keyframes scaleIn {
+  from {
+    transform: scale(.5, .5);
+    opacity: 1;
+  }
+  to {
+    transform: scale(2.5, 2.5);
+    opacity: 0;
+  }
+}
+
+.popover.hotspot-popover{
+	.arrow{
+		&:before, &:after{
+			border-bottom-color: inherit !important;
+		}
+	}
+    max-width: 300px;
+    border-radius: 0;
+}

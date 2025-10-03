@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="snazzy_new_page_template_groups" inherit_id="website.new_page_template_groups">
+        <xpath expr="//div[@id='team']" position="after">
+            <div id="snazzy">Snazzy</div>
+        </xpath>
+    </template>
+</odoo>

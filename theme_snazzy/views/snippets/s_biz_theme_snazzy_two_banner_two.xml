@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<template id="s_biz_theme_snazzy_homepage_two_banner_two" name=" Banner Two ">
+	
+        <section class="biz_theme_snazzy_homepage_two_banner_two pb48 custom_padding_bottom">
+            <section class="pt56 pb56" style="background-image: url(/theme_snazzy/static/src/img/page_one_banner_two_bg.jpg); background-position: center; background-size: cover;">
+                <div class="container-fluid">
+
+                    <div class="hedging_content_parent_class_bottom text-center w-100">
+                        <!-- <h1 class="fw-bold banner_hedging_text_two"></h1> -->
+                    </div>
+
+                    <div class="img_content pb64 position-absolute">
+                        <img class="img img-fluid mx-auto" src="/theme_snazzy/static/src/img/page_one_banner_two_img.png" loading="lazy"/>
+                    </div>
+
+                    <div class="hedging_content_parent_class_top position-absolute text-center w-100">
+                        <h1 class="banner_hedging_text_one fw-bold">SPORTS</h1>
+                    </div>
+
+                    <div class="text_content_and_btn text-center w-100">
+                        <div class="d-flex justify-content-center">
+                            <p class="text-white w-lg-25 text-center">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's</p>
+                        </div>
+                        <div class="banner_btn">
+                            <hr></hr>
+                            <a href="#" class="btn btn-custom flat btn-lg text-primary bg-white fw-bold" style="padding-left: 96px; padding-right: 96px; ">GET YOURS</a>
+                            <hr></hr>
+                            <!-- <div class="hr_teg_content w-100">
+                                <hr></hr>
+                            </div> -->
+                        </div>
+                    </div>
+
+                    <div class="text_content_parent_class">
+                        <div class="pt-4 text_content">
+                            <p class="text-white">Made with Sport Edition</p>
+                        </div>
+                    </div>
+
+                    <div class="social_media_icons">
+                        <div class="icon_content">
+                            <a href="#" class="btn"><i class="fa fa-facebook text-white border border-white rounded-circle bg-transparent mb-2"></i></a>
+                            <a href="#" class="btn"><i class="fa fa-instagram text-white border border-white rounded-circle bg-transparent mb-2"></i></a>
+                            <a href="#" class="btn"><i class="fa fa-twitter text-white border border-white rounded-circle bg-transparent mb-2"></i></a>
+                        </div>
+                    </div>
+
+                </div>
+
+            </section>
+        </section>
+        <div class="oe_structure oe_empty"></div>
+
+	</template>
+</odoo>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<template id="s_biz_theme_snazzy_homepage_three_wooden_bed" name="Wooden Bed">
+        <section class="biz_theme_snazzy_homepage_three_wooden_bed pt48 pb48 custom_padding_top custom_padding_bottom">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-7 custom_padding_top_30_lg_down">
+                        <img class="img img-fluid mx-auto w-100" src="/theme_snazzy/static/src/img/page_one_wooden_bed.jpg" loading="lazy"/>
+                    </div>
+                    <div class="col-lg-3 custom_padding_top_30_lg_down">
+                        <div class="custom_padding">
+                            <h3 class="custom_fw_700">Wooden Bed</h3>
+                            <p class="custom_fw_600">Wooden bed is one of the new beds that quality materials is pure wood, fabric or lather.</p>
+                            <div class="d-flex align-items-center">
+                                <a href="#" class="text-decoration-underline" data-bs-original-title="" title="" aria-describedby="popover843531" contenteditable="true"><small class="custom_fw_600">DISCOVER ALL BEDS</small></a>
+                                <img class="img img-fluid mx-auto ms-3 arrow_icon_right" src="/theme_snazzy/static/src/img/arrow_icon_right.png" loading="lazy"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div class="oe_structure oe_empty"></div>
+	</template>
+</odoo>

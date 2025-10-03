@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<template id="s_biz_theme_snazzy_grocery_banner" name="Banner">
+
+        <section class="biz_theme_snazzy_grocery_banner pb48 custom_padding_bottom">
+            <section class="pt128" style="background-image: url(/theme_snazzy/static/src/img/home_grocery_banner_one.png); background-position: center;">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="d-flex align-items-center h-100">
+                                <div>
+                                    <p>SUMMER 2023</p>
+                                    <h1 class="">Fresh Groceries For</h1>
+                                    <h1 class="">A Healthy Life</h1>
+                                    <h5 class="pt-3">Save Up to 50% off on your first order</h5>
+                                    <a href="#" class="btn btn-lg btn-primary flat px-4 mt-3"> Explore Now </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <img class="img img-fluid mx-auto w-100" src="/theme_snazzy/static/src/img/home_grocery_banner_one_img_two.png" loading="lazy"/>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </section>
+        <div class="oe_structure oe_empty"></div>
+
+	</template>
+</odoo>

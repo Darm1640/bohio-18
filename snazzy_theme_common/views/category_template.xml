@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <template id="website_sale_categoy_list_bizople" name="Product Category">
+        <t t-call="website.layout">
+            <div id="wrap" class="oe_structure">
+                <div class="oe_empty oe_structure">
+                </div>
+                <div class="oe_structure">
+                    <section class="pt48 pb48 shopby-category">
+                        <div class="container long-container">
+                            <div class="row align-items-center justify-content-between">
+                                <h4 class="text-primary mb-2 mb-md-0 w-auto">Categories</h4>
+                                <div class="text-center form-inline o_website_sale_search w-auto">
+                                    <form action="/category-search" method="post">
+                                        <div class="input-group">
+                                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
+                                            <div class="oe_search">
+                                                <input type="text" name="search"
+                                                    class="search-query-bizople form-control oe_search_box" t-att-value="search"
+                                                    placeholder="Search..." />
+                                            </div>
+                                            <span class="input-group-btn input-group-append">
+                                                <button type="submit" class="btn btn-default oe_search_button bg-secondary">
+                                                    <i class="ri ri-search-line"/>
+                                                </button>
+                                            </span>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="row mt32 mb32 mx-0 margin-75 pt32 pb32">
+                                <div t-foreach="categories" t-as="categ" class="categ-grid">
+                                    <div class="categ-box d-flex align-items-center">
+                                        <div class="categ-image">
+                                            <a itemprop="url" t-attf-href="/category/#{ slug(categ) }"
+                                                data-bs-toggle="tooltip" t-att-title="categ.name">
+                                                <span itemprop="image" t-field="categ.image_1920"
+                                                    t-options='{"widget": "image", "resize": None if image else "90x90"}'
+                                                    t-att-alt="categ.name" />
+                                            </a>
+                                        </div>
+                                        <div class="categ-name">
+                                            <h6 class="text-center mb-0">
+                                                <a t-attf-href="/category/#{ slug(categ) }" class="text-900 text-decoration-none">
+                                                    <t t-out="categ.name" />
+                                                </a>
+                                            </h6>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="text-center mt32 mb32 col-md-12 mx-auto form-inline justify-content-center">
+                                    <t t-call="website.pager">
+                                    </t>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <div class="oe_structure"/>
+            </div>
+        </t>
+    </template>
+    
+    <template id="enable_product_count_categories" inherit_id="snazzy_theme_common.website_sale_categoy_list_bizople" active="False" customize_show="True" name="Enable Product Count">
+        <xpath expr="//div[hasclass('categ-name')]/h6[1]" position="after">
+            <div class="">
+                (<span t-out="categ.product_tmpl_count"/><span> Items</span>)
+            </div>
+        </xpath>
+    </template>
+</odoo>
