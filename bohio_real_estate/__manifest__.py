@@ -26,12 +26,22 @@
         'portal',
         'account_loans',  # Odoo Enterprise - Gestión de préstamos
     ],
+    'external_dependencies': {
+        'odoo': ['documents', 'sign'],  # Opcionales - Odoo Enterprise
+    },
     'data': [
         'security/ir.model.access.csv',
         'security/ir_rule.xml',
 
+        # Data
+        'data/property_document_category_data.xml',
+
         # Partner Views
         'views/res_partner_views.xml',
+
+        # Contract Types & Documents
+        'views/property_contract_type_views.xml',
+        'views/property_contract_inherit_views.xml',
 
         # Loan Management
         'views/account_loan_template_views.xml',
@@ -62,6 +72,11 @@
         'views/portal/tenant/tenant_payments.xml',
         'views/portal/tenant/tenant_invoices.xml',
         'views/portal/tenant/tenant_documents.xml',
+
+        # Salesperson Portal
+        'views/portal/salesperson/salesperson_dashboard.xml',
+        'views/portal/salesperson/salesperson_opportunities.xml',
+        'views/portal/salesperson/salesperson_opportunity_detail.xml',
 
         # Portal Templates
         'views/portal_templates.xml',

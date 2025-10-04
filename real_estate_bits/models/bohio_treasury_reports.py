@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from odoo import models, fields, api, _
+from odoo import models, fields, api, tools, _
 from odoo.exceptions import UserError
 
 
@@ -201,25 +201,31 @@ class BohioCollectionReport(models.Model):
             CREATE OR REPLACE VIEW bohio_collection_report AS (
                 SELECT
                     row_number() OVER () AS id,
-                    DATE_TRUNC('month', pll.date)::date AS period_month,
-                    TO_CHAR(pll.date, 'YYYY') AS period_year,
-                    pc.project_id,
-                    pc.region_id,
-                    SUM(pll.amount) AS expected_amount,
-                    SUM(CASE WHEN pll.payment_state IN ('paid', 'partial')
-                        THEN pll.amount ELSE 0 END) AS collected_amount,
-                    pc.currency_id,
-                    pc.company_id
-                FROM property_loan_line pll
-                JOIN property_contract pc ON pll.contract_id = pc.id
-                WHERE pll.date <= CURRENT_DATE
+                    DATE_TRUNC('month', ll.date)::date AS period_month,
+                    TO_CHAR(ll.date, 'YYYY') AS period_year,
+                    ll.project_id,
+                    ll.region_id,
+                    SUM(ll.amount) AS expected_amount,
+                    SUM(CASE
+                        WHEN ll.invoice_id IS NOT NULL
+                            AND am.payment_state IN ('paid', 'in_payment')
+                        THEN ll.amount
+                        ELSE 0
+                    END) AS collected_amount,
+                    COALESCE(ll.currency_id, rc.currency_id) AS currency_id,
+                    ll.company_id
+                FROM loan_line ll
+                LEFT JOIN account_move am ON ll.invoice_id = am.id
+                LEFT JOIN res_company rc ON ll.company_id = rc.id
+                WHERE ll.date <= CURRENT_DATE
+                    AND ll.contract_id IS NOT NULL
                 GROUP BY
-                    DATE_TRUNC('month', pll.date),
-                    TO_CHAR(pll.date, 'YYYY'),
-                    pc.project_id,
-                    pc.region_id,
-                    pc.currency_id,
-                    pc.company_id
+                    DATE_TRUNC('month', ll.date),
+                    TO_CHAR(ll.date, 'YYYY'),
+                    ll.project_id,
+                    ll.region_id,
+                    COALESCE(ll.currency_id, rc.currency_id),
+                    ll.company_id
             )
         """)
 
