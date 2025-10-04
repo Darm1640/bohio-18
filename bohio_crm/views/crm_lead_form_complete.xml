@@ -72,10 +72,9 @@
                                 <field name="mobile" widget="phone"/>
                             </group>
 
-                            <!-- Actividades -->
-                            <group string="Actividades">
+                            <!-- Actividades y Etiquetas -->
+                            <group string="Clasificación">
                                 <field name="priority" widget="priority" nolabel="1"/>
-                                <field name="activity_ids" widget="mail_activity" nolabel="1"/>
                                 <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" placeholder="Etiquetas" nolabel="1"/>
                             </group>
 

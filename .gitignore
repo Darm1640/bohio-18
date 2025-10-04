@@ -1,2 +1,30 @@
+# Python
 *.pyc
-*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.egg-info/
+.Python
+*.so
+
+# Odoo
+*.log
+filestore/
+sessions/
+addons/web/static/lib/
+addons/*/static/lib/
+
+# Archivos locales y documentación
+src_local/
+
+# Configuración de editores e IDE
+.claude/
+.vscode/
+*.swp
+*.swo
+*~
+.idea/
+
+# Sistema
+.DS_Store
+Thumbs.db

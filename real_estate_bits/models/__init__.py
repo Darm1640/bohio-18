@@ -23,3 +23,4 @@ from . import contract_scenery
 from . import bohio_mass_payment
 from . import property_contract_line
 from . import bohio_treasury_reports
+from . import property_contract_type

@@ -25,8 +25,3 @@ class ProductTemplatePortal(models.Model):
         for record in self:
             record.can_edit_portal = not record.managed_by_bohio
 
-
-class PropertyContractPortal(models.Model):
-    _name = 'property.contract'
-    _inherit = ['property.contract', 'documents.mixin', 'portal.mixin']
-

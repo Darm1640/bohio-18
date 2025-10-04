@@ -276,7 +276,8 @@ class PropertyContractLineExtensionWizard(models.TransientModel):
 
 
 class PropertyContract(models.Model):
-    _inherit = 'property.contract'
+    _name = 'property.contract'
+    _inherit = ['property.contract', 'portal.mixin']
 
     # NUEVOS CAMPOS PARA MULTI-PROPIEDAD
     is_multi_property = fields.Boolean('Contrato Multi-Propiedad', default=False, tracking=True,
