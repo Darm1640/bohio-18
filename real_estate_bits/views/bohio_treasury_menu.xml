@@ -171,7 +171,8 @@
               sequence="10"/>
     -->
 
-    <!-- Acción: Reporte de Comisiones -->
+    <!-- TODO: Implementar modelos de reportes
+
     <record id="action_bohio_commission_report" model="ir.actions.act_window">
         <field name="name">Reporte de Comisiones</field>
         <field name="res_model">bohio.commission.report</field>
@@ -185,7 +186,6 @@
               action="action_bohio_commission_report"
               sequence="20"/>
 
-    <!-- Acción: Reporte de Recaudo -->
     <record id="action_bohio_collection_report" model="ir.actions.act_window">
         <field name="name">Reporte de Recaudo</field>
         <field name="res_model">bohio.collection.report</field>
@@ -199,7 +199,6 @@
               action="action_bohio_collection_report"
               sequence="30"/>
 
-    <!-- Acción: Balance de Impuestos -->
     <record id="action_bohio_tax_balance_report" model="ir.actions.act_window">
         <field name="name">Balance de Impuestos</field>
         <field name="res_model">bohio.tax.balance.report</field>
@@ -211,6 +210,7 @@
               parent="menu_bohio_treasury_reports"
               action="action_bohio_tax_balance_report"
               sequence="40"/>
+    -->
 
     <!-- ================================ -->
     <!-- SUBMENU: CONFIGURACIÓN -->
