@@ -860,6 +860,21 @@ class BohioDebitNote(models.Model):
 
         return account
 
+    def action_view_invoice(self):
+        """Ver factura asociada a la nota débito"""
+        self.ensure_one()
+        if not self.invoice_id:
+            return {}
+
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Factura'),
+            'res_model': 'account.move',
+            'res_id': self.invoice_id.id,
+            'view_mode': 'form',
+            'target': 'current',
+        }
+
     def action_cancel(self):
         """Cancelar nota débito"""
         self.ensure_one()

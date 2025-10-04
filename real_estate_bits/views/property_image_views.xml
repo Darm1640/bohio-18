@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Vistas de ir.attachment para propiedades -->
+    <record id="view_ir_attachment_property_list" model="ir.ui.view">
+        <field name="name">ir.attachment.property.list</field>
+        <field name="model">ir.attachment</field>
+        <field name="arch" type="xml">
+            <list string="Documentos de Propiedad" create="1" edit="1">
+                <field name="document_sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="document_type"/>
+                <field name="datas" filename="name"/>
+                <field name="file_size" widget="filesize"/>
+                <field name="mimetype"/>
+                <field name="is_brochure"/>
+                <field name="expiration_date"/>
+                <field name="is_expired" invisible="1"/>
+                <field name="create_date"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_ir_attachment_property_form" model="ir.ui.view">
+        <field name="name">ir.attachment.property.form</field>
+        <field name="model">ir.attachment</field>
+        <field name="arch" type="xml">
+            <form string="Documento">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="document_type"/>
+                            <field name="datas" filename="name"/>
+                            <field name="mimetype"/>
+                        </group>
+                        <group>
+                            <field name="file_size" widget="filesize"/>
+                            <field name="is_property_document" invisible="1"/>
+                            <field name="is_brochure"/>
+                            <field name="document_sequence"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="expiration_date"/>
+                            <field name="is_expired"/>
+                        </group>
+                        <group>
+                            <field name="create_date"/>
+                            <field name="write_date"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="description" placeholder="Descripción del documento..."/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Vistas de property.image -->
+    <record id="view_property_image_kanban" model="ir.ui.view">
+        <field name="name">property.image.kanban</field>
+        <field name="model">property.image</field>
+        <field name="arch" type="xml">
+            <kanban sample="1">
+                <field name="id"/>
+                <field name="name"/>
+                <field name="image_1920"/>
+                <field name="image_type"/>
+                <field name="is_cover"/>
+                <field name="sequence"/>
+                <templates>
+                    <t t-name="card">
+                        <main>
+                            <field name="image_1920" widget="image" class="w-100" options="{'size': [0, 270]}"/>
+                            <div class="mt-2">
+                                <strong><field name="name"/></strong>
+                                <div>
+                                    <span t-if="record.is_cover.raw_value" class="badge bg-success">
+                                        <i class="fa fa-star"/> Portada
+                                    </span>
+                                    <field name="image_type" widget="badge"/>
+                                </div>
+                            </div>
+                        </main>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="view_property_image_list" model="ir.ui.view">
+        <field name="name">property.image.list</field>
+        <field name="model">property.image</field>
+        <field name="arch" type="xml">
+            <list string="Imágenes" editable="bottom">
+                <field name="sequence" widget="handle"/>
+                <field name="image_1920" widget="image" options="{'size': [50, 50]}"/>
+                <field name="name"/>
+                <field name="image_type"/>
+                <field name="is_cover"/>
+                <field name="is_public"/>
+                <field name="description"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_property_image_form" model="ir.ui.view">
+        <field name="name">property.image.form</field>
+        <field name="model">property.image</field>
+        <field name="arch" type="xml">
+            <form string="Imagen">
+                <sheet>
+                    <field name="image_1920" widget="image" class="oe_avatar"/>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="image_type"/>
+                            <field name="property_id" invisible="context.get('default_property_id')"/>
+                        </group>
+                        <group>
+                            <field name="is_cover"/>
+                            <field name="is_public"/>
+                            <field name="sequence"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="description" placeholder="Descripción de la imagen..."/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+</odoo>
