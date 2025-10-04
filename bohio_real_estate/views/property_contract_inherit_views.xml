@@ -74,7 +74,7 @@
                             </div>
                         </group>
                     </group>
-                    <field name="document_checklist_ids" mode=",form">
+                    <field name="document_checklist_ids" mode="list,form">
                         <list editable="bottom" decoration-success="is_verified" decoration-warning="is_received and not is_verified" decoration-muted="not is_required">
                             <field name="sequence" widget="handle"/>
                             <field name="name"/>

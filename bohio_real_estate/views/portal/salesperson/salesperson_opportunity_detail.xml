@@ -76,47 +76,42 @@
                             </div>
                         </div>
 
-                        <!-- Propiedades Asociadas -->
-                        <div class="card border-0 shadow-sm mb-4" t-if="opportunity.property_ids">
+                        <!-- Propiedad Asociada -->
+                        <div class="card border-0 shadow-sm mb-4" t-if="opportunity.property_id">
                             <div class="card-header bg-white border-bottom">
-                                <h5 class="mb-0">
-                                    Propiedades
-                                    <span class="badge bg-danger ms-2" t-esc="len(opportunity.property_ids)"/>
-                                </h5>
+                                <h5 class="mb-0">Propiedad</h5>
                             </div>
                             <div class="card-body">
-                                <t t-foreach="opportunity.property_ids" t-as="property">
-                                    <div class="row align-items-center mb-3 pb-3 border-bottom" t-if="not property_last else 'row align-items-center'">
-                                        <div class="col-md-4" t-if="property.image_1920">
-                                            <img t-attf-src="/web/image/product.template/{{property.id}}/image_1920"
-                                                 class="img-fluid rounded"
-                                                 alt="Propiedad"/>
-                                        </div>
-                                        <div t-attf-class="col-md-{{8 if property.image_1920 else 12}}">
-                                            <h5 t-esc="property.name"/>
-                                            <p class="text-muted mb-2">
-                                                <small>Código: <span t-esc="property.default_code or '-'"/></small>
-                                            </p>
-                                            <h4 class="text-danger mb-3">
-                                                <t t-esc="'{:,.0f}'.format(property.list_price)"/>
-                                            </h4>
-                                            <div class="mb-3">
-                                                <t t-if="property.num_bedrooms">
-                                                    <i class="fa fa-bed"></i> <span t-esc="property.num_bedrooms"/> hab.
-                                                </t>
-                                                <t t-if="property.num_bathrooms">
-                                                    | <i class="fa fa-bath"></i> <span t-esc="property.num_bathrooms"/> baños
-                                                </t>
-                                                <t t-if="property.property_area">
-                                                    | <i class="fa fa-arrows-alt"></i> <span t-esc="property.property_area"/> m²
-                                                </t>
-                                            </div>
-                                            <a t-attf-href="/property/{{property.id}}" class="btn btn-sm btn-outline-danger" target="_blank">
-                                                <i class="fa fa-external-link-alt"></i> Ver Propiedad
-                                            </a>
-                                        </div>
+                                <div class="row align-items-center">
+                                    <div class="col-md-4" t-if="opportunity.property_id.image_1920">
+                                        <img t-attf-src="/web/image/product.template/{{opportunity.property_id.id}}/image_1920"
+                                             class="img-fluid rounded"
+                                             alt="Propiedad"/>
                                     </div>
-                                </t>
+                                    <div t-attf-class="col-md-{{8 if opportunity.property_id.image_1920 else 12}}">
+                                        <h5 t-esc="opportunity.property_id.name"/>
+                                        <p class="text-muted mb-2">
+                                            <small>Código: <span t-esc="opportunity.property_id.default_code or '-'"/></small>
+                                        </p>
+                                        <h4 class="text-danger mb-3">
+                                            <t t-esc="'{:,.0f}'.format(opportunity.property_id.list_price)"/>
+                                        </h4>
+                                        <div class="mb-3">
+                                            <t t-if="opportunity.property_id.num_bedrooms">
+                                                <i class="fa fa-bed"></i> <span t-esc="opportunity.property_id.num_bedrooms"/> hab.
+                                            </t>
+                                            <t t-if="opportunity.property_id.num_bathrooms">
+                                                | <i class="fa fa-bath"></i> <span t-esc="opportunity.property_id.num_bathrooms"/> baños
+                                            </t>
+                                            <t t-if="opportunity.property_id.property_area">
+                                                | <i class="fa fa-arrows-alt"></i> <span t-esc="opportunity.property_id.property_area"/> m²
+                                            </t>
+                                        </div>
+                                        <a t-attf-href="/property/{{opportunity.property_id.id}}" class="btn btn-sm btn-outline-danger" target="_blank">
+                                            <i class="fa fa-external-link-alt"></i> Ver Propiedad
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

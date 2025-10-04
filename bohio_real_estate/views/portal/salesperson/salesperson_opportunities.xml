@@ -61,16 +61,11 @@
                                                             <span t-else="" class="badge bg-info px-3 py-2" t-esc="opp.stage_id.name if opp.stage_id else 'Sin etapa'"/>
                                                         </td>
                                                         <td>
-                                                            <t t-if="opp.property_ids">
+                                                            <span t-if="opp.property_id">
                                                                 <i class="fa fa-home text-muted"></i>
-                                                                <span t-esc="', '.join(opp.property_ids.mapped('name')[:2])"/>
-                                                                <t t-if="len(opp.property_ids) > 2">
-                                                                    <span class="badge bg-secondary ms-1">+<t t-esc="len(opp.property_ids) - 2"/></span>
-                                                                </t>
-                                                            </t>
-                                                            <t t-else="">
-                                                                <span class="text-muted">-</span>
-                                                            </t>
+                                                                <span t-esc="opp.property_id.name"/>
+                                                            </span>
+                                                            <span t-else="" class="text-muted">-</span>
                                                         </td>
                                                         <td class="text-end">
                                                             <strong class="text-danger" t-esc="'${:,.0f}'.format(opp.expected_revenue)"/>

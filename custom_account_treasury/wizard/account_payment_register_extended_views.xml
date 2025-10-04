@@ -54,7 +54,7 @@
             </field>
 
             <!-- Add tax adjustment fields -->
-            <!-- Add payment lines tree view -->
+            <!-- Add payment lines list view -->
             <xpath expr="//group" position="after">
                 <notebook invisible="not use_payment_lines">
                     <page string="Líneas de Pago" name="payment_lines">

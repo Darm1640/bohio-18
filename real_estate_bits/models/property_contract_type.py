@@ -73,7 +73,7 @@ class PropertyContractType(models.Model):
             'name': _('Documentos: %s') % self.name,
             'type': 'ir.actions.act_window',
             'res_model': 'property.contract.type.document',
-            'view_mode': ',form',
+            'view_mode': 'list,form',
             'domain': [('contract_type_id', '=', self.id)],
             'context': {'default_contract_type_id': self.id}
         }

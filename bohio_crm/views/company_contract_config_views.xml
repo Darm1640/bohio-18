@@ -75,7 +75,7 @@
 
         <!-- Vista de lista -->
         <record id="view_company_contract_config_tree" model="ir.ui.view">
-            <field name="name">company.contract.config.tree</field>
+            <field name="name">company.contract.config.list</field>
             <field name="model">company.contract.config</field>
             <field name="arch" type="xml">
                 <list string="Configuraciones de Contratos">
