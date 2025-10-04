@@ -2,14 +2,17 @@
 {
     'name': 'Theme Bohio Real Estate',
     'category': 'Theme/Website',
-    'version': '18.0.1.0.0',
-    'summary': 'Tema inmobiliario para Bohio - Portal de búsqueda y gestión de propiedades',
+    'version': '18.0.2.0.0',
+    'summary': 'Tema inmobiliario completo - Website público y portal',
     'description': """
         Tema profesional para inmobiliarias con:
-        - Búsqueda avanzada de propiedades por barrio
+        - Website público con búsqueda avanzada de propiedades
+        - Tienda de propiedades (shop)
+        - Detalles de propiedades
+        - Homepage moderna
         - Portal de clientes personalizado
         - Diseño moderno y responsivo
-        - Integración con módulo bohio_real_estate
+        - Headers y Footers personalizados
     """,
     'depends': [
         'website',
@@ -18,14 +21,19 @@
     ],
     'data': [
         'views/assets.xml',
+
+        # Portal Templates
         'views/portal_template.xml',
+
+        # Website Public Templates
+        'views/website_templates.xml',
+        'views/properties_shop_template.xml',
+        'views/property_detail_template.xml',
+        'views/homepage/homepage.xml',
         'views/property_search_template.xml',
-        'views/homepage_template.xml',
 
-        # Headers
+        # Headers & Footers
         'views/headers/header_template.xml',
-
-        # Footers
         'views/footers/footer_template.xml',
     ],
     'assets': {
@@ -34,7 +42,8 @@
             '/theme_bohio_real_estate/static/src/scss/theme_variables.scss',
         ],
         'web.assets_frontend': [
-            # CSS
+            # Theme CSS/SCSS
+            '/theme_bohio_real_estate/static/src/scss/bohio_theme.scss',
             '/theme_bohio_real_estate/static/src/scss/common.scss',
             '/theme_bohio_real_estate/static/src/scss/header.scss',
             '/theme_bohio_real_estate/static/src/scss/footer.scss',
@@ -42,7 +51,24 @@
             '/theme_bohio_real_estate/static/src/scss/property_search.scss',
             '/theme_bohio_real_estate/static/src/scss/portal.scss',
 
-            # JS
+            # Website JS - Utils
+            '/theme_bohio_real_estate/static/src/js/utils/api.js',
+            '/theme_bohio_real_estate/static/src/js/utils/dom.js',
+            '/theme_bohio_real_estate/static/src/js/utils/formatters.js',
+            '/theme_bohio_real_estate/static/src/js/utils/debounce.js',
+            '/theme_bohio_real_estate/static/src/js/utils/validation.js',
+            '/theme_bohio_real_estate/static/src/js/utils/url.js',
+
+            # Website JS - Components
+            '/theme_bohio_real_estate/static/src/js/search/search_bar.js',
+            '/theme_bohio_real_estate/static/src/js/properties/property_card.js',
+            '/theme_bohio_real_estate/static/src/js/properties/properties_list.js',
+            '/theme_bohio_real_estate/static/src/js/homepage/homepage.js',
+            '/theme_bohio_real_estate/static/src/js/contact/contact_form.js',
+
+            # Website JS - Main
+            '/theme_bohio_real_estate/static/src/js/bohio_main.js',
+            '/theme_bohio_real_estate/static/src/js/properties_shop.js',
             '/theme_bohio_real_estate/static/src/js/property_search.js',
             '/theme_bohio_real_estate/static/src/js/portal.js',
             '/theme_bohio_real_estate/static/src/js/common.js',

@@ -1,0 +1,398 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ================================ -->
+    <!-- VISTAS DE LISTA MEJORADAS -->
+    <!-- ================================ -->
+
+    <!-- Vista de Lista - Pagos Masivos -->
+    <record id="view_bohio_mass_payment_list" model="ir.ui.view">
+        <field name="name">bohio.mass.payment.list</field>
+        <field name="model">bohio.mass.payment</field>
+        <field name="arch" type="xml">
+            <list string="Pagos Masivos" decoration-info="state == 'draft'"
+                  decoration-primary="state == 'simulated'"
+                  decoration-warning="state == 'confirmed'"
+                  decoration-success="state == 'processed'"
+                  decoration-muted="state == 'cancelled'">
+
+                <!-- Campos visibles -->
+                <field name="name"/>
+                <field name="simulation_month"/>
+                <field name="date"/>
+                <field name="total_canon" sum="Total Canon"/>
+                <field name="total_commission" sum="Total Comisión"/>
+                <field name="total_to_pay" sum="Total a Pagar"/>
+                <field name="state" widget="badge"
+                       decoration-info="state == 'draft'"
+                       decoration-primary="state == 'simulated'"
+                       decoration-warning="state == 'confirmed'"
+                       decoration-success="state == 'processed'"
+                       decoration-danger="state == 'cancelled'"/>
+
+                <!-- Campos invisibles para búsqueda -->
+                <field name="region_ids" invisible="1"/>
+                <field name="project_ids" invisible="1"/>
+                <field name="company_id" invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Vista Kanban - Pagos Masivos -->
+    <record id="view_bohio_mass_payment_kanban" model="ir.ui.view">
+        <field name="name">bohio.mass.payment.kanban</field>
+        <field name="model">bohio.mass.payment</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_mobile" sample="1">
+                <field name="name"/>
+                <field name="simulation_month"/>
+                <field name="state"/>
+                <field name="total_to_pay"/>
+                <field name="total_canon"/>
+                <field name="currency_id"/>
+
+                <templates>
+                    <t t-name="card">
+                        <div class="oe_kanban_global_click">
+                            <div class="row g-0">
+                                <div class="col-2">
+                                    <i class="fa fa-3x"
+                                       t-attf-class="fa-calculator {{state == 'draft' ? 'text-info' : state == 'simulated' ? 'text-primary' : state == 'confirmed' ? 'text-warning' : state == 'processed' ? 'text-success' : 'text-muted'}}"/>
+                                </div>
+                                <div class="col-10">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <strong><field name="name"/></strong>
+                                            <span class="badge float-end"
+                                                  t-attf-class="badge-{{state == 'draft' ? 'info' : state == 'simulated' ? 'primary' : state == 'confirmed' ? 'warning' : state == 'processed' ? 'success' : 'secondary'}}">
+                                                <field name="state"/>
+                                            </span>
+                                        </div>
+                                        <div class="col-12 text-muted">
+                                            <i class="fa fa-calendar"/> <field name="simulation_month"/>
+                                        </div>
+                                        <div class="col-12 mt-2">
+                                            <span class="text-success fw-bold">
+                                                <field name="total_to_pay" widget="monetary"/>
+                                            </span>
+                                        </div>
+                                        <div class="col-6 text-muted small">
+                                            Canon: <field name="total_canon" widget="monetary"/>
+                                        </div>
+                                        <div class="col-6 text-muted small">
+                                            Comisión: <field name="total_commission" widget="monetary"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- ================================ -->
+    <!-- FILTROS DE BÚSQUEDA -->
+    <!-- ================================ -->
+
+    <record id="view_bohio_mass_payment_search" model="ir.ui.view">
+        <field name="name">bohio.mass.payment.search</field>
+        <field name="model">bohio.mass.payment</field>
+        <field name="arch" type="xml">
+            <search string="Buscar Pagos Masivos">
+                <!-- Campos de búsqueda -->
+                <field name="name" string="Número"/>
+                <field name="simulation_month" string="Mes"/>
+                <field name="region_ids" string="Región"/>
+                <field name="project_ids" string="Proyecto"/>
+
+                <!-- Filtros predefinidos -->
+                <filter name="draft" string="Borradores"
+                        domain="[('state', '=', 'draft')]"/>
+                <filter name="simulated" string="Simulados"
+                        domain="[('state', '=', 'simulated')]"/>
+                <filter name="confirmed" string="Confirmados"
+                        domain="[('state', '=', 'confirmed')]"/>
+                <filter name="processed" string="Procesados"
+                        domain="[('state', '=', 'processed')]"/>
+
+                <separator/>
+
+                <filter name="current_month" string="Mes Actual"
+                        domain="[('simulation_month', '&gt;=', (context_today().replace(day=1)).strftime('%Y-%m-%d')),
+                                 ('simulation_month', '&lt;=', (context_today() + relativedelta(months=1, day=1, days=-1)).strftime('%Y-%m-%d'))]"/>
+                <filter name="next_month" string="Próximo Mes"
+                        domain="[('simulation_month', '&gt;=', (context_today() + relativedelta(months=1, day=1)).strftime('%Y-%m-%d')),
+                                 ('simulation_month', '&lt;=', (context_today() + relativedelta(months=2, day=1, days=-1)).strftime('%Y-%m-%d'))]"/>
+
+                <separator/>
+
+                <filter name="has_errors" string="Con Problemas"
+                        domain="[('simulation_line_ids.has_issues', '=', True)]"/>
+                <filter name="partial_payments" string="Pagos Parciales"
+                        domain="[('simulation_line_ids.paid_percentage', '&lt;', 100),
+                                 ('simulation_line_ids.paid_percentage', '&gt;', 0)]"/>
+
+                <!-- Agrupaciones -->
+                <group expand="0" string="Agrupar Por">
+                    <filter name="group_by_month" string="Mes"
+                            context="{'group_by': 'simulation_month'}"/>
+                    <filter name="group_by_state" string="Estado"
+                            context="{'group_by': 'state'}"/>
+                    <filter name="group_by_date" string="Fecha de Proceso"
+                            context="{'group_by': 'date:month'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- ================================ -->
+    <!-- VISTAS DE LÍNEAS DE PAGO -->
+    <!-- ================================ -->
+
+    <!-- Vista de Lista - Líneas de Pago -->
+    <record id="view_bohio_mass_payment_line_list" model="ir.ui.view">
+        <field name="name">bohio.mass.payment.line.list</field>
+        <field name="model">bohio.mass.payment.line</field>
+        <field name="arch" type="xml">
+            <list string="Líneas de Pago" editable="bottom"
+                  decoration-danger="skip_payment == True"
+                  decoration-success="processed == True"
+                  decoration-warning="paid_percentage &lt; 100 and paid_percentage &gt; 0">
+
+                <field name="selected" widget="boolean_toggle"/>
+                <field name="partner_id"/>
+                <field name="contract_id"/>
+                <field name="partner_percentage" string="%"/>
+                <field name="canon_amount" sum="Total Canon"/>
+                <field name="paid_canon" sum="Canon Pagado"/>
+                <field name="paid_percentage" widget="progressbar"/>
+                <field name="commission_amount" sum="Comisión"/>
+                <field name="tax_amount" sum="Impuestos"/>
+                <field name="novelty_amount" sum="Novedades" optional="hide"/>
+                <field name="loan_amount" sum="Préstamos" optional="hide"/>
+                <field name="interest_amount" sum="Intereses" optional="hide"/>
+                <field name="net_to_pay" sum="Neto a Pagar" decoration-bf="1"/>
+                <field name="skip_payment" widget="boolean_toggle"/>
+                <field name="processed" readonly="1"/>
+                <field name="notes" optional="hide"/>
+
+                <field name="currency_id" column_invisible="1"/>
+                <field name="mass_payment_id" column_invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Vista Form - Línea de Pago -->
+    <record id="view_bohio_mass_payment_line_form" model="ir.ui.view">
+        <field name="name">bohio.mass.payment.line.form</field>
+        <field name="model">bohio.mass.payment.line</field>
+        <field name="arch" type="xml">
+            <form string="Detalle de Línea de Pago">
+                <header>
+                    <button name="action_update_paid_canon" type="object" string="Actualizar Canon Pagado"
+                            class="btn-primary"/>
+                    <button name="action_mark_tax_reconciled" type="object" string="Conciliar Impuestos"
+                            class="btn-secondary"/>
+                    <field name="processed" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="%(action_bohio_debit_note)d" type="action"
+                                class="oe_stat_button" icon="fa-file-text-o">
+                            <div class="o_stat_info">
+                                <span class="o_stat_text">Notas</span>
+                                <span class="o_stat_text">Débito</span>
+                            </div>
+                        </button>
+                    </div>
+
+                    <group>
+                        <group string="Información del Propietario">
+                            <field name="partner_id"/>
+                            <field name="contract_id"/>
+                            <field name="partner_percentage"/>
+                            <field name="region_id"/>
+                            <field name="project_id"/>
+                        </group>
+                        <group string="Estado de Pago">
+                            <field name="selected"/>
+                            <field name="skip_payment"/>
+                            <field name="processed" readonly="1"/>
+                            <field name="paid_percentage" widget="percentpie"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Montos" name="amounts">
+                            <group>
+                                <group string="Ingresos">
+                                    <field name="canon_amount" widget="monetary"/>
+                                    <field name="paid_canon" widget="monetary"/>
+                                    <field name="interest_amount" widget="monetary"/>
+                                </group>
+                                <group string="Deducciones">
+                                    <field name="commission_amount" widget="monetary"/>
+                                    <field name="tax_amount" widget="monetary"/>
+                                    <field name="novelty_amount" widget="monetary"/>
+                                    <field name="loan_amount" widget="monetary"/>
+                                </group>
+                            </group>
+                            <group>
+                                <field name="net_to_pay" widget="monetary" class="oe_subtotal_footer_separator"/>
+                            </group>
+                        </page>
+                        <page string="Observaciones" name="notes">
+                            <field name="notes" placeholder="Agregar observaciones sobre esta línea de pago..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- ================================ -->
+    <!-- VISTAS DE NOTAS DÉBITO -->
+    <!-- ================================ -->
+
+    <!-- Vista de Lista - Notas Débito -->
+    <record id="view_bohio_debit_note_list" model="ir.ui.view">
+        <field name="name">bohio.debit.note.list</field>
+        <field name="model">bohio.debit.note</field>
+        <field name="arch" type="xml">
+            <list string="Notas Débito"
+                  decoration-info="state == 'draft'"
+                  decoration-primary="state == 'confirmed'"
+                  decoration-success="state == 'invoiced'"
+                  decoration-muted="state == 'cancelled'">
+
+                <field name="name"/>
+                <field name="date"/>
+                <field name="partner_id"/>
+                <field name="contract_id"/>
+                <field name="concept"/>
+                <field name="amount" sum="Monto Base"/>
+                <field name="tax_amount" sum="Impuestos" optional="hide"/>
+                <field name="amount_total" sum="Total" decoration-bf="1"/>
+                <field name="state" widget="badge"
+                       decoration-info="state == 'draft'"
+                       decoration-primary="state == 'confirmed'"
+                       decoration-success="state == 'invoiced'"
+                       decoration-danger="state == 'cancelled'"/>
+                <field name="invoice_id" optional="hide"/>
+
+                <field name="currency_id" column_invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Vista Form - Nota Débito -->
+    <record id="view_bohio_debit_note_form" model="ir.ui.view">
+        <field name="name">bohio.debit.note.form</field>
+        <field name="model">bohio.debit.note</field>
+        <field name="arch" type="xml">
+            <form string="Nota Débito">
+                <header>
+                    <button name="action_confirm" type="object" string="Confirmar"
+                            class="oe_highlight" invisible="state != 'draft'"/>
+                    <button name="action_create_invoice" type="object" string="Generar Factura"
+                            class="oe_highlight" invisible="state != 'confirmed' or invoice_id"/>
+                    <button name="action_cancel" type="object" string="Cancelar"
+                            invisible="state in ['invoiced', 'cancelled']"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,confirmed,invoiced"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_invoice" type="object"
+                                class="oe_stat_button" icon="fa-file-text-o"
+                                invisible="not invoice_id">
+                            <div class="o_stat_info">
+                                <span class="o_stat_value"><field name="invoice_id"/></span>
+                                <span class="o_stat_text">Factura</span>
+                            </div>
+                        </button>
+                    </div>
+
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+
+                    <group>
+                        <group string="Información General">
+                            <field name="date"/>
+                            <field name="partner_id"/>
+                            <field name="contract_id"/>
+                            <field name="mass_payment_id"/>
+                        </group>
+                        <group string="Concepto">
+                            <field name="concept"/>
+                            <field name="description" placeholder="Descripción detallada..."/>
+                        </group>
+                    </group>
+
+                    <group>
+                        <group string="Cálculo">
+                            <field name="base_amount" widget="monetary"/>
+                            <field name="rate" invisible="rate == 0"/>
+                            <field name="amount" widget="monetary"/>
+                        </group>
+                        <group string="Impuestos">
+                            <field name="tax_ids" widget="many2many_tags"/>
+                            <field name="tax_amount" widget="monetary"/>
+                            <field name="amount_total" widget="monetary" class="oe_subtotal_footer_separator"/>
+                        </group>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- ================================ -->
+    <!-- FILTROS DE BÚSQUEDA - NOTAS DÉBITO -->
+    <!-- ================================ -->
+
+    <record id="view_bohio_debit_note_search" model="ir.ui.view">
+        <field name="name">bohio.debit.note.search</field>
+        <field name="model">bohio.debit.note</field>
+        <field name="arch" type="xml">
+            <search string="Buscar Notas Débito">
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="contract_id"/>
+                <field name="concept"/>
+
+                <filter name="draft" string="Borradores"
+                        domain="[('state', '=', 'draft')]"/>
+                <filter name="confirmed" string="Confirmadas"
+                        domain="[('state', '=', 'confirmed')]"/>
+                <filter name="to_invoice" string="Por Facturar"
+                        domain="[('state', '=', 'confirmed'), ('invoice_id', '=', False)]"/>
+                <filter name="invoiced" string="Facturadas"
+                        domain="[('state', '=', 'invoiced')]"/>
+
+                <separator/>
+
+                <filter name="current_month" string="Mes Actual"
+                        domain="[('date', '&gt;=', (context_today().replace(day=1)).strftime('%Y-%m-%d')),
+                                 ('date', '&lt;=', (context_today() + relativedelta(months=1, day=1, days=-1)).strftime('%Y-%m-%d'))]"/>
+
+                <group expand="0" string="Agrupar Por">
+                    <filter name="group_by_partner" string="Cliente"
+                            context="{'group_by': 'partner_id'}"/>
+                    <filter name="group_by_contract" string="Contrato"
+                            context="{'group_by': 'contract_id'}"/>
+                    <filter name="group_by_state" string="Estado"
+                            context="{'group_by': 'state'}"/>
+                    <filter name="group_by_month" string="Mes"
+                            context="{'group_by': 'date:month'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+</odoo>

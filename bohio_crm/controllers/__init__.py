@@ -1,1 +1,1 @@
-from . import timeline_view
+# Controllers eliminados - timeline_view ahora es client action

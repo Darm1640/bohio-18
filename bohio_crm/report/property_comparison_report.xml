@@ -65,17 +65,23 @@
                                     <td><strong>Tipo</strong></td>
                                     <t t-foreach="docs" t-as="property">
                                         <td class="text-center">
-                                            <t t-esc="dict(property._fields['property_type'].selection).get(property.property_type, 'N/A')"/>
+                                            <t t-if="property.property_type">
+                                                <t t-esc="dict(property._fields['property_type'].selection).get(property.property_type, 'N/A')"/>
+                                            </t>
+                                            <t t-else="">N/A</t>
                                         </td>
                                     </t>
                                 </tr>
 
-                                <!-- Tipo de transacción -->
+                                <!-- Tipo de servicio -->
                                 <tr>
-                                    <td><strong>Transacción</strong></td>
+                                    <td><strong>Servicio</strong></td>
                                     <t t-foreach="docs" t-as="property">
                                         <td class="text-center">
-                                            <t t-esc="dict(property._fields['transaction_type'].selection).get(property.transaction_type, 'N/A')"/>
+                                            <t t-if="property.type_service">
+                                                <t t-esc="dict(property._fields['type_service'].selection).get(property.type_service, 'N/A')"/>
+                                            </t>
+                                            <t t-else="">N/A</t>
                                         </td>
                                     </t>
                                 </tr>
@@ -118,22 +124,12 @@
                                     </t>
                                 </tr>
 
-                                <!-- Área construida -->
+                                <!-- Área de la propiedad -->
                                 <tr>
-                                    <td><strong>Área Construida</strong></td>
+                                    <td><strong>Área Total</strong></td>
                                     <t t-foreach="docs" t-as="property">
                                         <td class="text-center">
-                                            <t t-esc="property.built_area"/> m²
-                                        </td>
-                                    </t>
-                                </tr>
-
-                                <!-- Área del lote -->
-                                <tr>
-                                    <td><strong>Área del Lote</strong></td>
-                                    <t t-foreach="docs" t-as="property">
-                                        <td class="text-center">
-                                            <t t-esc="property.land_area"/> m²
+                                            <t t-esc="property.property_area"/> m²
                                         </td>
                                     </t>
                                 </tr>
@@ -163,7 +159,10 @@
                                     <td><strong>Estrato</strong></td>
                                     <t t-foreach="docs" t-as="property">
                                         <td class="text-center">
-                                            <t t-esc="property.stratum or 'N/A'"/>
+                                            <t t-if="property.stratum">
+                                                <t t-esc="dict(property._fields['stratum'].selection).get(property.stratum, 'N/A')"/>
+                                            </t>
+                                            <t t-else="">N/A</t>
                                         </td>
                                     </t>
                                 </tr>
@@ -173,17 +172,17 @@
                                     <td><strong>Parqueaderos</strong></td>
                                     <t t-foreach="docs" t-as="property">
                                         <td class="text-center">
-                                            <t t-esc="property.parking_spaces or 0"/>
+                                            <t t-esc="property.n_garage or 0"/>
                                         </td>
                                     </t>
                                 </tr>
 
-                                <!-- Año de construcción -->
+                                <!-- Antigüedad -->
                                 <tr>
-                                    <td><strong>Año Construcción</strong></td>
+                                    <td><strong>Antigüedad (años)</strong></td>
                                     <t t-foreach="docs" t-as="property">
                                         <td class="text-center">
-                                            <t t-esc="property.year_built or 'N/A'"/>
+                                            <t t-esc="property.property_age or 'N/A'"/>
                                         </td>
                                     </t>
                                 </tr>
@@ -193,7 +192,10 @@
                                     <td><strong>Estado</strong></td>
                                     <t t-foreach="docs" t-as="property">
                                         <td class="text-center">
-                                            <t t-esc="dict(property._fields['property_status'].selection).get(property.property_status, 'N/A')"/>
+                                            <t t-if="property.property_status">
+                                                <t t-esc="dict(property._fields['property_status'].selection).get(property.property_status, 'N/A')"/>
+                                            </t>
+                                            <t t-else="">N/A</t>
                                         </td>
                                     </t>
                                 </tr>
@@ -204,13 +206,15 @@
                                     <t t-foreach="docs" t-as="property">
                                         <td>
                                             <ul style="list-style-type: none; padding-left: 0;">
-                                                <li t-if="property.has_pool">✓ Piscina</li>
-                                                <li t-if="property.has_gym">✓ Gimnasio</li>
-                                                <li t-if="property.has_elevator">✓ Ascensor</li>
+                                                <li t-if="property.pools">✓ Piscina</li>
+                                                <li t-if="property.gym">✓ Gimnasio</li>
+                                                <li t-if="property.elevator">✓ Ascensor</li>
                                                 <li t-if="property.has_security">✓ Seguridad 24h</li>
-                                                <li t-if="property.has_garden">✓ Jardín</li>
-                                                <li t-if="property.has_terrace">✓ Terraza</li>
-                                                <li t-if="property.has_balcony">✓ Balcón</li>
+                                                <li t-if="property.garden">✓ Jardín</li>
+                                                <li t-if="property.terrace">✓ Terraza</li>
+                                                <li t-if="property.balcony">✓ Balcón</li>
+                                                <li t-if="property.air_conditioning">✓ Aire Acondicionado</li>
+                                                <li t-if="property.furnished">✓ Amoblado</li>
                                             </ul>
                                         </td>
                                     </t>
@@ -219,9 +223,6 @@
                         </table>
                     </div>
                 </div>
-
-                <!-- Notas adicionales -->
-                <!-- Notes section removed as it's not part of the property model -->
 
                 <!-- Footer con información de contacto -->
                 <div class="row mt-5" style="border-top: 2px solid #8B4513; padding-top: 20px;">
@@ -296,8 +297,8 @@
 
                 <!-- Comparativo visual -->
                 <div class="row mt-4">
-                    <t t-foreach="docs" t-as="prop">
-                        <div t-att-class="'col-%s' % (12 // len(properties))">
+                    <t t-foreach="properties" t-as="prop">
+                        <div t-att-class="'col-%s' % (12 // min(len(properties), 4) if len(properties) > 0 else 12)">
                             <div style="border: 2px solid #ff1d25; border-radius: 12px; overflow: hidden; margin-bottom: 20px;">
                                 <img t-if="prop.image_1920"
                                      t-att-src="image_data_uri(prop.image_1920)"
@@ -313,10 +314,11 @@
                                         </div>
                                     </div>
                                     <div style="margin-top: 12px;">
-                                        <p style="margin: 4px 0;"><i class="fa fa-map-marker"/> <t t-esc="prop.neighborhood"/>, <t t-esc="prop.municipality"/></p>
-                                        <p style="margin: 4px 0;"><i class="fa fa-arrows-alt"/> <t t-esc="prop.property_area"/> m²</p>
+                                        <p style="margin: 4px 0;"><i class="fa fa-map-marker"/> <t t-esc="prop.neighborhood or 'N/A'"/>, <t t-esc="prop.municipality or 'N/A'"/></p>
+                                        <p style="margin: 4px 0;"><i class="fa fa-arrows-alt"/> <t t-esc="prop.property_area or 0"/> m²</p>
                                         <p style="margin: 4px 0;"><i class="fa fa-bed"/> <t t-esc="prop.num_bedrooms or 0"/> habitaciones</p>
                                         <p style="margin: 4px 0;"><i class="fa fa-bath"/> <t t-esc="prop.num_bathrooms or 0"/> baños</p>
+                                        <p style="margin: 4px 0;"><i class="fa fa-car"/> <t t-esc="prop.n_garage or 0"/> parqueaderos</p>
                                     </div>
                                 </div>
                             </div>

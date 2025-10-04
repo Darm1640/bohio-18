@@ -217,7 +217,7 @@ class CRMSalespersonDashboard(models.AbstractModel):
     # =================== CONTRATOS Y PROPIEDADES ===================
 
     def _get_contracts_by_state(self, is_manager=False):
-        """Obtiene cantidad de contratos por estado de firma"""
+        """Obtiene cantidad de contratos por estado"""
         domain = []
         if not is_manager:
             domain.append(('user_id', '=', self.env.user.id))
@@ -225,7 +225,9 @@ class CRMSalespersonDashboard(models.AbstractModel):
         contracts = self.env['property.contract'].search(domain)
 
         states_data = {
-            'draft': {'label': 'Borrador', 'count': 0, 'value': 0},
+            'quotation': {'label': 'Cotización', 'count': 0, 'value': 0},
+            'draft': {'label': 'Pre-Contrato', 'count': 0, 'value': 0},
+            'pending_signature': {'label': 'Pendiente de Firma', 'count': 0, 'value': 0},
             'confirmed': {'label': 'Confirmado', 'count': 0, 'value': 0},
             'renew': {'label': 'Renovado', 'count': 0, 'value': 0},
             'cancel': {'label': 'Cancelado', 'count': 0, 'value': 0},
@@ -237,7 +239,7 @@ class CRMSalespersonDashboard(models.AbstractModel):
                 states_data[state]['count'] += 1
                 # Sumar valor según tipo de contrato
                 if contract.contract_type == 'is_rental':
-                    states_data[state]['value'] += contract.rent or 0
+                    states_data[state]['value'] += contract.rental_fee or 0
                 else:
                     states_data[state]['value'] += contract.total_sales_price or 0
 
@@ -305,13 +307,6 @@ class CRMSalespersonDashboard(models.AbstractModel):
         Proyección financiera usando numpy y pandas
         Proyecta ingresos esperados y comisiones para la inmobiliaria
         """
-        if not np or not pd:
-            return {
-                'error': 'NumPy y Pandas no están disponibles',
-                'projected_income': [],
-                'projected_commissions': [],
-            }
-
         # Obtener contratos activos
         domain = [
             ('state', '=', 'confirmed'),
@@ -402,9 +397,6 @@ class CRMSalespersonDashboard(models.AbstractModel):
         Proyección de ingresos facturados vs recaudados
         Basado en propiedades actuales y sus contratos
         """
-        if not np or not pd:
-            return {'error': 'NumPy y Pandas no disponibles'}
-
         domain = [
             ('state', '=', 'confirmed'),
             ('contract_type', '=', 'is_rental')
@@ -495,55 +487,73 @@ class CRMSalespersonDashboard(models.AbstractModel):
 
     @api.model
     def create_expense(self, vals):
-        """Crea un gasto rápido desde el dashboard"""
+        """Crea un gasto rápido desde el dashboard usando hr.expense"""
         # Validar datos mínimos
         if not vals.get('amount') or not vals.get('description'):
             raise UserError(_("Monto y descripción son requeridos"))
 
-        # Crear factura de proveedor (gasto)
-        journal = self.env['account.journal'].search([('type', '=', 'purchase')], limit=1)
-        if not journal:
-            raise UserError(_("No se encontró diario de compras configurado"))
+        # Verificar si hr.expense está instalado
+        if 'hr.expense' not in self.env:
+            raise UserError(_("El módulo de Gastos (hr_expense) no está instalado"))
 
-        # Buscar cuenta de gastos
-        expense_account = self.env['account.account'].search([
-            ('account_type', '=', 'expense'),
-            ('company_id', '=', self.env.company.id)
+        # Obtener empleado del usuario actual
+        employee = self.env['hr.employee'].search([('user_id', '=', self.env.user.id)], limit=1)
+        if not employee:
+            raise UserError(_("No hay un empleado asociado al usuario actual"))
+
+        # Buscar producto de gastos genérico o crear uno
+        expense_product = self.env['product.product'].search([
+            ('can_be_expensed', '=', True),
+            ('name', '=', 'Gasto General')
         ], limit=1)
 
-        if not expense_account:
-            raise UserError(_("No se encontró cuenta de gastos configurada"))
+        if not expense_product:
+            # Crear producto de gasto genérico
+            expense_product = self.env['product.product'].create({
+                'name': 'Gasto General',
+                'can_be_expensed': True,
+                'type': 'service',
+                'list_price': 0.0,
+            })
 
-        # Crear proveedor genérico si no se especifica
-        partner_id = vals.get('partner_id')
-        if not partner_id:
-            partner = self.env['res.partner'].search([('name', '=', 'Gastos Varios')], limit=1)
-            if not partner:
-                partner = self.env['res.partner'].create({'name': 'Gastos Varios', 'supplier_rank': 1})
-            partner_id = partner.id
-
-        # Crear factura
-        invoice_vals = {
-            'move_type': 'in_invoice',
-            'partner_id': partner_id,
-            'invoice_date': fields.Date.today(),
-            'journal_id': journal.id,
-            'invoice_user_id': self.env.user.id,
-            'ref': vals.get('description'),
-            'invoice_line_ids': [(0, 0, {
-                'name': vals.get('description'),
-                'quantity': 1,
-                'price_unit': vals.get('amount'),
-                'account_id': expense_account.id,
-            })],
+        # Crear el gasto
+        expense_vals = {
+            'name': vals.get('description'),
+            'employee_id': employee.id,
+            'product_id': expense_product.id,
+            'unit_amount': vals.get('amount'),
+            'quantity': 1,
+            'date': fields.Date.today(),
+            'description': vals.get('notes', ''),
         }
 
-        invoice = self.env['account.move'].create(invoice_vals)
+        # Agregar categoría si viene en vals
+        if vals.get('category'):
+            expense_vals['payment_mode'] = vals.get('category')
+
+        expense = self.env['hr.expense'].create(expense_vals)
+
+        # Si se solicita aprobar automáticamente
+        if vals.get('auto_submit', False):
+            # Crear reporte de gastos
+            sheet = self.env['hr.expense.sheet'].create({
+                'name': f"Gastos - {fields.Date.today()}",
+                'employee_id': employee.id,
+                'expense_line_ids': [(4, expense.id)],
+            })
+
+            return {
+                'success': True,
+                'expense_id': expense.id,
+                'expense_name': expense.name,
+                'sheet_id': sheet.id,
+                'sheet_name': sheet.name,
+            }
 
         return {
             'success': True,
-            'invoice_id': invoice.id,
-            'invoice_number': invoice.name,
+            'expense_id': expense.id,
+            'expense_name': expense.name,
         }
 
     # =================== PROPIEDADES ===================

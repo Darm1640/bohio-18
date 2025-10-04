@@ -1,16 +1,20 @@
 {
-    'name': 'BOHIO Real Estate Portal & Website',
-    'version': '18.0.1.0.2',
-    'category': 'Website',
-    'summary': 'BOHIO portal for owners/tenants and public website',
+    'name': 'BOHIO Real Estate - Portal & Loans',
+    'version': '18.0.3.0.0',
+    'category': 'Portal',
+    'summary': 'Portal clientes inmobiliarios y gestión de préstamos',
     'description': """
-        BOHIO Real Estate Portal & Website
+        BOHIO Real Estate - Portal & Loans
         ===================================
         Portal personalizado para:
-        - Propietarios: dashboard, propiedades, pagos, facturas, oportunidades
+        - Propietarios: dashboard, propiedades, pagos, facturas, préstamos
         - Arrendatarios: contratos, pagos, facturas
-        - Website público con búsqueda avanzada
-        - Sistema PQRS con Helpdesk
+        - Gestión de préstamos con plantillas
+
+        IMPORTANTE:
+        - La lógica de CRM está en bohio_crm
+        - El website público está en theme_bohio_real_estate
+        - Este módulo solo maneja PORTAL y PRÉSTAMOS
     """,
     'author': 'BOHIO Inmobiliaria',
     'website': 'https://www.bohio.com.co',
@@ -25,48 +29,47 @@
     'data': [
         'security/ir.model.access.csv',
         'security/ir_rule.xml',
+
+        # Partner Views
         'views/res_partner_views.xml',
+
+        # Loan Management
         'views/account_loan_template_views.xml',
         'views/account_loan_views.xml',
         'views/account_loan_menu.xml',
-        'views/website_templates.xml',
+
+        # Portal Access
         'views/portal_access_actions.xml',
+
+        # Portal Templates
         'views/portal/common/portal_my_home.xml',
         'views/portal/common/portal_layout.xml',
         'views/portal/common/no_role.xml',
+        'views/portal/common/tickets.xml',
+        'views/portal/common/admin_portal_view.xml',
+
+        # Owner Portal
         'views/portal/owner/owner_dashboard.xml',
         'views/portal/owner/owner_properties.xml',
         'views/portal/owner/owner_payments.xml',
         'views/portal/owner/owner_invoices.xml',
         'views/portal/owner/owner_opportunities.xml',
         'views/portal/owner/owner_documents.xml',
+
+        # Tenant Portal
         'views/portal/tenant/tenant_dashboard.xml',
         'views/portal/tenant/tenant_contracts.xml',
         'views/portal/tenant/tenant_payments.xml',
         'views/portal/tenant/tenant_invoices.xml',
         'views/portal/tenant/tenant_documents.xml',
-        'views/portal/common/tickets.xml',
-        'views/portal/common/admin_portal_view.xml',
-        # Website Public Views
-        'views/properties_shop_template.xml',
-        'views/property_detail_template.xml',
-        'views/homepage/homepage.xml',
+
+        # Portal Templates
         'views/portal_templates.xml',
     ],
     'assets': {
         'web.assets_frontend': [
+            # Solo CSS de portal (el resto está en theme)
             'bohio_real_estate/static/src/css/mybohio_portal.css',
-            'bohio_real_estate/static/src/js/utils/api.js',
-            'bohio_real_estate/static/src/js/utils/dom.js',
-            'bohio_real_estate/static/src/js/utils/formatters.js',
-            'bohio_real_estate/static/src/js/utils/debounce.js',
-            'bohio_real_estate/static/src/js/utils/validation.js',
-            'bohio_real_estate/static/src/js/utils/url.js',
-            'bohio_real_estate/static/src/js/search/search_bar.js',
-            'bohio_real_estate/static/src/js/properties/property_card.js',
-            'bohio_real_estate/static/src/js/properties/properties_list.js',
-            'bohio_real_estate/static/src/js/homepage/homepage.js',
-            'bohio_real_estate/static/src/js/contact/contact_form.js',
         ],
         'web.assets_backend': [
         ],

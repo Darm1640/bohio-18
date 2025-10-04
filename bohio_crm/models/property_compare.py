@@ -20,10 +20,10 @@ class PropertyCompare(models.TransientModel):
             'properties': [],
             'features': {
                 'basic': ['default_code', 'type_service', 'property_type', 'state'],
-                'location': ['address', 'city', 'neighborhood', 'stratum'],
-                'characteristics': ['property_area', 'num_bedrooms', 'num_bathrooms', 'n_garage', 'property_age'],
-                'amenities': ['pool', 'gym', 'garden', 'terrace', 'air_conditioning'],
-                'prices': ['list_price', 'administration_fee']
+                'location': ['address', 'city', 'neighborhood', 'stratum', 'municipality'],
+                'characteristics': ['property_area', 'num_bedrooms', 'num_bathrooms', 'n_garage', 'property_age', 'floor_number'],
+                'amenities': ['pools', 'gym', 'garden', 'terrace', 'balcony', 'air_conditioning', 'elevator', 'has_security', 'furnished'],
+                'prices': ['list_price', 'sale_value_from', 'rent_value_from']
             }
         }
 

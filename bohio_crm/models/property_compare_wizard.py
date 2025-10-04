@@ -103,12 +103,13 @@ class PropertyCompareWizard(models.TransientModel):
 
                 # Información básica
                 'property_type': property.property_type if hasattr(property, 'property_type') else False,
-                'transaction_type': property.transaction_type if hasattr(property, 'transaction_type') else False,
+                'type_service': property.type_service if hasattr(property, 'type_service') else False,
                 'property_status': property.property_status if hasattr(property, 'property_status') else False,
 
                 # Precios
                 'list_price': property.list_price,
-                'administration_fee': property.administration_fee if hasattr(property, 'administration_fee') else 0,
+                'sale_value_from': property.sale_value_from if hasattr(property, 'sale_value_from') else 0,
+                'rent_value_from': property.rent_value_from if hasattr(property, 'rent_value_from') else 0,
 
                 # Ubicación
                 'city_id': property.city_id if hasattr(property, 'city_id') else False,
@@ -116,23 +117,26 @@ class PropertyCompareWizard(models.TransientModel):
                 'neighborhood': property.neighborhood if hasattr(property, 'neighborhood') else False,
                 'address': property.address if hasattr(property, 'address') else False,
                 'stratum': property.stratum if hasattr(property, 'stratum') else False,
+                'municipality': property.municipality if hasattr(property, 'municipality') else False,
 
                 # Características físicas
-                'built_area': property.built_area if hasattr(property, 'built_area') else 0,
-                'land_area': property.land_area if hasattr(property, 'land_area') else 0,
+                'property_area': property.property_area if hasattr(property, 'property_area') else 0,
                 'num_bedrooms': property.num_bedrooms if hasattr(property, 'num_bedrooms') else 0,
                 'num_bathrooms': property.num_bathrooms if hasattr(property, 'num_bathrooms') else 0,
-                'parking_spaces': property.parking_spaces if hasattr(property, 'parking_spaces') else 0,
-                'year_built': property.year_built if hasattr(property, 'year_built') else False,
+                'n_garage': property.n_garage if hasattr(property, 'n_garage') else 0,
+                'property_age': property.property_age if hasattr(property, 'property_age') else 0,
+                'floor_number': property.floor_number if hasattr(property, 'floor_number') else 0,
 
                 # Amenidades
-                'has_pool': property.has_pool if hasattr(property, 'has_pool') else False,
-                'has_gym': property.has_gym if hasattr(property, 'has_gym') else False,
-                'has_elevator': property.has_elevator if hasattr(property, 'has_elevator') else False,
+                'pools': property.pools if hasattr(property, 'pools') else False,
+                'gym': property.gym if hasattr(property, 'gym') else False,
+                'elevator': property.elevator if hasattr(property, 'elevator') else False,
                 'has_security': property.has_security if hasattr(property, 'has_security') else False,
-                'has_garden': property.has_garden if hasattr(property, 'has_garden') else False,
-                'has_terrace': property.has_terrace if hasattr(property, 'has_terrace') else False,
-                'has_balcony': property.has_balcony if hasattr(property, 'has_balcony') else False,
+                'garden': property.garden if hasattr(property, 'garden') else False,
+                'terrace': property.terrace if hasattr(property, 'terrace') else False,
+                'balcony': property.balcony if hasattr(property, 'balcony') else False,
+                'air_conditioning': property.air_conditioning if hasattr(property, 'air_conditioning') else False,
+                'furnished': property.furnished if hasattr(property, 'furnished') else False,
             }
 
             data['properties'].append(prop_data)
@@ -156,7 +160,7 @@ class PropertyCompareWizard(models.TransientModel):
         data = self._prepare_report_data()
 
         # Retornar la acción del reporte
-        return self.env.ref('bohio_real_estate.report_property_comparison').report_action(
+        return self.env.ref('bohio_crm.report_property_comparison').report_action(
             self.property_ids,
             data=data
         )
@@ -179,7 +183,7 @@ class PropertyCompareWizard(models.TransientModel):
             raise UserError('Por favor ingrese un email del cliente.')
 
         # Generar el PDF
-        pdf = self.env.ref('bohio_real_estate.report_property_comparison')._render_qweb_pdf(
+        pdf = self.env.ref('bohio_crm.report_property_comparison')._render_qweb_pdf(
             self.property_ids.ids,
             data=self._prepare_report_data()
         )[0]

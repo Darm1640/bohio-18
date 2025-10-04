@@ -13,6 +13,16 @@ class CrmLead(models.Model):
     # CAMPOS PRINCIPALES
     # ===============================
 
+    # Origen de solicitud (de bohio_real_estate)
+    request_source = fields.Selection([
+        ('website', 'Sitio Web'),
+        ('contact_form', 'Formulario Contacto'),
+        ('pqrs', 'PQRS'),
+        ('property_inquiry', 'Consulta Propiedad'),
+        ('whatsapp', 'WhatsApp'),
+        ('phone', 'Teléfono'),
+    ], string='Origen de Solicitud', tracking=True)
+
     # Información del cliente
     client_type = fields.Selection([
         ('owner', 'Propietario'),
@@ -1512,118 +1522,10 @@ class CrmTeam(models.Model):
             })
 
 
-class CrmDashboard(models.Model):
-    """Dashboard CRM para análisis"""
-    _name = 'bohio.crm.dashboard'
-    _description = 'CRM Dashboard Bohio'
-    _auto = False
-    _order = 'priority desc, id desc'
-
-    name = fields.Char('Nombre')
-    stage_id = fields.Many2one('crm.stage', 'Etapa')
-    partner_id = fields.Many2one('res.partner', 'Cliente')
-    user_id = fields.Many2one('res.users', 'Vendedor')
-    expected_revenue = fields.Monetary('Ingreso Esperado', currency_field='company_currency_id')
-    company_currency_id = fields.Many2one('res.currency', related='company_id.currency_id', readonly=True)
-    company_id = fields.Many2one('res.company', 'Compañía', default=lambda self: self.env.company)
-    probability = fields.Float('Probabilidad')
-    date_deadline = fields.Date('Fecha Cierre Esperada')
-    priority = fields.Selection([('0', 'Baja'), ('1', 'Media'), ('2', 'Alta'), ('3', 'Muy Alta')], default='1', string="Prioridad")
-    lead_type = fields.Selection([('lead', 'Lead'), ('opportunity', 'Oportunidad')], string='Tipo')
-    active = fields.Boolean('Activo', default=True)
-
-    def init(self):
-        tools.drop_view_if_exists(self.env.cr, self._table)
-        self.env.cr.execute(f"""
-            CREATE OR REPLACE VIEW {self._table} AS (
-                SELECT
-                    l.id as id,
-                    l.name as name,
-                    l.stage_id as stage_id,
-                    l.partner_id as partner_id,
-                    l.user_id as user_id,
-                    l.expected_revenue as expected_revenue,
-                    l.company_id as company_id,
-                    l.probability as probability,
-                    l.date_deadline as date_deadline,
-                    l.priority as priority,
-                    l.type as lead_type,
-                    l.active as active
-                FROM crm_lead l
-                WHERE l.active = true
-            )
-        """)
+# ELIMINADO: CrmDashboard - usar crm.salesperson.dashboard en su lugar
 
 
-class CrmAnalytics(models.Model):
-    """Analytics Dashboard Inmobiliario"""
-    _name = 'bohio.crm.analytics'
-    _description = 'Analytics Dashboard Inmobiliario'
-
-    name = fields.Char('Dashboard', default='Análisis Inmobiliario')
-
-    @api.model
-    def get_dashboard_data(self, team_id=None, period_start=None, period_end=None):
-        """Obtener datos del dashboard analytics"""
-        user = self.env.user
-        has_all_teams_access = user.has_group('sales_team.group_sale_manager')
-
-        if not period_start:
-            period_start = fields.Date.today().replace(day=1)
-        if not period_end:
-            period_end = fields.Date.today()
-
-        domain = []
-        if team_id:
-            domain.append(('team_id', '=', int(team_id)))
-        elif not has_all_teams_access:
-            user_teams = self.env['crm.team'].search([('member_ids', 'in', user.id)])
-            if user_teams:
-                domain.append(('team_id', 'in', user_teams.ids))
-
-        return {
-            'kpi_cards': self._get_kpi_cards(domain, period_start, period_end, has_all_teams_access),
-            'revenue_chart': self._get_revenue_by_service_chart(domain, period_start, period_end),
-            'properties_breakdown': self._get_properties_breakdown(),
-            'top_performers': self._get_top_performers(domain, period_start, period_end),
-            'period': {'start': period_start.strftime('%Y-%m-%d'), 'end': period_end.strftime('%Y-%m-%d')},
-            'has_all_teams_access': has_all_teams_access,
-        }
-
-    def _get_kpi_cards(self, domain, start, end, show_all):
-        """KPI Cards básicos"""
-        Lead = self.env['crm.lead']
-        time_domain = domain + [('create_date', '>=', start), ('create_date', '<=', end)]
-        new_opportunities = Lead.search_count(time_domain + [('type', '=', 'opportunity')])
-
-        return [
-            {'label': 'Nuevas Oportunidades', 'value': new_opportunities, 'icon': 'fa-star', 'color': 'primary'},
-        ]
-
-    def _get_revenue_by_service_chart(self, domain, start, end):
-        """Gráfico de ingresos por servicio"""
-        Lead = self.env['crm.lead']
-        services = ['sale', 'rent', 'projects', 'consign', 'legal', 'marketing']
-        data, labels, colors = [], [], []
-
-        for service in services:
-            service_domain = domain + [('service_interested', '=', service), ('create_date', '>=', start), ('create_date', '<=', end)]
-            leads = Lead.search_read(domain=service_domain, fields=['expected_revenue'])
-            revenue = sum(l['expected_revenue'] for l in leads)
-            if revenue > 0:
-                data.append(revenue)
-                labels.append(service.title())
-                colors.append('#FF6384')
-
-        return {'type': 'doughnut', 'title': 'Ingresos por Servicio', 'labels': labels, 'datasets': [{'data': data, 'backgroundColor': colors}]}
-
-    def _get_properties_breakdown(self):
-        """Breakdown de propiedades"""
-        return {'type': 'bar', 'title': 'Propiedades por Tipo', 'labels': [], 'datasets': []}
-
-    def _get_top_performers(self, domain, start, end):
-        """Top performers"""
-        return []
+# ELIMINADO: CrmAnalytics - funcionalidad incompleta, usar crm.salesperson.dashboard
 
 
 # Agregar métodos del timeline al CrmLead

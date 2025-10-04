@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ================================ -->
+    <!-- MENÚ PRINCIPAL DE TESORERÍA BOHÍO -->
+    <!-- ================================ -->
+
+    <!-- Menú Principal de Tesorería -->
+    <menuitem id="menu_bohio_treasury_root"
+              name="Tesorería BOHÍO"
+              sequence="50"
+              web_icon="real_estate_bits,static/description/icon_treasury.png"/>
+
+    <!-- ================================ -->
+    <!-- SUBMENU: PAGOS MASIVOS -->
+    <!-- ================================ -->
+
+    <menuitem id="menu_bohio_treasury_mass_payments"
+              name="Pagos Masivos"
+              parent="menu_bohio_treasury_root"
+              sequence="10"/>
+
+    <!-- Acción: Pagos Masivos -->
+    <record id="action_bohio_mass_payment" model="ir.actions.act_window">
+        <field name="name">Pagos Masivos</field>
+        <field name="res_model">bohio.mass.payment</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_draft': 1, 'search_default_simulated': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                ¡Crea tu primer Pago Masivo!
+            </p>
+            <p>
+                Los pagos masivos te permiten simular y procesar pagos a múltiples propietarios<br/>
+                de forma eficiente, calculando automáticamente comisiones, impuestos y descuentos.
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="menu_bohio_mass_payment"
+              name="Procesamiento de Pagos"
+              parent="menu_bohio_treasury_mass_payments"
+              action="action_bohio_mass_payment"
+              sequence="10"/>
+
+    <!-- Acción: Simulaciones Guardadas -->
+    <record id="action_bohio_mass_payment_simulated" model="ir.actions.act_window">
+        <field name="name">Simulaciones</field>
+        <field name="res_model">bohio.mass.payment</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('state', '=', 'simulated')]</field>
+        <field name="context">{'search_default_current_month': 1}</field>
+    </record>
+
+    <menuitem id="menu_bohio_mass_payment_simulated"
+              name="Simulaciones Guardadas"
+              parent="menu_bohio_treasury_mass_payments"
+              action="action_bohio_mass_payment_simulated"
+              sequence="20"/>
+
+    <!-- Acción: Pagos Confirmados -->
+    <record id="action_bohio_mass_payment_confirmed" model="ir.actions.act_window">
+        <field name="name">Pagos Confirmados"</field>
+        <field name="res_model">bohio.mass.payment</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('state', '=', 'confirmed')]</field>
+    </record>
+
+    <menuitem id="menu_bohio_mass_payment_confirmed"
+              name="Confirmados Pendientes"
+              parent="menu_bohio_treasury_mass_payments"
+              action="action_bohio_mass_payment_confirmed"
+              sequence="30"/>
+
+    <!-- Acción: Histórico de Pagos Procesados -->
+    <record id="action_bohio_mass_payment_processed" model="ir.actions.act_window">
+        <field name="name">Histórico de Pagos</field>
+        <field name="res_model">bohio.mass.payment</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('state', '=', 'processed')]</field>
+        <field name="context">{'group_by': 'simulation_month'}</field>
+    </record>
+
+    <menuitem id="menu_bohio_mass_payment_history"
+              name="Histórico Procesados"
+              parent="menu_bohio_treasury_mass_payments"
+              action="action_bohio_mass_payment_processed"
+              sequence="40"/>
+
+    <!-- ================================ -->
+    <!-- SUBMENU: NOTAS DÉBITO -->
+    <!-- ================================ -->
+
+    <menuitem id="menu_bohio_treasury_debit_notes"
+              name="Notas Débito"
+              parent="menu_bohio_treasury_root"
+              sequence="20"/>
+
+    <!-- Acción: Notas Débito -->
+    <record id="action_bohio_debit_note" model="ir.actions.act_window">
+        <field name="name">Notas Débito</field>
+        <field name="res_model">bohio.debit.note</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_draft': 1, 'search_default_confirmed': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No hay notas débito registradas
+            </p>
+            <p>
+                Las notas débito se utilizan para registrar cargos adicionales<br/>
+                como intereses por mora, penalizaciones o ajustes.
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="menu_bohio_debit_note"
+              name="Todas las Notas Débito"
+              parent="menu_bohio_treasury_debit_notes"
+              action="action_bohio_debit_note"
+              sequence="10"/>
+
+    <!-- Acción: Notas Débito por Facturar -->
+    <record id="action_bohio_debit_note_to_invoice" model="ir.actions.act_window">
+        <field name="name">Por Facturar</field>
+        <field name="res_model">bohio.debit.note</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('state', '=', 'confirmed'), ('invoice_id', '=', False)]</field>
+    </record>
+
+    <menuitem id="menu_bohio_debit_note_to_invoice"
+              name="Pendientes de Facturar"
+              parent="menu_bohio_treasury_debit_notes"
+              action="action_bohio_debit_note_to_invoice"
+              sequence="20"/>
+
+    <!-- Acción: Notas Débito Facturadas -->
+    <record id="action_bohio_debit_note_invoiced" model="ir.actions.act_window">
+        <field name="name">Facturadas</field>
+        <field name="res_model">bohio.debit.note</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('state', '=', 'invoiced')]</field>
+    </record>
+
+    <menuitem id="menu_bohio_debit_note_invoiced"
+              name="Facturadas"
+              parent="menu_bohio_treasury_debit_notes"
+              action="action_bohio_debit_note_invoiced"
+              sequence="30"/>
+
+    <!-- ================================ -->
+    <!-- SUBMENU: REPORTES Y ANÁLISIS -->
+    <!-- ================================ -->
+
+    <menuitem id="menu_bohio_treasury_reports"
+              name="Reportes y Análisis"
+              parent="menu_bohio_treasury_root"
+              sequence="30"/>
+
+    <!-- Acción: Dashboard de Tesorería -->
+    <record id="action_bohio_treasury_dashboard" model="ir.actions.act_window">
+        <field name="name">Dashboard Tesorería</field>
+        <field name="res_model">bohio.treasury.dashboard</field>
+        <field name="view_mode">kanban,form</field>
+        <field name="target">current</field>
+    </record>
+
+    <menuitem id="menu_bohio_treasury_dashboard"
+              name="Dashboard General"
+              parent="menu_bohio_treasury_reports"
+              action="action_bohio_treasury_dashboard"
+              sequence="10"/>
+
+    <!-- Acción: Reporte de Comisiones -->
+    <record id="action_bohio_commission_report" model="ir.actions.act_window">
+        <field name="name">Reporte de Comisiones</field>
+        <field name="res_model">bohio.commission.report</field>
+        <field name="view_mode">pivot,graph,list</field>
+        <field name="context">{'group_by': ['date:month', 'user_id']}</field>
+    </record>
+
+    <menuitem id="menu_bohio_commission_report"
+              name="Comisiones"
+              parent="menu_bohio_treasury_reports"
+              action="action_bohio_commission_report"
+              sequence="20"/>
+
+    <!-- Acción: Reporte de Recaudo -->
+    <record id="action_bohio_collection_report" model="ir.actions.act_window">
+        <field name="name">Reporte de Recaudo</field>
+        <field name="res_model">bohio.collection.report</field>
+        <field name="view_mode">pivot,graph,list</field>
+        <field name="context">{'group_by': ['period_month', 'project_id']}</field>
+    </record>
+
+    <menuitem id="menu_bohio_collection_report"
+              name="Recaudo vs Esperado"
+              parent="menu_bohio_treasury_reports"
+              action="action_bohio_collection_report"
+              sequence="30"/>
+
+    <!-- Acción: Balance de Impuestos -->
+    <record id="action_bohio_tax_balance_report" model="ir.actions.act_window">
+        <field name="name">Balance de Impuestos</field>
+        <field name="res_model">bohio.tax.balance.report</field>
+        <field name="view_mode">pivot,graph,list</field>
+    </record>
+
+    <menuitem id="menu_bohio_tax_balance_report"
+              name="Balance de Impuestos"
+              parent="menu_bohio_treasury_reports"
+              action="action_bohio_tax_balance_report"
+              sequence="40"/>
+
+    <!-- ================================ -->
+    <!-- SUBMENU: CONFIGURACIÓN -->
+    <!-- ================================ -->
+
+    <menuitem id="menu_bohio_treasury_config"
+              name="Configuración"
+              parent="menu_bohio_treasury_root"
+              sequence="90"
+              groups="base.group_system"/>
+
+    <!-- Acción: Cuentas Contables -->
+    <record id="action_bohio_treasury_accounts" model="ir.actions.act_window">
+        <field name="name">Cuentas Contables"</field>
+        <field name="res_model">account.account</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('code', 'in', ['28', '13', '42'])]</field>
+        <field name="context">{'search_default_group_by_code': 1}</field>
+    </record>
+
+    <menuitem id="menu_bohio_treasury_accounts"
+              name="Cuentas Contables"
+              parent="menu_bohio_treasury_config"
+              action="action_bohio_treasury_accounts"
+              sequence="10"/>
+
+    <!-- Acción: Diarios de Pago -->
+    <record id="action_bohio_payment_journals" model="ir.actions.act_window">
+        <field name="name">Diarios de Pago</field>
+        <field name="res_model">account.journal</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('type', 'in', ['bank', 'cash'])]</field>
+    </record>
+
+    <menuitem id="menu_bohio_payment_journals"
+              name="Diarios de Pago"
+              parent="menu_bohio_treasury_config"
+              action="action_bohio_payment_journals"
+              sequence="20"/>
+
+    <!-- Acción: Impuestos -->
+    <record id="action_bohio_taxes" model="ir.actions.act_window">
+        <field name="name">Impuestos</field>
+        <field name="res_model">account.tax</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('type_tax_use', '=', 'sale')]</field>
+    </record>
+
+    <menuitem id="menu_bohio_taxes"
+              name="Impuestos"
+              parent="menu_bohio_treasury_config"
+              action="action_bohio_taxes"
+              sequence="30"/>
+
+    <!-- ================================ -->
+    <!-- SUBMENU: HERRAMIENTAS -->
+    <!-- ================================ -->
+
+    <menuitem id="menu_bohio_treasury_tools"
+              name="Herramientas"
+              parent="menu_bohio_treasury_root"
+              sequence="80"/>
+
+    <!-- Acción: Wizard Creación Rápida -->
+    <record id="action_bohio_mass_payment_wizard" model="ir.actions.act_window">
+        <field name="name">Creación Rápida de Pago</field>
+        <field name="res_model">bohio.mass.payment.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="menu_bohio_mass_payment_wizard"
+              name="Crear Pago Rápido"
+              parent="menu_bohio_treasury_tools"
+              action="action_bohio_mass_payment_wizard"
+              sequence="10"/>
+
+    <!-- Acción: Calculadora de Intereses -->
+    <record id="action_bohio_interest_calculator" model="ir.actions.act_window">
+        <field name="name">Calculadora de Intereses</field>
+        <field name="res_model">bohio.interest.calculator</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="menu_bohio_interest_calculator"
+              name="Calculadora de Intereses"
+              parent="menu_bohio_treasury_tools"
+              action="action_bohio_interest_calculator"
+              sequence="20"/>
+
+    <!-- Acción: Conciliación Masiva -->
+    <record id="action_bohio_mass_reconciliation" model="ir.actions.act_window">
+        <field name="name">Conciliación Masiva</field>
+        <field name="res_model">bohio.mass.reconciliation.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="menu_bohio_mass_reconciliation"
+              name="Conciliación Masiva"
+              parent="menu_bohio_treasury_tools"
+              action="action_bohio_mass_reconciliation"
+              sequence="30"/>
+
+    <!-- Acción: Importador de Pagos -->
+    <record id="action_bohio_payment_importer" model="ir.actions.act_window">
+        <field name="name">Importar Pagos desde Excel</field>
+        <field name="res_model">bohio.payment.import.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="menu_bohio_payment_importer"
+              name="Importar desde Excel"
+              parent="menu_bohio_treasury_tools"
+              action="action_bohio_payment_importer"
+              sequence="40"/>
+
+</odoo>

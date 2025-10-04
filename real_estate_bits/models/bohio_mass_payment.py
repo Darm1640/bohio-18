@@ -106,10 +106,8 @@ class BohioMassPayment(models.Model):
         if self.state != 'draft':
             raise UserError(_('Solo se pueden simular pagos en estado borrador'))
 
-        # Limpiar líneas existentes
         self.simulation_line_ids.unlink()
 
-        # Obtener contratos filtrados
         contracts = self._get_filtered_contracts()
         if not contracts:
             raise UserError(_('No se encontraron contratos que cumplan los filtros especificados'))
@@ -233,10 +231,8 @@ class BohioMassPayment(models.Model):
                 elif novelty.destinatario == 'all':
                     novelty_amount += novelty.valor_total * (novelty.percentage_propietario / 100) * percentage_decimal
 
-        # Calcular préstamos (buscar en custom_account_treasury si existe)
         loan_amount = 0.0
         if self.include_loans:
-            # Buscar préstamos pendientes del propietario
             advance_payments = self.env['account.move.line'].search([
                 ('partner_id', '=', partner.id),
                 ('account_id.code', 'like', '13%'),  # Cuentas de préstamos

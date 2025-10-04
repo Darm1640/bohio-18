@@ -19,6 +19,7 @@
     'depends': [
         'crm',
         'account',
+        'hr_expense',
         'real_estate_bits',
         'portal',
     ],
@@ -61,12 +62,7 @@
             'bohio_crm/static/src/js/crm_salesperson_dashboard.js',
             'bohio_crm/static/src/xml/crm_salesperson_dashboard.xml',
 
-            # Timeline View (Original)
-            'bohio_crm/static/src/components/timeline_view/bohio_timeline_view.scss',
-            'bohio_crm/static/src/components/timeline_view/bohio_timeline_view.js',
-            'bohio_crm/static/src/components/timeline_view/bohio_timeline_view.xml',
-
-            # Timeline View V2 (Mejorada con modelo reactivo y chatter nativo)
+            # Timeline View V2 (Vista timeline principal)
             'bohio_crm/static/src/components/timeline_view_v2/bohio_timeline_view_v2.js',
             'bohio_crm/static/src/components/timeline_view_v2/bohio_timeline_view_v2.xml',
         ],
