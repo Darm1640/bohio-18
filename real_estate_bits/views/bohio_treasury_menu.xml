@@ -156,6 +156,7 @@
               sequence="30"/>
 
     <!-- Acción: Dashboard de Tesorería -->
+    <!-- TODO: Implementar modelo bohio.treasury.dashboard
     <record id="action_bohio_treasury_dashboard" model="ir.actions.act_window">
         <field name="name">Dashboard Tesorería</field>
         <field name="res_model">bohio.treasury.dashboard</field>
@@ -168,6 +169,7 @@
               parent="menu_bohio_treasury_reports"
               action="action_bohio_treasury_dashboard"
               sequence="10"/>
+    -->
 
     <!-- Acción: Reporte de Comisiones -->
     <record id="action_bohio_commission_report" model="ir.actions.act_window">
