@@ -4,7 +4,8 @@
         <t t-call="portal.portal_layout">
             <t t-set="additional_title">MyBOHIO</t>
 
-            <div class="container-fluid mybohio-portal">
+            <t t-set="page_content">
+                <div class="container-fluid mybohio-portal">
                 <div class="row">
                     <!-- Sidebar -->
                     <div class="col-lg-2 mybohio-sidebar bg-light vh-100 position-fixed">
@@ -127,7 +128,8 @@
                         </div>
                     </div>
                 </div>
-            </div>
+                </div>
+            </t>
         </t>
     </template>
 </odoo>
