@@ -40,7 +40,7 @@
         'views/res_partner_views.xml',
 
         # Contract Types & Documents
-        'views/property_contract_type_views.xml',
+        # 'views/property_contract_type_views.xml',  # Migrado a real_estate_bits
         'views/property_contract_inherit_views.xml',
 
         # Loan Management
