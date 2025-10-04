@@ -27,7 +27,6 @@ class ProductTemplatePortal(models.Model):
 
 
 class PropertyContractPortal(models.Model):
-    _inherit = 'property.contract'
+    _name = 'property.contract'
+    _inherit = ['property.contract', 'documents.mixin', 'portal.mixin']
 
-    # El campo 'rent' ya existe en property.contract
-    # No es necesario agregar monthly_amount

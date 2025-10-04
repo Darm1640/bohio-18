@@ -160,7 +160,15 @@ class PropertyContractTypeDocument(models.Model):
 
 
 class PropertyContract(models.Model):
-    _inherit = ['property.contract', 'documents.mixin']
+    """
+    Extensión de property.contract con gestión de documentos y tipos de contrato.
+
+    NOTA: Este modelo NO hereda de documents.mixin por defecto.
+    Si el módulo 'documents' está instalado, los métodos relacionados
+    funcionarán automáticamente. Si no está instalado, simplemente
+    se omitirán las funcionalidades de documents.
+    """
+    _inherit = 'property.contract'
 
     # Tipo de contrato
     contract_type_id = fields.Many2one(
