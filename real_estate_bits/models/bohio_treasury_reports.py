@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# Reportes de Tesorería - Bohio Real Estate
 from odoo import models, fields, api, tools, _
 from odoo.exceptions import UserError
 
@@ -197,8 +198,9 @@ class BohioCollectionReport(models.Model):
 
     def init(self):
         """Vista SQL para reporte de recaudo"""
+        tools.drop_view_if_exists(self.env.cr, self._table)
         self.env.cr.execute("""
-            CREATE OR REPLACE VIEW bohio_collection_report AS (
+            CREATE OR REPLACE VIEW %s AS (
                 SELECT
                     row_number() OVER () AS id,
                     DATE_TRUNC('month', ll.date)::date AS period_month,
@@ -227,7 +229,7 @@ class BohioCollectionReport(models.Model):
                     COALESCE(ll.currency_id, rc.currency_id),
                     ll.company_id
             )
-        """)
+        """ % self._table)
 
 
 class BohioTaxBalanceReport(models.Model):
