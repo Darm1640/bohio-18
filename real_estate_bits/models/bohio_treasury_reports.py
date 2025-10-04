@@ -214,7 +214,7 @@ class BohioCollectionReport(models.Model):
                         THEN ll.amount
                         ELSE 0
                     END) AS collected_amount,
-                    COALESCE(ll.currency_id, rc.currency_id) AS currency_id,
+                    COALESCE(am.currency_id, rc.currency_id) AS currency_id,
                     ll.company_id
                 FROM loan_line ll
                 LEFT JOIN account_move am ON ll.invoice_id = am.id
@@ -226,7 +226,7 @@ class BohioCollectionReport(models.Model):
                     TO_CHAR(ll.date, 'YYYY'),
                     ll.project_id,
                     ll.region_id,
-                    COALESCE(ll.currency_id, rc.currency_id),
+                    COALESCE(am.currency_id, rc.currency_id),
                     ll.company_id
             )
         """ % self._table)
