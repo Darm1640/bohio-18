@@ -127,8 +127,6 @@
 
                 <separator/>
 
-                <filter name="has_errors" string="Con Problemas"
-                        domain="[('simulation_line_ids.has_issues', '=', True)]"/>
                 <filter name="partial_payments" string="Pagos Parciales"
                         domain="[('simulation_line_ids.paid_percentage', '&lt;', 100),
                                  ('simulation_line_ids.paid_percentage', '&gt;', 0)]"/>

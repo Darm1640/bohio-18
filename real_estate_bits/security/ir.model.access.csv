@@ -35,3 +35,7 @@ access_property_analytics_user,property_analytics_user,model_property_analytics,
 access_lat_lng_line_user,lat_lng_line_user,model_lat_lng_line,base.group_user,1,1,1,1
 access_payment_operation_type_user,payment_operation_type_user,model_payment_operation_type,base.group_user,1,1,1,1
 access_property_dashboard_user,property_dashboard_user,model_property_dashboard,base.group_user,1,1,1,1
+access_property_image_user,property.image user,model_property_image,base.group_user,1,1,1,1
+access_property_image_portal,property.image portal,model_property_image,base.group_portal,1,0,0,0
+access_property_image_public,property.image public,model_property_image,base.group_public,1,0,0,0
+access_property_image_system,property.image system,model_property_image,base.group_system,1,1,1,1
