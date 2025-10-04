@@ -171,8 +171,7 @@
               sequence="10"/>
     -->
 
-    <!-- TODO: Implementar modelos de reportes
-
+    <!-- Reportes de Tesorería -->
     <record id="action_bohio_commission_report" model="ir.actions.act_window">
         <field name="name">Reporte de Comisiones</field>
         <field name="res_model">bohio.commission.report</field>
@@ -210,7 +209,6 @@
               parent="menu_bohio_treasury_reports"
               action="action_bohio_tax_balance_report"
               sequence="40"/>
-    -->
 
     <!-- ================================ -->
     <!-- SUBMENU: CONFIGURACIÓN -->
@@ -268,13 +266,13 @@
     <!-- ================================ -->
     <!-- SUBMENU: HERRAMIENTAS -->
     <!-- ================================ -->
+    <!-- TODO: Implementar herramientas/wizards
 
     <menuitem id="menu_bohio_treasury_tools"
               name="Herramientas"
               parent="menu_bohio_treasury_root"
               sequence="80"/>
 
-    <!-- Acción: Wizard Creación Rápida -->
     <record id="action_bohio_mass_payment_wizard" model="ir.actions.act_window">
         <field name="name">Creación Rápida de Pago</field>
         <field name="res_model">bohio.mass.payment.wizard</field>
@@ -288,7 +286,6 @@
               action="action_bohio_mass_payment_wizard"
               sequence="10"/>
 
-    <!-- Acción: Calculadora de Intereses -->
     <record id="action_bohio_interest_calculator" model="ir.actions.act_window">
         <field name="name">Calculadora de Intereses</field>
         <field name="res_model">bohio.interest.calculator</field>
@@ -302,7 +299,6 @@
               action="action_bohio_interest_calculator"
               sequence="20"/>
 
-    <!-- Acción: Conciliación Masiva -->
     <record id="action_bohio_mass_reconciliation" model="ir.actions.act_window">
         <field name="name">Conciliación Masiva</field>
         <field name="res_model">bohio.mass.reconciliation.wizard</field>
@@ -316,7 +312,6 @@
               action="action_bohio_mass_reconciliation"
               sequence="30"/>
 
-    <!-- Acción: Importador de Pagos -->
     <record id="action_bohio_payment_importer" model="ir.actions.act_window">
         <field name="name">Importar Pagos desde Excel</field>
         <field name="res_model">bohio.payment.import.wizard</field>
@@ -329,5 +324,6 @@
               parent="menu_bohio_treasury_tools"
               action="action_bohio_payment_importer"
               sequence="40"/>
+    -->
 
 </odoo>

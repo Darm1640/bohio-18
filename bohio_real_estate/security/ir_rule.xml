@@ -110,7 +110,7 @@
     <!-- IMÁGENES DE PROPIEDADES: Solo de propiedades propias -->
     <record id="property_image_portal_rule" model="ir.rule">
         <field name="name">Property Image: Portal Users - Own Properties Only</field>
-        <field name="model_id" ref="bohio_real_estate.model_property_image"/>
+        <field name="model_id" ref="real_estate_bits.model_property_image"/>
         <field name="domain_force">[
             '|',
             ('property_id.partner_id', '=', user.partner_id.id),
