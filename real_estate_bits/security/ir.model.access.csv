@@ -39,3 +39,7 @@ access_property_image_user,property.image user,model_property_image,base.group_u
 access_property_image_portal,property.image portal,model_property_image,base.group_portal,1,0,0,0
 access_property_image_public,property.image public,model_property_image,base.group_public,1,0,0,0
 access_property_image_system,property.image system,model_property_image,base.group_system,1,1,1,1
+access_property_document_category_user,property.document.category user,model_property_document_category,base.group_user,1,1,1,1
+access_property_contract_type_user,property.contract.type user,model_property_contract_type,base.group_user,1,1,1,1
+access_property_contract_type_document_user,property.contract.type.document user,model_property_contract_type_document,base.group_user,1,1,1,1
+access_property_contract_document_checklist_user,property.contract.document.checklist user,model_property_contract_document_checklist,base.group_user,1,1,1,1

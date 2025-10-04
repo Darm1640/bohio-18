@@ -39,6 +39,7 @@
         "views/bohio_treasury_menu.xml",
         "views/bohio_debit_note_wizard_views.xml",
         "views/property_contract_line_views.xml",
+        "views/property_contract_type_views.xml",
         "reports/contract_quotation_report.xml",
         "static/src/xml/home.xml",
 

@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Categorías de Documentos -->
+    <record id="view_property_document_category_list" model="ir.ui.view">
+        <field name="name">property.document.category.list</field>
+        <field name="model">property.document.category</field>
+        <field name="arch" type="xml">
+            <list string="Categorías de Documentos">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="color" widget="color_picker"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_property_document_category_form" model="ir.ui.view">
+        <field name="name">property.document.category.form</field>
+        <field name="model">property.document.category</field>
+        <field name="arch" type="xml">
+            <form string="Categoría de Documento">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="code"/>
+                            <field name="sequence"/>
+                        </group>
+                        <group>
+                            <field name="color" widget="color_picker"/>
+                            <field name="active"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="description" placeholder="Descripción de la categoría..."/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Tipos de Contrato -->
+    <record id="view_property_contract_type_list" model="ir.ui.view">
+        <field name="name">property.contract.type.list</field>
+        <field name="model">property.contract.type</field>
+        <field name="arch" type="xml">
+            <list string="Tipos de Contrato">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="applies_to_rent"/>
+                <field name="applies_to_sale"/>
+                <field name="color" widget="color_picker"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_property_contract_type_form" model="ir.ui.view">
+        <field name="name">property.contract.type.form</field>
+        <field name="model">property.contract.type</field>
+        <field name="arch" type="xml">
+            <form string="Tipo de Contrato">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_documents" type="object" class="oe_stat_button" icon="fa-file-text-o">
+                            <field name="document_line_ids" string="Documentos" widget="statinfo"/>
+                        </button>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="code"/>
+                            <field name="sequence"/>
+                        </group>
+                        <group>
+                            <field name="applies_to_rent"/>
+                            <field name="applies_to_sale"/>
+                            <field name="default_employment_type"/>
+                            <field name="color" widget="color_picker"/>
+                            <field name="active"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="description" placeholder="Descripción del tipo de contrato..."/>
+                    </group>
+                    <notebook>
+                        <page string="Documentos Requeridos" name="documents">
+                            <field name="document_line_ids">
+                                <list editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="name"/>
+                                    <field name="code"/>
+                                    <field name="document_category_id"/>
+                                    <field name="is_required"/>
+                                    <field name="is_optional"/>
+                                    <field name="is_allowed_by_law"/>
+                                    <field name="applies_to_employee"/>
+                                    <field name="applies_to_independent"/>
+                                    <field name="applies_to_pensioner"/>
+                                    <field name="applies_to_legal_entity"/>
+                                    <field name="applies_to_foreigner"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Plantilla de Contrato" name="template">
+                            <group>
+                                <field name="contract_template_id"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Documentos por Tipo de Contrato -->
+    <record id="view_property_contract_type_document_list" model="ir.ui.view">
+        <field name="name">property.contract.type.document.list</field>
+        <field name="model">property.contract.type.document</field>
+        <field name="arch" type="xml">
+            <list string="Documentos" editable="bottom">
+                <field name="sequence" widget="handle"/>
+                <field name="contract_type_id"/>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="document_category_id"/>
+                <field name="is_required"/>
+                <field name="is_optional"/>
+                <field name="is_allowed_by_law"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_property_contract_type_document_form" model="ir.ui.view">
+        <field name="name">property.contract.type.document.form</field>
+        <field name="model">property.contract.type.document</field>
+        <field name="arch" type="xml">
+            <form string="Documento Requerido">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="contract_type_id"/>
+                            <field name="name"/>
+                            <field name="code"/>
+                            <field name="document_category_id"/>
+                            <field name="sequence"/>
+                        </group>
+                        <group>
+                            <field name="is_required"/>
+                            <field name="is_optional"/>
+                            <field name="is_allowed_by_law"/>
+                            <field name="active"/>
+                        </group>
+                    </group>
+                    <group string="Aplicabilidad por Tipo de Persona">
+                        <group>
+                            <field name="applies_to_employee"/>
+                            <field name="applies_to_independent"/>
+                            <field name="applies_to_pensioner"/>
+                        </group>
+                        <group>
+                            <field name="applies_to_legal_entity"/>
+                            <field name="applies_to_foreigner"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="description" placeholder="Instrucciones para el documento..."/>
+                    </group>
+                    <group>
+                        <field name="legal_reference"/>
+                        <field name="example_attachment_id"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Checklist de Documentos del Contrato -->
+    <record id="view_property_contract_document_checklist_list" model="ir.ui.view">
+        <field name="name">property.contract.document.checklist.list</field>
+        <field name="model">property.contract.document.checklist</field>
+        <field name="arch" type="xml">
+            <list string="Checklist de Documentos" editable="bottom">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="document_category_id" widget="badge"/>
+                <field name="is_required" widget="boolean_toggle"/>
+                <field name="is_optional" widget="boolean_toggle"/>
+                <field name="is_received" widget="boolean_toggle"/>
+                <field name="received_date"/>
+                <field name="is_verified" widget="boolean_toggle"/>
+                <field name="verified_date"/>
+                <field name="attachment_count"/>
+                <field name="is_allowed_by_law" invisible="1"/>
+                <button name="action_mark_received" type="object" string="Marcar Recibido" icon="fa-check" invisible="is_received"/>
+                <button name="action_mark_verified" type="object" string="Verificar" icon="fa-check-circle" invisible="is_verified or not is_received"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_property_contract_document_checklist_form" model="ir.ui.view">
+        <field name="name">property.contract.document.checklist.form</field>
+        <field name="model">property.contract.document.checklist</field>
+        <field name="arch" type="xml">
+            <form string="Documento del Checklist">
+                <header>
+                    <button name="action_mark_received" string="Marcar Recibido" type="object" class="btn-primary" invisible="is_received"/>
+                    <button name="action_mark_verified" string="Verificar" type="object" class="btn-primary" invisible="is_verified or not is_received"/>
+                    <button name="action_upload_document" string="Subir Documento" type="object" class="btn-secondary"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="contract_id"/>
+                            <field name="name"/>
+                            <field name="document_category_id" widget="badge"/>
+                            <field name="sequence"/>
+                        </group>
+                        <group>
+                            <field name="is_required"/>
+                            <field name="is_optional"/>
+                            <field name="is_allowed_by_law"/>
+                        </group>
+                    </group>
+                    <group string="Estado">
+                        <group>
+                            <field name="is_received"/>
+                            <field name="received_date" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="is_verified"/>
+                            <field name="verified_date" readonly="1"/>
+                            <field name="verified_by_id" readonly="1"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="notes" placeholder="Observaciones sobre el documento..."/>
+                    </group>
+                    <group string="Archivos Adjuntos">
+                        <field name="attachment_ids" widget="many2many_binary" nolabel="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Actions -->
+    <record id="action_property_document_category" model="ir.actions.act_window">
+        <field name="name">Categorías de Documentos</field>
+        <field name="res_model">property.document.category</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="action_property_contract_type" model="ir.actions.act_window">
+        <field name="name">Tipos de Contrato</field>
+        <field name="res_model">property.contract.type</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="action_property_contract_type_document" model="ir.actions.act_window">
+        <field name="name">Documentos por Tipo de Contrato</field>
+        <field name="res_model">property.contract.type.document</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Menu Items -->
+    <menuitem id="menu_property_contract_config"
+              name="Configuración de Contratos"
+              parent="menu_real_estate_configuration"
+              sequence="50"/>
+
+    <menuitem id="menu_property_contract_type"
+              name="Tipos de Contrato"
+              parent="menu_property_contract_config"
+              action="action_property_contract_type"
+              sequence="10"/>
+
+    <menuitem id="menu_property_document_category"
+              name="Categorías de Documentos"
+              parent="menu_property_contract_config"
+              action="action_property_document_category"
+              sequence="20"/>
+
+</odoo>
