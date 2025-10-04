@@ -4,7 +4,6 @@ from datetime import datetime, timedelta
 import calendar
 from random import randrange
 from numerize import numerize
-from .chart import get_line_chart, get_bar_chart, prepare_chart_data
 from odoo.http import request
 
 DATE_FORMATE = "%Y-%m-%d 00:00:00"
