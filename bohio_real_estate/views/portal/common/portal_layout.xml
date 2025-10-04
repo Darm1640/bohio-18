@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <template id="mybohio_portal_layout" name="MyBOHIO Portal Layout">
-        <t t-call="portal.portal_layout">
-            <t t-set="additional_title">MyBOHIO</t>
-
-            <t t-set="page_content">
-                <div class="container-fluid mybohio-portal">
+    <template id="mybohio_portal_layout" name="MyBOHIO Portal Layout" inherit_id="portal.portal_layout" primary="True">
+        <xpath expr="//div[hasclass('o_portal_wrap')]" position="replace">
+            <div class="container-fluid mybohio-portal">
                 <div class="row">
                     <!-- Sidebar -->
                     <div class="col-lg-2 mybohio-sidebar bg-light vh-100 position-fixed">
@@ -128,8 +125,7 @@
                         </div>
                     </div>
                 </div>
-                </div>
-            </t>
-        </t>
+            </div>
+        </xpath>
     </template>
 </odoo>
