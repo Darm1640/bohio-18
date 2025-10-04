@@ -65,7 +65,7 @@ class BohioCommissionReport(models.Model):
                     pc.region_id,
                     pc.id AS contract_id,
                     pc.property_id,
-                    COALESCE(pc.amount_total, 0) AS sale_amount,
+                    COALESCE(pc.rental_fee, 0) AS sale_amount,
                     0.0 AS commission_rate,
                     COALESCE(pc.total_commission, 0) AS commission_amount,
                     COALESCE(pc.total_commission, 0) AS provision_amount,

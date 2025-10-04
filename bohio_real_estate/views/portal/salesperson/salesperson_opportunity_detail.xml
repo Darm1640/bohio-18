@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="mybohio_salesperson_opportunity_detail" name="Salesperson Opportunity Detail">
+        <t t-call="bohio_real_estate.mybohio_portal_layout">
+            <t t-set="page_name" t-value="'mybohio_salesperson_opportunity_detail'"/>
+
+            <div class="mybohio-opportunity-detail">
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h1 class="text-danger mb-2" t-esc="opportunity.name"/>
+                                <p class="text-muted mb-0">
+                                    <small>Referencia: #<span t-esc="opportunity.id"/></small>
+                                </p>
+                            </div>
+                            <a href="/mybohio/salesperson/opportunities" class="btn btn-outline-danger">
+                                <i class="fa fa-arrow-left"></i> Volver
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <!-- Columna Principal -->
+                    <div class="col-md-8">
+                        <!-- Información General -->
+                        <div class="card border-0 shadow-sm mb-4">
+                            <div class="card-header bg-white border-bottom">
+                                <h5 class="mb-0">Información General</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="text-muted small">Cliente</label>
+                                        <p class="mb-0">
+                                            <strong t-esc="opportunity.partner_id.name if opportunity.partner_id else 'Sin cliente'"/>
+                                        </p>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="text-muted small">Teléfono</label>
+                                        <p class="mb-0" t-esc="opportunity.phone or '-'"/>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="text-muted small">Email</label>
+                                        <p class="mb-0" t-esc="opportunity.email_from or '-'"/>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="text-muted small">Etapa</label>
+                                        <p class="mb-0">
+                                            <span t-if="opportunity.stage_id.is_won" class="badge bg-success">
+                                                <i class="fa fa-check-circle"></i> Ganada
+                                            </span>
+                                            <span t-elif="not opportunity.active" class="badge bg-danger">
+                                                <i class="fa fa-times-circle"></i> Perdida
+                                            </span>
+                                            <span t-else="" class="badge bg-info" t-esc="opportunity.stage_id.name if opportunity.stage_id else 'Sin etapa'"/>
+                                        </p>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="text-muted small">Fecha Límite</label>
+                                        <p class="mb-0">
+                                            <span t-if="opportunity.date_deadline" t-esc="opportunity.date_deadline.strftime('%d/%m/%Y')"/>
+                                            <span t-else="">-</span>
+                                        </p>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="text-muted small">Fecha Creación</label>
+                                        <p class="mb-0" t-esc="opportunity.create_date.strftime('%d/%m/%Y %H:%M')"/>
+                                    </div>
+                                    <div class="col-12" t-if="opportunity.description">
+                                        <label class="text-muted small">Descripción</label>
+                                        <p class="mb-0" t-esc="opportunity.description"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Propiedad Asociada -->
+                        <div class="card border-0 shadow-sm mb-4" t-if="opportunity.property_id">
+                            <div class="card-header bg-white border-bottom">
+                                <h5 class="mb-0">Propiedad</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row align-items-center">
+                                    <div class="col-md-4" t-if="opportunity.property_id.image_1920">
+                                        <img t-attf-src="/web/image/product.template/{{opportunity.property_id.id}}/image_1920"
+                                             class="img-fluid rounded"
+                                             alt="Propiedad"/>
+                                    </div>
+                                    <div t-attf-class="col-md-{{8 if opportunity.property_id.image_1920 else 12}}">
+                                        <h5 t-esc="opportunity.property_id.name"/>
+                                        <p class="text-muted mb-2">
+                                            <small>Código: <span t-esc="opportunity.property_id.default_code or '-'"/></small>
+                                        </p>
+                                        <h4 class="text-danger mb-3">
+                                            <t t-esc="'{:,.0f}'.format(opportunity.property_id.list_price)"/>
+                                        </h4>
+                                        <div class="mb-3">
+                                            <t t-if="opportunity.property_id.num_bedrooms">
+                                                <i class="fa fa-bed"></i> <span t-esc="opportunity.property_id.num_bedrooms"/> hab.
+                                            </t>
+                                            <t t-if="opportunity.property_id.num_bathrooms">
+                                                | <i class="fa fa-bath"></i> <span t-esc="opportunity.property_id.num_bathrooms"/> baños
+                                            </t>
+                                            <t t-if="opportunity.property_id.property_area">
+                                                | <i class="fa fa-arrows-alt"></i> <span t-esc="opportunity.property_id.property_area"/> m²
+                                            </t>
+                                        </div>
+                                        <a t-attf-href="/property/{{opportunity.property_id.id}}" class="btn btn-sm btn-outline-danger" target="_blank">
+                                            <i class="fa fa-external-link-alt"></i> Ver Propiedad
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sidebar -->
+                    <div class="col-md-4">
+                        <!-- Resumen Financiero -->
+                        <div class="card border-0 shadow-sm mb-4">
+                            <div class="card-header bg-white border-bottom">
+                                <h6 class="mb-0">Resumen Financiero</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <label class="text-muted small">Valor Esperado</label>
+                                    <h3 class="text-danger mb-0">
+                                        <t t-esc="'{:,.0f}'.format(opportunity.expected_revenue)"/>
+                                    </h3>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="text-muted small">Probabilidad</label>
+                                    <div class="progress" style="height: 25px;">
+                                        <div class="progress-bar bg-success" role="progressbar"
+                                             t-att-style="'width: ' + str(opportunity.probability) + '%'"
+                                             t-att-aria-valuenow="opportunity.probability"
+                                             aria-valuemin="0" aria-valuemax="100">
+                                            <span t-esc="opportunity.probability"/>%
+                                        </div>
+                                    </div>
+                                </div>
+                                <div t-if="opportunity.stage_id.is_won">
+                                    <label class="text-muted small">Ingreso Real</label>
+                                    <h4 class="text-success mb-0">
+                                        <t t-esc="'{:,.0f}'.format(opportunity.expected_revenue * opportunity.probability / 100)"/>
+                                    </h4>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Acciones Rápidas -->
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-header bg-white border-bottom">
+                                <h6 class="mb-0">Acciones</h6>
+                            </div>
+                            <div class="card-body">
+                                <a t-if="opportunity.partner_id and opportunity.partner_id.phone"
+                                   t-attf-href="tel:{{opportunity.partner_id.phone}}"
+                                   class="btn btn-outline-success w-100 mb-2">
+                                    <i class="fa fa-phone"></i> Llamar Cliente
+                                </a>
+                                <a t-if="opportunity.partner_id and opportunity.partner_id.email"
+                                   t-attf-href="mailto:{{opportunity.partner_id.email}}"
+                                   class="btn btn-outline-primary w-100 mb-2">
+                                    <i class="fa fa-envelope"></i> Enviar Email
+                                </a>
+                                <a t-if="opportunity.partner_id and opportunity.partner_id.mobile"
+                                   t-attf-href="https://wa.me/{{opportunity.partner_id.mobile.replace('+', '').replace(' ', '')}}"
+                                   target="_blank"
+                                   class="btn btn-outline-success w-100">
+                                    <i class="fa fa-whatsapp"></i> WhatsApp
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

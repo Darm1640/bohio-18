@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="mybohio_salesperson_opportunities" name="Salesperson Opportunities">
+        <t t-call="bohio_real_estate.mybohio_portal_layout">
+            <t t-set="page_name" t-value="'mybohio_salesperson_opportunities'"/>
+
+            <div class="mybohio-opportunities">
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <h1 class="text-danger mb-2">Mis Oportunidades</h1>
+                        <p class="text-muted">Gestiona todas tus oportunidades de venta</p>
+                    </div>
+                </div>
+
+                <t t-if="opportunities">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="table table-hover mb-0">
+                                    <thead class="bg-light">
+                                        <tr>
+                                            <th>Referencia</th>
+                                            <th>Cliente</th>
+                                            <th>Etapa</th>
+                                            <th>Propiedad</th>
+                                            <th>Valor Esperado</th>
+                                            <th>Probabilidad</th>
+                                            <th>Fecha Límite</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-foreach="opportunities" t-as="opp">
+                                            <tr>
+                                                <td>
+                                                    <small class="text-muted">#<span t-esc="opp.id"/></small>
+                                                </td>
+                                                <td>
+                                                    <strong t-esc="opp.partner_id.name if opp.partner_id else 'Sin cliente'"/>
+                                                    <br/>
+                                                    <small class="text-muted" t-esc="opp.phone or ''"/>
+                                                </td>
+                                                <td>
+                                                    <span t-if="opp.stage_id.is_won" class="badge bg-success">
+                                                        <i class="fa fa-check-circle"></i> Ganada
+                                                    </span>
+                                                    <span t-elif="not opp.active" class="badge bg-danger">
+                                                        <i class="fa fa-times-circle"></i> Perdida
+                                                    </span>
+                                                    <span t-else="" class="badge bg-info" t-esc="opp.stage_id.name if opp.stage_id else 'Sin etapa'"/>
+                                                </td>
+                                                <td>
+                                                    <span t-if="opp.property_id" t-esc="opp.property_id.name"/>
+                                                    <span t-else="" class="text-muted">-</span>
+                                                </td>
+                                                <td>
+                                                    <strong t-esc="'{:,.0f}'.format(opp.expected_revenue)"/>
+                                                </td>
+                                                <td>
+                                                    <div class="progress" style="height: 20px;">
+                                                        <div class="progress-bar" role="progressbar"
+                                                             t-att-style="'width: ' + str(opp.probability) + '%'"
+                                                             t-att-aria-valuenow="opp.probability"
+                                                             aria-valuemin="0" aria-valuemax="100">
+                                                            <span t-esc="opp.probability"/>%
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <span t-if="opp.date_deadline" t-esc="opp.date_deadline.strftime('%d/%m/%Y')"/>
+                                                    <span t-else="" class="text-muted">-</span>
+                                                </td>
+                                                <td class="text-end">
+                                                    <a t-attf-href="/mybohio/salesperson/opportunity/{{opp.id}}" class="btn btn-sm btn-outline-danger">
+                                                        <i class="fa fa-eye"></i> Ver
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+                <t t-else="">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body text-center py-5">
+                            <i class="fa fa-inbox text-muted mb-3" style="font-size: 4rem;"></i>
+                            <h4>No tienes oportunidades</h4>
+                            <p class="text-muted">Las oportunidades asignadas aparecerán aquí</p>
+                        </div>
+                    </div>
+                </t>
+            </div>
+        </t>
+    </template>
+</odoo>

@@ -22,8 +22,12 @@ class BohioPortal(CustomerPortal):
     def _get_user_role(self, partner):
         """
         Determina el rol del usuario en el portal
-        Returns: dict con is_owner, is_tenant, properties_count, tenant_contracts_count
+        Returns: dict con is_owner, is_tenant, is_salesperson, properties_count, etc.
         """
+        # Verificar si es vendedor/agente
+        user = request.env.user
+        is_salesperson = user.has_group('sales_team.group_sale_salesman')
+
         # Verificar si es propietario
         owned_properties = request.env['product.template'].sudo().search([
             ('is_property', '=', True),
@@ -32,14 +36,6 @@ class BohioPortal(CustomerPortal):
             ('owners_lines.partner_id', '=', partner.id)
         ])
 
-        _logger.info(f"Portal Owner Debug - Partner ID: {partner.id}, Partner Name: {partner.name}")
-        _logger.info(f"Portal Owner Debug - Properties found: {len(owned_properties)}")
-        _logger.info(f"Portal Owner Debug - Property IDs: {owned_properties.ids}")
-
-        # Verificar total de propiedades en el sistema
-        total_properties = request.env['product.template'].sudo().search_count([('is_property', '=', True)])
-        _logger.info(f"Portal Owner Debug - Total properties in system: {total_properties}")
-
         # Verificar si es arrendatario
         tenant_contracts = request.env['property.contract'].search([
             ('partner_id', '=', partner.id),
@@ -47,13 +43,23 @@ class BohioPortal(CustomerPortal):
             ('state', 'not in', ['draft', 'cancel'])
         ])
 
+        # Si es vendedor, obtener sus oportunidades
+        salesperson_opportunities = request.env['crm.lead']
+        if is_salesperson:
+            salesperson_opportunities = request.env['crm.lead'].search([
+                ('user_id', '=', user.id)
+            ])
+
         return {
             'is_owner': len(owned_properties) > 0,
             'is_tenant': len(tenant_contracts) > 0,
+            'is_salesperson': is_salesperson,
             'properties_count': len(owned_properties),
             'tenant_contracts_count': len(tenant_contracts),
+            'opportunities_count': len(salesperson_opportunities),
             'owned_properties': owned_properties,
             'tenant_contracts': tenant_contracts,
+            'salesperson_opportunities': salesperson_opportunities,
         }
 
     @http.route('/mybohio', type='http', auth='user', website=True)
@@ -61,6 +67,10 @@ class BohioPortal(CustomerPortal):
         """Dashboard principal - redirige según rol"""
         partner = request.env.user.partner_id
         role_info = self._get_user_role(partner)
+
+        # Prioridad: Vendedor > Propietario > Arrendatario
+        if role_info['is_salesperson']:
+            return self.mybohio_salesperson_dashboard(**kw)
 
         # Si solo es arrendatario, mostrar dashboard de arrendatario
         if role_info['is_tenant'] and not role_info['is_owner']:
@@ -1199,3 +1209,218 @@ class BohioPortal(CustomerPortal):
         }
 
         return request.render('bohio_real_estate.mybohio_admin_portal_home', values)
+
+    # =================== SECCIÓN VENDEDORES ===================
+
+    @http.route('/mybohio/salesperson', type='http', auth='user', website=True)
+    def mybohio_salesperson_dashboard(self, **kw):
+        """Dashboard para vendedores"""
+        partner = request.env.user.partner_id
+        user = request.env.user
+        role_info = self._get_user_role(partner)
+
+        if not role_info['is_salesperson']:
+            return request.redirect('/mybohio')
+
+        # Estadísticas del vendedor
+        opportunities = role_info['salesperson_opportunities']
+
+        won_opportunities = opportunities.filtered(lambda o: o.stage_id.is_won)
+        lost_opportunities = opportunities.filtered(lambda o: o.type == 'opportunity' and not o.active)
+        active_opportunities = opportunities.filtered(lambda o: o.type == 'opportunity' and o.active and not o.stage_id.is_won)
+
+        total_expected_revenue = sum(opportunities.mapped('expected_revenue'))
+        total_won_revenue = sum(won_opportunities.mapped('expected_revenue'))
+
+        values = {
+            'page_name': 'mybohio_salesperson_dashboard',
+            'role_info': role_info,
+            'opportunities': opportunities,
+            'active_opportunities': active_opportunities,
+            'won_opportunities': won_opportunities,
+            'lost_opportunities': lost_opportunities,
+            'total_expected_revenue': total_expected_revenue,
+            'total_won_revenue': total_won_revenue,
+            'win_rate': (len(won_opportunities) / len(opportunities) * 100) if opportunities else 0,
+        }
+
+        return request.render('bohio_real_estate.mybohio_salesperson_dashboard', values)
+
+    @http.route('/mybohio/salesperson/opportunities', type='http', auth='user', website=True)
+    def mybohio_salesperson_opportunities(self, **kw):
+        """Lista de oportunidades del vendedor"""
+        partner = request.env.user.partner_id
+        role_info = self._get_user_role(partner)
+
+        if not role_info['is_salesperson']:
+            return request.redirect('/mybohio')
+
+        opportunities = role_info['salesperson_opportunities']
+
+        values = {
+            'page_name': 'mybohio_salesperson_opportunities',
+            'role_info': role_info,
+            'opportunities': opportunities,
+        }
+
+        return request.render('bohio_real_estate.mybohio_salesperson_opportunities', values)
+
+    @http.route('/mybohio/salesperson/opportunity/<int:opportunity_id>', type='http', auth='user', website=True)
+    def mybohio_salesperson_opportunity_detail(self, opportunity_id, **kw):
+        """Detalle de oportunidad"""
+        partner = request.env.user.partner_id
+        user = request.env.user
+        role_info = self._get_user_role(partner)
+
+        if not role_info['is_salesperson']:
+            return request.redirect('/mybohio')
+
+        opportunity = request.env['crm.lead'].search([
+            ('id', '=', opportunity_id),
+            ('user_id', '=', user.id)
+        ], limit=1)
+
+        if not opportunity:
+            return request.redirect('/mybohio/salesperson/opportunities')
+
+        values = {
+            'page_name': 'mybohio_salesperson_opportunity_detail',
+            'role_info': role_info,
+            'opportunity': opportunity,
+        }
+
+        return request.render('bohio_real_estate.mybohio_salesperson_opportunity_detail', values)
+
+    # =================== API ENDPOINTS PARA VENDEDORES ===================
+
+    @http.route('/api/salesperson/opportunities', type='json', auth='user', methods=['GET'], csrf=False)
+    def api_salesperson_opportunities(self, **kw):
+        """API: Obtener oportunidades del vendedor"""
+        user = request.env.user
+
+        if not user.has_group('sales_team.group_sale_salesman'):
+            return {'error': 'Unauthorized', 'message': 'No tiene permisos de vendedor'}
+
+        opportunities = request.env['crm.lead'].search([
+            ('user_id', '=', user.id)
+        ])
+
+        return {
+            'success': True,
+            'data': [{
+                'id': opp.id,
+                'name': opp.name,
+                'partner_name': opp.partner_id.name if opp.partner_id else '',
+                'expected_revenue': opp.expected_revenue,
+                'probability': opp.probability,
+                'stage': opp.stage_id.name if opp.stage_id else '',
+                'date_deadline': opp.date_deadline.isoformat() if opp.date_deadline else None,
+                'property_id': opp.property_id.id if opp.property_id else None,
+                'property_name': opp.property_id.name if opp.property_id else '',
+            } for opp in opportunities]
+        }
+
+    @http.route('/api/salesperson/opportunity/<int:opportunity_id>', type='json', auth='user', methods=['GET'], csrf=False)
+    def api_salesperson_opportunity_detail(self, opportunity_id, **kw):
+        """API: Obtener detalle de oportunidad"""
+        user = request.env.user
+
+        if not user.has_group('sales_team.group_sale_salesman'):
+            return {'error': 'Unauthorized'}
+
+        opportunity = request.env['crm.lead'].search([
+            ('id', '=', opportunity_id),
+            ('user_id', '=', user.id)
+        ], limit=1)
+
+        if not opportunity:
+            return {'error': 'Not found'}
+
+        return {
+            'success': True,
+            'data': {
+                'id': opportunity.id,
+                'name': opportunity.name,
+                'partner_id': opportunity.partner_id.id if opportunity.partner_id else None,
+                'partner_name': opportunity.partner_id.name if opportunity.partner_id else '',
+                'email_from': opportunity.email_from,
+                'phone': opportunity.phone,
+                'expected_revenue': opportunity.expected_revenue,
+                'probability': opportunity.probability,
+                'stage_id': opportunity.stage_id.id if opportunity.stage_id else None,
+                'stage_name': opportunity.stage_id.name if opportunity.stage_id else '',
+                'date_deadline': opportunity.date_deadline.isoformat() if opportunity.date_deadline else None,
+                'property_id': opportunity.property_id.id if opportunity.property_id else None,
+                'property_name': opportunity.property_id.name if opportunity.property_id else '',
+                'description': opportunity.description or '',
+            }
+        }
+
+    @http.route('/api/salesperson/opportunity/<int:opportunity_id>/update', type='json', auth='user', methods=['POST'], csrf=False)
+    def api_salesperson_opportunity_update(self, opportunity_id, **kw):
+        """API: Actualizar oportunidad"""
+        user = request.env.user
+
+        if not user.has_group('sales_team.group_sale_salesman'):
+            return {'error': 'Unauthorized'}
+
+        opportunity = request.env['crm.lead'].search([
+            ('id', '=', opportunity_id),
+            ('user_id', '=', user.id)
+        ], limit=1)
+
+        if not opportunity:
+            return {'error': 'Not found'}
+
+        # Campos permitidos para actualizar
+        allowed_fields = {
+            'name': kw.get('name'),
+            'phone': kw.get('phone'),
+            'email_from': kw.get('email_from'),
+            'expected_revenue': kw.get('expected_revenue'),
+            'probability': kw.get('probability'),
+            'date_deadline': kw.get('date_deadline'),
+            'description': kw.get('description'),
+        }
+
+        # Filtrar solo los campos que se enviaron
+        update_vals = {k: v for k, v in allowed_fields.items() if v is not None}
+
+        if update_vals:
+            opportunity.write(update_vals)
+
+        return {
+            'success': True,
+            'message': 'Oportunidad actualizada correctamente',
+            'data': {'id': opportunity.id, 'name': opportunity.name}
+        }
+
+    @http.route('/api/salesperson/opportunity/<int:opportunity_id>/add_note', type='json', auth='user', methods=['POST'], csrf=False)
+    def api_salesperson_opportunity_add_note(self, opportunity_id, note, **kw):
+        """API: Agregar nota a oportunidad"""
+        user = request.env.user
+
+        if not user.has_group('sales_team.group_sale_salesman'):
+            return {'error': 'Unauthorized'}
+
+        opportunity = request.env['crm.lead'].search([
+            ('id', '=', opportunity_id),
+            ('user_id', '=', user.id)
+        ], limit=1)
+
+        if not opportunity:
+            return {'error': 'Not found'}
+
+        if not note:
+            return {'error': 'Note is required'}
+
+        opportunity.message_post(
+            body=note,
+            message_type='comment',
+            subtype_xmlid='mail.mt_note'
+        )
+
+        return {
+            'success': True,
+            'message': 'Nota agregada correctamente'
+        }

@@ -23,6 +23,7 @@
         "views/view_installment_template.xml",
         "views/view_project_worksite.xml",
         "views/view_property.xml",
+        "views/property_image_views.xml",
         "views/news_contracts.xml",
         "views/view_property_contract.xml",
         "views/view_property_reservation.xml",

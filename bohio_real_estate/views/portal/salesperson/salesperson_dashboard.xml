@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="mybohio_salesperson_dashboard" name="Salesperson Dashboard">
+        <t t-call="bohio_real_estate.mybohio_portal_layout">
+            <t t-set="page_name" t-value="'mybohio_salesperson'"/>
+
+            <div class="mybohio-dashboard">
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <h1 class="text-danger mb-2">Panel de Vendedor</h1>
+                        <p class="text-muted">Gestiona tus oportunidades y clientes</p>
+                    </div>
+                </div>
+
+                <!-- Tarjetas de Resumen -->
+                <div class="row mb-4">
+                    <div class="col-md-3 mb-3">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-body text-center">
+                                <i class="fa fa-handshake text-warning mb-2" style="font-size: 2.5rem;"></i>
+                                <h3 class="mb-0" t-esc="len(active_opportunities)"/>
+                                <p class="text-muted mb-0">Oportunidades Activas</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-body text-center">
+                                <i class="fa fa-trophy text-success mb-2" style="font-size: 2.5rem;"></i>
+                                <h3 class="mb-0" t-esc="len(won_opportunities)"/>
+                                <p class="text-muted mb-0">Ganadas</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-body text-center">
+                                <i class="fa fa-dollar-sign text-info mb-2" style="font-size: 2.5rem;"></i>
+                                <h3 class="mb-0">
+                                    <t t-esc="'{:,.0f}'.format(total_expected_revenue)"/>
+                                </h3>
+                                <p class="text-muted mb-0">Ingresos Esperados</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-body text-center">
+                                <i class="fa fa-percent text-primary mb-2" style="font-size: 2.5rem;"></i>
+                                <h3 class="mb-0">
+                                    <t t-esc="'{:.1f}%'.format(win_rate)"/>
+                                </h3>
+                                <p class="text-muted mb-0">Tasa de Conversión</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Oportunidades Activas -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-header bg-white border-bottom">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <h5 class="mb-0">Oportunidades Activas</h5>
+                                    <a href="/mybohio/salesperson/opportunities" class="btn btn-sm btn-danger">
+                                        Ver Todas
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <t t-if="active_opportunities">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover mb-0">
+                                            <thead>
+                                                <tr>
+                                                    <th>Cliente</th>
+                                                    <th>Etapa</th>
+                                                    <th>Propiedad</th>
+                                                    <th>Valor Esperado</th>
+                                                    <th>Probabilidad</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <t t-foreach="active_opportunities[:5]" t-as="opp">
+                                                    <tr>
+                                                        <td>
+                                                            <strong t-esc="opp.partner_id.name if opp.partner_id else 'Sin cliente'"/>
+                                                        </td>
+                                                        <td>
+                                                            <span class="badge bg-info" t-esc="opp.stage_id.name if opp.stage_id else 'Sin etapa'"/>
+                                                        </td>
+                                                        <td>
+                                                            <span t-esc="opp.property_id.name if opp.property_id else '-'"/>
+                                                        </td>
+                                                        <td>
+                                                            <t t-esc="'{:,.0f}'.format(opp.expected_revenue)"/>
+                                                        </td>
+                                                        <td>
+                                                            <span t-esc="opp.probability"/>%
+                                                        </td>
+                                                        <td class="text-end">
+                                                            <a t-attf-href="/mybohio/salesperson/opportunity/{{opp.id}}" class="btn btn-sm btn-outline-danger">
+                                                                Ver
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                </t>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </t>
+                                <t t-else="">
+                                    <div class="text-center text-muted py-4">
+                                        <i class="fa fa-inbox fa-3x mb-3"></i>
+                                        <p>No tienes oportunidades activas</p>
+                                    </div>
+                                </t>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Oportunidades Ganadas Recientes -->
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-header bg-white border-bottom">
+                                <h5 class="mb-0">Oportunidades Ganadas Recientes</h5>
+                            </div>
+                            <div class="card-body">
+                                <t t-if="won_opportunities">
+                                    <div class="list-group list-group-flush">
+                                        <t t-foreach="won_opportunities[:3]" t-as="opp">
+                                            <div class="list-group-item border-0 px-0">
+                                                <div class="d-flex justify-content-between">
+                                                    <div>
+                                                        <h6 class="mb-1" t-esc="opp.name"/>
+                                                        <small class="text-muted" t-esc="opp.partner_id.name if opp.partner_id else 'Sin cliente'"/>
+                                                    </div>
+                                                    <div class="text-end">
+                                                        <strong class="text-success" t-esc="'{:,.0f}'.format(opp.expected_revenue)"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </t>
+                                    </div>
+                                </t>
+                                <t t-else="">
+                                    <div class="text-center text-muted py-3">
+                                        <p class="mb-0">No hay oportunidades ganadas aún</p>
+                                    </div>
+                                </t>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

@@ -10,10 +10,13 @@
                     <div class="col-lg-2 mybohio-sidebar bg-light vh-100 position-fixed">
                         <div class="p-3">
                             <div class="mybohio-logo mb-4 text-center">
-                                <h3 class="text-danger fw-bold">BOHIO</h3>
-                                <small class="text-muted">Montería, Córdoba</small>
+                                <img src="/bohio_real_estate/static/img/logo-horizontal-bohio.png"
+                                     alt="BOHIO Logo"
+                                     class="img-fluid mb-2"
+                                     style="max-width: 180px;"/>
                                 <br/>
-                                <small class="text-danger"><strong>Centro de operaciones inmobiliarias</strong></small>
+                                <small class="text-muted d-block">Montería, Córdoba</small>
+                                <small class="text-danger"><strong>Portal MyBOHIO</strong></small>
                             </div>
 
                             <!-- Menú Propietario -->
@@ -74,6 +77,30 @@
                                         </a>
                                         <a t-att-class="'nav-link ' + ('active' if page_name == 'mybohio_tenant_tickets' else '')" href="/mybohio/tenant/tickets">
                                             <i class="fa fa-ticket"></i> PQRS
+                                        </a>
+                                    </nav>
+                                </div>
+                            </t>
+
+                            <!-- Menú Vendedor/Agente -->
+                            <t t-if="role_info.get('is_salesperson')">
+                                <div class="mybohio-menu-section mb-4">
+                                    <h6 class="text-uppercase text-muted mb-3">
+                                        <i class="fa fa-briefcase"></i> Vendedor
+                                    </h6>
+                                    <nav class="nav flex-column">
+                                        <a t-att-class="'nav-link ' + ('active' if page_name == 'mybohio_salesperson' else '')" href="/mybohio/salesperson">
+                                            <i class="fa fa-dashboard"></i> Dashboard
+                                        </a>
+                                        <a t-att-class="'nav-link ' + ('active' if 'salesperson_opportunities' in page_name else '')" href="/mybohio/salesperson/opportunities">
+                                            <i class="fa fa-handshake"></i> Mis Oportunidades
+                                            <span class="badge bg-warning float-end" t-esc="role_info.get('opportunities_count', 0)"/>
+                                        </a>
+                                        <a t-att-class="'nav-link ' + ('active' if page_name == 'mybohio_salesperson_clients' else '')" href="/mybohio/salesperson/clients">
+                                            <i class="fa fa-users"></i> Mis Clientes
+                                        </a>
+                                        <a t-att-class="'nav-link ' + ('active' if page_name == 'mybohio_salesperson_properties' else '')" href="/mybohio/salesperson/properties">
+                                            <i class="fa fa-building"></i> Propiedades Asignadas
                                         </a>
                                     </nav>
                                 </div>

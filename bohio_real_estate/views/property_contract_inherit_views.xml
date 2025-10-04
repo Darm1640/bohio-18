@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Herencia de property.contract para agregar checklist de documentos -->
+    <record id="view_property_contract_form_inherit_documents" model="ir.ui.view">
+        <field name="name">property.contract.form.inherit.documents</field>
+        <field name="model">property.contract</field>
+        <field name="inherit_id" ref="real_estate_bits.view_property_contract_form"/>
+        <field name="arch" type="xml">
+
+            <!-- Agregar campos invisibles necesarios -->
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="contract_type_id" invisible="1"/>
+                <field name="tenant_employment_type" invisible="1"/>
+                <field name="tenant_is_foreigner" invisible="1"/>
+            </xpath>
+
+            <!-- Agregar botones en button_box -->
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_generate_document_checklist" type="object"
+                        class="oe_stat_button" icon="fa-refresh"
+                        invisible="not contract_type_id">
+                    <div class="o_field_widget o_stat_info">
+                        <span class="o_stat_text">Regenerar Checklist</span>
+                    </div>
+                </button>
+                <button name="action_request_contract_signature" type="object"
+                        class="oe_stat_button" icon="fa-file-pdf-o"
+                        invisible="not contract_type_id or signature_state in ('signed', 'pending')">
+                    <div class="o_field_widget o_stat_info">
+                        <span class="o_stat_text">Solicitar Firma</span>
+                    </div>
+                </button>
+                <button name="action_open_generated_contract" type="object"
+                        class="oe_stat_button" icon="fa-download"
+                        invisible="not generated_contract_id">
+                    <div class="o_field_widget o_stat_info">
+                        <span class="o_stat_text">Ver Contrato</span>
+                    </div>
+                </button>
+            </xpath>
+
+            <!-- Agregar grupo de Tipo de Contrato antes del notebook -->
+            <xpath expr="//page[@name='property_lines']" position="before">
+                <group name="contract_type_group" string="Tipo de Contrato">
+                    <group>
+                        <field name="contract_type_id" options="{'no_create': True, 'no_open': True}"/>
+                        <field name="tenant_employment_type"/>
+                        <field name="tenant_is_foreigner"/>
+                    </group>
+                    <group>
+                        <field name="signature_state" widget="badge"
+                               decoration-muted="signature_state == 'not_required'"
+                               decoration-warning="signature_state == 'pending'"
+                               decoration-success="signature_state == 'signed'"
+                               decoration-danger="signature_state == 'rejected'"/>
+                        <field name="generated_contract_id" invisible="1"/>
+                    </group>
+                </group>
+            </xpath>
+
+            <!-- Agregar página de Documentos Requeridos -->
+            <xpath expr="//page[@name='property_lines']" position="after">
+                <page string="Documentos Requeridos" name="documents" invisible="not contract_type_id">
+                    <group>
+                        <group>
+                            <field name="document_progress" widget="progressbar"/>
+                        </group>
+                        <group>
+                            <label for="required_docs_count" string="Documentos"/>
+                            <div>
+                                <field name="required_docs_count" class="oe_inline"/> /
+                                <field name="received_docs_count" class="oe_inline"/>
+                            </div>
+                        </group>
+                    </group>
+                    <field name="document_checklist_ids" mode="tree,form">
+                        <list editable="bottom" decoration-success="is_verified" decoration-warning="is_received and not is_verified" decoration-muted="not is_required">
+                            <field name="sequence" widget="handle"/>
+                            <field name="name"/>
+                            <field name="document_category_id" widget="badge"/>
+                            <field name="is_required" widget="boolean_toggle" readonly="1"/>
+                            <field name="is_optional" widget="boolean_toggle" readonly="1"/>
+                            <field name="is_received" widget="boolean_toggle"/>
+                            <field name="received_date" readonly="1"/>
+                            <field name="is_verified" widget="boolean_toggle"/>
+                            <field name="verified_date" readonly="1"/>
+                            <field name="verified_by_id" readonly="1"/>
+                            <field name="attachment_count"/>
+                            <button name="action_mark_received" type="object" string="" icon="fa-check"
+                                    title="Marcar como Recibido" invisible="is_received"/>
+                            <button name="action_mark_verified" type="object" string="" icon="fa-check-circle"
+                                    title="Verificar" invisible="is_verified or not is_received"/>
+                            <button name="action_upload_document" type="object" string="" icon="fa-upload"
+                                    title="Subir Documento"/>
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+
+        </field>
+    </record>
+
+</odoo>
