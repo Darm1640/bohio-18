@@ -77,6 +77,8 @@
         'views/portal/salesperson/salesperson_dashboard.xml',
         'views/portal/salesperson/salesperson_opportunities.xml',
         'views/portal/salesperson/salesperson_opportunity_detail.xml',
+        'views/portal/salesperson/salesperson_clients.xml',
+        'views/portal/salesperson/salesperson_properties.xml',
 
         # Portal Templates
         'views/portal_templates.xml',

@@ -1,0 +1,394 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Lista de Clientes -->
+    <template id="mybohio_salesperson_clients" name="Salesperson Clients">
+        <t t-call="bohio_real_estate.mybohio_portal_layout">
+            <t t-set="page_name" t-value="'mybohio_salesperson_clients'"/>
+
+            <div class="mybohio-clients h-100">
+                <!-- Header -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <div class="p-4 bg-light rounded-3">
+                            <h1 class="text-danger mb-2">
+                                <i class="fa fa-users"></i> Mis Clientes
+                            </h1>
+                            <p class="text-muted mb-0">Gestiona la información de tus clientes</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Barra de búsqueda -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <form method="get" action="/mybohio/salesperson/clients" class="card border-0 shadow-sm">
+                            <div class="card-body">
+                                <div class="input-group">
+                                    <span class="input-group-text bg-white border-end-0">
+                                        <i class="fa fa-search text-muted"></i>
+                                    </span>
+                                    <input type="text" class="form-control border-start-0 ps-0"
+                                           name="search" t-att-value="search"
+                                           placeholder="Buscar por nombre, email o teléfono..."/>
+                                    <button type="submit" class="btn btn-danger">Buscar</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Lista de clientes -->
+                <div class="row">
+                    <div class="col-12">
+                        <t t-if="clients">
+                            <div class="card border-0 shadow-sm">
+                                <div class="card-body p-0">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover align-middle mb-0">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th class="px-4 py-3">Cliente</th>
+                                                    <th class="py-3">Contacto</th>
+                                                    <th class="py-3 text-center">Oportunidades</th>
+                                                    <th class="py-3 text-center">Propiedades</th>
+                                                    <th class="py-3 text-center">Contratos</th>
+                                                    <th class="py-3 text-end">Ingresos</th>
+                                                    <th class="py-3 text-end px-4">Acciones</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <t t-foreach="clients" t-as="client">
+                                                    <t t-set="stats" t-value="client_stats.get(client.id, {})"/>
+                                                    <tr class="border-bottom">
+                                                        <td class="px-4">
+                                                            <div class="d-flex align-items-center">
+                                                                <div class="me-3">
+                                                                    <t t-if="client.image_128">
+                                                                        <img t-att-src="'data:image/png;base64,' + client.image_128.decode()"
+                                                                             class="rounded-circle"
+                                                                             style="width: 48px; height: 48px; object-fit: cover;"/>
+                                                                    </t>
+                                                                    <t t-else="">
+                                                                        <div class="rounded-circle bg-danger text-white d-flex align-items-center justify-content-center"
+                                                                             style="width: 48px; height: 48px; font-size: 20px; font-weight: bold;">
+                                                                            <span t-esc="client.name[0].upper() if client.name else '?'"/>
+                                                                        </div>
+                                                                    </t>
+                                                                </div>
+                                                                <div>
+                                                                    <strong class="d-block" t-esc="client.name"/>
+                                                                    <small class="text-muted" t-if="client.vat">
+                                                                        <i class="fa fa-id-card fa-xs"></i> <span t-esc="client.vat"/>
+                                                                    </small>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div>
+                                                                <small class="d-block" t-if="client.email">
+                                                                    <i class="fa fa-envelope text-muted fa-xs"></i> <span t-esc="client.email"/>
+                                                                </small>
+                                                                <small class="d-block" t-if="client.phone">
+                                                                    <i class="fa fa-phone text-muted fa-xs"></i> <span t-esc="client.phone"/>
+                                                                </small>
+                                                            </div>
+                                                        </td>
+                                                        <td class="text-center">
+                                                            <div class="d-flex flex-column align-items-center">
+                                                                <span class="badge bg-warning text-dark px-3 py-2 mb-1" t-esc="stats.get('total_opportunities', 0)"/>
+                                                                <small class="text-muted" t-if="stats.get('won_opportunities', 0) > 0">
+                                                                    <i class="fa fa-check text-success"></i> <span t-esc="stats.get('won_opportunities', 0)"/> ganadas
+                                                                </small>
+                                                            </div>
+                                                        </td>
+                                                        <td class="text-center">
+                                                            <span class="badge bg-primary px-3 py-2" t-esc="stats.get('properties_count', 0)"/>
+                                                        </td>
+                                                        <td class="text-center">
+                                                            <span class="badge bg-info px-3 py-2" t-esc="stats.get('active_contracts', 0)"/>
+                                                        </td>
+                                                        <td class="text-end">
+                                                            <strong class="text-success" t-esc="'${:,.0f}'.format(stats.get('total_revenue', 0))"/>
+                                                        </td>
+                                                        <td class="text-end px-4">
+                                                            <a t-attf-href="/mybohio/salesperson/client/{{client.id}}"
+                                                               class="btn btn-sm btn-danger">
+                                                                <i class="fa fa-eye"></i> Ver Detalle
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                </t>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <!-- Paginación -->
+                                <div class="card-footer bg-light" t-if="pager.get('page_count', 1) > 1">
+                                    <t t-call="portal.pager"/>
+                                </div>
+                            </div>
+                        </t>
+                        <t t-else="">
+                            <div class="card border-0 shadow-sm">
+                                <div class="card-body text-center py-5">
+                                    <div class="mb-4">
+                                        <i class="fa fa-users text-muted" style="font-size: 5rem; opacity: 0.3;"></i>
+                                    </div>
+                                    <h3 class="text-muted">No se encontraron clientes</h3>
+                                    <p class="text-muted mb-4">Los clientes de tus oportunidades aparecerán aquí</p>
+                                    <a href="/mybohio/salesperson" class="btn btn-danger">
+                                        <i class="fa fa-arrow-left"></i> Volver al Dashboard
+                                    </a>
+                                </div>
+                            </div>
+                        </t>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- Detalle de Cliente -->
+    <template id="mybohio_salesperson_client_detail" name="Salesperson Client Detail">
+        <t t-call="bohio_real_estate.mybohio_portal_layout">
+            <t t-set="page_name" t-value="'mybohio_salesperson_client_detail'"/>
+
+            <div class="mybohio-client-detail h-100">
+                <!-- Header con información del cliente -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <div class="card border-0 shadow-sm bg-light">
+                            <div class="card-body p-4">
+                                <div class="d-flex align-items-center mb-3">
+                                    <a href="/mybohio/salesperson/clients" class="btn btn-sm btn-outline-secondary me-3">
+                                        <i class="fa fa-arrow-left"></i> Volver
+                                    </a>
+                                    <div class="flex-grow-1">
+                                        <h1 class="text-danger mb-1">
+                                            <i class="fa fa-user"></i> <span t-esc="client.name"/>
+                                        </h1>
+                                        <p class="text-muted mb-0">Información detallada del cliente</p>
+                                    </div>
+                                </div>
+
+                                <!-- Info básica -->
+                                <div class="row mt-4">
+                                    <div class="col-md-3" t-if="client.vat">
+                                        <small class="text-muted d-block">Identificación</small>
+                                        <strong t-esc="client.vat"/>
+                                    </div>
+                                    <div class="col-md-3" t-if="client.email">
+                                        <small class="text-muted d-block">Email</small>
+                                        <strong t-esc="client.email"/>
+                                    </div>
+                                    <div class="col-md-3" t-if="client.phone">
+                                        <small class="text-muted d-block">Teléfono</small>
+                                        <strong t-esc="client.phone"/>
+                                    </div>
+                                    <div class="col-md-3" t-if="client.city">
+                                        <small class="text-muted d-block">Ciudad</small>
+                                        <strong t-esc="client.city"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tabs de información -->
+                <div class="row">
+                    <div class="col-12">
+                        <ul class="nav nav-tabs mb-4" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" data-bs-toggle="tab" href="#opportunities_tab">
+                                    <i class="fa fa-handshake"></i> Oportunidades (<t t-esc="len(opportunities)"/>)
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-bs-toggle="tab" href="#properties_tab">
+                                    <i class="fa fa-home"></i> Propiedades (<t t-esc="len(properties)"/>)
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-bs-toggle="tab" href="#contracts_tab">
+                                    <i class="fa fa-file-contract"></i> Contratos (<t t-esc="len(owner_contracts) + len(tenant_contracts)"/>)
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-bs-toggle="tab" href="#tickets_tab">
+                                    <i class="fa fa-ticket"></i> PQRS (<t t-esc="len(tickets)"/>)
+                                </a>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content">
+                            <!-- Oportunidades -->
+                            <div class="tab-pane fade show active" id="opportunities_tab">
+                                <t t-if="opportunities">
+                                    <t t-foreach="opportunities" t-as="opp">
+                                        <div class="card mb-3 border-0 shadow-sm">
+                                            <div class="card-body">
+                                                <div class="d-flex justify-content-between align-items-start">
+                                                    <div>
+                                                        <h5 class="mb-1"><span t-esc="opp.name"/></h5>
+                                                        <p class="text-muted mb-2" t-esc="opp.description or 'Sin descripción'"/>
+                                                        <div class="d-flex gap-2">
+                                                            <span t-if="opp.stage_id" class="badge bg-info"><span t-esc="opp.stage_id.name"/></span>
+                                                            <span class="badge bg-warning text-dark"><i class="fa fa-percentage"></i> <span t-esc="opp.probability"/>%</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="text-end">
+                                                        <strong class="text-danger fs-5" t-esc="'${:,.0f}'.format(opp.expected_revenue)"/>
+                                                        <br/>
+                                                        <small class="text-muted" t-if="opp.date_deadline">
+                                                            <i class="fa fa-calendar"></i> <span t-esc="opp.date_deadline.strftime('%d/%m/%Y')"/>
+                                                        </small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </t>
+                                </t>
+                                <t t-else="">
+                                    <div class="alert alert-info">
+                                        <i class="fa fa-info-circle"></i> No hay oportunidades para este cliente
+                                    </div>
+                                </t>
+                            </div>
+
+                            <!-- Propiedades -->
+                            <div class="tab-pane fade" id="properties_tab">
+                                <t t-if="properties">
+                                    <div class="row">
+                                        <t t-foreach="properties" t-as="prop">
+                                            <div class="col-md-6 mb-3">
+                                                <div class="card h-100 border-0 shadow-sm">
+                                                    <div class="card-body">
+                                                        <h5><i class="fa fa-home text-danger"></i> <span t-esc="prop.name"/></h5>
+                                                        <p class="text-muted mb-2" t-if="prop.property_address">
+                                                            <i class="fa fa-map-marker"></i> <span t-esc="prop.property_address"/>
+                                                        </p>
+                                                        <div class="row mt-3">
+                                                            <div class="col-6">
+                                                                <small class="text-muted d-block">Código</small>
+                                                                <strong t-esc="prop.property_code or '-'"/>
+                                                            </div>
+                                                            <div class="col-6">
+                                                                <small class="text-muted d-block">Estado</small>
+                                                                <span t-if="prop.property_state == 'available'" class="badge bg-success">Disponible</span>
+                                                                <span t-elif="prop.property_state == 'rented'" class="badge bg-warning text-dark">Arrendada</span>
+                                                                <span t-else="" class="badge bg-secondary" t-esc="prop.property_state or 'N/A'"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </t>
+                                    </div>
+                                </t>
+                                <t t-else="">
+                                    <div class="alert alert-info">
+                                        <i class="fa fa-info-circle"></i> Este cliente no tiene propiedades registradas
+                                    </div>
+                                </t>
+                            </div>
+
+                            <!-- Contratos -->
+                            <div class="tab-pane fade" id="contracts_tab">
+                                <t t-if="owner_contracts or tenant_contracts">
+                                    <t t-if="owner_contracts">
+                                        <h5 class="mb-3">Como Propietario</h5>
+                                        <t t-foreach="owner_contracts" t-as="contract">
+                                            <div class="card mb-3 border-0 shadow-sm">
+                                                <div class="card-body">
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <strong><span t-esc="contract.property_id.name"/></strong>
+                                                            <p class="text-muted mb-0">Arrendatario: <span t-esc="contract.partner_id.name"/></p>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <small class="text-muted d-block">Renta Mensual</small>
+                                                            <strong class="text-danger" t-esc="'${:,.0f}'.format(contract.rent or 0)"/>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <small class="text-muted d-block">Estado</small>
+                                                            <span class="badge bg-success" t-if="contract.state == 'confirmed'">Activo</span>
+                                                            <span class="badge bg-warning" t-elif="contract.state == 'renew'">Renovación</span>
+                                                            <span class="badge bg-secondary" t-else="" t-esc="contract.state"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </t>
+                                    </t>
+
+                                    <t t-if="tenant_contracts">
+                                        <h5 class="mb-3 mt-4">Como Arrendatario</h5>
+                                        <t t-foreach="tenant_contracts" t-as="contract">
+                                            <div class="card mb-3 border-0 shadow-sm">
+                                                <div class="card-body">
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <strong><span t-esc="contract.property_id.name"/></strong>
+                                                            <p class="text-muted mb-0">Propietario: <span t-esc="contract.property_id.partner_id.name"/></p>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <small class="text-muted d-block">Renta Mensual</small>
+                                                            <strong class="text-danger" t-esc="'${:,.0f}'.format(contract.rent or 0)"/>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <small class="text-muted d-block">Estado</small>
+                                                            <span class="badge bg-success" t-if="contract.state == 'confirmed'">Activo</span>
+                                                            <span class="badge bg-warning" t-elif="contract.state == 'renew'">Renovación</span>
+                                                            <span class="badge bg-secondary" t-else="" t-esc="contract.state"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </t>
+                                    </t>
+                                </t>
+                                <t t-else="">
+                                    <div class="alert alert-info">
+                                        <i class="fa fa-info-circle"></i> No hay contratos activos para este cliente
+                                    </div>
+                                </t>
+                            </div>
+
+                            <!-- PQRS -->
+                            <div class="tab-pane fade" id="tickets_tab">
+                                <t t-if="tickets">
+                                    <t t-foreach="tickets" t-as="ticket">
+                                        <div class="card mb-3 border-0 shadow-sm">
+                                            <div class="card-body">
+                                                <div class="d-flex justify-content-between">
+                                                    <div>
+                                                        <h6><span t-esc="ticket.name"/></h6>
+                                                        <p class="text-muted mb-0" t-esc="ticket.description or 'Sin descripción'"/>
+                                                    </div>
+                                                    <div class="text-end">
+                                                        <span t-if="ticket.stage_id" class="badge"
+                                                              t-attf-class="badge-{{ticket.stage_id.is_close and 'success' or 'warning'}}"
+                                                              t-esc="ticket.stage_id.name"/>
+                                                        <br/>
+                                                        <small class="text-muted" t-esc="ticket.create_date.strftime('%d/%m/%Y')"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </t>
+                                </t>
+                                <t t-else="">
+                                    <div class="alert alert-info">
+                                        <i class="fa fa-info-circle"></i> No hay tickets registrados para este cliente
+                                    </div>
+                                </t>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

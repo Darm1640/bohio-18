@@ -1424,3 +1424,274 @@ class BohioPortal(CustomerPortal):
             'success': True,
             'message': 'Nota agregada correctamente'
         }
+
+    @http.route('/mybohio/salesperson/clients', type='http', auth='user', website=True)
+    def mybohio_salesperson_clients(self, page=1, search='', **kw):
+        """Lista de clientes del vendedor"""
+        partner = request.env.user.partner_id
+        user = request.env.user
+        role_info = self._get_user_role(partner)
+
+        if not role_info['is_salesperson']:
+            return request.redirect('/mybohio')
+
+        # Clientes del vendedor (desde oportunidades)
+        opportunities = role_info['salesperson_opportunities']
+        client_ids = opportunities.mapped('partner_id').ids
+
+        # Búsqueda
+        domain = [('id', 'in', client_ids)]
+        if search:
+            domain += ['|', '|',
+                       ('name', 'ilike', search),
+                       ('email', 'ilike', search),
+                       ('phone', 'ilike', search)]
+
+        Partner = request.env['res.partner']
+        client_count = Partner.search_count(domain)
+
+        pager = portal_pager(
+            url='/mybohio/salesperson/clients',
+            url_args={'search': search},
+            total=client_count,
+            page=page,
+            step=20
+        )
+
+        clients = Partner.search(domain, order='name asc', limit=20, offset=pager['offset'])
+
+        # Estadísticas por cliente
+        client_stats = {}
+        for client in clients:
+            client_opps = opportunities.filtered(lambda o: o.partner_id.id == client.id)
+            won_opps = client_opps.filtered(lambda o: o.stage_id.is_won if o.stage_id else False)
+            active_opps = client_opps.filtered(lambda o: o.active and not (o.stage_id.is_won if o.stage_id else False))
+
+            # Propiedades relacionadas
+            properties = request.env['product.template'].sudo().search([
+                ('is_property', '=', True),
+                '|',
+                ('partner_id', '=', client.id),
+                ('owners_lines.partner_id', '=', client.id)
+            ])
+
+            # Contratos activos
+            contracts = request.env['property.contract'].sudo().search([
+                ('partner_id', '=', client.id),
+                ('state', 'in', ['confirmed', 'renew'])
+            ])
+
+            client_stats[client.id] = {
+                'total_opportunities': len(client_opps),
+                'won_opportunities': len(won_opps),
+                'active_opportunities': len(active_opps),
+                'total_revenue': sum(won_opps.mapped('expected_revenue')),
+                'properties_count': len(properties),
+                'active_contracts': len(contracts),
+            }
+
+        values = {
+            'page_name': 'mybohio_salesperson_clients',
+            'role_info': role_info,
+            'clients': clients,
+            'client_stats': client_stats,
+            'pager': pager,
+            'search': search,
+        }
+
+        return request.render('bohio_real_estate.mybohio_salesperson_clients', values)
+
+    @http.route('/mybohio/salesperson/client/<int:client_id>', type='http', auth='user', website=True)
+    def mybohio_salesperson_client_detail(self, client_id, **kw):
+        """Detalle de cliente con propiedades y oportunidades"""
+        partner = request.env.user.partner_id
+        user = request.env.user
+        role_info = self._get_user_role(partner)
+
+        if not role_info['is_salesperson']:
+            return request.redirect('/mybohio')
+
+        # Verificar que el cliente pertenece al vendedor
+        opportunities = role_info['salesperson_opportunities']
+        client_opps = opportunities.filtered(lambda o: o.partner_id.id == client_id)
+
+        if not client_opps:
+            return request.redirect('/mybohio/salesperson/clients')
+
+        client = request.env['res.partner'].browse(client_id)
+
+        # Propiedades del cliente
+        properties = request.env['product.template'].sudo().search([
+            ('is_property', '=', True),
+            '|',
+            ('partner_id', '=', client.id),
+            ('owners_lines.partner_id', '=', client.id)
+        ])
+
+        # Contratos del cliente
+        owner_contracts = request.env['property.contract'].sudo().search([
+            ('property_id', 'in', properties.ids),
+            ('contract_type', '=', 'is_rental')
+        ])
+
+        tenant_contracts = request.env['property.contract'].sudo().search([
+            ('partner_id', '=', client.id),
+            ('contract_type', '=', 'is_rental')
+        ])
+
+        # Tickets/PQRS del cliente
+        tickets = request.env['helpdesk.ticket'].sudo().search([
+            ('partner_id', '=', client.id)
+        ], order='create_date desc', limit=10)
+
+        # Facturas
+        invoices = request.env['account.move'].sudo().search([
+            ('partner_id', '=', client.id),
+            ('move_type', 'in', ['out_invoice', 'out_refund']),
+            ('state', '=', 'posted')
+        ], order='invoice_date desc', limit=10)
+
+        # Pagos
+        payments = request.env['account.payment'].sudo().search([
+            ('partner_id', '=', client.id),
+            ('state', '=', 'posted')
+        ], order='date desc', limit=10)
+
+        values = {
+            'page_name': 'mybohio_salesperson_client_detail',
+            'role_info': role_info,
+            'client': client,
+            'opportunities': client_opps,
+            'properties': properties,
+            'owner_contracts': owner_contracts,
+            'tenant_contracts': tenant_contracts,
+            'tickets': tickets,
+            'invoices': invoices,
+            'payments': payments,
+        }
+
+        return request.render('bohio_real_estate.mybohio_salesperson_client_detail', values)
+
+    @http.route('/mybohio/salesperson/properties', type='http', auth='user', website=True)
+    def mybohio_salesperson_properties(self, page=1, search='', filter='all', **kw):
+        """Propiedades disponibles para vendedores"""
+        partner = request.env.user.partner_id
+        role_info = self._get_user_role(partner)
+
+        if not role_info['is_salesperson']:
+            return request.redirect('/mybohio')
+
+        # Dominio base: propiedades activas
+        domain = [('is_property', '=', True), ('active', '=', True)]
+
+        # Filtros
+        if filter == 'available':
+            domain.append(('is_rentable', '=', True))
+            # No tiene contrato activo
+            active_properties = request.env['property.contract'].sudo().search([
+                ('state', 'in', ['confirmed', 'renew']),
+                ('contract_type', '=', 'is_rental')
+            ]).mapped('property_id').ids
+            domain.append(('id', 'not in', active_properties))
+        elif filter == 'rented':
+            active_properties = request.env['property.contract'].sudo().search([
+                ('state', 'in', ['confirmed', 'renew']),
+                ('contract_type', '=', 'is_rental')
+            ]).mapped('property_id').ids
+            domain.append(('id', 'in', active_properties))
+        elif filter == 'managed':
+            domain.append(('managed_by_bohio', '=', True))
+
+        # Búsqueda
+        if search:
+            domain += ['|', '|',
+                       ('name', 'ilike', search),
+                       ('property_code', 'ilike', search),
+                       ('property_address', 'ilike', search)]
+
+        Property = request.env['product.template'].sudo()
+        property_count = Property.search_count(domain)
+
+        pager = portal_pager(
+            url='/mybohio/salesperson/properties',
+            url_args={'search': search, 'filter': filter},
+            total=property_count,
+            page=page,
+            step=20
+        )
+
+        properties = Property.search(domain, order='property_code asc', limit=20, offset=pager['offset'])
+
+        # Estado de cada propiedad
+        property_status = {}
+        for prop in properties:
+            contract = request.env['property.contract'].sudo().search([
+                ('property_id', '=', prop.id),
+                ('contract_type', '=', 'is_rental'),
+                ('state', 'in', ['confirmed', 'renew'])
+            ], limit=1)
+
+            property_status[prop.id] = {
+                'is_rented': bool(contract),
+                'tenant': contract.partner_id.name if contract else '',
+                'rent': contract.rent if contract else 0.0,
+                'contract_end': contract.period_end if contract else None,
+            }
+
+        values = {
+            'page_name': 'mybohio_salesperson_properties',
+            'role_info': role_info,
+            'properties': properties,
+            'property_status': property_status,
+            'pager': pager,
+            'search': search,
+            'current_filter': filter,
+        }
+
+        return request.render('bohio_real_estate.mybohio_salesperson_properties', values)
+
+    @http.route('/mybohio/salesperson/property/<int:property_id>', type='http', auth='user', website=True)
+    def mybohio_salesperson_property_detail(self, property_id, **kw):
+        """Detalle de propiedad para vendedores"""
+        partner = request.env.user.partner_id
+        role_info = self._get_user_role(partner)
+
+        if not role_info['is_salesperson']:
+            return request.redirect('/mybohio')
+
+        prop = request.env['product.template'].sudo().search([
+            ('id', '=', property_id),
+            ('is_property', '=', True)
+        ], limit=1)
+
+        if not prop:
+            return request.redirect('/mybohio/salesperson/properties')
+
+        # Contrato activo
+        contract = request.env['property.contract'].sudo().search([
+            ('property_id', '=', prop.id),
+            ('contract_type', '=', 'is_rental'),
+            ('state', 'in', ['confirmed', 'renew'])
+        ], limit=1)
+
+        # Histórico de contratos
+        historical_contracts = request.env['property.contract'].sudo().search([
+            ('property_id', '=', prop.id),
+            ('contract_type', '=', 'is_rental')
+        ], order='period_start desc')
+
+        # Oportunidades relacionadas con esta propiedad
+        opportunities = request.env['crm.lead'].search([
+            ('property_id', '=', prop.id)
+        ], order='create_date desc')
+
+        values = {
+            'page_name': 'mybohio_salesperson_property_detail',
+            'role_info': role_info,
+            'property': prop,
+            'contract': contract,
+            'historical_contracts': historical_contracts,
+            'opportunities': opportunities,
+        }
+
+        return request.render('bohio_real_estate.mybohio_salesperson_property_detail', values)

@@ -1,0 +1,435 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Lista de Propiedades -->
+    <template id="mybohio_salesperson_properties" name="Salesperson Properties">
+        <t t-call="bohio_real_estate.mybohio_portal_layout">
+            <t t-set="page_name" t-value="'mybohio_salesperson_properties'"/>
+
+            <div class="mybohio-properties h-100">
+                <!-- Header -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <div class="p-4 bg-light rounded-3">
+                            <h1 class="text-danger mb-2">
+                                <i class="fa fa-building"></i> Catálogo de Propiedades
+                            </h1>
+                            <p class="text-muted mb-0">Explora el inventario completo de propiedades</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Filtros y búsqueda -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-body">
+                                <form method="get" action="/mybohio/salesperson/properties">
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <div class="input-group">
+                                                <span class="input-group-text bg-white border-end-0">
+                                                    <i class="fa fa-search text-muted"></i>
+                                                </span>
+                                                <input type="text" class="form-control border-start-0 ps-0"
+                                                       name="search" t-att-value="search"
+                                                       placeholder="Buscar por nombre, código o dirección..."/>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <select name="filter" class="form-select">
+                                                <option value="all" t-att-selected="'selected' if current_filter == 'all' else None">
+                                                    Todas las Propiedades
+                                                </option>
+                                                <option value="available" t-att-selected="'selected' if current_filter == 'available' else None">
+                                                    Disponibles para Arrendar
+                                                </option>
+                                                <option value="rented" t-att-selected="'selected' if current_filter == 'rented' else None">
+                                                    Actualmente Arrendadas
+                                                </option>
+                                                <option value="managed" t-att-selected="'selected' if current_filter == 'managed' else None">
+                                                    Administradas por BOHIO
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <button type="submit" class="btn btn-danger w-100">
+                                                <i class="fa fa-filter"></i> Filtrar
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Lista de propiedades -->
+                <div class="row">
+                    <t t-if="properties">
+                        <t t-foreach="properties" t-as="prop">
+                            <t t-set="status" t-value="property_status.get(prop.id, {})"/>
+                            <div class="col-md-6 col-lg-4 mb-4">
+                                <div class="card h-100 border-0 shadow-sm hover-shadow">
+                                    <!-- Imagen -->
+                                    <div class="position-relative">
+                                        <t t-if="prop.property_images">
+                                            <img t-att-src="'/web/image/property.image/' + str(prop.property_images[0].id) + '/image'"
+                                                 class="card-img-top" style="height: 200px; object-fit: cover;"/>
+                                        </t>
+                                        <t t-else="">
+                                            <div class="bg-secondary d-flex align-items-center justify-content-center"
+                                                 style="height: 200px;">
+                                                <i class="fa fa-home fa-4x text-white opacity-50"></i>
+                                            </div>
+                                        </t>
+
+                                        <!-- Badge de estado -->
+                                        <div class="position-absolute top-0 end-0 m-2">
+                                            <span t-if="status.get('is_rented')" class="badge bg-warning text-dark">
+                                                <i class="fa fa-user-check"></i> Arrendada
+                                            </span>
+                                            <span t-else="" class="badge bg-success">
+                                                <i class="fa fa-check-circle"></i> Disponible
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <div class="card-body">
+                                        <!-- Título -->
+                                        <h5 class="card-title text-danger mb-2">
+                                            <span t-esc="prop.property_code or prop.name"/>
+                                        </h5>
+
+                                        <!-- Dirección -->
+                                        <p class="text-muted mb-3" t-if="prop.property_address">
+                                            <i class="fa fa-map-marker"></i> <span t-esc="prop.property_address"/>
+                                        </p>
+
+                                        <!-- Características -->
+                                        <div class="row mb-3">
+                                            <div class="col-4 text-center" t-if="prop.property_type_id">
+                                                <small class="text-muted d-block">Tipo</small>
+                                                <strong class="small" t-esc="prop.property_type_id.name"/>
+                                            </div>
+                                            <div class="col-4 text-center" t-if="prop.bedrooms">
+                                                <small class="text-muted d-block">Habitaciones</small>
+                                                <strong class="small">
+                                                    <i class="fa fa-bed"></i> <span t-esc="prop.bedrooms"/>
+                                                </strong>
+                                            </div>
+                                            <div class="col-4 text-center" t-if="prop.bathrooms">
+                                                <small class="text-muted d-block">Baños</small>
+                                                <strong class="small">
+                                                    <i class="fa fa-bath"></i> <span t-esc="prop.bathrooms"/>
+                                                </strong>
+                                            </div>
+                                        </div>
+
+                                        <!-- Info de arrendamiento -->
+                                        <div class="border-top pt-3">
+                                            <t t-if="status.get('is_rented')">
+                                                <div class="mb-2">
+                                                    <small class="text-muted d-block">Arrendatario</small>
+                                                    <strong class="small" t-esc="status.get('tenant', 'N/A')"/>
+                                                </div>
+                                                <div class="mb-2">
+                                                    <small class="text-muted d-block">Renta Mensual</small>
+                                                    <strong class="text-danger" t-esc="'${:,.0f}'.format(status.get('rent', 0))"/>
+                                                </div>
+                                                <div t-if="status.get('contract_end')">
+                                                    <small class="text-muted d-block">Termina</small>
+                                                    <strong class="small" t-esc="status.get('contract_end').strftime('%d/%m/%Y')"/>
+                                                </div>
+                                            </t>
+                                            <t t-else="">
+                                                <div class="mb-2">
+                                                    <small class="text-muted d-block">Canon Sugerido</small>
+                                                    <strong class="text-danger" t-esc="'${:,.0f}'.format(prop.suggested_rent or 0)"/>
+                                                </div>
+                                                <div>
+                                                    <span class="badge bg-success">
+                                                        <i class="fa fa-check"></i> Disponible
+                                                    </span>
+                                                </div>
+                                            </t>
+                                        </div>
+                                    </div>
+
+                                    <div class="card-footer bg-transparent border-top">
+                                        <a t-attf-href="/mybohio/salesperson/property/{{prop.id}}"
+                                           class="btn btn-sm btn-danger w-100">
+                                            <i class="fa fa-eye"></i> Ver Detalles
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+
+                        <!-- Paginación -->
+                        <div class="col-12" t-if="pager.get('page_count', 1) > 1">
+                            <div class="card border-0 shadow-sm">
+                                <div class="card-body">
+                                    <t t-call="portal.pager"/>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                    <t t-else="">
+                        <div class="col-12">
+                            <div class="card border-0 shadow-sm">
+                                <div class="card-body text-center py-5">
+                                    <div class="mb-4">
+                                        <i class="fa fa-building text-muted" style="font-size: 5rem; opacity: 0.3;"></i>
+                                    </div>
+                                    <h3 class="text-muted">No se encontraron propiedades</h3>
+                                    <p class="text-muted mb-4">Intenta ajustar los filtros de búsqueda</p>
+                                    <a href="/mybohio/salesperson/properties" class="btn btn-danger">
+                                        <i class="fa fa-refresh"></i> Ver Todas
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+            </div>
+
+            <style>
+                .hover-shadow {
+                    transition: all 0.3s ease;
+                }
+                .hover-shadow:hover {
+                    transform: translateY(-5px);
+                    box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15) !important;
+                }
+            </style>
+        </t>
+    </template>
+
+    <!-- Detalle de Propiedad -->
+    <template id="mybohio_salesperson_property_detail" name="Salesperson Property Detail">
+        <t t-call="bohio_real_estate.mybohio_portal_layout">
+            <t t-set="page_name" t-value="'mybohio_salesperson_property_detail'"/>
+
+            <div class="mybohio-property-detail h-100">
+                <!-- Header -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <div class="card border-0 shadow-sm bg-light">
+                            <div class="card-body p-4">
+                                <a href="/mybohio/salesperson/properties" class="btn btn-sm btn-outline-secondary mb-3">
+                                    <i class="fa fa-arrow-left"></i> Volver al Catálogo
+                                </a>
+                                <h1 class="text-danger mb-1">
+                                    <i class="fa fa-home"></i> <span t-esc="property.property_code or property.name"/>
+                                </h1>
+                                <p class="text-muted mb-0" t-if="property.property_address">
+                                    <i class="fa fa-map-marker"></i> <span t-esc="property.property_address"/>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <!-- Galería e información principal -->
+                    <div class="col-lg-8 mb-4">
+                        <!-- Galería de imágenes -->
+                        <div class="card border-0 shadow-sm mb-4">
+                            <div class="card-body p-0">
+                                <t t-if="property.property_images">
+                                    <div id="propertyCarousel" class="carousel slide" data-bs-ride="carousel">
+                                        <div class="carousel-inner">
+                                            <t t-foreach="property.property_images" t-as="img">
+                                                <div t-attf-class="carousel-item {{img_index == 0 and 'active' or ''}}">
+                                                    <img t-att-src="'/web/image/property.image/' + str(img.id) + '/image'"
+                                                         class="d-block w-100" style="height: 400px; object-fit: cover;"/>
+                                                </div>
+                                            </t>
+                                        </div>
+                                        <button class="carousel-control-prev" type="button" data-bs-target="#propertyCarousel" data-bs-slide="prev">
+                                            <span class="carousel-control-prev-icon"></span>
+                                        </button>
+                                        <button class="carousel-control-next" type="button" data-bs-target="#propertyCarousel" data-bs-slide="next">
+                                            <span class="carousel-control-next-icon"></span>
+                                        </button>
+                                    </div>
+                                </t>
+                                <t t-else="">
+                                    <div class="bg-secondary d-flex align-items-center justify-content-center" style="height: 400px;">
+                                        <i class="fa fa-home fa-5x text-white opacity-50"></i>
+                                    </div>
+                                </t>
+                            </div>
+                        </div>
+
+                        <!-- Descripción -->
+                        <div class="card border-0 shadow-sm mb-4" t-if="property.property_description">
+                            <div class="card-header bg-white">
+                                <h5 class="mb-0"><i class="fa fa-align-left text-danger"></i> Descripción</h5>
+                            </div>
+                            <div class="card-body">
+                                <p t-esc="property.property_description"/>
+                            </div>
+                        </div>
+
+                        <!-- Oportunidades relacionadas -->
+                        <div class="card border-0 shadow-sm" t-if="opportunities">
+                            <div class="card-header bg-white">
+                                <h5 class="mb-0"><i class="fa fa-handshake text-danger"></i> Oportunidades Relacionadas</h5>
+                            </div>
+                            <div class="card-body">
+                                <t t-foreach="opportunities" t-as="opp">
+                                    <div class="border-bottom pb-3 mb-3" t-if="not opp_last">
+                                        <div class="d-flex justify-content-between">
+                                            <div>
+                                                <strong t-esc="opp.name"/>
+                                                <p class="text-muted mb-0" t-if="opp.partner_id">
+                                                    Cliente: <span t-esc="opp.partner_id.name"/>
+                                                </p>
+                                            </div>
+                                            <div class="text-end">
+                                                <strong class="text-danger" t-esc="'${:,.0f}'.format(opp.expected_revenue)"/>
+                                                <br/>
+                                                <span class="badge bg-info" t-if="opp.stage_id" t-esc="opp.stage_id.name"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </t>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sidebar con información -->
+                    <div class="col-lg-4">
+                        <!-- Estado actual -->
+                        <div class="card border-0 shadow-sm mb-4">
+                            <div class="card-header bg-danger text-white">
+                                <h5 class="mb-0"><i class="fa fa-info-circle"></i> Estado Actual</h5>
+                            </div>
+                            <div class="card-body">
+                                <t t-if="contract">
+                                    <div class="alert alert-warning mb-3">
+                                        <strong><i class="fa fa-user-check"></i> Propiedad Arrendada</strong>
+                                    </div>
+                                    <div class="mb-3">
+                                        <small class="text-muted d-block">Arrendatario</small>
+                                        <strong t-esc="contract.partner_id.name"/>
+                                    </div>
+                                    <div class="mb-3">
+                                        <small class="text-muted d-block">Renta Mensual</small>
+                                        <strong class="text-danger fs-4" t-esc="'${:,.0f}'.format(contract.rent or 0)"/>
+                                    </div>
+                                    <div class="mb-3">
+                                        <small class="text-muted d-block">Periodo</small>
+                                        <strong>
+                                            <span t-esc="contract.period_start.strftime('%d/%m/%Y')"/> -
+                                            <span t-esc="contract.period_end.strftime('%d/%m/%Y')"/>
+                                        </strong>
+                                    </div>
+                                </t>
+                                <t t-else="">
+                                    <div class="alert alert-success mb-3">
+                                        <strong><i class="fa fa-check-circle"></i> Disponible</strong>
+                                    </div>
+                                    <div class="mb-3">
+                                        <small class="text-muted d-block">Canon Sugerido</small>
+                                        <strong class="text-danger fs-4" t-esc="'${:,.0f}'.format(property.suggested_rent or 0)"/>
+                                    </div>
+                                </t>
+                            </div>
+                        </div>
+
+                        <!-- Características -->
+                        <div class="card border-0 shadow-sm mb-4">
+                            <div class="card-header bg-white">
+                                <h5 class="mb-0"><i class="fa fa-list text-danger"></i> Características</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3" t-if="property.property_type_id">
+                                    <small class="text-muted d-block">Tipo</small>
+                                    <strong t-esc="property.property_type_id.name"/>
+                                </div>
+                                <div class="mb-3" t-if="property.bedrooms">
+                                    <small class="text-muted d-block">Habitaciones</small>
+                                    <strong><i class="fa fa-bed"></i> <span t-esc="property.bedrooms"/></strong>
+                                </div>
+                                <div class="mb-3" t-if="property.bathrooms">
+                                    <small class="text-muted d-block">Baños</small>
+                                    <strong><i class="fa fa-bath"></i> <span t-esc="property.bathrooms"/></strong>
+                                </div>
+                                <div class="mb-3" t-if="property.property_area">
+                                    <small class="text-muted d-block">Área</small>
+                                    <strong><span t-esc="property.property_area"/> m²</strong>
+                                </div>
+                                <div class="mb-3" t-if="property.parking_spaces">
+                                    <small class="text-muted d-block">Parqueaderos</small>
+                                    <strong><i class="fa fa-car"></i> <span t-esc="property.parking_spaces"/></strong>
+                                </div>
+                                <div class="mb-0" t-if="property.property_stratum">
+                                    <small class="text-muted d-block">Estrato</small>
+                                    <strong t-esc="property.property_stratum"/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Propietario -->
+                        <div class="card border-0 shadow-sm" t-if="property.partner_id">
+                            <div class="card-header bg-white">
+                                <h5 class="mb-0"><i class="fa fa-user text-danger"></i> Propietario</h5>
+                            </div>
+                            <div class="card-body">
+                                <strong t-esc="property.partner_id.name"/>
+                                <p class="text-muted mb-0 mt-2" t-if="property.partner_id.phone">
+                                    <i class="fa fa-phone"></i> <span t-esc="property.partner_id.phone"/>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Histórico de contratos -->
+                <div class="row mt-4" t-if="historical_contracts">
+                    <div class="col-12">
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-header bg-white">
+                                <h5 class="mb-0"><i class="fa fa-history text-danger"></i> Histórico de Contratos</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover align-middle mb-0">
+                                        <thead>
+                                            <tr>
+                                                <th>Arrendatario</th>
+                                                <th>Periodo</th>
+                                                <th class="text-end">Renta</th>
+                                                <th>Estado</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <t t-foreach="historical_contracts" t-as="hist_contract">
+                                                <tr>
+                                                    <td><span t-esc="hist_contract.partner_id.name"/></td>
+                                                    <td>
+                                                        <span t-esc="hist_contract.period_start.strftime('%d/%m/%Y')"/> -
+                                                        <span t-esc="hist_contract.period_end.strftime('%d/%m/%Y')"/>
+                                                    </td>
+                                                    <td class="text-end">
+                                                        <strong t-esc="'${:,.0f}'.format(hist_contract.rent or 0)"/>
+                                                    </td>
+                                                    <td>
+                                                        <span class="badge bg-success" t-if="hist_contract.state == 'confirmed'">Activo</span>
+                                                        <span class="badge bg-secondary" t-else="" t-esc="hist_contract.state"/>
+                                                    </td>
+                                                </tr>
+                                            </t>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>
