@@ -549,7 +549,7 @@
                                             </div>
                                             <div class="col-md-6 mb-3">
                                                 <strong>Código:</strong>
-                                                <p><span t-field="contract.property_code"/></p>
+                                                <p><span t-field="contract.default_code"/></p>
                                             </div>
                                             <div class="col-md-6 mb-3">
                                                 <strong>Área:</strong>

@@ -101,8 +101,8 @@
                                         </h5>
 
                                         <!-- Dirección -->
-                                        <p class="text-muted mb-3" t-if="prop.property_address">
-                                            <i class="fa fa-map-marker"></i> <span t-esc="prop.property_address"/>
+                                        <p class="text-muted mb-3" t-if="prop.address">
+                                            <i class="fa fa-map-marker"></i> <span t-esc="prop.address"/>
                                         </p>
 
                                         <!-- Características -->
@@ -111,16 +111,16 @@
                                                 <small class="text-muted d-block">Tipo</small>
                                                 <strong class="small" t-esc="prop.property_type_id.name"/>
                                             </div>
-                                            <div class="col-4 text-center" t-if="prop.bedrooms">
+                                            <div class="col-4 text-center" t-if="prop.num_bedrooms">
                                                 <small class="text-muted d-block">Habitaciones</small>
                                                 <strong class="small">
-                                                    <i class="fa fa-bed"></i> <span t-esc="prop.bedrooms"/>
+                                                    <i class="fa fa-bed"></i> <span t-esc="prop.num_bedrooms"/>
                                                 </strong>
                                             </div>
-                                            <div class="col-4 text-center" t-if="prop.bathrooms">
+                                            <div class="col-4 text-center" t-if="prop.num_bathrooms">
                                                 <small class="text-muted d-block">Baños</small>
                                                 <strong class="small">
-                                                    <i class="fa fa-bath"></i> <span t-esc="prop.bathrooms"/>
+                                                    <i class="fa fa-bath"></i> <span t-esc="prop.num_bathrooms"/>
                                                 </strong>
                                             </div>
                                         </div>
@@ -144,7 +144,7 @@
                                             <t t-else="">
                                                 <div class="mb-2">
                                                     <small class="text-muted d-block">Canon Sugerido</small>
-                                                    <strong class="text-danger" t-esc="'${:,.0f}'.format(prop.suggested_rent or 0)"/>
+                                                    <strong class="text-danger" t-esc="'${:,.0f}'.format(prop.list_price or 0)"/>
                                                 </div>
                                                 <div>
                                                     <span class="badge bg-success">
@@ -222,8 +222,8 @@
                                 <h1 class="text-danger mb-1">
                                     <i class="fa fa-home"></i> <span t-esc="property.default_code or property.name"/>
                                 </h1>
-                                <p class="text-muted mb-0" t-if="property.property_address">
-                                    <i class="fa fa-map-marker"></i> <span t-esc="property.property_address"/>
+                                <p class="text-muted mb-0" t-if="property.address">
+                                    <i class="fa fa-map-marker"></i> <span t-esc="property.address"/>
                                 </p>
                             </div>
                         </div>
@@ -333,7 +333,7 @@
                                     </div>
                                     <div class="mb-3">
                                         <small class="text-muted d-block">Canon Sugerido</small>
-                                        <strong class="text-danger fs-4" t-esc="'${:,.0f}'.format(property.suggested_rent or 0)"/>
+                                        <strong class="text-danger fs-4" t-esc="'${:,.0f}'.format(property.list_price or 0)"/>
                                     </div>
                                 </t>
                             </div>
@@ -349,25 +349,25 @@
                                     <small class="text-muted d-block">Tipo</small>
                                     <strong t-esc="property.property_type_id.name"/>
                                 </div>
-                                <div class="mb-3" t-if="property.bedrooms">
+                                <div class="mb-3" t-if="property.num_bedrooms">
                                     <small class="text-muted d-block">Habitaciones</small>
-                                    <strong><i class="fa fa-bed"></i> <span t-esc="property.bedrooms"/></strong>
+                                    <strong><i class="fa fa-bed"></i> <span t-esc="property.num_bedrooms"/></strong>
                                 </div>
-                                <div class="mb-3" t-if="property.bathrooms">
+                                <div class="mb-3" t-if="property.num_bathrooms">
                                     <small class="text-muted d-block">Baños</small>
-                                    <strong><i class="fa fa-bath"></i> <span t-esc="property.bathrooms"/></strong>
+                                    <strong><i class="fa fa-bath"></i> <span t-esc="property.num_bathrooms"/></strong>
                                 </div>
                                 <div class="mb-3" t-if="property.property_area">
                                     <small class="text-muted d-block">Área</small>
                                     <strong><span t-esc="property.property_area"/> m²</strong>
                                 </div>
-                                <div class="mb-3" t-if="property.parking_spaces">
+                                <div class="mb-3" t-if="property.covered_parking or property.uncovered_parking">
                                     <small class="text-muted d-block">Parqueaderos</small>
-                                    <strong><i class="fa fa-car"></i> <span t-esc="property.parking_spaces"/></strong>
+                                    <strong><i class="fa fa-car"></i> <span t-esc="(property.covered_parking or 0) + (property.uncovered_parking or 0)"/></strong>
                                 </div>
-                                <div class="mb-0" t-if="property.property_stratum">
+                                <div class="mb-0" t-if="property.stratum">
                                     <small class="text-muted d-block">Estrato</small>
-                                    <strong t-esc="property.property_stratum"/>
+                                    <strong t-esc="dict(property._fields['stratum'].selection).get(property.stratum, property.stratum)"/>
                                 </div>
                             </div>
                         </div>
