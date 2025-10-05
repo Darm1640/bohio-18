@@ -97,7 +97,7 @@
                                     <div class="card-body">
                                         <!-- Título -->
                                         <h5 class="card-title text-danger mb-2">
-                                            <span t-esc="prop.property_code or prop.name"/>
+                                            <span t-esc="prop.default_code or prop.name"/>
                                         </h5>
 
                                         <!-- Dirección -->
@@ -220,7 +220,7 @@
                                     <i class="fa fa-arrow-left"></i> Volver al Catálogo
                                 </a>
                                 <h1 class="text-danger mb-1">
-                                    <i class="fa fa-home"></i> <span t-esc="property.property_code or property.name"/>
+                                    <i class="fa fa-home"></i> <span t-esc="property.default_code or property.name"/>
                                 </h1>
                                 <p class="text-muted mb-0" t-if="property.property_address">
                                     <i class="fa fa-map-marker"></i> <span t-esc="property.property_address"/>

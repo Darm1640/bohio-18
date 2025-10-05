@@ -1606,7 +1606,7 @@ class BohioPortal(CustomerPortal):
         if search:
             domain += ['|', '|',
                        ('name', 'ilike', search),
-                       ('property_code', 'ilike', search),
+                       ('default_code', 'ilike', search),
                        ('property_address', 'ilike', search)]
 
         Property = request.env['product.template'].sudo()
@@ -1620,7 +1620,7 @@ class BohioPortal(CustomerPortal):
             step=20
         )
 
-        properties = Property.search(domain, order='property_code asc', limit=20, offset=pager['offset'])
+        properties = Property.search(domain, order='default_code asc', limit=20, offset=pager['offset'])
 
         # Estado de cada propiedad
         property_status = {}
