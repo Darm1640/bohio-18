@@ -1,0 +1,609 @@
+/* ============================================
+   MYBOHIO PORTAL - ESTILOS PERSONALIZADOS
+   ============================================ */
+
+/* ===========================
+   VARIABLES Y COLORES BOHÍO
+   =========================== */
+:root {
+    --bohio-primary: #1a73e8;
+    --bohio-secondary: #34a853;
+    --bohio-accent: #fbbc04;
+    --bohio-danger: #ea4335;
+    --bohio-dark: #202124;
+    --bohio-light: #f8f9fa;
+    --bohio-border: #dadce0;
+    --bohio-shadow: rgba(0, 0, 0, 0.1);
+    --bohio-shadow-hover: rgba(0, 0, 0, 0.15);
+}
+
+/* ===========================
+   RESET Y ESTILOS BASE
+   =========================== */
+.o_portal_mybohio {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--bohio-dark);
+    background-color: var(--bohio-light);
+}
+
+/* ===========================
+   HEADER Y NAVEGACIÓN
+   =========================== */
+.o_portal_mybohio .navbar-mybohio {
+    background: linear-gradient(135deg, var(--bohio-primary) 0%, #1557b0 100%);
+    box-shadow: 0 2px 8px var(--bohio-shadow);
+    padding: 1rem 0;
+}
+
+.o_portal_mybohio .navbar-mybohio .navbar-brand {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: white;
+}
+
+.o_portal_mybohio .navbar-mybohio .nav-link {
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.o_portal_mybohio .navbar-mybohio .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+/* ===========================
+   CARDS Y CONTENEDORES
+   =========================== */
+.o_portal_mybohio .card-bohio {
+    border: 1px solid var(--bohio-border);
+    border-radius: 8px;
+    box-shadow: 0 2px 4px var(--bohio-shadow);
+    transition: all 0.3s ease;
+    background-color: white;
+    overflow: hidden;
+}
+
+.o_portal_mybohio .card-bohio:hover {
+    box-shadow: 0 4px 12px var(--bohio-shadow-hover);
+    transform: translateY(-2px);
+}
+
+.o_portal_mybohio .card-bohio-header {
+    background: linear-gradient(135deg, var(--bohio-primary) 0%, #1557b0 100%);
+    color: white;
+    padding: 1.25rem;
+    font-weight: 600;
+    border-bottom: none;
+}
+
+.o_portal_mybohio .card-bohio-body {
+    padding: 1.5rem;
+}
+
+.o_portal_mybohio .card-bohio-footer {
+    background-color: var(--bohio-light);
+    padding: 1rem 1.5rem;
+    border-top: 1px solid var(--bohio-border);
+}
+
+/* ===========================
+   DASHBOARD - KPIs
+   =========================== */
+.o_portal_mybohio .kpi-card {
+    border-radius: 8px;
+    padding: 1.5rem;
+    text-align: center;
+    color: white;
+    box-shadow: 0 2px 8px var(--bohio-shadow);
+    transition: all 0.3s ease;
+}
+
+.o_portal_mybohio .kpi-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 16px var(--bohio-shadow-hover);
+}
+
+.o_portal_mybohio .kpi-card-primary {
+    background: linear-gradient(135deg, var(--bohio-primary) 0%, #1557b0 100%);
+}
+
+.o_portal_mybohio .kpi-card-success {
+    background: linear-gradient(135deg, var(--bohio-secondary) 0%, #2d8e47 100%);
+}
+
+.o_portal_mybohio .kpi-card-warning {
+    background: linear-gradient(135deg, var(--bohio-accent) 0%, #e5a803 100%);
+}
+
+.o_portal_mybohio .kpi-card-danger {
+    background: linear-gradient(135deg, var(--bohio-danger) 0%, #d33b2f 100%);
+}
+
+.o_portal_mybohio .kpi-value {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin: 0.5rem 0;
+}
+
+.o_portal_mybohio .kpi-label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    opacity: 0.9;
+}
+
+/* ===========================
+   TABLAS
+   =========================== */
+.o_portal_mybohio .table-bohio {
+    width: 100%;
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px var(--bohio-shadow);
+}
+
+.o_portal_mybohio .table-bohio thead {
+    background: linear-gradient(135deg, var(--bohio-primary) 0%, #1557b0 100%);
+    color: white;
+}
+
+.o_portal_mybohio .table-bohio thead th {
+    padding: 1rem;
+    font-weight: 600;
+    border: none;
+    text-transform: uppercase;
+    font-size: 0.875rem;
+    letter-spacing: 0.5px;
+}
+
+.o_portal_mybohio .table-bohio tbody tr {
+    transition: all 0.2s ease;
+    border-bottom: 1px solid var(--bohio-border);
+}
+
+.o_portal_mybohio .table-bohio tbody tr:hover {
+    background-color: rgba(26, 115, 232, 0.05);
+}
+
+.o_portal_mybohio .table-bohio tbody td {
+    padding: 1rem;
+    vertical-align: middle;
+}
+
+.o_portal_mybohio .table-bohio tbody tr:last-child {
+    border-bottom: none;
+}
+
+/* ===========================
+   BADGES Y ESTADOS
+   =========================== */
+.o_portal_mybohio .badge-bohio {
+    padding: 0.375rem 0.75rem;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.o_portal_mybohio .badge-draft {
+    background-color: #6c757d;
+    color: white;
+}
+
+.o_portal_mybohio .badge-active {
+    background-color: var(--bohio-secondary);
+    color: white;
+}
+
+.o_portal_mybohio .badge-pending {
+    background-color: var(--bohio-accent);
+    color: var(--bohio-dark);
+}
+
+.o_portal_mybohio .badge-cancelled {
+    background-color: var(--bohio-danger);
+    color: white;
+}
+
+.o_portal_mybohio .badge-paid {
+    background-color: var(--bohio-primary);
+    color: white;
+}
+
+/* ===========================
+   BOTONES
+   =========================== */
+.o_portal_mybohio .btn-bohio {
+    padding: 0.625rem 1.5rem;
+    border-radius: 6px;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.875rem;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.o_portal_mybohio .btn-bohio-primary {
+    background: linear-gradient(135deg, var(--bohio-primary) 0%, #1557b0 100%);
+    color: white;
+}
+
+.o_portal_mybohio .btn-bohio-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(26, 115, 232, 0.3);
+}
+
+.o_portal_mybohio .btn-bohio-secondary {
+    background-color: var(--bohio-secondary);
+    color: white;
+}
+
+.o_portal_mybohio .btn-bohio-outline {
+    background-color: transparent;
+    color: var(--bohio-primary);
+    border: 2px solid var(--bohio-primary);
+}
+
+.o_portal_mybohio .btn-bohio-outline:hover {
+    background-color: var(--bohio-primary);
+    color: white;
+}
+
+/* ===========================
+   FILTROS Y BÚSQUEDA
+   =========================== */
+.o_portal_mybohio .filter-section {
+    background-color: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px var(--bohio-shadow);
+    margin-bottom: 1.5rem;
+}
+
+.o_portal_mybohio .search-box {
+    position: relative;
+}
+
+.o_portal_mybohio .search-box input {
+    width: 100%;
+    padding: 0.75rem 1rem 0.75rem 3rem;
+    border: 1px solid var(--bohio-border);
+    border-radius: 6px;
+    font-size: 0.875rem;
+    transition: all 0.3s ease;
+}
+
+.o_portal_mybohio .search-box input:focus {
+    outline: none;
+    border-color: var(--bohio-primary);
+    box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.1);
+}
+
+.o_portal_mybohio .search-box i {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #5f6368;
+}
+
+/* ===========================
+   PAGINACIÓN
+   =========================== */
+.o_portal_mybohio .pagination-bohio {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+}
+
+.o_portal_mybohio .pagination-bohio .page-link {
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--bohio-border);
+    border-radius: 4px;
+    color: var(--bohio-primary);
+    background-color: white;
+    transition: all 0.2s ease;
+}
+
+.o_portal_mybohio .pagination-bohio .page-link:hover {
+    background-color: var(--bohio-primary);
+    color: white;
+    border-color: var(--bohio-primary);
+}
+
+.o_portal_mybohio .pagination-bohio .page-link.active {
+    background-color: var(--bohio-primary);
+    color: white;
+    border-color: var(--bohio-primary);
+}
+
+/* ===========================
+   GRÁFICOS Y ESTADÍSTICAS
+   =========================== */
+.o_portal_mybohio .chart-container {
+    background-color: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px var(--bohio-shadow);
+    margin-bottom: 1.5rem;
+}
+
+.o_portal_mybohio .stat-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--bohio-border);
+}
+
+.o_portal_mybohio .stat-item:last-child {
+    border-bottom: none;
+}
+
+.o_portal_mybohio .stat-label {
+    font-weight: 500;
+    color: #5f6368;
+}
+
+.o_portal_mybohio .stat-value {
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: var(--bohio-primary);
+}
+
+/* ===========================
+   PROPIEDADES Y CONTRATOS
+   =========================== */
+.o_portal_mybohio .property-card {
+    border: 1px solid var(--bohio-border);
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: white;
+    box-shadow: 0 2px 4px var(--bohio-shadow);
+    transition: all 0.3s ease;
+}
+
+.o_portal_mybohio .property-card:hover {
+    box-shadow: 0 4px 12px var(--bohio-shadow-hover);
+    transform: translateY(-4px);
+}
+
+.o_portal_mybohio .property-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.o_portal_mybohio .property-info {
+    padding: 1.25rem;
+}
+
+.o_portal_mybohio .property-title {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--bohio-dark);
+    margin-bottom: 0.5rem;
+}
+
+.o_portal_mybohio .property-detail {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+    color: #5f6368;
+    font-size: 0.875rem;
+}
+
+.o_portal_mybohio .property-detail i {
+    color: var(--bohio-primary);
+}
+
+/* ===========================
+   PAGOS Y TRANSACCIONES
+   =========================== */
+.o_portal_mybohio .payment-summary {
+    background: linear-gradient(135deg, var(--bohio-primary) 0%, #1557b0 100%);
+    color: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px var(--bohio-shadow);
+    margin-bottom: 2rem;
+}
+
+.o_portal_mybohio .payment-amount {
+    font-size: 3rem;
+    font-weight: 700;
+    margin: 1rem 0;
+}
+
+.o_portal_mybohio .payment-detail-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--bohio-border);
+}
+
+.o_portal_mybohio .payment-detail-row:last-child {
+    border-bottom: none;
+    font-weight: 700;
+    font-size: 1.125rem;
+}
+
+/* ===========================
+   DOCUMENTOS Y ARCHIVOS
+   =========================== */
+.o_portal_mybohio .document-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.o_portal_mybohio .document-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+    border: 1px solid var(--bohio-border);
+    border-radius: 6px;
+    margin-bottom: 0.75rem;
+    background-color: white;
+    transition: all 0.2s ease;
+}
+
+.o_portal_mybohio .document-item:hover {
+    background-color: rgba(26, 115, 232, 0.05);
+    border-color: var(--bohio-primary);
+}
+
+.o_portal_mybohio .document-icon {
+    font-size: 2rem;
+    color: var(--bohio-primary);
+    margin-right: 1rem;
+}
+
+.o_portal_mybohio .document-info {
+    flex-grow: 1;
+}
+
+.o_portal_mybohio .document-name {
+    font-weight: 600;
+    color: var(--bohio-dark);
+    margin-bottom: 0.25rem;
+}
+
+.o_portal_mybohio .document-meta {
+    font-size: 0.75rem;
+    color: #5f6368;
+}
+
+/* ===========================
+   ALERTAS Y NOTIFICACIONES
+   =========================== */
+.o_portal_mybohio .alert-bohio {
+    padding: 1rem 1.25rem;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+}
+
+.o_portal_mybohio .alert-bohio-info {
+    background-color: rgba(26, 115, 232, 0.1);
+    border-color: rgba(26, 115, 232, 0.2);
+    color: var(--bohio-primary);
+}
+
+.o_portal_mybohio .alert-bohio-success {
+    background-color: rgba(52, 168, 83, 0.1);
+    border-color: rgba(52, 168, 83, 0.2);
+    color: var(--bohio-secondary);
+}
+
+.o_portal_mybohio .alert-bohio-warning {
+    background-color: rgba(251, 188, 4, 0.1);
+    border-color: rgba(251, 188, 4, 0.2);
+    color: #e5a803;
+}
+
+.o_portal_mybohio .alert-bohio-danger {
+    background-color: rgba(234, 67, 53, 0.1);
+    border-color: rgba(234, 67, 53, 0.2);
+    color: var(--bohio-danger);
+}
+
+/* ===========================
+   RESPONSIVO - MOBILE
+   =========================== */
+@media (max-width: 768px) {
+    .o_portal_mybohio .kpi-card {
+        margin-bottom: 1rem;
+    }
+
+    .o_portal_mybohio .kpi-value {
+        font-size: 2rem;
+    }
+
+    .o_portal_mybohio .payment-amount {
+        font-size: 2rem;
+    }
+
+    .o_portal_mybohio .table-bohio {
+        font-size: 0.875rem;
+    }
+
+    .o_portal_mybohio .table-bohio thead th,
+    .o_portal_mybohio .table-bohio tbody td {
+        padding: 0.75rem 0.5rem;
+    }
+
+    .o_portal_mybohio .property-card {
+        margin-bottom: 1rem;
+    }
+}
+
+/* ===========================
+   UTILIDADES
+   =========================== */
+.o_portal_mybohio .text-bohio-primary {
+    color: var(--bohio-primary) !important;
+}
+
+.o_portal_mybohio .text-bohio-secondary {
+    color: var(--bohio-secondary) !important;
+}
+
+.o_portal_mybohio .bg-bohio-light {
+    background-color: var(--bohio-light) !important;
+}
+
+.o_portal_mybohio .border-bohio {
+    border-color: var(--bohio-border) !important;
+}
+
+/* ===========================
+   ANIMACIONES
+   =========================== */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.o_portal_mybohio .fade-in {
+    animation: fadeIn 0.5s ease-out;
+}
+
+/* ===========================
+   SCROLL PERSONALIZADO
+   =========================== */
+.o_portal_mybohio ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.o_portal_mybohio ::-webkit-scrollbar-track {
+    background-color: var(--bohio-light);
+}
+
+.o_portal_mybohio ::-webkit-scrollbar-thumb {
+    background-color: var(--bohio-border);
+    border-radius: 4px;
+}
+
+.o_portal_mybohio ::-webkit-scrollbar-thumb:hover {
+    background-color: #b0b3b8;
+}

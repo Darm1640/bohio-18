@@ -520,11 +520,122 @@
         </field>
     </record>
 
-    <!-- Menú Principal -->
-    <menuitem id="menu_bohio_mass_payment"
-              name="Pago Masivo"
+    <!-- ================================ -->
+    <!-- MENÚS DE FLUJO DE TRABAJO -->
+    <!-- ================================ -->
+
+    <!-- Menú Padre: Pagos Masivos -->
+    <menuitem id="menu_bohio_mass_payment_root"
+              name="Pagos Masivos"
               parent="real_estate_bits.menu_real_estate_root"
-              action="action_bohio_mass_payment"
               sequence="25"/>
+
+    <!-- 1. Borradores -->
+    <record id="action_bohio_mass_payment_draft" model="ir.actions.act_window">
+        <field name="name">Borradores</field>
+        <field name="res_model">bohio.mass.payment</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('state', '=', 'draft')]</field>
+        <field name="context">{
+            'default_state': 'draft',
+            'search_default_group_month': 1,
+        }</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No hay borradores de pagos masivos
+            </p>
+            <p>
+                Cree un nuevo pago masivo para comenzar a simular pagos a propietarios.
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="menu_bohio_mass_payment_draft"
+              name="Borradores"
+              parent="menu_bohio_mass_payment_root"
+              action="action_bohio_mass_payment_draft"
+              sequence="10"/>
+
+    <!-- 2. Simulados -->
+    <record id="action_bohio_mass_payment_simulated" model="ir.actions.act_window">
+        <field name="name">Simulados</field>
+        <field name="res_model">bohio.mass.payment</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('state', '=', 'simulated')]</field>
+        <field name="context">{
+            'search_default_group_month': 1,
+        }</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No hay pagos simulados
+            </p>
+            <p>
+                Los pagos simulados están listos para ser revisados y confirmados.
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="menu_bohio_mass_payment_simulated"
+              name="Simulados"
+              parent="menu_bohio_mass_payment_root"
+              action="action_bohio_mass_payment_simulated"
+              sequence="20"/>
+
+    <!-- 3. Confirmados -->
+    <record id="action_bohio_mass_payment_confirmed" model="ir.actions.act_window">
+        <field name="name">Confirmados</field>
+        <field name="res_model">bohio.mass.payment</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('state', '=', 'confirmed')]</field>
+        <field name="context">{
+            'search_default_group_month': 1,
+        }</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No hay pagos confirmados pendientes
+            </p>
+            <p>
+                Los pagos confirmados están listos para ser procesados.
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="menu_bohio_mass_payment_confirmed"
+              name="Confirmados"
+              parent="menu_bohio_mass_payment_root"
+              action="action_bohio_mass_payment_confirmed"
+              sequence="30"/>
+
+    <!-- 4. Procesados -->
+    <record id="action_bohio_mass_payment_processed" model="ir.actions.act_window">
+        <field name="name">Procesados</field>
+        <field name="res_model">bohio.mass.payment</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('state', '=', 'processed')]</field>
+        <field name="context">{
+            'search_default_group_month': 1,
+        }</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No hay pagos procesados
+            </p>
+            <p>
+                Los pagos procesados ya han sido ejecutados y contabilizados.
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="menu_bohio_mass_payment_processed"
+              name="Procesados"
+              parent="menu_bohio_mass_payment_root"
+              action="action_bohio_mass_payment_processed"
+              sequence="40"/>
+
+    <!-- 5. Todos los Pagos -->
+    <menuitem id="menu_bohio_mass_payment_all"
+              name="Todos los Pagos"
+              parent="menu_bohio_mass_payment_root"
+              action="action_bohio_mass_payment"
+              sequence="50"/>
 
 </data>
