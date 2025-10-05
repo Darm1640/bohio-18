@@ -5,18 +5,21 @@ from odoo.exceptions import UserError
 class AccountLoanTemplate(models.Model):
     _name = 'account.loan.template'
     _description = 'Plantilla de Préstamo'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
     _order = 'sequence, name'
 
     # Campos básicos
     name = fields.Char(
         string='Nombre de Plantilla',
         required=True,
+        tracking=True,
         help='Nombre descriptivo de la plantilla'
     )
 
     active = fields.Boolean(
         string='Activo',
-        default=True
+        default=True,
+        tracking=True
     )
 
     sequence = fields.Integer(

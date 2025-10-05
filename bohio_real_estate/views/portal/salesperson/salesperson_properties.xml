@@ -72,8 +72,8 @@
                                 <div class="card h-100 border-0 shadow-sm hover-shadow">
                                     <!-- Imagen -->
                                     <div class="position-relative">
-                                        <t t-if="prop.property_images">
-                                            <img t-att-src="'/web/image/property.image/' + str(prop.property_images[0].id) + '/image'"
+                                        <t t-if="prop.property_image_ids">
+                                            <img t-att-src="'/web/image/property.image/' + str(prop.property_image_ids[0].id) + '/image_1920'"
                                                  class="card-img-top" style="height: 200px; object-fit: cover;"/>
                                         </t>
                                         <t t-else="">
@@ -236,12 +236,12 @@
                         <!-- Galería de imágenes -->
                         <div class="card border-0 shadow-sm mb-4">
                             <div class="card-body p-0">
-                                <t t-if="property.property_images">
+                                <t t-if="property.property_image_ids">
                                     <div id="propertyCarousel" class="carousel slide" data-bs-ride="carousel">
                                         <div class="carousel-inner">
-                                            <t t-foreach="property.property_images" t-as="img">
+                                            <t t-foreach="property.property_image_ids" t-as="img">
                                                 <div t-attf-class="carousel-item {{img_index == 0 and 'active' or ''}}">
-                                                    <img t-att-src="'/web/image/property.image/' + str(img.id) + '/image'"
+                                                    <img t-att-src="'/web/image/property.image/' + str(img.id) + '/image_1920'"
                                                          class="d-block w-100" style="height: 400px; object-fit: cover;"/>
                                                 </div>
                                             </t>
