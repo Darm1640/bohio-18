@@ -24,6 +24,7 @@
         'website',
         'helpdesk',
         'portal',
+        'mail',
         'account_loans',  # Odoo Enterprise - Gestión de préstamos
     ],
     'external_dependencies': {
