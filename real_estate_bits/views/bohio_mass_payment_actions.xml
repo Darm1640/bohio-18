@@ -119,11 +119,11 @@
                 <separator/>
 
                 <filter name="current_month" string="Mes Actual"
-                        domain="[('simulation_month', '&gt;=', (context_today().replace(day=1)).strftime('%Y-%m-%d')),
-                                 ('simulation_month', '&lt;=', (context_today() + relativedelta(months=1, day=1, days=-1)).strftime('%Y-%m-%d'))]"/>
+                        domain="[('simulation_month', '&gt;=', time.strftime('%Y-%m-01')),
+                                 ('simulation_month', '&lt;=', (datetime.date.today() + relativedelta(day=31)).strftime('%Y-%m-%d'))]"/>
                 <filter name="next_month" string="Próximo Mes"
-                        domain="[('simulation_month', '&gt;=', (context_today() + relativedelta(months=1, day=1)).strftime('%Y-%m-%d')),
-                                 ('simulation_month', '&lt;=', (context_today() + relativedelta(months=2, day=1, days=-1)).strftime('%Y-%m-%d'))]"/>
+                        domain="[('simulation_month', '&gt;=', (datetime.date.today() + relativedelta(months=1, day=1)).strftime('%Y-%m-%d')),
+                                 ('simulation_month', '&lt;=', (datetime.date.today() + relativedelta(months=1, day=31)).strftime('%Y-%m-%d'))]"/>
 
                 <separator/>
 
@@ -376,8 +376,8 @@
                 <separator/>
 
                 <filter name="current_month" string="Mes Actual"
-                        domain="[('date', '&gt;=', (context_today().replace(day=1)).strftime('%Y-%m-%d')),
-                                 ('date', '&lt;=', (context_today() + relativedelta(months=1, day=1, days=-1)).strftime('%Y-%m-%d'))]"/>
+                        domain="[('date', '&gt;=', time.strftime('%Y-%m-01')),
+                                 ('date', '&lt;=', (datetime.date.today() + relativedelta(day=31)).strftime('%Y-%m-%d'))]"/>
 
                 <group expand="0" string="Agrupar Por">
                     <filter name="group_by_partner" string="Cliente"
