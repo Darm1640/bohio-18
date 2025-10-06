@@ -70,6 +70,14 @@ $grid-breakpoints: (
   xxl: 1400px
 ) !default;
 
+// Breakpoint variables individuales
+$breakpoint-xs: 0 !default;
+$breakpoint-sm: 576px !default;
+$breakpoint-md: 768px !default;
+$breakpoint-lg: 992px !default;
+$breakpoint-xl: 1200px !default;
+$breakpoint-xxl: 1400px !default;
+
 // Z-index levels
 $zindex-dropdown: 1000 !default;
 $zindex-sticky: 1020 !default;

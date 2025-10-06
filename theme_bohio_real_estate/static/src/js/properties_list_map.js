@@ -1,6 +1,27 @@
 /** @odoo-module **/
 
-import { jsonrpc } from "@web/core/network/rpc_service";
+/**
+ * Helper function para hacer llamadas JSON-RPC
+ */
+async function jsonrpc(url, params = {}) {
+    const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            jsonrpc: '2.0',
+            method: 'call',
+            params: params,
+            id: Math.floor(Math.random() * 1000000),
+        }),
+    });
+    const data = await response.json();
+    if (data.error) {
+        throw new Error(data.error.data?.message || data.error.message);
+    }
+    return data.result;
+}
 
 export class PropertiesListMap {
     constructor() {
