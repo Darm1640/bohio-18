@@ -322,8 +322,8 @@
                                     <div class="mb-3">
                                         <small class="text-muted d-block">Periodo</small>
                                         <strong>
-                                            <span t-esc="contract.period_start.strftime('%d/%m/%Y')"/> -
-                                            <span t-esc="contract.period_end.strftime('%d/%m/%Y')"/>
+                                            <span t-esc="contract.date_from.strftime('%d/%m/%Y')"/> -
+                                            <span t-esc="contract.date_to.strftime('%d/%m/%Y')"/>
                                         </strong>
                                     </div>
                                 </t>
@@ -410,8 +410,8 @@
                                                 <tr>
                                                     <td><span t-esc="hist_contract.partner_id.name"/></td>
                                                     <td>
-                                                        <span t-esc="hist_contract.period_start.strftime('%d/%m/%Y')"/> -
-                                                        <span t-esc="hist_contract.period_end.strftime('%d/%m/%Y')"/>
+                                                        <span t-esc="hist_contract.date_from.strftime('%d/%m/%Y')"/> -
+                                                        <span t-esc="hist_contract.date_to.strftime('%d/%m/%Y')"/>
                                                     </td>
                                                     <td class="text-end">
                                                         <strong t-esc="'${:,.0f}'.format(hist_contract.rent or 0)"/>
