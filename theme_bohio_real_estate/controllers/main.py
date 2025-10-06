@@ -132,22 +132,23 @@ class BohioWebsiteController(http.Controller):
 
         return {'properties': result}
 
-    @http.route('/properties/compare', type='http', auth='public', website=True)
-    def properties_compare(self, ids='', **kw):
-        if not ids:
-            return request.redirect('/properties')
-
-        property_ids = [int(x) for x in ids.split(',') if x.isdigit()]
-        if len(property_ids) < 2:
-            return request.redirect('/properties')
-
-        property_ids = property_ids[:4]
-
-        properties = request.env['product.template'].sudo().browse(property_ids)
-
-        return request.render('bohio_real_estate.property_compare_view', {
-            'properties': properties
-        })
+    # TODO: Crear vista property_compare_view en theme_bohio_real_estate
+    # @http.route('/properties/compare', type='http', auth='public', website=True)
+    # def properties_compare(self, ids='', **kw):
+    #     if not ids:
+    #         return request.redirect('/properties')
+    #
+    #     property_ids = [int(x) for x in ids.split(',') if x.isdigit()]
+    #     if len(property_ids) < 2:
+    #         return request.redirect('/properties')
+    #
+    #     property_ids = property_ids[:4]
+    #
+    #     properties = request.env['product.template'].sudo().browse(property_ids)
+    #
+    #     return request.render('theme_bohio_real_estate.property_compare_view', {
+    #         'properties': properties
+    #     })
 
     @http.route('/contact/property/<int:property_id>', type='http', auth='public', website=True, methods=['POST'], csrf=True)
     def contact_property(self, property_id, **post):
@@ -249,7 +250,7 @@ class BohioWebsiteController(http.Controller):
         if not prop:
             return request.redirect('/properties')
 
-        return request.render('bohio_real_estate.property_detail', {
+        return request.render('theme_bohio_real_estate.property_detail', {
             'property': prop
         })
 
@@ -420,7 +421,7 @@ class BohioWebsiteController(http.Controller):
             'product_count': product_count,
         }
 
-        return request.render('bohio_real_estate.properties_shop', values)
+        return request.render('theme_bohio_real_estate.properties_shop', values)
 
     @http.route('/api/properties/search_by_code', type='json', auth='public', website=True)
     def search_by_code(self, code='', **kw):
@@ -769,30 +770,31 @@ class BohioWebsiteController(http.Controller):
 
         return {'results': results}
 
-    @http.route('/servicios/venta', type='http', auth='public', website=True)
-    def servicio_venta(self, **kw):
-        return request.render('bohio_real_estate.servicio_venta')
-
-    @http.route('/servicios/arriendo', type='http', auth='public', website=True)
-    def servicio_arriendo(self, **kw):
-        return request.render('bohio_real_estate.servicio_arriendo')
-
-    @http.route('/servicios/juridico', type='http', auth='public', website=True)
-    def servicio_juridico(self, **kw):
-        return request.render('bohio_real_estate.servicio_juridico')
-
-    @http.route('/servicios/marketing', type='http', auth='public', website=True)
-    def servicio_marketing(self, **kw):
-        return request.render('bohio_real_estate.servicio_marketing')
-
-    @http.route('/clientes/propietarios', type='http', auth='public', website=True)
-    def clientes_propietarios(self, **kw):
-        return request.render('bohio_real_estate.clientes_propietarios')
-
-    @http.route('/clientes/arrendatarios', type='http', auth='public', website=True)
-    def clientes_arrendatarios(self, **kw):
-        return request.render('bohio_real_estate.clientes_arrendatarios')
-
-    @http.route('/contacto', type='http', auth='public', website=True)
-    def contacto(self, **kw):
-        return request.render('bohio_real_estate.contacto_page')
+    # TODO: Crear vistas de servicios y páginas informativas en theme_bohio_real_estate
+    # @http.route('/servicios/venta', type='http', auth='public', website=True)
+    # def servicio_venta(self, **kw):
+    #     return request.render('theme_bohio_real_estate.servicio_venta')
+    #
+    # @http.route('/servicios/arriendo', type='http', auth='public', website=True)
+    # def servicio_arriendo(self, **kw):
+    #     return request.render('theme_bohio_real_estate.servicio_arriendo')
+    #
+    # @http.route('/servicios/juridico', type='http', auth='public', website=True)
+    # def servicio_juridico(self, **kw):
+    #     return request.render('theme_bohio_real_estate.servicio_juridico')
+    #
+    # @http.route('/servicios/marketing', type='http', auth='public', website=True)
+    # def servicio_marketing(self, **kw):
+    #     return request.render('theme_bohio_real_estate.servicio_marketing')
+    #
+    # @http.route('/clientes/propietarios', type='http', auth='public', website=True)
+    # def clientes_propietarios(self, **kw):
+    #     return request.render('theme_bohio_real_estate.clientes_propietarios')
+    #
+    # @http.route('/clientes/arrendatarios', type='http', auth='public', website=True)
+    # def clientes_arrendatarios(self, **kw):
+    #     return request.render('theme_bohio_real_estate.clientes_arrendatarios')
+    #
+    # @http.route('/contacto', type='http', auth='public', website=True)
+    # def contacto(self, **kw):
+    #     return request.render('theme_bohio_real_estate.contacto_page')

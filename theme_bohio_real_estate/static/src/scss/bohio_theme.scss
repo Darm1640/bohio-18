@@ -1,0 +1,77 @@
+// ============================================
+// Bohio Real Estate - Theme Base
+// ============================================
+// Este archivo mapea las variables custom del tema a variables estándar
+// para que sean accesibles en todos los archivos SCSS del tema
+
+// Font Families - Mapeo de variables custom a variables estándar
+$font-family-heading: $o-theme-font-heading !default;
+$font-family-body: $o-theme-font-body !default;
+
+// Bootstrap font size base
+$font-size-base: 1rem !default;
+
+// Heading sizes (Bootstrap compatible)
+$h1-font-size: 2.5rem !default;
+$h2-font-size: 2rem !default;
+$h3-font-size: 1.75rem !default;
+$h4-font-size: 1.5rem !default;
+$h5-font-size: 1.25rem !default;
+$h6-font-size: 1rem !default;
+
+// Spacing - Mapeo de variables custom a variables estándar
+$spacer-xs: $o-theme-spacer-xs !default;
+$spacer-sm: $o-theme-spacer-sm !default;
+$spacer-md: $o-theme-spacer-md !default;
+$spacer-lg: $o-theme-spacer-lg !default;
+$spacer-xl: $o-theme-spacer-xl !default;
+
+// Border Radius - Mapeo de variables custom
+$border-radius: 0.375rem !default; // Bootstrap default
+$border-radius-lg: 0.5rem !default;
+$border-radius-sm: 0.25rem !default;
+$border-radius-xl: $o-theme-border-radius-xl !default;
+
+// Transitions - Mapeo de variables custom
+$transition-base: $o-theme-transition-base !default;
+$transition-fast: $o-theme-transition-fast !default;
+$transition-slow: $o-theme-transition-slow !default;
+
+// Shadows (si no están definidas en color_variables)
+$shadow-sm: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !default;
+$shadow-md: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !default;
+$shadow-lg: 0 1rem 3rem rgba(0, 0, 0, 0.175) !default;
+
+// Colors - Asegurar que existan variables de texto si no están en color_variables
+$o-color-text-white: #ffffff !default;
+$o-color-text-dark: #212529 !default;
+$o-color-primary: #C90712 !default;
+$o-color-secondary: #6c757d !default;
+
+// Container max-widths (Bootstrap compatible)
+$container-max-widths: (
+  sm: 540px,
+  md: 720px,
+  lg: 960px,
+  xl: 1140px,
+  xxl: 1320px
+) !default;
+
+// Grid breakpoints (Bootstrap compatible)
+$grid-breakpoints: (
+  xs: 0,
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px,
+  xxl: 1400px
+) !default;
+
+// Z-index levels
+$zindex-dropdown: 1000 !default;
+$zindex-sticky: 1020 !default;
+$zindex-fixed: 1030 !default;
+$zindex-modal-backdrop: 1040 !default;
+$zindex-modal: 1050 !default;
+$zindex-popover: 1060 !default;
+$zindex-tooltip: 1070 !default;
