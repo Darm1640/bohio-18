@@ -1607,7 +1607,7 @@ class BohioPortal(CustomerPortal):
             domain += ['|', '|',
                        ('name', 'ilike', search),
                        ('default_code', 'ilike', search),
-                       ('property_address', 'ilike', search)]
+                       ('address', 'ilike', search)]
 
         Property = request.env['product.template'].sudo()
         property_count = Property.search_count(domain)
@@ -1635,7 +1635,7 @@ class BohioPortal(CustomerPortal):
                 'is_rented': bool(contract),
                 'tenant': contract.partner_id.name if contract else '',
                 'rent': contract.rent if contract else 0.0,
-                'contract_end': contract.period_end if contract else None,
+                'contract_end': contract.date_to if contract else None,
             }
 
         values = {
@@ -1678,7 +1678,7 @@ class BohioPortal(CustomerPortal):
         historical_contracts = request.env['property.contract'].sudo().search([
             ('property_id', '=', prop.id),
             ('contract_type', '=', 'is_rental')
-        ], order='period_start desc')
+        ], order='date_from desc')
 
         # Oportunidades relacionadas con esta propiedad
         opportunities = request.env['crm.lead'].search([
