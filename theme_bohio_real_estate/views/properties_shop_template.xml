@@ -36,11 +36,14 @@
                                             <div class="col-md-3">
                                                 <select name="property_type" class="form-select">
                                                     <option value="">Tipo de Inmueble</option>
-                                                    <t t-foreach="property_types" t-as="pt">
-                                                        <option t-att-value="pt['property_type']"
-                                                                t-att-selected="'selected' if property_type == pt['property_type'] else None"
-                                                                t-esc="dict(request.env['product.template']._fields['property_type'].selection).get(pt['property_type'], pt['property_type'])"/>
-                                                    </t>
+                                                    <option value="apartment" t-att-selected="'selected' if property_type == 'apartment' else None">Apartamento</option>
+                                                    <option value="house" t-att-selected="'selected' if property_type == 'house' else None">Casa</option>
+                                                    <option value="lot" t-att-selected="'selected' if property_type == 'lot' else None">Lote</option>
+                                                    <option value="office" t-att-selected="'selected' if property_type == 'office' else None">Oficina</option>
+                                                    <option value="commercial" t-att-selected="'selected' if property_type == 'commercial' else None">Local Comercial</option>
+                                                    <option value="bodega" t-att-selected="'selected' if property_type == 'bodega' else None">Bodega</option>
+                                                    <option value="country_lot" t-att-selected="'selected' if property_type == 'country_lot' else None">Lote Rural</option>
+                                                    <option value="finca" t-att-selected="'selected' if property_type == 'finca' else None">Finca</option>
                                                 </select>
                                             </div>
                                         </div>
