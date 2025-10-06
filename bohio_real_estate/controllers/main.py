@@ -28,15 +28,14 @@ class BohioRealEstateController(http.Controller):
             ('is_property', '=', True),
             ('website_published', '=', True),
             ('state', '=', 'free'),
-            ('net_price', '>', 0),
-            ('is_project', '=', False)
+            ('net_price', '>', 0)
         ], limit=4, order='create_date desc')
 
-        # Proyectos en venta
+        # Proyectos en venta (por ahora mostramos propiedades)
         projects = Product.search([
             ('is_property', '=', True),
             ('website_published', '=', True),
-            ('is_project', '=', True)
+            ('net_price', '>', 0)
         ], limit=3, order='create_date desc')
 
         # Ciudades para el buscador
