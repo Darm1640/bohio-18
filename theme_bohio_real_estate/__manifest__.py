@@ -29,6 +29,8 @@
         'views/website_templates.xml',
         'views/properties_shop_template.xml',
         'views/property_detail_template.xml',
+        'views/properties_list_map.xml',
+        'views/homepage_landing.xml',
         'views/homepage/homepage.xml',
         'views/property_search_template.xml',
 
@@ -48,7 +50,9 @@
             '/theme_bohio_real_estate/static/src/scss/header.scss',
             '/theme_bohio_real_estate/static/src/scss/footer.scss',
             '/theme_bohio_real_estate/static/src/scss/homepage.scss',
+            '/theme_bohio_real_estate/static/src/scss/homepage_landing.scss',
             '/theme_bohio_real_estate/static/src/scss/property_search.scss',
+            '/theme_bohio_real_estate/static/src/scss/properties_list_map.scss',
             '/theme_bohio_real_estate/static/src/scss/portal.scss',
 
             # Website JS - Utils
@@ -70,6 +74,8 @@
             '/theme_bohio_real_estate/static/src/js/bohio_main.js',
             '/theme_bohio_real_estate/static/src/js/properties_shop.js',
             '/theme_bohio_real_estate/static/src/js/property_search.js',
+            '/theme_bohio_real_estate/static/src/js/properties_list_map.js',
+            '/theme_bohio_real_estate/static/src/js/homepage_landing.js',
             '/theme_bohio_real_estate/static/src/js/portal.js',
             '/theme_bohio_real_estate/static/src/js/common.js',
         ],

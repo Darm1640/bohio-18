@@ -10,19 +10,80 @@ class BohioRealEstateController(http.Controller):
 
     @http.route('/', type='http', auth='public', website=True)
     def bohio_home(self, **kw):
-        featured_properties = request.env['product.template'].sudo().search([
+        """Homepage landing con secciones de arriendo, venta y proyectos"""
+        Product = request.env['product.template'].sudo()
+        City = request.env['res.city'].sudo()
+        Contract = request.env['property.contract'].sudo()
+
+        # Propiedades en arriendo
+        rent_properties = Product.search([
             ('is_property', '=', True),
             ('website_published', '=', True),
-            ('state', '=', 'free')
-        ], limit=6, order='create_date desc')
+            ('state', '=', 'free'),
+            ('net_rental_price', '>', 0)
+        ], limit=4, order='create_date desc')
 
-        return request.render('bohio_real_estate.bohio_homepage', {
-            'featured_properties': featured_properties
+        # Propiedades en venta (usados)
+        sale_properties = Product.search([
+            ('is_property', '=', True),
+            ('website_published', '=', True),
+            ('state', '=', 'free'),
+            ('net_price', '>', 0),
+            ('is_project', '=', False)
+        ], limit=4, order='create_date desc')
+
+        # Proyectos en venta
+        projects = Product.search([
+            ('is_property', '=', True),
+            ('website_published', '=', True),
+            ('is_project', '=', True)
+        ], limit=3, order='create_date desc')
+
+        # Ciudades para el buscador
+        cities = City.search([
+            ('state_id.country_id.code', '=', 'CO')
+        ], order='name', limit=50)
+
+        # Stats
+        total_properties = Product.search_count([
+            ('is_property', '=', True),
+            ('website_published', '=', True)
+        ])
+
+        active_contracts = Contract.search_count([
+            ('state', 'in', ['active', 'running'])
+        ])
+
+        # Clientes satisfechos (estimado)
+        happy_clients = 150
+
+        stats = {
+            'total_properties': total_properties,
+            'active_contracts': active_contracts,
+            'happy_clients': happy_clients
+        }
+
+        return request.render('theme_bohio_real_estate.bohio_homepage_landing', {
+            'rent_properties': rent_properties,
+            'sale_properties': sale_properties,
+            'projects': projects,
+            'cities': cities,
+            'stats': stats
         })
 
     @http.route('/properties/map', type='http', auth='public', website=True)
     def properties_map(self, **kw):
-        return request.render('bohio_real_estate.property_map_view')
+        """Vista de lista/mapa de propiedades con OpenStreetMap"""
+        City = request.env['res.city']
+
+        # Obtener ciudades para filtro
+        cities = City.sudo().search([
+            ('state_id.country_id.code', '=', 'CO')
+        ], order='name', limit=100)
+
+        return request.render('theme_bohio_real_estate.properties_list_map_page', {
+            'cities': cities
+        })
 
     @http.route('/api/properties/map', type='json', auth='public', website=True)
     def api_properties_map(self, **kw):

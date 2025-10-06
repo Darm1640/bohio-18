@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ========================================== -->
+    <!-- PÁGINA PRINCIPAL: LISTA/MAPA DE PROPIEDADES -->
+    <!-- ========================================== -->
+    <template id="properties_list_map_page" name="Properties List/Map View">
+        <t t-call="website.layout">
+            <t t-set="additional_title">Propiedades</t>
+
+            <!-- OpenStreetMap Leaflet CSS -->
+            <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+                integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+                crossorigin=""/>
+
+            <div id="wrap" class="bohio_properties_map_page">
+
+                <!-- HERO SECTION -->
+                <section class="hero-search-section">
+                    <div class="container">
+                        <h1 class="hero-title">Encuentra tu Propiedad Ideal</h1>
+
+                        <!-- FILTROS PRINCIPALES -->
+                        <div class="filters-grid">
+                            <div class="field-group">
+                                <label for="filterType">Tipo de Inmueble</label>
+                                <select id="filterType" class="form-select">
+                                    <option value="">Todos</option>
+                                    <option value="apartment">Apartamento</option>
+                                    <option value="house">Casa</option>
+                                    <option value="lot">Lote</option>
+                                    <option value="office">Oficina</option>
+                                    <option value="commercial">Local Comercial</option>
+                                    <option value="bodega">Bodega</option>
+                                    <option value="finca">Finca</option>
+                                </select>
+                            </div>
+
+                            <div class="field-group">
+                                <label for="filterCity">Ciudad</label>
+                                <select id="filterCity" class="form-select">
+                                    <option value="">Todas</option>
+                                    <t t-foreach="cities" t-as="city">
+                                        <option t-att-value="city.id" t-esc="city.name"/>
+                                    </t>
+                                </select>
+                            </div>
+
+                            <div class="field-group">
+                                <label for="filterMode">Modalidad</label>
+                                <select id="filterMode" class="form-select">
+                                    <option value="">Todas</option>
+                                    <option value="sale">Venta</option>
+                                    <option value="rent">Arriendo</option>
+                                </select>
+                            </div>
+
+                            <div class="field-group">
+                                <label for="filterBedrooms">Habitaciones</label>
+                                <select id="filterBedrooms" class="form-select">
+                                    <option value="">Todas</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4+</option>
+                                </select>
+                            </div>
+
+                            <div class="field-group">
+                                <label for="filterBathrooms">Baños</label>
+                                <select id="filterBathrooms" class="form-select">
+                                    <option value="">Todos</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3+</option>
+                                </select>
+                            </div>
+
+                            <div class="field-group btn-group-field">
+                                <button class="btn-bohio-primary" id="btnBuscar">Buscar</button>
+                            </div>
+                        </div>
+
+                        <!-- SUBFILTROS -->
+                        <div class="subfilters-row">
+                            <div class="code-search-bar">
+                                <input type="text" id="inputCodigo" class="form-control" placeholder="¿Tienes un código? (ej: BOH-001)"/>
+                                <button class="btn-bohio-primary" id="btnCodigo">Buscar Código</button>
+                            </div>
+
+                            <span class="badge-price-title">Rango de Precio</span>
+
+                            <div class="price-range-group">
+                                <span class="chip-label">COP$</span>
+                                <span class="chip-input">
+                                    Desde
+                                    <input type="number" id="priceMin" placeholder="0"/>
+                                </span>
+                                <span class="chip-label">COP$</span>
+                                <span class="chip-input">
+                                    Hasta
+                                    <input type="number" id="priceMax" placeholder="0"/>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- LISTING HEAD -->
+                <div class="container listing-controls">
+                    <div class="sort-container">
+                        <label for="sortSel">Ordenar por</label>
+                        <select id="sortSel" class="form-select">
+                            <option value="price_asc">Precio: Menor a Mayor</option>
+                            <option value="price_desc">Precio: Mayor a Menor</option>
+                            <option value="rooms_desc">Habitaciones: Más a Menos</option>
+                            <option value="area_desc">Área: Mayor a Menor</option>
+                            <option value="newest">Más Recientes</option>
+                        </select>
+                    </div>
+
+                    <div class="view-toggle-controls">
+                        <span class="showing-count">
+                            <strong id="countText">0</strong> propiedades encontradas
+                        </span>
+                        <div class="segmented-control" role="tablist" aria-label="Cambiar vista">
+                            <button id="btnLista" class="active" role="tab" aria-selected="true">
+                                Lista
+                            </button>
+                            <button id="btnMapa" role="tab" aria-selected="false">
+                                Mapa
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CONTENT -->
+                <div class="container content-wrapper">
+                    <!-- LISTA DE PROPIEDADES -->
+                    <div id="lista" class="properties-grid" aria-live="polite">
+                        <!-- Se llenará dinámicamente con JS -->
+                    </div>
+
+                    <!-- MAPA -->
+                    <div id="mapa" class="map-wrapper" aria-hidden="true" style="display: none;">
+                        <div id="mapCanvas" class="map-canvas"></div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- OpenStreetMap Leaflet JS -->
+            <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+                integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+                crossorigin=""></script>
+        </t>
+    </template>
+</odoo>
