@@ -3,7 +3,7 @@
     <!-- ========================================== -->
     <!-- PÁGINA PRINCIPAL: LISTA/MAPA DE PROPIEDADES -->
     <!-- ========================================== -->
-    <template id="properties_list_map_page" name="Properties List/Map View">
+    <template id="theme_bohio_real_estate.properties_list_map_page" name="Properties List/Map View">
         <t t-call="website.layout">
             <t t-set="additional_title">Propiedades</t>
 

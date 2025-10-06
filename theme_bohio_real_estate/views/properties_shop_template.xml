@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <template id="properties_shop" name="Properties Shop">
+    <template id="theme_bohio_real_estate.properties_shop" name="Properties Shop">
         <t t-call="website.layout">
             <div id="wrap" class="oe_structure">
                 <div class="container mt-4">
