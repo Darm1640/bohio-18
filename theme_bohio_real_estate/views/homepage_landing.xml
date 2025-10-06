@@ -12,9 +12,7 @@
                 <!-- HERO SECTION -->
                 <header class="hero-section">
                     <div class="hero-bg">
-                        <t t-if="website.homepage_image">
-                            <img t-att-src="'/web/image/website/%s/homepage_image' % website.id" alt="Hero Background"/>
-                        </t>
+                        <!-- Background image - puede configurarse con CSS o dinámicamente -->
                     </div>
                     <div class="hero-overlay"/>
 
