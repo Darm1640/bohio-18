@@ -252,7 +252,7 @@
     <!-- ========================================== -->
     <!-- COMPONENTE: TARJETA SIMPLE DE PROPIEDAD -->
     <!-- ========================================== -->
-    <template id="property_card_simple" name="Property Card Simple">
+    <template id="theme_bohio_real_estate.property_card_simple" name="Property Card Simple">
         <article class="property-card-simple">
             <div class="price-ribbon" t-esc="'$%s' % '{:,.0f}'.format(property.net_rental_price if property.net_rental_price else property.net_price)"/>
 
