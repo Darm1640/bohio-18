@@ -42,6 +42,9 @@ $shadow-sm: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !default;
 $shadow-md: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !default;
 $shadow-lg: 0 1rem 3rem rgba(0, 0, 0, 0.175) !default;
 
+// Container max-width
+$container-max-width: 1320px !default;
+
 // Colors - Asegurar que existan variables de texto si no están en color_variables
 $o-color-text-white: #ffffff !default;
 $o-color-text-dark: #212529 !default;
