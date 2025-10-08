@@ -3,6 +3,18 @@
     <template id="properties_shop" name="BOHIO Properties Shop">
         <t t-call="website.layout">
             <div id="wrap" class="bohio-shop-page">
+                <!-- Banner Hero -->
+                <section class="properties-hero position-relative" style="background: linear-gradient(rgba(227, 30, 36, 0.75), rgba(0,0,0,0.6)), url('/theme_bohio_real_estate/static/src/img/banner_inicio.jpg') center/cover; min-height: 300px;">
+                    <div class="container h-100">
+                        <div class="row h-100 align-items-center text-white text-center" style="min-height: 300px;">
+                            <div class="col-12">
+                                <h1 class="display-4 fw-bold mb-3">Encuentra Tu Hogar Ideal</h1>
+                                <p class="lead mb-0">Explora nuestra amplia selección de propiedades</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
                 <!-- Contenedor con contexto para JavaScript -->
                 <div class="property_search_container" t-att-data-context="search_context or 'public'">
 

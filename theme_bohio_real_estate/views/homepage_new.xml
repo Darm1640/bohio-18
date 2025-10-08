@@ -8,13 +8,8 @@
                     <section class="bohio-hero-section position-relative">
                         <div class="container-fluid p-0">
                             <div class="hero-banner position-relative">
-                                <!-- GIF Inicial (se muestra primero 3 segundos) -->
-                                <div id="heroGif" class="hero-gif-container" style="display: block;">
-                                    <img src="/theme_bohio_real_estate/static/src/img/proyectos.gif" alt="Bienvenido a BOHIO" class="img-fluid w-100" style="max-height: 600px; object-fit: cover;"/>
-                                </div>
-
-                                <!-- Carrusel de imágenes fijas (se muestra después del GIF) -->
-                                <div id="heroCarousel" class="carousel slide carousel-fade" data-bs-ride="false" style="display: none;">
+                                <!-- Carrusel de imágenes (siempre visible) -->
+                                <div id="heroCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
                                     <div class="carousel-inner">
                                         <div class="carousel-item active">
                                             <img src="/theme_bohio_real_estate/static/src/img/banner1.jpg" alt="Encuentra tu hogar ideal" class="img-fluid w-100" style="max-height: 600px; object-fit: cover;"/>

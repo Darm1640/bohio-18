@@ -29,24 +29,17 @@ function initTransparentNavbar() {
 }
 
 function initHeroBanner() {
-    const gifContainer = document.getElementById('heroGif');
     const carouselContainer = document.getElementById('heroCarousel');
 
-    if (!gifContainer || !carouselContainer) return;
+    if (!carouselContainer) return;
 
-    // Después de 3 segundos, cambia del GIF al carrusel
-    setTimeout(() => {
-        gifContainer.style.display = 'none';
-        carouselContainer.style.display = 'block';
-
-        // Iniciar el carrusel automático con Bootstrap
-        if (typeof bootstrap !== 'undefined') {
-            const carousel = new bootstrap.Carousel(carouselContainer, {
-                interval: 5000,
-                ride: 'carousel'
-            });
-        }
-    }, 3000);
+    // Iniciar el carrusel automático con Bootstrap
+    if (typeof bootstrap !== 'undefined') {
+        new bootstrap.Carousel(carouselContainer, {
+            interval: 5000,
+            ride: 'carousel'
+        });
+    }
 }
 
 async function loadHomeProperties() {
