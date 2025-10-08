@@ -19,8 +19,8 @@
         </xpath>
     </template>
 
-    <!-- Custom Portal Styles -->
-    <template id="portal_custom_css" inherit_id="portal.portal_layout">
+    <!-- Custom Portal Styles - hereda de website.layout que SÍ tiene head -->
+    <template id="portal_custom_css" inherit_id="website.layout">
         <xpath expr="//head" position="inside">
             <style type="text/css">
                 .bohio-portal-sidebar {

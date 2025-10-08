@@ -34,6 +34,9 @@
         'views/homepage/homepage.xml',
         'views/property_search_template.xml',
 
+        # Pages
+        'views/pages/about_us.xml',
+
         # Headers & Footers
         'views/headers/header_template.xml',
         'views/footers/footer_template.xml',
