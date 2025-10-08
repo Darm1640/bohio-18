@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- Página de Contacto BOHIO -->
-    <template id="bohio_contacto_page" name="BOHIO Contáctanos">
+    <data>
+        <!-- Página de Contacto BOHIO -->
+        <template id="bohio_contacto_page" name="BOHIO Contáctanos">
         <t t-call="website.layout">
             <div id="wrap" class="oe_structure bohio-contacto-page">
 
@@ -293,23 +294,5 @@
             </script>
         </t>
     </template>
-
-    <style>
-        .bohio-contacto-page .contacto-hero {
-            min-height: 400px;
-            display: flex;
-            align-items: center;
-        }
-
-        .bohio-contacto-page .form-control:focus,
-        .bohio-contacto-page .form-select:focus {
-            border-color: #E31E24;
-            box-shadow: 0 0 0 0.2rem rgba(227, 30, 36, 0.25);
-        }
-
-        .bohio-contacto-page .btn-outline-danger:hover {
-            transform: scale(1.1);
-            transition: transform 0.2s ease;
-        }
-    </style>
+    </data>
 </odoo>

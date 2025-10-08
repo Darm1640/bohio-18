@@ -273,7 +273,7 @@
                             proyectosMarkers.addLayer(marker);
                             bounds.push([proyecto.latitude, proyecto.longitude]);
                         }
-                    });
+                    }); 
 
                     if (bounds.length > 0) {
                         proyectosMap.fitBounds(bounds, { padding: [50, 50] });
