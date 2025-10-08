@@ -1,11 +1,80 @@
 // Bohio Real Estate - Homepage Styles - NEW VERSION
 
-// Variables fallback para compatibilidad
-$spacer-xl: 3rem;
-$o-color-primary: #E31E24 !default;
-$o-color-secondary: #C41E3A !default;
-$o-color-text-dark: #212529 !default;
-$o-color-text-light: #6C757D !default;
+// BOHIO Variables - Custom Theme Variables
+// Spacers
+$bohio-spacer-xs: 0.25rem;
+$bohio-spacer-sm: 0.5rem;
+$bohio-spacer-md: 1rem;
+$bohio-spacer-lg: 1.5rem;
+$bohio-spacer-xl: 3rem;
+
+// Breakpoints
+$bohio-breakpoint-sm: 576px;
+$bohio-breakpoint-md: 768px;
+$bohio-breakpoint-lg: 992px;
+$bohio-breakpoint-xl: 1200px;
+
+// Font Sizes
+$bohio-font-size-sm: 0.875rem;
+$bohio-font-size-base: 1rem;
+$bohio-font-size-lg: 1.125rem;
+$bohio-h1-font-size: 2.5rem;
+$bohio-h2-font-size: 2rem;
+$bohio-h4-font-size: 1.5rem;
+$bohio-h5-font-size: 1.25rem;
+
+// Colors
+$bohio-color-primary: #E31E24;
+$bohio-color-secondary: #C41E3A;
+$bohio-color-text-dark: #212529;
+$bohio-color-text-light: #6C757D;
+$bohio-color-success: #10B981;
+$bohio-color-bg-white: #FFFFFF;
+$bohio-color-bg-light: #F9FAFB;
+$bohio-color-border: #E5E7EB;
+
+// Border Radius
+$bohio-border-radius: 0.375rem;
+$bohio-border-radius-lg: 0.5rem;
+
+// Shadows
+$bohio-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+$bohio-shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+$bohio-shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.15);
+
+// Transitions
+$bohio-transition-base: all 0.3s ease;
+$bohio-transition-slow: all 0.5s ease;
+
+// Legacy Compatibility (for old code sections)
+$spacer-xl: $bohio-spacer-xl;
+$spacer-lg: $bohio-spacer-lg;
+$spacer-md: $bohio-spacer-md;
+$spacer-sm: $bohio-spacer-sm;
+$spacer-xs: $bohio-spacer-xs;
+$breakpoint-md: $bohio-breakpoint-md;
+$o-color-primary: $bohio-color-primary;
+$o-color-secondary: $bohio-color-secondary;
+$o-color-text-dark: $bohio-color-text-dark;
+$o-color-text-light: $bohio-color-text-light;
+$o-success: $bohio-color-success;
+$o-bg-white: $bohio-color-bg-white;
+$o-bg-light: $bohio-color-bg-light;
+$border-color: $bohio-color-border;
+$border-radius: $bohio-border-radius;
+$border-radius-lg: $bohio-border-radius-lg;
+$shadow-sm: $bohio-shadow-sm;
+$shadow-md: $bohio-shadow-md;
+$shadow-lg: $bohio-shadow-lg;
+$transition-base: $bohio-transition-base;
+$transition-slow: $bohio-transition-slow;
+$h1-font-size: $bohio-h1-font-size;
+$h2-font-size: $bohio-h2-font-size;
+$h4-font-size: $bohio-h4-font-size;
+$h5-font-size: $bohio-h5-font-size;
+$font-size-sm: $bohio-font-size-sm;
+$font-size-base: $bohio-font-size-base;
+$font-size-lg: $bohio-font-size-lg;
 
 /* BOHIO Homepage Styles */
 .bohio-homepage {
