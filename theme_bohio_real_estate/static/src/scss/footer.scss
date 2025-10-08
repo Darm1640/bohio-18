@@ -1,7 +1,22 @@
 // Bohio Real Estate - Footer Styles
 
-// Variables
-$spacer-xl: 3rem;
+// Variables fallback para compatibilidad Odoo 18
+$spacer-xs: 0.25rem !default;
+$spacer-sm: 0.5rem !default;
+$spacer-md: 1rem !default;
+$spacer-lg: 1.5rem !default;
+$spacer-xl: 3rem !default;
+
+$breakpoint-sm: 576px !default;
+$breakpoint-md: 768px !default;
+$breakpoint-lg: 992px !default;
+$breakpoint-xl: 1200px !default;
+
+$h5-font-size: 1.25rem !default;
+$font-size-sm: 0.875rem !default;
+
+$transition-base: all 0.3s ease !default;
+
 $body-color: #212529 !default;
 $o-color-text-dark: $body-color !default;
 
