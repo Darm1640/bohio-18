@@ -2,9 +2,11 @@
 
 // Variables
 $spacer-xl: 3rem;
+$body-color: #212529 !default;
+$o-color-text-dark: $body-color !default;
 
 .bohio-footer {
-    background: $o-color-text-dark;
+    background: var(--bs-body-color, #212529);
     color: white;
     margin-top: $spacer-xl;
 
@@ -53,7 +55,7 @@ $spacer-xl: 3rem;
                     text-decoration: none;
 
                     &:hover {
-                        background: $o-color-primary;
+                        background: var(--bs-danger, #E31E24);
                         transform: translateY(-4px);
                     }
 
@@ -99,7 +101,7 @@ $spacer-xl: 3rem;
 
                     i {
                         font-size: 1.25rem;
-                        color: $o-color-secondary;
+                        color: var(--bs-danger, #E31E24);
                         flex-shrink: 0;
                         margin-top: 2px;
                     }

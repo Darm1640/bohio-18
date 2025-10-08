@@ -1,7 +1,11 @@
 // Bohio Real Estate - Homepage Styles - NEW VERSION
 
-// Variables
+// Variables fallback para compatibilidad
 $spacer-xl: 3rem;
+$o-color-primary: #E31E24 !default;
+$o-color-secondary: #C41E3A !default;
+$o-color-text-dark: #212529 !default;
+$o-color-text-light: #6C757D !default;
 
 /* BOHIO Homepage Styles */
 .bohio-homepage {
