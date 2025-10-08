@@ -35,10 +35,9 @@
                                     </div>
                                     <div class="card-body p-4">
                                         <div class="d-flex align-items-center mb-3">
-                                            <img src="/theme_bohio_real_estate/static/src/img/avaluos.gif"
-                                                 alt="Arriendo"
-                                                 class="me-3"
-                                                 style="width: 60px; height: 60px; object-fit: contain;"/>
+                                            <div class="me-3 d-flex align-items-center justify-content-center bg-danger bg-opacity-10 rounded-circle" style="width: 60px; height: 60px;">
+                                                <i class="fa fa-key text-danger fa-2x"></i>
+                                            </div>
                                             <h3 class="h4 mb-0 text-danger">Arriendo</h3>
                                         </div>
                                         <p class="text-muted mb-3">
@@ -70,10 +69,9 @@
                                     </div>
                                     <div class="card-body p-4">
                                         <div class="d-flex align-items-center mb-3">
-                                            <img src="/theme_bohio_real_estate/static/src/img/proyectos.gif"
-                                                 alt="Venta"
-                                                 class="me-3"
-                                                 style="width: 60px; height: 60px; object-fit: contain;"/>
+                                            <div class="me-3 d-flex align-items-center justify-content-center bg-danger bg-opacity-10 rounded-circle" style="width: 60px; height: 60px;">
+                                                <i class="fa fa-home text-danger fa-2x"></i>
+                                            </div>
                                             <h3 class="h4 mb-0 text-danger">Venta</h3>
                                         </div>
                                         <p class="text-muted mb-3">
@@ -105,10 +103,9 @@
                                     </div>
                                     <div class="card-body p-4">
                                         <div class="d-flex align-items-center mb-3">
-                                            <img src="/theme_bohio_real_estate/static/src/img/marketing_digital.gif"
-                                                 alt="Marketing"
-                                                 class="me-3"
-                                                 style="width: 60px; height: 60px; object-fit: contain;"/>
+                                            <div class="me-3 d-flex align-items-center justify-content-center bg-danger bg-opacity-10 rounded-circle" style="width: 60px; height: 60px;">
+                                                <i class="fa fa-bullhorn text-danger fa-2x"></i>
+                                            </div>
                                             <h3 class="h4 mb-0 text-danger">Marketing Inmobiliario</h3>
                                         </div>
                                         <p class="text-muted mb-3">
@@ -140,10 +137,9 @@
                                     </div>
                                     <div class="card-body p-4">
                                         <div class="d-flex align-items-center mb-3">
-                                            <img src="/theme_bohio_real_estate/static/src/img/servicios_juridico.gif"
-                                                 alt="Servicios Jurídicos"
-                                                 class="me-3"
-                                                 style="width: 60px; height: 60px; object-fit: contain;"/>
+                                            <div class="me-3 d-flex align-items-center justify-content-center bg-danger bg-opacity-10 rounded-circle" style="width: 60px; height: 60px;">
+                                                <i class="fa fa-balance-scale text-danger fa-2x"></i>
+                                            </div>
                                             <h3 class="h4 mb-0 text-danger">Servicios Jurídicos</h3>
                                         </div>
                                         <p class="text-muted mb-3">
@@ -175,10 +171,9 @@
                                     </div>
                                     <div class="card-body p-4">
                                         <div class="d-flex align-items-center mb-3">
-                                            <img src="/theme_bohio_real_estate/static/src/img/negocios_corporativos.gif"
-                                                 alt="Negocios Corporativos"
-                                                 class="me-3"
-                                                 style="width: 60px; height: 60px; object-fit: contain;"/>
+                                            <div class="me-3 d-flex align-items-center justify-content-center bg-danger bg-opacity-10 rounded-circle" style="width: 60px; height: 60px;">
+                                                <i class="fa fa-briefcase text-danger fa-2x"></i>
+                                            </div>
                                             <h3 class="h4 mb-0 text-danger">Negocios Corporativos</h3>
                                         </div>
                                         <p class="text-muted mb-3">
@@ -210,10 +205,9 @@
                                     </div>
                                     <div class="card-body p-4">
                                         <div class="d-flex align-items-center mb-3">
-                                            <img src="/theme_bohio_real_estate/static/src/img/firma_digital.gif"
-                                                 alt="Firma Digital"
-                                                 class="me-3"
-                                                 style="width: 60px; height: 60px; object-fit: contain;"/>
+                                            <div class="me-3 d-flex align-items-center justify-content-center bg-danger bg-opacity-10 rounded-circle" style="width: 60px; height: 60px;">
+                                                <i class="fa fa-pencil-square text-danger fa-2x"></i>
+                                            </div>
                                             <h3 class="h4 mb-0 text-danger">Firma Digital</h3>
                                         </div>
                                         <p class="text-muted mb-3">

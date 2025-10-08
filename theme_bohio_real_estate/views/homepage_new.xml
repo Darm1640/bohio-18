@@ -223,8 +223,8 @@
 
                                 <div class="col-md-2 col-6">
                                     <div class="service-card text-center p-3 h-100 bg-white rounded-3 shadow-sm">
-                                        <div class="service-icon mb-2">
-                                            <img src="/theme_bohio_real_estate/static/src/img/avaluos.gif" alt="Avalúos" style="width: 60px; height: 60px;"/>
+                                        <div class="service-icon mb-2 d-flex align-items-center justify-content-center mx-auto bg-danger bg-opacity-10 rounded-circle" style="width: 60px; height: 60px;">
+                                            <i class="fa fa-calculator text-danger fa-2x"></i>
                                         </div>
                                         <h6 class="mb-0">Avalúos</h6>
                                     </div>
@@ -232,8 +232,8 @@
 
                                 <div class="col-md-2 col-6">
                                     <div class="service-card text-center p-3 h-100 bg-white rounded-3 shadow-sm">
-                                        <div class="service-icon mb-2">
-                                            <img src="/theme_bohio_real_estate/static/src/img/negocios_.gif" alt="Negocios corporativos" style="width: 60px; height: 60px;"/>
+                                        <div class="service-icon mb-2 d-flex align-items-center justify-content-center mx-auto bg-danger bg-opacity-10 rounded-circle" style="width: 60px; height: 60px;">
+                                            <i class="fa fa-briefcase text-danger fa-2x"></i>
                                         </div>
                                         <h6 class="mb-0">Negocios corporativos</h6>
                                     </div>
@@ -241,8 +241,8 @@
 
                                 <div class="col-md-2 col-6">
                                     <div class="service-card text-center p-3 h-100 bg-white rounded-3 shadow-sm">
-                                        <div class="service-icon mb-2">
-                                            <img src="/theme_bohio_real_estate/static/src/img/servicios_juridico.gif" alt="Servicios jurídicos" style="width: 60px; height: 60px;"/>
+                                        <div class="service-icon mb-2 d-flex align-items-center justify-content-center mx-auto bg-danger bg-opacity-10 rounded-circle" style="width: 60px; height: 60px;">
+                                            <i class="fa fa-balance-scale text-danger fa-2x"></i>
                                         </div>
                                         <h6 class="mb-0">Servicios jurídicos</h6>
                                     </div>
@@ -250,8 +250,8 @@
 
                                 <div class="col-md-2 col-6">
                                     <div class="service-card text-center p-3 h-100 bg-white rounded-3 shadow-sm">
-                                        <div class="service-icon mb-2">
-                                            <img src="/theme_bohio_real_estate/static/src/img/marketing_digital.gif" alt="Marketing digital" style="width: 60px; height: 60px;"/>
+                                        <div class="service-icon mb-2 d-flex align-items-center justify-content-center mx-auto bg-danger bg-opacity-10 rounded-circle" style="width: 60px; height: 60px;">
+                                            <i class="fa fa-bullhorn text-danger fa-2x"></i>
                                         </div>
                                         <h6 class="mb-0">Marketing digital</h6>
                                     </div>
@@ -259,8 +259,8 @@
 
                                 <div class="col-md-2 col-6">
                                     <div class="service-card text-center p-3 h-100 bg-white rounded-3 shadow-sm">
-                                        <div class="service-icon mb-2">
-                                            <img src="/theme_bohio_real_estate/static/src/img/firma_digital.gif" alt="Firma digital" style="width: 60px; height: 60px;"/>
+                                        <div class="service-icon mb-2 d-flex align-items-center justify-content-center mx-auto bg-danger bg-opacity-10 rounded-circle" style="width: 60px; height: 60px;">
+                                            <i class="fa fa-pencil-square text-danger fa-2x"></i>
                                         </div>
                                         <h6 class="mb-0">Firma digital</h6>
                                     </div>
