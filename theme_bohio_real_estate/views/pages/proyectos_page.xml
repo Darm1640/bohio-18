@@ -307,23 +307,4 @@
             </script>
         </t>
     </template>
-
-    <style>
-        .bohio-proyectos-page .hover-lift {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .bohio-proyectos-page .hover-lift:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15) !important;
-        }
-
-        .bohio-proyectos-page .proyecto-image img {
-            transition: transform 0.3s ease;
-        }
-
-        .bohio-proyectos-page .hover-lift:hover .proyecto-image img {
-            transform: scale(1.05);
-        }
-    </style>
 </odoo>

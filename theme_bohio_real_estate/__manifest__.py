@@ -50,6 +50,8 @@
             # SCSS
             'theme_bohio_real_estate/static/src/scss/loader.scss',
             'theme_bohio_real_estate/static/src/scss/homepage.scss',
+            'theme_bohio_real_estate/static/src/scss/pages.scss',
+            'theme_bohio_real_estate/static/src/scss/property_detail.scss',
             'theme_bohio_real_estate/static/src/scss/header.scss',
             'theme_bohio_real_estate/static/src/scss/footer.scss',
             'theme_bohio_real_estate/static/src/scss/property_shop.scss',
