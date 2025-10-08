@@ -121,7 +121,7 @@
                                                 <!-- Botón Filtros Avanzados -->
                                                 <div class="col-md-1">
                                                     <button class="btn btn-outline-secondary btn-sm w-100" type="button" data-bs-toggle="collapse" data-bs-target="#advancedFilters">
-                                                        <i class="fa fa-sliders"></i>
+                                                        <i class="fa fa-bars"></i>
                                                     </button>
                                                 </div>
 
@@ -177,7 +177,7 @@
                                         </li>
                                         <li class="nav-item" role="presentation">
                                             <button class="nav-link" data-bs-toggle="tab" data-bs-target="#map-view" type="button">
-                                                <i class="fa fa-map-marked-alt"/> Vista Mapa
+                                                <i class="fa fa-map-marker"/> Vista Mapa
                                             </button>
                                         </li>
                                     </ul>
