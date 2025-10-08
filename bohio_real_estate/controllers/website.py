@@ -8,67 +8,6 @@ import base64
 class BohioWebsiteController(http.Controller):
     """Controlador para website público - Bohío Real Estate"""
 
-    @http.route('/', type='http', auth='public', website=True)
-    def bohio_home(self, **kw):
-        """Homepage landing con secciones de arriendo, venta y proyectos"""
-        Product = request.env['product.template'].sudo()
-        City = request.env['res.city'].sudo()
-        Contract = request.env['property.contract'].sudo()
-
-        # Propiedades en arriendo
-        rent_properties = Product.search([
-            ('is_property', '=', True),
-            ('website_published', '=', True),
-            ('state', '=', 'free'),
-            ('net_rental_price', '>', 0)
-        ], limit=4, order='create_date desc')
-
-        # Propiedades en venta (usados)
-        sale_properties = Product.search([
-            ('is_property', '=', True),
-            ('website_published', '=', True),
-            ('state', '=', 'free'),
-            ('net_price', '>', 0)
-        ], limit=4, order='create_date desc')
-
-        # Proyectos en venta (por ahora mostramos propiedades)
-        projects = Product.search([
-            ('is_property', '=', True),
-            ('website_published', '=', True),
-            ('net_price', '>', 0)
-        ], limit=3, order='create_date desc')
-
-        # Ciudades para el buscador
-        cities = City.search([
-            ('state_id.country_id.code', '=', 'CO')
-        ], order='name', limit=50)
-
-        # Stats
-        total_properties = Product.search_count([
-            ('is_property', '=', True),
-            ('website_published', '=', True)
-        ])
-
-        active_contracts = Contract.search_count([
-            ('state', 'in', ['active', 'running'])
-        ])
-
-        # Clientes satisfechos (estimado)
-        happy_clients = 150
-
-        stats = {
-            'total_properties': total_properties,
-            'active_contracts': active_contracts,
-            'happy_clients': happy_clients
-        }
-
-        # return request.render('theme_bohio_real_estate.bohio_homepage_new', {
-        #     'rent_properties': rent_properties,
-        #     'sale_properties': sale_properties,
-        #     'projects': projects,
-        #     'cities': cities,
-        #     'stats': stats
-        # })
 
     @http.route('/properties/map', type='http', auth='public', website=True)
     def properties_map(self, **kw):
