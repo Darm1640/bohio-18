@@ -287,7 +287,7 @@
 
                         // Marcador de oficina
                         const marker = L.marker([4.7110, -74.0721]).addTo(map);
-                        marker.bindPopup('<b>BOHIO Real Estate</b><br>Oficina Principal<br>Calle 123 # 45-67, Bogotá').openPopup();
+                        marker.bindPopup('<b>BOHIO Real Estate</b><br/>Oficina Principal<br/>Calle 123 # 45-67, Bogotá').openPopup();
                     }
                 });
             </script>
