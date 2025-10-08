@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Menú Principal del Sitio Web -->
+    <record id="menu_properties_map" model="website.menu">
+        <field name="name">Mapa de Propiedades</field>
+        <field name="url">/properties/map</field>
+        <field name="parent_id" ref="website.main_menu"/>
+        <field name="sequence" type="int">15</field>
+    </record>
+
+    <record id="menu_properties_list" model="website.menu">
+        <field name="name">Buscar Propiedades</field>
+        <field name="url">/properties</field>
+        <field name="parent_id" ref="website.main_menu"/>
+        <field name="sequence" type="int">10</field>
+    </record>
+
+    <record id="menu_about_us" model="website.menu">
+        <field name="name">Sobre Nosotros</field>
+        <field name="url">/aboutus</field>
+        <field name="parent_id" ref="website.main_menu"/>
+        <field name="sequence" type="int">20</field>
+    </record>
+
+    <record id="menu_services" model="website.menu">
+        <field name="name">Servicios</field>
+        <field name="url">/services</field>
+        <field name="parent_id" ref="website.main_menu"/>
+        <field name="sequence" type="int">25</field>
+    </record>
+
+    <record id="menu_contact" model="website.menu">
+        <field name="name">Contacto</field>
+        <field name="url">/contactus</field>
+        <field name="parent_id" ref="website.main_menu"/>
+        <field name="sequence" type="int">30</field>
+    </record>
+</odoo>
