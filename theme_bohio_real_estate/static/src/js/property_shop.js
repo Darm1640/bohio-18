@@ -841,9 +841,34 @@ class PropertyShop {
         html += '</tbody></table></div>';
         content.innerHTML = html;
 
-        // Mostrar modal
-        const modal = new bootstrap.Modal(document.getElementById('comparisonModal'));
-        modal.show();
+        // Mostrar modal - usar jQuery si Bootstrap 5 no está disponible
+        const modalElement = document.getElementById('comparisonModal');
+        if (modalElement) {
+            if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
+                const modal = new bootstrap.Modal(modalElement);
+                modal.show();
+            } else if (typeof $ !== 'undefined' && $.fn.modal) {
+                $(modalElement).modal('show');
+            } else {
+                // Fallback: mostrar con display
+                modalElement.style.display = 'block';
+                modalElement.classList.add('show');
+                document.body.classList.add('modal-open');
+
+                // Crear backdrop
+                const backdrop = document.createElement('div');
+                backdrop.className = 'modal-backdrop fade show';
+                document.body.appendChild(backdrop);
+
+                // Cerrar al hacer click en backdrop
+                backdrop.addEventListener('click', () => {
+                    modalElement.style.display = 'none';
+                    modalElement.classList.remove('show');
+                    document.body.classList.remove('modal-open');
+                    backdrop.remove();
+                });
+            }
+        }
     }
 
     getFieldLabel(field) {
