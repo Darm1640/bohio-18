@@ -14,7 +14,7 @@ class PropertyShop {
 
         // Paginación
         this.currentPage = 1;
-        this.itemsPerPage = 80;
+        this.itemsPerPage = 40;
         this.totalItems = 0;
         this.totalPages = 0;
 
@@ -800,24 +800,39 @@ class PropertyShop {
         const content = document.getElementById('comparison-content');
         if (!content) return;
 
+        // Validar datos
+        const properties = data?.properties || data?.result?.properties || [];
+
+        if (!Array.isArray(properties) || properties.length === 0) {
+            content.innerHTML = `
+                <div class="alert alert-warning">
+                    <i class="fa fa-exclamation-triangle"></i> No hay propiedades para comparar o error al cargar los datos.
+                </div>
+            `;
+            const modal = new bootstrap.Modal(document.getElementById('comparisonModal'));
+            modal.show();
+            return;
+        }
+
         // Renderizar tabla de comparación
         let html = '<div class="table-responsive"><table class="table table-bordered">';
 
         // Headers con imágenes
         html += '<thead><tr><th>Característica</th>';
-        data.properties.forEach(prop => {
+        properties.forEach(prop => {
+            const imageUrl = prop.image_url || '/theme_bohio_real_estate/static/src/img/banner1.jpg';
             html += `<th class="text-center">
-                <img src="${prop.image_url}" style="width: 100px; height: 100px; object-fit: cover;" class="rounded mb-2"/>
-                <div>${prop.name}</div>
+                <img src="${imageUrl}" style="width: 100px; height: 100px; object-fit: cover;" class="rounded mb-2"/>
+                <div class="small">${prop.name || 'Sin nombre'}</div>
             </th>`;
         });
         html += '</tr></thead><tbody>';
 
         // Comparar campos
-        const fields = ['list_price', 'property_type', 'bedrooms', 'bathrooms', 'area_constructed'];
+        const fields = ['list_price', 'property_type_name', 'bedrooms', 'bathrooms', 'area_constructed', 'city', 'stratum'];
         fields.forEach(field => {
             html += '<tr><td><strong>' + this.getFieldLabel(field) + '</strong></td>';
-            data.properties.forEach(prop => {
+            properties.forEach(prop => {
                 html += `<td class="text-center">${this.getFieldValue(prop, field)}</td>`;
             });
             html += '</tr>';
@@ -835,9 +850,12 @@ class PropertyShop {
         const labels = {
             list_price: 'Precio',
             property_type: 'Tipo',
+            property_type_name: 'Tipo de Propiedad',
             bedrooms: 'Habitaciones',
             bathrooms: 'Baños',
-            area_constructed: 'Área'
+            area_constructed: 'Área Construida',
+            city: 'Ciudad',
+            stratum: 'Estrato'
         };
         return labels[field] || field;
     }

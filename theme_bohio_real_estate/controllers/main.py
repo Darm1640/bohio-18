@@ -1246,3 +1246,68 @@ class BohioRealEstateController(http.Controller):
                 'error': str(e),
                 'message': f'Error: {str(e)}'
             }
+
+    @http.route(['/property/comparison/get'], type='json', auth='public', website=True, csrf=False)
+    def get_property_comparison(self, **post):
+        """Obtener propiedades para comparación"""
+        try:
+            property_ids = post.get('property_ids', [])
+
+            if not property_ids or not isinstance(property_ids, list):
+                return {
+                    'success': False,
+                    'properties': []
+                }
+
+            # Buscar propiedades
+            Product = request.env['product.template'].sudo()
+            properties = Product.browse([int(pid) for pid in property_ids if pid])
+
+            properties_data = []
+            for prop in properties:
+                if not prop.exists():
+                    continue
+
+                # Determinar precio correcto
+                price = 0
+                if prop.type_service == 'sale':
+                    price = float(prop.net_price) if prop.net_price else float(prop.list_price)
+                elif prop.type_service == 'rent':
+                    price = float(prop.net_rental_price) if prop.net_rental_price else float(prop.list_price)
+                else:
+                    price = float(prop.list_price) if prop.list_price else 0
+
+                properties_data.append({
+                    'id': prop.id,
+                    'name': prop.name or '',
+                    'default_code': prop.default_code or '',
+                    'list_price': price,
+                    'property_type': prop.property_type or '',
+                    'property_type_name': prop.property_type_id.name if prop.property_type_id else '',
+                    'type_service': prop.type_service or '',
+                    'bedrooms': int(prop.num_bedrooms) if prop.num_bedrooms else 0,
+                    'bathrooms': int(prop.num_bathrooms) if prop.num_bathrooms else 0,
+                    'area_constructed': float(prop.property_area) if prop.property_area else 0,
+                    'city': prop.city_id.name if prop.city_id else prop.city or '',
+                    'state': prop.state_id.name if prop.state_id else '',
+                    'region': prop.neighborhood or '',
+                    'stratum': int(prop.stratum) if prop.stratum else 0,
+                    'image_url': f'/web/image/product.template/{prop.id}/image_512' if prop.image_512 else None,
+                    'garage': bool(prop.garage),
+                    'elevator': bool(prop.elevator),
+                    'pools': bool(prop.pools),
+                    'furnished': bool(prop.furnished),
+                })
+
+            return {
+                'success': True,
+                'properties': properties_data
+            }
+
+        except Exception as e:
+            _logger.error(f"Error en comparación de propiedades: {str(e)}")
+            return {
+                'success': False,
+                'error': str(e),
+                'properties': []
+            }
