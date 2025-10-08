@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <template id="bohio_homepage_new" name="BOHIO Homepage">
+    <data>
+        <template id="bohio_homepage_new" name="BOHIO Homepage">
         <t t-call="website.layout">
             <div id="wrap" class="bohio-homepage">
                 <!-- Hero Section con Banner y Búsqueda -->
@@ -591,4 +592,5 @@
             }
         }
     </style>
+    </data>
 </odoo>
