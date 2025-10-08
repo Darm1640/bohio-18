@@ -293,7 +293,7 @@
                                 </li>
                                 <li class="nav-item" role="presentation">
                                     <button class="nav-link" id="arriendo-map-tab" data-bs-toggle="tab" data-bs-target="#arriendo-map" type="button" role="tab">
-                                        <i class="fa fa-map-marked-alt me-1"/>
+                                        <i class="fa fa-map-marker me-1"/>
  Vista Mapa
                                     </button>
                                 </li>
@@ -333,7 +333,7 @@
                                 </li>
                                 <li class="nav-item">
                                     <button class="nav-link" data-bs-toggle="tab" data-bs-target="#used-sale-map">
-                                        <i class="fa fa-map-marked-alt me-1"/>
+                                        <i class="fa fa-map-marker me-1"/>
  Vista Mapa
                                     </button>
                                 </li>
@@ -373,7 +373,7 @@
                                 </li>
                                 <li class="nav-item">
                                     <button class="nav-link" data-bs-toggle="tab" data-bs-target="#projects-map">
-                                        <i class="fa fa-map-marked-alt me-1"/>
+                                        <i class="fa fa-map-marker me-1"/>
  Vista Mapa
                                     </button>
                                 </li>
