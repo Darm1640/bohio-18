@@ -12,13 +12,13 @@
                             <p class="small">Tu aliado en bienes raíces. Encuentra tu hogar ideal con nosotros.</p>
                             <div class="d-flex gap-3 mt-3">
                                 <a href="https://www.instagram.com/bohioinmobiliaria/?hl=es" target="_blank" class="text-white">
-                                    <i class="fab fa-instagram fa-lg"></i>
+                                    <i class="fa fa-instagram fa-lg"></i>
                                 </a>
                                 <a href="#" class="text-white">
-                                    <i class="fab fa-facebook fa-lg"></i>
+                                    <i class="fa fa-facebook fa-lg"></i>
                                 </a>
                                 <a href="#" class="text-white">
-                                    <i class="fab fa-linkedin fa-lg"></i>
+                                    <i class="fa fa-linkedin fa-lg"></i>
                                 </a>
                                 <a href="https://bohioconsultores.com/" target="_blank" class="text-white">
                                     <i class="fa fa-globe fa-lg"></i>
@@ -53,7 +53,7 @@
                             <h6 class="text-danger mb-3">Contacto</h6>
                             <ul class="list-unstyled small">
                                 <li class="mb-2">
-                                    <i class="fa fa-map-marker-alt me-2"></i>
+                                    <i class="fa fa-map-marker me-2"></i>
                                     Barranquilla, Colombia
                                 </li>
                                 <li class="mb-2">

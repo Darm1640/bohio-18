@@ -275,7 +275,7 @@
             <button class="btn btn-success whatsapp-float-btn shadow-lg"
                     id="whatsappFloatBtn"
                     onclick="openWhatsAppModal()">
-                <i class="fab fa-whatsapp fa-2x"></i>
+                <i class="fa fa-whatsapp fa-2x"></i>
                 <span class="whatsapp-float-text">Consultar por WhatsApp</span>
             </button>
 
@@ -285,7 +285,7 @@
                     <div class="modal-content">
                         <div class="modal-header bg-success text-white">
                             <h5 class="modal-title">
-                                <i class="fab fa-whatsapp me-2"></i>Consultar por WhatsApp
+                                <i class="fa fa-whatsapp me-2"></i>Consultar por WhatsApp
                             </h5>
                             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                         </div>
@@ -345,7 +345,7 @@
 
                                 <div class="d-grid">
                                     <button type="submit" class="btn btn-success btn-lg">
-                                        <i class="fab fa-whatsapp me-2"></i>Enviar Mensaje por WhatsApp
+                                        <i class="fa fa-whatsapp me-2"></i>Enviar Mensaje por WhatsApp
                                     </button>
                                 </div>
                             </form>
@@ -383,7 +383,7 @@
                     notification.style.cssText = 'animation: slideInRight 0.5s ease;';
                     notification.innerHTML = `
                         <div class="d-flex align-items-start">
-                            <i class="fas fa-check-circle fa-2x text-success me-3"></i>
+                            <i class="fa fa-check-circle fa-2x text-success me-3"></i>
                             <div>
                                 <h5 class="alert-heading mb-1">${title}</h5>
                                 <p class="mb-0">${message}</p>
