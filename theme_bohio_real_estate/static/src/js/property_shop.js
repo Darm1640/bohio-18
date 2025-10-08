@@ -238,7 +238,9 @@ class PropertyShop {
             const data = await response.json();
             console.log('Datos recibidos:', data);
 
-            this.currentProperties = data.items || data.properties || [];
+            // Odoo JSON-RPC wrapper: data puede ser {result: {...}} o directamente {...}
+            const result = data.result || data;
+            this.currentProperties = result.items || result.properties || [];
             console.log('Propiedades procesadas:', this.currentProperties.length);
 
             this.renderProperties(this.currentProperties);
