@@ -46,7 +46,7 @@
             # External - Leaflet Maps
             'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css',
             'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js',
-
+            'theme_bohio_real_estate/static/src/css/style.css',
             # SCSS
             'theme_bohio_real_estate/static/src/scss/loader.scss',
             'theme_bohio_real_estate/static/src/scss/homepage.scss',

@@ -1,0 +1,16 @@
+.bohio-servicios-page .hover-lift {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.bohio-servicios-page .hover-lift:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15) !important;
+}
+
+.bohio-servicios-page .servicio-card:hover .servicio-overlay {
+    opacity: 1 !important;
+}
+
+.bohio-servicios-page .servicio-card {
+    background: white;
+}
