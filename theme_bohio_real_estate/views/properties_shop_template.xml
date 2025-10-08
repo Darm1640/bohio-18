@@ -1,391 +1,253 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <template id="theme_bohio_real_estate.properties_shop" name="Properties Shop">
+    <template id="properties_shop" name="BOHIO Properties Shop">
         <t t-call="website.layout">
-            <div id="wrap" class="oe_structure">
-                <div class="container mt-4">
-                    <h1 class="text-center mb-4">Buscar Propiedades</h1>
+            <div id="wrap" class="bohio-shop-page">
+                <!-- Contenedor con contexto para JavaScript -->
+                <div class="property_search_container" t-att-data-context="search_context or 'public'">
 
-                    <div class="row mb-4">
-                        <div class="col-12">
-                            <div class="card shadow-sm">
-                                <div class="card-body">
-                                    <form method="get" action="/properties" class="property-search-form">
-                                        <div class="row g-3">
-                                            <div class="col-md-6">
-                                                <div class="input-group">
-                                                    <input type="text" class="form-control" name="search"
-                                                           t-att-value="search" placeholder="Buscar por nombre o descripción..."/>
-                                                    <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal"
-                                                            data-bs-target="#codeSearchModal">
-                                                        <i class="fa fa-qrcode"/> Por Código
-                                                    </button>
+                    <!-- Header con búsqueda principal -->
+                    <section class="shop-header bg-white border-bottom py-4">
+                        <div class="container">
+                            <div class="row align-items-center mb-4">
+                                <div class="col-md-6">
+                                    <h1 class="mb-0">
+                                        <i class="fa fa-search"/> Propiedades
+                                    </h1>
+                                    <p class="text-muted mb-0 mt-2">
+                                        <span id="property-count" class="fw-bold text-danger">0</span> propiedades encontradas
+                                    </p>
+                                </div>
+                                <div class="col-md-6 text-end">
+                                    <!-- Botón comparar -->
+                                    <button class="btn btn-outline-danger view-comparison" disabled="disabled">
+                                        <i class="fa fa-balance-scale"/> Comparar
+                                        <span class="badge bg-danger comparison-badge ms-2" style="display: none;">0</span>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Barra de búsqueda con autocompletado -->
+                            <div class="search-bar-container position-relative">
+                                <div class="input-group input-group-lg">
+                                    <input type="text"
+                                           class="form-control property-search-input"
+                                           placeholder="Buscar por ciudad, barrio o código..."
+                                           autocomplete="off"/>
+                                    <select class="form-select subdivision-filter" style="max-width: 200px;">
+                                        <option value="all">Buscar todo</option>
+                                        <option value="cities">Ciudades</option>
+                                        <option value="regions">Barrios</option>
+                                        <option value="properties">Propiedades</option>
+                                    </select>
+                                    <button class="btn btn-danger" type="submit">
+                                        <i class="fa fa-search"/> Buscar
+                                    </button>
+                                </div>
+                                <!-- Contenedor de autocompletado -->
+                                <div class="autocomplete-container shadow-lg" style="display: none;"></div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Filtros y resultados -->
+                    <section class="shop-content py-4">
+                        <div class="container">
+                            <div class="row">
+                                <!-- Panel de filtros lateral -->
+                                <div class="col-lg-3 col-md-4">
+                                    <div class="filters-panel card shadow-sm mb-4">
+                                        <div class="card-header bg-white">
+                                            <h5 class="mb-0"><i class="fa fa-filter"/> Filtros</h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <!-- Tipo de servicio -->
+                                            <div class="filter-group mb-4">
+                                                <h6 class="fw-bold">Tipo de Servicio</h6>
+                                                <div class="form-check">
+                                                    <input class="form-check-input property-filter" type="checkbox" id="service_sale" data-filter="type_service" data-value="sale"/>
+                                                    <label class="form-check-label" for="service_sale">Venta</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input property-filter" type="checkbox" id="service_rent" data-filter="type_service" data-value="rent"/>
+                                                    <label class="form-check-label" for="service_rent">Arriendo</label>
                                                 </div>
                                             </div>
 
-                                            <div class="col-md-3">
-                                                <select name="type_service" class="form-select">
-                                                    <option value="">Tipo de Servicio</option>
-                                                    <option value="sale" t-att-selected="'selected' if type_service == 'sale' else None">Venta</option>
-                                                    <option value="rent" t-att-selected="'selected' if type_service == 'rent' else None">Arriendo</option>
-                                                    <option value="sale_rent" t-att-selected="'selected' if type_service == 'sale_rent' else None">Venta y Arriendo</option>
-                                                    <option value="vacation_rent" t-att-selected="'selected' if type_service == 'vacation_rent' else None">Arriendo Vacacional</option>
+                                            <!-- Tipo de propiedad -->
+                                            <div class="filter-group mb-4">
+                                                <h6 class="fw-bold">Tipo de Propiedad</h6>
+                                                <div class="form-check">
+                                                    <input class="form-check-input property-filter" type="checkbox" id="type_apartment" data-filter="property_type" data-value="apartment"/>
+                                                    <label class="form-check-label" for="type_apartment">Apartamento</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input property-filter" type="checkbox" id="type_house" data-filter="property_type" data-value="house"/>
+                                                    <label class="form-check-label" for="type_house">Casa</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input property-filter" type="checkbox" id="type_commercial" data-filter="property_type" data-value="commercial"/>
+                                                    <label class="form-check-label" for="type_commercial">Comercial</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input property-filter" type="checkbox" id="type_lot" data-filter="property_type" data-value="lot"/>
+                                                    <label class="form-check-label" for="type_lot">Lote</label>
+                                                </div>
+                                            </div>
+
+                                            <!-- Habitaciones -->
+                                            <div class="filter-group mb-4">
+                                                <h6 class="fw-bold">Habitaciones</h6>
+                                                <select class="form-select property-filter" data-filter="bedrooms">
+                                                    <option value="">Cualquiera</option>
+                                                    <option value="1">1+</option>
+                                                    <option value="2">2+</option>
+                                                    <option value="3">3+</option>
+                                                    <option value="4">4+</option>
+                                                    <option value="5">5+</option>
                                                 </select>
                                             </div>
 
-                                            <div class="col-md-3">
-                                                <select name="property_type" class="form-select">
-                                                    <option value="">Tipo de Inmueble</option>
-                                                    <option value="apartment" t-att-selected="'selected' if property_type == 'apartment' else None">Apartamento</option>
-                                                    <option value="house" t-att-selected="'selected' if property_type == 'house' else None">Casa</option>
-                                                    <option value="lot" t-att-selected="'selected' if property_type == 'lot' else None">Lote</option>
-                                                    <option value="office" t-att-selected="'selected' if property_type == 'office' else None">Oficina</option>
-                                                    <option value="commercial" t-att-selected="'selected' if property_type == 'commercial' else None">Local Comercial</option>
-                                                    <option value="bodega" t-att-selected="'selected' if property_type == 'bodega' else None">Bodega</option>
-                                                    <option value="country_lot" t-att-selected="'selected' if property_type == 'country_lot' else None">Lote Rural</option>
-                                                    <option value="finca" t-att-selected="'selected' if property_type == 'finca' else None">Finca</option>
-                                                </select>
-                                            </div>
-                                        </div>
-
-                                        <div class="row g-3 mt-2">
-                                            <div class="col-md-3">
-                                                <select name="state_id" id="state_filter" class="form-select">
-                                                    <option value="">Departamento</option>
-                                                    <t t-foreach="states" t-as="state">
-                                                        <option t-att-value="state.id"
-                                                                t-att-selected="'selected' if state_id == state.id else None"
-                                                                t-esc="state.name"/>
-                                                    </t>
+                                            <!-- Baños -->
+                                            <div class="filter-group mb-4">
+                                                <h6 class="fw-bold">Baños</h6>
+                                                <select class="form-select property-filter" data-filter="bathrooms">
+                                                    <option value="">Cualquiera</option>
+                                                    <option value="1">1+</option>
+                                                    <option value="2">2+</option>
+                                                    <option value="3">3+</option>
+                                                    <option value="4">4+</option>
                                                 </select>
                                             </div>
 
-                                            <div class="col-md-3">
-                                                <select name="city_id" id="city_filter" class="form-select">
-                                                    <option value="">Ciudad</option>
-                                                    <t t-foreach="cities" t-as="city">
-                                                        <option t-att-value="city.id"
-                                                                t-att-selected="'selected' if city_id == city.id else None"
-                                                                t-esc="city.name"/>
-                                                    </t>
-                                                </select>
+                                            <!-- Rango de precio -->
+                                            <div class="filter-group mb-4">
+                                                <h6 class="fw-bold">Precio</h6>
+                                                <div class="row g-2">
+                                                    <div class="col-6">
+                                                        <input type="number" class="form-control form-control-sm property-filter" placeholder="Mínimo" data-filter="min_price"/>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <input type="number" class="form-control form-control-sm property-filter" placeholder="Máximo" data-filter="max_price"/>
+                                                    </div>
+                                                </div>
                                             </div>
 
-                                            <div class="col-md-3">
-                                                <select name="region_id" id="region_filter" class="form-select">
-                                                    <option value="">Barrio</option>
-                                                    <t t-foreach="regions" t-as="region">
-                                                        <option t-att-value="region.id"
-                                                                t-att-selected="'selected' if region_id == region.id else None"
-                                                                t-esc="region.name"/>
-                                                    </t>
-                                                </select>
+                                            <!-- Características -->
+                                            <div class="filter-group mb-4">
+                                                <h6 class="fw-bold">Características</h6>
+                                                <div class="form-check">
+                                                    <input class="form-check-input property-filter" type="checkbox" id="has_garage" data-filter="garage" data-value="true"/>
+                                                    <label class="form-check-label" for="has_garage">Garaje</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input property-filter" type="checkbox" id="has_pool" data-filter="pool" data-value="true"/>
+                                                    <label class="form-check-label" for="has_pool">Piscina</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input property-filter" type="checkbox" id="has_garden" data-filter="garden" data-value="true"/>
+                                                    <label class="form-check-label" for="has_garden">Jardín</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input property-filter" type="checkbox" id="has_elevator" data-filter="elevator" data-value="true"/>
+                                                    <label class="form-check-label" for="has_elevator">Ascensor</label>
+                                                </div>
                                             </div>
 
-                                            <div class="col-md-3">
-                                                <select name="stratum" class="form-select">
-                                                    <option value="">Estrato</option>
-                                                    <option value="1" t-att-selected="'selected' if stratum == '1' else None">Estrato 1</option>
-                                                    <option value="2" t-att-selected="'selected' if stratum == '2' else None">Estrato 2</option>
-                                                    <option value="3" t-att-selected="'selected' if stratum == '3' else None">Estrato 3</option>
-                                                    <option value="4" t-att-selected="'selected' if stratum == '4' else None">Estrato 4</option>
-                                                    <option value="5" t-att-selected="'selected' if stratum == '5' else None">Estrato 5</option>
-                                                    <option value="6" t-att-selected="'selected' if stratum == '6' else None">Estrato 6</option>
-                                                    <option value="commercial" t-att-selected="'selected' if stratum == 'commercial' else None">Comercial</option>
-                                                </select>
-                                            </div>
-                                        </div>
-
-                                        <div class="row g-3 mt-2">
-                                            <div class="col-md-2">
-                                                <input type="number" name="bedrooms" class="form-control"
-                                                       t-att-value="bedrooms" placeholder="Habitaciones" min="0"/>
-                                            </div>
-
-                                            <div class="col-md-2">
-                                                <input type="number" name="bathrooms" class="form-control"
-                                                       t-att-value="bathrooms" placeholder="Baños" min="0"/>
-                                            </div>
-
-                                            <div class="col-md-2">
-                                                <input type="number" name="price_min" id="price_min" class="form-control price-input"
-                                                       t-att-value="price_min" placeholder="Precio Mín" min="0" step="1000000"/>
-                                            </div>
-
-                                            <div class="col-md-2">
-                                                <input type="number" name="price_max" id="price_max" class="form-control price-input"
-                                                       t-att-value="price_max" placeholder="Precio Máx" min="0" step="1000000"/>
-                                            </div>
-
-                                            <div class="col-md-2">
-                                                <input type="number" name="area_min" class="form-control"
-                                                       t-att-value="area_min" placeholder="Área Mín (m²)" min="0"/>
-                                            </div>
-
-                                            <div class="col-md-2">
-                                                <input type="number" name="area_max" class="form-control"
-                                                       t-att-value="area_max" placeholder="Área Máx (m²)" min="0"/>
-                                            </div>
-                                        </div>
-
-                                        <div class="row mt-3">
-                                            <div class="col-12 text-center">
-                                                <button type="submit" class="btn btn-primary btn-lg px-5">
-                                                    <i class="fa fa-search"/> Buscar Propiedades
-                                                </button>
-                                                <a href="/properties" class="btn btn-secondary btn-lg px-4 ms-2">
-                                                    <i class="fa fa-times"/> Limpiar
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row mb-3">
-                        <div class="col-12">
-                            <h4>
-                                <t t-if="product_count == 0">No se encontraron propiedades</t>
-                                <t t-elif="product_count == 1">1 propiedad encontrada</t>
-                                <t t-else=""><span t-esc="product_count"/> propiedades encontradas</t>
-                            </h4>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <t t-foreach="properties" t-as="property">
-                            <div class="col-lg-4 col-md-6 mb-4">
-                                <div class="card h-100 shadow-sm property-card">
-                                    <div class="position-relative">
-                                        <t t-if="property.image_1920">
-                                            <img class="card-img-top" t-att-src="'/web/image/product.template/%s/image_1920' % property.id"
-                                                 t-att-alt="property.name" style="height: 250px; object-fit: cover;"/>
-                                        </t>
-                                        <t t-else="">
-                                            <div class="card-img-top bg-secondary d-flex align-items-center justify-content-center"
-                                                 style="height: 250px;">
-                                                <i class="fa fa-home fa-5x text-white"/>
-                                            </div>
-                                        </t>
-
-                                        <!-- Badge NUEVO para propiedades recientes (últimos 30 días) -->
-                                        <t t-if="property.is_new">
-                                            <div class="property-badge-new">
-                                                <i class="fa fa-star"/> NUEVO
-                                            </div>
-                                        </t>
-
-                                        <!-- Botones de Favoritos y Comparar -->
-                                        <div class="property-actions position-absolute top-0 end-0 m-2">
-                                            <button class="btn btn-sm btn-light rounded-circle btn-favorite"
-                                                    t-att-data-property-id="property.id"
-                                                    aria-label="Agregar a favoritos"
-                                                    title="Agregar a favoritos"
-                                                    style="width: 36px; height: 36px; padding: 0;">
-                                                <i class="fa fa-heart-o"></i>
-                                            </button>
-                                            <button class="btn btn-sm btn-outline-primary rounded-circle btn-add-comparison ms-1"
-                                                    t-att-data-property-id="property.id"
-                                                    aria-label="Agregar a comparación"
-                                                    title="Comparar propiedad"
-                                                    style="width: 36px; height: 36px; padding: 0;">
-                                                <i class="fa fa-balance-scale"></i>
+                                            <!-- Botón limpiar filtros -->
+                                            <button class="btn btn-outline-danger w-100 clear-filters">
+                                                <i class="fa fa-times"/> Limpiar Filtros
                                             </button>
                                         </div>
                                     </div>
+                                </div>
 
-                                    <div class="card-body">
-                                        <h5 class="card-title">
-                                            <a t-att-href="'/property/%s' % property.id" t-esc="property.name" class="text-decoration-none"/>
-                                        </h5>
+                                <!-- Área de resultados -->
+                                <div class="col-lg-9 col-md-8">
+                                    <!-- Tabs: Grid / Mapa -->
+                                    <ul class="nav nav-tabs mb-4" role="tablist">
+                                        <li class="nav-item" role="presentation">
+                                            <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#grid-view" type="button">
+                                                <i class="fa fa-th-large"/> Vista Grid
+                                            </button>
+                                        </li>
+                                        <li class="nav-item" role="presentation">
+                                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#map-view" type="button">
+                                                <i class="fa fa-map-marked-alt"/> Vista Mapa
+                                            </button>
+                                        </li>
+                                    </ul>
 
-                                        <p class="text-muted mb-2">
-                                            <small>
-                                                <i class="fa fa-tag"/> <span t-esc="property.default_code or 'N/A'"/>
-                                            </small>
-                                        </p>
+                                    <!-- Ordenamiento -->
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <div>
+                                            <span class="text-muted">Mostrando <span id="showing-count">0</span> propiedades</span>
+                                        </div>
+                                        <div>
+                                            <select class="form-select form-select-sm property-sort" style="width: auto;">
+                                                <option value="relevance">Relevancia</option>
+                                                <option value="price_asc">Precio: Menor a Mayor</option>
+                                                <option value="price_desc">Precio: Mayor a Menor</option>
+                                                <option value="newest">Más Recientes</option>
+                                                <option value="area_desc">Área: Mayor a Menor</option>
+                                            </select>
+                                        </div>
+                                    </div>
 
-                                        <p class="text-muted mb-2">
-                                            <small>
-                                                <i class="fa fa-map-marker"/>
-                                                <span t-if="property.region_id" t-esc="property.region_id.name"/><span t-if="property.region_id and property.city">, </span><span t-if="property.city" t-esc="property.city"/>
-                                            </small>
-                                        </p>
-
-                                        <!-- Características principales agrupadas -->
-                                        <div class="property-features mb-2">
-                                            <!-- Características comunes para todos -->
-                                            <div class="d-flex justify-content-between text-muted small">
-                                                <span t-if="property.property_area" class="feature-item">
-                                                    <i class="fa fa-arrows-alt text-primary"/> <strong t-esc="'%.0f' % property.property_area"/> m²
-                                                </span>
-                                                <span t-if="property.num_bedrooms" class="feature-item">
-                                                    <i class="fa fa-bed text-primary"/> <strong t-esc="property.num_bedrooms"/>
-                                                </span>
-                                                <span t-if="property.num_bathrooms" class="feature-item">
-                                                    <i class="fa fa-bath text-primary"/> <strong t-esc="property.num_bathrooms"/>
-                                                </span>
-                                                <span t-if="property.parking_spaces" class="feature-item">
-                                                    <i class="fa fa-car text-primary"/> <strong t-esc="property.parking_spaces"/>
-                                                </span>
+                                    <!-- Contenido con tabs -->
+                                    <div class="tab-content">
+                                        <!-- Vista Grid -->
+                                        <div class="tab-pane fade show active" id="grid-view" role="tabpanel">
+                                            <div class="row g-4" id="properties-grid">
+                                                <!-- Las propiedades se cargarán aquí vía JavaScript -->
+                                                <div class="col-12 text-center py-5">
+                                                    <div class="spinner-border text-danger" role="status">
+                                                        <span class="visually-hidden">Cargando...</span>
+                                                    </div>
+                                                    <p class="text-muted mt-3">Cargando propiedades...</p>
+                                                </div>
                                             </div>
 
-                                            <!-- Características específicas según tipo -->
-                                            <t t-if="property.property_type">
-                                                <!-- Apartamento, Casa, Apartaestudio -->
-                                                <t t-if="property.property_type in ['apartment', 'house', 'studio']">
-                                                    <div class="d-flex justify-content-between text-muted small mt-1" t-if="property.floor_number or property.balcony or property.stratum">
-                                                        <span t-if="property.floor_number" class="feature-item">
-                                                            <i class="fa fa-layer-group"/> Piso <strong t-esc="property.floor_number"/>
-                                                        </span>
-                                                        <span t-if="property.balcony" class="feature-item text-success">
-                                                            <i class="fa fa-window-maximize"/> Balcón
-                                                        </span>
-                                                        <span t-if="property.stratum" class="feature-item">
-                                                            <i class="fa fa-star"/> E<strong t-esc="property.stratum"/>
-                                                        </span>
-                                                    </div>
-                                                </t>
-
-                                                <!-- Local Comercial, Bodega -->
-                                                <t t-if="property.property_type in ['local', 'bodega']">
-                                                    <div class="d-flex justify-content-between text-muted small mt-1" t-if="property.front_meters or property.ceiling_height">
-                                                        <span t-if="property.front_meters" class="feature-item">
-                                                            <i class="fa fa-ruler-horizontal"/> <strong t-esc="property.front_meters"/>m frente
-                                                        </span>
-                                                        <span t-if="property.ceiling_height" class="feature-item">
-                                                            <i class="fa fa-ruler-vertical"/> <strong t-esc="property.ceiling_height"/>m altura
-                                                        </span>
-                                                    </div>
-                                                </t>
-
-                                                <!-- Lote, Parcela, Lote Campestre -->
-                                                <t t-if="property.property_type in ['lot', 'plot', 'country_lot']">
-                                                    <div class="d-flex justify-content-between text-muted small mt-1" t-if="property.front_meters or property.depth_meters">
-                                                        <span t-if="property.front_meters" class="feature-item">
-                                                            <i class="fa fa-ruler-horizontal"/> <strong t-esc="property.front_meters"/>m frente
-                                                        </span>
-                                                        <span t-if="property.depth_meters" class="feature-item">
-                                                            <i class="fa fa-ruler-vertical"/> <strong t-esc="property.depth_meters"/>m fondo
-                                                        </span>
-                                                    </div>
-                                                </t>
-
-                                                <!-- Oficina -->
-                                                <t t-if="property.property_type == 'office'">
-                                                    <div class="d-flex justify-content-between text-muted small mt-1" t-if="property.floor_number or property.num_offices">
-                                                        <span t-if="property.floor_number" class="feature-item">
-                                                            <i class="fa fa-layer-group"/> Piso <strong t-esc="property.floor_number"/>
-                                                        </span>
-                                                        <span t-if="property.num_offices" class="feature-item">
-                                                            <i class="fa fa-door-open"/> <strong t-esc="property.num_offices"/> oficinas
-                                                        </span>
-                                                    </div>
-                                                </t>
-                                            </t>
+                                            <!-- Paginación -->
+                                            <nav class="mt-4" id="pagination-container" style="display: none;">
+                                                <ul class="pagination justify-content-center"></ul>
+                                            </nav>
                                         </div>
 
-                                        <h4 class="text-primary mb-3">
-                                            <span t-field="property.list_price" t-options="{'widget': 'monetary', 'display_currency': property.currency_id}"/>
-                                        </h4>
-
-                                        <a t-att-href="'/property/%s' % property.id" class="btn btn-primary w-100">
-                                            Ver Detalles
-                                        </a>
+                                        <!-- Vista Mapa -->
+                                        <div class="tab-pane fade" id="map-view" role="tabpanel">
+                                            <div id="properties-map" style="height: 700px; width: 100%; border-radius: 0.5rem;"></div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </t>
-                    </div>
+                        </div>
+                    </section>
+                </div>
 
-                    <div class="row mt-4" t-if="product_count &gt; 0">
-                        <div class="col-12">
-                            <t t-call="website.pager"/>
+                <!-- Modal de comparación -->
+                <div class="modal fade" id="comparisonModal" tabindex="-1">
+                    <div class="modal-dialog modal-xl">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">
+                                    <i class="fa fa-balance-scale"/> Comparar Propiedades
+                                </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body" id="comparison-content">
+                                <!-- Contenido de comparación se carga vía JavaScript -->
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-outline-danger clear-comparison">
+                                    <i class="fa fa-times"/> Limpiar Todo
+                                </button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-
-            <!-- Modal búsqueda por código - sin aria-hidden para evitar conflictos de accesibilidad -->
-            <div class="modal fade" id="codeSearchModal" tabindex="-1" aria-labelledby="codeSearchModalLabel">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="codeSearchModalLabel">Buscar por Código</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"/>
-                        </div>
-                        <div class="modal-body">
-                            <div class="mb-3">
-                                <label for="property_code_input" class="form-label">Código de Propiedad (BOH-XXX)</label>
-                                <input type="text" class="form-control" id="property_code_input"
-                                       placeholder="Ej: BOH-001"/>
-                            </div>
-                            <div id="code_search_result" class="alert" style="display:none;"></div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                            <button type="button" class="btn btn-primary" id="search_by_code_btn">
-                                <i class="fa fa-search"/> Buscar
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Script para sincronizar precios -->
-            <script type="text/javascript">
-                document.addEventListener('DOMContentLoaded', function() {
-                    const priceMin = document.getElementById('price_min');
-                    const priceMax = document.getElementById('price_max');
-
-                    if (priceMin &amp;&amp; priceMax) {
-                        // Función para sincronizar precios
-                        function syncPrices(sourceInput, targetInput) {
-                            const sourceValue = parseFloat(sourceInput.value) || 0;
-                            const targetValue = parseFloat(targetInput.value) || 0;
-
-                            // Si el campo origen tiene valor y el destino está vacío o es 0
-                            // copiar el valor del origen al destino
-                            if (sourceValue > 0 &amp;&amp; targetValue === 0) {
-                                targetInput.value = sourceValue;
-                            }
-                        }
-
-                        // Evento cuando el usuario ingresa precio mínimo
-                        priceMin.addEventListener('blur', function() {
-                            syncPrices(priceMin, priceMax);
-                        });
-
-                        // Evento cuando el usuario ingresa precio máximo
-                        priceMax.addEventListener('blur', function() {
-                            syncPrices(priceMax, priceMin);
-                        });
-
-                        // También sincronizar al cambiar (input event)
-                        priceMin.addEventListener('input', function() {
-                            const minValue = parseFloat(priceMin.value) || 0;
-                            const maxValue = parseFloat(priceMax.value) || 0;
-
-                            // Si min es mayor que max y max no está vacío, ajustar max
-                            if (minValue > 0 &amp;&amp; maxValue > 0 &amp;&amp; minValue > maxValue) {
-                                priceMax.value = minValue;
-                            }
-                        });
-
-                        priceMax.addEventListener('input', function() {
-                            const minValue = parseFloat(priceMin.value) || 0;
-                            const maxValue = parseFloat(priceMax.value) || 0;
-
-                            // Si max es menor que min y min no está vacío, ajustar min
-                            if (maxValue > 0 &amp;&amp; minValue > 0 &amp;&amp; maxValue &lt; minValue) {
-                                priceMin.value = maxValue;
-                            }
-                        });
-                    }
-                });
-            </script>
         </t>
     </template>
 </odoo>

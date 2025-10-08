@@ -7,8 +7,14 @@
                 <section class="bohio-hero-section position-relative">
                     <div class="container-fluid p-0">
                         <div class="hero-banner position-relative">
-                            <!-- Carrusel de imágenes -->
-                            <div id="heroCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="5000">
+                            <!-- GIF Inicial (se muestra primero 3 segundos) -->
+                            <div id="heroGif" class="hero-gif-container" style="display: block;">
+                                <img src="/theme_bohio_real_estate/static/src/img/proyectos.gif"
+                                     alt="Bienvenido a BOHIO" class="img-fluid w-100" style="max-height: 600px; object-fit: cover;"/>
+                            </div>
+
+                            <!-- Carrusel de imágenes fijas (se muestra después del GIF) -->
+                            <div id="heroCarousel" class="carousel slide carousel-fade" data-bs-ride="false" style="display: none;">
                                 <div class="carousel-inner">
                                     <div class="carousel-item active">
                                         <img src="/theme_bohio_real_estate/static/src/img/banner1.jpg"
@@ -23,6 +29,12 @@
                                              alt="Tu mejor inversión" class="img-fluid w-100" style="max-height: 600px; object-fit: cover;"/>
                                     </div>
                                 </div>
+                                <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                </button>
                             </div>
 
                             <div class="hero-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center"

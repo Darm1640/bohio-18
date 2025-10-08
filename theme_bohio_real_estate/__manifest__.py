@@ -40,9 +40,11 @@
             'theme_bohio_real_estate/static/src/scss/homepage.scss',
             'theme_bohio_real_estate/static/src/scss/header.scss',
             'theme_bohio_real_estate/static/src/scss/footer.scss',
+            'theme_bohio_real_estate/static/src/scss/property_shop.scss',
 
             # JavaScript
             'theme_bohio_real_estate/static/src/js/homepage_new.js',
+            'theme_bohio_real_estate/static/src/js/property_shop.js',
         ],
     },
     'installable': True,

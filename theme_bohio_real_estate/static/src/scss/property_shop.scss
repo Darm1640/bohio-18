@@ -1,0 +1,281 @@
+/* BOHIO Property Shop Styles */
+
+.bohio-shop-page {
+    background-color: #F9FAFB;
+    min-height: 100vh;
+
+    .shop-header {
+        background-color: white;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+
+        .search-bar-container {
+            position: relative;
+
+            .form-control {
+                border: 2px solid #E5E7EB;
+                &:focus {
+                    border-color: #E31E24;
+                    box-shadow: 0 0 0 3px rgba(227, 30, 36, 0.1);
+                }
+            }
+
+            .btn-danger {
+                background-color: #E31E24;
+                border-color: #E31E24;
+                &:hover {
+                    background-color: #c01a1f;
+                }
+            }
+        }
+    }
+
+    // Autocompletado
+    .autocomplete-container {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: white;
+        border: 2px solid #E31E24;
+        border-top: none;
+        border-radius: 0 0 0.5rem 0.5rem;
+        max-height: 400px;
+        overflow-y: auto;
+        z-index: 1000;
+
+        .autocomplete-item {
+            transition: background-color 0.2s ease;
+
+            &:hover {
+                background-color: #FEF2F2;
+            }
+        }
+    }
+
+    // Panel de filtros
+    .filters-panel {
+        position: sticky;
+        top: 20px;
+
+        .filter-group {
+            h6 {
+                color: #1F2937;
+                font-size: 0.875rem;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+            }
+
+            .form-check-label {
+                font-size: 0.875rem;
+                cursor: pointer;
+            }
+
+            .form-check-input:checked {
+                background-color: #E31E24;
+                border-color: #E31E24;
+            }
+        }
+    }
+
+    // Tabs
+    .nav-tabs {
+        border-bottom: 2px solid #E5E7EB;
+
+        .nav-link {
+            color: #6B7280;
+            border: none;
+            border-bottom: 3px solid transparent;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+
+            &:hover {
+                color: #E31E24;
+                border-bottom-color: #FEE2E2;
+            }
+
+            &.active {
+                color: #E31E24;
+                border-bottom-color: #E31E24;
+                background-color: transparent;
+            }
+        }
+    }
+
+    // Property Cards
+    .property-card {
+        transition: all 0.3s ease;
+        cursor: pointer;
+        border: 1px solid #E5E7EB;
+
+        &:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12) !important;
+        }
+
+        .card-img-top {
+            transition: transform 0.3s ease;
+        }
+
+        &:hover .card-img-top {
+            transform: scale(1.05);
+        }
+
+        .add-to-comparison {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        &:hover .add-to-comparison {
+            opacity: 1;
+        }
+    }
+
+    // Badges
+    .badge {
+        font-weight: 600;
+        letter-spacing: 0.3px;
+
+        &.bg-danger {
+            background-color: #E31E24 !important;
+        }
+    }
+}
+
+// Custom Map Pins
+.custom-property-pin {
+    background: transparent;
+    border: none;
+
+    .map-pin {
+        position: relative;
+
+        .pin-price {
+            background: #E31E24;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 24px;
+            font-weight: 700;
+            font-size: 14px;
+            white-space: nowrap;
+            box-shadow: 0 4px 12px rgba(227, 30, 36, 0.4);
+            animation: pinPulse 2s infinite;
+        }
+
+        .pin-arrow {
+            width: 0;
+            height: 0;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-top: 12px solid #E31E24;
+            margin: 0 auto;
+        }
+    }
+}
+
+@keyframes pinPulse {
+    0%, 100% {
+        box-shadow: 0 4px 12px rgba(227, 30, 36, 0.4);
+    }
+    50% {
+        box-shadow: 0 6px 20px rgba(227, 30, 36, 0.6);
+    }
+}
+
+// Leaflet Popup Customization
+.leaflet-popup-content-wrapper {
+    border-radius: 0.5rem;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+
+    .property-popup {
+        padding: 0.5rem;
+
+        h6 {
+            color: #E31E24;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+
+            a {
+                color: #E31E24;
+                text-decoration: none;
+
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+        }
+
+        .btn-danger {
+            background-color: #E31E24;
+            border-color: #E31E24;
+
+            &:hover {
+                background-color: #c01a1f;
+            }
+        }
+    }
+}
+
+.leaflet-popup-tip {
+    background: white;
+}
+
+// Comparison Modal
+#comparisonModal {
+    .modal-xl {
+        max-width: 1200px;
+    }
+
+    .table {
+        margin-bottom: 0;
+
+        th, td {
+            vertical-align: middle;
+        }
+
+        thead th {
+            background-color: #F9FAFB;
+            border-bottom: 2px solid #E31E24;
+        }
+
+        tbody tr:hover {
+            background-color: #FEF2F2;
+        }
+    }
+}
+
+// Responsive
+@media (max-width: 768px) {
+    .bohio-shop-page {
+        .filters-panel {
+            position: static;
+            margin-bottom: 2rem;
+        }
+
+        .property-card .add-to-comparison {
+            opacity: 1;
+        }
+
+        #comparisonModal .table {
+            font-size: 0.875rem;
+
+            img {
+                width: 60px !important;
+                height: 60px !important;
+            }
+        }
+    }
+}
+
+// Loading states
+.property-card-loading {
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
