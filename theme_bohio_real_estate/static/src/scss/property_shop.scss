@@ -1,5 +1,9 @@
 /* BOHIO Property Shop Styles */
 
+// BOHIO/Moncormiga Brand Colors
+$bohio-red: #E31E24;
+$bohio-red-dark: #B81820;
+
 .bohio-shop-page {
     background-color: #F9FAFB;
     min-height: 100vh;
@@ -23,7 +27,7 @@
                 background-color: #E31E24;
                 border-color: #E31E24;
                 &:hover {
-                    background-color: #c01a1f;
+                    background-color: $bohio-red-dark;
                 }
             }
         }

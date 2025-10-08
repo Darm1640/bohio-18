@@ -1,4 +1,9 @@
 /* BOHIO Header - Estilo Profesional */
+
+// BOHIO/Moncormiga Brand Colors
+$bohio-red: #E31E24;
+$bohio-red-dark: #B81820;
+
 .bohio-header {
     position: sticky;
     top: 0;
@@ -55,7 +60,7 @@
                     }
 
                     &:hover {
-                        background: #C90712;
+                        background: $bohio-red-dark;
                         color: #FFFFFF;
                         transform: translateY(-2px);
                         box-shadow: 0 4px 12px rgba(227, 30, 36, 0.3);
