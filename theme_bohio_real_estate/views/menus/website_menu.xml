@@ -49,4 +49,12 @@
         <field name="parent_id" ref="website.main_menu"/>
         <field name="sequence" type="int">30</field>
     </record>
+
+    <!-- Mi Portal BOHIO -->
+    <record id="menu_portal" model="website.menu">
+        <field name="name">My Bohio</field>
+        <field name="url">/mybohio</field>
+        <field name="parent_id" ref="website.main_menu"/>
+        <field name="sequence" type="int">35</field>
+    </record>
 </odoo>

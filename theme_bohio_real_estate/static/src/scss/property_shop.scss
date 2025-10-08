@@ -105,32 +105,70 @@ $bohio-red-dark: #B81820;
         }
     }
 
-    // Property Cards
+    // Property Cards - Cuadradas y Centradas
     .property-card {
         transition: all 0.3s ease;
         cursor: pointer;
         border: 1px solid #E5E7EB;
+        border-radius: 12px;
+        overflow: hidden;
+
+        // Asegurar que la tarjeta sea cuadrada en la parte superior
+        .position-relative {
+            position: relative;
+            width: 100%;
+            padding-top: 100%; // Ratio 1:1 para imagen cuadrada
+            overflow: hidden;
+
+            img {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                object-position: center;
+                transition: transform 0.3s ease;
+            }
+        }
 
         &:hover {
             transform: translateY(-8px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12) !important;
+            box-shadow: 0 20px 40px rgba(227, 30, 36, 0.15) !important;
+            border-color: #E31E24;
         }
 
-        .card-img-top {
-            transition: transform 0.3s ease;
+        &:hover img {
+            transform: scale(1.08);
         }
 
-        &:hover .card-img-top {
-            transform: scale(1.05);
-        }
-
-        .add-to-comparison {
+        .add-to-comparison,
+        .add-to-crm {
             opacity: 0;
-            transition: opacity 0.3s ease;
+            transition: opacity 0.3s ease, background-color 0.3s ease;
         }
 
-        &:hover .add-to-comparison {
+        &:hover .add-to-comparison,
+        &:hover .add-to-crm {
             opacity: 1;
+        }
+
+        .card-body {
+            padding: 1.25rem;
+        }
+    }
+
+    // Grid centrado
+    #properties-grid {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1.5rem;
+
+        > .col-lg-4,
+        > .col-md-6 {
+            display: flex;
+            justify-content: center;
         }
     }
 
@@ -282,4 +320,34 @@ $bohio-red-dark: #B81820;
     50% {
         opacity: 0.5;
     }
+}
+
+// Notificaciones
+@keyframes slideIn {
+    from {
+        transform: translateX(400px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOut {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(400px);
+        opacity: 0;
+    }
+}
+
+.bohio-notification {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.3px;
 }

@@ -70,19 +70,43 @@ $bohio-red-darker: #8B1419;
 }
 
 // ==========================================
-// PROPERTY DETAIL PAGE
+// PROPERTY DETAIL PAGE - IMAGEN CUADRADA
 // ==========================================
 .property-detail-page {
     .card {
         border: none;
-        border-radius: 12px;
+        border-radius: 16px;
         overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        transition: box-shadow 0.3s ease;
+
+        &:hover {
+            box-shadow: 0 15px 40px rgba(227, 30, 36, 0.12);
+        }
     }
 
-    .card-img-top {
+    // Contenedor de imagen con ratio fijo
+    .position-relative {
+        position: relative;
         width: 100%;
-        max-height: 500px;
-        object-fit: cover;
+        padding-top: 75%; // Ratio 4:3 para detalle (más ancho)
+        overflow: hidden;
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+
+        img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            transition: transform 0.5s ease;
+
+            &:hover {
+                transform: scale(1.05);
+            }
+        }
     }
 
     // Placeholder para imágenes sin cargar
@@ -96,6 +120,20 @@ $bohio-red-darker: #8B1419;
         i {
             color: #6c757d;
             opacity: 0.3;
+        }
+    }
+
+    // Mejorar el card body
+    .card-body {
+        padding: 2rem;
+
+        h1, h2, h3 {
+            color: $bohio-red;
+        }
+
+        hr {
+            border-color: rgba(227, 30, 36, 0.2);
+            opacity: 1;
         }
     }
 }

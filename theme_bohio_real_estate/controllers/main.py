@@ -842,25 +842,71 @@ class BohioRealEstateController(http.Controller):
         try:
             for prop in properties:
                 try:
+                    # Determinar precio correcto según tipo de servicio
+                    price = 0
+                    if prop.type_service == 'sale':
+                        price = float(prop.net_price) if prop.net_price else float(prop.list_price)
+                    elif prop.type_service == 'rent':
+                        price = float(prop.net_rental_price) if prop.net_rental_price else float(prop.list_price)
+                    else:
+                        price = float(prop.list_price) if prop.list_price else 0
+
                     # Obtener solo los campos necesarios de forma eficiente
                     properties_data.append({
                         'id': prop.id,
                         'name': prop.name or '',
                         'default_code': prop.default_code or '',
-                        'list_price': float(prop.list_price) if prop.list_price else 0,
+                        'list_price': price,
+                        'net_price': float(prop.net_price) if prop.net_price else 0,
+                        'net_rental_price': float(prop.net_rental_price) if prop.net_rental_price else 0,
                         'property_type': prop.property_type or '',
+                        'property_type_name': prop.property_type_id.name if prop.property_type_id else '',
                         'type_service': prop.type_service or '',
                         'bedrooms': int(prop.num_bedrooms) if prop.num_bedrooms else 0,
                         'bathrooms': int(prop.num_bathrooms) if prop.num_bathrooms else 0,
                         'area_constructed': float(prop.property_area) if prop.property_area else 0,
                         'area_total': float(prop.property_area) if prop.property_area else 0,
-                        'city': prop.city or '',
+                        'city': prop.city_id.name if prop.city_id else prop.city or '',
+                        'state': prop.state_id.name if prop.state_id else '',
                         'region': prop.neighborhood or '',
+                        'address': prop.address or '',
+                        'description': prop.description or '',
                         'image_url': f'/web/image/product.template/{prop.id}/image_512' if prop.image_512 else None,
                         'create_date': prop.create_date.isoformat() if prop.create_date else None,
                         'is_new': bool(prop.create_date and prop.create_date >= thirty_days_ago),
                         'latitude': float(prop.latitude) if prop.latitude else None,
                         'longitude': float(prop.longitude) if prop.longitude else None,
+                        # Características básicas
+                        'garage': bool(prop.garage),
+                        'elevator': bool(prop.elevator),
+                        'pools': bool(prop.pools),
+                        'stratum': int(prop.stratum) if prop.stratum else 0,
+                        'parking': (prop.covered_parking or 0) + (prop.uncovered_parking or 0),
+                        'covered_parking': int(prop.covered_parking) if prop.covered_parking else 0,
+                        'uncovered_parking': int(prop.uncovered_parking) if prop.uncovered_parking else 0,
+                        # Características adicionales agrupadas
+                        'furnished': bool(prop.furnished),
+                        'balcony': bool(prop.balcony),
+                        'terrace': bool(prop.terrace),
+                        'patio': bool(prop.patio),
+                        'garden': bool(prop.garden),
+                        'gym': bool(prop.gym),
+                        'social_room': bool(prop.social_room),
+                        'green_areas': bool(prop.green_areas),
+                        'has_playground': bool(prop.has_playground),
+                        'sports_area': bool(prop.sports_area),
+                        'air_conditioning': bool(prop.air_conditioning),
+                        'hot_water': bool(prop.hot_water),
+                        'has_security': bool(prop.has_security),
+                        'security_cameras': bool(prop.security_cameras),
+                        'alarm': bool(prop.alarm),
+                        'intercom': bool(prop.intercom),
+                        'doorman': prop.doorman or False,
+                        'laundry_area': bool(prop.laundry_area),
+                        'warehouse': bool(prop.warehouse),
+                        'fireplace': bool(prop.fireplace),
+                        'mezzanine': bool(prop.mezzanine),
+                        'apartment_type': prop.apartment_type or False,
                     })
                 except Exception as e:
                     _logger.warning(f"Error procesando propiedad {prop.id}: {str(e)}")
@@ -1109,4 +1155,94 @@ class BohioRealEstateController(http.Controller):
             return {
                 'success': False,
                 'error': str(e)
+            }
+
+    @http.route(['/bohio/api/crm/add_property'], type='json', auth='public', website=True, csrf=False)
+    def add_property_to_crm(self, **post):
+        """Agregar propiedad al CRM como oportunidad"""
+        try:
+            property_id = post.get('property_id')
+            property_name = post.get('property_name', '')
+
+            if not property_id:
+                return {
+                    'success': False,
+                    'message': 'ID de propiedad requerido'
+                }
+
+            # Obtener propiedad
+            property_obj = request.env['product.template'].sudo().browse(int(property_id))
+
+            if not property_obj.exists():
+                return {
+                    'success': False,
+                    'message': 'Propiedad no encontrada'
+                }
+
+            # Obtener usuario actual o crear partner genérico
+            Partner = request.env['res.partner'].sudo()
+
+            if request.env.user._is_public():
+                # Usuario público - crear partner genérico o usar uno existente
+                partner = Partner.search([('name', '=', 'Cliente Web Interesado')], limit=1)
+                if not partner:
+                    partner = Partner.create({
+                        'name': 'Cliente Web Interesado',
+                        'customer_rank': 1,
+                    })
+            else:
+                # Usuario logueado
+                partner = request.env.user.partner_id
+
+            # Crear oportunidad en CRM
+            Lead = request.env['crm.lead'].sudo()
+
+            # Preparar descripción
+            property_code = property_obj.default_code or property_obj.name
+            property_url = f"{request.httprequest.host_url}property/{property_id}"
+
+            description = f"""
+**Propiedad de Interés desde la Web**
+
+**Propiedad:**
+- Nombre: {property_name}
+- Código: {property_code}
+- Tipo: {property_obj.property_type_id.name if property_obj.property_type_id else 'N/A'}
+- URL: {property_url}
+
+**Origen:** Botón "Agregar al CRM" desde tienda de propiedades
+**Fecha:** {fields.Datetime.now()}
+            """
+
+            lead_vals = {
+                'name': f'Interés Web - {property_code}',
+                'partner_id': partner.id,
+                'description': description.strip(),
+                'type': 'opportunity',
+                'user_id': False,  # Sin asignar
+                'team_id': request.env['crm.team'].sudo().search([], limit=1).id if request.env['crm.team'].sudo().search([], limit=1) else False,
+                'source_id': request.env.ref('utm.utm_source_website').id if request.env.ref('utm.utm_source_website', False) else False,
+                'medium_id': request.env.ref('utm.utm_medium_website').id if request.env.ref('utm.utm_medium_website', False) else False,
+            }
+
+            # Vincular propiedad si existe el campo
+            if hasattr(Lead, 'property_id'):
+                lead_vals['property_id'] = property_id
+
+            lead = Lead.create(lead_vals)
+
+            _logger.info(f"Propiedad agregada al CRM: Lead ID {lead.id}, Propiedad: {property_code}")
+
+            return {
+                'success': True,
+                'lead_id': lead.id,
+                'message': 'Propiedad agregada al CRM exitosamente'
+            }
+
+        except Exception as e:
+            _logger.error(f"Error agregando propiedad al CRM: {str(e)}")
+            return {
+                'success': False,
+                'error': str(e),
+                'message': f'Error: {str(e)}'
             }

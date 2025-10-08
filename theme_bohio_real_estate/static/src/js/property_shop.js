@@ -312,48 +312,94 @@ class PropertyShop {
 
         gridContainer.innerHTML = properties.map(prop => this.renderPropertyCard(prop)).join('');
 
-        // Re-attach event listeners para comparación
+        // Re-attach event listeners para comparación y CRM
         this.attachComparisonListeners();
+        this.attachCRMListeners();
     }
 
     renderPropertyCard(property) {
-        const imageUrl = property.image_url || '/theme_bohio_real_estate/static/src/img/home-banner.jpg';
+        const imageUrl = property.image_url || '/theme_bohio_real_estate/static/src/img/banner1.jpg';
         const price = this.formatPrice(property.list_price);
+        const priceLabel = property.type_service === 'rent' ? `$${price}/mes` : `$${price}`;
         const isInComparison = this.comparisonList.includes(property.id);
 
+        // Ubicación completa
+        const location = [property.address, property.region, property.city, property.state]
+            .filter(x => x).join(', ');
+
         return `
-            <div class="col-lg-4 col-md-6">
-                <div class="card property-card shadow-sm h-100">
-                    <div class="position-relative">
-                        <img src="${imageUrl}" class="card-img-top" alt="${property.name}" style="height: 250px; object-fit: cover;"/>
+            <div class="col-lg-4 col-md-6 mb-4 d-flex justify-content-center">
+                <div class="card property-card shadow-sm border-0" style="width: 100%; max-width: 380px;">
+                    <div class="position-relative" style="width: 100%; padding-top: 100%; overflow: hidden;">
+                        <img src="${imageUrl}" class="position-absolute top-0 start-0 w-100 h-100" alt="${property.name}" style="object-fit: cover; object-position: center;"/>
                         <div class="position-absolute top-0 end-0 m-3">
-                            <span class="badge bg-danger px-3 py-2">$${price}</span>
+                            <span class="badge px-3 py-2 fs-6 fw-bold" style="background: #E31E24;">${priceLabel}</span>
                         </div>
                         <div class="position-absolute top-0 start-0 m-3">
-                            ${property.type_service === 'rent' ? '<span class="badge bg-primary me-1">Arriendo</span>' : ''}
-                            ${property.type_service === 'sale' ? '<span class="badge bg-success me-1">Venta</span>' : ''}
+                            ${property.type_service === 'rent' ? '<span class="badge me-1" style="background: #E31E24;">Arriendo</span>' : ''}
+                            ${property.type_service === 'sale' ? '<span class="badge me-1" style="background: #10B981;">Venta</span>' : ''}
                             ${property.is_new ? '<span class="badge bg-warning">NUEVO</span>' : ''}
                         </div>
-                        <button class="btn btn-sm ${isInComparison ? 'btn-warning' : 'btn-outline-light'} position-absolute bottom-0 end-0 m-3 add-to-comparison"
-                                data-property-id="${property.id}">
-                            <i class="fa fa-balance-scale"></i>
-                        </button>
+                        <div class="position-absolute bottom-0 end-0 m-3 d-flex gap-2">
+                            <button class="btn btn-sm ${isInComparison ? 'btn-warning' : 'btn-outline-light'} add-to-comparison"
+                                    data-property-id="${property.id}"
+                                    title="Comparar">
+                                <i class="fa fa-balance-scale"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-light add-to-crm"
+                                    data-property-id="${property.id}"
+                                    title="Agregar al CRM">
+                                <i class="fa fa-heart"></i>
+                            </button>
+                        </div>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body d-flex flex-column">
                         <h5 class="card-title mb-2">
-                            <a href="/property/${property.id}" class="text-decoration-none text-dark">
-                                ${property.name.substring(0, 50)}
+                            <a href="/property/${property.id}" class="text-decoration-none" style="color: #E31E24; font-weight: 600;">
+                                ${property.name.substring(0, 50)}${property.name.length > 50 ? '...' : ''}
                             </a>
                         </h5>
-                        <p class="text-muted small mb-3">
-                            <i class="fa fa-map-marker-alt me-1"></i>
-                            ${property.city || ''}, ${property.region || ''}
-                        </p>
-                        ${this.renderFeatures(property)}
-                        <div class="mb-3">
-                            <small class="text-muted">Código: <strong>${property.default_code || 'N/A'}</strong></small>
+
+                        <!-- Código -->
+                        <div class="mb-2">
+                            <small class="text-muted">Código: <strong style="color: #E31E24;">${property.default_code || 'N/A'}</strong></small>
                         </div>
-                        <a href="/property/${property.id}" class="btn btn-outline-danger w-100">Ver Detalles</a>
+
+                        <!-- Ubicación Precisa -->
+                        <p class="text-muted small mb-2">
+                            <i class="fa fa-map-marker text-danger me-1"></i>
+                            ${location || 'Ubicación no disponible'}
+                        </p>
+
+                        <!-- Tipo de Propiedad -->
+                        ${property.property_type_name ? `
+                            <p class="text-muted small mb-2">
+                                <i class="fa fa-building text-danger me-1"></i>
+                                ${property.property_type_name}
+                            </p>
+                        ` : ''}
+
+                        <!-- OBSERVACIONES PRIMERO -->
+                        ${property.description ? `
+                            <div class="alert alert-light mb-3 p-2" style="border-left: 3px solid #E31E24;">
+                                <small class="fw-bold text-danger d-block mb-1">
+                                    <i class="fa fa-comment"></i> Observaciones:
+                                </small>
+                                <small class="text-muted">
+                                    ${property.description.substring(0, 100)}${property.description.length > 100 ? '...' : ''}
+                                </small>
+                            </div>
+                        ` : ''}
+
+                        <!-- Características Básicas -->
+                        ${this.renderFeatures(property)}
+
+                        <!-- Características Adicionales Agrupadas -->
+                        ${this.renderAdditionalFeatures(property)}
+
+                        <a href="/property/${property.id}" class="btn w-100 mt-auto" style="background: #E31E24; color: white; border: none;">
+                            Ver Detalles
+                        </a>
                     </div>
                 </div>
             </div>
@@ -361,33 +407,122 @@ class PropertyShop {
     }
 
     renderFeatures(property) {
-        if (!['apartment', 'house'].includes(property.property_type)) {
-            return `
-                <div class="d-flex justify-content-between mb-3 pb-3 border-bottom">
+        let html = '<div class="mb-3 pb-2 border-bottom">';
+
+        if (['apartment', 'house'].includes(property.property_type)) {
+            html += `
+                <div class="d-flex justify-content-between">
                     <span class="text-muted small">
-                        <img src="/theme_bohio_real_estate/static/src/img/areas_1-8.png" style="width: 20px; height: 20px;" alt="Área"/>
+                        <img src="/theme_bohio_real_estate/static/src/img/habitacion-8.png" style="width: 18px; height: 18px;" alt="Hab"/>
+                        <strong>${property.bedrooms || 0}</strong>
+                    </span>
+                    <span class="text-muted small">
+                        <img src="/theme_bohio_real_estate/static/src/img/baño_1-8.png" style="width: 18px; height: 18px;" alt="Baños"/>
+                        <strong>${property.bathrooms || 0}</strong>
+                    </span>
+                    <span class="text-muted small">
+                        <img src="/theme_bohio_real_estate/static/src/img/areas_1-8.png" style="width: 18px; height: 18px;" alt="Área"/>
+                        <strong>${property.area_constructed || 0}</strong> m²
+                    </span>
+                </div>
+            `;
+        } else {
+            html += `
+                <div class="d-flex justify-content-start">
+                    <span class="text-muted small">
+                        <img src="/theme_bohio_real_estate/static/src/img/areas_1-8.png" style="width: 18px; height: 18px;" alt="Área"/>
                         <strong>${property.area_total || 0}</strong> m²
                     </span>
                 </div>
             `;
         }
 
-        return `
-            <div class="d-flex justify-content-between mb-3 pb-3 border-bottom">
-                <span class="text-muted small">
-                    <img src="/theme_bohio_real_estate/static/src/img/habitacion-8.png" style="width: 20px; height: 20px;" alt="Hab"/>
-                    <strong>${property.bedrooms || 0}</strong>
-                </span>
-                <span class="text-muted small">
-                    <img src="/theme_bohio_real_estate/static/src/img/baño_1-8.png" style="width: 20px; height: 20px;" alt="Baños"/>
-                    <strong>${property.bathrooms || 0}</strong>
-                </span>
-                <span class="text-muted small">
-                    <img src="/theme_bohio_real_estate/static/src/img/areas_1-8.png" style="width: 20px; height: 20px;" alt="Área"/>
-                    <strong>${property.area_constructed || 0}</strong> m²
-                </span>
-            </div>
-        `;
+        // Estrato y parqueadero
+        if (property.stratum > 0 || property.parking > 0) {
+            html += `<div class="d-flex justify-content-between mt-2">`;
+            if (property.stratum > 0) {
+                html += `<span class="text-muted small"><i class="fa fa-star text-warning"></i> Estrato ${property.stratum}</span>`;
+            }
+            if (property.parking > 0) {
+                html += `<span class="text-muted small"><i class="fa fa-car text-primary"></i> ${property.parking} Parqueo(s)</span>`;
+            }
+            html += `</div>`;
+        }
+
+        html += '</div>';
+        return html;
+    }
+
+    renderAdditionalFeatures(property) {
+        const features = [];
+
+        // Amenidades del inmueble
+        if (property.furnished) features.push({ icon: 'fa-cube', text: 'Amoblado', color: 'info' });
+        if (property.balcony) features.push({ icon: 'fa-building', text: 'Balcón', color: 'primary' });
+        if (property.terrace) features.push({ icon: 'fa-sun-o', text: 'Terraza', color: 'warning' });
+        if (property.patio) features.push({ icon: 'fa-tree', text: 'Patio', color: 'success' });
+        if (property.garden) features.push({ icon: 'fa-leaf', text: 'Jardín', color: 'success' });
+        if (property.laundry_area) features.push({ icon: 'fa-tint', text: 'Zona Lavandería', color: 'info' });
+        if (property.warehouse) features.push({ icon: 'fa-archive', text: 'Depósito', color: 'secondary' });
+        if (property.fireplace) features.push({ icon: 'fa-fire', text: 'Chimenea', color: 'danger' });
+        if (property.mezzanine) features.push({ icon: 'fa-level-up', text: 'Mezzanine', color: 'info' });
+
+        // Servicios del edificio
+        if (property.elevator) features.push({ icon: 'fa-arrows-v', text: 'Ascensor', color: 'primary' });
+        if (property.gym) features.push({ icon: 'fa-heartbeat', text: 'Gimnasio', color: 'danger' });
+        if (property.pools) features.push({ icon: 'fa-tint', text: 'Piscina', color: 'info' });
+        if (property.social_room) features.push({ icon: 'fa-users', text: 'Salón Social', color: 'warning' });
+        if (property.green_areas) features.push({ icon: 'fa-tree', text: 'Zonas Verdes', color: 'success' });
+        if (property.has_playground) features.push({ icon: 'fa-child', text: 'Zona Juegos', color: 'warning' });
+        if (property.sports_area) features.push({ icon: 'fa-futbol-o', text: 'Cancha', color: 'success' });
+
+        // Servicios y comodidades
+        if (property.air_conditioning) features.push({ icon: 'fa-snowflake-o', text: 'Aire Acond.', color: 'info' });
+        if (property.hot_water) features.push({ icon: 'fa-fire', text: 'Agua Caliente', color: 'danger' });
+
+        // Seguridad
+        if (property.has_security) features.push({ icon: 'fa-shield', text: 'Seguridad', color: 'primary' });
+        if (property.security_cameras) features.push({ icon: 'fa-video-camera', text: 'Cámaras', color: 'secondary' });
+        if (property.alarm) features.push({ icon: 'fa-bell', text: 'Alarma', color: 'danger' });
+        if (property.intercom) features.push({ icon: 'fa-phone', text: 'Citófono', color: 'info' });
+        if (property.doorman) {
+            const doormanText = {
+                '24_hours': '24h Portería',
+                'daytime': 'Portería Diurna',
+                'virtual': 'Video Portería',
+            };
+            features.push({ icon: 'fa-user-circle', text: doormanText[property.doorman] || 'Portería', color: 'primary' });
+        }
+
+        if (features.length === 0) {
+            return '';
+        }
+
+        // Agrupar en filas de máximo 3 características
+        let html = '<div class="mb-3"><small class="fw-bold text-danger d-block mb-2"><i class="fa fa-check-circle"></i> Características:</small>';
+        html += '<div class="row g-1">';
+
+        features.slice(0, 6).forEach(feature => {
+            html += `
+                <div class="col-6">
+                    <small class="d-flex align-items-center">
+                        <i class="fa ${feature.icon} text-${feature.color} me-1" style="width: 14px;"></i>
+                        <span class="text-muted">${feature.text}</span>
+                    </small>
+                </div>
+            `;
+        });
+
+        if (features.length > 6) {
+            html += `
+                <div class="col-12">
+                    <small class="text-muted fst-italic">+ ${features.length - 6} más características</small>
+                </div>
+            `;
+        }
+
+        html += '</div></div>';
+        return html;
     }
 
     updateCounter(count) {
@@ -529,6 +664,80 @@ class PropertyShop {
                 this.toggleComparison(propertyId);
             });
         });
+    }
+
+    attachCRMListeners() {
+        document.querySelectorAll('.add-to-crm').forEach(btn => {
+            btn.addEventListener('click', async (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                const propertyId = parseInt(btn.dataset.propertyId);
+                await this.addPropertyToCRM(propertyId);
+            });
+        });
+    }
+
+    async addPropertyToCRM(propertyId) {
+        try {
+            // Obtener información de la propiedad
+            const property = this.currentProperties.find(p => p.id === propertyId);
+            if (!property) {
+                console.error('Propiedad no encontrada');
+                return;
+            }
+
+            // Crear oportunidad en CRM
+            const response = await fetch('/bohio/api/crm/add_property', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    property_id: propertyId,
+                    property_name: property.name
+                })
+            });
+
+            const result = await response.json();
+
+            if (result.success || result.result?.success) {
+                this.showNotification('Propiedad agregada al CRM exitosamente', 'success');
+            } else {
+                this.showNotification(result.message || 'Error al agregar propiedad al CRM', 'error');
+            }
+        } catch (error) {
+            console.error('Error agregando propiedad al CRM:', error);
+            this.showNotification('Error al agregar propiedad al CRM', 'error');
+        }
+    }
+
+    showNotification(message, type = 'info') {
+        // Crear notificación con estilo BOHIO
+        const notification = document.createElement('div');
+        notification.className = 'bohio-notification';
+        notification.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            background: ${type === 'success' ? '#E31E24' : '#dc3545'};
+            color: white;
+            border-radius: 5px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 10000;
+            animation: slideIn 0.3s ease-out;
+        `;
+        notification.innerHTML = `
+            <i class="fa ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}" style="margin-right: 10px;"></i>
+            ${message}
+        `;
+
+        document.body.appendChild(notification);
+
+        setTimeout(() => {
+            notification.style.animation = 'slideOut 0.3s ease-in';
+            setTimeout(() => notification.remove(), 300);
+        }, 3000);
     }
 
     toggleComparison(propertyId) {
