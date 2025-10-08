@@ -806,43 +806,59 @@ class BohioRealEstateController(http.Controller):
         if elevator:
             domain.append(('elevator', '=', True))
 
-        Property = request.env['product.template'].sudo()
-        properties = Property.search(domain, limit=limit, order='sequence ASC, create_date DESC')
+        try:
+            Property = request.env['product.template'].sudo()
 
-        _logger.info(f"API properties: Dominio de búsqueda: {domain}")
-        _logger.info(f"API properties: Propiedades encontradas: {len(properties)}")
+            # Limitar búsqueda para evitar timeouts
+            search_limit = min(int(limit), 100)  # Máximo 100 propiedades
 
-        # Preparar datos para JSON
+            properties = Property.search(domain, limit=search_limit, order='sequence ASC, create_date DESC')
+
+            _logger.info(f"API properties: Dominio de búsqueda: {domain}")
+            _logger.info(f"API properties: Propiedades encontradas: {len(properties)}")
+
+        except Exception as e:
+            _logger.error(f"Error en búsqueda de propiedades: {str(e)}")
+            return {
+                'items': [],
+                'properties': [],
+                'count': 0,
+                'error': str(e)
+            }
+
+        # Preparar datos para JSON - Optimizado
         properties_data = []
-        for prop in properties:
-            # Determinar si es nueva (< 30 días)
-            is_new = False
-            if prop.create_date:
-                thirty_days_ago = datetime.now() - timedelta(days=30)
-                is_new = prop.create_date >= thirty_days_ago
+        thirty_days_ago = datetime.now() - timedelta(days=30)
 
-            # Obtener URL de imagen
-            image_url = f'/web/image/product.template/{prop.id}/image_1920' if prop.image_1920 else None
+        try:
+            for prop in properties:
+                try:
+                    # Obtener solo los campos necesarios de forma eficiente
+                    properties_data.append({
+                        'id': prop.id,
+                        'name': prop.name or '',
+                        'default_code': prop.default_code or '',
+                        'list_price': float(prop.list_price) if prop.list_price else 0,
+                        'property_type': prop.property_type or '',
+                        'type_service': prop.type_service or '',
+                        'bedrooms': int(prop.num_bedrooms) if prop.num_bedrooms else 0,
+                        'bathrooms': int(prop.num_bathrooms) if prop.num_bathrooms else 0,
+                        'area_constructed': float(prop.property_area) if prop.property_area else 0,
+                        'area_total': float(prop.property_area) if prop.property_area else 0,
+                        'city': prop.city or '',
+                        'region': prop.neighborhood or '',
+                        'image_url': f'/web/image/product.template/{prop.id}/image_512' if prop.image_512_small else None,
+                        'create_date': prop.create_date.isoformat() if prop.create_date else None,
+                        'is_new': bool(prop.create_date and prop.create_date >= thirty_days_ago),
+                        'latitude': float(prop.latitude) if prop.latitude else None,
+                        'longitude': float(prop.longitude) if prop.longitude else None,
+                    })
+                except Exception as e:
+                    _logger.warning(f"Error procesando propiedad {prop.id}: {str(e)}")
+                    continue
 
-            properties_data.append({
-                'id': prop.id,
-                'name': prop.name,
-                'default_code': prop.default_code or '',
-                'list_price': prop.list_price,
-                'property_type': prop.property_type,
-                'type_service': prop.type_service,
-                'bedrooms': prop.num_bedrooms if hasattr(prop, 'num_bedrooms') else 0,
-                'bathrooms': prop.num_bathrooms if hasattr(prop, 'num_bathrooms') else 0,
-                'area_constructed': prop.property_area if hasattr(prop, 'property_area') else 0,
-                'area_total': prop.property_area if hasattr(prop, 'property_area') else 0,
-                'city': prop.city if hasattr(prop, 'city') else '',
-                'region': prop.neighborhood if hasattr(prop, 'neighborhood') else '',
-                'image_url': image_url,
-                'create_date': prop.create_date.isoformat() if prop.create_date else None,
-                'is_new': is_new,
-                'latitude': prop.latitude if hasattr(prop, 'latitude') else None,
-                'longitude': prop.longitude if hasattr(prop, 'longitude') else None,
-            })
+        except Exception as e:
+            _logger.error(f"Error preparando datos de propiedades: {str(e)}")
 
         result = {
             'items': properties_data,

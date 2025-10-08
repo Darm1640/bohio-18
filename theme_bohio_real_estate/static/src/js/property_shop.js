@@ -246,11 +246,37 @@ class PropertyShop {
             this.updateCounter(this.currentProperties.length);
         } catch (error) {
             console.error('Error cargando propiedades:', error);
+
+            let errorMessage = error.message;
+            let errorDetails = '';
+
+            if (error.message.includes('503')) {
+                errorMessage = 'El servidor no está disponible (Error 503)';
+                errorDetails = `
+                    <div class="alert alert-warning mt-3">
+                        <h6><i class="fa fa-info-circle"></i> Posibles causas:</h6>
+                        <ul class="text-start mb-0">
+                            <li>El servidor Odoo no está ejecutándose</li>
+                            <li>Error en el código del servidor</li>
+                            <li>Base de datos no disponible</li>
+                        </ul>
+                        <p class="mt-2 mb-0"><strong>Acción:</strong> Verifica que Odoo esté corriendo y revisa los logs del servidor.</p>
+                    </div>
+                `;
+            } else if (error.message.includes('404')) {
+                errorMessage = 'La ruta /bohio/api/properties no existe (Error 404)';
+                errorDetails = '<p class="text-muted mt-2">Verifica que el módulo theme_bohio_real_estate esté instalado correctamente.</p>';
+            }
+
             gridContainer.innerHTML = `
                 <div class="col-12 text-center py-5">
                     <i class="fa fa-exclamation-triangle fa-3x text-danger mb-3"></i>
-                    <p class="text-muted">Error al cargar propiedades: ${error.message}</p>
-                    <button class="btn btn-danger mt-3" onclick="location.reload()">Reintentar</button>
+                    <h5 class="text-danger mb-3">Error al cargar propiedades</h5>
+                    <p class="text-muted">${errorMessage}</p>
+                    ${errorDetails}
+                    <button class="btn btn-danger mt-3" onclick="location.reload()">
+                        <i class="fa fa-refresh"></i> Reintentar
+                    </button>
                 </div>
             `;
         }
