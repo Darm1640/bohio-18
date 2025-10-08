@@ -182,8 +182,7 @@ class BohioWebsiteController(http.Controller):
     def property_detail(self, property_id, **kw):
         prop = request.env['product.template'].sudo().search([
             ('id', '=', property_id),
-            ('is_property', '=', True),
-            ('website_published', '=', True)
+            ('is_property', '=', True)
         ], limit=1)
 
         if not prop:

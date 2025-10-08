@@ -23,9 +23,14 @@ $bohio-h2-font-size: 2rem;
 $bohio-h4-font-size: 1.5rem;
 $bohio-h5-font-size: 1.25rem;
 
-// Colors
-$bohio-color-primary: #E31E24;
-$bohio-color-secondary: #C41E3A;
+// BOHIO/Moncormiga Brand Colors - Corporate Identity
+$bohio-red: #E31E24;              // Principal - Rojo corporativo Moncormiga
+$bohio-red-dark: #B81820;         // Hover/Active states
+$bohio-red-light: #FEE2E2;        // Backgrounds
+
+// Alias for consistency
+$bohio-color-primary: $bohio-red;
+$bohio-color-secondary: $bohio-red-dark;
 $bohio-color-text-dark: #212529;
 $bohio-color-text-light: #6C757D;
 $bohio-color-success: #10B981;
@@ -134,7 +139,7 @@ $font-size-lg: $bohio-font-size-lg;
                 transition: all 0.3s ease;
 
                 &:hover {
-                    background-color: #c01a1f;
+                    background-color: $bohio-red-dark;
                     transform: translateY(-2px);
                     box-shadow: 0 6px 16px rgba(227, 30, 36, 0.4);
                 }
