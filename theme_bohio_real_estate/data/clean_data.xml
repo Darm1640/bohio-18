@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <!-- Eliminar menús antiguos del website -->
+        <delete model="website.menu" search="[('url', 'in', ['/properties', '/properties/map', '/aboutus', '/services', '/contactus'])]"/>
+
+        <!-- Eliminar vistas antiguas del portal -->
+        <delete model="ir.ui.view" search="[('key', 'like', 'theme_bohio_real_estate.%')]"/>
+    </data>
+</odoo>

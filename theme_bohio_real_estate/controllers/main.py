@@ -720,3 +720,104 @@ class BohioRealEstateController(http.Controller):
             'prev_url': f"{url}?page={page-1}" if page > 1 else None,
             'next_url': f"{url}?page={page+1}" if page < total_pages else None,
         }
+
+    # =================== NEW HOMEPAGE API ===================
+
+    @http.route(['/'], type='http', auth='public', website=True)
+    def homepage_new(self, **kwargs):
+        """Nueva Homepage BOHIO Real Estate"""
+        return request.render('theme_bohio_real_estate.bohio_homepage_new', {})
+
+    @http.route(['/bohio/api/properties'], type='json', auth='public', website=True)
+    def api_get_properties(self, type_service=None, state=None, is_project=False, limit=6, **kwargs):
+        """API para obtener propiedades para la homepage"""
+        domain = [
+            ('is_property', '=', True),
+            ('active', '=', True),
+            ('state', '=', 'free'),
+        ]
+
+        if type_service:
+            if type_service == 'sale_rent':
+                domain.append(('type_service', 'in', ['sale', 'rent', 'sale_rent']))
+            else:
+                domain.append(('type_service', 'in', [type_service, 'sale_rent']))
+
+        if state:
+            if state == 'used':
+                domain.append(('product_state', '=', 'used'))
+            elif state == 'new':
+                domain.append(('product_state', '=', 'new'))
+
+        if is_project:
+            domain.append(('project_worksite_id', '!=', False))
+
+        Property = request.env['product.template'].sudo()
+        properties = Property.search(domain, limit=limit, order='sequence ASC, create_date DESC')
+
+        # Preparar datos para JSON
+        properties_data = []
+        for prop in properties:
+            # Determinar si es nueva (< 30 días)
+            is_new = False
+            if prop.create_date:
+                thirty_days_ago = datetime.now() - timedelta(days=30)
+                is_new = prop.create_date >= thirty_days_ago
+
+            # Obtener URL de imagen
+            image_url = f'/web/image/product.template/{prop.id}/image_1920' if prop.image_1920 else None
+
+            properties_data.append({
+                'id': prop.id,
+                'name': prop.name,
+                'default_code': prop.default_code or '',
+                'list_price': prop.list_price,
+                'property_type': prop.property_type,
+                'type_service': prop.type_service,
+                'bedrooms': prop.num_bedrooms if hasattr(prop, 'num_bedrooms') else 0,
+                'bathrooms': prop.num_bathrooms if hasattr(prop, 'num_bathrooms') else 0,
+                'area_constructed': prop.property_area if hasattr(prop, 'property_area') else 0,
+                'area_total': prop.property_area if hasattr(prop, 'property_area') else 0,
+                'city': prop.city if hasattr(prop, 'city') else '',
+                'region': prop.neighborhood if hasattr(prop, 'neighborhood') else '',
+                'image_url': image_url,
+                'create_date': prop.create_date.isoformat() if prop.create_date else None,
+                'is_new': is_new,
+                'latitude': prop.latitude if hasattr(prop, 'latitude') else None,
+                'longitude': prop.longitude if hasattr(prop, 'longitude') else None,
+            })
+
+        return {
+            'properties': properties_data,
+            'count': len(properties_data)
+        }
+
+    @http.route(['/bohio/api/cities/autocomplete'], type='json', auth='public', website=True)
+    def api_cities_autocomplete(self, query='', limit=10, **kwargs):
+        """API para autocompletar ciudades"""
+        if not query or len(query) < 2:
+            return {'cities': []}
+
+        City = request.env['res.city'].sudo()
+        cities = City.search([
+            ('name', 'ilike', query),
+        ], limit=limit, order='name ASC')
+
+        cities_data = []
+        for city in cities:
+            # Contar propiedades disponibles
+            property_count = request.env['product.template'].sudo().search_count([
+                ('is_property', '=', True),
+                ('city_id', '=', city.id),
+                ('state', '=', 'free'),
+            ])
+
+            if property_count > 0:
+                cities_data.append({
+                    'id': city.id,
+                    'name': city.name,
+                    'region': city.state_id.name if city.state_id else '',
+                    'property_count': property_count,
+                })
+
+        return {'cities': cities_data}
