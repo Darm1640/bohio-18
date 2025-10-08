@@ -1,7 +1,5 @@
 /** @odoo-module **/
 
-import { jsonrpc } from "@web/core/network/rpc_service";
-
 console.log('BOHIO Property Shop JS cargado');
 
 class PropertyShop {
@@ -61,11 +59,18 @@ class PropertyShop {
         const subdivision = document.querySelector('.subdivision-filter')?.value || 'all';
 
         try {
-            const result = await jsonrpc('/property/search/autocomplete/' + this.context, {
-                term: term,
-                subdivision: subdivision,
-                limit: 10
+            const response = await fetch('/property/search/autocomplete/' + this.context, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    term: term,
+                    subdivision: subdivision,
+                    limit: 10
+                })
             });
+            const result = await response.json();
 
             this.renderAutocompleteResults(result.results || []);
         } catch (error) {
@@ -211,12 +216,19 @@ class PropertyShop {
         `;
 
         try {
-            const response = await jsonrpc('/properties', {
-                ...this.filters,
-                context: this.context
+            const response = await fetch('/properties', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    ...this.filters,
+                    context: this.context
+                })
             });
+            const data = await response.json();
 
-            this.currentProperties = response.properties || [];
+            this.currentProperties = data.properties || [];
             this.renderProperties(this.currentProperties);
             this.updateMap(this.currentProperties);
             this.updateCounter(this.currentProperties.length);
@@ -505,12 +517,19 @@ class PropertyShop {
         if (this.comparisonList.length === 0) return;
 
         try {
-            const response = await jsonrpc('/property/comparison/get', {
-                property_ids: this.comparisonList,
-                context: this.context
+            const response = await fetch('/property/comparison/get', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    property_ids: this.comparisonList,
+                    context: this.context
+                })
             });
+            const data = await response.json();
 
-            this.renderComparisonModal(response);
+            this.renderComparisonModal(data);
         } catch (error) {
             console.error('Error obteniendo comparación:', error);
         }

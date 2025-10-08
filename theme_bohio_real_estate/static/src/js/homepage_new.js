@@ -1,7 +1,5 @@
 /** @odoo-module **/
 
-import { jsonrpc } from "@web/core/network/rpc_service";
-
 console.log('BOHIO Homepage JS cargado');
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -72,9 +70,16 @@ async function loadHomeProperties() {
 
 async function fetchProperties(filters) {
     try {
-        const response = await jsonrpc('/bohio/api/properties', filters);
-        console.log('Propiedades recibidas:', response);
-        return response;
+        const response = await fetch('/bohio/api/properties', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(filters)
+        });
+        const data = await response.json();
+        console.log('Propiedades recibidas:', data);
+        return data;
     } catch (error) {
         console.error('Error en fetch:', error);
         return { properties: [], count: 0 };
