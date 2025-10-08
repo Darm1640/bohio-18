@@ -847,7 +847,7 @@ class BohioRealEstateController(http.Controller):
                         'area_total': float(prop.property_area) if prop.property_area else 0,
                         'city': prop.city or '',
                         'region': prop.neighborhood or '',
-                        'image_url': f'/web/image/product.template/{prop.id}/image_512' if prop.image_512_small else None,
+                        'image_url': f'/web/image/product.template/{prop.id}/image_512' if prop.image_512 else None,
                         'create_date': prop.create_date.isoformat() if prop.create_date else None,
                         'is_new': bool(prop.create_date and prop.create_date >= thirty_days_ago),
                         'latitude': float(prop.latitude) if prop.latitude else None,
