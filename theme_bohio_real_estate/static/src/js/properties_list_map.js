@@ -353,7 +353,8 @@ export class PropertiesListMap {
 
         if (mapaWrap) {
             mapaWrap.style.display = isMapa ? 'block' : 'none';
-            mapaWrap.setAttribute('aria-hidden', !isMapa);
+            // No es necesario aria-hidden cuando ya usamos display:none
+            // display:none ya oculta el elemento de tecnologías asistivas
         }
 
         if (isMapa) {

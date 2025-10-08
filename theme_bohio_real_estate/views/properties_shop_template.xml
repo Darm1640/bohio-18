@@ -281,12 +281,13 @@
                 </div>
             </div>
 
-            <div class="modal fade" id="codeSearchModal" tabindex="-1" aria-labelledby="codeSearchModalLabel" aria-hidden="true">
+            <!-- Modal búsqueda por código - sin aria-hidden para evitar conflictos de accesibilidad -->
+            <div class="modal fade" id="codeSearchModal" tabindex="-1" aria-labelledby="codeSearchModalLabel">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="codeSearchModalLabel">Buscar por Código</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"/>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"/>
                         </div>
                         <div class="modal-body">
                             <div class="mb-3">

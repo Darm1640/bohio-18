@@ -150,7 +150,7 @@ export class SearchBar {
 
             badge.innerHTML = `
                 ${loc.display}
-                <button type="button" class="btn-close btn-close-white ms-2" aria-label="Remove"></button>
+                <button type="button" class="btn-close btn-close-white ms-2" aria-label="Eliminar ${loc.display}"></button>
             `;
 
             const closeBtn = badge.querySelector('.btn-close');
