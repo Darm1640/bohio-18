@@ -844,8 +844,22 @@ class PropertyShop {
                     <i class="fa fa-exclamation-triangle"></i> No hay propiedades para comparar o error al cargar los datos.
                 </div>
             `;
-            const modal = new bootstrap.Modal(document.getElementById('comparisonModal'));
-            modal.show();
+            // Mostrar modal con fallback
+            const modalEl = document.getElementById('comparisonModal');
+            if (modalEl) {
+                if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
+                    new bootstrap.Modal(modalEl).show();
+                } else if (typeof $ !== 'undefined' && $.fn.modal) {
+                    $(modalEl).modal('show');
+                } else {
+                    modalEl.style.display = 'block';
+                    modalEl.classList.add('show');
+                    document.body.classList.add('modal-open');
+                    const backdrop = document.createElement('div');
+                    backdrop.className = 'modal-backdrop fade show';
+                    document.body.appendChild(backdrop);
+                }
+            }
             return;
         }
 
