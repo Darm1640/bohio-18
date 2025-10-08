@@ -170,6 +170,13 @@
                                             </div>
                                         </t>
 
+                                        <!-- Badge NUEVO para propiedades recientes (últimos 30 días) -->
+                                        <t t-if="property.is_new">
+                                            <div class="property-badge-new">
+                                                <i class="fa fa-star"/> NUEVO
+                                            </div>
+                                        </t>
+
                                         <!-- Botones de Favoritos y Comparar -->
                                         <div class="property-actions position-absolute top-0 end-0 m-2">
                                             <button class="btn btn-sm btn-light rounded-circle btn-favorite"
