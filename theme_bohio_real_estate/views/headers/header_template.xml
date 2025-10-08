@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <!-- Header Template -->
+    <!-- Header Template BOHIO - Estilo Profesional -->
     <template id="bohio_header" inherit_id="website.layout" name="Bohio Real Estate Header">
         <xpath expr="//header" position="replace">
-            <header class="bohio-header">
-                <nav class="navbar navbar-expand-lg">
-                    <div class="container-bohio">
+            <header class="bohio-header shadow-sm">
+                <nav class="navbar navbar-expand-lg navbar-light bg-white">
+                    <div class="container">
                         <!-- Logo -->
-                        <a class="navbar-brand" href="/">
+                        <a class="navbar-brand py-2" href="/">
                             <img src="/theme_bohio_real_estate/static/src/img/logo.png"
-                                 alt="Bohio Real Estate"
+                                 alt="BOHIO Real Estate"
                                  class="bohio-logo"
-                                 style="max-height: 60px;"/>
+                                 style="max-height: 70px;"/>
                         </a>
 
                         <!-- Mobile Toggle -->
-                        <button class="navbar-toggler" type="button"
+                        <button class="navbar-toggler border-0" type="button"
                                 data-bs-toggle="collapse"
                                 data-bs-target="#navbarMain"
                                 aria-controls="navbarMain"
@@ -26,55 +26,42 @@
 
                         <!-- Navigation -->
                         <div class="collapse navbar-collapse" id="navbarMain">
-                            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                            <ul class="navbar-nav ms-auto align-items-lg-center">
                                 <li class="nav-item">
-                                    <a class="nav-link" href="/">Inicio</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="/properties">Propiedades</a>
-                                </li>
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="#" role="button"
-                                       data-bs-toggle="dropdown" aria-expanded="false">
-                                        Servicios
-                                    </a>
-                                    <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item" href="/services/sale">Venta</a></li>
-                                        <li><a class="dropdown-item" href="/services/rent">Arriendo</a></li>
-                                        <li><a class="dropdown-item" href="/services/consign">Consignar Inmueble</a></li>
-                                        <li><a class="dropdown-item" href="/services/legal">Servicios Jurídicos</a></li>
-                                        <li><a class="dropdown-item" href="/services/marketing">Marketing</a></li>
-                                    </ul>
+                                    <a class="nav-link px-3 fw-semibold" href="/">INICIO</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="/aboutus">Nosotros</a>
+                                    <a class="nav-link px-3 fw-semibold" href="/properties">PROPIEDADES</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="/contactus">Contacto</a>
+                                    <a class="nav-link px-3 fw-semibold" href="/proyectos">PROYECTOS</a>
                                 </li>
-
-                                <!-- User Menu -->
-                                <li class="nav-item dropdown" t-if="not user_id._is_public()">
-                                    <a class="nav-link dropdown-toggle" href="#" role="button"
-                                       data-bs-toggle="dropdown" aria-expanded="false">
-                                        <i class="ri-user-line"></i>
-                                        <t t-out="user_id.name"/>
-                                    </a>
-                                    <ul class="dropdown-menu dropdown-menu-end">
-                                        <li><a class="dropdown-item" href="/my">Mi Portal</a></li>
-                                        <li><a class="dropdown-item" href="/my/account">Mi Cuenta</a></li>
-                                        <li><hr class="dropdown-divider"/></li>
-                                        <li><a class="dropdown-item" href="/web/session/logout">Cerrar Sesión</a></li>
-                                    </ul>
+                                <li class="nav-item">
+                                    <a class="nav-link px-3 fw-semibold" href="/servicios">SERVICIOS</a>
                                 </li>
-
-                                <!-- Login Button -->
-                                <li class="nav-item" t-if="user_id._is_public()">
-                                    <a class="btn btn-primary" href="/web/login">
-                                        <i class="ri-login-box-line me-2"></i>Ingresar
-                                    </a>
+                                <li class="nav-item">
+                                    <a class="nav-link px-3 fw-semibold" href="/sobre-nosotros">NOSOTROS</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link btn-contacto px-4 py-2 ms-lg-2" href="/contacto">CONTÁCTANOS</a>
                                 </li>
                             </ul>
+
+                            <!-- Social Icons -->
+                            <div class="social-icons d-none d-lg-flex ms-3">
+                                <a href="https://www.instagram.com/bohioinmobiliaria/" target="_blank"
+                                   class="social-icon-link me-2" title="Instagram">
+                                    <i class="fab fa-instagram"></i>
+                                </a>
+                                <a href="https://www.facebook.com/bohio" target="_blank"
+                                   class="social-icon-link me-2" title="Facebook">
+                                    <i class="fab fa-facebook-f"></i>
+                                </a>
+                                <a href="https://wa.me/573001234567" target="_blank"
+                                   class="social-icon-link" title="WhatsApp">
+                                    <i class="fab fa-whatsapp"></i>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </nav>

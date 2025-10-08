@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Página de Contacto BOHIO -->
+    <template id="bohio_contacto_page" name="BOHIO Contáctanos">
+        <t t-call="website.layout">
+            <div id="wrap" class="oe_structure bohio-contacto-page">
+
+                <!-- Hero Section -->
+                <section class="contacto-hero position-relative" style="background: linear-gradient(rgba(0,0,0,0.6), rgba(227, 30, 36, 0.7)), url('/theme_bohio_real_estate/static/src/img/contactanos.jpg') center/cover; min-height: 400px;">
+                    <div class="container h-100 d-flex align-items-center justify-content-center text-white text-center py-5">
+                        <div>
+                            <h1 class="display-3 fw-bold mb-4">Contáctanos</h1>
+                            <p class="lead fs-4">Estamos aquí para ayudarte. Hablemos de tu próximo proyecto inmobiliario</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Información de Contacto y Formulario -->
+                <section class="contacto-content py-5">
+                    <div class="container">
+                        <div class="row g-5">
+
+                            <!-- Información de Contacto -->
+                            <div class="col-lg-5">
+                                <h2 class="h3 fw-bold text-danger mb-4">Información de Contacto</h2>
+                                <p class="text-muted mb-4">
+                                    Estamos disponibles para atenderte y resolver todas tus dudas sobre nuestros
+                                    servicios inmobiliarios.
+                                </p>
+
+                                <div class="contacto-info">
+                                    <!-- Teléfono -->
+                                    <div class="info-item d-flex align-items-start mb-4">
+                                        <div class="icon-wrapper me-3">
+                                            <div class="bg-danger bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center"
+                                                 style="width: 50px; height: 50px; min-width: 50px;">
+                                                <i class="fa fa-phone text-danger"></i>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <h4 class="h6 fw-bold mb-1">Teléfono</h4>
+                                            <p class="mb-0 text-muted">Línea de Atención al Cliente</p>
+                                            <p class="mb-0 text-muted">WhatsApp: Contáctanos</p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Email -->
+                                    <div class="info-item d-flex align-items-start mb-4">
+                                        <div class="icon-wrapper me-3">
+                                            <div class="bg-danger bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center"
+                                                 style="width: 50px; height: 50px; min-width: 50px;">
+                                                <i class="fa fa-envelope text-danger"></i>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <h4 class="h6 fw-bold mb-1">Email</h4>
+                                            <p class="mb-0"><a href="mailto:info@bohioconsultores.com" class="text-muted text-decoration-none">info@bohioconsultores.com</a></p>
+                                            <p class="mb-0"><a href="mailto:ventas@bohioconsultores.com" class="text-muted text-decoration-none">ventas@bohioconsultores.com</a></p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Dirección -->
+                                    <div class="info-item d-flex align-items-start mb-4">
+                                        <div class="icon-wrapper me-3">
+                                            <div class="bg-danger bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center"
+                                                 style="width: 50px; height: 50px; min-width: 50px;">
+                                                <i class="fa fa-map-marker-alt text-danger"></i>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <h4 class="h6 fw-bold mb-1">Oficina Principal</h4>
+                                            <p class="mb-0 text-muted">Colombia</p>
+                                            <p class="mb-0 text-muted"><a href="https://bohioconsultores.com" target="_blank" class="text-danger">bohioconsultores.com</a></p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Horario -->
+                                    <div class="info-item d-flex align-items-start mb-4">
+                                        <div class="icon-wrapper me-3">
+                                            <div class="bg-danger bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center"
+                                                 style="width: 50px; height: 50px; min-width: 50px;">
+                                                <i class="fa fa-clock text-danger"></i>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <h4 class="h6 fw-bold mb-1">Horario de Atención</h4>
+                                            <p class="mb-0 text-muted">Lunes a Viernes: 7:30 AM - 12:00 PM, 2:00 PM - 6:00 PM</p>
+                                            <p class="mb-0 text-muted">Sábados: 8:00 AM - 12:00 PM</p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Redes Sociales -->
+                                    <div class="social-links mt-4">
+                                        <h4 class="h6 fw-bold mb-3">Síguenos en Redes Sociales</h4>
+                                        <div class="d-flex gap-3">
+                                            <a href="https://www.instagram.com/bohioinmobiliaria/" target="_blank"
+                                               class="btn btn-outline-danger rounded-circle"
+                                               style="width: 45px; height: 45px; padding: 0; display: flex; align-items: center; justify-content: center;">
+                                                <i class="fab fa-instagram"></i>
+                                            </a>
+                                            <a href="https://www.facebook.com/bohio" target="_blank"
+                                               class="btn btn-outline-danger rounded-circle"
+                                               style="width: 45px; height: 45px; padding: 0; display: flex; align-items: center; justify-content: center;">
+                                                <i class="fab fa-facebook-f"></i>
+                                            </a>
+                                            <a href="https://www.linkedin.com/company/bohio" target="_blank"
+                                               class="btn btn-outline-danger rounded-circle"
+                                               style="width: 45px; height: 45px; padding: 0; display: flex; align-items: center; justify-content: center;">
+                                                <i class="fab fa-linkedin-in"></i>
+                                            </a>
+                                            <a href="https://wa.me/573001234567" target="_blank"
+                                               class="btn btn-outline-danger rounded-circle"
+                                               style="width: 45px; height: 45px; padding: 0; display: flex; align-items: center; justify-content: center;">
+                                                <i class="fab fa-whatsapp"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Formulario de Contacto -->
+                            <div class="col-lg-7">
+                                <div class="card border-0 shadow-lg">
+                                    <div class="card-body p-4 p-lg-5">
+                                        <h2 class="h3 fw-bold text-danger mb-4">Envíanos un Mensaje</h2>
+                                        <p class="text-muted mb-4">
+                                            Completa el formulario y nos pondremos en contacto contigo lo antes posible
+                                        </p>
+
+                                        <form action="/contacto/submit" method="post" class="contacto-form">
+                                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+
+                                            <div class="row g-3">
+                                                <!-- Nombre -->
+                                                <div class="col-md-6">
+                                                    <label for="nombre" class="form-label fw-bold">Nombre Completo *</label>
+                                                    <input type="text" class="form-control form-control-lg" id="nombre" name="nombre" required="required"
+                                                           placeholder="Tu nombre completo"/>
+                                                </div>
+
+                                                <!-- Email -->
+                                                <div class="col-md-6">
+                                                    <label for="email" class="form-label fw-bold">Email *</label>
+                                                    <input type="email" class="form-control form-control-lg" id="email" name="email" required="required"
+                                                           placeholder="tu@email.com"/>
+                                                </div>
+
+                                                <!-- Teléfono -->
+                                                <div class="col-md-6">
+                                                    <label for="telefono" class="form-label fw-bold">Teléfono *</label>
+                                                    <input type="tel" class="form-control form-control-lg" id="telefono" name="telefono" required="required"
+                                                           placeholder="+57 300 123 4567"/>
+                                                </div>
+
+                                                <!-- Asunto -->
+                                                <div class="col-md-6">
+                                                    <label for="asunto" class="form-label fw-bold">Asunto *</label>
+                                                    <select class="form-select form-select-lg" id="asunto" name="asunto" required="required">
+                                                        <option value="">Selecciona un asunto</option>
+                                                        <option value="compra">Compra de Inmueble</option>
+                                                        <option value="venta">Venta de Inmueble</option>
+                                                        <option value="arriendo">Arriendo</option>
+                                                        <option value="proyecto">Proyectos</option>
+                                                        <option value="marketing">Marketing Inmobiliario</option>
+                                                        <option value="juridico">Servicios Jurídicos</option>
+                                                        <option value="otro">Otro</option>
+                                                    </select>
+                                                </div>
+
+                                                <!-- Mensaje -->
+                                                <div class="col-12">
+                                                    <label for="mensaje" class="form-label fw-bold">Mensaje *</label>
+                                                    <textarea class="form-control" id="mensaje" name="mensaje" rows="5" required="required"
+                                                              placeholder="Cuéntanos cómo podemos ayudarte..."></textarea>
+                                                </div>
+
+                                                <!-- Checkbox GDPR -->
+                                                <div class="col-12">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" id="acepto_politica" name="acepto_politica" required="required"/>
+                                                        <label class="form-check-label small text-muted" for="acepto_politica">
+                                                            Acepto la <a href="/privacy" class="text-danger">Política de Privacidad</a> y el
+                                                            <a href="/terms" class="text-danger">Tratamiento de Datos</a> *
+                                                        </label>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Botón Submit -->
+                                                <div class="col-12">
+                                                    <button type="submit" class="btn btn-danger btn-lg w-100 py-3">
+                                                        <i class="fa fa-paper-plane me-2"></i>Enviar Mensaje
+                                                    </button>
+                                                </div>
+
+                                                <div class="col-12">
+                                                    <p class="text-muted small mb-0">* Campos obligatorios</p>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Mapa -->
+                <section class="mapa-section">
+                    <div class="container-fluid p-0">
+                        <div id="contactoMap" style="height: 400px; width: 100%;"></div>
+                    </div>
+                </section>
+
+                <!-- FAQ Rápido -->
+                <section class="faq-rapido py-5 bg-light">
+                    <div class="container">
+                        <div class="text-center mb-5">
+                            <h2 class="h3 fw-bold text-danger mb-3">Preguntas Frecuentes</h2>
+                            <p class="text-muted">Respuestas rápidas a las preguntas más comunes</p>
+                        </div>
+
+                        <div class="row g-4">
+                            <div class="col-md-6">
+                                <div class="card border-0 shadow-sm h-100">
+                                    <div class="card-body p-4">
+                                        <h4 class="h6 fw-bold text-danger mb-2">¿Cuánto tiempo toma vender una propiedad?</h4>
+                                        <p class="text-muted small mb-0">
+                                            El tiempo varía según el tipo de propiedad y el mercado, pero en promedio
+                                            una propiedad bien valorada y ubicada se vende entre 30 a 90 días.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="card border-0 shadow-sm h-100">
+                                    <div class="card-body p-4">
+                                        <h4 class="h6 fw-bold text-danger mb-2">¿Cobran por la asesoría inicial?</h4>
+                                        <p class="text-muted small mb-0">
+                                            No, la asesoría inicial y el avalúo de tu propiedad son completamente
+                                            gratuitos y sin compromiso.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="card border-0 shadow-sm h-100">
+                                    <div class="card-body p-4">
+                                        <h4 class="h6 fw-bold text-danger mb-2">¿Puedo ver propiedades en cualquier momento?</h4>
+                                        <p class="text-muted small mb-0">
+                                            Sí, coordinamos visitas según tu disponibilidad, incluyendo fines de semana
+                                            previa cita con nuestros asesores.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="card border-0 shadow-sm h-100">
+                                    <div class="card-body p-4">
+                                        <h4 class="h6 fw-bold text-danger mb-2">¿Qué documentos necesito para vender?</h4>
+                                        <p class="text-muted small mb-0">
+                                            Necesitarás escrituras, certificado de libertad, paz y salvo de administración
+                                            y servicios. Te asesoramos en todo el proceso.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+
+            <!-- Script para el mapa -->
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    // Inicializar mapa de Leaflet para oficina BOHIO
+                    if (typeof L !== 'undefined' &amp;&amp; document.getElementById('contactoMap')) {
+                        const map = L.map('contactoMap').setView([4.7110, -74.0721], 15); // Coordenadas Bogotá ejemplo
+
+                        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                            attribution: '© OpenStreetMap contributors'
+                        }).addTo(map);
+
+                        // Marcador de oficina
+                        const marker = L.marker([4.7110, -74.0721]).addTo(map);
+                        marker.bindPopup('<b>BOHIO Real Estate</b><br>Oficina Principal<br>Calle 123 # 45-67, Bogotá').openPopup();
+                    }
+                });
+            </script>
+        </t>
+    </template>
+
+    <style>
+        .bohio-contacto-page .contacto-hero {
+            min-height: 400px;
+            display: flex;
+            align-items: center;
+        }
+
+        .bohio-contacto-page .form-control:focus,
+        .bohio-contacto-page .form-select:focus {
+            border-color: #E31E24;
+            box-shadow: 0 0 0 0.2rem rgba(227, 30, 36, 0.25);
+        }
+
+        .bohio-contacto-page .btn-outline-danger:hover {
+            transform: scale(1.1);
+            transition: transform 0.2s ease;
+        }
+    </style>
+</odoo>

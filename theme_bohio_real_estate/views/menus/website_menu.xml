@@ -1,37 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <!-- Menú Principal del Sitio Web -->
-    <record id="menu_properties_map" model="website.menu">
-        <field name="name">Mapa de Propiedades</field>
-        <field name="url">/properties/map</field>
+    <!-- Menú Principal del Sitio Web BOHIO -->
+
+    <!-- Inicio -->
+    <record id="menu_home" model="website.menu">
+        <field name="name">Inicio</field>
+        <field name="url">/</field>
         <field name="parent_id" ref="website.main_menu"/>
-        <field name="sequence" type="int">15</field>
+        <field name="sequence" type="int">5</field>
     </record>
 
-    <record id="menu_properties_list" model="website.menu">
-        <field name="name">Buscar Propiedades</field>
+    <!-- Propiedades -->
+    <record id="menu_properties" model="website.menu">
+        <field name="name">Propiedades</field>
         <field name="url">/properties</field>
         <field name="parent_id" ref="website.main_menu"/>
         <field name="sequence" type="int">10</field>
     </record>
 
-    <record id="menu_about_us" model="website.menu">
-        <field name="name">Sobre Nosotros</field>
-        <field name="url">/aboutus</field>
+    <!-- Proyectos -->
+    <record id="menu_proyectos" model="website.menu">
+        <field name="name">Proyectos</field>
+        <field name="url">/proyectos</field>
+        <field name="parent_id" ref="website.main_menu"/>
+        <field name="sequence" type="int">15</field>
+    </record>
+
+    <!-- Servicios -->
+    <record id="menu_servicios" model="website.menu">
+        <field name="name">Servicios</field>
+        <field name="url">/servicios</field>
         <field name="parent_id" ref="website.main_menu"/>
         <field name="sequence" type="int">20</field>
     </record>
 
-    <record id="menu_services" model="website.menu">
-        <field name="name">Servicios</field>
-        <field name="url">/services</field>
+    <!-- Sobre Nosotros -->
+    <record id="menu_sobre_nosotros" model="website.menu">
+        <field name="name">Sobre Nosotros</field>
+        <field name="url">/sobre-nosotros</field>
         <field name="parent_id" ref="website.main_menu"/>
         <field name="sequence" type="int">25</field>
     </record>
 
-    <record id="menu_contact" model="website.menu">
+    <!-- Contacto -->
+    <record id="menu_contacto" model="website.menu">
         <field name="name">Contacto</field>
-        <field name="url">/contactus</field>
+        <field name="url">/contacto</field>
         <field name="parent_id" ref="website.main_menu"/>
         <field name="sequence" type="int">30</field>
     </record>

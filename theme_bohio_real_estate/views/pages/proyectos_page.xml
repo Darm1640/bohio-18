@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Página de Proyectos BOHIO -->
+    <template id="bohio_proyectos_page" name="BOHIO Proyectos">
+        <t t-call="website.layout">
+            <div id="wrap" class="oe_structure bohio-proyectos-page">
+
+                <!-- Hero Section -->
+                <section class="proyectos-hero bg-dark text-white position-relative" style="background: linear-gradient(rgba(227, 30, 36, 0.8), rgba(0,0,0,0.7)), url('/theme_bohio_real_estate/static/src/img/proyectos.gif') center/cover; min-height: 450px;">
+                    <div class="container h-100 d-flex align-items-center justify-content-center py-5">
+                        <div class="text-center">
+                            <h1 class="display-2 fw-bold mb-4">Nuestros Proyectos</h1>
+                            <p class="lead fs-3">Desarrollos inmobiliarios de alta calidad</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Filtros -->
+                <section class="proyectos-filtros bg-light py-4 sticky-top shadow-sm" style="top: 70px; z-index: 999;">
+                    <div class="container">
+                        <div class="row g-3 align-items-end">
+                            <div class="col-md-3">
+                                <label class="form-label fw-bold small">Ciudad</label>
+                                <select class="form-select proyecto-filter" data-filter="city">
+                                    <option value="">Todas las ciudades</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label fw-bold small">Estado</label>
+                                <select class="form-select proyecto-filter" data-filter="estado">
+                                    <option value="">Todos</option>
+                                    <option value="construccion">En Construcción</option>
+                                    <option value="planos">En Planos</option>
+                                    <option value="entregado">Entregado</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label fw-bold small">Tipo</label>
+                                <select class="form-select proyecto-filter" data-filter="tipo">
+                                    <option value="">Todos</option>
+                                    <option value="apartamento">Apartamentos</option>
+                                    <option value="casa">Casas</option>
+                                    <option value="comercial">Comercial</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <button class="btn btn-danger w-100" onclick="aplicarFiltrosProyectos()">
+                                    <i class="fa fa-search me-2"></i>Buscar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Lista de Proyectos -->
+                <section class="proyectos-lista py-5">
+                    <div class="container">
+                        <div class="row g-4" id="proyectosContainer">
+                            <!-- Los proyectos se cargarán dinámicamente -->
+                        </div>
+
+                        <!-- Loading State -->
+                        <div id="proyectosLoading" class="text-center py-5">
+                            <div class="spinner-border text-danger" role="status" style="width: 3rem; height: 3rem;">
+                                <span class="visually-hidden">Cargando...</span>
+                            </div>
+                            <p class="text-muted mt-3">Cargando proyectos...</p>
+                        </div>
+
+                        <!-- Empty State -->
+                        <div id="proyectosEmpty" class="text-center py-5" style="display: none;">
+                            <i class="fa fa-building text-muted mb-3" style="font-size: 60px;"></i>
+                            <h3 class="h5 text-muted">No se encontraron proyectos</h3>
+                            <p class="text-muted">Intenta ajustar los filtros de búsqueda</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Vista de Mapa -->
+                <section class="proyectos-mapa py-5 bg-light">
+                    <div class="container">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h2 class="h3 fw-bold text-danger mb-0">Mapa de Proyectos</h2>
+                            <button class="btn btn-outline-danger" onclick="toggleMapaProyectos()">
+                                <i class="fa fa-map-marked-alt me-2"></i>
+                                <span id="mapaToggleText">Ver Mapa</span>
+                            </button>
+                        </div>
+                        <div id="proyectosMapContainer" class="rounded-3 overflow-hidden shadow-lg" style="display: none;">
+                            <div id="proyectosMap" style="height: 500px; width: 100%;"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- CTA -->
+                <section class="proyectos-cta bg-danger text-white py-5">
+                    <div class="container text-center">
+                        <h2 class="display-5 fw-bold mb-4">¿Interesado en algún proyecto?</h2>
+                        <p class="lead mb-4">Agenda una visita y conoce nuestros desarrollos</p>
+                        <a href="/contacto" class="btn btn-light btn-lg px-5">Agendar Visita</a>
+                    </div>
+                </section>
+
+            </div>
+
+            <!-- Script para proyectos -->
+            <script>
+                let proyectosMap = null;
+                let proyectosMarkers = null;
+                let allProyectos = [];
+
+                document.addEventListener('DOMContentLoaded', function() {
+                    cargarProyectos();
+                    inicializarMapaProyectos();
+                });
+
+                async function cargarProyectos() {
+                    const container = document.getElementById('proyectosContainer');
+                    const loading = document.getElementById('proyectosLoading');
+                    const empty = document.getElementById('proyectosEmpty');
+
+                    try {
+                        loading.style.display = 'block';
+                        container.innerHTML = '';
+                        empty.style.display = 'none';
+
+                        // Llamar API para obtener proyectos
+                        const response = await fetch('/bohio/api/proyectos', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                jsonrpc: '2.0',
+                                method: 'call',
+                                params: {}
+                            })
+                        });
+
+                        const data = await response.json();
+                        allProyectos = data.result.proyectos || [];
+
+                        loading.style.display = 'none';
+
+                        if (allProyectos.length === 0) {
+                            empty.style.display = 'block';
+                            return;
+                        }
+
+                        // Renderizar proyectos
+                        allProyectos.forEach(proyecto => {
+                            const card = crearCardProyecto(proyecto);
+                            container.insertAdjacentHTML('beforeend', card);
+                        });
+
+                        // Actualizar mapa
+                        if (proyectosMap) {
+                            actualizarMapaProyectos(allProyectos);
+                        }
+
+                    } catch (error) {
+                        console.error('Error cargando proyectos:', error);
+                        loading.style.display = 'none';
+                        empty.style.display = 'block';
+                    }
+                }
+
+                function crearCardProyecto(proyecto) {
+                    const estadoBadge = {
+                        'construccion': 'bg-warning text-dark',
+                        'planos': 'bg-info',
+                        'entregado': 'bg-success'
+                    }[proyecto.estado] || 'bg-secondary';
+
+                    const estadoTexto = {
+                        'construccion': 'En Construcción',
+                        'planos': 'En Planos',
+                        'entregado': 'Entregado'
+                    }[proyecto.estado] || proyecto.estado;
+
+                    return `
+                        <div class="col-lg-6">
+                            <div class="card border-0 shadow-sm hover-lift h-100">
+                                <div class="row g-0">
+                                    <div class="col-md-5">
+                                        <div class="proyecto-image position-relative" style="height: 100%; min-height: 250px;">
+                                            <img src="${proyecto.image_url || '/theme_bohio_real_estate/static/src/img/banner1.jpg'}"
+                                                 alt="${proyecto.name}"
+                                                 class="w-100 h-100"
+                                                 style="object-fit: cover;"/>
+                                            <span class="badge ${estadoBadge} position-absolute top-0 start-0 m-3">${estadoTexto}</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7">
+                                        <div class="card-body p-4 d-flex flex-column h-100">
+                                            <h3 class="h5 fw-bold text-danger mb-2">${proyecto.name}</h3>
+                                            <p class="text-muted small mb-3">
+                                                <i class="fa fa-map-marker-alt text-danger me-1"></i>
+                                                ${proyecto.ubicacion || 'Sin ubicación'}
+                                            </p>
+                                            <p class="text-muted small mb-3">${proyecto.descripcion || 'Proyecto inmobiliario de alta calidad'}</p>
+
+                                            <div class="proyecto-stats mb-3">
+                                                <div class="row g-2 small">
+                                                    <div class="col-6">
+                                                        <i class="fa fa-building text-muted me-1"></i>
+                                                        <span class="text-muted">${proyecto.unidades || 0} Unidades</span>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <i class="fa fa-home text-muted me-1"></i>
+                                                        <span class="text-muted">${proyecto.disponibles || 0} Disponibles</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="mt-auto">
+                                                <div class="d-flex gap-2">
+                                                    <a href="/properties?project_id=${proyecto.id}" class="btn btn-outline-danger btn-sm flex-fill">
+                                                        <i class="fa fa-th me-1"></i>Ver Unidades
+                                                    </a>
+                                                    <a href="/contacto?proyecto=${proyecto.id}" class="btn btn-danger btn-sm flex-fill">
+                                                        <i class="fa fa-envelope me-1"></i>Contactar
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                function inicializarMapaProyectos() {
+                    if (typeof L === 'undefined') return;
+
+                    const mapElement = document.getElementById('proyectosMap');
+                    if (!mapElement) return;
+
+                    proyectosMap = L.map('proyectosMap').setView([4.7110, -74.0721], 12);
+
+                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                        attribution: '© OpenStreetMap contributors'
+                    }).addTo(proyectosMap);
+
+                    proyectosMarkers = L.layerGroup().addTo(proyectosMap);
+                }
+
+                function actualizarMapaProyectos(proyectos) {
+                    if (!proyectosMap || !proyectosMarkers) return;
+
+                    proyectosMarkers.clearLayers();
+                    const bounds = [];
+
+                    proyectos.forEach(proyecto => {
+                        if (proyecto.latitude &amp;&amp; proyecto.longitude) {
+                            const marker = L.marker([proyecto.latitude, proyecto.longitude]);
+
+                            const popupContent = `
+                                <div style="min-width: 200px;">
+                                    <h6 class="fw-bold text-danger mb-2">${proyecto.name}</h6>
+                                    <p class="small text-muted mb-2">${proyecto.ubicacion || ''}</p>
+                                    <p class="small mb-2">
+                                        <strong>${proyecto.disponibles || 0}</strong> unidades disponibles
+                                    </p>
+                                    <a href="/properties?project_id=${proyecto.id}" class="btn btn-danger btn-sm w-100">
+                                        Ver Unidades
+                                    </a>
+                                </div>
+                            `;
+
+                            marker.bindPopup(popupContent);
+                            proyectosMarkers.addLayer(marker);
+                            bounds.push([proyecto.latitude, proyecto.longitude]);
+                        }
+                    });
+
+                    if (bounds.length > 0) {
+                        proyectosMap.fitBounds(bounds, { padding: [50, 50] });
+                    }
+                }
+
+                function toggleMapaProyectos() {
+                    const mapContainer = document.getElementById('proyectosMapContainer');
+                    const toggleText = document.getElementById('mapaToggleText');
+
+                    if (mapContainer.style.display === 'none') {
+                        mapContainer.style.display = 'block';
+                        toggleText.textContent = 'Ocultar Mapa';
+
+                        // Refresh map size
+                        setTimeout(() => {
+                            if (proyectosMap) {
+                                proyectosMap.invalidateSize();
+                            }
+                        }, 100);
+                    } else {
+                        mapContainer.style.display = 'none';
+                        toggleText.textContent = 'Ver Mapa';
+                    }
+                }
+
+                function aplicarFiltrosProyectos() {
+                    // Implementar filtrado
+                    cargarProyectos();
+                }
+            </script>
+        </t>
+    </template>
+
+    <style>
+        .bohio-proyectos-page .hover-lift {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .bohio-proyectos-page .hover-lift:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15) !important;
+        }
+
+        .bohio-proyectos-page .proyecto-image img {
+            transition: transform 0.3s ease;
+        }
+
+        .bohio-proyectos-page .hover-lift:hover .proyecto-image img {
+            transform: scale(1.05);
+        }
+    </style>
+</odoo>

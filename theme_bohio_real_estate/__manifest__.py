@@ -18,8 +18,19 @@
         'bohio_real_estate',
     ],
     'data': [
-        # Views
+        # Layout
+        'views/layout/loader_template.xml',
+
+        # Views - Homepage
         'views/homepage_new.xml',
+
+        # Views - Pages
+        'views/pages/servicios_page.xml',
+        'views/pages/sobre_nosotros_page.xml',
+        'views/pages/contacto_page.xml',
+        'views/pages/proyectos_page.xml',
+
+        # Views - Properties
         'views/properties_shop_template.xml',
         'views/property_detail_template.xml',
 
@@ -37,12 +48,15 @@
             'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js',
 
             # SCSS
+            'theme_bohio_real_estate/static/src/scss/loader.scss',
             'theme_bohio_real_estate/static/src/scss/homepage.scss',
             'theme_bohio_real_estate/static/src/scss/header.scss',
             'theme_bohio_real_estate/static/src/scss/footer.scss',
             'theme_bohio_real_estate/static/src/scss/property_shop.scss',
 
             # JavaScript
+            'theme_bohio_real_estate/static/src/js/page_loader.js',
+            'theme_bohio_real_estate/static/src/js/property_compare.js',
             'theme_bohio_real_estate/static/src/js/homepage_new.js',
             'theme_bohio_real_estate/static/src/js/property_shop.js',
         ],

@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Página de Servicios BOHIO -->
+    <template id="bohio_servicios_page" name="BOHIO Servicios">
+        <t t-call="website.layout">
+            <div id="wrap" class="oe_structure bohio-servicios-page">
+
+                <!-- Hero Section -->
+                <section class="servicios-hero bg-dark text-white py-5 position-relative" style="background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('/theme_bohio_real_estate/static/src/img/banner1.jpg') center/cover; min-height: 400px;">
+                    <div class="container h-100 d-flex align-items-center justify-content-center">
+                        <div class="text-center">
+                            <h1 class="display-3 fw-bold mb-4">Nuestros Servicios</h1>
+                            <p class="lead fs-4">Soluciones integrales para todas tus necesidades inmobiliarias</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Servicios Principales -->
+                <section class="servicios-principales py-5">
+                    <div class="container">
+                        <div class="row g-4">
+
+                            <!-- Arriendo -->
+                            <div class="col-lg-4 col-md-6">
+                                <div class="servicio-card h-100 shadow-sm border-0 rounded-3 overflow-hidden hover-lift">
+                                    <div class="servicio-image position-relative">
+                                        <img src="/theme_bohio_real_estate/static/src/img/servicio_arriendo.jpg"
+                                             alt="Servicio de Arriendo"
+                                             class="w-100"
+                                             style="height: 250px; object-fit: cover;"/>
+                                        <div class="servicio-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center"
+                                             style="background: rgba(227, 30, 36, 0.9); opacity: 0; transition: opacity 0.3s;">
+                                            <a href="/properties?type_service=rent" class="btn btn-light btn-lg">Ver Propiedades</a>
+                                        </div>
+                                    </div>
+                                    <div class="card-body p-4">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <img src="/theme_bohio_real_estate/static/src/img/avaluos.gif"
+                                                 alt="Arriendo"
+                                                 class="me-3"
+                                                 style="width: 60px; height: 60px; object-fit: contain;"/>
+                                            <h3 class="h4 mb-0 text-danger">Arriendo</h3>
+                                        </div>
+                                        <p class="text-muted mb-3">
+                                            Encuentra el inmueble perfecto para arrendar. Ofrecemos una amplia variedad de propiedades
+                                            con las mejores condiciones del mercado.
+                                        </p>
+                                        <ul class="list-unstyled mb-0">
+                                            <li class="mb-2"><i class="fa fa-check text-success me-2"></i>Asesoría personalizada</li>
+                                            <li class="mb-2"><i class="fa fa-check text-success me-2"></i>Contratos seguros</li>
+                                            <li class="mb-2"><i class="fa fa-check text-success me-2"></i>Gestión de pagos</li>
+                                            <li class="mb-2"><i class="fa fa-check text-success me-2"></i>Mantenimiento incluido</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Venta -->
+                            <div class="col-lg-4 col-md-6">
+                                <div class="servicio-card h-100 shadow-sm border-0 rounded-3 overflow-hidden hover-lift">
+                                    <div class="servicio-image position-relative">
+                                        <img src="/theme_bohio_real_estate/static/src/img/servicio_venta.jpg"
+                                             alt="Servicio de Venta"
+                                             class="w-100"
+                                             style="height: 250px; object-fit: cover;"/>
+                                        <div class="servicio-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center"
+                                             style="background: rgba(227, 30, 36, 0.9); opacity: 0; transition: opacity 0.3s;">
+                                            <a href="/properties?type_service=sale" class="btn btn-light btn-lg">Ver Propiedades</a>
+                                        </div>
+                                    </div>
+                                    <div class="card-body p-4">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <img src="/theme_bohio_real_estate/static/src/img/proyectos.gif"
+                                                 alt="Venta"
+                                                 class="me-3"
+                                                 style="width: 60px; height: 60px; object-fit: contain;"/>
+                                            <h3 class="h4 mb-0 text-danger">Venta</h3>
+                                        </div>
+                                        <p class="text-muted mb-3">
+                                            Compra o vende tu inmueble con total confianza. Te acompañamos en todo el proceso
+                                            para garantizar una transacción exitosa.
+                                        </p>
+                                        <ul class="list-unstyled mb-0">
+                                            <li class="mb-2"><i class="fa fa-check text-success me-2"></i>Avalúo profesional</li>
+                                            <li class="mb-2"><i class="fa fa-check text-success me-2"></i>Marketing efectivo</li>
+                                            <li class="mb-2"><i class="fa fa-check text-success me-2"></i>Negociación experta</li>
+                                            <li class="mb-2"><i class="fa fa-check text-success me-2"></i>Documentación legal</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Marketing Inmobiliario -->
+                            <div class="col-lg-4 col-md-6">
+                                <div class="servicio-card h-100 shadow-sm border-0 rounded-3 overflow-hidden hover-lift">
+                                    <div class="servicio-image position-relative">
+                                        <img src="/theme_bohio_real_estate/static/src/img/servicio_marketing.jpg"
+                                             alt="Marketing Inmobiliario"
+                                             class="w-100"
+                                             style="height: 250px; object-fit: cover;"/>
+                                        <div class="servicio-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center"
+                                             style="background: rgba(227, 30, 36, 0.9); opacity: 0; transition: opacity 0.3s;">
+                                            <a href="/contacto" class="btn btn-light btn-lg">Solicitar Servicio</a>
+                                        </div>
+                                    </div>
+                                    <div class="card-body p-4">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <img src="/theme_bohio_real_estate/static/src/img/marketing_digital.gif"
+                                                 alt="Marketing"
+                                                 class="me-3"
+                                                 style="width: 60px; height: 60px; object-fit: contain;"/>
+                                            <h3 class="h4 mb-0 text-danger">Marketing Inmobiliario</h3>
+                                        </div>
+                                        <p class="text-muted mb-3">
+                                            Potenciamos la venta de tu propiedad con estrategias de marketing digital
+                                            especializadas en el sector inmobiliario.
+                                        </p>
+                                        <ul class="list-unstyled mb-0">
+                                            <li class="mb-2"><i class="fa fa-check text-success me-2"></i>Fotografía profesional</li>
+                                            <li class="mb-2"><i class="fa fa-check text-success me-2"></i>Tours virtuales 360°</li>
+                                            <li class="mb-2"><i class="fa fa-check text-success me-2"></i>Redes sociales</li>
+                                            <li class="mb-2"><i class="fa fa-check text-success me-2"></i>Publicidad digital</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Servicios Jurídicos -->
+                            <div class="col-lg-4 col-md-6">
+                                <div class="servicio-card h-100 shadow-sm border-0 rounded-3 overflow-hidden hover-lift">
+                                    <div class="servicio-image position-relative">
+                                        <img src="/theme_bohio_real_estate/static/src/img/banner2.jpg"
+                                             alt="Servicios Jurídicos"
+                                             class="w-100"
+                                             style="height: 250px; object-fit: cover;"/>
+                                        <div class="servicio-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center"
+                                             style="background: rgba(227, 30, 36, 0.9); opacity: 0; transition: opacity 0.3s;">
+                                            <a href="/contacto" class="btn btn-light btn-lg">Solicitar Servicio</a>
+                                        </div>
+                                    </div>
+                                    <div class="card-body p-4">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <img src="/theme_bohio_real_estate/static/src/img/servicios_juridico.gif"
+                                                 alt="Servicios Jurídicos"
+                                                 class="me-3"
+                                                 style="width: 60px; height: 60px; object-fit: contain;"/>
+                                            <h3 class="h4 mb-0 text-danger">Servicios Jurídicos</h3>
+                                        </div>
+                                        <p class="text-muted mb-3">
+                                            Asesoría legal especializada en derecho inmobiliario para garantizar
+                                            la seguridad jurídica de tus transacciones.
+                                        </p>
+                                        <ul class="list-unstyled mb-0">
+                                            <li class="mb-2"><i class="fa fa-check text-success me-2"></i>Revisión de documentos</li>
+                                            <li class="mb-2"><i class="fa fa-check text-success me-2"></i>Contratos de compraventa</li>
+                                            <li class="mb-2"><i class="fa fa-check text-success me-2"></i>Escrituración</li>
+                                            <li class="mb-2"><i class="fa fa-check text-success me-2"></i>Asesoría legal</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Negocios Corporativos -->
+                            <div class="col-lg-4 col-md-6">
+                                <div class="servicio-card h-100 shadow-sm border-0 rounded-3 overflow-hidden hover-lift">
+                                    <div class="servicio-image position-relative">
+                                        <img src="/theme_bohio_real_estate/static/src/img/banner3.jpg"
+                                             alt="Negocios Corporativos"
+                                             class="w-100"
+                                             style="height: 250px; object-fit: cover;"/>
+                                        <div class="servicio-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center"
+                                             style="background: rgba(227, 30, 36, 0.9); opacity: 0; transition: opacity 0.3s;">
+                                            <a href="/contacto" class="btn btn-light btn-lg">Solicitar Servicio</a>
+                                        </div>
+                                    </div>
+                                    <div class="card-body p-4">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <img src="/theme_bohio_real_estate/static/src/img/negocios_.gif"
+                                                 alt="Negocios Corporativos"
+                                                 class="me-3"
+                                                 style="width: 60px; height: 60px; object-fit: contain;"/>
+                                            <h3 class="h4 mb-0 text-danger">Negocios Corporativos</h3>
+                                        </div>
+                                        <p class="text-muted mb-3">
+                                            Soluciones inmobiliarias corporativas para empresas que buscan expandir
+                                            o relocar sus operaciones.
+                                        </p>
+                                        <ul class="list-unstyled mb-0">
+                                            <li class="mb-2"><i class="fa fa-check text-success me-2"></i>Oficinas corporativas</li>
+                                            <li class="mb-2"><i class="fa fa-check text-success me-2"></i>Locales comerciales</li>
+                                            <li class="mb-2"><i class="fa fa-check text-success me-2"></i>Bodegas industriales</li>
+                                            <li class="mb-2"><i class="fa fa-check text-success me-2"></i>Asesoría empresarial</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Firma Digital -->
+                            <div class="col-lg-4 col-md-6">
+                                <div class="servicio-card h-100 shadow-sm border-0 rounded-3 overflow-hidden hover-lift">
+                                    <div class="servicio-image position-relative">
+                                        <img src="/theme_bohio_real_estate/static/src/img/banner1.jpg"
+                                             alt="Firma Digital"
+                                             class="w-100"
+                                             style="height: 250px; object-fit: cover;"/>
+                                        <div class="servicio-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center"
+                                             style="background: rgba(227, 30, 36, 0.9); opacity: 0; transition: opacity 0.3s;">
+                                            <a href="/contacto" class="btn btn-light btn-lg">Solicitar Servicio</a>
+                                        </div>
+                                    </div>
+                                    <div class="card-body p-4">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <img src="/theme_bohio_real_estate/static/src/img/firma_digital.gif"
+                                                 alt="Firma Digital"
+                                                 class="me-3"
+                                                 style="width: 60px; height: 60px; object-fit: contain;"/>
+                                            <h3 class="h4 mb-0 text-danger">Firma Digital</h3>
+                                        </div>
+                                        <p class="text-muted mb-3">
+                                            Agiliza tus trámites con firma digital certificada. Firma contratos
+                                            desde cualquier lugar de forma segura y legal.
+                                        </p>
+                                        <ul class="list-unstyled mb-0">
+                                            <li class="mb-2"><i class="fa fa-check text-success me-2"></i>100% legal y seguro</li>
+                                            <li class="mb-2"><i class="fa fa-check text-success me-2"></i>Firma remota</li>
+                                            <li class="mb-2"><i class="fa fa-check text-success me-2"></i>Certificación digital</li>
+                                            <li class="mb-2"><i class="fa fa-check text-success me-2"></i>Agilidad en procesos</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </section>
+
+                <!-- CTA Section -->
+                <section class="servicios-cta bg-danger text-white py-5">
+                    <div class="container text-center">
+                        <h2 class="display-5 fw-bold mb-4">¿Necesitas asesoría personalizada?</h2>
+                        <p class="lead mb-4">Nuestro equipo de expertos está listo para ayudarte</p>
+                        <a href="/contacto" class="btn btn-light btn-lg px-5">Contáctanos Ahora</a>
+                    </div>
+                </section>
+
+            </div>
+        </t>
+    </template>
+
+    <style>
+        .bohio-servicios-page .hover-lift {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .bohio-servicios-page .hover-lift:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15) !important;
+        }
+
+        .bohio-servicios-page .servicio-card:hover .servicio-overlay {
+            opacity: 1 !important;
+        }
+
+        .bohio-servicios-page .servicio-card {
+            background: white;
+        }
+    </style>
+</odoo>

@@ -162,3 +162,32 @@ function renderPropertyFeatures(property) {
 function formatPrice(price) {
     return new Intl.NumberFormat('es-CO').format(price);
 }
+
+/**
+ * Toggle Advanced Filters
+ * Muestra/oculta los filtros avanzados en el formulario de búsqueda
+ */
+window.toggleAdvancedFilters = function() {
+    const filtersContainer = document.getElementById('advancedFilters');
+    const toggleBtn = document.getElementById('toggleFiltersBtn');
+    const toggleText = document.getElementById('toggleFiltersText');
+    const toggleIcon = toggleBtn?.querySelector('i');
+
+    if (!filtersContainer || !toggleBtn || !toggleText || !toggleIcon) return;
+
+    if (filtersContainer.style.display === 'none' || filtersContainer.style.display === '') {
+        // Mostrar filtros
+        filtersContainer.style.display = 'block';
+        toggleText.textContent = 'Ocultar filtros';
+        toggleIcon.classList.remove('fa-plus-circle');
+        toggleIcon.classList.add('fa-minus-circle');
+        toggleBtn.classList.add('active');
+    } else {
+        // Ocultar filtros
+        filtersContainer.style.display = 'none';
+        toggleText.textContent = 'Mostrar más filtros';
+        toggleIcon.classList.remove('fa-minus-circle');
+        toggleIcon.classList.add('fa-plus-circle');
+        toggleBtn.classList.remove('active');
+    }
+};

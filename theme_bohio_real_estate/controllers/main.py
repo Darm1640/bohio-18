@@ -11,15 +11,15 @@ _logger = logging.getLogger(__name__)
 
 class BohioRealEstateController(http.Controller):
 
-    @http.route('/aboutus', type='http', auth='public', website=True)
-    def about_us(self, **kwargs):
-        """Página Sobre Nosotros"""
-        return request.render('theme_bohio_real_estate.about_us_page', {})
+    @http.route('/sobre-nosotros', type='http', auth='public', website=True)
+    def sobre_nosotros(self, **kwargs):
+        """Página Sobre Nosotros BOHIO"""
+        return request.render('theme_bohio_real_estate.bohio_sobre_nosotros_page', {})
 
-    @http.route('/services', type='http', auth='public', website=True)
-    def services(self, **kwargs):
-        """Página de Servicios"""
-        return request.render('theme_bohio_real_estate.services_page', {})
+    @http.route('/servicios', type='http', auth='public', website=True)
+    def servicios(self, **kwargs):
+        """Página de Servicios BOHIO"""
+        return request.render('theme_bohio_real_estate.bohio_servicios_page', {})
 
     @http.route('/privacy', type='http', auth='public', website=True)
     def privacy(self, **kwargs):
@@ -821,3 +821,202 @@ class BohioRealEstateController(http.Controller):
                 })
 
         return {'cities': cities_data}
+
+    @http.route(['/contacto'], type='http', auth='public', website=True)
+    def contacto(self, **kwargs):
+        """Página de Contacto BOHIO"""
+        return request.render('theme_bohio_real_estate.bohio_contacto_page', {})
+
+    @http.route(['/contacto/submit'], type='http', auth='public', website=True, methods=['POST'], csrf=True)
+    def contacto_submit(self, **post):
+        """Procesar formulario de contacto"""
+        # Crear lead en CRM
+        Lead = request.env['crm.lead'].sudo()
+        lead_vals = {
+            'name': post.get('asunto', 'Contacto desde Web'),
+            'contact_name': post.get('nombre', ''),
+            'email_from': post.get('email', ''),
+            'phone': post.get('telefono', ''),
+            'description': post.get('mensaje', ''),
+            'type': 'opportunity',
+            'source_id': request.env.ref('utm.utm_source_website').id if request.env.ref('utm.utm_source_website') else False,
+        }
+
+        try:
+            lead = Lead.create(lead_vals)
+            return request.render('theme_bohio_real_estate.contacto_gracias', {})
+        except Exception as e:
+            _logger.error(f"Error creating lead from contact form: {e}")
+            return request.render('theme_bohio_real_estate.contacto_error', {})
+
+    @http.route(['/proyectos'], type='http', auth='public', website=True)
+    def proyectos(self, **kwargs):
+        """Página de Proyectos BOHIO"""
+        return request.render('theme_bohio_real_estate.bohio_proyectos_page', {})
+
+    @http.route(['/bohio/api/proyectos'], type='json', auth='public', website=True)
+    def api_get_proyectos(self, **kwargs):
+        """API para obtener proyectos"""
+        Project = request.env['project.worksite'].sudo()
+
+        domain = [('is_enabled', '=', True)]
+
+        proyectos = Project.search(domain, order='name ASC')
+
+        proyectos_data = []
+        for proyecto in proyectos:
+            # Contar unidades disponibles
+            unidades_totales = request.env['product.template'].sudo().search_count([
+                ('project_worksite_id', '=', proyecto.id),
+                ('is_property', '=', True),
+            ])
+
+            unidades_disponibles = request.env['product.template'].sudo().search_count([
+                ('project_worksite_id', '=', proyecto.id),
+                ('is_property', '=', True),
+                ('state', '=', 'free'),
+            ])
+
+            # Ubicación completa
+            ubicacion_parts = []
+            if proyecto.region_id:
+                ubicacion_parts.append(proyecto.region_id.name)
+            if proyecto.region_id and proyecto.region_id.city_id:
+                ubicacion_parts.append(proyecto.region_id.city_id.name)
+            if proyecto.region_id and proyecto.region_id.state_id:
+                ubicacion_parts.append(proyecto.region_id.state_id.name)
+
+            ubicacion = ', '.join(ubicacion_parts) if ubicacion_parts else 'Sin ubicación'
+
+            # Imagen del proyecto (tomar de primera unidad si existe)
+            image_url = None
+            primera_unidad = request.env['product.template'].sudo().search([
+                ('project_worksite_id', '=', proyecto.id),
+                ('is_property', '=', True),
+                ('image_1920', '!=', False)
+            ], limit=1)
+
+            if primera_unidad:
+                image_url = f'/web/image/product.template/{primera_unidad.id}/image_1920'
+
+            proyectos_data.append({
+                'id': proyecto.id,
+                'name': proyecto.name,
+                'descripcion': proyecto.description if hasattr(proyecto, 'description') else '',
+                'ubicacion': ubicacion,
+                'estado': 'construccion',  # Por defecto
+                'unidades': unidades_totales,
+                'disponibles': unidades_disponibles,
+                'image_url': image_url,
+                'latitude': proyecto.latitude if hasattr(proyecto, 'latitude') else None,
+                'longitude': proyecto.longitude if hasattr(proyecto, 'longitude') else None,
+            })
+
+        return {'proyectos': proyectos_data}
+
+    @http.route(['/bohio/crm/create_lead_whatsapp'], type='json', auth='public', website=True, csrf=False)
+    def create_lead_whatsapp(self, **post):
+        """Crear oportunidad desde formulario de WhatsApp"""
+        try:
+            # Extraer datos del formulario
+            property_id = post.get('property_id')
+            property_name = post.get('property_name', '')
+            property_code = post.get('property_code', '')
+            property_url = post.get('property_url', '')
+            customer_name = post.get('customer_name', '')
+            customer_phone = post.get('customer_phone', '')
+            customer_email = post.get('customer_email', '')
+            customer_message = post.get('customer_message', '')
+
+            # Obtener propiedad
+            property_obj = request.env['product.template'].sudo().browse(int(property_id))
+
+            # Buscar o crear partner
+            Partner = request.env['res.partner'].sudo()
+            partner_domain = []
+
+            if customer_email:
+                partner_domain.append(('email', '=', customer_email))
+            elif customer_phone:
+                partner_domain.append(('phone', '=', customer_phone))
+
+            partner = Partner.search(partner_domain, limit=1) if partner_domain else False
+
+            if not partner:
+                # Crear nuevo partner
+                partner_vals = {
+                    'name': customer_name,
+                    'phone': customer_phone,
+                    'email': customer_email or False,
+                    'customer_rank': 1,
+                }
+                partner = Partner.create(partner_vals)
+
+            # Crear oportunidad en CRM
+            Lead = request.env['crm.lead'].sudo()
+
+            # Preparar descripción con toda la información
+            description = f"""
+**Consulta desde WhatsApp - Detalle de Propiedad**
+
+**Propiedad:**
+- Nombre: {property_name}
+- Código: {property_code}
+- URL: {property_url}
+
+**Cliente:**
+- Nombre: {customer_name}
+- Teléfono: {customer_phone}
+- Email: {customer_email or 'No proporcionado'}
+
+**Mensaje del Cliente:**
+{customer_message or 'Sin mensaje adicional'}
+
+**Origen:** Botón WhatsApp desde página de detalle
+**Fecha:** {fields.Datetime.now()}
+            """
+
+            lead_vals = {
+                'name': f'WhatsApp - {property_code} - {customer_name}',
+                'partner_id': partner.id,
+                'contact_name': customer_name,
+                'phone': customer_phone,
+                'email_from': customer_email or False,
+                'description': description.strip(),
+                'type': 'opportunity',
+                'user_id': False,  # Sin asignar, para que el equipo lo asigne
+                'team_id': request.env['crm.team'].sudo().search([], limit=1).id if request.env['crm.team'].sudo().search([], limit=1) else False,
+                'source_id': request.env.ref('utm.utm_source_website').id if request.env.ref('utm.utm_source_website', False) else False,
+                'medium_id': request.env.ref('utm.utm_medium_website').id if request.env.ref('utm.utm_medium_website', False) else False,
+                'tag_ids': [(6, 0, [])],
+            }
+
+            # Vincular propiedad si existe el campo
+            if hasattr(Lead, 'property_id'):
+                lead_vals['property_id'] = property_id
+
+            lead = Lead.create(lead_vals)
+
+            # Obtener número de WhatsApp de la compañía
+            company = request.env.company
+            whatsapp_number = company.phone or '573001234567'  # Número por defecto
+
+            # Limpiar número (quitar espacios, guiones, paréntesis)
+            whatsapp_number = ''.join(filter(str.isdigit, whatsapp_number))
+
+            _logger.info(f"Oportunidad creada desde WhatsApp: Lead ID {lead.id}, Cliente: {customer_name}, Propiedad: {property_code}")
+
+            return {
+                'success': True,
+                'lead_id': lead.id,
+                'partner_id': partner.id,
+                'whatsapp_number': whatsapp_number,
+                'message': 'Oportunidad creada exitosamente'
+            }
+
+        except Exception as e:
+            _logger.error(f"Error creando oportunidad desde WhatsApp: {str(e)}")
+            return {
+                'success': False,
+                'error': str(e)
+            }

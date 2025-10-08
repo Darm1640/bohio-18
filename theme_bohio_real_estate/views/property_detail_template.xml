@@ -270,6 +270,236 @@
                     }
                 });
             </script>
+
+            <!-- Botón Flotante de WhatsApp -->
+            <button class="btn btn-success whatsapp-float-btn shadow-lg"
+                    id="whatsappFloatBtn"
+                    onclick="openWhatsAppModal()">
+                <i class="fab fa-whatsapp fa-2x"></i>
+                <span class="whatsapp-float-text">Consultar por WhatsApp</span>
+            </button>
+
+            <!-- Modal Formulario WhatsApp -->
+            <div class="modal fade" id="whatsappModal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header bg-success text-white">
+                            <h5 class="modal-title">
+                                <i class="fab fa-whatsapp me-2"></i>Consultar por WhatsApp
+                            </h5>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="property-info-summary mb-4 p-3 bg-light rounded">
+                                <h6 class="fw-bold mb-2">Propiedad de Interés:</h6>
+                                <p class="mb-1 small"><strong>Código:</strong> <span t-esc="property.default_code or 'N/A'"/></p>
+                                <p class="mb-0 small text-truncate"><strong>Nombre:</strong> <span t-esc="property.name"/></p>
+                            </div>
+
+                            <form id="whatsappForm" onsubmit="sendWhatsAppMessage(event)">
+                                <input type="hidden" name="property_id" t-att-value="property.id"/>
+                                <input type="hidden" name="property_name" t-att-value="property.name"/>
+                                <input type="hidden" name="property_code" t-att-value="property.default_code"/>
+                                <input type="hidden" name="property_url" t-att-value="request.httprequest.url"/>
+
+                                <div class="mb-3">
+                                    <label for="customer_name" class="form-label fw-semibold">
+                                        <i class="fa fa-user text-danger me-1"></i>Nombre Completo *
+                                    </label>
+                                    <input type="text" class="form-control" id="customer_name" name="customer_name"
+                                           required="required" placeholder="Tu nombre completo"/>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="customer_phone" class="form-label fw-semibold">
+                                        <i class="fa fa-phone text-danger me-1"></i>Teléfono / WhatsApp *
+                                    </label>
+                                    <input type="tel" class="form-control" id="customer_phone" name="customer_phone"
+                                           required="required" placeholder="+57 300 123 4567"/>
+                                    <small class="text-muted">Formato: +57 seguido de tu número</small>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="customer_email" class="form-label fw-semibold">
+                                        <i class="fa fa-envelope text-danger me-1"></i>Email
+                                    </label>
+                                    <input type="email" class="form-control" id="customer_email" name="customer_email"
+                                           placeholder="tu@email.com"/>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="customer_message" class="form-label fw-semibold">
+                                        <i class="fa fa-comment text-danger me-1"></i>Mensaje Adicional
+                                    </label>
+                                    <textarea class="form-control" id="customer_message" name="customer_message"
+                                              rows="3" placeholder="¿Tienes alguna pregunta específica?"></textarea>
+                                </div>
+
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" id="accept_terms" required="required"/>
+                                    <label class="form-check-label small" for="accept_terms">
+                                        Acepto la <a href="/privacy" target="_blank">Política de Privacidad</a> y
+                                        <a href="/terms" target="_blank">Términos de Servicio</a> *
+                                    </label>
+                                </div>
+
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-success btn-lg">
+                                        <i class="fab fa-whatsapp me-2"></i>Enviar Mensaje por WhatsApp
+                                    </button>
+                                </div>
+                            </form>
+
+                            <div id="whatsappLoading" class="text-center py-4" style="display: none;">
+                                <div class="spinner-border text-success" role="status">
+                                    <span class="visually-hidden">Enviando...</span>
+                                </div>
+                                <p class="mt-2 text-muted">Creando oportunidad...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <style>
+                .whatsapp-float-btn {
+                    position: fixed;
+                    bottom: 100px;
+                    right: 30px;
+                    z-index: 999;
+                    border-radius: 50px;
+                    padding: 15px 25px;
+                    background: #25D366;
+                    border: none;
+                    box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4);
+                    transition: all 0.3s ease;
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                }
+
+                .whatsapp-float-btn:hover {
+                    background: #128C7E;
+                    transform: translateY(-5px);
+                    box-shadow: 0 8px 20px rgba(37, 211, 102, 0.6);
+                }
+
+                .whatsapp-float-text {
+                    font-weight: 600;
+                    font-size: 14px;
+                }
+
+                @media (max-width: 768px) {
+                    .whatsapp-float-btn {
+                        bottom: 80px;
+                        right: 20px;
+                        padding: 12px 20px;
+                    }
+
+                    .whatsapp-float-text {
+                        display: none;
+                    }
+                }
+
+                .property-info-summary {
+                    border-left: 4px solid #25D366;
+                }
+            </style>
+
+            <script>
+                function openWhatsAppModal() {
+                    const modal = new bootstrap.Modal(document.getElementById('whatsappModal'));
+                    modal.show();
+                }
+
+                function showSuccessNotification(title, message) {
+                    // Crear contenedor de notificación si no existe
+                    let container = document.getElementById('successNotificationContainer');
+                    if (!container) {
+                        container = document.createElement('div');
+                        container.id = 'successNotificationContainer';
+                        container.style.cssText = 'position: fixed; top: 20px; right: 20px; z-index: 9999; max-width: 400px;';
+                        document.body.appendChild(container);
+                    }
+
+                    // Crear notificación
+                    const notification = document.createElement('div');
+                    notification.className = 'alert alert-success alert-dismissible fade show shadow-lg';
+                    notification.style.cssText = 'animation: slideInRight 0.5s ease;';
+                    notification.innerHTML = `
+                        <div class="d-flex align-items-start">
+                            <i class="fas fa-check-circle fa-2x text-success me-3"></i>
+                            <div>
+                                <h5 class="alert-heading mb-1">${title}</h5>
+                                <p class="mb-0">${message}</p>
+                            </div>
+                            <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert"></button>
+                        </div>
+                    `;
+
+                    container.appendChild(notification);
+
+                    // Auto-remover después de 6 segundos
+                    setTimeout(() => {
+                        notification.classList.remove('show');
+                        setTimeout(() => notification.remove(), 300);
+                    }, 6000);
+                }
+
+                // Agregar animación CSS
+                if (!document.getElementById('whatsapp-notification-styles')) {
+                    const style = document.createElement('style');
+                    style.id = 'whatsapp-notification-styles';
+                    style.textContent = `
+                        @keyframes slideInRight {
+                            from {
+                                transform: translateX(100%);
+                                opacity: 0;
+                            }
+                            to {
+                                transform: translateX(0);
+                                opacity: 1;
+                            }
+                        }
+                    `;
+                    document.head.appendChild(style);
+                }
+
+                function sendWhatsAppMessage(event) {
+                    event.preventDefault();
+
+                    const form = event.target;
+                    const formData = new FormData(form);
+                    const data = Object.fromEntries(formData);
+
+                    // Construir mensaje de WhatsApp
+                    const whatsappNumber = '573001234567'; // Número de BOHIO
+                    const message = `Hola BOHIO!\n\n` +
+                                  `Me interesa la propiedad:\n` +
+                                  `*${data.property_name}*\n` +
+                                  `Código: *${data.property_code}*\n\n` +
+                                  `Mi nombre: ${data.customer_name}\n` +
+                                  `Teléfono: ${data.customer_phone}\n` +
+                                  `${data.customer_email ? 'Email: ' + data.customer_email + '\n' : ''}` +
+                                  `${data.customer_message ? '\n' + data.customer_message + '\n' : ''}` +
+                                  `\nVer propiedad: ${data.property_url}`;
+
+                    const whatsappURL = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+
+                    // Abrir WhatsApp
+                    window.open(whatsappURL, '_blank');
+
+                    // Cerrar modal y resetear formulario
+                    bootstrap.Modal.getInstance(document.getElementById('whatsappModal')).hide();
+                    form.reset();
+
+                    // Mostrar mensaje de éxito
+                    showSuccessNotification(
+                        '¡Redirigiendo a WhatsApp!',
+                        'Se abrirá WhatsApp con tu mensaje pre-cargado.'
+                    );
+                }
+            </script>
         </t>
     </template>
 </odoo>
