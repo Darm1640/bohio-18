@@ -62,13 +62,13 @@ class BohioWebsiteController(http.Controller):
             'happy_clients': happy_clients
         }
 
-        return request.render('theme_bohio_real_estate.bohio_homepage_new', {
-            'rent_properties': rent_properties,
-            'sale_properties': sale_properties,
-            'projects': projects,
-            'cities': cities,
-            'stats': stats
-        })
+        # return request.render('theme_bohio_real_estate.bohio_homepage_new', {
+        #     'rent_properties': rent_properties,
+        #     'sale_properties': sale_properties,
+        #     'projects': projects,
+        #     'cities': cities,
+        #     'stats': stats
+        # })
 
     @http.route('/properties/map', type='http', auth='public', website=True)
     def properties_map(self, **kw):
