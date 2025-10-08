@@ -335,10 +335,11 @@ class PropertyShop {
                         <div class="position-absolute top-0 end-0 m-3">
                             <span class="badge px-3 py-2 fs-6 fw-bold" style="background: #E31E24;">${priceLabel}</span>
                         </div>
-                        <div class="position-absolute top-0 start-0 m-3">
+                        <div class="position-absolute top-0 start-0 m-3 d-flex flex-column gap-1">
                             ${property.type_service === 'rent' ? '<span class="badge me-1" style="background: #E31E24;">Arriendo</span>' : ''}
                             ${property.type_service === 'sale' ? '<span class="badge me-1" style="background: #10B981;">Venta</span>' : ''}
-                            ${property.is_new ? '<span class="badge bg-warning">NUEVO</span>' : ''}
+                            ${property.is_new ? '<span class="badge bg-warning text-dark">NUEVO</span>' : ''}
+                            ${property.property_type_name ? `<span class="badge bg-info text-white">${property.property_type_name}</span>` : ''}
                         </div>
                         <div class="position-absolute bottom-0 end-0 m-3 d-flex gap-2">
                             <button class="btn btn-sm ${isInComparison ? 'btn-warning' : 'btn-outline-light'} add-to-comparison"
@@ -654,6 +655,40 @@ class PropertyShop {
                 this.clearComparison();
             }
         });
+
+        // Agregar listeners para cerrar modal manualmente
+        this.initModalCloseListeners();
+    }
+
+    initModalCloseListeners() {
+        const modal = document.getElementById('comparisonModal');
+        if (!modal) return;
+
+        // Botones con data-bs-dismiss
+        modal.querySelectorAll('[data-bs-dismiss="modal"]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                this.closeModal(modal);
+            });
+        });
+
+        // Click en backdrop
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                this.closeModal(modal);
+            }
+        });
+    }
+
+    closeModal(modalElement) {
+        modalElement.style.display = 'none';
+        modalElement.classList.remove('show');
+        document.body.classList.remove('modal-open');
+
+        // Remover backdrop
+        const backdrop = document.querySelector('.modal-backdrop');
+        if (backdrop) {
+            backdrop.remove();
+        }
     }
 
     attachComparisonListeners() {

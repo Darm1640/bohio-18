@@ -1321,55 +1321,58 @@ class BohioRealEstateController(http.Controller):
             # Obtener propiedad actual
             current_property = Product.browse(property_id)
             if not current_property.exists():
-                return {'properties': []}
+                _logger.warning(f"Propiedad {property_id} no existe")
+                return {'success': False, 'properties': []}
 
-            # Construir dominio de búsqueda para propiedades similares
+            _logger.info(f"Buscando propiedades similares a: {current_property.name} (ID: {property_id})")
+            _logger.info(f"Tipo servicio: {current_property.type_service}, Ciudad: {current_property.city}, Precio: {current_property.list_price}")
+
+            # BÚSQUEDA NIVEL 1: Mismo tipo y ciudad (MUY FLEXIBLE)
             domain = [
-                ('id', '!=', property_id),  # Excluir la propiedad actual
-                ('is_published', '=', True),
+                ('id', '!=', property_id),
                 ('active', '=', True),
             ]
 
-            # Mismo tipo de servicio (venta/arriendo)
+            # Mismo tipo de servicio (solo si existe)
             if current_property.type_service:
                 domain.append(('type_service', '=', current_property.type_service))
 
-            # Mismo tipo de propiedad
-            if current_property.property_type_id:
-                domain.append(('property_type_id', '=', current_property.property_type_id.id))
-
-            # Misma ciudad
+            # Misma ciudad (intentar ambos campos)
             if current_property.city_id:
                 domain.append(('city_id', '=', current_property.city_id.id))
             elif current_property.city:
                 domain.append(('city', '=', current_property.city))
 
-            # Rango de precio similar (±30%)
-            if current_property.list_price:
-                min_price = current_property.list_price * 0.7
-                max_price = current_property.list_price * 1.3
-                domain.append(('list_price', '>=', min_price))
-                domain.append(('list_price', '<=', max_price))
+            _logger.info(f"Dominio búsqueda nivel 1 (flexible): {domain}")
+            similar_properties = Product.search(domain, limit=6, order='create_date DESC')
+            _logger.info(f"Nivel 1: Encontradas {len(similar_properties)} propiedades")
 
-            # Buscar propiedades similares (máximo 5)
-            similar_properties = Product.search(domain, limit=5, order='create_date DESC')
-
-            # Si no encuentra suficientes, relajar criterios
+            # BÚSQUEDA NIVEL 2: Solo mismo tipo de servicio (MUY AMPLIO)
             if len(similar_properties) < 3:
-                # Buscar solo por ciudad y tipo de servicio
+                _logger.info("Relajando criterios a nivel 2 (solo tipo servicio)...")
                 domain = [
                     ('id', '!=', property_id),
-                    ('is_published', '=', True),
                     ('active', '=', True),
                 ]
+
                 if current_property.type_service:
                     domain.append(('type_service', '=', current_property.type_service))
-                if current_property.city_id:
-                    domain.append(('city_id', '=', current_property.city_id.id))
-                elif current_property.city:
-                    domain.append(('city', '=', current_property.city))
 
-                similar_properties = Product.search(domain, limit=5, order='create_date DESC')
+                _logger.info(f"Dominio búsqueda nivel 2: {domain}")
+                similar_properties = Product.search(domain, limit=6, order='create_date DESC')
+                _logger.info(f"Nivel 2: Encontradas {len(similar_properties)} propiedades")
+
+            # BÚSQUEDA NIVEL 3: Cualquier propiedad activa (ULTRA AMPLIO)
+            if len(similar_properties) < 2:
+                _logger.info("Relajando criterios a nivel 3 (cualquier activa)...")
+                domain = [
+                    ('id', '!=', property_id),
+                    ('active', '=', True),
+                ]
+
+                _logger.info(f"Dominio búsqueda nivel 3: {domain}")
+                similar_properties = Product.search(domain, limit=6, order='create_date DESC')
+                _logger.info(f"Nivel 3: Encontradas {len(similar_properties)} propiedades")
 
             # Formatear datos
             properties_data = []
