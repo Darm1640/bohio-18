@@ -53,6 +53,7 @@
         'views/portal_access_actions.xml',
 
         # Portal Templates
+        'views/portal/portal_menu.xml',
         'views/portal/common/portal_my_home.xml',
         'views/portal/common/portal_layout.xml',
         'views/portal/common/no_role.xml',

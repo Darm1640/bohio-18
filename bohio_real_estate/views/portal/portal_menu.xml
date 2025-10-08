@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ========================================== -->
+    <!-- MENÚ DE PORTAL BOHIO - PRIORIDAD ALTA     -->
+    <!-- priority="10" para aparecer primero       -->
+    <!-- ========================================== -->
+
+    <template id="portal_my_bohio_home" name="Portal BOHIO" inherit_id="portal.portal_my_home" priority="10">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="before">
+            <!-- Título Principal BOHIO -->
+            <div class="row mb-4">
+                <div class="col-12">
+                    <h2 class="mb-4" style="color: #E31E24; border-bottom: 3px solid #E31E24; padding-bottom: 10px;">
+                        <i class="fa fa-home me-2"></i>
+                        Mi Portal BOHIO
+                    </h2>
+                </div>
+            </div>
+
+            <!-- PROPIETARIO -->
+            <t t-if="request.env.user.partner_id.property_owner">
+                <div class="alert mb-4" style="background: #FEE2E2; border: 2px solid #E31E24; color: #212529;">
+                    <i class="fa fa-user-circle me-2" style="color: #E31E24;"></i>
+                    <strong>Perfil:</strong> Propietario
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-12 mb-3">
+                        <h4 class="text-muted">
+                            <i class="fa fa-building me-2" style="color: #E31E24;"></i>
+                            Gestión de Propietario
+                        </h4>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6 mb-3">
+                        <a href="/my/properties/owner" class="text-decoration-none">
+                            <div class="card h-100 border-0 shadow-sm bohio-portal-card">
+                                <div class="card-body text-center p-4">
+                                    <i class="fa fa-building fa-3x mb-3" style="color: #E31E24;"></i>
+                                    <h5 class="card-title fw-bold" style="color: #E31E24;">Mis Propiedades</h5>
+                                    <p class="card-text text-muted small">Gestione sus inmuebles</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6 mb-3">
+                        <a href="/my/contracts/owner" class="text-decoration-none">
+                            <div class="card h-100 border-0 shadow-sm bohio-portal-card">
+                                <div class="card-body text-center p-4">
+                                    <i class="fa fa-file-text fa-3x mb-3" style="color: #E31E24;"></i>
+                                    <h5 class="card-title fw-bold" style="color: #E31E24;">Mis Contratos</h5>
+                                    <p class="card-text text-muted small">Contratos activos</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6 mb-3">
+                        <a href="/my/payments/owner" class="text-decoration-none">
+                            <div class="card h-100 border-0 shadow-sm bohio-portal-card">
+                                <div class="card-body text-center p-4">
+                                    <i class="fa fa-dollar fa-3x mb-3" style="color: #E31E24;"></i>
+                                    <h5 class="card-title fw-bold" style="color: #E31E24;">Pagos</h5>
+                                    <p class="card-text text-muted small">Historial de pagos</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6 mb-3">
+                        <a href="/properties" class="text-decoration-none">
+                            <div class="card h-100 border-0 shadow-sm bohio-portal-card">
+                                <div class="card-body text-center p-4">
+                                    <i class="fa fa-plus-circle fa-3x mb-3" style="color: #E31E24;"></i>
+                                    <h5 class="card-title fw-bold" style="color: #E31E24;">Agregar</h5>
+                                    <p class="card-text text-muted small">Nueva propiedad</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </t>
+
+            <!-- ARRENDATARIO -->
+            <t t-if="request.env.user.partner_id.property_tenant">
+                <div class="alert mb-4" style="background: #FEE2E2; border: 2px solid #E31E24; color: #212529;">
+                    <i class="fa fa-user-circle me-2" style="color: #E31E24;"></i>
+                    <strong>Perfil:</strong> Arrendatario
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-12 mb-3">
+                        <h4 class="text-muted">
+                            <i class="fa fa-key me-2" style="color: #E31E24;"></i>
+                            Gestión de Arrendatario
+                        </h4>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6 mb-3">
+                        <a href="/my/properties/tenant" class="text-decoration-none">
+                            <div class="card h-100 border-0 shadow-sm bohio-portal-card">
+                                <div class="card-body text-center p-4">
+                                    <i class="fa fa-home fa-3x mb-3" style="color: #E31E24;"></i>
+                                    <h5 class="card-title fw-bold" style="color: #E31E24;">Mi Propiedad</h5>
+                                    <p class="card-text text-muted small">Inmueble arrendado</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6 mb-3">
+                        <a href="/my/contracts/tenant" class="text-decoration-none">
+                            <div class="card h-100 border-0 shadow-sm bohio-portal-card">
+                                <div class="card-body text-center p-4">
+                                    <i class="fa fa-file-text fa-3x mb-3" style="color: #E31E24;"></i>
+                                    <h5 class="card-title fw-bold" style="color: #E31E24;">Mi Contrato</h5>
+                                    <p class="card-text text-muted small">Contrato de arriendo</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6 mb-3">
+                        <a href="/my/payments/tenant" class="text-decoration-none">
+                            <div class="card h-100 border-0 shadow-sm bohio-portal-card">
+                                <div class="card-body text-center p-4">
+                                    <i class="fa fa-credit-card fa-3x mb-3" style="color: #E31E24;"></i>
+                                    <h5 class="card-title fw-bold" style="color: #E31E24;">Mis Pagos</h5>
+                                    <p class="card-text text-muted small">Próximos pagos</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6 mb-3">
+                        <a href="/my/maintenance/tenant" class="text-decoration-none">
+                            <div class="card h-100 border-0 shadow-sm bohio-portal-card">
+                                <div class="card-body text-center p-4">
+                                    <i class="fa fa-wrench fa-3x mb-3" style="color: #E31E24;"></i>
+                                    <h5 class="card-title fw-bold" style="color: #E31E24;">Mantenimiento</h5>
+                                    <p class="card-text text-muted small">Reportar problemas</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </t>
+
+            <!-- EMPLEADO / ASESOR -->
+            <t t-if="request.env.user.has_group('bohio_real_estate.group_bohio_employee')">
+                <div class="alert mb-4" style="background: #FEE2E2; border: 2px solid #E31E24; color: #212529;">
+                    <i class="fa fa-id-badge me-2" style="color: #E31E24;"></i>
+                    <strong>Perfil:</strong> Empleado BOHIO
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-12 mb-3">
+                        <h4 class="text-muted">
+                            <i class="fa fa-briefcase me-2" style="color: #E31E24;"></i>
+                            Panel de Empleado
+                        </h4>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6 mb-3">
+                        <a href="/my/tasks/employee" class="text-decoration-none">
+                            <div class="card h-100 border-0 shadow-sm bohio-portal-card">
+                                <div class="card-body text-center p-4">
+                                    <i class="fa fa-tasks fa-3x mb-3" style="color: #E31E24;"></i>
+                                    <h5 class="card-title fw-bold" style="color: #E31E24;">Mis Tareas</h5>
+                                    <p class="card-text text-muted small">Tareas pendientes</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6 mb-3">
+                        <a href="/my/clients/employee" class="text-decoration-none">
+                            <div class="card h-100 border-0 shadow-sm bohio-portal-card">
+                                <div class="card-body text-center p-4">
+                                    <i class="fa fa-users fa-3x mb-3" style="color: #E31E24;"></i>
+                                    <h5 class="card-title fw-bold" style="color: #E31E24;">Mis Clientes</h5>
+                                    <p class="card-text text-muted small">Clientes asignados</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6 mb-3">
+                        <a href="/my/appointments/employee" class="text-decoration-none">
+                            <div class="card h-100 border-0 shadow-sm bohio-portal-card">
+                                <div class="card-body text-center p-4">
+                                    <i class="fa fa-calendar fa-3x mb-3" style="color: #E31E24;"></i>
+                                    <h5 class="card-title fw-bold" style="color: #E31E24;">Mis Citas</h5>
+                                    <p class="card-text text-muted small">Visitas programadas</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6 mb-3">
+                        <a href="/my/performance/employee" class="text-decoration-none">
+                            <div class="card h-100 border-0 shadow-sm bohio-portal-card">
+                                <div class="card-body text-center p-4">
+                                    <i class="fa fa-chart-line fa-3x mb-3" style="color: #E31E24;"></i>
+                                    <h5 class="card-title fw-bold" style="color: #E31E24;">Desempeño</h5>
+                                    <p class="card-text text-muted small">Mis estadísticas</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </t>
+
+            <!-- SECCIÓN COMÚN: BUSCAR Y COMPARAR -->
+            <div class="row mb-4">
+                <div class="col-12 mb-3">
+                    <h4 class="text-muted">
+                        <i class="fa fa-search me-2" style="color: #E31E24;"></i>
+                        Explorar Propiedades
+                    </h4>
+                </div>
+
+                <div class="col-lg-3 col-md-6 mb-3">
+                    <a href="/properties" class="text-decoration-none">
+                        <div class="card h-100 border-0 shadow-sm bohio-portal-card">
+                            <div class="card-body text-center p-4">
+                                <i class="fa fa-search fa-3x mb-3" style="color: #E31E24;"></i>
+                                <h5 class="card-title fw-bold" style="color: #E31E24;">Buscar</h5>
+                                <p class="card-text text-muted small">Catálogo completo</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-lg-3 col-md-6 mb-3">
+                    <a href="/properties?show_comparison=1" class="text-decoration-none">
+                        <div class="card h-100 border-0 shadow-sm bohio-portal-card">
+                            <div class="card-body text-center p-4">
+                                <i class="fa fa-balance-scale fa-3x mb-3" style="color: #E31E24;"></i>
+                                <h5 class="card-title fw-bold" style="color: #E31E24;">Comparar</h5>
+                                <p class="card-text text-muted small">Hasta 4 propiedades</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-lg-3 col-md-6 mb-3">
+                    <a href="/proyectos" class="text-decoration-none">
+                        <div class="card h-100 border-0 shadow-sm bohio-portal-card">
+                            <div class="card-body text-center p-4">
+                                <i class="fa fa-building fa-3x mb-3" style="color: #E31E24;"></i>
+                                <h5 class="card-title fw-bold" style="color: #E31E24;">Proyectos</h5>
+                                <p class="card-text text-muted small">Desarrollos nuevos</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-lg-3 col-md-6 mb-3">
+                    <a href="/servicios" class="text-decoration-none">
+                        <div class="card h-100 border-0 shadow-sm bohio-portal-card">
+                            <div class="card-body text-center p-4">
+                                <i class="fa fa-briefcase fa-3x mb-3" style="color: #E31E24;"></i>
+                                <h5 class="card-title fw-bold" style="color: #E31E24;">Servicios</h5>
+                                <p class="card-text text-muted small">Avalúos y más</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Separador antes de otras secciones -->
+            <hr class="my-5" style="border-top: 2px solid #E31E24; opacity: 0.5;"/>
+        </xpath>
+    </template>
+
+    <!-- ESTILOS BOHIO -->
+    <template id="portal_bohio_styles" name="BOHIO Portal Styles" inherit_id="portal.frontend_layout">
+        <xpath expr="//head" position="inside">
+            <style>
+                .bohio-portal-card {
+                    transition: all 0.3s ease;
+                    cursor: pointer;
+                    border: 1px solid transparent;
+                }
+
+                .bohio-portal-card:hover {
+                    border: 2px solid #E31E24 !important;
+                    box-shadow: 0 8px 20px rgba(227, 30, 36, 0.3) !important;
+                    transform: translateY(-8px);
+                }
+
+                .bohio-portal-card:hover .card-title,
+                .bohio-portal-card:hover .fa {
+                    color: #B81820 !important;
+                }
+            </style>
+        </xpath>
+    </template>
+</odoo>
