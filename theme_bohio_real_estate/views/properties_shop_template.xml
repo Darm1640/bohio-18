@@ -52,118 +52,122 @@
 
                     <!-- Filtros y resultados -->
                     <section class="shop-content py-4">
-                        <div class="container">
-                            <div class="row">
-                                <!-- Panel de filtros lateral -->
-                                <div class="col-lg-3 col-md-4">
-                                    <div class="filters-panel card shadow-sm mb-4">
-                                        <div class="card-header bg-white">
-                                            <h5 class="mb-0"><i class="fa fa-filter"/> Filtros</h5>
-                                        </div>
-                                        <div class="card-body">
-                                            <!-- Tipo de servicio -->
-                                            <div class="filter-group mb-4">
-                                                <h6 class="fw-bold">Tipo de Servicio</h6>
-                                                <div class="form-check">
-                                                    <input class="form-check-input property-filter" type="checkbox" id="service_sale" data-filter="type_service" data-value="sale"/>
-                                                    <label class="form-check-label" for="service_sale">Venta</label>
+                        <div class="container-fluid px-4">
+                            <!-- Filtros horizontales superiores -->
+                            <div class="row mb-4">
+                                <div class="col-12">
+                                    <div class="filters-panel-horizontal card shadow-sm">
+                                        <div class="card-body py-3">
+                                            <div class="row g-3 align-items-end">
+                                                <!-- Tipo de Servicio -->
+                                                <div class="col-md-2">
+                                                    <label class="form-label fw-bold mb-1 small">Servicio</label>
+                                                    <select class="form-select form-select-sm property-filter" data-filter="type_service">
+                                                        <option value="">Todos</option>
+                                                        <option value="sale">Venta</option>
+                                                        <option value="rent">Arriendo</option>
+                                                    </select>
                                                 </div>
-                                                <div class="form-check">
-                                                    <input class="form-check-input property-filter" type="checkbox" id="service_rent" data-filter="type_service" data-value="rent"/>
-                                                    <label class="form-check-label" for="service_rent">Arriendo</label>
+
+                                                <!-- Tipo de Propiedad -->
+                                                <div class="col-md-2">
+                                                    <label class="form-label fw-bold mb-1 small">Tipo</label>
+                                                    <select class="form-select form-select-sm property-filter" data-filter="property_type">
+                                                        <option value="">Todos</option>
+                                                        <option value="apartment">Apartamento</option>
+                                                        <option value="house">Casa</option>
+                                                        <option value="commercial">Comercial</option>
+                                                        <option value="lot">Lote</option>
+                                                    </select>
+                                                </div>
+
+                                                <!-- Habitaciones -->
+                                                <div class="col-md-1">
+                                                    <label class="form-label fw-bold mb-1 small">Habs</label>
+                                                    <select class="form-select form-select-sm property-filter" data-filter="bedrooms">
+                                                        <option value="">Todas</option>
+                                                        <option value="1">1+</option>
+                                                        <option value="2">2+</option>
+                                                        <option value="3">3+</option>
+                                                        <option value="4">4+</option>
+                                                        <option value="5">5+</option>
+                                                    </select>
+                                                </div>
+
+                                                <!-- Baños -->
+                                                <div class="col-md-1">
+                                                    <label class="form-label fw-bold mb-1 small">Baños</label>
+                                                    <select class="form-select form-select-sm property-filter" data-filter="bathrooms">
+                                                        <option value="">Todos</option>
+                                                        <option value="1">1+</option>
+                                                        <option value="2">2+</option>
+                                                        <option value="3">3+</option>
+                                                        <option value="4">4+</option>
+                                                    </select>
+                                                </div>
+
+                                                <!-- Precio Mínimo -->
+                                                <div class="col-md-2">
+                                                    <label class="form-label fw-bold mb-1 small">Precio Mín</label>
+                                                    <input type="number" class="form-control form-control-sm property-filter" placeholder="$0" data-filter="min_price"/>
+                                                </div>
+
+                                                <!-- Precio Máximo -->
+                                                <div class="col-md-2">
+                                                    <label class="form-label fw-bold mb-1 small">Precio Máx</label>
+                                                    <input type="number" class="form-control form-control-sm property-filter" placeholder="Sin límite" data-filter="max_price"/>
+                                                </div>
+
+                                                <!-- Botón Filtros Avanzados -->
+                                                <div class="col-md-1">
+                                                    <button class="btn btn-outline-secondary btn-sm w-100" type="button" data-bs-toggle="collapse" data-bs-target="#advancedFilters">
+                                                        <i class="fa fa-sliders"></i>
+                                                    </button>
+                                                </div>
+
+                                                <!-- Botón Limpiar -->
+                                                <div class="col-md-1">
+                                                    <button class="btn btn-outline-danger btn-sm w-100 clear-filters">
+                                                        <i class="fa fa-times"></i>
+                                                    </button>
                                                 </div>
                                             </div>
 
-                                            <!-- Tipo de propiedad -->
-                                            <div class="filter-group mb-4">
-                                                <h6 class="fw-bold">Tipo de Propiedad</h6>
-                                                <div class="form-check">
-                                                    <input class="form-check-input property-filter" type="checkbox" id="type_apartment" data-filter="property_type" data-value="apartment"/>
-                                                    <label class="form-check-label" for="type_apartment">Apartamento</label>
-                                                </div>
-                                                <div class="form-check">
-                                                    <input class="form-check-input property-filter" type="checkbox" id="type_house" data-filter="property_type" data-value="house"/>
-                                                    <label class="form-check-label" for="type_house">Casa</label>
-                                                </div>
-                                                <div class="form-check">
-                                                    <input class="form-check-input property-filter" type="checkbox" id="type_commercial" data-filter="property_type" data-value="commercial"/>
-                                                    <label class="form-check-label" for="type_commercial">Comercial</label>
-                                                </div>
-                                                <div class="form-check">
-                                                    <input class="form-check-input property-filter" type="checkbox" id="type_lot" data-filter="property_type" data-value="lot"/>
-                                                    <label class="form-check-label" for="type_lot">Lote</label>
-                                                </div>
-                                            </div>
-
-                                            <!-- Habitaciones -->
-                                            <div class="filter-group mb-4">
-                                                <h6 class="fw-bold">Habitaciones</h6>
-                                                <select class="form-select property-filter" data-filter="bedrooms">
-                                                    <option value="">Cualquiera</option>
-                                                    <option value="1">1+</option>
-                                                    <option value="2">2+</option>
-                                                    <option value="3">3+</option>
-                                                    <option value="4">4+</option>
-                                                    <option value="5">5+</option>
-                                                </select>
-                                            </div>
-
-                                            <!-- Baños -->
-                                            <div class="filter-group mb-4">
-                                                <h6 class="fw-bold">Baños</h6>
-                                                <select class="form-select property-filter" data-filter="bathrooms">
-                                                    <option value="">Cualquiera</option>
-                                                    <option value="1">1+</option>
-                                                    <option value="2">2+</option>
-                                                    <option value="3">3+</option>
-                                                    <option value="4">4+</option>
-                                                </select>
-                                            </div>
-
-                                            <!-- Rango de precio -->
-                                            <div class="filter-group mb-4">
-                                                <h6 class="fw-bold">Precio</h6>
-                                                <div class="row g-2">
-                                                    <div class="col-6">
-                                                        <input type="number" class="form-control form-control-sm property-filter" placeholder="Mínimo" data-filter="min_price"/>
+                                            <!-- Filtros Avanzados Colapsables -->
+                                            <div class="collapse mt-3" id="advancedFilters">
+                                                <hr/>
+                                                <div class="row g-3">
+                                                    <div class="col-md-12">
+                                                        <label class="form-label fw-bold mb-2">Características</label>
+                                                        <div class="d-flex gap-4 flex-wrap">
+                                                            <div class="form-check">
+                                                                <input class="form-check-input property-filter" type="checkbox" id="has_garage" data-filter="garage" data-value="true"/>
+                                                                <label class="form-check-label" for="has_garage">Garaje</label>
+                                                            </div>
+                                                            <div class="form-check">
+                                                                <input class="form-check-input property-filter" type="checkbox" id="has_pool" data-filter="pool" data-value="true"/>
+                                                                <label class="form-check-label" for="has_pool">Piscina</label>
+                                                            </div>
+                                                            <div class="form-check">
+                                                                <input class="form-check-input property-filter" type="checkbox" id="has_garden" data-filter="garden" data-value="true"/>
+                                                                <label class="form-check-label" for="has_garden">Jardín</label>
+                                                            </div>
+                                                            <div class="form-check">
+                                                                <input class="form-check-input property-filter" type="checkbox" id="has_elevator" data-filter="elevator" data-value="true"/>
+                                                                <label class="form-check-label" for="has_elevator">Ascensor</label>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                    <div class="col-6">
-                                                        <input type="number" class="form-control form-control-sm property-filter" placeholder="Máximo" data-filter="max_price"/>
-                                                    </div>
                                                 </div>
                                             </div>
-
-                                            <!-- Características -->
-                                            <div class="filter-group mb-4">
-                                                <h6 class="fw-bold">Características</h6>
-                                                <div class="form-check">
-                                                    <input class="form-check-input property-filter" type="checkbox" id="has_garage" data-filter="garage" data-value="true"/>
-                                                    <label class="form-check-label" for="has_garage">Garaje</label>
-                                                </div>
-                                                <div class="form-check">
-                                                    <input class="form-check-input property-filter" type="checkbox" id="has_pool" data-filter="pool" data-value="true"/>
-                                                    <label class="form-check-label" for="has_pool">Piscina</label>
-                                                </div>
-                                                <div class="form-check">
-                                                    <input class="form-check-input property-filter" type="checkbox" id="has_garden" data-filter="garden" data-value="true"/>
-                                                    <label class="form-check-label" for="has_garden">Jardín</label>
-                                                </div>
-                                                <div class="form-check">
-                                                    <input class="form-check-input property-filter" type="checkbox" id="has_elevator" data-filter="elevator" data-value="true"/>
-                                                    <label class="form-check-label" for="has_elevator">Ascensor</label>
-                                                </div>
-                                            </div>
-
-                                            <!-- Botón limpiar filtros -->
-                                            <button class="btn btn-outline-danger w-100 clear-filters">
-                                                <i class="fa fa-times"/> Limpiar Filtros
-                                            </button>
                                         </div>
                                     </div>
                                 </div>
+                            </div>
 
-                                <!-- Área de resultados -->
-                                <div class="col-lg-9 col-md-8">
+                            <!-- Área de resultados -->
+                            <div class="row">
+                                <div class="col-12">
                                     <!-- Tabs: Grid / Mapa -->
                                     <ul class="nav nav-tabs mb-4" role="tablist">
                                         <li class="nav-item" role="presentation">
@@ -216,7 +220,7 @@
 
                                         <!-- Vista Mapa -->
                                         <div class="tab-pane fade" id="map-view" role="tabpanel">
-                                            <div id="properties-map" style="height: 700px; width: 100%; border-radius: 0.5rem;"></div>
+                                            <div id="properties-map" style="height: 800px; width: 100%; border-radius: 0.5rem;"></div>
                                         </div>
                                     </div>
                                 </div>
