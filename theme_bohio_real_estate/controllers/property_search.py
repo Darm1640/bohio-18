@@ -1,0 +1,787 @@
+# -*- coding: utf-8 -*-
+# Part of Odoo Real Estate Module - Sistema Avanzado de Búsqueda
+
+from odoo import http, fields, _
+from odoo.http import request
+from odoo.osv import expression
+from datetime import datetime, timedelta
+import json
+import logging
+
+_logger = logging.getLogger(__name__)
+
+
+class PropertySearchController(http.Controller):
+    """
+    Controlador avanzado para búsqueda de propiedades inmobiliarias
+    con sistema de contextos, comparación y autocompletado inteligente
+    """
+
+    # =================== CONFIGURACIÓN DE CONTEXTOS ===================
+
+    SEARCH_CONTEXTS = {
+        'public': {
+            'name': 'Búsqueda Pública',
+            'allowed_states': ['free'],  # Solo propiedades disponibles
+            'show_price': True,
+            'show_contact': True,
+            'allow_comparison': True,
+        },
+        'admin': {
+            'name': 'Búsqueda Administrativa',
+            'allowed_states': ['free', 'reserved', 'sold', 'on_lease'],
+            'show_price': True,
+            'show_contact': True,
+            'allow_comparison': True,
+        },
+        'project': {
+            'name': 'Búsqueda por Proyecto',
+            'allowed_states': ['free'],
+            'filter_by_project': True,
+            'show_price': True,
+            'show_contact': False,
+            'allow_comparison': True,
+        },
+        'quick': {
+            'name': 'Búsqueda Rápida',
+            'allowed_states': ['free'],
+            'show_price': False,
+            'show_contact': False,
+            'allow_comparison': False,
+            'max_results': 10,
+        },
+    }
+
+    # =================== BÚSQUEDA PRINCIPAL CON CONTEXTO ===================
+
+    @http.route([
+        '/shop/property/search',
+        '/shop/property/search/<string:context>',
+        '/property/search',
+        '/property/search/<string:context>'
+    ], type='http', auth='public', website=True, sitemap=False)
+    def property_search(self, context='public', **post):
+        """
+        Página principal de búsqueda de propiedades con contextos configurables
+
+        Params:
+            context: 'public', 'admin', 'project', 'quick'
+            **post: Parámetros de filtrado
+        """
+        # Validar y obtener configuración de contexto
+        search_context = self.SEARCH_CONTEXTS.get(context, self.SEARCH_CONTEXTS['public'])
+
+        # Extraer parámetros de búsqueda
+        search_term = post.get('search', '').strip()
+        property_type = post.get('property_type', '')
+        city_id = post.get('city_id', '')
+        state_id = post.get('state_id', '')
+        region_id = post.get('region_id', '')
+        project_id = post.get('project_id', '')
+
+        # Filtros adicionales
+        min_price = post.get('min_price', 0)
+        max_price = post.get('max_price', 0)
+        min_area = post.get('min_area', 0)
+        max_area = post.get('max_area', 0)
+        bedrooms = post.get('bedrooms', '')
+        bathrooms = post.get('bathrooms', '')
+        type_service = post.get('type_service', '')
+
+        # Filtros booleanos
+        garage = post.get('garage', '')
+        garden = post.get('garden', '')
+        pool = post.get('pool', '')
+        elevator = post.get('elevator', '')
+
+        # Construir dominio base según contexto
+        domain = self._build_context_domain(search_context, post)
+
+        # Aplicar filtros de ubicación
+        location_domain = self._build_location_domain(
+            search_term, city_id, state_id, region_id
+        )
+        if location_domain:
+            domain = expression.AND([domain, location_domain])
+
+        # Filtro por proyecto (si el contexto lo permite)
+        if project_id and search_context.get('filter_by_project', True):
+            try:
+                domain.append(('project_worksite_id', '=', int(project_id)))
+            except ValueError:
+                pass
+
+        # Aplicar filtros de tipo de propiedad
+        if property_type:
+            domain.append(('property_type', '=', property_type))
+
+        # Filtros booleanos
+        if garage:
+            domain.append(('garage', '=', True))
+        if garden:
+            domain.append(('garden', '=', True))
+        if pool:
+            domain.append(('pools', '=', True))
+        if elevator:
+            domain.append(('elevator', '=', True))
+
+        # Filtros de precio
+        price_field = self._get_price_field_by_context(type_service)
+        if min_price:
+            try:
+                domain.append((price_field, '>=', float(min_price)))
+            except ValueError:
+                pass
+        if max_price:
+            try:
+                domain.append((price_field, '<=', float(max_price)))
+            except ValueError:
+                pass
+
+        # Filtros de área
+        if min_area:
+            try:
+                domain.append(('property_area', '>=', float(min_area)))
+            except ValueError:
+                pass
+        if max_area:
+            try:
+                domain.append(('property_area', '<=', float(max_area)))
+            except ValueError:
+                pass
+
+        # Filtros de habitaciones y baños
+        if bedrooms:
+            try:
+                domain.append(('num_bedrooms', '>=', int(bedrooms)))
+            except ValueError:
+                pass
+        if bathrooms:
+            try:
+                domain.append(('num_bathrooms', '>=', int(bathrooms)))
+            except ValueError:
+                pass
+
+        # Filtro de tipo de servicio
+        if type_service:
+            if type_service == 'sale_rent':
+                domain.append(('type_service', 'in', ['sale', 'rent', 'sale_rent']))
+            else:
+                domain.append(('type_service', 'in', [type_service, 'sale_rent']))
+
+        # Ordenamiento
+        order = self._get_smart_order(post.get('order', 'relevance'))
+
+        # Paginación (respetar límites del contexto)
+        page = int(post.get('page', 1))
+        ppg = min(int(post.get('ppg', 20)), search_context.get('max_results', 100))
+        offset = (page - 1) * ppg
+
+        # Búsqueda de propiedades
+        Property = request.env['product.template'].sudo()
+        total_properties = Property.search_count(domain)
+        properties = Property.search(domain, limit=ppg, offset=offset, order=order)
+
+        # Marcar propiedades nuevas (creadas en los últimos 30 días)
+        thirty_days_ago = datetime.now() - timedelta(days=30)
+        for prop in properties:
+            prop.is_new = prop.create_date >= thirty_days_ago if prop.create_date else False
+
+        # Preparar valores para renderizado
+        values = {
+            'properties': properties,
+            'total_properties': total_properties,
+            'search_term': search_term,
+            'property_type': property_type,
+            'city_id': city_id,
+            'state_id': state_id,
+            'region_id': region_id,
+            'project_id': project_id,
+            'min_price': min_price,
+            'max_price': max_price,
+            'min_area': min_area,
+            'max_area': max_area,
+            'bedrooms': bedrooms,
+            'bathrooms': bathrooms,
+            'type_service': type_service,
+            'garage': garage,
+            'garden': garden,
+            'pool': pool,
+            'elevator': elevator,
+            'order': post.get('order', 'relevance'),
+            'page': page,
+            'ppg': ppg,
+            'pager': self._get_pager(total_properties, page, ppg, f'/property/search/{context}', post),
+
+            # Contexto de búsqueda
+            'search_context': context,
+            'context_config': search_context,
+
+            # Datos para filtros
+            'property_types': self._get_property_types_with_counts(domain),
+            'cities': self._get_cities_with_counts(domain),
+            'states': self._get_states_with_counts(domain),
+            'regions': self._get_regions_with_counts(domain, city_id, state_id),
+            'projects': self._get_projects_with_counts(domain, city_id, state_id, region_id),
+            'price_ranges': self._get_price_ranges_by_type(property_type, type_service),
+            'area_ranges': self._get_area_ranges(),
+            'bedroom_options': [1, 2, 3, 4, 5],
+            'bathroom_options': [1, 2, 3, 4],
+            'service_types': [
+                {'value': 'sale', 'label': _('Venta')},
+                {'value': 'rent', 'label': _('Arriendo')},
+                {'value': 'vacation_rent', 'label': _('Arriendo Vacacional')},
+            ],
+        }
+
+        return request.render('theme_bohio_real_estate.properties_shop', values)
+
+    # =================== AUTOCOMPLETADO CON SUBDIVISIÓN ===================
+
+    @http.route([
+        '/property/search/autocomplete',
+        '/property/search/autocomplete/<string:context>'
+    ], type='json', auth='public', website=True)
+    def property_search_autocomplete(self, term='', context='public', subdivision='all', limit=10):
+        """
+        Autocompletado inteligente con subdivisión por tipo de búsqueda
+
+        Params:
+            term: Término de búsqueda
+            context: Contexto de búsqueda (public, admin, etc.)
+            subdivision: 'all', 'cities', 'regions', 'projects', 'properties'
+            limit: Número máximo de resultados
+        """
+        if not term or len(term) < 2:
+            return {'results': [], 'subdivision': subdivision}
+
+        search_context = self.SEARCH_CONTEXTS.get(context, self.SEARCH_CONTEXTS['public'])
+        results = []
+
+        # Subdivisión: Solo Ciudades
+        if subdivision in ['all', 'cities']:
+            results.extend(self._autocomplete_cities(term, search_context, limit))
+
+        # Subdivisión: Solo Barrios/Regiones
+        if subdivision in ['all', 'regions']:
+            results.extend(self._autocomplete_regions(term, search_context, limit))
+
+        # Subdivisión: Solo Proyectos
+        if subdivision in ['all', 'projects'] and search_context.get('filter_by_project', True):
+            results.extend(self._autocomplete_projects(term, search_context, limit))
+
+        # Subdivisión: Solo Propiedades (por código o nombre)
+        if subdivision in ['all', 'properties']:
+            results.extend(self._autocomplete_properties(term, search_context, limit))
+
+        # Ordenar por prioridad y relevancia
+        results.sort(key=lambda x: (x.get('priority', 0), x.get('property_count', 0)), reverse=True)
+
+        return {
+            'results': results[:limit],
+            'subdivision': subdivision,
+            'total': len(results)
+        }
+
+    # =================== SISTEMA DE COMPARACIÓN DE PROPIEDADES ===================
+
+    @http.route(['/property/comparison/add'], type='json', auth='public', website=True)
+    def add_to_comparison(self, property_id, context='public'):
+        """
+        Agrega una propiedad al sistema de comparación (sesión)
+        """
+        search_context = self.SEARCH_CONTEXTS.get(context, self.SEARCH_CONTEXTS['public'])
+
+        if not search_context.get('allow_comparison', False):
+            return {'success': False, 'message': _('Comparación no permitida en este contexto')}
+
+        # Obtener lista de comparación de la sesión
+        comparison_list = request.session.get('property_comparison', [])
+
+        # Validar que la propiedad existe y cumple con el contexto
+        Property = request.env['product.template'].sudo()
+        domain = [
+            ('id', '=', int(property_id)),
+            ('is_property', '=', True),
+            ('state', 'in', search_context.get('allowed_states', ['free']))
+        ]
+
+        property_obj = Property.search(domain, limit=1)
+
+        if not property_obj:
+            return {'success': False, 'message': _('Propiedad no válida')}
+
+        # Verificar límite de comparación (máximo 4 propiedades)
+        if len(comparison_list) >= 4:
+            return {'success': False, 'message': _('Máximo 4 propiedades para comparar')}
+
+        # Agregar si no existe
+        if property_id not in comparison_list:
+            comparison_list.append(property_id)
+            request.session['property_comparison'] = comparison_list
+
+        return {
+            'success': True,
+            'total': len(comparison_list),
+            'property_ids': comparison_list
+        }
+
+    @http.route(['/property/comparison/remove'], type='json', auth='public', website=True)
+    def remove_from_comparison(self, property_id):
+        """
+        Elimina una propiedad del sistema de comparación
+        """
+        comparison_list = request.session.get('property_comparison', [])
+
+        if property_id in comparison_list:
+            comparison_list.remove(property_id)
+            request.session['property_comparison'] = comparison_list
+
+        return {
+            'success': True,
+            'total': len(comparison_list),
+            'property_ids': comparison_list
+        }
+
+    @http.route(['/property/comparison/clear'], type='json', auth='public', website=True)
+    def clear_comparison(self):
+        """
+        Limpia todas las propiedades del sistema de comparación
+        """
+        request.session['property_comparison'] = []
+        return {'success': True, 'total': 0}
+
+    @http.route(['/property/comparison/get'], type='json', auth='public', website=True)
+    def get_comparison_data(self, context='public'):
+        """
+        Obtiene datos detallados de las propiedades en comparación
+        """
+        search_context = self.SEARCH_CONTEXTS.get(context, self.SEARCH_CONTEXTS['public'])
+        comparison_list = request.session.get('property_comparison', [])
+
+        if not comparison_list:
+            return {'properties': [], 'fields': [], 'differences': []}
+
+        # Obtener propiedades
+        Property = request.env['product.template'].sudo()
+        properties = Property.browse(comparison_list).filtered(
+            lambda p: p.is_property and p.state in search_context.get('allowed_states', ['free'])
+        )
+
+        # Definir campos a comparar
+        comparison_fields = self._get_comparison_fields(properties)
+
+        # Obtener datos estructurados
+        property_data = []
+        for prop in properties:
+            prop_dict = {
+                'id': prop.id,
+                'name': prop.name,
+                'image_url': f'/web/image/product.template/{prop.id}/image_1920',
+                'property_type': dict(prop._fields['property_type'].selection).get(prop.property_type, ''),
+                'type_service': dict(prop._fields['type_service'].selection).get(prop.type_service, ''),
+            }
+
+            # Agregar campos de comparación
+            for field in comparison_fields:
+                prop_dict[field['name']] = self._get_field_display_value(prop, field)
+
+            property_data.append(prop_dict)
+
+        # Detectar diferencias
+        differences = self._detect_differences(property_data, comparison_fields)
+
+        return {
+            'properties': property_data,
+            'fields': comparison_fields,
+            'differences': differences,
+            'total': len(property_data)
+        }
+
+    # =================== MÉTODOS AUXILIARES PARA CONTEXTOS ===================
+
+    def _build_context_domain(self, search_context, params):
+        """Construye el dominio base según el contexto de búsqueda"""
+        domain = [('is_property', '=', True), ('active', '=', True)]
+
+        # Filtrar por estados permitidos en el contexto
+        allowed_states = search_context.get('allowed_states', ['free'])
+        domain.append(('state', 'in', allowed_states))
+
+        return domain
+
+    def _get_price_field_by_context(self, type_service):
+        """Retorna el campo de precio según el tipo de servicio"""
+        if type_service in ['rent', 'vacation_rent']:
+            return 'net_rental_price'
+        return 'net_price'
+
+    def _get_price_ranges_by_type(self, property_type, type_service):
+        """Define rangos de precio según tipo de propiedad y servicio"""
+        is_rental = type_service in ['rent', 'vacation_rent']
+
+        if is_rental:
+            return [
+                {'min': 0, 'max': 1000000, 'label': 'Hasta $1M'},
+                {'min': 1000000, 'max': 2000000, 'label': '$1M - $2M'},
+                {'min': 2000000, 'max': 3000000, 'label': '$2M - $3M'},
+                {'min': 3000000, 'max': 5000000, 'label': '$3M - $5M'},
+                {'min': 5000000, 'max': 0, 'label': 'Más de $5M'},
+            ]
+        else:
+            return [
+                {'min': 0, 'max': 100000000, 'label': 'Hasta $100M'},
+                {'min': 100000000, 'max': 200000000, 'label': '$100M - $200M'},
+                {'min': 200000000, 'max': 300000000, 'label': '$200M - $300M'},
+                {'min': 300000000, 'max': 500000000, 'label': '$300M - $500M'},
+                {'min': 500000000, 'max': 1000000000, 'label': '$500M - $1,000M'},
+                {'min': 1000000000, 'max': 0, 'label': 'Más de $1,000M'},
+            ]
+
+    # =================== MÉTODOS AUXILIARES PARA AUTOCOMPLETADO ===================
+
+    def _autocomplete_cities(self, term, search_context, limit):
+        """Autocompletado de ciudades"""
+        results = []
+        cities = request.env['res.city'].sudo().search([
+            ('name', 'ilike', term),
+            ('country_id', '=', request.env.company.country_id.id)
+        ], limit=limit)
+
+        for city in cities:
+            domain = [
+                ('is_property', '=', True),
+                ('city_id', '=', city.id),
+                ('state', 'in', search_context.get('allowed_states', ['free']))
+            ]
+            property_count = request.env['product.template'].sudo().search_count(domain)
+
+            if property_count > 0:
+                results.append({
+                    'id': f'city_{city.id}',
+                    'type': 'city',
+                    'name': city.name,
+                    'full_name': f'{city.name}, {city.state_id.name}',
+                    'label': f'<i class="fa fa-map-marker text-primary"></i> <b>{city.name}</b>, {city.state_id.name}',
+                    'property_count': property_count,
+                    'priority': 3,
+                    'city_id': city.id,
+                    'state_id': city.state_id.id,
+                })
+
+        return results
+
+    def _autocomplete_regions(self, term, search_context, limit):
+        """Autocompletado de barrios/regiones"""
+        results = []
+        Region = request.env['region.region'].sudo()
+
+        if not Region._name in request.env:
+            return results
+
+        regions = Region.search([('name', 'ilike', term)], limit=limit)
+
+        for region in regions:
+            domain = [
+                ('is_property', '=', True),
+                ('region_id', '=', region.id),
+                ('state', 'in', search_context.get('allowed_states', ['free']))
+            ]
+            property_count = request.env['product.template'].sudo().search_count(domain)
+
+            if property_count > 0:
+                results.append({
+                    'id': f'region_{region.id}',
+                    'type': 'region',
+                    'name': region.name,
+                    'full_name': f'{region.name}, {region.city_id.name}',
+                    'label': f'<i class="fa fa-home text-success"></i> {region.name} <small class="text-muted">({region.city_id.name})</small>',
+                    'property_count': property_count,
+                    'priority': 2,
+                    'region_id': region.id,
+                    'city_id': region.city_id.id,
+                })
+
+        return results
+
+    def _autocomplete_projects(self, term, search_context, limit):
+        """Autocompletado de proyectos"""
+        results = []
+        Project = request.env['project.worksite'].sudo()
+
+        if not Project._name in request.env:
+            return results
+
+        projects = Project.search([('name', 'ilike', term)], limit=limit)
+
+        for project in projects:
+            domain = [
+                ('is_property', '=', True),
+                ('project_worksite_id', '=', project.id),
+                ('state', 'in', search_context.get('allowed_states', ['free']))
+            ]
+            property_count = request.env['product.template'].sudo().search_count(domain)
+
+            if property_count > 0:
+                results.append({
+                    'id': f'project_{project.id}',
+                    'type': 'project',
+                    'name': project.name,
+                    'full_name': f'{project.name} (Proyecto)',
+                    'label': f'<i class="fa fa-building text-warning"></i> {project.name} <small class="text-muted">(Proyecto)</small>',
+                    'property_count': property_count,
+                    'priority': 2,
+                    'project_id': project.id,
+                })
+
+        return results
+
+    def _autocomplete_properties(self, term, search_context, limit):
+        """Autocompletado de propiedades por código o nombre"""
+        results = []
+        domain = [
+            ('is_property', '=', True),
+            ('state', 'in', search_context.get('allowed_states', ['free'])),
+            '|', '|',
+            ('name', 'ilike', term),
+            ('default_code', 'ilike', term),
+            ('barcode', 'ilike', term),
+        ]
+
+        properties = request.env['product.template'].sudo().search(domain, limit=limit)
+
+        for prop in properties:
+            results.append({
+                'id': f'property_{prop.id}',
+                'type': 'property',
+                'name': prop.name,
+                'full_name': f'{prop.default_code or ""} - {prop.name}',
+                'label': f'<i class="fa fa-key text-info"></i> {prop.default_code or ""} - {prop.name}',
+                'property_count': 1,
+                'priority': 1,
+                'property_id': prop.id,
+            })
+
+        return results
+
+    # =================== MÉTODOS AUXILIARES PARA COMPARACIÓN ===================
+
+    def _get_comparison_fields(self, properties):
+        """Define los campos a comparar según los tipos de propiedad"""
+        fields = [
+            {'name': 'net_price', 'label': _('Precio'), 'type': 'monetary'},
+            {'name': 'property_area', 'label': _('Área'), 'type': 'float', 'unit': 'm²'},
+            {'name': 'num_bedrooms', 'label': _('Habitaciones'), 'type': 'integer'},
+            {'name': 'num_bathrooms', 'label': _('Baños'), 'type': 'integer'},
+            {'name': 'garage', 'label': _('Garaje'), 'type': 'boolean'},
+            {'name': 'pools', 'label': _('Piscina'), 'type': 'boolean'},
+            {'name': 'garden', 'label': _('Jardín'), 'type': 'boolean'},
+            {'name': 'elevator', 'label': _('Ascensor'), 'type': 'boolean'},
+        ]
+
+        return fields
+
+    def _get_field_display_value(self, record, field):
+        """Obtiene el valor formateado de un campo"""
+        field_name = field['name']
+
+        if not hasattr(record, field_name):
+            return '-'
+
+        value = record[field_name]
+
+        if value is False or value is None:
+            return '-' if field['type'] != 'boolean' else _('No')
+
+        if field['type'] == 'boolean':
+            return _('Sí') if value else _('No')
+        elif field['type'] == 'monetary':
+            return f"${value:,.0f}"
+        elif field['type'] == 'float':
+            unit = field.get('unit', '')
+            return f'{value:,.2f} {unit}'
+        elif field['type'] == 'integer':
+            return str(int(value))
+        else:
+            return str(value)
+
+    def _detect_differences(self, property_data, fields):
+        """Detecta diferencias significativas entre propiedades"""
+        differences = []
+
+        if len(property_data) < 2:
+            return differences
+
+        for field in fields:
+            field_name = field['name']
+            values = [prop.get(field_name) for prop in property_data]
+
+            # Verificar si hay diferencias
+            unique_values = set(str(v) for v in values if v not in [None, '-'])
+
+            if len(unique_values) > 1:
+                differences.append({
+                    'field': field_name,
+                    'label': field['label'],
+                    'values': values,
+                })
+
+        return differences
+
+    # =================== MÉTODOS AUXILIARES HEREDADOS ===================
+
+    def _build_location_domain(self, search_term, city_id, state_id, region_id):
+        """Construye el dominio de búsqueda por ubicación"""
+        domain = []
+
+        if region_id:
+            try:
+                domain.append(('region_id', '=', int(region_id)))
+            except ValueError:
+                pass
+        elif city_id:
+            try:
+                domain.append(('city_id', '=', int(city_id)))
+            except ValueError:
+                pass
+        elif state_id:
+            try:
+                domain.append(('state_id', '=', int(state_id)))
+            except ValueError:
+                pass
+
+        return domain
+
+    def _get_smart_order(self, order_param):
+        """Traduce parámetros de ordenamiento"""
+        order_map = {
+            'relevance': 'sequence ASC, id DESC',
+            'price_asc': 'net_price ASC, id DESC',
+            'price_desc': 'net_price DESC, id DESC',
+            'area_asc': 'property_area ASC, id DESC',
+            'area_desc': 'property_area DESC, id DESC',
+            'newest': 'create_date DESC, id DESC',
+            'oldest': 'create_date ASC, id DESC',
+        }
+        return order_map.get(order_param, 'sequence ASC, id DESC')
+
+    def _get_property_types_with_counts(self, base_domain):
+        """Obtiene tipos de propiedad con cantidades"""
+        Property = request.env['product.template'].sudo()
+        type_data = Property.read_group(base_domain, ['property_type'], ['property_type'])
+        type_labels = dict(Property._fields['property_type'].selection)
+
+        return [
+            {
+                'value': item['property_type'],
+                'label': type_labels.get(item['property_type'], item['property_type']),
+                'count': item['property_type_count']
+            }
+            for item in type_data if item['property_type']
+        ]
+
+    def _get_cities_with_counts(self, base_domain):
+        """Obtiene ciudades con cantidades"""
+        Property = request.env['product.template'].sudo()
+        city_data = Property.read_group(base_domain, ['city_id'], ['city_id'])
+
+        return [
+            {
+                'id': item['city_id'][0],
+                'name': item['city_id'][1],
+                'count': item['city_id_count']
+            }
+            for item in city_data if item['city_id']
+        ]
+
+    def _get_states_with_counts(self, base_domain):
+        """Obtiene departamentos con cantidades"""
+        Property = request.env['product.template'].sudo()
+        state_data = Property.read_group(base_domain, ['state_id'], ['state_id'])
+
+        return [
+            {
+                'id': item['state_id'][0],
+                'name': item['state_id'][1],
+                'count': item['state_id_count']
+            }
+            for item in state_data if item['state_id']
+        ]
+
+    def _get_regions_with_counts(self, base_domain, city_id, state_id):
+        """Obtiene barrios con cantidades"""
+        Property = request.env['product.template'].sudo()
+        region_domain = list(base_domain)
+
+        if city_id:
+            try:
+                region_domain.append(('city_id', '=', int(city_id)))
+            except ValueError:
+                pass
+        elif state_id:
+            try:
+                region_domain.append(('state_id', '=', int(state_id)))
+            except ValueError:
+                pass
+
+        region_data = Property.read_group(region_domain, ['region_id'], ['region_id'])
+
+        return [
+            {
+                'id': item['region_id'][0],
+                'name': item['region_id'][1],
+                'count': item['region_id_count']
+            }
+            for item in region_data if item['region_id']
+        ]
+
+    def _get_projects_with_counts(self, base_domain, city_id, state_id, region_id):
+        """Obtiene proyectos con cantidades"""
+        Property = request.env['product.template'].sudo()
+        Project = request.env['project.worksite'].sudo()
+
+        if not Project._name in request.env:
+            return []
+
+        project_domain = []
+
+        if region_id:
+            try:
+                project_domain.append(('region_id', '=', int(region_id)))
+            except ValueError:
+                pass
+
+        project_data = Property.read_group(base_domain + project_domain, ['project_worksite_id'], ['project_worksite_id'])
+
+        return [
+            {
+                'id': item['project_worksite_id'][0],
+                'name': item['project_worksite_id'][1],
+                'count': item['project_worksite_id_count']
+            }
+            for item in project_data if item['project_worksite_id']
+        ]
+
+    def _get_area_ranges(self):
+        """Define rangos de área"""
+        return [
+            {'min': 0, 'max': 50, 'label': 'Hasta 50 m²'},
+            {'min': 50, 'max': 100, 'label': '50 - 100 m²'},
+            {'min': 100, 'max': 150, 'label': '100 - 150 m²'},
+            {'min': 150, 'max': 200, 'label': '150 - 200 m²'},
+            {'min': 200, 'max': 300, 'label': '200 - 300 m²'},
+            {'min': 300, 'max': 0, 'label': 'Más de 300 m²'},
+        ]
+
+    def _get_pager(self, total, page, ppg, url, params):
+        """Genera datos de paginación"""
+        total_pages = (total + ppg - 1) // ppg
+
+        return {
+            'page': page,
+            'total_pages': total_pages,
+            'total': total,
+            'ppg': ppg,
+            'prev_url': f"{url}?page={page-1}" if page > 1 else None,
+            'next_url': f"{url}?page={page+1}" if page < total_pages else None,
+        }

@@ -186,12 +186,12 @@
                                                     style="width: 36px; height: 36px; padding: 0;">
                                                 <i class="fa fa-heart-o"></i>
                                             </button>
-                                            <button class="btn btn-sm btn-light rounded-circle btn-compare ms-1"
+                                            <button class="btn btn-sm btn-outline-primary rounded-circle btn-add-comparison ms-1"
                                                     t-att-data-property-id="property.id"
                                                     aria-label="Agregar a comparación"
                                                     title="Comparar propiedad"
                                                     style="width: 36px; height: 36px; padding: 0;">
-                                                <i class="fa fa-square-o"></i>
+                                                <i class="fa fa-balance-scale"></i>
                                             </button>
                                         </div>
                                     </div>
