@@ -158,16 +158,36 @@
                         <t t-foreach="properties" t-as="property">
                             <div class="col-lg-4 col-md-6 mb-4">
                                 <div class="card h-100 shadow-sm property-card">
-                                    <t t-if="property.image_1920">
-                                        <img class="card-img-top" t-att-src="'/web/image/product.template/%s/image_1920' % property.id"
-                                             t-att-alt="property.name" style="height: 250px; object-fit: cover;"/>
-                                    </t>
-                                    <t t-else="">
-                                        <div class="card-img-top bg-secondary d-flex align-items-center justify-content-center"
-                                             style="height: 250px;">
-                                            <i class="fa fa-home fa-5x text-white"/>
+                                    <div class="position-relative">
+                                        <t t-if="property.image_1920">
+                                            <img class="card-img-top" t-att-src="'/web/image/product.template/%s/image_1920' % property.id"
+                                                 t-att-alt="property.name" style="height: 250px; object-fit: cover;"/>
+                                        </t>
+                                        <t t-else="">
+                                            <div class="card-img-top bg-secondary d-flex align-items-center justify-content-center"
+                                                 style="height: 250px;">
+                                                <i class="fa fa-home fa-5x text-white"/>
+                                            </div>
+                                        </t>
+
+                                        <!-- Botones de Favoritos y Comparar -->
+                                        <div class="property-actions position-absolute top-0 end-0 m-2">
+                                            <button class="btn btn-sm btn-light rounded-circle btn-favorite"
+                                                    t-att-data-property-id="property.id"
+                                                    aria-label="Agregar a favoritos"
+                                                    title="Agregar a favoritos"
+                                                    style="width: 36px; height: 36px; padding: 0;">
+                                                <i class="fa fa-heart-o"></i>
+                                            </button>
+                                            <button class="btn btn-sm btn-light rounded-circle btn-compare ms-1"
+                                                    t-att-data-property-id="property.id"
+                                                    aria-label="Agregar a comparación"
+                                                    title="Comparar propiedad"
+                                                    style="width: 36px; height: 36px; padding: 0;">
+                                                <i class="fa fa-square-o"></i>
+                                            </button>
                                         </div>
-                                    </t>
+                                    </div>
 
                                     <div class="card-body">
                                         <h5 class="card-title">

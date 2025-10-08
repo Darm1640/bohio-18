@@ -193,6 +193,27 @@
                     <span class="badge bg-success" t-if="property.type_service == 'rent'">Arriendo</span>
                     <span class="badge bg-info" t-if="property.type_service == 'sale_rent'">Venta/Arriendo</span>
                 </div>
+
+                <!-- Botones de Favoritos y Comparar -->
+                <div class="property-actions position-absolute top-0 end-0 m-2">
+                    <button class="btn btn-sm btn-light rounded-circle btn-favorite"
+                            t-att-data-property-id="property.id"
+                            aria-label="Agregar a favoritos"
+                            title="Agregar a favoritos"
+                            style="width: 36px; height: 36px; padding: 0;">
+                        <i class="fa fa-heart-o"></i>
+                    </button>
+                    <button class="btn btn-sm btn-light rounded-circle btn-compare ms-1"
+                            t-att-data-property-id="property.id"
+                            t-att-data-area="property.property_area"
+                            t-att-data-bedrooms="property.num_bedrooms"
+                            t-att-data-bathrooms="property.num_bathrooms"
+                            aria-label="Agregar a comparación"
+                            title="Comparar propiedad"
+                            style="width: 36px; height: 36px; padding: 0;">
+                        <i class="fa fa-square-o"></i>
+                    </button>
+                </div>
             </div>
 
             <div class="property-content p-3">
