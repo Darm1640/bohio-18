@@ -14,7 +14,7 @@ class PropertyShop {
 
         // Paginación
         this.currentPage = 1;
-        this.itemsPerPage = 12;
+        this.itemsPerPage = 80;
         this.totalItems = 0;
         this.totalPages = 0;
 

@@ -729,11 +729,11 @@ class BohioRealEstateController(http.Controller):
         return request.render('theme_bohio_real_estate.bohio_homepage_new', {})
 
     @http.route(['/bohio/api/properties'], type='json', auth='public', website=True)
-    def api_get_properties(self, type_service=None, state=None, is_project=False, limit=12,
+    def api_get_properties(self, type_service=None, state=None, is_project=False, limit=80,
                           offset=0, property_type=None, bedrooms=None, bathrooms=None,
                           min_price=None, max_price=None, garage=None, pool=None,
                           garden=None, elevator=None, **kwargs):
-        """API para obtener propiedades con paginación - compatible con homepage y shop"""
+        """API para obtener propiedades con paginación (80 por página) - compatible con homepage y shop"""
         _logger.info(f"API /bohio/api/properties - limit={limit}, offset={offset}, filtros: type_service={type_service}, property_type={property_type}")
 
         domain = [
