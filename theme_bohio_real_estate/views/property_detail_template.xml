@@ -21,9 +21,31 @@
                                             </p>
                                         </div>
                                         <div class="text-end">
-                                            <h3 class="text-primary mb-0">
-                                                <span t-field="property.list_price" t-options="{'widget': 'monetary', 'display_currency': property.currency_id}"/>
-                                            </h3>
+                                            <!-- Precio de Venta -->
+                                            <t t-if="property.type_service == 'sale' and property.net_price">
+                                                <h3 class="text-primary mb-0">
+                                                    <span t-field="property.net_price" t-options="{'widget': 'monetary', 'display_currency': property.currency_id}"/>
+                                                </h3>
+                                                <p class="text-muted small mb-0" t-if="property.price_per_unit">
+                                                    <span t-field="property.price_per_unit" t-options="{'widget': 'monetary', 'display_currency': property.currency_id}"/> / m²
+                                                </p>
+                                            </t>
+
+                                            <!-- Precio de Arriendo -->
+                                            <t t-if="property.type_service == 'rent' and property.net_rental_price">
+                                                <h3 class="text-primary mb-0">
+                                                    <span t-field="property.net_rental_price" t-options="{'widget': 'monetary', 'display_currency': property.currency_id}"/>
+                                                    <small class="fs-6 text-muted">/ mes</small>
+                                                </h3>
+                                            </t>
+
+                                            <!-- Fallback: list_price si no hay net_price -->
+                                            <t t-if="not property.net_price and not property.net_rental_price">
+                                                <h3 class="text-primary mb-0">
+                                                    <span t-field="property.list_price" t-options="{'widget': 'monetary', 'display_currency': property.currency_id}"/>
+                                                </h3>
+                                            </t>
+
                                             <span t-if="property.type_service" class="badge bg-info mt-2">
                                                 <span t-esc="dict(property._fields['type_service'].selection).get(property.type_service)"/>
                                             </span>
@@ -98,53 +120,54 @@
                                                 </div>
                                             </div>
 
-                                            <!-- Características adicionales según tipo -->
-                                            <t t-if="property.property_type_id">
-                                                <!-- Características para Apartamento/Casa (Residencial) -->
-                                                <t t-if="property.property_type_id.name in ['Apartamento', 'Casa', 'Apartaestudio']">
-                                                    <div class="row" t-if="property.balcony or property.terrace">
-                                                        <div class="col-12">
-                                                            <h6 class="text-muted mb-2"><i class="fa fa-home"/> Adicionales</h6>
-                                                        </div>
-                                                        <div class="col-6 mb-2" t-if="property.balcony">
-                                                            <i class="fa fa-window-maximize text-success"/> Balcón
-                                                        </div>
-                                                        <div class="col-6 mb-2" t-if="property.terrace">
-                                                            <i class="fa fa-sun text-success"/> Terraza
-                                                        </div>
-                                                    </div>
-                                                </t>
+                                            <!-- Amenidades y Características Adicionales -->
+                                            <div class="row mb-3" t-if="property.garage or property.elevator or property.pools or property.gym or property.furnished or property.balcony or property.terrace or property.patio or property.garden">
+                                                <div class="col-12">
+                                                    <h6 class="text-muted mb-2"><i class="fa fa-star"/> Amenidades</h6>
+                                                </div>
+                                                <div class="col-6 mb-2" t-if="property.garage">
+                                                    <i class="fa fa-car text-success"/> Garaje
+                                                </div>
+                                                <div class="col-6 mb-2" t-if="property.elevator">
+                                                    <i class="fa fa-arrows-v text-success"/> Ascensor
+                                                </div>
+                                                <div class="col-6 mb-2" t-if="property.pools">
+                                                    <i class="fa fa-tint text-success"/> Piscina
+                                                </div>
+                                                <div class="col-6 mb-2" t-if="property.gym">
+                                                    <i class="fa fa-heartbeat text-success"/> Gimnasio
+                                                </div>
+                                                <div class="col-6 mb-2" t-if="property.furnished">
+                                                    <i class="fa fa-home text-success"/> Amoblado
+                                                </div>
+                                                <div class="col-6 mb-2" t-if="property.balcony">
+                                                    <i class="fa fa-window-maximize text-success"/> Balcón
+                                                </div>
+                                                <div class="col-6 mb-2" t-if="property.terrace">
+                                                    <i class="fa fa-sun text-success"/> Terraza
+                                                </div>
+                                                <div class="col-6 mb-2" t-if="property.patio">
+                                                    <i class="fa fa-square text-success"/> Patio
+                                                </div>
+                                                <div class="col-6 mb-2" t-if="property.garden">
+                                                    <i class="fa fa-tree text-success"/> Jardín
+                                                </div>
+                                            </div>
 
-                                                <!-- Características para Local Comercial/Bodega -->
-                                                <t t-if="property.property_type_id.name in ['Local Comercial', 'Bodega']">
-                                                    <div class="row" t-if="property.front_meters">
-                                                        <div class="col-12">
-                                                            <h6 class="text-muted mb-2"><i class="fa fa-store"/> Comercial</h6>
-                                                        </div>
-                                                        <div class="col-6 mb-2" t-if="property.front_meters">
-                                                            <i class="fa fa-ruler-horizontal"/>
-                                                            <strong t-esc="property.front_meters"/> m frente
-                                                        </div>
-                                                    </div>
-                                                </t>
-
-                                                <!-- Características para Lote/Terreno -->
-                                                <t t-if="property.property_type_id.name in ['Lote', 'Terreno']">
-                                                    <div class="row" t-if="property.front_meters or property.depth_meters">
-                                                        <div class="col-12">
-                                                            <h6 class="text-muted mb-2"><i class="fa fa-map"/> Terreno</h6>
-                                                        </div>
-                                                        <div class="col-6 mb-2" t-if="property.front_meters">
-                                                            <i class="fa fa-ruler-horizontal"/>
-                                                            <strong t-esc="property.front_meters"/> m frente
-                                                        </div>
-                                                        <div class="col-6 mb-2" t-if="property.depth_meters">
-                                                            <i class="fa fa-ruler-vertical"/>
-                                                            <strong t-esc="property.depth_meters"/> m fondo
-                                                        </div>
-                                                    </div>
-                                                </t>
-                                            </t>
+                                            <!-- Medidas específicas según tipo -->
+                                            <div class="row mb-2" t-if="property.front_meters or property.depth_meters">
+                                                <div class="col-12">
+                                                    <h6 class="text-muted mb-2"><i class="fa fa-ruler-combined"/> Medidas</h6>
+                                                </div>
+                                                <div class="col-6 mb-2" t-if="property.front_meters">
+                                                    <i class="fa fa-arrows-h text-primary"/>
+                                                    Frente: <strong t-esc="'%.2f' % property.front_meters"/> m
+                                                </div>
+                                                <div class="col-6 mb-2" t-if="property.depth_meters">
+                                                    <i class="fa fa-arrows-v text-primary"/>
+                                                    Fondo: <strong t-esc="'%.2f' % property.depth_meters"/> m
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
 
