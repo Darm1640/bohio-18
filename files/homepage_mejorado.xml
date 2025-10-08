@@ -1,0 +1,481 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Template Homepage BOHIO - Versión Mejorada -->
+    <template id="bohio_homepage" name="BOHIO Homepage">
+        <t t-call="website.layout">
+            <div id="wrap" class="bohio-homepage">
+                <!-- Hero Section con Banner Principal -->
+                <section class="bohio-hero-section position-relative">
+                    <div class="container-fluid p-0">
+                        <div class="hero-banner position-relative">
+                            <img src="/bohio_real_estate/static/src/img/Imagen_inicio.jpg"
+                                 alt="Encuentra tu hogar ideal" class="img-fluid w-100" style="max-height: 600px; object-fit: cover;"/>
+                            <div class="hero-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center" 
+                                 style="background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.5));">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-lg-10 mx-auto text-center text-white">
+                                            <h1 class="display-4 fw-bold mb-3" style="text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">
+                                                Encuentra tu hogar ideal
+                                            </h1>
+                                            
+                                            <!-- Búsqueda Rápida -->
+                                            <div class="quick-search bg-white p-4 rounded-3 shadow-lg mt-5">
+                                                <form action="/properties" method="get">
+                                                    <div class="row g-3 align-items-end">
+                                                        <div class="col-md-2">
+                                                            <label class="form-label text-dark small mb-1">Inmueble</label>
+                                                            <select name="property_type" class="form-select border-2">
+                                                                <option value="">Tipo</option>
+                                                                <option value="apartment">Apartamento</option>
+                                                                <option value="house">Casa</option>
+                                                                <option value="commercial">Comercial</option>
+                                                                <option value="lot">Lote</option>
+                                                                <option value="office">Oficina</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <label class="form-label text-dark small mb-1">Ciudad</label>
+                                                            <input type="text" name="city" class="form-control border-2"
+                                                                   placeholder="¿Dónde buscas?"/>
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <label class="form-label text-dark small mb-1">Habitaciones</label>
+                                                            <input type="number" name="bedrooms" class="form-control border-2"
+                                                                   placeholder="N°" min="0"/>
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <label class="form-label text-dark small mb-1">Baños</label>
+                                                            <input type="number" name="bathrooms" class="form-control border-2"
+                                                                   placeholder="N°" min="0"/>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <button type="submit" class="btn btn-danger w-100 py-2 fw-semibold" 
+                                                                    style="background-color: #E31E24; border: none;">
+                                                                Buscar
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <!-- Búsqueda por código -->
+                                                    <div class="row mt-3">
+                                                        <div class="col-12 text-center">
+                                                            <span class="text-muted small">¿Tienes un código? Realiza tu búsqueda</span>
+                                                            <div class="input-group mx-auto mt-2" style="max-width: 400px;">
+                                                                <input type="text" name="code" class="form-control" 
+                                                                       placeholder="Código"/>
+                                                                <button class="btn btn-outline-danger" type="submit">
+                                                                    <i class="fa fa-search"/>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                                
+                                                <!-- Precio de arriendo -->
+                                                <div class="mt-4 pt-3 border-top">
+                                                    <h5 class="text-danger mb-3 fw-bold">Precio de arriendo</h5>
+                                                    <div class="row g-2">
+                                                        <div class="col">
+                                                            <button type="button" class="btn btn-outline-secondary w-100 btn-sm">
+                                                                COP$
+                                                            </button>
+                                                        </div>
+                                                        <div class="col">
+                                                            <button type="button" class="btn btn-outline-secondary w-100 btn-sm">
+                                                                COP$
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Nuestros Servicios -->
+                <section class="bohio-services py-5">
+                    <div class="container">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <div>
+                                <span class="badge bg-danger px-3 py-2">Nuestros servicios</span>
+                            </div>
+                            <div class="d-flex gap-2">
+                                <button class="btn btn-danger btn-sm rounded-circle" style="width: 40px; height: 40px;">
+                                    <i class="fa fa-chevron-left"/>
+                                </button>
+                                <button class="btn btn-danger btn-sm rounded-circle" style="width: 40px; height: 40px;">
+                                    <i class="fa fa-chevron-right"/>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="row g-4">
+                            <!-- Estudio social -->
+                            <div class="col-md-2 col-6">
+                                <div class="service-card text-center p-3 h-100 bg-white rounded-3 shadow-sm">
+                                    <div class="service-icon mb-2">
+                                        <img src="/bohio_real_estate/static/src/img/areas_1-8.png" 
+                                             alt="Estudio social" style="width: 60px; height: 60px;"/>
+                                    </div>
+                                    <h6 class="mb-0">Estudio social</h6>
+                                </div>
+                            </div>
+
+                            <!-- Avalúos -->
+                            <div class="col-md-2 col-6">
+                                <div class="service-card text-center p-3 h-100 bg-white rounded-3 shadow-sm">
+                                    <div class="service-icon mb-2">
+                                        <img src="/bohio_real_estate/static/src/img/avaluos.gif" 
+                                             alt="Avalúos" style="width: 60px; height: 60px;"/>
+                                    </div>
+                                    <h6 class="mb-0">Avalúos</h6>
+                                </div>
+                            </div>
+
+                            <!-- Negocios corporativos -->
+                            <div class="col-md-2 col-6">
+                                <div class="service-card text-center p-3 h-100 bg-white rounded-3 shadow-sm">
+                                    <div class="service-icon mb-2">
+                                        <img src="/bohio_real_estate/static/src/img/negocios_.gif" 
+                                             alt="Negocios corporativos" style="width: 60px; height: 60px;"/>
+                                    </div>
+                                    <h6 class="mb-0">Negocios corporativos</h6>
+                                </div>
+                            </div>
+
+                            <!-- Servicios jurídicos -->
+                            <div class="col-md-2 col-6">
+                                <div class="service-card text-center p-3 h-100 bg-white rounded-3 shadow-sm">
+                                    <div class="service-icon mb-2">
+                                        <img src="/bohio_real_estate/static/src/img/servicios_juridico.gif" 
+                                             alt="Servicios jurídicos" style="width: 60px; height: 60px;"/>
+                                    </div>
+                                    <h6 class="mb-0">Servicios jurídicos</h6>
+                                </div>
+                            </div>
+
+                            <!-- Marketing digital -->
+                            <div class="col-md-2 col-6">
+                                <div class="service-card text-center p-3 h-100 bg-white rounded-3 shadow-sm">
+                                    <div class="service-icon mb-2">
+                                        <img src="/bohio_real_estate/static/src/img/marketing_digital.gif" 
+                                             alt="Marketing digital" style="width: 60px; height: 60px;"/>
+                                    </div>
+                                    <h6 class="mb-0">Marketing digital</h6>
+                                </div>
+                            </div>
+
+                            <!-- Firma digital -->
+                            <div class="col-md-2 col-6">
+                                <div class="service-card text-center p-3 h-100 bg-white rounded-3 shadow-sm">
+                                    <div class="service-icon mb-2">
+                                        <img src="/bohio_real_estate/static/src/img/firma_digital.gif" 
+                                             alt="Firma digital" style="width: 60px; height: 60px;"/>
+                                    </div>
+                                    <h6 class="mb-0">Firma digital</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Sección: Arriendo -->
+                <section class="bohio-arriendo py-5 bg-light">
+                    <div class="container">
+                        <div class="mb-4">
+                            <span class="badge bg-danger px-3 py-2">Arriendo</span>
+                        </div>
+                        <h2 class="mb-4">
+                            Te <span class="fw-bold">ayudamos</span> a encontrar el <span class="text-danger fw-bold">lugar ideal</span> para vivir
+                        </h2>
+                        
+                        <div class="row g-4" id="arriendo-properties">
+                            <!-- Las propiedades se cargarán dinámicamente aquí -->
+                        </div>
+                        
+                        <div class="text-center mt-4">
+                            <button class="btn btn-danger px-4">Explora la categoria</button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Sección: Venta de inmuebles usados -->
+                <section class="bohio-used-sale py-5">
+                    <div class="container">
+                        <div class="mb-4">
+                            <span class="badge bg-danger px-3 py-2">Venta de inmuebles usados</span>
+                        </div>
+                        <h2 class="mb-4">
+                            Te ayudamos a encontrar el <span class="text-danger fw-bold">hogar</span> que estas buscando
+                        </h2>
+                        
+                        <div class="row g-4" id="used-sale-properties">
+                            <!-- Las propiedades se cargarán dinámicamente aquí -->
+                        </div>
+                        
+                        <div class="text-center mt-4">
+                            <button class="btn btn-danger px-4">Explora la categoria</button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Sección: Proyectos en venta -->
+                <section class="bohio-projects py-5 bg-light">
+                    <div class="container">
+                        <div class="mb-4">
+                            <span class="badge bg-danger px-3 py-2">Proyectos en venta</span>
+                        </div>
+                        <h2 class="mb-4">
+                            <span class="text-danger fw-bold">Invierte</span> hoy en el <span class="fw-bold">futuro</span> que sueñas
+                        </h2>
+                        
+                        <div class="row g-4" id="projects-properties">
+                            <!-- Los proyectos se cargarán dinámicamente aquí -->
+                        </div>
+                        
+                        <div class="text-center mt-4">
+                            <button class="btn btn-danger px-4">Explora la categoria</button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Testimonios -->
+                <section class="bohio-testimonials py-5">
+                    <div class="container">
+                        <div class="mb-4">
+                            <span class="badge bg-danger px-3 py-2">Testimonios</span>
+                        </div>
+                        <h2 class="mb-5">
+                            Ellos ya vivieron <span class="text-danger fw-bold">la experiencia bohío</span>
+                        </h2>
+                        
+                        <div class="row g-4">
+                            <div class="col-md-3">
+                                <div class="testimonial-card p-4 bg-white rounded-3 shadow-sm h-100">
+                                    <div class="d-flex align-items-center mb-3">
+                                        <img src="/web/image/res.partner/1/avatar_128" 
+                                             class="rounded-circle me-3" 
+                                             style="width: 50px; height: 50px; object-fit: cover;"
+                                             alt="Paola Morja"/>
+                                        <div>
+                                            <h6 class="mb-0">Paola Morja</h6>
+                                            <div class="stars text-warning small">
+                                                <i class="fa fa-star"/>
+                                                <i class="fa fa-star"/>
+                                                <i class="fa fa-star"/>
+                                                <i class="fa fa-star"/>
+                                                <i class="fa fa-star"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <p class="small text-muted mb-0">
+                                        "Excelente servicio y atención. BOHIO me ayudó a encontrar el apartamento perfecto."
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-3">
+                                <div class="testimonial-card p-4 bg-white rounded-3 shadow-sm h-100">
+                                    <div class="d-flex align-items-center mb-3">
+                                        <img src="/web/image/res.partner/2/avatar_128" 
+                                             class="rounded-circle me-3" 
+                                             style="width: 50px; height: 50px; object-fit: cover;"
+                                             alt="José Raul"/>
+                                        <div>
+                                            <h6 class="mb-0">José Raul</h6>
+                                            <div class="stars text-warning small">
+                                                <i class="fa fa-star"/>
+                                                <i class="fa fa-star"/>
+                                                <i class="fa fa-star"/>
+                                                <i class="fa fa-star"/>
+                                                <i class="fa fa-star"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <p class="small text-muted mb-0">
+                                        "La administración de mi propiedad ha sido impecable. Pagos puntuales y reportes claros."
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-3">
+                                <div class="testimonial-card p-4 bg-white rounded-3 shadow-sm h-100">
+                                    <div class="d-flex align-items-center mb-3">
+                                        <img src="/web/image/res.partner/3/avatar_128" 
+                                             class="rounded-circle me-3" 
+                                             style="width: 50px; height: 50px; object-fit: cover;"
+                                             alt="Fer Vélez"/>
+                                        <div>
+                                            <h6 class="mb-0">Fer Vélez</h6>
+                                            <div class="stars text-warning small">
+                                                <i class="fa fa-star"/>
+                                                <i class="fa fa-star"/>
+                                                <i class="fa fa-star"/>
+                                                <i class="fa fa-star"/>
+                                                <i class="fa fa-star"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <p class="small text-muted mb-0">
+                                        "Profesionalismo y transparencia en todo el proceso. Altamente recomendados."
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-3">
+                                <div class="testimonial-card p-4 bg-white rounded-3 shadow-sm h-100">
+                                    <div class="d-flex align-items-center mb-3">
+                                        <img src="/web/image/res.partner/4/avatar_128" 
+                                             class="rounded-circle me-3" 
+                                             style="width: 50px; height: 50px; object-fit: cover;"
+                                             alt="Carlos Gutiérrez"/>
+                                        <div>
+                                            <h6 class="mb-0">Carlos Gutiérrez</h6>
+                                            <div class="stars text-warning small">
+                                                <i class="fa fa-star"/>
+                                                <i class="fa fa-star"/>
+                                                <i class="fa fa-star"/>
+                                                <i class="fa fa-star"/>
+                                                <i class="fa fa-star"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <p class="small text-muted mb-0">
+                                        "Encontré mi casa ideal gracias al equipo profesional de BOHIO."
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Videos (Placeholder) -->
+                <section class="bohio-videos py-5 bg-dark text-white">
+                    <div class="container">
+                        <div class="row g-4">
+                            <div class="col-md-4">
+                                <div class="video-placeholder bg-secondary rounded-3" style="height: 250px;">
+                                    <!-- Video placeholder -->
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="video-placeholder bg-secondary rounded-3" style="height: 250px;">
+                                    <!-- Video placeholder -->
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="video-placeholder bg-secondary rounded-3" style="height: 250px;">
+                                    <!-- Video placeholder -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Nuestros clientes -->
+                <section class="bohio-clients py-5">
+                    <div class="container">
+                        <div class="mb-4">
+                            <span class="badge bg-danger px-3 py-2">Nuestros clientes</span>
+                        </div>
+                        <h2 class="mb-5">
+                            Voces que <span class="text-danger fw-bold">respaldan</span> nuestro compromiso
+                        </h2>
+                        
+                        <div class="row g-4 justify-content-center">
+                            <div class="col-md-2 col-6 text-center">
+                                <img src="/bohio_real_estate/static/src/img/client-logo-1.png" 
+                                     alt="Cliente 1" class="img-fluid" style="max-height: 80px;"/>
+                            </div>
+                            <div class="col-md-2 col-6 text-center">
+                                <img src="/bohio_real_estate/static/src/img/client-logo-2.png" 
+                                     alt="Cliente 2" class="img-fluid" style="max-height: 80px;"/>
+                            </div>
+                            <div class="col-md-2 col-6 text-center">
+                                <img src="/bohio_real_estate/static/src/img/client-logo-3.png" 
+                                     alt="Cliente 3" class="img-fluid" style="max-height: 80px;"/>
+                            </div>
+                            <div class="col-md-2 col-6 text-center">
+                                <img src="/bohio_real_estate/static/src/img/client-logo-4.png" 
+                                     alt="Cliente 4" class="img-fluid" style="max-height: 80px;"/>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            
+            <!-- CSS adicional para modo oscuro y mejoras visuales -->
+            <style>
+                /* Modo oscuro */
+                @media (prefers-color-scheme: dark) {
+                    .bohio-homepage {
+                        background-color: #1a1a1a;
+                        color: #f0f0f0;
+                    }
+                    
+                    .bohio-services,
+                    .bohio-used-sale,
+                    .bohio-testimonials,
+                    .bohio-clients {
+                        background-color: #1a1a1a !important;
+                    }
+                    
+                    .bohio-arriendo,
+                    .bohio-projects {
+                        background-color: #252525 !important;
+                    }
+                    
+                    .service-card,
+                    .testimonial-card {
+                        background-color: #2d2d2d !important;
+                        color: #f0f0f0 !important;
+                        border: 1px solid #3d3d3d;
+                    }
+                    
+                    h2, h3, h4, h5, h6 {
+                        color: #f0f0f0 !important;
+                    }
+                    
+                    .text-muted {
+                        color: #b0b0b0 !important;
+                    }
+                }
+                
+                /* Transiciones suaves */
+                .service-card,
+                .testimonial-card {
+                    transition: transform 0.3s ease, box-shadow 0.3s ease;
+                }
+                
+                .service-card:hover,
+                .testimonial-card:hover {
+                    transform: translateY(-5px);
+                    box-shadow: 0 10px 25px rgba(227, 30, 36, 0.15) !important;
+                }
+                
+                /* Botones */
+                .btn-danger {
+                    background-color: #E31E24;
+                    border-color: #E31E24;
+                }
+                
+                .btn-danger:hover {
+                    background-color: #c01a1f;
+                    border-color: #c01a1f;
+                }
+                
+                /* Badges */
+                .badge.bg-danger {
+                    background-color: #E31E24 !important;
+                    font-weight: 600;
+                    letter-spacing: 0.5px;
+                }
+            </style>
+        </t>
+    </template>
+</odoo>

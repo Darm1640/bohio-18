@@ -788,7 +788,8 @@ class BohioRealEstateController(http.Controller):
             })
 
         return {
-            'properties': properties_data,
+            'items': properties_data,
+            'properties': properties_data,  # Mantener compatibilidad
             'count': len(properties_data)
         }
 

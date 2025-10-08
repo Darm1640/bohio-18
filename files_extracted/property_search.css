@@ -1,0 +1,463 @@
+/* =================== ESTILOS GENERALES =================== */
+
+.property_search_container {
+    position: relative;
+}
+
+/* =================== AUTOCOMPLETADO =================== */
+
+.property-search-input {
+    border-radius: 4px 0 0 4px;
+}
+
+.autocomplete-container {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border: 1px solid #dee2e6;
+    border-top: none;
+    border-radius: 0 0 4px 4px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    max-height: 400px;
+    overflow-y: auto;
+    z-index: 1000;
+    margin-top: -1px;
+}
+
+.autocomplete-results {
+    margin: 0;
+    padding: 0;
+}
+
+.autocomplete-result {
+    padding: 12px 20px;
+    cursor: pointer;
+    border-bottom: 1px solid #f1f3f5;
+    transition: background-color 0.2s ease;
+}
+
+.autocomplete-result:hover {
+    background-color: #f8f9fa;
+}
+
+.autocomplete-result:last-child {
+    border-bottom: none;
+}
+
+.autocomplete-result .result-label {
+    font-size: 14px;
+    color: #212529;
+    margin-bottom: 4px;
+}
+
+.autocomplete-result .result-count {
+    font-size: 12px;
+    color: #6c757d;
+}
+
+.autocomplete-empty {
+    padding: 20px;
+    text-align: center;
+    color: #6c757d;
+    font-style: italic;
+}
+
+/* =================== TARJETAS DE PROPIEDADES =================== */
+
+.property-card {
+    transition: all 0.3s ease;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.property-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15) !important;
+}
+
+.property-card.in-comparison {
+    border: 2px solid #28a745;
+    background-color: #f8fff9;
+}
+
+.property-card .property-image-wrapper {
+    position: relative;
+    overflow: hidden;
+}
+
+.property-card .property-image-wrapper img {
+    transition: transform 0.3s ease;
+}
+
+.property-card:hover .property-image-wrapper img {
+    transform: scale(1.05);
+}
+
+.property-card .card-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    height: 40px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+.property-card .card-title a {
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.property-card .card-title a:hover {
+    color: #007bff !important;
+}
+
+.property-features {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.property-features .badge {
+    font-weight: 500;
+    padding: 6px 10px;
+}
+
+.property-price h4 {
+    font-weight: 700;
+    font-size: 24px;
+}
+
+.property-thumb {
+    max-width: 100px;
+    max-height: 100px;
+    object-fit: cover;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+/* =================== SISTEMA DE COMPARACIÓN =================== */
+
+.comparison-badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    min-width: 20px;
+    height: 20px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.view-comparison {
+    position: relative;
+}
+
+.view-comparison:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* =================== MODAL DE COMPARACIÓN =================== */
+
+.comparison-modal .modal-xl {
+    max-width: 1200px;
+}
+
+.comparison-table-wrapper {
+    overflow-x: auto;
+}
+
+.comparison-table {
+    min-width: 800px;
+    margin-bottom: 0;
+}
+
+.comparison-table thead th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    border-bottom: 2px solid #dee2e6;
+}
+
+.comparison-table .field-name-column {
+    min-width: 150px;
+    font-weight: 600;
+    background-color: #fff;
+    position: sticky;
+    left: 0;
+    z-index: 5;
+}
+
+.comparison-table .property-column {
+    min-width: 200px;
+    text-align: center;
+    vertical-align: top;
+}
+
+.comparison-table .property-header {
+    padding: 15px;
+}
+
+.comparison-table .property-name {
+    font-weight: 600;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-size: 14px;
+    min-height: 40px;
+}
+
+.comparison-table .field-name {
+    background-color: #f8f9fa;
+    font-weight: 500;
+    padding: 12px;
+}
+
+.comparison-table .field-value {
+    padding: 12px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.comparison-table .difference-row {
+    background-color: #fff3cd;
+}
+
+.comparison-table .difference-row .field-name {
+    background-color: #ffeaa7;
+}
+
+/* =================== NOTIFICACIONES =================== */
+
+.notification-container {
+    position: fixed;
+    top: 70px;
+    right: 20px;
+    z-index: 9999;
+    width: 350px;
+}
+
+.property-notification {
+    margin-bottom: 10px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    animation: slideInRight 0.3s ease;
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* =================== FILTROS =================== */
+
+.filter-group {
+    padding-bottom: 15px;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.filter-group:last-child {
+    border-bottom: none;
+}
+
+.filter-group h6 {
+    color: #495057;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 15px;
+}
+
+.custom-control-label {
+    font-size: 14px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.custom-control-label .badge {
+    font-size: 11px;
+    padding: 2px 6px;
+}
+
+.property-filter:checked + .custom-control-label {
+    font-weight: 600;
+    color: #007bff;
+}
+
+/* =================== ORDENAMIENTO =================== */
+
+#orderSelect {
+    max-width: 250px;
+    border-radius: 4px;
+}
+
+/* =================== PAGINACIÓN =================== */
+
+.pagination {
+    margin-top: 30px;
+}
+
+.pagination .page-link {
+    color: #007bff;
+    border-color: #dee2e6;
+    padding: 10px 16px;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.pagination .page-item.disabled .page-link {
+    color: #6c757d;
+    cursor: not-allowed;
+}
+
+/* =================== RESPONSIVE =================== */
+
+@media (max-width: 768px) {
+    .notification-container {
+        width: calc(100% - 40px);
+        right: 20px;
+        left: 20px;
+    }
+    
+    .property-card {
+        margin-bottom: 20px;
+    }
+    
+    .subdivision-filter {
+        max-width: 100% !important;
+        margin-top: 10px;
+    }
+    
+    .comparison-table .property-column {
+        min-width: 150px;
+    }
+    
+    .comparison-modal .modal-dialog {
+        margin: 10px;
+    }
+}
+
+@media print {
+    .modal-header,
+    .modal-footer,
+    .remove-from-comparison {
+        display: none !important;
+    }
+    
+    .comparison-table {
+        font-size: 12px;
+    }
+    
+    .property-thumb {
+        max-width: 60px;
+        max-height: 60px;
+    }
+}
+
+/* =================== ANIMACIONES =================== */
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.property-card {
+    animation: fadeIn 0.5s ease;
+}
+
+/* =================== UTILIDADES =================== */
+
+.sticky-top {
+    position: sticky;
+    top: 100px;
+    z-index: 1020;
+}
+
+.text-truncate-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.shadow-hover:hover {
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+}
+
+/* =================== BADGES =================== */
+
+.badge-primary {
+    background-color: #007bff;
+}
+
+.badge-success {
+    background-color: #28a745;
+}
+
+.badge-warning {
+    background-color: #ffc107;
+    color: #212529;
+}
+
+.badge-info {
+    background-color: #17a2b8;
+}
+
+.badge-light {
+    background-color: #f8f9fa;
+    color: #495057;
+    border: 1px solid #dee2e6;
+}
+
+/* =================== LOADING STATES =================== */
+
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9998;
+}
+
+.loading-spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #007bff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}

@@ -1,0 +1,530 @@
+/* ========================================
+   BOHIO Real Estate - Estilos Personalizados
+   ======================================== */
+
+/* ---- Fuentes Personalizadas ---- */
+@font-face {
+    font-family: 'Ciutadella';
+    src: url('/bohio_real_estate/static/src/fonts/Ciutadella_Light.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Ciutadella';
+    src: url('/bohio_real_estate/static/src/fonts/Ciutadella_SemiBold.ttf') format('truetype');
+    font-weight: 600;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Arista Pro';
+    src: url('/bohio_real_estate/static/src/fonts/arista-pro-bold.ttf') format('truetype');
+    font-weight: 700;
+    font-style: normal;
+}
+
+/* ---- Variables CSS ---- */
+:root {
+    /* Colores principales */
+    --bohio-red: #E31E24;
+    --bohio-red-dark: #c01a1f;
+    --bohio-red-light: #ff3d43;
+    
+    /* Colores neutros */
+    --gray-50: #f9fafb;
+    --gray-100: #f3f4f6;
+    --gray-200: #e5e7eb;
+    --gray-300: #d1d5db;
+    --gray-400: #9ca3af;
+    --gray-500: #6b7280;
+    --gray-600: #4b5563;
+    --gray-700: #374151;
+    --gray-800: #1f2937;
+    --gray-900: #111827;
+    
+    /* Sombras */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    
+    /* Espaciado */
+    --spacing-xs: 0.25rem;
+    --spacing-sm: 0.5rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 1.5rem;
+    --spacing-xl: 2rem;
+    --spacing-2xl: 3rem;
+    
+    /* Border radius */
+    --radius-sm: 0.375rem;
+    --radius-md: 0.5rem;
+    --radius-lg: 0.75rem;
+    --radius-xl: 1rem;
+    
+    /* Transiciones */
+    --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-base: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow: 500ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Variables para modo oscuro */
+[data-theme="dark"],
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg-primary: #1a1a1a;
+        --bg-secondary: #252525;
+        --bg-tertiary: #2d2d2d;
+        --text-primary: #f0f0f0;
+        --text-secondary: #b0b0b0;
+        --text-muted: #808080;
+        --border-color: #3d3d3d;
+    }
+}
+
+/* Variables para modo claro */
+[data-theme="light"],
+@media (prefers-color-scheme: light) {
+    :root {
+        --bg-primary: #ffffff;
+        --bg-secondary: #f9fafb;
+        --bg-tertiary: #f3f4f6;
+        --text-primary: #111827;
+        --text-secondary: #4b5563;
+        --text-muted: #6b7280;
+        --border-color: #e5e7eb;
+    }
+}
+
+/* ---- Estilos Globales ---- */
+body {
+    font-family: 'Ciutadella', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    color: var(--text-primary);
+    background-color: var(--bg-primary);
+    transition: background-color var(--transition-base), color var(--transition-base);
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Arista Pro', 'Ciutadella', sans-serif;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.fw-semibold {
+    font-family: 'Ciutadella', sans-serif;
+    font-weight: 600;
+}
+
+/* ---- Botones ---- */
+.btn {
+    font-family: 'Ciutadella', sans-serif;
+    font-weight: 600;
+    transition: all var(--transition-fast);
+    border-radius: var(--radius-md);
+}
+
+.btn-danger {
+    background-color: var(--bohio-red);
+    border-color: var(--bohio-red);
+    color: white;
+}
+
+.btn-danger:hover {
+    background-color: var(--bohio-red-dark);
+    border-color: var(--bohio-red-dark);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.btn-danger:active {
+    transform: translateY(0);
+}
+
+.btn-outline-danger {
+    color: var(--bohio-red);
+    border-color: var(--bohio-red);
+    background-color: transparent;
+}
+
+.btn-outline-danger:hover {
+    background-color: var(--bohio-red);
+    border-color: var(--bohio-red);
+    color: white;
+}
+
+/* ---- Badges ---- */
+.badge {
+    font-family: 'Ciutadella', sans-serif;
+    font-weight: 600;
+    letter-spacing: 0.025em;
+    border-radius: var(--radius-md);
+}
+
+.badge.bg-danger {
+    background-color: var(--bohio-red) !important;
+}
+
+/* ---- Cards ---- */
+.card {
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    transition: all var(--transition-base);
+    background-color: var(--bg-primary);
+}
+
+.card:hover {
+    box-shadow: var(--shadow-xl);
+}
+
+.property-card {
+    overflow: hidden;
+}
+
+.property-card:hover {
+    transform: translateY(-8px);
+}
+
+.property-card .card-img-top {
+    transition: transform var(--transition-slow);
+}
+
+.property-card:hover .card-img-top {
+    transform: scale(1.08);
+}
+
+/* ---- Forms ---- */
+.form-control,
+.form-select {
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 0.625rem 1rem;
+    font-family: 'Ciutadella', sans-serif;
+    font-weight: 300;
+    transition: all var(--transition-fast);
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--bohio-red);
+    box-shadow: 0 0 0 3px rgba(227, 30, 36, 0.1);
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+}
+
+.form-label {
+    font-family: 'Ciutadella', sans-serif;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: var(--spacing-xs);
+}
+
+/* ---- Hero Section ---- */
+.bohio-hero-section {
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-overlay {
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6));
+}
+
+.quick-search {
+    backdrop-filter: blur(10px);
+    background-color: rgba(255, 255, 255, 0.95) !important;
+    border-radius: var(--radius-xl);
+}
+
+@media (prefers-color-scheme: dark) {
+    .quick-search {
+        background-color: rgba(45, 45, 45, 0.95) !important;
+    }
+}
+
+/* ---- Service Cards ---- */
+.service-card {
+    background-color: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    transition: all var(--transition-base);
+    cursor: pointer;
+}
+
+.service-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(227, 30, 36, 0.15);
+    border-color: var(--bohio-red);
+}
+
+.service-icon {
+    transition: transform var(--transition-base);
+}
+
+.service-card:hover .service-icon {
+    transform: scale(1.1);
+}
+
+/* ---- Testimonial Cards ---- */
+.testimonial-card {
+    background-color: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    transition: all var(--transition-base);
+}
+
+.testimonial-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+}
+
+/* ---- Property Features ---- */
+.property-features {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: var(--spacing-md) 0;
+    border-top: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.feature-item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+}
+
+.feature-item img {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+}
+
+/* ---- Search Section ---- */
+.search-hero {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: var(--spacing-2xl) 0;
+}
+
+.search-box {
+    background-color: white;
+    border-radius: var(--radius-xl);
+    padding: var(--spacing-xl);
+    box-shadow: var(--shadow-xl);
+}
+
+@media (prefers-color-scheme: dark) {
+    .search-box {
+        background-color: var(--bg-tertiary);
+        border: 1px solid var(--border-color);
+    }
+}
+
+/* ---- Price Badge ---- */
+.price-badge {
+    background-color: var(--bohio-red);
+    color: white;
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    font-size: 1.125rem;
+}
+
+/* ---- Animations ---- */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in {
+    animation: fadeIn var(--transition-slow) ease-out;
+}
+
+@keyframes slideInFromLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.slide-in-left {
+    animation: slideInFromLeft var(--transition-base) ease-out;
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 768px) {
+    .quick-search {
+        padding: var(--spacing-lg);
+    }
+    
+    .service-card {
+        margin-bottom: var(--spacing-md);
+    }
+    
+    h1 {
+        font-size: 2rem;
+    }
+    
+    h2 {
+        font-size: 1.5rem;
+    }
+}
+
+/* ---- Modo Oscuro Completo ---- */
+@media (prefers-color-scheme: dark) {
+    body {
+        background-color: var(--bg-primary);
+        color: var(--text-primary);
+    }
+    
+    .bg-light {
+        background-color: var(--bg-secondary) !important;
+    }
+    
+    .bg-white {
+        background-color: var(--bg-primary) !important;
+    }
+    
+    .text-dark {
+        color: var(--text-primary) !important;
+    }
+    
+    .text-muted {
+        color: var(--text-muted) !important;
+    }
+    
+    .border {
+        border-color: var(--border-color) !important;
+    }
+    
+    .shadow,
+    .shadow-sm,
+    .shadow-lg {
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.5) !important;
+    }
+    
+    /* Modal en modo oscuro */
+    .modal-content {
+        background-color: var(--bg-tertiary);
+        color: var(--text-primary);
+        border-color: var(--border-color);
+    }
+    
+    .modal-header {
+        border-bottom-color: var(--border-color);
+    }
+    
+    .modal-footer {
+        border-top-color: var(--border-color);
+    }
+    
+    /* Dropdown en modo oscuro */
+    .dropdown-menu {
+        background-color: var(--bg-tertiary);
+        border-color: var(--border-color);
+    }
+    
+    .dropdown-item {
+        color: var(--text-primary);
+    }
+    
+    .dropdown-item:hover {
+        background-color: var(--bg-secondary);
+        color: var(--text-primary);
+    }
+}
+
+/* ---- Utilidades Adicionales ---- */
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.object-cover {
+    object-fit: cover;
+}
+
+.object-contain {
+    object-fit: contain;
+}
+
+.transition-all {
+    transition: all var(--transition-base);
+}
+
+.hover-lift:hover {
+    transform: translateY(-5px);
+}
+
+.hover-scale:hover {
+    transform: scale(1.05);
+}
+
+/* ---- Scrollbar personalizado ---- */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--bohio-red);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--bohio-red-dark);
+}
+
+@media (prefers-color-scheme: dark) {
+    ::-webkit-scrollbar-track {
+        background: var(--bg-tertiary);
+    }
+}
+
+/* ---- Loading States ---- */
+.skeleton {
+    background: linear-gradient(90deg, var(--bg-secondary) 25%, var(--bg-tertiary) 50%, var(--bg-secondary) 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s ease-in-out infinite;
+}
+
+@keyframes loading {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+/* ---- Print Styles ---- */
+@media print {
+    .btn,
+    .badge,
+    nav,
+    footer {
+        display: none;
+    }
+    
+    .property-card {
+        page-break-inside: avoid;
+    }
+}

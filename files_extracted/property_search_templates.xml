@@ -1,0 +1,441 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <!-- =================== PÁGINA PRINCIPAL DE BÚSQUEDA =================== -->
+    
+    <template id="property_search_page" name="Property Search Page">
+        <t t-call="website.layout">
+            <div id="wrap" class="oe_structure">
+                
+                <!-- Notificaciones -->
+                <div class="notification-container fixed-top" style="z-index: 9999; top: 70px;"/>
+                
+                <!-- Contenedor de búsqueda con contexto -->
+                <div class="property_search_container" t-att-data-context="search_context">
+                    
+                    <!-- Header de búsqueda -->
+                    <section class="bg-primary text-white py-4">
+                        <div class="container">
+                            <div class="row align-items-center">
+                                <div class="col-md-8">
+                                    <h1 class="mb-0">
+                                        <i class="fa fa-search"/> Buscar Propiedades
+                                    </h1>
+                                    <p class="mb-0 mt-2">
+                                        <span t-esc="context_config.get('name', 'Búsqueda')"/>
+                                        <span class="badge badge-light ml-2" t-esc="total_properties"/>
+                                        propiedades encontradas
+                                    </p>
+                                </div>
+                                <div class="col-md-4 text-right">
+                                    <!-- Botón de comparación -->
+                                    <button class="btn btn-light btn-lg view-comparison" 
+                                            t-if="context_config.get('allow_comparison')"
+                                            disabled="disabled">
+                                        <i class="fa fa-balance-scale"/>
+                                        Comparar
+                                        <span class="badge badge-danger comparison-badge ml-2" 
+                                              style="display: none;">0</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    
+                    <!-- Barra de búsqueda principal -->
+                    <section class="bg-light py-4">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="input-group input-group-lg">
+                                        <!-- Input de búsqueda -->
+                                        <input type="text" 
+                                               class="form-control property-search-input" 
+                                               placeholder="Buscar por ciudad, barrio, proyecto o código..."
+                                               t-att-value="search_term"/>
+                                        
+                                        <!-- Selector de subdivisión -->
+                                        <select class="form-control subdivision-filter" style="max-width: 200px;">
+                                            <option value="all">Buscar todo</option>
+                                            <option value="cities">Solo ciudades</option>
+                                            <option value="regions">Solo barrios</option>
+                                            <option value="projects" t-if="context_config.get('filter_by_project')">
+                                                Solo proyectos
+                                            </option>
+                                            <option value="properties">Solo propiedades</option>
+                                        </select>
+                                        
+                                        <!-- Botón de búsqueda -->
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary" type="submit">
+                                                <i class="fa fa-search"/> Buscar
+                                            </button>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Contenedor de autocompletado -->
+                                    <div class="autocomplete-container" style="display: none;"/>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    
+                    <!-- Filtros y resultados -->
+                    <section class="py-5">
+                        <div class="container">
+                            <div class="row">
+                                
+                                <!-- Panel de filtros lateral -->
+                                <div class="col-md-3">
+                                    <div class="card shadow-sm mb-4">
+                                        <div class="card-header bg-white">
+                                            <h5 class="mb-0">
+                                                <i class="fa fa-filter"/> Filtros
+                                            </h5>
+                                        </div>
+                                        <div class="card-body">
+                                            
+                                            <!-- Filtro: Tipo de propiedad -->
+                                            <div class="filter-group mb-4">
+                                                <h6 class="font-weight-bold">Tipo de Propiedad</h6>
+                                                <t t-foreach="property_types" t-as="ptype">
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" 
+                                                               class="custom-control-input property-filter" 
+                                                               t-att-id="'ptype_' + ptype['value']"
+                                                               data-filter="property_type"
+                                                               t-att-data-value="ptype['value']"
+                                                               t-att-checked="property_type == ptype['value']"/>
+                                                        <label class="custom-control-label" 
+                                                               t-att-for="'ptype_' + ptype['value']">
+                                                            <t t-esc="ptype['label']"/>
+                                                            <span class="badge badge-secondary ml-2" 
+                                                                  t-esc="ptype['count']"/>
+                                                        </label>
+                                                    </div>
+                                                </t>
+                                            </div>
+                                            
+                                            <!-- Filtro: Ciudades -->
+                                            <div class="filter-group mb-4" t-if="cities">
+                                                <h6 class="font-weight-bold">Ciudades</h6>
+                                                <t t-foreach="cities[:10]" t-as="city">
+                                                    <div class="custom-control custom-radio">
+                                                        <input type="radio" 
+                                                               class="custom-control-input property-filter" 
+                                                               t-att-id="'city_' + city['id']"
+                                                               name="city_filter"
+                                                               data-filter="city_id"
+                                                               t-att-data-value="city['id']"
+                                                               t-att-checked="str(city_id) == str(city['id'])"/>
+                                                        <label class="custom-control-label" 
+                                                               t-att-for="'city_' + city['id']">
+                                                            <t t-esc="city['name']"/>
+                                                            <span class="badge badge-secondary ml-2" 
+                                                                  t-esc="city['count']"/>
+                                                        </label>
+                                                    </div>
+                                                </t>
+                                            </div>
+                                            
+                                            <!-- Filtro: Rango de precio -->
+                                            <div class="filter-group mb-4" t-if="context_config.get('show_price')">
+                                                <h6 class="font-weight-bold">Rango de Precio</h6>
+                                                <t t-foreach="price_ranges[:5]" t-as="range">
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" 
+                                                               class="custom-control-input property-filter" 
+                                                               t-att-id="'price_' + range_index"
+                                                               data-filter="price_range"
+                                                               t-att-data-min="range['min']"
+                                                               t-att-data-max="range['max']"/>
+                                                        <label class="custom-control-label" 
+                                                               t-att-for="'price_' + range_index">
+                                                            <t t-esc="range['label']"/>
+                                                        </label>
+                                                    </div>
+                                                </t>
+                                            </div>
+                                            
+                                            <!-- Filtro: Características -->
+                                            <div class="filter-group mb-4">
+                                                <h6 class="font-weight-bold">Características</h6>
+                                                <div class="custom-control custom-checkbox">
+                                                    <input type="checkbox" 
+                                                           class="custom-control-input property-filter" 
+                                                           id="filter_garage"
+                                                           data-filter="garage"
+                                                           data-value="1"
+                                                           t-att-checked="garage"/>
+                                                    <label class="custom-control-label" for="filter_garage">
+                                                        <i class="fa fa-car"/> Garaje
+                                                    </label>
+                                                </div>
+                                                <div class="custom-control custom-checkbox">
+                                                    <input type="checkbox" 
+                                                           class="custom-control-input property-filter" 
+                                                           id="filter_garden"
+                                                           data-filter="garden"
+                                                           data-value="1"
+                                                           t-att-checked="garden"/>
+                                                    <label class="custom-control-label" for="filter_garden">
+                                                        <i class="fa fa-leaf"/> Jardín
+                                                    </label>
+                                                </div>
+                                                <div class="custom-control custom-checkbox">
+                                                    <input type="checkbox" 
+                                                           class="custom-control-input property-filter" 
+                                                           id="filter_pool"
+                                                           data-filter="pool"
+                                                           data-value="1"
+                                                           t-att-checked="pool"/>
+                                                    <label class="custom-control-label" for="filter_pool">
+                                                        <i class="fa fa-tint"/> Piscina
+                                                    </label>
+                                                </div>
+                                                <div class="custom-control custom-checkbox">
+                                                    <input type="checkbox" 
+                                                           class="custom-control-input property-filter" 
+                                                           id="filter_elevator"
+                                                           data-filter="elevator"
+                                                           data-value="1"
+                                                           t-att-checked="elevator"/>
+                                                    <label class="custom-control-label" for="filter_elevator">
+                                                        <i class="fa fa-building"/> Ascensor
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Grid de propiedades -->
+                                <div class="col-md-9">
+                                    
+                                    <!-- Ordenamiento -->
+                                    <div class="d-flex justify-content-between align-items-center mb-4">
+                                        <div>
+                                            <strong t-esc="total_properties"/> resultados
+                                        </div>
+                                        <div class="btn-group" role="group">
+                                            <select class="form-control" id="orderSelect">
+                                                <option value="relevance">Más relevantes</option>
+                                                <option value="price_asc">Precio: menor a mayor</option>
+                                                <option value="price_desc">Precio: mayor a menor</option>
+                                                <option value="area_desc">Área: mayor a menor</option>
+                                                <option value="newest">Más recientes</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Propiedades -->
+                                    <div class="row">
+                                        <t t-if="not properties">
+                                            <div class="col-12">
+                                                <div class="alert alert-info">
+                                                    <i class="fa fa-info-circle"/> No se encontraron propiedades con los filtros seleccionados.
+                                                </div>
+                                            </div>
+                                        </t>
+                                        
+                                        <t t-foreach="properties" t-as="property">
+                                            <div class="col-md-4 mb-4">
+                                                <t t-call="real_estate_bits.property_card">
+                                                    <t t-set="prop" t-value="property"/>
+                                                    <t t-set="show_comparison" t-value="context_config.get('allow_comparison')"/>
+                                                    <t t-set="show_price" t-value="context_config.get('show_price')"/>
+                                                </t>
+                                            </div>
+                                        </t>
+                                    </div>
+                                    
+                                    <!-- Paginación -->
+                                    <t t-if="pager.get('total_pages', 0) > 1">
+                                        <nav aria-label="Page navigation" class="mt-4">
+                                            <ul class="pagination justify-content-center">
+                                                <li class="page-item" t-att-class="'disabled' if page == 1 else ''">
+                                                    <a class="page-link" t-att-href="pager.get('prev_url')">
+                                                        <i class="fa fa-chevron-left"/> Anterior
+                                                    </a>
+                                                </li>
+                                                
+                                                <li class="page-item active">
+                                                    <span class="page-link">
+                                                        Página <t t-esc="page"/> de <t t-esc="pager['total_pages']"/>
+                                                    </span>
+                                                </li>
+                                                
+                                                <li class="page-item" t-att-class="'disabled' if page >= pager['total_pages'] else ''">
+                                                    <a class="page-link" t-att-href="pager.get('next_url')">
+                                                        Siguiente <i class="fa fa-chevron-right"/>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </nav>
+                                    </t>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    
+                </div>
+            </div>
+        </t>
+    </template>
+    
+    <!-- =================== TARJETA DE PROPIEDAD =================== -->
+    
+    <template id="property_card" name="Property Card">
+        <div class="card property-card h-100 shadow-sm">
+            <!-- Imagen -->
+            <div class="property-image-wrapper position-relative">
+                <t t-if="prop.image_1920">
+                    <img t-att-src="'data:image/png;base64,' + prop.image_1920.decode('utf-8')" 
+                         class="card-img-top" 
+                         t-att-alt="prop.name"
+                         style="height: 200px; object-fit: cover;"/>
+                </t>
+                <t t-else="">
+                    <img src="/web/static/src/img/placeholder.png" 
+                         class="card-img-top" 
+                         alt="Sin imagen"
+                         style="height: 200px; object-fit: cover;"/>
+                </t>
+                
+                <!-- Badges sobre la imagen -->
+                <div class="position-absolute" style="top: 10px; left: 10px;">
+                    <span class="badge badge-primary" t-if="prop.property_type">
+                        <t t-esc="dict(prop._fields['property_type'].selection).get(prop.property_type)"/>
+                    </span>
+                </div>
+                
+                <div class="position-absolute" style="top: 10px; right: 10px;">
+                    <span class="badge badge-success" t-if="prop.type_service">
+                        <t t-esc="dict(prop._fields['type_service'].selection).get(prop.type_service)"/>
+                    </span>
+                </div>
+            </div>
+            
+            <!-- Contenido -->
+            <div class="card-body">
+                <h5 class="card-title">
+                    <a t-att-href="'/property/get/%s/%s' % (prop.id, search_context or 'public')"
+                       class="text-dark">
+                        <t t-esc="prop.name"/>
+                    </a>
+                </h5>
+                
+                <p class="text-muted small mb-2">
+                    <i class="fa fa-map-marker"/> 
+                    <t t-if="prop.city_id">
+                        <t t-esc="prop.city_id.name"/>, 
+                    </t>
+                    <t t-if="prop.region_id">
+                        <t t-esc="prop.region_id.name"/>
+                    </t>
+                </p>
+                
+                <!-- Características principales -->
+                <div class="property-features mb-3">
+                    <span class="badge badge-light mr-2" t-if="prop.property_area">
+                        <i class="fa fa-arrows-alt"/> <t t-esc="'%.0f' % prop.property_area"/> m²
+                    </span>
+                    <span class="badge badge-light mr-2" t-if="prop.num_bedrooms">
+                        <i class="fa fa-bed"/> <t t-esc="int(prop.num_bedrooms)"/>
+                    </span>
+                    <span class="badge badge-light mr-2" t-if="prop.num_bathrooms">
+                        <i class="fa fa-bath"/> <t t-esc="int(prop.num_bathrooms)"/>
+                    </span>
+                </div>
+                
+                <!-- Precio -->
+                <div class="property-price mb-3" t-if="show_price">
+                    <h4 class="text-primary mb-0">
+                        <t t-esc="prop.currency_id.format(prop.net_price)"/>
+                    </h4>
+                </div>
+                
+            </div>
+            
+            <!-- Acciones -->
+            <div class="card-footer bg-white">
+                <div class="btn-group btn-group-sm w-100" role="group">
+                    <a t-att-href="'/property/get/%s/%s' % (prop.id, search_context or 'public')"
+                       class="btn btn-primary">
+                        <i class="fa fa-eye"/> Ver detalles
+                    </a>
+                    
+                    <button class="btn btn-outline-primary add-to-comparison"
+                            t-if="show_comparison"
+                            t-att-data-property-id="prop.id">
+                        <i class="fa fa-balance-scale"/> Comparar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </template>
+    
+    <!-- =================== PÁGINA DE DETALLES DE PROPIEDAD =================== -->
+    
+    <template id="property_detail_page" name="Property Detail Page">
+        <t t-call="website.layout">
+            <div id="wrap" class="oe_structure">
+                <div class="container py-5">
+                    
+                    <!-- Breadcrumb -->
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <a t-att-href="'/property/search/%s' % search_context">Búsqueda</a>
+                            </li>
+                            <li class="breadcrumb-item active" aria-current="page">
+                                <t t-esc="property.name"/>
+                            </li>
+                        </ol>
+                    </nav>
+                    
+                    <!-- Contenido de la propiedad -->
+                    <div class="row">
+                        <div class="col-md-8">
+                            <!-- Galería de imágenes aquí -->
+                            <h1 t-esc="property.name"/>
+                            
+                            <p class="lead text-muted">
+                                <i class="fa fa-map-marker"/> 
+                                <t t-esc="property.address or property.city_id.name"/>
+                            </p>
+                            
+                            <!-- Detalles completos aquí -->
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <!-- Sidebar con información de contacto, precio, etc. -->
+                            <div class="card sticky-top" style="top: 100px;">
+                                <div class="card-body">
+                                    <h3 class="text-primary" t-if="show_price">
+                                        <t t-esc="property.currency_id.format(property.net_price)"/>
+                                    </h3>
+                                    
+                                    <button class="btn btn-primary btn-block mb-2" 
+                                            t-if="show_contact">
+                                        <i class="fa fa-phone"/> Contactar
+                                    </button>
+                                    
+                                    <button class="btn btn-outline-primary btn-block add-to-comparison"
+                                            t-if="allow_comparison"
+                                            t-att-data-property-id="property.id">
+                                        <i class="fa fa-balance-scale"/> Agregar a Comparación
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </t>
+    </template>
+    
+</odoo>

@@ -216,19 +216,20 @@ class PropertyShop {
         `;
 
         try {
-            const response = await fetch('/properties', {
+            const response = await fetch('/bohio/api/properties', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
                     ...this.filters,
-                    context: this.context
+                    context: this.context,
+                    limit: 50
                 })
             });
             const data = await response.json();
 
-            this.currentProperties = data.properties || [];
+            this.currentProperties = data.items || [];
             this.renderProperties(this.currentProperties);
             this.updateMap(this.currentProperties);
             this.updateCounter(this.currentProperties.length);

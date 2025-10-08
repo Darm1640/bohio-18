@@ -1,0 +1,477 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Template Tienda de Propiedades BOHIO - Versión Mejorada -->
+    <template id="theme_bohio_real_estate.properties_shop" name="Properties Shop">
+        <t t-call="website.layout">
+            <div id="wrap" class="oe_structure bohio-properties-shop">
+                <!-- Hero Search Section -->
+                <section class="search-hero bg-light py-4" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="search-box bg-white rounded-3 shadow-lg p-4">
+                                    <form method="get" action="/properties" class="property-search-form">
+                                        <!-- Primera fila -->
+                                        <div class="row g-3 mb-3">
+                                            <div class="col-md-3">
+                                                <label class="form-label small text-muted mb-1">Inmueble</label>
+                                                <select name="property_type" class="form-select">
+                                                    <option value="">Tipo de inmueble</option>
+                                                    <option value="apartment" t-att-selected="'selected' if property_type == 'apartment' else None">Apartamento</option>
+                                                    <option value="house" t-att-selected="'selected' if property_type == 'house' else None">Casa</option>
+                                                    <option value="lot" t-att-selected="'selected' if property_type == 'lot' else None">Lote</option>
+                                                    <option value="office" t-att-selected="'selected' if property_type == 'office' else None">Oficina</option>
+                                                    <option value="commercial" t-att-selected="'selected' if property_type == 'commercial' else None">Local Comercial</option>
+                                                    <option value="bodega" t-att-selected="'selected' if property_type == 'bodega' else None">Bodega</option>
+                                                </select>
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                <label class="form-label small text-muted mb-1">Ciudad</label>
+                                                <select name="city_id" id="city_filter" class="form-select">
+                                                    <option value="">Selecciona ciudad</option>
+                                                    <t t-foreach="cities" t-as="city">
+                                                        <option t-att-value="city.id"
+                                                                t-att-selected="'selected' if city_id == city.id else None"
+                                                                t-esc="city.name"/>
+                                                    </t>
+                                                </select>
+                                            </div>
+
+                                            <div class="col-md-2">
+                                                <label class="form-label small text-muted mb-1">Habitaciones</label>
+                                                <input type="number" name="bedrooms" class="form-control"
+                                                       t-att-value="bedrooms" placeholder="N°" min="0"/>
+                                            </div>
+
+                                            <div class="col-md-2">
+                                                <label class="form-label small text-muted mb-1">Baños</label>
+                                                <input type="number" name="bathrooms" class="form-control"
+                                                       t-att-value="bathrooms" placeholder="N°" min="0"/>
+                                            </div>
+
+                                            <div class="col-md-2">
+                                                <label class="form-label small text-muted mb-1">&#160;</label>
+                                                <button type="submit" class="btn btn-danger w-100" 
+                                                        style="background-color: #E31E24; border: none;">
+                                                    <i class="fa fa-search me-1"/> Buscar
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        <!-- Búsqueda por código -->
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="text-center border-top pt-3">
+                                                    <span class="text-muted small me-2">¿Tienes un código? Realiza tu búsqueda</span>
+                                                    <div class="d-inline-flex align-items-center">
+                                                        <input type="text" name="code" class="form-control form-control-sm me-2" 
+                                                               placeholder="Código" style="max-width: 200px;"/>
+                                                        <button class="btn btn-sm btn-outline-danger" type="submit">
+                                                            <i class="fa fa-search"/>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Precio de arriendo -->
+                                        <div class="row mt-3">
+                                            <div class="col-12">
+                                                <div class="border-top pt-3">
+                                                    <h6 class="text-danger mb-2 fw-bold">Precio de arriendo</h6>
+                                                    <div class="row g-2">
+                                                        <div class="col-md-6">
+                                                            <input type="number" name="price_min" id="price_min" 
+                                                                   class="form-control price-input"
+                                                                   t-att-value="price_min" 
+                                                                   placeholder="Precio mínimo" 
+                                                                   min="0" 
+                                                                   step="100000"/>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <input type="number" name="price_max" id="price_max" 
+                                                                   class="form-control price-input"
+                                                                   t-att-value="price_max" 
+                                                                   placeholder="Precio máximo" 
+                                                                   min="0" 
+                                                                   step="100000"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Filtros y Resultados -->
+                <div class="container my-5">
+                    <!-- Barra de ordenamiento y contador -->
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <div class="dropdown d-inline-block">
+                                <button class="btn btn-outline-secondary dropdown-toggle" type="button" 
+                                        id="sortDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fa fa-sort me-1"/> Ordenar por
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="sortDropdown">
+                                    <li><a class="dropdown-item" href="?sort=price_asc">$ (Menor a mayor)</a></li>
+                                    <li><a class="dropdown-item" href="?sort=price_desc">$ (Mayor a menor)</a></li>
+                                    <li><a class="dropdown-item" href="?sort=newest">Más recientes</a></li>
+                                    <li><a class="dropdown-item" href="?sort=area_desc">Mayor área</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-6 text-end">
+                            <span class="text-muted">
+                                Mostrando <strong><t t-esc="len(properties)"/></strong> resultados
+                                <t t-if="product_count">
+                                    de <strong><t t-esc="product_count"/></strong>
+                                </t>
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Grid de propiedades -->
+                    <div class="row g-4">
+                        <t t-if="not properties">
+                            <div class="col-12 text-center py-5">
+                                <i class="fa fa-search fa-4x text-muted mb-3"/>
+                                <h4 class="text-muted">No se encontraron propiedades</h4>
+                                <p class="text-muted">Intenta ajustar tus criterios de búsqueda</p>
+                            </div>
+                        </t>
+
+                        <t t-foreach="properties" t-as="property">
+                            <div class="col-lg-4 col-md-6">
+                                <div class="property-card card h-100 border-0 shadow-sm rounded-3">
+                                    <!-- Imagen de la propiedad -->
+                                    <div class="position-relative">
+                                        <t t-if="property.image_1920">
+                                            <img t-att-src="'data:image/png;base64,%s' % property.image_1920.decode('utf-8')" 
+                                                 class="card-img-top" 
+                                                 style="height: 250px; object-fit: cover;"
+                                                 t-att-alt="property.name"/>
+                                        </t>
+                                        <t t-else="">
+                                            <div class="card-img-top bg-light d-flex align-items-center justify-content-center" 
+                                                 style="height: 250px;">
+                                                <i class="fa fa-home fa-3x text-muted"/>
+                                            </div>
+                                        </t>
+                                        
+                                        <!-- Etiqueta de precio -->
+                                        <div class="position-absolute top-0 end-0 m-3">
+                                            <span class="badge bg-danger px-3 py-2 fs-6">
+                                                <t t-esc="'${:,.0f}'.format(property.list_price).replace(',', '.')"/>
+                                            </span>
+                                        </div>
+                                        
+                                        <!-- Etiqueta de estado -->
+                                        <div class="position-absolute top-0 start-0 m-3">
+                                            <t t-if="property.type_service == 'rent'">
+                                                <span class="badge bg-primary">Arriendo</span>
+                                            </t>
+                                            <t t-if="property.type_service == 'sale'">
+                                                <span class="badge bg-success">Venta</span>
+                                            </t>
+                                        </div>
+                                    </div>
+
+                                    <!-- Contenido de la tarjeta -->
+                                    <div class="card-body">
+                                        <h5 class="card-title mb-2">
+                                            <a t-att-href="'/property/%s' % property.id" 
+                                               class="text-decoration-none text-dark">
+                                                <t t-esc="property.name[:50]"/>
+                                            </a>
+                                        </h5>
+                                        
+                                        <!-- Ubicación -->
+                                        <p class="text-muted small mb-3">
+                                            <i class="fa fa-map-marker-alt me-1"/>
+                                            <t t-if="property.region_id">
+                                                <t t-esc="property.region_id.name"/>, 
+                                            </t>
+                                            <t t-if="property.city_id">
+                                                <t t-esc="property.city_id.name"/>
+                                            </t>
+                                        </p>
+
+                                        <!-- Características -->
+                                        <div class="property-features d-flex justify-content-between mb-3">
+                                            <t t-if="property.property_type in ['apartment', 'house']">
+                                                <span class="feature-item text-muted small">
+                                                    <img src="/bohio_real_estate/static/src/img/habitacion-8.png" 
+                                                         style="width: 20px; height: 20px;" 
+                                                         alt="Habitaciones"/>
+                                                    <strong t-esc="property.bedrooms or 0"/>
+                                                </span>
+                                                <span class="feature-item text-muted small">
+                                                    <img src="/bohio_real_estate/static/src/img/baño_1-8.png" 
+                                                         style="width: 20px; height: 20px;" 
+                                                         alt="Baños"/>
+                                                    <strong t-esc="property.bathrooms or 0"/>
+                                                </span>
+                                                <span class="feature-item text-muted small">
+                                                    <img src="/bohio_real_estate/static/src/img/areas_1-8.png" 
+                                                         style="width: 20px; height: 20px;" 
+                                                         alt="Área"/>
+                                                    <strong t-esc="property.area_constructed or 0"/> m²
+                                                </span>
+                                            </t>
+                                            
+                                            <t t-if="property.property_type == 'lot'">
+                                                <span class="feature-item text-muted small">
+                                                    <i class="fa fa-ruler-combined"/>
+                                                    <strong t-esc="property.area_total or 0"/> m²
+                                                </span>
+                                            </t>
+                                        </div>
+
+                                        <!-- Código de propiedad -->
+                                        <div class="mb-3">
+                                            <small class="text-muted">
+                                                Código: <strong t-esc="property.default_code or 'N/A'"/>
+                                            </small>
+                                        </div>
+
+                                        <!-- Botón de acción -->
+                                        <a t-att-href="'/property/%s' % property.id" 
+                                           class="btn btn-outline-danger w-100">
+                                            Ver Detalles
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </div>
+
+                    <!-- Paginación -->
+                    <div class="row mt-5" t-if="product_count &gt; 0">
+                        <div class="col-12">
+                            <t t-call="website.pager"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal de búsqueda por código -->
+            <div class="modal fade" id="codeSearchModal" tabindex="-1" aria-labelledby="codeSearchModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="codeSearchModalLabel">
+                                <i class="fa fa-qrcode me-2"/> Buscar por Código
+                            </h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"/>
+                        </div>
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label for="property_code_input" class="form-label">
+                                    Ingresa el código de la propiedad
+                                </label>
+                                <input type="text" class="form-control" id="property_code_input"
+                                       placeholder="Ej: BOH-001"/>
+                            </div>
+                            <div id="code_search_result" class="alert" style="display:none;"></div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="button" class="btn btn-danger" id="search_by_code_btn">
+                                <i class="fa fa-search"/> Buscar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CSS adicional para modo oscuro y mejoras -->
+            <style>
+                /* Modo oscuro */
+                @media (prefers-color-scheme: dark) {
+                    .bohio-properties-shop {
+                        background-color: #1a1a1a;
+                        color: #f0f0f0;
+                    }
+                    
+                    .search-box {
+                        background-color: #2d2d2d !important;
+                        border: 1px solid #3d3d3d;
+                    }
+                    
+                    .property-card {
+                        background-color: #2d2d2d !important;
+                        border: 1px solid #3d3d3d !important;
+                    }
+                    
+                    .card-title a {
+                        color: #f0f0f0 !important;
+                    }
+                    
+                    .text-muted {
+                        color: #b0b0b0 !important;
+                    }
+                    
+                    .form-control,
+                    .form-select {
+                        background-color: #3d3d3d;
+                        border-color: #4d4d4d;
+                        color: #f0f0f0;
+                    }
+                    
+                    .form-control:focus,
+                    .form-select:focus {
+                        background-color: #4d4d4d;
+                        border-color: #E31E24;
+                        color: #f0f0f0;
+                    }
+                    
+                    .modal-content {
+                        background-color: #2d2d2d;
+                        color: #f0f0f0;
+                    }
+                    
+                    .dropdown-menu {
+                        background-color: #2d2d2d;
+                        border-color: #3d3d3d;
+                    }
+                    
+                    .dropdown-item {
+                        color: #f0f0f0;
+                    }
+                    
+                    .dropdown-item:hover {
+                        background-color: #3d3d3d;
+                    }
+                }
+                
+                /* Transiciones suaves */
+                .property-card {
+                    transition: transform 0.3s ease, box-shadow 0.3s ease;
+                    cursor: pointer;
+                }
+                
+                .property-card:hover {
+                    transform: translateY(-8px);
+                    box-shadow: 0 15px 35px rgba(227, 30, 36, 0.2) !important;
+                }
+                
+                /* Botones */
+                .btn-danger {
+                    background-color: #E31E24;
+                    border-color: #E31E24;
+                }
+                
+                .btn-danger:hover {
+                    background-color: #c01a1f;
+                    border-color: #c01a1f;
+                }
+                
+                .btn-outline-danger {
+                    color: #E31E24;
+                    border-color: #E31E24;
+                }
+                
+                .btn-outline-danger:hover {
+                    background-color: #E31E24;
+                    border-color: #E31E24;
+                    color: white;
+                }
+                
+                /* Badges */
+                .badge.bg-danger {
+                    background-color: #E31E24 !important;
+                }
+                
+                /* Características de propiedades */
+                .property-features {
+                    border-top: 1px solid #e9ecef;
+                    border-bottom: 1px solid #e9ecef;
+                    padding: 10px 0;
+                }
+                
+                @media (prefers-color-scheme: dark) {
+                    .property-features {
+                        border-color: #3d3d3d;
+                    }
+                }
+                
+                /* Imagen de la tarjeta */
+                .card-img-top {
+                    transition: transform 0.3s ease;
+                }
+                
+                .property-card:hover .card-img-top {
+                    transform: scale(1.05);
+                }
+                
+                .property-card .position-relative {
+                    overflow: hidden;
+                    border-radius: 0.5rem 0.5rem 0 0;
+                }
+            </style>
+
+            <!-- Script para sincronizar precios y búsqueda por código -->
+            <script type="text/javascript">
+                document.addEventListener('DOMContentLoaded', function() {
+                    const priceMin = document.getElementById('price_min');
+                    const priceMax = document.getElementById('price_max');
+
+                    if (priceMin &amp;&amp; priceMax) {
+                        // Función para sincronizar precios
+                        function syncPrices(sourceInput, targetInput) {
+                            const sourceValue = parseFloat(sourceInput.value) || 0;
+                            const targetValue = parseFloat(targetInput.value) || 0;
+
+                            if (sourceValue > 0 &amp;&amp; targetValue === 0) {
+                                targetInput.value = sourceValue;
+                            }
+                        }
+
+                        priceMin.addEventListener('blur', function() {
+                            syncPrices(priceMin, priceMax);
+                        });
+
+                        priceMax.addEventListener('blur', function() {
+                            syncPrices(priceMax, priceMin);
+                        });
+
+                        priceMin.addEventListener('input', function() {
+                            const minValue = parseFloat(priceMin.value) || 0;
+                            const maxValue = parseFloat(priceMax.value) || 0;
+
+                            if (minValue > 0 &amp;&amp; maxValue > 0 &amp;&amp; minValue > maxValue) {
+                                priceMax.value = minValue;
+                            }
+                        });
+
+                        priceMax.addEventListener('input', function() {
+                            const minValue = parseFloat(priceMin.value) || 0;
+                            const maxValue = parseFloat(priceMax.value) || 0;
+
+                            if (maxValue > 0 &amp;&amp; minValue > 0 &amp;&amp; maxValue &lt; minValue) {
+                                priceMin.value = maxValue;
+                            }
+                        });
+                    }
+
+                    // Búsqueda por código
+                    const searchByCodeBtn = document.getElementById('search_by_code_btn');
+                    if (searchByCodeBtn) {
+                        searchByCodeBtn.addEventListener('click', function() {
+                            const code = document.getElementById('property_code_input').value;
+                            if (code) {
+                                window.location.href = '/properties?code=' + encodeURIComponent(code);
+                            }
+                        });
+                    }
+                });
+            </script>
+        </t>
+    </template>
+</odoo>
