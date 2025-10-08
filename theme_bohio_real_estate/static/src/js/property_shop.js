@@ -12,6 +12,12 @@ class PropertyShop {
         this.autocompleteTimeout = null;
         this.currentProperties = [];
 
+        // Paginación
+        this.currentPage = 1;
+        this.itemsPerPage = 12;
+        this.totalItems = 0;
+        this.totalPages = 0;
+
         this.init();
     }
 
@@ -225,7 +231,8 @@ class PropertyShop {
                 body: JSON.stringify({
                     ...this.filters,
                     context: this.context,
-                    limit: 50
+                    limit: this.itemsPerPage,
+                    offset: (this.currentPage - 1) * this.itemsPerPage
                 })
             });
 
@@ -241,11 +248,15 @@ class PropertyShop {
             // Odoo JSON-RPC wrapper: data puede ser {result: {...}} o directamente {...}
             const result = data.result || data;
             this.currentProperties = result.items || result.properties || [];
-            console.log('Propiedades procesadas:', this.currentProperties.length);
+            this.totalItems = result.total || this.currentProperties.length;
+            this.totalPages = Math.ceil(this.totalItems / this.itemsPerPage);
+
+            console.log(`Propiedades: ${this.currentProperties.length} de ${this.totalItems} total (Página ${this.currentPage}/${this.totalPages})`);
 
             this.renderProperties(this.currentProperties);
             this.updateMap(this.currentProperties);
-            this.updateCounter(this.currentProperties.length);
+            this.updateCounter(this.totalItems);
+            this.renderPagination();
         } catch (error) {
             console.error('Error cargando propiedades:', error);
 
@@ -634,6 +645,103 @@ class PropertyShop {
         localStorage.removeItem('bohio_comparison');
         this.updateComparisonBadge();
         this.renderProperties(this.currentProperties);
+    }
+    // =================== PAGINACIÓN ===================
+
+    renderPagination() {
+        const container = document.getElementById('paginationContainer');
+        if (!container || this.totalPages <= 1) {
+            if (container) container.innerHTML = '';
+            return;
+        }
+
+        const maxButtons = 5;
+        let startPage = Math.max(1, this.currentPage - Math.floor(maxButtons / 2));
+        let endPage = Math.min(this.totalPages, startPage + maxButtons - 1);
+
+        if (endPage - startPage < maxButtons - 1) {
+            startPage = Math.max(1, endPage - maxButtons + 1);
+        }
+
+        let html = '<nav aria-label="Paginación de propiedades"><ul class="pagination justify-content-center mb-0">';
+
+        // Botón Anterior
+        html += `
+            <li class="page-item ${this.currentPage === 1 ? 'disabled' : ''}">
+                <a class="page-link" href="#" data-page="${this.currentPage - 1}" aria-label="Anterior">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+        `;
+
+        // Primera página si no está visible
+        if (startPage > 1) {
+            html += `<li class="page-item"><a class="page-link" href="#" data-page="1">1</a></li>`;
+            if (startPage > 2) {
+                html += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+            }
+        }
+
+        // Páginas numeradas
+        for (let i = startPage; i <= endPage; i++) {
+            html += `
+                <li class="page-item ${i === this.currentPage ? 'active' : ''}">
+                    <a class="page-link" href="#" data-page="${i}">${i}</a>
+                </li>
+            `;
+        }
+
+        // Última página si no está visible
+        if (endPage < this.totalPages) {
+            if (endPage < this.totalPages - 1) {
+                html += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+            }
+            html += `<li class="page-item"><a class="page-link" href="#" data-page="${this.totalPages}">${this.totalPages}</a></li>`;
+        }
+
+        // Botón Siguiente
+        html += `
+            <li class="page-item ${this.currentPage === this.totalPages ? 'disabled' : ''}">
+                <a class="page-link" href="#" data-page="${this.currentPage + 1}" aria-label="Siguiente">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        `;
+
+        html += '</ul></nav>';
+
+        // Info de resultados
+        const start = ((this.currentPage - 1) * this.itemsPerPage) + 1;
+        const end = Math.min(this.currentPage * this.itemsPerPage, this.totalItems);
+        html += `
+            <div class="text-center mt-3 text-muted small">
+                Mostrando ${start} a ${end} de ${this.totalItems} propiedades
+            </div>
+        `;
+
+        container.innerHTML = html;
+
+        // Event listeners
+        container.querySelectorAll('.page-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const page = parseInt(e.currentTarget.dataset.page);
+                if (page && page !== this.currentPage && page >= 1 && page <= this.totalPages) {
+                    this.goToPage(page);
+                }
+            });
+        });
+    }
+
+    goToPage(page) {
+        this.currentPage = page;
+        this.loadProperties();
+
+        // Scroll suave a la parte superior de los resultados
+        const resultsContainer = document.querySelector('.property-results-grid');
+        if (resultsContainer) {
+            resultsContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
     }
 }
 

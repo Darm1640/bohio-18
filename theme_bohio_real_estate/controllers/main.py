@@ -729,12 +729,12 @@ class BohioRealEstateController(http.Controller):
         return request.render('theme_bohio_real_estate.bohio_homepage_new', {})
 
     @http.route(['/bohio/api/properties'], type='json', auth='public', website=True)
-    def api_get_properties(self, type_service=None, state=None, is_project=False, limit=6,
-                          property_type=None, bedrooms=None, bathrooms=None,
+    def api_get_properties(self, type_service=None, state=None, is_project=False, limit=12,
+                          offset=0, property_type=None, bedrooms=None, bathrooms=None,
                           min_price=None, max_price=None, garage=None, pool=None,
                           garden=None, elevator=None, **kwargs):
-        """API para obtener propiedades - compatible con homepage y shop"""
-        _logger.info(f"API /bohio/api/properties llamado con filtros: type_service={type_service}, property_type={property_type}, limit={limit}")
+        """API para obtener propiedades con paginación - compatible con homepage y shop"""
+        _logger.info(f"API /bohio/api/properties - limit={limit}, offset={offset}, filtros: type_service={type_service}, property_type={property_type}")
 
         domain = [
             ('is_property', '=', True),
@@ -809,13 +809,21 @@ class BohioRealEstateController(http.Controller):
         try:
             Property = request.env['product.template'].sudo()
 
+            # Obtener total count para paginación
+            total_count = Property.search_count(domain)
+
             # Limitar búsqueda para evitar timeouts
-            search_limit = min(int(limit), 100)  # Máximo 100 propiedades
+            search_limit = min(int(limit), 100)  # Máximo 100 propiedades por página
+            search_offset = int(offset)
 
-            properties = Property.search(domain, limit=search_limit, order='sequence ASC, create_date DESC')
+            properties = Property.search(
+                domain,
+                limit=search_limit,
+                offset=search_offset,
+                order='sequence ASC, create_date DESC'
+            )
 
-            _logger.info(f"API properties: Dominio de búsqueda: {domain}")
-            _logger.info(f"API properties: Propiedades encontradas: {len(properties)}")
+            _logger.info(f"API properties: Total={total_count}, Devolviendo={len(properties)}, Offset={search_offset}, Limit={search_limit}")
 
         except Exception as e:
             _logger.error(f"Error en búsqueda de propiedades: {str(e)}")
@@ -823,6 +831,7 @@ class BohioRealEstateController(http.Controller):
                 'items': [],
                 'properties': [],
                 'count': 0,
+                'total': 0,
                 'error': str(e)
             }
 
@@ -863,10 +872,13 @@ class BohioRealEstateController(http.Controller):
         result = {
             'items': properties_data,
             'properties': properties_data,  # Mantener compatibilidad
-            'count': len(properties_data)
+            'count': len(properties_data),
+            'total': total_count,
+            'offset': search_offset,
+            'limit': search_limit
         }
 
-        _logger.info(f"API properties: Devolviendo {len(properties_data)} propiedades")
+        _logger.info(f"API properties: Devolviendo {len(properties_data)} de {total_count} propiedades totales")
 
         return result
 

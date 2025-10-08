@@ -225,9 +225,9 @@
                                             </div>
 
                                             <!-- Paginación -->
-                                            <nav class="mt-4" id="pagination-container" style="display: none;">
-                                                <ul class="pagination justify-content-center"></ul>
-                                            </nav>
+                                            <div class="mt-5" id="paginationContainer">
+                                                <!-- La paginación se renderizará aquí vía JavaScript -->
+                                            </div>
                                         </div>
 
                                         <!-- Vista Mapa -->
