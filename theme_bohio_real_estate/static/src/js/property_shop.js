@@ -216,6 +216,7 @@ class PropertyShop {
         `;
 
         try {
+            console.log('Enviando request a /bohio/api/properties con filtros:', this.filters);
             const response = await fetch('/bohio/api/properties', {
                 method: 'POST',
                 headers: {
@@ -227,9 +228,19 @@ class PropertyShop {
                     limit: 50
                 })
             });
-            const data = await response.json();
 
-            this.currentProperties = data.items || [];
+            console.log('Response recibido, status:', response.status);
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            console.log('Datos recibidos:', data);
+
+            this.currentProperties = data.items || data.properties || [];
+            console.log('Propiedades procesadas:', this.currentProperties.length);
+
             this.renderProperties(this.currentProperties);
             this.updateMap(this.currentProperties);
             this.updateCounter(this.currentProperties.length);
@@ -238,7 +249,8 @@ class PropertyShop {
             gridContainer.innerHTML = `
                 <div class="col-12 text-center py-5">
                     <i class="fa fa-exclamation-triangle fa-3x text-danger mb-3"></i>
-                    <p class="text-muted">Error al cargar propiedades</p>
+                    <p class="text-muted">Error al cargar propiedades: ${error.message}</p>
+                    <button class="btn btn-danger mt-3" onclick="location.reload()">Reintentar</button>
                 </div>
             `;
         }
