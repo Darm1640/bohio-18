@@ -4,8 +4,8 @@
         <t t-call="website.layout">
             <div id="wrap" class="oe_structure property-detail-page">
                 <div class="container mt-4 mb-5">
-                    <div class="row justify-content-center">
-                        <div class="col-lg-10">
+                    <div class="row">
+                        <div class="col-lg-8">
                             <div class="card shadow-sm mb-4 border-0" style="border-radius: 16px; overflow: hidden;">
                                 <!-- Imagen Principal Cuadrada -->
                                 <div class="position-relative" style="width: 100%; padding-top: 75%; overflow: hidden; background: #f8f9fa;">
@@ -69,11 +69,11 @@
                                         </div>
                                     </div>
 
-                                    <!-- DESCRIPCIÓN Y OBSERVACIONES DESTACADAS -->
-                                    <t t-if="property.description">
+                                    <!-- OBSERVACIONES DESTACADAS -->
+                                    <t t-if="property.observations">
                                         <div class="alert alert-light border-start border-danger border-4 mb-4">
                                             <h5 class="text-danger mb-3"><i class="fa fa-comment-o"/> Descripción de la Propiedad</h5>
-                                            <div t-field="property.description" class="text-muted"/>
+                                            <div t-field="property.observations" class="text-muted" style="white-space: pre-wrap;"/>
                                         </div>
                                     </t>
 
@@ -507,8 +507,9 @@
                         </div>
 
                         <div class="col-lg-4">
-                            <div class="card shadow-sm sticky-top" style="top: 20px;">
-                                <div class="card-header bg-primary text-white">
+                            <!-- FORMULARIO DE CONTACTO -->
+                            <div class="card shadow-sm sticky-top mb-4" style="top: 20px; border: 2px solid #E31E24;">
+                                <div class="card-header text-white" style="background: #E31E24;">
                                     <h5 class="mb-0"><i class="fa fa-envelope"/> Contactar</h5>
                                 </div>
                                 <div class="card-body">
@@ -517,22 +518,22 @@
                                         <input type="hidden" name="property_id" t-att-value="property.id"/>
 
                                         <div class="mb-3">
-                                            <label class="form-label">Nombre Completo *</label>
-                                            <input type="text" name="name" class="form-control" required="required"/>
+                                            <label class="form-label fw-bold">Nombre Completo *</label>
+                                            <input type="text" name="name" class="form-control" required="required" placeholder="Tu nombre completo"/>
                                         </div>
 
                                         <div class="mb-3">
-                                            <label class="form-label">Correo Electrónico *</label>
-                                            <input type="email" name="email" class="form-control" required="required"/>
+                                            <label class="form-label fw-bold">Correo Electrónico *</label>
+                                            <input type="email" name="email" class="form-control" required="required" placeholder="tu@email.com"/>
                                         </div>
 
                                         <div class="mb-3">
-                                            <label class="form-label">Teléfono</label>
-                                            <input type="tel" name="phone" class="form-control"/>
+                                            <label class="form-label fw-bold">Teléfono *</label>
+                                            <input type="tel" name="phone" class="form-control" required="required" placeholder="+57 300 123 4567"/>
                                         </div>
 
                                         <div class="mb-3">
-                                            <label class="form-label">Tipo de Cliente</label>
+                                            <label class="form-label fw-bold">Tipo de Cliente</label>
                                             <select name="client_type" class="form-select">
                                                 <option value="buyer">Comprador</option>
                                                 <option value="tenant">Arrendatario</option>
@@ -541,11 +542,11 @@
                                         </div>
 
                                         <div class="mb-3">
-                                            <label class="form-label">Mensaje</label>
+                                            <label class="form-label fw-bold">Mensaje</label>
                                             <textarea name="message" class="form-control" rows="4" placeholder="Estoy interesado en esta propiedad..."></textarea>
                                         </div>
 
-                                        <button type="submit" class="btn btn-primary w-100">
+                                        <button type="submit" class="btn w-100 text-white" style="background: #E31E24; border: none;">
                                             <i class="fa fa-send"/> Enviar Consulta
                                         </button>
                                     </form>
@@ -557,9 +558,24 @@
                                             <i class="fa fa-arrow-left"/> Volver a Propiedades
                                         </a>
                                         <a t-if="property.latitude and property.longitude"
-                                           href="/properties/map" class="btn btn-outline-info">
+                                           href="/properties/map" class="btn" style="background: #E31E24; color: white; border: none;">
                                             <i class="fa fa-map"/> Ver en Mapa
                                         </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- PROPIEDADES SIMILARES -->
+                            <div class="card shadow-sm border-0">
+                                <div class="card-header text-white" style="background: #E31E24;">
+                                    <h5 class="mb-0"><i class="fa fa-th-large"/> Propiedades Similares</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div id="similar-properties-container">
+                                        <div class="text-center text-muted py-4">
+                                            <i class="fa fa-spinner fa-spin fa-2x mb-2"></i>
+                                            <p>Cargando propiedades similares...</p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -570,6 +586,7 @@
 
             <script>
                 document.addEventListener('DOMContentLoaded', function() {
+                    // Mapa
                     const mapElement = document.getElementById('property_map');
                     if (mapElement) {
                         const lat = parseFloat(mapElement.dataset.lat);
@@ -588,7 +605,74 @@
                                 .openPopup();
                         }
                     }
+
+                    // Cargar propiedades similares
+                    loadSimilarProperties();
                 });
+
+                async function loadSimilarProperties() {
+                    const container = document.getElementById('similar-properties-container');
+                    const propertyId = <t t-esc="property.id"/>;
+
+                    try {
+                        const response = await fetch(`/property/${propertyId}/similar`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({})
+                        });
+
+                        const data = await response.json();
+
+                        if (data.success &amp;&amp; data.properties &amp;&amp; data.properties.length > 0) {
+                            let html = '';
+                            data.properties.forEach(prop => {
+                                const imageUrl = prop.image_url || '/theme_bohio_real_estate/static/src/img/banner1.jpg';
+                                const price = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 }).format(prop.list_price);
+                                const priceLabel = prop.type_service === 'rent' ? `${price}/mes` : price;
+
+                                html += `
+                                    &lt;div class="card mb-3 border-0 shadow-sm" style="cursor: pointer;" onclick="window.location='/property/${prop.id}'"&gt;
+                                        &lt;div class="row g-0"&gt;
+                                            &lt;div class="col-4"&gt;
+                                                &lt;img src="${imageUrl}" class="img-fluid rounded-start" style="height: 100px; width: 100%; object-fit: cover;" alt="${prop.name}"/&gt;
+                                            &lt;/div&gt;
+                                            &lt;div class="col-8"&gt;
+                                                &lt;div class="card-body p-2"&gt;
+                                                    &lt;h6 class="card-title mb-1 small text-truncate"&gt;${prop.name.substring(0, 30)}...&lt;/h6&gt;
+                                                    &lt;p class="mb-1 small text-muted"&gt;&lt;i class="fa fa-map-marker text-danger"&gt;&lt;/i&gt; ${prop.city}&lt;/p&gt;
+                                                    &lt;p class="mb-0 fw-bold text-danger small"&gt;${priceLabel}&lt;/p&gt;
+                                                    &lt;div class="d-flex gap-2 small text-muted mt-1"&gt;
+                                                        ${prop.bedrooms ? `&lt;span&gt;&lt;i class="fa fa-bed"&gt;&lt;/i&gt; ${prop.bedrooms}&lt;/span&gt;` : ''}
+                                                        ${prop.bathrooms ? `&lt;span&gt;&lt;i class="fa fa-bath"&gt;&lt;/i&gt; ${prop.bathrooms}&lt;/span&gt;` : ''}
+                                                        ${prop.area_constructed ? `&lt;span&gt;&lt;i class="fa fa-arrows-alt"&gt;&lt;/i&gt; ${prop.area_constructed}m²&lt;/span&gt;` : ''}
+                                                    &lt;/div&gt;
+                                                &lt;/div&gt;
+                                            &lt;/div&gt;
+                                        &lt;/div&gt;
+                                    &lt;/div&gt;
+                                `;
+                            });
+
+                            container.innerHTML = html;
+                        } else {
+                            container.innerHTML = `
+                                &lt;div class="text-center text-muted py-4"&gt;
+                                    &lt;i class="fa fa-info-circle fa-2x mb-2"&gt;&lt;/i&gt;
+                                    &lt;p&gt;No se encontraron propiedades similares&lt;/p&gt;
+                                &lt;/div&gt;
+                            `;
+                        }
+                    } catch (error) {
+                        console.error('Error cargando propiedades similares:', error);
+                        container.innerHTML = `
+                            &lt;div class="alert alert-danger"&gt;
+                                &lt;i class="fa fa-exclamation-triangle"&gt;&lt;/i&gt; Error al cargar propiedades similares
+                            &lt;/div&gt;
+                        `;
+                    }
+                }
             </script>
 
             <!-- Botón Flotante de WhatsApp - Rojo BOHIO -->
