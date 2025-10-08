@@ -35,7 +35,7 @@
         'views/property_detail_template.xml',
         'views/properties_list_map.xml',
         'views/homepage_landing.xml',
-        'views/homepage/homepage.xml',
+        'views/homepage_template.xml',
         'views/property_search_template.xml',
 
         # Pages
