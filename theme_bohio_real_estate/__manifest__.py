@@ -61,6 +61,7 @@
             'theme_bohio_real_estate/static/src/js/property_compare.js',
             'theme_bohio_real_estate/static/src/js/homepage_new.js',
             'theme_bohio_real_estate/static/src/js/property_shop.js',
+            'theme_bohio_real_estate/static/src/js/proyectos.js',
         ],
     },
     'installable': True,
