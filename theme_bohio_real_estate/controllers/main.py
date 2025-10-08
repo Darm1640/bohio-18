@@ -729,31 +729,88 @@ class BohioRealEstateController(http.Controller):
         return request.render('theme_bohio_real_estate.bohio_homepage_new', {})
 
     @http.route(['/bohio/api/properties'], type='json', auth='public', website=True)
-    def api_get_properties(self, type_service=None, state=None, is_project=False, limit=6, **kwargs):
-        """API para obtener propiedades para la homepage"""
+    def api_get_properties(self, type_service=None, state=None, is_project=False, limit=6,
+                          property_type=None, bedrooms=None, bathrooms=None,
+                          min_price=None, max_price=None, garage=None, pool=None,
+                          garden=None, elevator=None, **kwargs):
+        """API para obtener propiedades - compatible con homepage y shop"""
+        _logger.info(f"API /bohio/api/properties llamado con filtros: type_service={type_service}, property_type={property_type}, limit={limit}")
+
         domain = [
             ('is_property', '=', True),
             ('active', '=', True),
-            ('state', '=', 'free'),
         ]
 
+        # Filtrar por estado de propiedad (solo disponibles si no se especifica)
+        if kwargs.get('context') == 'public' or not state:
+            domain.append(('state', '=', 'free'))
+
+        # Tipo de servicio
         if type_service:
             if type_service == 'sale_rent':
                 domain.append(('type_service', 'in', ['sale', 'rent', 'sale_rent']))
             else:
                 domain.append(('type_service', 'in', [type_service, 'sale_rent']))
 
+        # Estado del producto (nuevo/usado)
         if state:
             if state == 'used':
                 domain.append(('product_state', '=', 'used'))
             elif state == 'new':
                 domain.append(('product_state', '=', 'new'))
 
+        # Proyectos
         if is_project:
             domain.append(('project_worksite_id', '!=', False))
 
+        # NUEVOS FILTROS PARA PROPERTY SHOP
+
+        # Tipo de propiedad
+        if property_type:
+            domain.append(('property_type', '=', property_type))
+
+        # Habitaciones
+        if bedrooms:
+            try:
+                domain.append(('num_bedrooms', '>=', int(bedrooms)))
+            except ValueError:
+                pass
+
+        # Baños
+        if bathrooms:
+            try:
+                domain.append(('num_bathrooms', '>=', int(bathrooms)))
+            except ValueError:
+                pass
+
+        # Precio
+        price_field = 'net_rental_price' if type_service in ['rent', 'vacation_rent'] else 'net_price'
+        if min_price:
+            try:
+                domain.append((price_field, '>=', float(min_price)))
+            except ValueError:
+                pass
+        if max_price:
+            try:
+                domain.append((price_field, '<=', float(max_price)))
+            except ValueError:
+                pass
+
+        # Características booleanas
+        if garage:
+            domain.append(('garage', '=', True))
+        if pool:
+            domain.append(('pools', '=', True))
+        if garden:
+            domain.append(('garden', '=', True))
+        if elevator:
+            domain.append(('elevator', '=', True))
+
         Property = request.env['product.template'].sudo()
         properties = Property.search(domain, limit=limit, order='sequence ASC, create_date DESC')
+
+        _logger.info(f"API properties: Dominio de búsqueda: {domain}")
+        _logger.info(f"API properties: Propiedades encontradas: {len(properties)}")
 
         # Preparar datos para JSON
         properties_data = []
@@ -787,11 +844,15 @@ class BohioRealEstateController(http.Controller):
                 'longitude': prop.longitude if hasattr(prop, 'longitude') else None,
             })
 
-        return {
+        result = {
             'items': properties_data,
             'properties': properties_data,  # Mantener compatibilidad
             'count': len(properties_data)
         }
+
+        _logger.info(f"API properties: Devolviendo {len(properties_data)} propiedades")
+
+        return result
 
     @http.route(['/bohio/api/cities/autocomplete'], type='json', auth='public', website=True)
     def api_cities_autocomplete(self, query='', limit=10, **kwargs):
