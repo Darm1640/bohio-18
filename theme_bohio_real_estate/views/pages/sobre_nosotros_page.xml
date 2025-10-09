@@ -1,72 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- Página Sobre Nosotros BOHIO -->
-    <template id="bohio_sobre_nosotros_page" name="BOHIO Sobre Nosotros">
+    <!-- Página Quienes Somos BOHIO -->
+    <template id="bohio_sobre_nosotros_page" name="BOHIO Quienes Somos">
         <t t-call="website.layout">
-            <div id="wrap" class="oe_structure bohio-sobre-nosotros-page">
+            <div id="wrap" class="oe_structure bohio-quienes-somos-page">
 
-                <!-- Hero Section -->
-                <section class="sobre-nosotros-hero bg-dark text-white py-5 position-relative" style="background: linear-gradient(rgba(227, 30, 36, 0.85), rgba(0,0,0,0.7)), url('/theme_bohio_real_estate/static/src/img/banner2.jpg') center/cover; min-height: 450px;">
-                    <div class="container h-100 d-flex align-items-center justify-content-center">
-                        <div class="text-center">
-                            <h1 class="display-2 fw-bold mb-4">Sobre Nosotros</h1>
-                            <p class="lead fs-3">Experiencia, confianza y resultados</p>
+                <!-- Hero Section con Imagen -->
+                <section class="quienes-somos-hero position-relative" style="background: url('/theme_bohio_real_estate/static/src/img/quienes-somos.jpg') center/cover; min-height: 500px;">
+                    <div class="overlay position-absolute top-0 start-0 w-100 h-100" style="background: linear-gradient(rgba(227, 30, 36, 0.7), rgba(0,0,0,0.6));"></div>
+                    <div class="container position-relative h-100 d-flex align-items-center justify-content-center" style="min-height: 500px;">
+                        <div class="text-center text-white">
+                            <h1 class="display-2 fw-bold mb-3" style="text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">
+                                Quienes Somos
+                            </h1>
+                            <div class="d-inline-block bg-danger px-4 py-2 rounded-3 mt-3">
+                                <p class="mb-0 fs-4 fw-bold">14+ Años de experiencia</p>
+                            </div>
                         </div>
                     </div>
                 </section>
 
-                <!-- Quiénes Somos -->
-                <section class="quienes-somos py-5 bg-light">
+                <!-- Somos Bohío -->
+                <section class="somos-bohio py-5 bg-white">
                     <div class="container">
                         <div class="row align-items-center g-5">
-                            <div class="col-lg-6">
-                                <h2 class="display-5 fw-bold text-danger mb-4">¿Quiénes Somos?</h2>
-                                <p class="lead mb-4">
-                                    BOHIO Consultores es una empresa inmobiliaria colombiana especializada en la compra,
-                                    venta, arriendo y administración de propiedades.
-                                </p>
-                                <p class="mb-4">
-                                    Nuestro equipo de profesionales especializados trabaja día a día para ofrecer
-                                    el mejor servicio a nuestros clientes, garantizando transparencia, honestidad
-                                    y compromiso en cada transacción.
-                                </p>
-                                <p class="mb-4">
-                                    Nos especializamos en la compra, venta, arriendo y administración de propiedades
-                                    residenciales, comerciales e industriales, brindando servicios de consultoría inmobiliaria,
-                                    gestión de clientes y registro de propiedades.
-                                </p>
+                            <div class="col-lg-5">
+                                <div class="position-relative">
+                                    <img src="/theme_bohio_real_estate/static/src/img/quienes-somos.jpg"
+                                         alt="Bohío Consultores"
+                                         class="img-fluid rounded-4 shadow-lg"/>
+                                    <div class="position-absolute top-0 start-0 bg-danger text-white px-3 py-2 m-3 rounded">
+                                        <strong>14+ Años de experiencia</strong>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-lg-6">
-                                <img src="/theme_bohio_real_estate/static/src/img/banner3.jpg"
-                                     alt="BOHIO Real Estate"
-                                     class="img-fluid rounded-4 shadow-lg"
-                                     style="object-fit: cover; height: 450px; width: 100%;"/>
+                            <div class="col-lg-7">
+                                <h2 class="display-5 fw-bold text-danger mb-4">Somos Bohío</h2>
+                                <h3 class="h4 fw-bold mb-4">Tu guía de confianza para decisiones inmobiliarias seguras y sostenibles</h3>
+
+                                <p class="lead mb-4">
+                                    En Bohío Consultores te apoyamos paso a paso para que tomes decisiones seguras,
+                                    rentables y con visión de futuro, tanto si buscas vivienda como invertir.
+                                </p>
+
+                                <p class="mb-4">
+                                    Somos un grupo empresarial familiar con amplia experiencia en comercialización,
+                                    promoción y gestión de proyectos inmobiliarios.
+                                </p>
+
+                                <p class="mb-4">
+                                    En Bohío, trabajamos con transparencia, compromiso y experiencia para que tomes
+                                    decisiones seguras. Tu tranquilidad es nuestra mayor prioridad.
+                                </p>
+
+                                <a href="#diferencias" class="btn btn-danger btn-lg">
+                                    LEER MÁS <i class="fa fa-arrow-right ms-2"></i>
+                                </a>
                             </div>
                         </div>
                     </div>
                 </section>
 
                 <!-- Misión, Visión, Valores -->
-                <section class="mision-vision-valores py-5">
+                <section class="mision-vision-valores py-5 bg-light">
                     <div class="container">
                         <div class="row g-4">
 
                             <!-- Misión -->
                             <div class="col-lg-4">
-                                <div class="card h-100 border-0 shadow-sm hover-lift">
-                                    <div class="card-body p-4 text-center">
-                                        <div class="icon-wrapper mb-4">
+                                <div class="card h-100 border-0 shadow-sm">
+                                    <div class="card-body p-4">
+                                        <div class="text-center mb-4">
                                             <div class="bg-danger bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center"
-                                                 style="width: 100px; height: 100px;">
-                                                <i class="fa fa-bullseye text-danger" style="font-size: 50px;"></i>
+                                                 style="width: 80px; height: 80px;">
+                                                <i class="fa fa-bullseye text-danger" style="font-size: 40px;"></i>
                                             </div>
                                         </div>
-                                        <h3 class="h4 fw-bold text-danger mb-3">Nuestra Misión</h3>
-                                        <p class="text-muted">
-                                            Ofrecer soluciones inmobiliarias integrales y personalizadas,
-                                            facilitando el acceso a la vivienda y generando valor para nuestros
-                                            clientes a través de un servicio de excelencia, ética profesional
-                                            y compromiso con la comunidad.
+                                        <h3 class="h4 fw-bold text-center mb-4">Nuestra Misión</h3>
+                                        <p class="text-center text-muted">
+                                            Ofrecer soluciones inmobiliarias integrales, transparentes y adaptadas a tus necesidades,
+                                            con atención personalizada y respaldo jurídico. Queremos que cada experiencia contigo
+                                            sea simple, segura y orientada a resultados.
                                         </p>
                                     </div>
                                 </div>
@@ -74,20 +88,19 @@
 
                             <!-- Visión -->
                             <div class="col-lg-4">
-                                <div class="card h-100 border-0 shadow-sm hover-lift">
-                                    <div class="card-body p-4 text-center">
-                                        <div class="icon-wrapper mb-4">
+                                <div class="card h-100 border-0 shadow-sm">
+                                    <div class="card-body p-4">
+                                        <div class="text-center mb-4">
                                             <div class="bg-danger bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center"
-                                                 style="width: 100px; height: 100px;">
-                                                <i class="fa fa-eye text-danger" style="font-size: 50px;"></i>
+                                                 style="width: 80px; height: 80px;">
+                                                <i class="fa fa-eye text-danger" style="font-size: 40px;"></i>
                                             </div>
                                         </div>
-                                        <h3 class="h4 fw-bold text-danger mb-3">Nuestra Visión</h3>
-                                        <p class="text-muted">
-                                            Ser la empresa inmobiliaria líder en Colombia, reconocida por nuestra
-                                            innovación, profesionalismo y compromiso con la satisfacción del cliente,
-                                            expandiendo nuestra presencia en las principales ciudades del país
-                                            para el año 2030.
+                                        <h3 class="h4 fw-bold text-center mb-4">Nuestra Visión</h3>
+                                        <p class="text-center text-muted">
+                                            Ser referentes del mercado en el Caribe colombiano, reconocidos por nuestra cercanía,
+                                            profesionalismo e innovación digital, y por generar relaciones a largo plazo con
+                                            nuestros clientes.
                                         </p>
                                     </div>
                                 </div>
@@ -95,22 +108,29 @@
 
                             <!-- Valores -->
                             <div class="col-lg-4">
-                                <div class="card h-100 border-0 shadow-sm hover-lift">
-                                    <div class="card-body p-4 text-center">
-                                        <div class="icon-wrapper mb-4">
+                                <div class="card h-100 border-0 shadow-sm">
+                                    <div class="card-body p-4">
+                                        <div class="text-center mb-4">
                                             <div class="bg-danger bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center"
-                                                 style="width: 100px; height: 100px;">
-                                                <i class="fa fa-heart text-danger" style="font-size: 50px;"></i>
+                                                 style="width: 80px; height: 80px;">
+                                                <i class="fa fa-heart text-danger" style="font-size: 40px;"></i>
                                             </div>
                                         </div>
-                                        <h3 class="h4 fw-bold text-danger mb-3">Nuestros Valores</h3>
-                                        <ul class="list-unstyled text-start mb-0">
-                                            <li class="mb-2"><i class="fa fa-check text-success me-2"></i>Honestidad y transparencia</li>
-                                            <li class="mb-2"><i class="fa fa-check text-success me-2"></i>Compromiso con el cliente</li>
-                                            <li class="mb-2"><i class="fa fa-check text-success me-2"></i>Excelencia en el servicio</li>
-                                            <li class="mb-2"><i class="fa fa-check text-success me-2"></i>Innovación constante</li>
-                                            <li class="mb-2"><i class="fa fa-check text-success me-2"></i>Responsabilidad social</li>
-                                        </ul>
+                                        <h3 class="h4 fw-bold text-center mb-4">Nuestros Valores</h3>
+                                        <div class="text-start">
+                                            <p class="mb-3">
+                                                <strong class="text-danger">Confianza:</strong> Operamos con transparencia
+                                                y claridad desde el primer contacto.
+                                            </p>
+                                            <p class="mb-3">
+                                                <strong class="text-danger">Compromiso:</strong> Nos implicamos contigo y con
+                                                tu proyecto como si fuese propio.
+                                            </p>
+                                            <p class="mb-0">
+                                                <strong class="text-danger">Servicio humano:</strong> Un equipo cercano,
+                                                dispuesto a escucharte y orientar cada paso.
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -119,176 +139,83 @@
                     </div>
                 </section>
 
-                <!-- Por qué elegirnos -->
-                <section class="why-choose-us py-5 bg-light">
+                <!-- ¿Qué nos hace diferentes? -->
+                <section id="diferencias" class="diferencias py-5 bg-white">
                     <div class="container">
                         <div class="text-center mb-5">
-                            <h2 class="display-5 fw-bold text-danger mb-3">¿Por Qué Elegirnos?</h2>
-                            <p class="lead text-muted">Razones que nos hacen tu mejor opción</p>
+                            <h2 class="display-5 fw-bold text-danger mb-4">¿Qué nos hace diferentes?</h2>
                         </div>
 
-                        <div class="row g-4">
-                            <div class="col-md-6 col-lg-3">
-                                <div class="text-center">
-                                    <div class="bg-danger bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
-                                         style="width: 80px; height: 80px;">
-                                        <i class="fa fa-medal text-danger" style="font-size: 40px;"></i>
+                        <div class="row g-4 mb-5">
+                            <div class="col-lg-6">
+                                <div class="d-flex align-items-start">
+                                    <div class="flex-shrink-0">
+                                        <div class="bg-danger rounded-circle d-flex align-items-center justify-content-center"
+                                             style="width: 60px; height: 60px;">
+                                            <i class="fa fa-check text-white fa-2x"></i>
+                                        </div>
                                     </div>
-                                    <h4 class="h5 fw-bold mb-2">Experiencia</h4>
-                                    <p class="text-muted small">
-                                        Más de 10 años en el mercado inmobiliario colombiano
-                                    </p>
+                                    <div class="flex-grow-1 ms-4">
+                                        <h4 class="fw-bold mb-3">Somos cercanos y familiares, pero con procesos robustos y respaldados</h4>
+                                        <p class="text-muted">
+                                            Combinamos el trato personal con sistemas profesionales que garantizan
+                                            seguridad en cada transacción.
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
 
-                            <div class="col-md-6 col-lg-3">
-                                <div class="text-center">
-                                    <div class="bg-danger bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
-                                         style="width: 80px; height: 80px;">
-                                        <i class="fa fa-users text-danger" style="font-size: 40px;"></i>
+                            <div class="col-lg-6">
+                                <div class="d-flex align-items-start">
+                                    <div class="flex-shrink-0">
+                                        <div class="bg-danger rounded-circle d-flex align-items-center justify-content-center"
+                                             style="width: 60px; height: 60px;">
+                                            <i class="fa fa-laptop text-white fa-2x"></i>
+                                        </div>
                                     </div>
-                                    <h4 class="h5 fw-bold mb-2">Equipo Profesional</h4>
-                                    <p class="text-muted small">
-                                        Asesores certificados y especializados en el sector
-                                    </p>
+                                    <div class="flex-grow-1 ms-4">
+                                        <h4 class="fw-bold mb-3">Integramos fuerza humana con herramientas digitales</h4>
+                                        <p class="text-muted">
+                                            Marketing online, firma electrónica y acompañamiento legal en cada paso
+                                            de tu proceso inmobiliario.
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
+                        </div>
 
-                            <div class="col-md-6 col-lg-3">
-                                <div class="text-center">
-                                    <div class="bg-danger bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
-                                         style="width: 80px; height: 80px;">
-                                        <i class="fa fa-shield-alt text-danger" style="font-size: 40px;"></i>
-                                    </div>
-                                    <h4 class="h5 fw-bold mb-2">Seguridad Jurídica</h4>
-                                    <p class="text-muted small">
-                                        Asesoría legal especializada en todas tus transacciones
-                                    </p>
-                                </div>
-                            </div>
-
-                            <div class="col-md-6 col-lg-3">
-                                <div class="text-center">
-                                    <div class="bg-danger bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
-                                         style="width: 80px; height: 80px;">
-                                        <i class="fa fa-chart-line text-danger" style="font-size: 40px;"></i>
-                                    </div>
-                                    <h4 class="h5 fw-bold mb-2">Resultados Comprobados</h4>
-                                    <p class="text-muted small">
-                                        Miles de clientes satisfechos y transacciones exitosas
-                                    </p>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="text-center p-4 border border-danger border-2 rounded-3">
+                                    <h4 class="fw-bold mb-0">
+                                        En cada paso, priman la ética, la claridad y el enfoque en tus objetivos.
+                                    </h4>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </section>
 
-                <!-- Estadísticas -->
-                <section class="estadisticas py-5 bg-danger text-white">
+                <!-- Contigo, en cada decisión -->
+                <section class="contigo-decision py-5 bg-danger text-white">
                     <div class="container">
-                        <div class="row text-center g-4">
-                            <div class="col-6 col-md-3">
-                                <div class="stat-item">
-                                    <h3 class="display-4 fw-bold mb-2">10+</h3>
-                                    <p class="mb-0">Años de Experiencia</p>
-                                </div>
-                            </div>
-                            <div class="col-6 col-md-3">
-                                <div class="stat-item">
-                                    <h3 class="display-4 fw-bold mb-2">5000+</h3>
-                                    <p class="mb-0">Clientes Satisfechos</p>
-                                </div>
-                            </div>
-                            <div class="col-6 col-md-3">
-                                <div class="stat-item">
-                                    <h3 class="display-4 fw-bold mb-2">500+</h3>
-                                    <p class="mb-0">Propiedades Activas</p>
-                                </div>
-                            </div>
-                            <div class="col-6 col-md-3">
-                                <div class="stat-item">
-                                    <h3 class="display-4 fw-bold mb-2">98%</h3>
-                                    <p class="mb-0">Satisfacción del Cliente</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
+                        <div class="text-center">
+                            <h2 class="display-5 fw-bold mb-4">Contigo, en cada decisión</h2>
+                            <p class="lead mb-4">
+                                En Bohío, no solo facilitamos transacciones, construimos confianza y relaciones duraderas.
+                            </p>
+                            <p class="fs-5 mb-5">
+                                Desde la primera asesoría hasta la entrega final y más allá, estamos contigo.
+                            </p>
 
-                <!-- Nuestro Equipo -->
-                <section class="nuestro-equipo py-5">
-                    <div class="container">
-                        <div class="text-center mb-5">
-                            <h2 class="display-5 fw-bold text-danger mb-3">Nuestro Equipo</h2>
-                            <p class="lead text-muted">Profesionales comprometidos con tu éxito</p>
-                        </div>
-
-                        <div class="row g-4">
-                            <div class="col-md-6 col-lg-4">
-                                <div class="card border-0 shadow-sm hover-lift h-100">
-                                    <div class="card-body text-center p-4">
-                                        <div class="team-avatar mb-3">
-                                            <div class="bg-danger bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center"
-                                                 style="width: 120px; height: 120px;">
-                                                <i class="fa fa-user text-danger" style="font-size: 60px;"></i>
-                                            </div>
-                                        </div>
-                                        <h4 class="h5 fw-bold mb-1">Gerente General</h4>
-                                        <p class="text-danger small mb-3">Dirección Ejecutiva</p>
-                                        <p class="text-muted small mb-0">
-                                            Liderazgo estratégico y desarrollo de negocios con más de 15 años de experiencia.
-                                        </p>
-                                    </div>
+                            <div class="mt-4">
+                                <h3 class="h4 fw-bold mb-4">¿Listo para comenzar tu camino inmobiliario?</h3>
+                                <p class="lead mb-4">Contáctanos hoy y descubre cómo podemos ayudarte.</p>
+                                <div class="d-flex gap-3 justify-content-center flex-wrap">
+                                    <a href="/properties" class="btn btn-light btn-lg px-5 fw-bold">Ver Propiedades</a>
+                                    <a href="/contacto" class="btn btn-outline-light btn-lg px-5 fw-bold">Contáctanos</a>
                                 </div>
                             </div>
-
-                            <div class="col-md-6 col-lg-4">
-                                <div class="card border-0 shadow-sm hover-lift h-100">
-                                    <div class="card-body text-center p-4">
-                                        <div class="team-avatar mb-3">
-                                            <div class="bg-danger bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center"
-                                                 style="width: 120px; height: 120px;">
-                                                <i class="fa fa-user text-danger" style="font-size: 60px;"></i>
-                                            </div>
-                                        </div>
-                                        <h4 class="h5 fw-bold mb-1">Director Comercial</h4>
-                                        <p class="text-danger small mb-3">Ventas y Marketing</p>
-                                        <p class="text-muted small mb-0">
-                                            Especialista en estrategias comerciales y desarrollo de mercado inmobiliario.
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-6 col-lg-4">
-                                <div class="card border-0 shadow-sm hover-lift h-100">
-                                    <div class="card-body text-center p-4">
-                                        <div class="team-avatar mb-3">
-                                            <div class="bg-danger bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center"
-                                                 style="width: 120px; height: 120px;">
-                                                <i class="fa fa-user text-danger" style="font-size: 60px;"></i>
-                                            </div>
-                                        </div>
-                                        <h4 class="h5 fw-bold mb-1">Asesor Jurídico</h4>
-                                        <p class="text-danger small mb-3">Legal y Cumplimiento</p>
-                                        <p class="text-muted small mb-0">
-                                            Abogado especializado en derecho inmobiliario y contratos.
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- CTA Section -->
-                <section class="cta-section bg-dark text-white py-5">
-                    <div class="container text-center">
-                        <h2 class="display-5 fw-bold mb-4">¿Listo para encontrar tu propiedad ideal?</h2>
-                        <p class="lead mb-4">Nuestro equipo está aquí para ayudarte en cada paso del camino</p>
-                        <div class="d-flex gap-3 justify-content-center flex-wrap">
-                            <a href="/properties" class="btn btn-danger btn-lg px-5">Ver Propiedades</a>
-                            <a href="/contacto" class="btn btn-outline-light btn-lg px-5">Contáctanos</a>
                         </div>
                     </div>
                 </section>
