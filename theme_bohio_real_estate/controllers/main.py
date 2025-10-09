@@ -1511,7 +1511,11 @@ class BohioRealEstateController(http.Controller):
         API REST para listar propiedades (para homepage)
         """
         try:
-            domain = [('state', '=', 'free')]  # Solo propiedades disponibles
+            domain = [
+                ('state', '=', 'free'),  # Solo propiedades disponibles
+                ('latitude', '!=', False),  # Debe tener latitud
+                ('longitude', '!=', False),  # Debe tener longitud
+            ]
 
             # Filtro por tipo de servicio
             if type_service:
@@ -1532,15 +1536,27 @@ class BohioRealEstateController(http.Controller):
             # Construir respuesta
             properties_data = []
             for prop in properties:
+      
+
+                # Precio según tipo de servicio
+                price = float(prop.list_price) if prop.list_price else 0
+                type_service = prop.type_service or 'sale'
+
                 properties_data.append({
                     'id': prop.id,
                     'name': prop.name,
-                    'price': float(prop.list_price) if prop.list_price else 0,
+                    'description': prop.description or prop.note or '',
+                    'price': price,
+                    'type_service': type_service,
                     'bedrooms': int(prop.num_bedrooms) if prop.num_bedrooms else 0,
                     'bathrooms': int(prop.num_bathrooms) if prop.num_bathrooms else 0,
                     'area': float(prop.property_area) if prop.property_area else 0,
                     'city': prop.city_id.name if prop.city_id else prop.city or '',
                     'state': prop.state_id.name if prop.state_id else '',
+                    'neighborhood': prop.neighborhood or '',
+                    'default_code': prop.default_code or '',
+                    'latitude': float(prop.latitude) if prop.latitude else None,
+                    'longitude': float(prop.longitude) if prop.longitude else None,
                     'image_url': request.env['website'].image_url(prop, 'image_512') if prop.image_512 else None,
                 })
 
