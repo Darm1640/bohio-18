@@ -6,7 +6,7 @@
             <div id="wrap" class="oe_structure bohio-proyectos-page">
 
                 <!-- Hero Section -->
-                <section class="proyectos-hero bg-dark text-white position-relative" style="background: linear-gradient(rgba(227, 30, 36, 0.8), rgba(0,0,0,0.7)), url('/theme_bohio_real_estate/static/src/img/banner3.jpg') center/cover; min-height: 450px;">
+                <section class="proyectos-hero bg-dark text-white position-relative" style="background: linear-gradient(rgba(227, 30, 36, 0.8), rgba(0,0,0,0.7)), url('/theme_bohio_real_estate/static/src/img/banner_inicio.jpg') center/cover; min-height: 450px;">
                     <div class="container h-100 d-flex align-items-center justify-content-center py-5">
                         <div class="text-center">
                             <h1 class="display-2 fw-bold mb-4">Nuestros Proyectos</h1>

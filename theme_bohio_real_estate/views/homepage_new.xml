@@ -19,7 +19,7 @@
                                             <img src="/theme_bohio_real_estate/static/src/img/banner2.jpg" alt="Propiedades en venta" class="img-fluid w-100" style="max-height: 600px; object-fit: cover;"/>
                                         </div>
                                         <div class="carousel-item">
-                                            <img src="/theme_bohio_real_estate/static/src/img/banner3.jpg" alt="Tu mejor inversión" class="img-fluid w-100" style="max-height: 600px; object-fit: cover;"/>
+                                            <img src="/theme_bohio_real_estate/static/src/img/banner_inicio.jpg" alt="Tu mejor inversión" class="img-fluid w-100" style="max-height: 600px; object-fit: cover;"/>
                                         </div>
                                     </div>
                                     <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
@@ -39,162 +39,197 @@
                                                 </h1>
 
                                                 <!-- Búsqueda Avanzada -->
-                                                <div class="advanced-search bg-white p-4 rounded-3 shadow-lg mt-5">
+                                                <div class="advanced-search p-3 rounded-3 shadow-lg mt-5" style="background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px);">
                                                     <form action="/properties" method="get" id="searchForm">
-                                                        <!-- Filtros Básicos -->
-                                                        <div class="row g-3 align-items-end">
-                                                            <div class="col-lg-2 col-md-6">
-                                                                <label class="form-label text-dark fw-semibold small mb-1">
-                                                                    <i class="fa fa-building text-danger me-1"></i>Tipo Servicio
-                                                                </label>
-                                                                <select name="type_service" class="form-select border-2">
-                                                                    <option value="">Todos</option>
-                                                                    <option value="sale">Venta</option>
-                                                                    <option value="rent">Arriendo</option>
-                                                                    <option value="vacation_rent">Arriendo Vacacional</option>
-                                                                </select>
+                                                        <!-- Campos ocultos para valores seleccionados -->
+                                                        <input type="hidden" name="type_service" id="selectedTypeService" value=""/>
+                                                        <input type="hidden" name="property_type" id="selectedPropertyType" value=""/>
+                                                        <input type="hidden" name="bedrooms" id="selectedBedrooms" value=""/>
+
+                                                        <!-- Tipo de Servicio - Botones -->
+                                                        <div class="mb-3">
+                                                            <label class="form-label fw-bold small mb-2" style="color: #000;">
+                                                                <i class="fa fa-building text-danger me-1"></i>Tipo de Servicio
+                                                            </label>
+                                                            <div class="d-flex flex-wrap gap-2">
+                                                                <button type="button" class="filter-chip" data-filter="type_service" data-value="">
+                                                                    Todos
+                                                                </button>
+                                                                <button type="button" class="filter-chip" data-filter="type_service" data-value="sale">
+                                                                    <i class="fa fa-tag me-1"></i>Venta
+                                                                </button>
+                                                                <button type="button" class="filter-chip" data-filter="type_service" data-value="rent">
+                                                                    <i class="fa fa-key me-1"></i>Arriendo
+                                                                </button>
+                                                                <button type="button" class="filter-chip" data-filter="type_service" data-value="vacation_rent">
+                                                                    <i class="fa fa-umbrella-beach me-1"></i>Arriendo Vacacional
+                                                                </button>
+                                                                <button type="button" class="filter-chip" data-filter="type_service" data-value="sale_rent">
+                                                                    <i class="fa fa-exchange-alt me-1"></i>Venta y Arriendo
+                                                                </button>
                                                             </div>
-                                                            <div class="col-lg-2 col-md-6">
-                                                                <label class="form-label text-dark fw-semibold small mb-1">
-                                                                    <i class="fa fa-home text-danger me-1"></i>Tipo Propiedad
-                                                                </label>
-                                                                <select name="property_type" class="form-select border-2">
-                                                                    <option value="">Todos</option>
-                                                                    <option value="apartment">Apartamento</option>
-                                                                    <option value="house">Casa</option>
-                                                                    <option value="commercial">Local Comercial</option>
-                                                                    <option value="lot">Lote</option>
-                                                                    <option value="office">Oficina</option>
-                                                                    <option value="bodega">Bodega</option>
-                                                                </select>
+                                                        </div>
+
+                                                        <!-- Tipo de Propiedad - Botones -->
+                                                        <div class="mb-3">
+                                                            <label class="form-label fw-bold small mb-2" style="color: #000;">
+                                                                <i class="fa fa-home text-danger me-1"></i>Tipo de Propiedad
+                                                            </label>
+                                                            <div class="d-flex flex-wrap gap-2">
+                                                                <button type="button" class="filter-chip" data-filter="property_type" data-value="">
+                                                                    Todos
+                                                                </button>
+                                                                <button type="button" class="filter-chip" data-filter="property_type" data-value="apartment">
+                                                                    <i class="fa fa-building me-1"></i>Apartamento
+                                                                </button>
+                                                                <button type="button" class="filter-chip" data-filter="property_type" data-value="house">
+                                                                    <i class="fa fa-home me-1"></i>Casa
+                                                                </button>
+                                                                <button type="button" class="filter-chip" data-filter="property_type" data-value="commercial">
+                                                                    <i class="fa fa-store me-1"></i>Local Comercial
+                                                                </button>
+                                                                <button type="button" class="filter-chip" data-filter="property_type" data-value="lot">
+                                                                    <i class="fa fa-map me-1"></i>Lote
+                                                                </button>
+                                                                <button type="button" class="filter-chip" data-filter="property_type" data-value="office">
+                                                                    <i class="fa fa-briefcase me-1"></i>Oficina
+                                                                </button>
+                                                                <button type="button" class="filter-chip" data-filter="property_type" data-value="warehouse">
+                                                                    <i class="fa fa-warehouse me-1"></i>Bodega
+                                                                </button>
+                                                                <button type="button" class="filter-chip" data-filter="property_type" data-value="farm">
+                                                                    <i class="fa fa-tree me-1"></i>Finca
+                                                                </button>
+                                                                <button type="button" class="filter-chip" data-filter="property_type" data-value="cabin">
+                                                                    <i class="fa fa-campground me-1"></i>Cabaña
+                                                                </button>
+                                                                <button type="button" class="filter-chip" data-filter="property_type" data-value="penthouse">
+                                                                    <i class="fa fa-building me-1"></i>Penthouse
+                                                                </button>
                                                             </div>
-                                                            <div class="col-lg-3 col-md-6">
-                                                                <label class="form-label text-dark fw-semibold small mb-1">
+                                                        </div>
+
+                                                        <!-- Habitaciones - Botones estilizados -->
+                                                        <div class="mb-3">
+                                                            <label class="form-label fw-bold small mb-2" style="color: #000;">
+                                                                <i class="fa fa-bed text-danger me-1"></i>Habitaciones
+                                                            </label>
+                                                            <div class="d-flex flex-wrap gap-2">
+                                                                <button type="button" class="filter-chip bedroom-chip" data-filter="bedrooms" data-value="">
+                                                                    Todas
+                                                                </button>
+                                                                <button type="button" class="filter-chip bedroom-chip" data-filter="bedrooms" data-value="1">
+                                                                    <span class="bedroom-number">1</span>+
+                                                                </button>
+                                                                <button type="button" class="filter-chip bedroom-chip" data-filter="bedrooms" data-value="2">
+                                                                    <span class="bedroom-number">2</span>+
+                                                                </button>
+                                                                <button type="button" class="filter-chip bedroom-chip" data-filter="bedrooms" data-value="3">
+                                                                    <span class="bedroom-number">3</span>+
+                                                                </button>
+                                                                <button type="button" class="filter-chip bedroom-chip" data-filter="bedrooms" data-value="4">
+                                                                    <span class="bedroom-number">4</span>+
+                                                                </button>
+                                                                <button type="button" class="filter-chip bedroom-chip" data-filter="bedrooms" data-value="5">
+                                                                    <span class="bedroom-number">5</span>+
+                                                                </button>
+                                                                <button type="button" class="filter-chip bedroom-chip" data-filter="bedrooms" data-value="6">
+                                                                    <span class="bedroom-number">6</span>+
+                                                                </button>
+                                                                <button type="button" class="filter-chip bedroom-chip" data-filter="bedrooms" data-value="7">
+                                                                    <span class="bedroom-number">7</span>+
+                                                                </button>
+                                                                <button type="button" class="filter-chip bedroom-chip" data-filter="bedrooms" data-value="8">
+                                                                    <span class="bedroom-number">8</span>+
+                                                                </button>
+                                                            </div>
+                                                        </div>
+
+                                                        <!-- Campo de búsqueda y botón -->
+                                                        <div class="row g-2 align-items-end">
+                                                            <div class="col-lg-9 col-md-8">
+                                                                <label class="form-label fw-bold small mb-1" style="color: #000;">
                                                                     <i class="fa fa-map-marker-alt text-danger me-1"></i>Ciudad o Barrio
                                                                 </label>
-                                                                <input type="text" name="search" class="form-control border-2" placeholder="Ej: Bogotá, Chapinero..." autocomplete="off"/>
+                                                                <input type="text" name="search" class="form-control" placeholder="Ej: Bogotá, Chapinero..." autocomplete="off" style="border: 2px solid #dee2e6; height: 42px;"/>
                                                             </div>
-                                                            <div class="col-lg-2 col-md-3">
-                                                                <label class="form-label text-dark fw-semibold small mb-1">
-                                                                    <i class="fa fa-bed text-danger me-1"></i>Habitaciones
-                                                                </label>
-                                                                <select name="bedrooms" class="form-select border-2">
-                                                                    <option value="">Cualquiera</option>
-                                                                    <option value="1">1+</option>
-                                                                    <option value="2">2+</option>
-                                                                    <option value="3">3+</option>
-                                                                    <option value="4">4+</option>
-                                                                    <option value="5">5+</option>
-                                                                </select>
-                                                            </div>
-                                                            <div class="col-lg-3 col-md-3">
-                                                                <button type="submit" class="btn btn-danger w-100 py-2 fw-bold" style="background-color: #E31E24; border: none; height: 44px;">
-                                                                    <i class="fa fa-search me-2"></i>BUSCAR PROPIEDADES
+                                                            <div class="col-lg-3 col-md-4">
+                                                                <button type="submit" class="btn btn-danger w-100 fw-bold" style="background-color: #E31E24; border: none; height: 42px;">
+                                                                    <i class="fa fa-search me-2"></i>BUSCAR
                                                                 </button>
-                                                            </div>
-                                                        </div>
-
-                                                        <!-- Filtros Avanzados (colapsables) -->
-                                                        <div id="advancedFilters" class="advanced-filters-collapse mt-3" style="display: none;">
-                                                            <hr class="my-3"/>
-                                                            <div class="row g-3">
-                                                                <div class="col-md-2">
-                                                                    <label class="form-label text-dark fw-semibold small mb-1">
-                                                                        <i class="fa fa-bath text-danger me-1"></i>Baños
-                                                                    </label>
-                                                                    <select name="bathrooms" class="form-select">
-                                                                        <option value="">Cualquiera</option>
-                                                                        <option value="1">1+</option>
-                                                                        <option value="2">2+</option>
-                                                                        <option value="3">3+</option>
-                                                                        <option value="4">4+</option>
-                                                                    </select>
-                                                                </div>
-                                                                <div class="col-md-3">
-                                                                    <label class="form-label text-dark fw-semibold small mb-1">
-                                                                        <i class="fa fa-dollar-sign text-danger me-1"></i>Precio Mínimo
-                                                                    </label>
-                                                                    <input type="number" name="min_price" class="form-control" placeholder="Ej: 100000000" step="1000000"/>
-                                                                </div>
-                                                                <div class="col-md-3">
-                                                                    <label class="form-label text-dark fw-semibold small mb-1">
-                                                                        <i class="fa fa-dollar-sign text-danger me-1"></i>Precio Máximo
-                                                                    </label>
-                                                                    <input type="number" name="max_price" class="form-control" placeholder="Ej: 500000000" step="1000000"/>
-                                                                </div>
-                                                                <div class="col-md-2">
-                                                                    <label class="form-label text-dark fw-semibold small mb-1">
-                                                                        <i class="fa fa-ruler-combined text-danger me-1"></i>Área Mín (m²)
-                                                                    </label>
-                                                                    <input type="number" name="min_area" class="form-control" placeholder="Ej: 50"/>
-                                                                </div>
-                                                                <div class="col-md-2">
-                                                                    <label class="form-label text-dark fw-semibold small mb-1">
-                                                                        <i class="fa fa-ruler-combined text-danger me-1"></i>Área Máx (m²)
-                                                                    </label>
-                                                                    <input type="number" name="max_area" class="form-control" placeholder="Ej: 200"/>
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="row g-3 mt-2">
-                                                                <div class="col-12">
-                                                                    <label class="form-label text-dark fw-semibold small mb-2">
-                                                                        <i class="fa fa-check-circle text-danger me-1"></i>Características
-                                                                    </label>
-                                                                    <div class="d-flex flex-wrap gap-3">
-                                                                        <div class="form-check">
-                                                                            <input class="form-check-input" type="checkbox" name="garage" value="1" id="filterGarage"/>
-                                                                            <label class="form-check-label" for="filterGarage">
-                                                                                <i class="fa fa-car me-1"></i>Garaje
-                                                                            </label>
-                                                                        </div>
-                                                                        <div class="form-check">
-                                                                            <input class="form-check-input" type="checkbox" name="pool" value="1" id="filterPool"/>
-                                                                            <label class="form-check-label" for="filterPool">
-                                                                                <i class="fa fa-swimming-pool me-1"></i>Piscina
-                                                                            </label>
-                                                                        </div>
-                                                                        <div class="form-check">
-                                                                            <input class="form-check-input" type="checkbox" name="garden" value="1" id="filterGarden"/>
-                                                                            <label class="form-check-label" for="filterGarden">
-                                                                                <i class="fa fa-tree me-1"></i>Jardín
-                                                                            </label>
-                                                                        </div>
-                                                                        <div class="form-check">
-                                                                            <input class="form-check-input" type="checkbox" name="elevator" value="1" id="filterElevator"/>
-                                                                            <label class="form-check-label" for="filterElevator">
-                                                                                <i class="fa fa-arrow-up me-1"></i>Ascensor
-                                                                            </label>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                        <!-- Botón Mostrar/Ocultar Filtros -->
-                                                        <div class="row mt-3">
-                                                            <div class="col-12 text-center">
-                                                                <button type="button" class="btn btn-link text-danger text-decoration-none fw-semibold" id="toggleFiltersBtn" onclick="toggleAdvancedFilters()">
-                                                                    <i class="fa fa-plus-circle me-1"></i>
-                                                                    <span id="toggleFiltersText">Mostrar más filtros</span>
-                                                                </button>
-                                                            </div>
-                                                        </div>
-
-                                                        <!-- Búsqueda por código -->
-                                                        <div class="row mt-3">
-                                                            <div class="col-12 text-center">
-                                                                <span class="text-muted small">¿Tienes un código de propiedad?</span>
-                                                                <div class="input-group mx-auto mt-2" style="max-width: 400px;">
-                                                                    <input type="text" name="default_code" class="form-control" placeholder="Ingresa el código"/>
-                                                                    <button class="btn btn-outline-danger" type="submit">
-                                                                        <i class="fa fa-search"></i>
-                                                                    </button>
-                                                                </div>
                                                             </div>
                                                         </div>
                                                     </form>
                                                 </div>
+
+                                                <style>
+                                                    .filter-chip {
+                                                        padding: 8px 16px;
+                                                        border: 2px solid rgba(0, 0, 0, 0.2);
+                                                        background: rgba(255, 255, 255, 0.7);
+                                                        color: #000;
+                                                        border-radius: 25px;
+                                                        font-size: 14px;
+                                                        font-weight: 500;
+                                                        transition: all 0.3s ease;
+                                                        cursor: pointer;
+                                                    }
+                                                    .filter-chip:hover {
+                                                        background: rgba(227, 30, 36, 0.1);
+                                                        border-color: #E31E24;
+                                                        transform: translateY(-2px);
+                                                        box-shadow: 0 4px 8px rgba(227, 30, 36, 0.2);
+                                                    }
+                                                    .filter-chip.active {
+                                                        background: #E31E24;
+                                                        color: white;
+                                                        border-color: #E31E24;
+                                                        box-shadow: 0 4px 12px rgba(227, 30, 36, 0.4);
+                                                    }
+                                                    .bedroom-number {
+                                                        font-weight: 700;
+                                                        font-size: 18px;
+                                                        color: #E31E24;
+                                                    }
+                                                    .filter-chip.active .bedroom-number {
+                                                        color: white;
+                                                    }
+                                                </style>
+
+                                                <script>
+                                                //<![CDATA[
+                                                    // Manejar clicks en filtros tipo chip
+                                                    document.addEventListener('DOMContentLoaded', function() {
+                                                        const filterChips = document.querySelectorAll('.filter-chip');
+
+                                                        filterChips.forEach(chip => {
+                                                            chip.addEventListener('click', function() {
+                                                                const filterType = this.dataset.filter;
+                                                                const filterValue = this.dataset.value;
+
+                                                                // Remover active de otros chips del mismo tipo
+                                                                document.querySelectorAll(`[data-filter="${filterType}"]`).forEach(c => {
+                                                                    c.classList.remove('active');
+                                                                });
+
+                                                                // Activar este chip
+                                                                this.classList.add('active');
+
+                                                                // Actualizar campo oculto
+                                                                const hiddenInput = document.getElementById('selected' + filterType.charAt(0).toUpperCase() + filterType.slice(1).replace('_', ''));
+                                                                if (hiddenInput) {
+                                                                    hiddenInput.value = filterValue;
+                                                                }
+                                                            });
+                                                        });
+
+                                                        // Activar "Todos" por defecto
+                                                        document.querySelectorAll('.filter-chip[data-value=""]').forEach(chip => {
+                                                            chip.classList.add('active');
+                                                        });
+                                                    });
+                                                //]]>
+                                                </script>
                                             </div>
                                         </div>
                                     </div>
@@ -601,44 +636,6 @@
                         </div>
                     </section>
 
-                    <!-- Modal de Búsqueda por Código -->
-                    <div class="modal fade" id="codeSearchModal" tabindex="-1" aria-labelledby="codeSearchModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered">
-                            <div class="modal-content">
-                                <div class="modal-header" style="background: linear-gradient(135deg, #E31E24 0%, #B81820 100%); color: white;">
-                                    <h5 class="modal-title fw-bold" id="codeSearchModalLabel">
-                                        <i class="fa fa-search me-2"></i>Búsqueda por Código
-                                    </h5>
-                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body p-4">
-                                    <p class="text-muted mb-3">
-                                        <i class="fa fa-info-circle text-danger me-2"></i>
-                                        Ingresa el código de la propiedad que te compartimos
-                                    </p>
-                                    <div class="input-group input-group-lg mb-3">
-                                        <input type="text"
-                                               id="modalPropertyCode"
-                                               class="form-control"
-                                               placeholder="Ej: BOH-001, APT-2023-045"
-                                               autocomplete="off"
-                                               style="font-size: 1.1rem; padding: 15px;"/>
-                                        <button class="btn btn-danger px-4"
-                                                type="button"
-                                                onclick="searchPropertyByCode()"
-                                                style="background: #E31E24; border: none;">
-                                            <i class="fa fa-search fa-lg"></i>
-                                        </button>
-                                    </div>
-                                    <small class="text-muted">
-                                        <i class="fa fa-lightbulb me-1"></i>
-                                        El código lo encuentras en la información que te compartimos
-                                    </small>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
                     <script>
                     //<![CDATA[
                         function searchPropertyByCode() {
@@ -982,6 +979,45 @@
                             <i class="fa fa-trash"></i>
                         </button>
                     </div>
+
+                    <!-- Modal de Búsqueda por Código -->
+                    <div class="modal fade" id="codeSearchModal" tabindex="-1" aria-labelledby="codeSearchModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header" style="background: linear-gradient(135deg, #E31E24 0%, #B81820 100%); color: white;">
+                                    <h5 class="modal-title fw-bold" id="codeSearchModalLabel">
+                                        <i class="fa fa-search me-2"></i>Búsqueda por Código
+                                    </h5>
+                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body p-4">
+                                    <p class="text-muted mb-3">
+                                        <i class="fa fa-info-circle text-danger me-2"></i>
+                                        Ingresa el código de la propiedad que te compartimos
+                                    </p>
+                                    <div class="input-group input-group-lg mb-3">
+                                        <input type="text"
+                                               id="modalPropertyCode"
+                                               class="form-control"
+                                               placeholder="Ej: BOH-001, APT-2023-045"
+                                               autocomplete="off"
+                                               style="font-size: 1.1rem; padding: 15px;"/>
+                                        <button class="btn btn-danger px-4"
+                                                type="button"
+                                                onclick="searchPropertyByCode()"
+                                                style="background: #E31E24; border: none;">
+                                            <i class="fa fa-search fa-lg"></i>
+                                        </button>
+                                    </div>
+                                    <small class="text-muted">
+                                        <i class="fa fa-lightbulb me-1"></i>
+                                        El código lo encuentras en la información que te compartimos
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
         </t>
     </template>
