@@ -16,6 +16,7 @@
     'depends': [
         'website',
         'bohio_real_estate',
+        'utm',
     ],
     'data': [
         # Layout

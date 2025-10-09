@@ -1055,6 +1055,12 @@ class BohioRealEstateController(http.Controller):
         """Procesar formulario de contacto"""
         # Crear lead en CRM
         Lead = request.env['crm.lead'].sudo()
+
+        # Obtener source_id buscando por nombre 'Website'
+        UtmSource = request.env['utm.source'].sudo()
+        website_source = UtmSource.search([('name', '=', 'Website')], limit=1)
+        source_id = website_source.id if website_source else False
+
         lead_vals = {
             'name': post.get('asunto', 'Contacto desde Web'),
             'contact_name': post.get('nombre', ''),
@@ -1062,7 +1068,7 @@ class BohioRealEstateController(http.Controller):
             'phone': post.get('telefono', ''),
             'description': post.get('mensaje', ''),
             'type': 'opportunity',
-            'source_id': request.env.ref('utm.utm_source_website').id if request.env.ref('utm.utm_source_website') else False,
+            'source_id': source_id,
         }
 
         try:
@@ -1111,28 +1117,20 @@ class BohioRealEstateController(http.Controller):
 
             ubicacion = ', '.join(ubicacion_parts) if ubicacion_parts else 'Sin ubicación'
 
-            # Imagen del proyecto (tomar de primera unidad si existe)
+            # Imagen del proyecto
             image_url = None
-            primera_unidad = request.env['product.template'].sudo().search([
-                ('project_worksite_id', '=', proyecto.id),
-                ('is_property', '=', True),
-                ('image_1920', '!=', False)
-            ], limit=1)
-
-            if primera_unidad:
-                image_url = f'/web/image/product.template/{primera_unidad.id}/image_1920'
+            if proyecto.image_1920:
+                image_url = f'/web/image/project.worksite/{proyecto.id}/image_1920'
 
             proyectos_data.append({
                 'id': proyecto.id,
                 'name': proyecto.name,
-                'descripcion': proyecto.description if hasattr(proyecto, 'description') else '',
+                'descripcion': proyecto.description or '',
                 'ubicacion': ubicacion,
                 'estado': 'construccion',  # Por defecto
                 'unidades': unidades_totales,
                 'disponibles': unidades_disponibles,
                 'image_url': image_url,
-                'latitude': proyecto.latitude if hasattr(proyecto, 'latitude') else None,
-                'longitude': proyecto.longitude if hasattr(proyecto, 'longitude') else None,
             })
 
         return {'proyectos': proyectos_data}
@@ -1513,7 +1511,7 @@ class BohioRealEstateController(http.Controller):
         API REST para listar propiedades (para homepage)
         """
         try:
-            domain = [('is_published', '=', True)]
+            domain = [('state', '=', 'free')]  # Solo propiedades disponibles
 
             # Filtro por tipo de servicio
             if type_service:
