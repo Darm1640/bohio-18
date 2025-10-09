@@ -1538,9 +1538,19 @@ class BohioRealEstateController(http.Controller):
             for prop in properties:
       
 
-                # Precio según tipo de servicio
-                price = float(prop.list_price) if prop.list_price else 0
+                # Determinar tipo de servicio
                 type_service = prop.type_service or 'sale'
+
+                # Precio según tipo de servicio
+                if type_service in ('rent', 'vacation_rent'):
+                    # Para arriendo, usar net_rental_price
+                    price = float(prop.net_rental_price) if prop.net_rental_price else 0
+                elif type_service == 'sale_rent':
+                    # Si tiene ambos servicios, priorizar venta
+                    price = float(prop.net_price) if prop.net_price else 0
+                else:
+                    # Para venta, usar net_price (Precio Final de Venta)
+                    price = float(prop.net_price) if prop.net_price else 0
 
                 properties_data.append({
                     'id': prop.id,
