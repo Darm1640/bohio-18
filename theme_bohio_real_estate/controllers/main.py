@@ -1506,3 +1506,55 @@ class BohioRealEstateController(http.Controller):
                 'success': False,
                 'properties': []
             }
+
+    @http.route('/properties/api/list', type='json', auth='public', website=True, csrf=False)
+    def properties_api_list(self, type_service=None, is_project=None, limit=4):
+        """
+        API REST para listar propiedades (para homepage)
+        """
+        try:
+            domain = [('is_published', '=', True)]
+
+            # Filtro por tipo de servicio
+            if type_service:
+                domain.append(('type_service', '=', type_service))
+
+            # Filtro por proyectos
+            if is_project is not None:
+                is_proj_bool = str(is_project).lower() in ('true', '1', 'yes')
+                domain.append(('is_project', '=', is_proj_bool))
+
+            # Buscar propiedades
+            properties = request.env['product.template'].sudo().search(
+                domain,
+                limit=int(limit),
+                order='create_date desc'
+            )
+
+            # Construir respuesta
+            properties_data = []
+            for prop in properties:
+                properties_data.append({
+                    'id': prop.id,
+                    'name': prop.name,
+                    'price': float(prop.list_price) if prop.list_price else 0,
+                    'bedrooms': int(prop.num_bedrooms) if prop.num_bedrooms else 0,
+                    'bathrooms': int(prop.num_bathrooms) if prop.num_bathrooms else 0,
+                    'area': float(prop.property_area) if prop.property_area else 0,
+                    'city': prop.city_id.name if prop.city_id else prop.city or '',
+                    'state': prop.state_id.name if prop.state_id else '',
+                    'image_url': request.env['website'].image_url(prop, 'image_512') if prop.image_512 else None,
+                })
+
+            return {
+                'success': True,
+                'properties': properties_data
+            }
+
+        except Exception as e:
+            _logger.error(f"Error en API /properties/api/list: {str(e)}")
+            return {
+                'success': False,
+                'properties': [],
+                'error': str(e)
+            }
