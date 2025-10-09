@@ -640,6 +640,7 @@
                     </div>
 
                     <script>
+                    //<![CDATA[
                         function searchPropertyByCode() {
                             const code = document.getElementById('modalPropertyCode').value.trim();
                             if (code) {
@@ -765,6 +766,7 @@
                             // Cargar propiedades del homepage
                             loadHomeProperties();
                         });
+                    //]]>
                     </script>
 
                     <!-- Enlace a Instagram -->

@@ -5,8 +5,8 @@
         <xpath expr="//body" position="inside">
             <div id="bohio-page-loader">
                 <div class="loader-content">
-                    <!-- Logo BOHIO -->
-                    <img src="/theme_bohio_real_estate/static/src/img/logo.png"
+                    <!-- Logo BOHIO Oficial -->
+                    <img src="/theme_bohio_real_estate/static/src/img/logo-bohio-oficial.png"
                          alt="BOHIO Real Estate"
                          class="loader-logo"/>
 
