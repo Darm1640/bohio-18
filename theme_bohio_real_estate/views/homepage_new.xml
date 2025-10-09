@@ -200,17 +200,7 @@
                             </div>
 
                             <div class="row g-4">
-                                <div class="col-md-2 col-6">
-                                    <div class="service-card text-center p-3 h-100 bg-white rounded-3 shadow-sm">
-                                        <div class="service-icon mb-2">
-                                            <img src="/theme_bohio_real_estate/static/src/img/icono-servicios.png"
-                                                 alt="Servicios Generales"
-                                                 style="width: 60px; height: 60px; object-fit: contain;"
-                                                 loading="lazy"/>
-                                        </div>
-                                        <h6 class="mb-0">Servicios Generales</h6>
-                                    </div>
-                                </div>
+
 
                                 <div class="col-md-2 col-6">
                                     <div class="service-card text-center p-3 h-100 bg-white rounded-3 shadow-sm">
