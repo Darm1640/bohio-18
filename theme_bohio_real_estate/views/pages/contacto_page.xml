@@ -294,5 +294,89 @@
             </script>
         </t>
     </template>
+
+    <!-- Página de Agradecimiento -->
+    <template id="contacto_gracias" name="Gracias por Contactarnos">
+        <t t-call="website.layout">
+            <div id="wrap" class="oe_structure">
+                <section class="py-5 my-5">
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-6 text-center">
+                                <div class="p-5">
+                                    <div class="mb-4">
+                                        <i class="fa fa-check-circle text-success" style="font-size: 80px;"></i>
+                                    </div>
+                                    <h1 class="display-4 fw-bold text-danger mb-4">¡Gracias por Contactarnos!</h1>
+                                    <p class="lead text-muted mb-4">
+                                        Hemos recibido tu mensaje correctamente. Uno de nuestros asesores se pondrá en contacto contigo en las próximas 24 horas.
+                                    </p>
+                                    <div class="d-flex gap-3 justify-content-center flex-wrap">
+                                        <a href="/" class="btn btn-danger btn-lg px-4">
+                                            <i class="fa fa-home me-2"></i>Volver al Inicio
+                                        </a>
+                                        <a href="/properties" class="btn btn-outline-danger btn-lg px-4">
+                                            <i class="fa fa-search me-2"></i>Ver Propiedades
+                                        </a>
+                                    </div>
+                                    <div class="mt-5 pt-4 border-top">
+                                        <p class="text-muted mb-3">¿Necesitas ayuda inmediata?</p>
+                                        <a href="https://wa.me/573001234567" target="_blank" class="btn btn-success btn-lg">
+                                            <i class="fa fa-whatsapp me-2"></i>Chatea con nosotros
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </t>
+    </template>
+
+    <!-- Página de Error -->
+    <template id="contacto_error" name="Error al Enviar Mensaje">
+        <t t-call="website.layout">
+            <div id="wrap" class="oe_structure">
+                <section class="py-5 my-5">
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-6 text-center">
+                                <div class="p-5">
+                                    <div class="mb-4">
+                                        <i class="fa fa-exclamation-triangle text-warning" style="font-size: 80px;"></i>
+                                    </div>
+                                    <h1 class="display-4 fw-bold text-danger mb-4">Algo salió mal</h1>
+                                    <p class="lead text-muted mb-4">
+                                        Lo sentimos, hubo un error al enviar tu mensaje. Por favor, intenta nuevamente o contáctanos directamente.
+                                    </p>
+                                    <div class="d-flex gap-3 justify-content-center flex-wrap">
+                                        <a href="/contacto" class="btn btn-danger btn-lg px-4">
+                                            <i class="fa fa-redo me-2"></i>Intentar de Nuevo
+                                        </a>
+                                        <a href="/" class="btn btn-outline-danger btn-lg px-4">
+                                            <i class="fa fa-home me-2"></i>Volver al Inicio
+                                        </a>
+                                    </div>
+                                    <div class="mt-5 pt-4 border-top">
+                                        <p class="text-muted mb-3"><strong>Contáctanos directamente:</strong></p>
+                                        <div class="d-flex gap-3 justify-content-center flex-wrap">
+                                            <a href="mailto:info@bohioconsultores.com" class="btn btn-outline-secondary">
+                                                <i class="fa fa-envelope me-2"></i>Email
+                                            </a>
+                                            <a href="https://wa.me/573001234567" target="_blank" class="btn btn-success">
+                                                <i class="fa fa-whatsapp me-2"></i>WhatsApp
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </t>
+    </template>
+
     </data>
 </odoo>

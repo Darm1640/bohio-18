@@ -654,16 +654,34 @@
                             }
                         }
 
+                        // Función helper para llamadas JSON-RPC
+                        async function jsonRpc(url, params) {
+                            const response = await fetch(url, {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                },
+                                body: JSON.stringify({
+                                    jsonrpc: '2.0',
+                                    method: 'call',
+                                    params: params,
+                                    id: Math.floor(Math.random() * 1000000)
+                                })
+                            });
+                            const data = await response.json();
+                            return data.result;
+                        }
+
                         // Cargar propiedades para el homepage
                         async function loadHomeProperties() {
                             // Cargar propiedades en arriendo (4 propiedades)
                             try {
-                                const rentData = await odoo.jsonRpc('/properties/api/list', 'call', {
+                                const rentData = await jsonRpc('/properties/api/list', {
                                     type_service: 'rent',
                                     limit: 4
                                 });
                                 const arriendoContainer = document.getElementById('arriendo-properties-grid');
-                                if (arriendoContainer &amp;&amp; rentData.properties &amp;&amp; rentData.properties.length > 0) {
+                                if (arriendoContainer && rentData.properties && rentData.properties.length > 0) {
                                     arriendoContainer.innerHTML = rentData.properties.map(prop => createPropertyCard(prop)).join('');
                                 }
                             } catch (err) {
@@ -672,13 +690,13 @@
 
                             // Cargar propiedades usadas en venta (4 propiedades)
                             try {
-                                const usedSaleData = await odoo.jsonRpc('/properties/api/list', 'call', {
+                                const usedSaleData = await jsonRpc('/properties/api/list', {
                                     type_service: 'sale',
                                     is_project: 'false',
                                     limit: 4
                                 });
                                 const usedSaleContainer = document.getElementById('used-sale-properties-grid');
-                                if (usedSaleContainer &amp;&amp; usedSaleData.properties &amp;&amp; usedSaleData.properties.length > 0) {
+                                if (usedSaleContainer && usedSaleData.properties && usedSaleData.properties.length > 0) {
                                     usedSaleContainer.innerHTML = usedSaleData.properties.map(prop => createPropertyCard(prop)).join('');
                                 }
                             } catch (err) {
@@ -687,13 +705,13 @@
 
                             // Cargar proyectos en venta (4 propiedades)
                             try {
-                                const projectsData = await odoo.jsonRpc('/properties/api/list', 'call', {
+                                const projectsData = await jsonRpc('/properties/api/list', {
                                     type_service: 'sale',
                                     is_project: 'true',
                                     limit: 4
                                 });
                                 const projectsContainer = document.getElementById('projects-properties-grid');
-                                if (projectsContainer &amp;&amp; projectsData.properties &amp;&amp; projectsData.properties.length > 0) {
+                                if (projectsContainer && projectsData.properties && projectsData.properties.length > 0) {
                                     projectsContainer.innerHTML = projectsData.properties.map(prop => createPropertyCard(prop)).join('');
                                 }
                             } catch (err) {
