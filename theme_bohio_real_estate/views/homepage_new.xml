@@ -4,6 +4,7 @@
         <template id="bohio_homepage_new" name="BOHIO Homepage">
             <t t-call="website.layout">
                 <div id="wrap" class="bohio-homepage">
+
                     <!-- Hero Section con Banner y Búsqueda -->
                     <section class="bohio-hero-section position-relative">
                         <div class="container-fluid p-0">
@@ -499,6 +500,115 @@
                             </div>
                         </div>
                     </section>
+
+                    <!-- Banner Rialto - Búsqueda por Código -->
+                    <section class="rialto-code-search py-5" style="background: rgba(128, 128, 128, 0.15); backdrop-filter: blur(10px);">
+                        <div class="container">
+                            <div class="row align-items-center">
+                                <!-- Logo Rialto -->
+                                <div class="col-lg-3 col-md-4 text-center mb-3 mb-md-0">
+                                    <img src="/theme_bohio_real_estate/static/src/img/Logo_Rialto.png"
+                                         alt="Rialto - Eleva tus sueños"
+                                         class="img-fluid"
+                                         style="max-width: 220px;"/>
+                                </div>
+
+                                <!-- Texto y Botones -->
+                                <div class="col-lg-9 col-md-8">
+                                    <div class="row align-items-center g-3">
+                                        <div class="col-md-5">
+                                            <h3 class="mb-2 fw-bold" style="color: #333; font-size: 1.5rem;">
+                                                ¿Tienes un código? Realiza la búsqueda
+                                            </h3>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <button type="button"
+                                                    class="btn btn-light btn-lg w-100 shadow-sm fw-bold"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#codeSearchModal"
+                                                    style="border: 2px solid #E31E24; color: #E31E24; padding: 12px 25px;">
+                                                <i class="fa fa-search me-2"></i>Código
+                                            </button>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <a href="/contacto"
+                                               class="btn btn-lg w-100 shadow fw-bold text-white"
+                                               style="background: #E31E24; border: none; padding: 12px 25px;">
+                                                Consigna tu inmueble
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Modal de Búsqueda por Código -->
+                    <div class="modal fade" id="codeSearchModal" tabindex="-1" aria-labelledby="codeSearchModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header" style="background: linear-gradient(135deg, #E31E24 0%, #B81820 100%); color: white;">
+                                    <h5 class="modal-title fw-bold" id="codeSearchModalLabel">
+                                        <i class="fa fa-search me-2"></i>Búsqueda por Código
+                                    </h5>
+                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body p-4">
+                                    <p class="text-muted mb-3">
+                                        <i class="fa fa-info-circle text-danger me-2"></i>
+                                        Ingresa el código de la propiedad que te compartimos
+                                    </p>
+                                    <div class="input-group input-group-lg mb-3">
+                                        <input type="text"
+                                               id="modalPropertyCode"
+                                               class="form-control"
+                                               placeholder="Ej: BOH-001, APT-2023-045"
+                                               autocomplete="off"
+                                               style="font-size: 1.1rem; padding: 15px;"/>
+                                        <button class="btn btn-danger px-4"
+                                                type="button"
+                                                onclick="searchPropertyByCode()"
+                                                style="background: #E31E24; border: none;">
+                                            <i class="fa fa-search fa-lg"></i>
+                                        </button>
+                                    </div>
+                                    <small class="text-muted">
+                                        <i class="fa fa-lightbulb me-1"></i>
+                                        El código lo encuentras en la información que te compartimos
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <script>
+                        function searchPropertyByCode() {
+                            const code = document.getElementById('modalPropertyCode').value.trim();
+                            if (code) {
+                                // Cerrar modal
+                                const modal = bootstrap.Modal.getInstance(document.getElementById('codeSearchModal'));
+                                if (modal) modal.hide();
+
+                                // Redirigir a búsqueda
+                                window.location.href = '/properties?search=' + encodeURIComponent(code);
+                            } else {
+                                alert('Por favor ingresa un código de propiedad');
+                            }
+                        }
+
+                        // Permitir búsqueda con Enter en el modal
+                        document.addEventListener('DOMContentLoaded', function() {
+                            const input = document.getElementById('modalPropertyCode');
+                            if (input) {
+                                input.addEventListener('keypress', function(e) {
+                                    if (e.key === 'Enter') {
+                                        e.preventDefault();
+                                        searchPropertyByCode();
+                                    }
+                                });
+                            }
+                        });
+                    </script>
 
                     <!-- Enlace a Instagram -->
                     <section class="bohio-social py-4 text-center bg-dark text-white">
