@@ -281,9 +281,10 @@ class BohioRealEstateController(http.Controller):
 
     # =================== AUTOCOMPLETADO AVANZADO ===================
 
-    @http.route(['/property/search/autocomplete'], type='json', auth='public', website=True)
-    def property_search_autocomplete(self, term='', limit=10):
-        """Autocompletado inteligente con jerarquía y proyectos"""
+    # DESHABILITADO - Usar endpoint en property_search.py con búsqueda aproximada sin acentos
+    # @http.route(['/property/search/autocomplete'], type='json', auth='public', website=True)
+    def property_search_autocomplete_OLD(self, term='', limit=10):
+        """Autocompletado inteligente con jerarquía y proyectos - DEPRECADO"""
         if not term or len(term) < 2:
             return {'results': []}
 

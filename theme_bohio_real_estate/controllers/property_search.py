@@ -252,6 +252,10 @@ class PropertySearchController(http.Controller):
             subdivision: 'all', 'cities', 'regions', 'projects', 'properties'
             limit: Número máximo de resultados
         """
+        import logging
+        _logger = logging.getLogger(__name__)
+        _logger.info(f"Autocompletado - término: '{term}', context: {context}, subdivision: {subdivision}")
+
         if not term or len(term) < 2:
             return {'results': [], 'subdivision': subdivision}
 
@@ -441,13 +445,34 @@ class PropertySearchController(http.Controller):
 
     # =================== MÉTODOS AUXILIARES PARA AUTOCOMPLETADO ===================
 
+    def _normalize_search_term(self, term):
+        """Normaliza el término de búsqueda para búsqueda aproximada sin acentos"""
+        import unicodedata
+        # Remover acentos
+        normalized = ''.join(
+            c for c in unicodedata.normalize('NFD', term)
+            if unicodedata.category(c) != 'Mn'
+        )
+        return normalized.lower().strip()
+
     def _autocomplete_cities(self, term, search_context, limit):
-        """Autocompletado de ciudades"""
+        """Autocompletado de ciudades con búsqueda aproximada sin acentos"""
         results = []
+
+        # Buscar con término original (con acentos)
         cities = request.env['res.city'].sudo().search([
+            '|',
             ('name', 'ilike', term),
+            ('name', 'ilike', self._normalize_search_term(term)),
             ('country_id', '=', request.env.company.country_id.id)
-        ], limit=limit)
+        ], limit=limit * 2)  # Aumentar límite para filtrar después
+
+        # Si no hay resultados, intentar búsqueda más flexible con %term%
+        if not cities:
+            cities = request.env['res.city'].sudo().search([
+                ('name', 'ilike', f'%{self._normalize_search_term(term)}%'),
+                ('country_id', '=', request.env.company.country_id.id)
+            ], limit=limit * 2)
 
         for city in cities:
             domain = [
@@ -473,14 +498,25 @@ class PropertySearchController(http.Controller):
         return results
 
     def _autocomplete_regions(self, term, search_context, limit):
-        """Autocompletado de barrios/regiones"""
+        """Autocompletado de barrios/regiones con búsqueda aproximada"""
         results = []
         Region = request.env['region.region'].sudo()
 
         if not Region._name in request.env:
             return results
 
-        regions = Region.search([('name', 'ilike', term)], limit=limit)
+        # Buscar con término original y normalizado
+        regions = Region.search([
+            '|',
+            ('name', 'ilike', term),
+            ('name', 'ilike', self._normalize_search_term(term))
+        ], limit=limit * 2)
+
+        # Si no hay resultados, búsqueda más flexible
+        if not regions:
+            regions = Region.search([
+                ('name', 'ilike', f'%{self._normalize_search_term(term)}%')
+            ], limit=limit * 2)
 
         for region in regions:
             domain = [
@@ -506,14 +542,25 @@ class PropertySearchController(http.Controller):
         return results
 
     def _autocomplete_projects(self, term, search_context, limit):
-        """Autocompletado de proyectos"""
+        """Autocompletado de proyectos con búsqueda aproximada"""
         results = []
         Project = request.env['project.worksite'].sudo()
 
         if not Project._name in request.env:
             return results
 
-        projects = Project.search([('name', 'ilike', term)], limit=limit)
+        # Buscar con término original y normalizado
+        projects = Project.search([
+            '|',
+            ('name', 'ilike', term),
+            ('name', 'ilike', self._normalize_search_term(term))
+        ], limit=limit * 2)
+
+        # Si no hay resultados, búsqueda más flexible
+        if not projects:
+            projects = Project.search([
+                ('name', 'ilike', f'%{self._normalize_search_term(term)}%')
+            ], limit=limit * 2)
 
         for project in projects:
             domain = [
@@ -538,18 +585,36 @@ class PropertySearchController(http.Controller):
         return results
 
     def _autocomplete_properties(self, term, search_context, limit):
-        """Autocompletado de propiedades por código o nombre"""
+        """Autocompletado de propiedades por código o nombre con búsqueda aproximada"""
         results = []
+        normalized_term = self._normalize_search_term(term)
+
+        # Buscar con término original y normalizado
         domain = [
             ('is_property', '=', True),
             ('state', 'in', search_context.get('allowed_states', ['free'])),
-            '|', '|',
+            '|', '|', '|', '|', '|',
             ('name', 'ilike', term),
+            ('name', 'ilike', normalized_term),
             ('default_code', 'ilike', term),
+            ('default_code', 'ilike', normalized_term),
             ('barcode', 'ilike', term),
+            ('barcode', 'ilike', normalized_term),
         ]
 
-        properties = request.env['product.template'].sudo().search(domain, limit=limit)
+        properties = request.env['product.template'].sudo().search(domain, limit=limit * 2)
+
+        # Si no hay resultados, búsqueda más flexible
+        if not properties:
+            domain = [
+                ('is_property', '=', True),
+                ('state', 'in', search_context.get('allowed_states', ['free'])),
+                '|', '|',
+                ('name', 'ilike', f'%{normalized_term}%'),
+                ('default_code', 'ilike', f'%{normalized_term}%'),
+                ('barcode', 'ilike', f'%{normalized_term}%'),
+            ]
+            properties = request.env['product.template'].sudo().search(domain, limit=limit * 2)
 
         for prop in properties:
             results.append({
