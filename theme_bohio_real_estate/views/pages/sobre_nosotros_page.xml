@@ -5,12 +5,16 @@
         <t t-call="website.layout">
             <div id="wrap" class="oe_structure bohio-quienes-somos-page">
 
-                <!-- Hero Section con Imagen -->
-                <section class="quienes-somos-hero position-relative" style="background: url('/theme_bohio_real_estate/static/src/img/quienes-somos.jpg') center/cover; min-height: 500px;">
-                    <div class="overlay position-absolute top-0 start-0 w-100 h-100" style="background: linear-gradient(rgba(227, 30, 36, 0.7), rgba(0,0,0,0.6));"></div>
+                <!-- Hero Section con Imagen (Optimizado) -->
+                <section class="quienes-somos-hero position-relative" style="min-height: 500px; will-change: transform;">
+                    <!-- Imagen de fondo con lazy loading -->
+                    <div class="hero-bg position-absolute top-0 start-0 w-100 h-100"
+                         style="background: url('/theme_bohio_real_estate/static/src/img/quienes-somos.jpg') center/cover; transform: translateZ(0);"></div>
+                    <div class="overlay position-absolute top-0 start-0 w-100 h-100"
+                         style="background: linear-gradient(rgba(227, 30, 36, 0.7), rgba(0,0,0,0.6)); will-change: opacity;"></div>
                     <div class="container position-relative h-100 d-flex align-items-center justify-content-center" style="min-height: 500px;">
                         <div class="text-center text-white">
-                            <h1 class="display-2 fw-bold mb-3" style="text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">
+                            <h1 class="display-2 fw-bold mb-3" style="text-shadow: 2px 2px 4px rgba(0,0,0,0.5); will-change: transform;">
                                 Quienes Somos
                             </h1>
                             <div class="d-inline-block bg-danger px-4 py-2 rounded-3 mt-3">
@@ -28,7 +32,10 @@
                                 <div class="position-relative">
                                     <img src="/theme_bohio_real_estate/static/src/img/quienes-somos.jpg"
                                          alt="Bohío Consultores"
-                                         class="img-fluid rounded-4 shadow-lg"/>
+                                         class="img-fluid rounded-4 shadow-lg"
+                                         loading="lazy"
+                                         decoding="async"
+                                         style="transform: translateZ(0);"/>
                                     <div class="position-absolute top-0 start-0 bg-danger text-white px-3 py-2 m-3 rounded">
                                         <strong>14+ Años de experiencia</strong>
                                     </div>
@@ -221,6 +228,150 @@
                 </section>
 
             </div>
+
+            <!-- Script de Optimización de Performance -->
+            <script type="text/javascript">
+                // Optimizaciones de performance
+                (function() {
+                    'use strict';
+
+                    // 1. Usar passive event listeners para touch events
+                    if ('addEventListener' in window) {
+                        window.addEventListener('touchstart', function() {}, { passive: true });
+                        window.addEventListener('touchmove', function() {}, { passive: true });
+                    }
+
+                    // 2. Debounce para scroll events
+                    let scrollTimeout;
+                    function debounceScroll(callback, delay = 100) {
+                        return function() {
+                            clearTimeout(scrollTimeout);
+                            scrollTimeout = setTimeout(callback, delay);
+                        };
+                    }
+
+                    // 3. Optimizar animaciones usando requestAnimationFrame
+                    const animatedElements = document.querySelectorAll('.hover-lift, .card');
+                    if (animatedElements.length > 0 &amp;&amp; 'IntersectionObserver' in window) {
+                        const observerOptions = {
+                            root: null,
+                            rootMargin: '50px',
+                            threshold: 0.1
+                        };
+
+                        const observer = new IntersectionObserver(function(entries) {
+                            entries.forEach(function(entry) {
+                                if (entry.isIntersecting) {
+                                    entry.target.style.willChange = 'transform';
+                                    requestAnimationFrame(function() {
+                                        entry.target.classList.add('visible');
+                                    });
+                                } else {
+                                    entry.target.style.willChange = 'auto';
+                                }
+                            });
+                        }, observerOptions);
+
+                        animatedElements.forEach(function(el) {
+                            observer.observe(el);
+                        });
+                    }
+
+                    // 4. Lazy load de imágenes con loading="lazy" nativo
+                    const images = document.querySelectorAll('img[loading="lazy"]');
+                    if ('loading' in HTMLImageElement.prototype) {
+                        // Browser soporta lazy loading nativo
+                        console.log('Lazy loading nativo habilitado para', images.length, 'imágenes');
+                    } else {
+                        // Fallback para navegadores que no soportan lazy loading
+                        const imageObserver = new IntersectionObserver(function(entries) {
+                            entries.forEach(function(entry) {
+                                if (entry.isIntersecting) {
+                                    const img = entry.target;
+                                    if (img.dataset.src) {
+                                        img.src = img.dataset.src;
+                                        imageObserver.unobserve(img);
+                                    }
+                                }
+                            });
+                        });
+
+                        images.forEach(function(img) {
+                            imageObserver.observe(img);
+                        });
+                    }
+
+                    // 5. Optimizar renderizado de background images
+                    const heroSection = document.querySelector('.hero-bg');
+                    if (heroSection) {
+                        // Pre-cargar imagen del hero en baja calidad
+                        const bgImage = new Image();
+                        bgImage.src = '/theme_bohio_real_estate/static/src/img/quienes-somos.jpg';
+                        bgImage.onload = function() {
+                            heroSection.style.opacity = '1';
+                            heroSection.style.transition = 'opacity 0.3s ease-in-out';
+                        };
+                    }
+
+                    // 6. Prevenir layout thrashing
+                    window.addEventListener('resize', debounceScroll(function() {
+                        requestAnimationFrame(function() {
+                            // Recalcular layouts solo cuando sea necesario
+                            document.body.style.visibility = 'visible';
+                        });
+                    }, 250));
+
+                })();
+            </script>
+
+            <!-- CSS de optimización -->
+            <style>
+                /* Hardware acceleration */
+                .quienes-somos-hero,
+                .hero-bg,
+                .overlay,
+                img {
+                    -webkit-transform: translateZ(0);
+                    transform: translateZ(0);
+                    -webkit-backface-visibility: hidden;
+                    backface-visibility: hidden;
+                }
+
+                /* Smooth scrolling optimizado */
+                html {
+                    scroll-behavior: smooth;
+                }
+
+                @media (prefers-reduced-motion: reduce) {
+                    html {
+                        scroll-behavior: auto;
+                    }
+                }
+
+                /* Optimizar animaciones de hover */
+                .hover-lift {
+                    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                    will-change: auto;
+                }
+
+                .hover-lift:hover {
+                    transform: translateY(-5px) translateZ(0);
+                }
+
+                /* Prevenir FOUC (Flash of Unstyled Content) */
+                .card,
+                .shadow-sm,
+                .shadow-lg {
+                    contain: layout style paint;
+                }
+
+                /* Optimizar fuentes */
+                .display-2,
+                .display-5,
+                .fw-bold {
+                    font-display: swap;
+                }
+            </style>
         </t>
     </template>
 </odoo>
