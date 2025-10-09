@@ -105,6 +105,7 @@
 
             <!-- Script para proyectos -->
             <script>
+            //<![CDATA[
                 let proyectosMap = null;
                 let proyectosMarkers = null;
                 let allProyectos = [];
@@ -253,7 +254,7 @@
                     const bounds = [];
 
                     proyectos.forEach(proyecto => {
-                        if (proyecto.latitude &amp;&amp; proyecto.longitude) {
+                        if (proyecto.latitude && proyecto.longitude) {
                             const marker = L.marker([proyecto.latitude, proyecto.longitude]);
 
                             const popupContent = `
@@ -304,6 +305,7 @@
                     // Implementar filtrado
                     cargarProyectos();
                 }
+            //]]>
             </script>
         </t>
     </template>
