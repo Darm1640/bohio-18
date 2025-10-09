@@ -206,35 +206,44 @@
                     <!-- Nuestros Servicios -->
                     <section class="bohio-services py-5">
                         <div class="container">
-                            <div class="d-flex justify-content-between align-items-center mb-4">
-                                <div>
-                                    <span class="badge bg-danger px-3 py-2">Nuestros servicios</span>
-                                </div>
+                            <div class="mb-4">
+                                <h2 class="d-inline-block bg-danger text-white px-4 py-3 mb-0 rounded-end-pill" style="font-size: 1.75rem; font-weight: 500;">
+                                    Nuestros servicios
+                                </h2>
                             </div>
 
                             <div class="row g-4">
                                 <div class="col-md-2 col-6">
                                     <div class="service-card text-center p-3 h-100 bg-white rounded-3 shadow-sm">
                                         <div class="service-icon mb-2">
-                                            <img src="/theme_bohio_real_estate/static/src/img/areas_1-8.png" alt="Estudio social" style="width: 60px; height: 60px;"/>
+                                            <img src="/theme_bohio_real_estate/static/src/img/icono-servicios.png"
+                                                 alt="Servicios Generales"
+                                                 style="width: 60px; height: 60px; object-fit: contain;"
+                                                 loading="lazy"/>
                                         </div>
-                                        <h6 class="mb-0">Estudio social</h6>
+                                        <h6 class="mb-0">Servicios Generales</h6>
                                     </div>
                                 </div>
 
                                 <div class="col-md-2 col-6">
                                     <div class="service-card text-center p-3 h-100 bg-white rounded-3 shadow-sm">
-                                        <div class="service-icon mb-2 d-flex align-items-center justify-content-center mx-auto bg-danger bg-opacity-10 rounded-circle" style="width: 60px; height: 60px;">
-                                            <i class="fa fa-calculator text-danger fa-2x"></i>
+                                        <div class="service-icon mb-2">
+                                            <img src="/theme_bohio_real_estate/static/src/img/icono-proyectos.png"
+                                                 alt="Proyectos"
+                                                 style="width: 60px; height: 60px; object-fit: contain;"
+                                                 loading="lazy"/>
                                         </div>
-                                        <h6 class="mb-0">Avalúos</h6>
+                                        <h6 class="mb-0">Proyectos</h6>
                                     </div>
                                 </div>
 
                                 <div class="col-md-2 col-6">
                                     <div class="service-card text-center p-3 h-100 bg-white rounded-3 shadow-sm">
-                                        <div class="service-icon mb-2 d-flex align-items-center justify-content-center mx-auto bg-danger bg-opacity-10 rounded-circle" style="width: 60px; height: 60px;">
-                                            <i class="fa fa-briefcase text-danger fa-2x"></i>
+                                        <div class="service-icon mb-2">
+                                            <img src="/theme_bohio_real_estate/static/src/img/icono-negocios-corporativos.png"
+                                                 alt="Negocios Corporativos"
+                                                 style="width: 60px; height: 60px; object-fit: contain;"
+                                                 loading="lazy"/>
                                         </div>
                                         <h6 class="mb-0">Negocios corporativos</h6>
                                     </div>
@@ -242,28 +251,25 @@
 
                                 <div class="col-md-2 col-6">
                                     <div class="service-card text-center p-3 h-100 bg-white rounded-3 shadow-sm">
-                                        <div class="service-icon mb-2 d-flex align-items-center justify-content-center mx-auto bg-danger bg-opacity-10 rounded-circle" style="width: 60px; height: 60px;">
-                                            <i class="fa fa-balance-scale text-danger fa-2x"></i>
-                                        </div>
-                                        <h6 class="mb-0">Servicios jurídicos</h6>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-2 col-6">
-                                    <div class="service-card text-center p-3 h-100 bg-white rounded-3 shadow-sm">
-                                        <div class="service-icon mb-2 d-flex align-items-center justify-content-center mx-auto bg-danger bg-opacity-10 rounded-circle" style="width: 60px; height: 60px;">
-                                            <i class="fa fa-bullhorn text-danger fa-2x"></i>
-                                        </div>
-                                        <h6 class="mb-0">Marketing digital</h6>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-2 col-6">
-                                    <div class="service-card text-center p-3 h-100 bg-white rounded-3 shadow-sm">
-                                        <div class="service-icon mb-2 d-flex align-items-center justify-content-center mx-auto bg-danger bg-opacity-10 rounded-circle" style="width: 60px; height: 60px;">
-                                            <i class="fa fa-pencil-square text-danger fa-2x"></i>
+                                        <div class="service-icon mb-2">
+                                            <img src="/theme_bohio_real_estate/static/src/img/icono-firma.png"
+                                                 alt="Firma Digital"
+                                                 style="width: 60px; height: 60px; object-fit: contain;"
+                                                 loading="lazy"/>
                                         </div>
                                         <h6 class="mb-0">Firma digital</h6>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-2 col-6">
+                                    <div class="service-card text-center p-3 h-100 bg-white rounded-3 shadow-sm">
+                                        <div class="service-icon mb-2">
+                                            <img src="/theme_bohio_real_estate/static/src/img/icono-marketing.png"
+                                                 alt="Marketing Digital"
+                                                 style="width: 60px; height: 60px; object-fit: contain;"
+                                                 loading="lazy"/>
+                                        </div>
+                                        <h6 class="mb-0">Marketing digital</h6>
                                     </div>
                                 </div>
                             </div>
@@ -274,7 +280,9 @@
                     <section class="bohio-arriendo py-5 bg-light">
                         <div class="container">
                             <div class="mb-4">
-                                <span class="badge bg-danger px-3 py-2">Arriendo</span>
+                                <h2 class="d-inline-block bg-danger text-white px-4 py-3 mb-0 rounded-end-pill" style="font-size: 1.75rem; font-weight: 500;">
+                                    Arriendo
+                                </h2>
                             </div>
                             <h2 class="mb-4">
                             Te <span class="fw-bold">ayudamos</span> a encontrar el <span class="text-danger fw-bold">lugar ideal</span> para vivir
@@ -314,7 +322,9 @@
                     <section class="bohio-used-sale py-5">
                         <div class="container">
                             <div class="mb-4">
-                                <span class="badge bg-danger px-3 py-2">Venta de inmuebles usados</span>
+                                <h2 class="d-inline-block bg-danger text-white px-4 py-3 mb-0 rounded-end-pill" style="font-size: 1.75rem; font-weight: 500;">
+                                    Venta de inmuebles usados
+                                </h2>
                             </div>
                             <h2 class="mb-4">
                             Te ayudamos a encontrar el <span class="text-danger fw-bold">hogar</span> que estás buscando
@@ -354,7 +364,9 @@
                     <section class="bohio-projects py-5 bg-light">
                         <div class="container">
                             <div class="mb-4">
-                                <span class="badge bg-danger px-3 py-2">Proyectos en venta</span>
+                                <h2 class="d-inline-block bg-danger text-white px-4 py-3 mb-0 rounded-end-pill" style="font-size: 1.75rem; font-weight: 500;">
+                                    Proyectos en venta
+                                </h2>
                             </div>
                             <h2 class="mb-4">
                                 <span class="text-danger fw-bold">Invierte</span> hoy en el <span class="fw-bold">futuro</span> que sueñas
@@ -394,7 +406,9 @@
                     <section class="bohio-testimonials py-5">
                         <div class="container">
                             <div class="mb-4">
-                                <span class="badge bg-danger px-3 py-2">Testimonios</span>
+                                <h2 class="d-inline-block bg-danger text-white px-4 py-3 mb-0 rounded-end-pill" style="font-size: 1.75rem; font-weight: 500;">
+                                    Testimonios
+                                </h2>
                             </div>
                             <h2 class="mb-5">
                             Ellos ya vivieron <span class="text-danger fw-bold">la experiencia bohío</span>
@@ -480,22 +494,66 @@
                     <!-- Nuestros clientes -->
                     <section class="bohio-clients py-5 bg-light">
                         <div class="container">
-                            <div class="mb-4">
-                                <span class="badge bg-danger px-3 py-2">Nuestros clientes</span>
+                            <div class="text-center mb-4">
+                                <h2 class="display-6 fw-bold mb-2">
+                                    Voces que <span class="text-danger">respaldan</span> nuestro compromiso
+                                </h2>
                             </div>
-                            <h2 class="mb-5">Voces que <span class="text-danger fw-bold">respaldan</span> nuestro compromiso</h2>
-                            <div class="row g-4 justify-content-center">
-                                <div class="col-md-2 col-6 text-center">
-                                    <div class="client-logo-placeholder bg-white p-3 rounded shadow-sm" style="height: 100px;"></div>
+                            <div class="row g-4 justify-content-center align-items-center">
+                                <!-- Haceb -->
+                                <div class="col-lg-3 col-md-4 col-6 text-center">
+                                    <div class="client-logo bg-white p-4 rounded shadow-sm d-flex align-items-center justify-content-center"
+                                         style="height: 150px; transition: transform 0.3s ease;"
+                                         onmouseover="this.style.transform='translateY(-5px)'"
+                                         onmouseout="this.style.transform='translateY(0)'">
+                                        <img src="/theme_bohio_real_estate/static/src/img/cliente-haceb.png"
+                                             alt="Haceb - Un hogar en tus manos"
+                                             class="img-fluid"
+                                             style="max-height: 100%; max-width: 100%; object-fit: contain;"
+                                             loading="lazy"/>
+                                    </div>
                                 </div>
-                                <div class="col-md-2 col-6 text-center">
-                                    <div class="client-logo-placeholder bg-white p-3 rounded shadow-sm" style="height: 100px;"></div>
+
+                                <!-- Hotel Cinco -->
+                                <div class="col-lg-3 col-md-4 col-6 text-center">
+                                    <div class="client-logo bg-white p-4 rounded shadow-sm d-flex align-items-center justify-content-center"
+                                         style="height: 150px; transition: transform 0.3s ease;"
+                                         onmouseover="this.style.transform='translateY(-5px)'"
+                                         onmouseout="this.style.transform='translateY(0)'">
+                                        <img src="/theme_bohio_real_estate/static/src/img/cliente-hotelcinco.jpg"
+                                             alt="Hotel Cinco - Elegancia y Confort"
+                                             class="img-fluid"
+                                             style="max-height: 100%; max-width: 100%; object-fit: contain;"
+                                             loading="lazy"/>
+                                    </div>
                                 </div>
-                                <div class="col-md-2 col-6 text-center">
-                                    <div class="client-logo-placeholder bg-white p-3 rounded shadow-sm" style="height: 100px;"></div>
+
+                                <!-- Construcciones Crearts -->
+                                <div class="col-lg-3 col-md-4 col-6 text-center">
+                                    <div class="client-logo bg-white p-4 rounded shadow-sm d-flex align-items-center justify-content-center"
+                                         style="height: 150px; transition: transform 0.3s ease;"
+                                         onmouseover="this.style.transform='translateY(-5px)'"
+                                         onmouseout="this.style.transform='translateY(0)'">
+                                        <img src="/theme_bohio_real_estate/static/src/img/cliente-crearts.jpg"
+                                             alt="Construcciones Crearts S.A.S."
+                                             class="img-fluid"
+                                             style="max-height: 100%; max-width: 100%; object-fit: contain;"
+                                             loading="lazy"/>
+                                    </div>
                                 </div>
-                                <div class="col-md-2 col-6 text-center">
-                                    <div class="client-logo-placeholder bg-white p-3 rounded shadow-sm" style="height: 100px;"></div>
+
+                                <!-- Derma Piel -->
+                                <div class="col-lg-3 col-md-4 col-6 text-center">
+                                    <div class="client-logo bg-white p-4 rounded shadow-sm d-flex align-items-center justify-content-center"
+                                         style="height: 150px; transition: transform 0.3s ease;"
+                                         onmouseover="this.style.transform='translateY(-5px)'"
+                                         onmouseout="this.style.transform='translateY(0)'">
+                                        <img src="/theme_bohio_real_estate/static/src/img/cliente-dermapiel.jpg"
+                                             alt="Derma Piel - Cuidado de la Piel"
+                                             class="img-fluid"
+                                             style="max-height: 100%; max-width: 100%; object-fit: contain;"
+                                             loading="lazy"/>
+                                    </div>
                                 </div>
                             </div>
                         </div>
