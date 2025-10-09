@@ -78,6 +78,7 @@
                                                         <option value="">Todos</option>
                                                         <option value="sale">Venta</option>
                                                         <option value="rent">Arriendo</option>
+                                                        <option value="vacation_rent">Arriendo Vacacional</option>
                                                     </select>
                                                 </div>
 

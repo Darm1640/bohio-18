@@ -813,6 +813,7 @@ class PropertyShop {
         if (this.comparisonList.length === 0) return;
 
         try {
+            console.log('Solicitando comparación con IDs:', this.comparisonList);
             const response = await fetch('/property/comparison/get', {
                 method: 'POST',
                 headers: {
@@ -824,6 +825,7 @@ class PropertyShop {
                 })
             });
             const data = await response.json();
+            console.log('Datos de comparación recibidos:', data);
 
             this.renderComparisonModal(data);
         } catch (error) {

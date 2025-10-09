@@ -11,6 +11,32 @@ _logger = logging.getLogger(__name__)
 
 class BohioRealEstateController(http.Controller):
 
+    def _safe_stratum_to_int(self, stratum_value):
+        """
+        Convierte stratum a int de forma segura.
+        Si es 'commercial', 'no_stratified' u otro string, retorna 0.
+        Si es un número o string numérico, lo convierte a int.
+        """
+        if not stratum_value:
+            return 0
+
+        # Si ya es un int, retornar directamente
+        if isinstance(stratum_value, int):
+            return stratum_value
+
+        # Si es string, intentar convertir
+        if isinstance(stratum_value, str):
+            # Si es 'commercial', 'no_stratified', etc., retornar 0
+            if not stratum_value.isdigit():
+                return 0
+            try:
+                return int(stratum_value)
+            except ValueError:
+                return 0
+
+        # Para cualquier otro tipo, retornar 0
+        return 0
+
     @http.route('/sobre-nosotros', type='http', auth='public', website=True)
     def sobre_nosotros(self, **kwargs):
         """Página Sobre Nosotros BOHIO"""
@@ -747,10 +773,15 @@ class BohioRealEstateController(http.Controller):
 
         # Tipo de servicio
         if type_service:
+            _logger.info(f"Filtro type_service recibido: {type_service}")
             if type_service == 'sale_rent':
-                domain.append(('type_service', 'in', ['sale', 'rent', 'sale_rent']))
+                filter_clause = ('type_service', 'in', ['sale', 'rent', 'sale_rent'])
+                domain.append(filter_clause)
+                _logger.info(f"Filtro aplicado (sale_rent): {filter_clause}")
             else:
-                domain.append(('type_service', 'in', [type_service, 'sale_rent']))
+                filter_clause = ('type_service', 'in', [type_service, 'sale_rent'])
+                domain.append(filter_clause)
+                _logger.info(f"Filtro aplicado ({type_service}): {filter_clause}")
 
         # Estado del producto (nuevo/usado)
         if state:
@@ -808,6 +839,9 @@ class BohioRealEstateController(http.Controller):
 
         try:
             Property = request.env['product.template'].sudo()
+
+            # Log del domain completo antes de la búsqueda
+            _logger.info(f"Domain final para búsqueda: {domain}")
 
             # Obtener total count para paginación
             total_count = Property.search_count(domain)
@@ -880,7 +914,7 @@ class BohioRealEstateController(http.Controller):
                         'garage': bool(prop.garage),
                         'elevator': bool(prop.elevator),
                         'pools': bool(prop.pools),
-                        'stratum': int(prop.stratum) if prop.stratum else 0,
+                        'stratum': self._safe_stratum_to_int(prop.stratum),
                         'parking': (prop.covered_parking or 0) + (prop.uncovered_parking or 0),
                         'covered_parking': int(prop.covered_parking) if prop.covered_parking else 0,
                         'uncovered_parking': int(prop.uncovered_parking) if prop.uncovered_parking else 0,
@@ -1251,9 +1285,12 @@ class BohioRealEstateController(http.Controller):
     def get_property_comparison(self, **post):
         """Obtener propiedades para comparación"""
         try:
+            _logger.info(f"Comparación de propiedades - POST recibido: {post}")
             property_ids = post.get('property_ids', [])
+            _logger.info(f"Property IDs extraídos: {property_ids}")
 
             if not property_ids or not isinstance(property_ids, list):
+                _logger.warning(f"Property IDs inválidos o vacíos: {property_ids}")
                 return {
                     'success': False,
                     'properties': []
@@ -1291,7 +1328,7 @@ class BohioRealEstateController(http.Controller):
                     'city': prop.city_id.name if prop.city_id else prop.city or '',
                     'state': prop.state_id.name if prop.state_id else '',
                     'region': prop.neighborhood or '',
-                    'stratum': int(prop.stratum) if prop.stratum else 0,
+                    'stratum': self._safe_stratum_to_int(prop.stratum),
                     'image_url': f'/web/image/product.template/{prop.id}/image_512' if prop.image_512 else None,
                     'garage': bool(prop.garage),
                     'elevator': bool(prop.elevator),
@@ -1299,6 +1336,7 @@ class BohioRealEstateController(http.Controller):
                     'furnished': bool(prop.furnished),
                 })
 
+            _logger.info(f"Comparación exitosa - Devolviendo {len(properties_data)} propiedades")
             return {
                 'success': True,
                 'properties': properties_data

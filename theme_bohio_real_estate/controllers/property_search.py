@@ -351,8 +351,9 @@ class PropertySearchController(http.Controller):
         request.session['property_comparison'] = []
         return {'success': True, 'total': 0}
 
-    @http.route(['/property/comparison/get'], type='json', auth='public', website=True)
-    def get_comparison_data(self, context='public'):
+    # DESHABILITADO - Usar endpoint en main.py que recibe property_ids por POST
+    # @http.route(['/property/comparison/get'], type='json', auth='public', website=True)
+    def get_comparison_data_OLD(self, context='public'):
         """
         Obtiene datos detallados de las propiedades en comparación
         """
