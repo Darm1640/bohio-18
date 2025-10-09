@@ -322,6 +322,7 @@ class AccountLoan(models.Model):
 class AccountLoanSpecialPayment(models.Model):
     _name = 'account.loan.special.payment'
     _description = 'Línea de Pago Especial de Préstamo'
+    _inherit = ['mail.thread']  # Habilitar tracking
     _order = 'date desc, id desc'
 
     loan_id = fields.Many2one(

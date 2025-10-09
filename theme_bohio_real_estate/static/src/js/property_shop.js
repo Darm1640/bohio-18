@@ -30,6 +30,9 @@ class PropertyShop {
             this.context = container.dataset.context || 'public';
         }
 
+        // Leer filtros de la URL
+        this.readFiltersFromURL();
+
         // Inicializar componentes
         this.initSearch();
         this.initFilters();
@@ -38,6 +41,50 @@ class PropertyShop {
 
         // Cargar propiedades iniciales
         this.loadProperties();
+    }
+
+    // =================== GESTIÓN DE URL ===================
+
+    readFiltersFromURL() {
+        const params = new URLSearchParams(window.location.search);
+        this.filters = {};
+
+        // Leer todos los parámetros de filtro
+        const filterKeys = ['type_service', 'property_type', 'bedrooms', 'bathrooms', 'min_price', 'max_price', 'garage', 'pool', 'garden', 'elevator', 'order'];
+        filterKeys.forEach(key => {
+            const value = params.get(key);
+            if (value) {
+                this.filters[key] = value;
+            }
+        });
+
+        // Leer página
+        const page = params.get('page');
+        if (page) {
+            this.currentPage = parseInt(page);
+        }
+
+        console.log('Filtros leídos de URL:', this.filters);
+    }
+
+    updateURL() {
+        const params = new URLSearchParams();
+
+        // Agregar filtros a la URL
+        Object.keys(this.filters).forEach(key => {
+            if (this.filters[key]) {
+                params.set(key, this.filters[key]);
+            }
+        });
+
+        // Agregar página si no es la primera
+        if (this.currentPage > 1) {
+            params.set('page', this.currentPage);
+        }
+
+        // Actualizar URL sin recargar la página
+        const newURL = `${window.location.pathname}?${params.toString()}`;
+        window.history.pushState({}, '', newURL);
     }
 
     // =================== BÚSQUEDA Y AUTOCOMPLETADO ===================
@@ -141,6 +188,9 @@ class PropertyShop {
     // =================== FILTROS ===================
 
     initFilters() {
+        // Sincronizar valores del formulario con filtros de la URL
+        this.syncFormWithFilters();
+
         // Filtros checkboxes y selects
         document.querySelectorAll('.property-filter').forEach(filter => {
             filter.addEventListener('change', () => {
@@ -154,6 +204,7 @@ class PropertyShop {
         if (sortSelect) {
             sortSelect.addEventListener('change', (e) => {
                 this.filters.order = e.target.value;
+                this.updateURL();
                 this.loadProperties();
             });
         }
@@ -164,6 +215,28 @@ class PropertyShop {
             clearButton.addEventListener('click', () => {
                 this.clearFilters();
             });
+        }
+    }
+
+    syncFormWithFilters() {
+        // Sincronizar valores de los inputs con los filtros leídos de la URL
+        document.querySelectorAll('.property-filter').forEach(filter => {
+            const filterName = filter.dataset.filter;
+            if (!filterName || !this.filters[filterName]) return;
+
+            const filterValue = this.filters[filterName];
+
+            if (filter.type === 'checkbox') {
+                filter.checked = Array.isArray(filterValue) && filterValue.includes(filter.dataset.value || filter.value);
+            } else if (filter.tagName === 'SELECT' || filter.type === 'number' || filter.type === 'text') {
+                filter.value = filterValue;
+            }
+        });
+
+        // Sincronizar orden
+        const sortSelect = document.querySelector('.property-sort');
+        if (sortSelect && this.filters.order) {
+            sortSelect.value = this.filters.order;
         }
     }
 
@@ -189,6 +262,9 @@ class PropertyShop {
         });
 
         console.log('Filtros actualizados:', this.filters);
+
+        // Actualizar URL con los nuevos filtros
+        this.updateURL();
     }
 
     clearFilters() {
@@ -202,6 +278,8 @@ class PropertyShop {
             }
         });
 
+        // Actualizar URL (limpia)
+        this.updateURL();
         this.loadProperties();
     }
 

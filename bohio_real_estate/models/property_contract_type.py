@@ -540,6 +540,7 @@ class PropertyContractDocumentChecklist(models.Model):
     """Checklist de documentos por contrato individual"""
     _name = 'property.contract.document.checklist'
     _description = 'Checklist de Documentos del Contrato'
+    _inherit = ['mail.thread']  # Habilitar tracking
     _order = 'sequence, name'
 
     contract_id = fields.Many2one(

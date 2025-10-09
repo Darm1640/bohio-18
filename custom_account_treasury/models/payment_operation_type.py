@@ -124,24 +124,29 @@ class PaymentOperationType(models.Model):
 
         return self.sequence_id.with_context(**context).next_by_id()
 
-    @api.model
-    def create(self, vals):
+    @api.model_create_multi
+    def create(self, vals_list):
         """Al crear, si no hay secuencia, crear una automáticamente"""
-        if 'sequence_id' not in vals:
-            # Crear secuencia automática
-            code = vals.get('code', 'OP')
-            sequence_vals = {
-                'name': _('Secuencia %s') % vals.get('name', 'Operación'),
-                'code': 'payment.operation.%s' % code.lower(),
-                'prefix': '%s/%%(year)s/' % code.upper(),
-                'padding': 5,
-                'use_date_range': True,
-                'company_id': False,  # Global para multi-compañía
-            }
-            sequence = self.env['ir.sequence'].create(sequence_vals)
-            vals['sequence_id'] = sequence.id
+        # Normalizar vals_list para soportar batch y single create
+        if not isinstance(vals_list, list):
+            vals_list = [vals_list]
 
-        return super(PaymentOperationType, self).create(vals)
+        for vals in vals_list:
+            if 'sequence_id' not in vals:
+                # Crear secuencia automática
+                code = vals.get('code', 'OP')
+                sequence_vals = {
+                    'name': _('Secuencia %s') % vals.get('name', 'Operación'),
+                    'code': 'payment.operation.%s' % code.lower(),
+                    'prefix': '%s/%%(year)s/' % code.upper(),
+                    'padding': 5,
+                    'use_date_range': True,
+                    'company_id': False,  # Global para multi-compañía
+                }
+                sequence = self.env['ir.sequence'].create(sequence_vals)
+                vals['sequence_id'] = sequence.id
+
+        return super(PaymentOperationType, self).create(vals_list)
 
     def unlink(self):
         """Al eliminar, verificar que no haya pagos usando este tipo"""

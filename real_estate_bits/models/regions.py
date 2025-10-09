@@ -22,8 +22,8 @@ class Regions(models.Model):
         string="Nombre del Barrio",
         required=True,
         tracking=True,
-        index=True
-    )
+        index=True,
+        help="Nombre del barrio o urbanización")
 
     code = fields.Char(
         string="Código",

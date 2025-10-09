@@ -6,6 +6,10 @@ from datetime import datetime, timedelta
 import json
 import logging
 
+# Helpers de Odoo para URLs (mismo patrón que website_sale)
+from odoo.addons.website.controllers.main import QueryURL
+from odoo.addons.portal.controllers.portal import _build_url_w_params
+
 _logger = logging.getLogger(__name__)
 
 
@@ -182,6 +186,29 @@ class BohioRealEstateController(http.Controller):
         for prop in properties:
             prop.is_new = prop.create_date >= thirty_days_ago if prop.create_date else False
 
+        # QueryURL helper (mismo patrón que website_sale) para mantener filtros en URLs
+        keep = QueryURL('/properties',
+            search=search_term,
+            property_type=property_type,
+            city_id=city_id,
+            state_id=state_id,
+            region_id=region_id,
+            project_id=project_id,
+            property_state=property_state,
+            min_price=min_price,
+            max_price=max_price,
+            min_area=min_area,
+            max_area=max_area,
+            bedrooms=bedrooms,
+            bathrooms=bathrooms,
+            type_service=type_service,
+            garage=garage,
+            garden=garden,
+            pool=pool,
+            elevator=elevator,
+            order=post.get('order', 'relevance')
+        )
+
         # Preparar valores para renderizado
         values = {
             'properties': properties,
@@ -208,6 +235,7 @@ class BohioRealEstateController(http.Controller):
             'page': page,
             'ppg': ppg,
             'pager': self._get_pager(total_properties, page, ppg, '/properties', post),
+            'keep': keep,  # Helper para construir URLs con filtros preservados
 
             # Datos para filtros con contadores
             'property_types': self._get_property_types_with_counts(domain),
@@ -756,12 +784,32 @@ class BohioRealEstateController(http.Controller):
         return request.render('theme_bohio_real_estate.bohio_homepage_new', {})
 
     @http.route(['/bohio/api/properties'], type='json', auth='public', website=True)
-    def api_get_properties(self, type_service=None, state=None, is_project=False, limit=80,
-                          offset=0, property_type=None, bedrooms=None, bathrooms=None,
-                          min_price=None, max_price=None, garage=None, pool=None,
-                          garden=None, elevator=None, **kwargs):
-        """API para obtener propiedades con paginación (80 por página) - compatible con homepage y shop"""
-        _logger.info(f"API /bohio/api/properties - limit={limit}, offset={offset}, filtros: type_service={type_service}, property_type={property_type}")
+    def api_get_properties(self, **params):
+        """API para obtener propiedades con paginación (40 por página) - compatible con homepage y shop"""
+        # Extraer parámetros del JSON body
+        type_service = params.get('type_service')
+        state = params.get('state')
+        is_project = params.get('is_project', False)
+        limit = params.get('limit', 40)
+        offset = params.get('offset', 0)
+        property_type = params.get('property_type')
+        bedrooms = params.get('bedrooms')
+        bathrooms = params.get('bathrooms')
+        min_price = params.get('min_price')
+        max_price = params.get('max_price')
+        garage = params.get('garage')
+        pool = params.get('pool')
+        garden = params.get('garden')
+        elevator = params.get('elevator')
+        order = params.get('order')
+        context = params.get('context', 'public')
+
+        _logger.info(f"API /bohio/api/properties LLAMADO - Parámetros recibidos:")
+        _logger.info(f"  type_service={type_service}, property_type={property_type}")
+        _logger.info(f"  bedrooms={bedrooms}, bathrooms={bathrooms}")
+        _logger.info(f"  min_price={min_price}, max_price={max_price}")
+        _logger.info(f"  garage={garage}, pool={pool}, garden={garden}, elevator={elevator}")
+        _logger.info(f"  order={order}, limit={limit}, offset={offset}")
 
         domain = [
             ('is_property', '=', True),
@@ -769,7 +817,7 @@ class BohioRealEstateController(http.Controller):
         ]
 
         # Filtrar por estado de propiedad (solo disponibles si no se especifica)
-        if kwargs.get('context') == 'public' or not state:
+        if context == 'public' or not state:
             domain.append(('state', '=', 'free'))
 
         # Tipo de servicio
@@ -886,6 +934,10 @@ class BohioRealEstateController(http.Controller):
                     else:
                         price = float(prop.list_price) if prop.list_price else 0
 
+                    # Obtener URL de imagen optimizada usando website.image_url (mismo patrón que website_sale)
+                    website = request.website
+                    image_url = website.image_url(prop, 'image_512') if prop.image_512 else None
+
                     # Obtener solo los campos necesarios de forma eficiente
                     properties_data.append({
                         'id': prop.id,
@@ -906,7 +958,7 @@ class BohioRealEstateController(http.Controller):
                         'region': prop.neighborhood or '',
                         'address': prop.address or '',
                         'description': prop.description or '',
-                        'image_url': f'/web/image/product.template/{prop.id}/image_512' if prop.image_512 else None,
+                        'image_url': image_url,
                         'create_date': prop.create_date.isoformat() if prop.create_date else None,
                         'is_new': bool(prop.create_date and prop.create_date >= thirty_days_ago),
                         'latitude': float(prop.latitude) if prop.latitude else None,
@@ -1315,6 +1367,10 @@ class BohioRealEstateController(http.Controller):
                 else:
                     price = float(prop.list_price) if prop.list_price else 0
 
+                # Obtener URL de imagen optimizada (mismo patrón que website_sale)
+                website = request.website
+                image_url = website.image_url(prop, 'image_512') if prop.image_512 else None
+
                 properties_data.append({
                     'id': prop.id,
                     'name': prop.name or '',
@@ -1330,7 +1386,7 @@ class BohioRealEstateController(http.Controller):
                     'state': prop.state_id.name if prop.state_id else '',
                     'region': prop.neighborhood or '',
                     'stratum': self._safe_stratum_to_int(prop.stratum),
-                    'image_url': f'/web/image/product.template/{prop.id}/image_512' if prop.image_512 else None,
+                    'image_url': image_url,
                     'garage': bool(prop.garage),
                     'elevator': bool(prop.elevator),
                     'pools': bool(prop.pools),
