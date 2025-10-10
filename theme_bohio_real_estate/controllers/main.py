@@ -792,7 +792,7 @@ class BohioRealEstateController(http.Controller):
         # Coordenadas de la oficina BOHIO en Montería
         office_lat = params.get('ref_lat', 8.7479)
         office_lng = params.get('ref_lng', -75.8814)
-        limit = params.get('limit', 100)
+        limit = params.get('limit', 30)  # Default 30 propiedades para mejor rendimiento
 
         # Extraer filtros
         type_service = params.get('type_service')
@@ -808,6 +808,12 @@ class BohioRealEstateController(http.Controller):
             ('state', '=', 'free'),
             ('latitude', '!=', False),
             ('longitude', '!=', False),
+            ('latitude', '!=', 0),
+            ('longitude', '!=', 0),
+            # Excluir productos que no son propiedades reales
+            ('name', 'not ilike', 'COMISION'),
+            ('name', 'not ilike', 'PAGO'),
+            ('name', 'not ilike', 'Pago'),
         ]
 
         # Aplicar filtros si existen

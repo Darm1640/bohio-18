@@ -62,6 +62,7 @@ class PropertyShop {
         this.officeMarker = null;  // Marker especial para la oficina
         this.autocompleteTimeout = null;
         this.currentProperties = [];
+        this.mapProperties = [];  // Propiedades con coordenadas para el mapa
 
         // Paginación
         this.currentPage = 1;
@@ -729,21 +730,23 @@ class PropertyShop {
         try {
             const result = await rpc('/bohio/api/properties/map', {
                 ...this.filters,
-                limit: 200  // Cargar más propiedades para el mapa
+                limit: 30  // Limitar a 30 propiedades para mejor rendimiento
             });
 
             console.log('[MAP] Respuesta del endpoint:', result);
 
             if (result.success) {
-                const mapProperties = result.properties || [];
-                console.log(`[MAP] Propiedades con coordenadas: ${mapProperties.length}`);
-                this.updateMap(mapProperties);
+                this.mapProperties = result.properties || [];
+                console.log(`[MAP] Propiedades con coordenadas: ${this.mapProperties.length}`);
+                this.updateMap(this.mapProperties);
             } else {
                 console.error('[MAP] Error en respuesta:', result.error);
+                this.mapProperties = [];
                 this.updateMap([]);
             }
         } catch (error) {
             console.error('[MAP] Error cargando propiedades del mapa:', error);
+            this.mapProperties = [];
             this.updateMap([]);
         }
     }
@@ -806,7 +809,10 @@ class PropertyShop {
                 mapTab.addEventListener('shown.bs.tab', () => {
                     setTimeout(() => {
                         this.map.invalidateSize();
-                        this.updateMap(this.currentProperties);
+                        // Usar mapProperties que ya tiene las propiedades con coordenadas
+                        if (this.mapProperties && this.mapProperties.length > 0) {
+                            this.updateMap(this.mapProperties);
+                        }
                     }, 100);
                 });
             }
@@ -880,13 +886,22 @@ class PropertyShop {
                 ...this.filters,
                 ref_lat: userLat,
                 ref_lng: userLng,
-                limit: 200
+                limit: 30  // Solo 30 propiedades más cercanas
             });
 
             if (result.success) {
-                const mapProperties = result.properties || [];
-                console.log(`[MAP] Propiedades cercanas encontradas: ${mapProperties.length}`);
-                this.updateMap(mapProperties);
+                this.mapProperties = result.properties || [];
+                console.log(`[MAP] Propiedades cercanas encontradas: ${this.mapProperties.length}`);
+
+                // Centrar mapa en la ubicación del usuario
+                if (this.map && this.mapProperties.length > 0) {
+                    // Ajustar zoom según cantidad de propiedades
+                    const zoom = this.mapProperties.length > 10 ? 12 : 13;
+                    this.map.setView([userLat, userLng], zoom);
+                    console.log(`[MAP] Mapa centrado en usuario: ${userLat}, ${userLng} (zoom: ${zoom})`);
+                }
+
+                this.updateMap(this.mapProperties);
             }
         } catch (error) {
             console.error('[MAP] Error cargando propiedades cercanas:', error);
