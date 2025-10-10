@@ -90,20 +90,29 @@ function updateMapMarkers(map, properties) {
             const imageUrl = prop.image_url || '/theme_bohio_real_estate/static/src/img/placeholder.jpg';
             const neighborhood = prop.neighborhood ? `${prop.neighborhood}, ` : '';
             const location = `${neighborhood}${prop.city || prop.state || ''}`;
+            const bedrooms = prop.bedrooms || 0;
+            const bathrooms = prop.bathrooms || 0;
+            const area = prop.total_area || prop.built_area || 0;
 
-            // Crear popup con imagen, barrio y precio
+            // Crear popup con imagen, barrio, precio y detalles
             const popupContent = `
-                <div style="min-width: 250px; max-width: 300px;">
+                <div style="min-width: 280px; max-width: 300px;">
                     <img src="${imageUrl}"
                          alt="${prop.name}"
-                         style="width: 100%; height: 150px; object-fit: cover; border-radius: 8px; margin-bottom: 10px;"/>
+                         style="width: 100%; height: 160px; object-fit: cover; border-radius: 8px; margin-bottom: 12px;"
+                         onerror="this.src='/theme_bohio_real_estate/static/src/img/placeholder.jpg'"/>
                     <h6 class="fw-bold mb-2" style="font-size: 14px;">${prop.name}</h6>
-                    <p class="small mb-1 text-muted">
-                        <i class="fa fa-map-marker-alt text-danger"></i> ${location}
+                    <p class="small mb-2 text-muted">
+                        <i class="fa fa-map-marker-alt text-danger me-1"></i>${location}
                     </p>
                     <div class="mb-2">
                         <small class="text-muted d-block">${priceLabel}</small>
-                        <p class="mb-1 text-danger fw-bold" style="font-size: 16px;">${price}</p>
+                        <p class="mb-2 text-danger fw-bold" style="font-size: 16px;">${price}</p>
+                    </div>
+                    <div class="d-flex gap-3 mb-3" style="font-size: 13px; color: #666;">
+                        ${area > 0 ? `<span><i class="fa fa-ruler-combined me-1"></i>${area} m²</span>` : ''}
+                        ${bedrooms > 0 ? `<span><i class="fa fa-bed me-1"></i>${bedrooms} hab</span>` : ''}
+                        ${bathrooms > 0 ? `<span><i class="fa fa-bath me-1"></i>${bathrooms} baños</span>` : ''}
                     </div>
                     <a href="/property/${prop.id}"
                        class="btn btn-sm btn-danger w-100"
@@ -210,60 +219,75 @@ async function loadProperties(params) {
  * Cargar todas las propiedades del homepage
  */
 async function loadHomePropertiesWithMaps() {
-    // Cargar propiedades en arriendo
+    // Cargar propiedades en arriendo (20 más recientes con ubicación)
     try {
         const rentData = await loadProperties({
             type_service: 'rent',
-            limit: 4
+            has_location: true,
+            limit: 20,
+            order: 'newest'
         });
 
         if (rentData.properties && rentData.properties.length > 0) {
             rentPropertiesData = rentData.properties;
             const arriendoContainer = document.getElementById('arriendo-properties-grid');
             if (arriendoContainer) {
-                arriendoContainer.innerHTML = rentPropertiesData.map(prop => createPropertyCard(prop)).join('');
+                // Mostrar solo las primeras 4 en el grid
+                arriendoContainer.innerHTML = rentPropertiesData.slice(0, 4).map(prop => createPropertyCard(prop)).join('');
             }
             console.log('Propiedades de arriendo cargadas:', rentPropertiesData.length);
+        } else {
+            console.warn('No se encontraron propiedades de arriendo con ubicación');
         }
     } catch (err) {
         console.error('Error cargando arriendos:', err);
     }
 
-    // Cargar propiedades usadas en venta
+    // Cargar propiedades usadas en venta (20 más recientes con ubicación)
     try {
         const usedSaleData = await loadProperties({
             type_service: 'sale',
-            is_project: 'false',
-            limit: 4
+            is_project: false,
+            has_location: true,
+            limit: 20,
+            order: 'newest'
         });
 
         if (usedSaleData.properties && usedSaleData.properties.length > 0) {
             usedSalePropertiesData = usedSaleData.properties;
             const usedSaleContainer = document.getElementById('used-sale-properties-grid');
             if (usedSaleContainer) {
-                usedSaleContainer.innerHTML = usedSalePropertiesData.map(prop => createPropertyCard(prop)).join('');
+                // Mostrar solo las primeras 4 en el grid
+                usedSaleContainer.innerHTML = usedSaleData.properties.slice(0, 4).map(prop => createPropertyCard(prop)).join('');
             }
-            console.log('Propiedades usadas cargadas:', usedSalePropertiesData.length);
+            console.log('Propiedades usadas cargadas:', usedSaleData.properties.length);
+        } else {
+            console.warn('No se encontraron propiedades de venta usadas con ubicación');
         }
     } catch (err) {
         console.error('Error cargando ventas usadas:', err);
     }
 
-    // Cargar proyectos en venta
+    // Cargar proyectos en venta (20 más recientes con ubicación)
     try {
         const projectsData = await loadProperties({
             type_service: 'sale',
-            is_project: 'true',
-            limit: 4
+            is_project: true,
+            has_location: true,
+            limit: 20,
+            order: 'newest'
         });
 
         if (projectsData.properties && projectsData.properties.length > 0) {
             projectsPropertiesData = projectsData.properties;
             const projectsContainer = document.getElementById('projects-properties-grid');
             if (projectsContainer) {
-                projectsContainer.innerHTML = projectsPropertiesData.map(prop => createPropertyCard(prop)).join('');
+                // Mostrar solo los primeros 4 en el grid
+                projectsContainer.innerHTML = projectsData.properties.slice(0, 4).map(prop => createPropertyCard(prop)).join('');
             }
-            console.log('Proyectos cargados:', projectsPropertiesData.length);
+            console.log('Proyectos cargados:', projectsData.properties.length);
+        } else {
+            console.warn('No se encontraron proyectos con ubicación');
         }
     } catch (err) {
         console.error('Error cargando proyectos:', err);

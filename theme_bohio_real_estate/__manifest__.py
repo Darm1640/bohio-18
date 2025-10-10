@@ -58,6 +58,7 @@
             'theme_bohio_real_estate/static/src/css/style.css',
             'theme_bohio_real_estate/static/src/css/homepage_autocomplete.css',
             'theme_bohio_real_estate/static/src/css/homepage_maps.css',
+            'theme_bohio_real_estate/static/src/css/map_styles.css',
 
             # SCSS
             'theme_bohio_real_estate/static/src/scss/loader.scss',

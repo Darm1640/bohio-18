@@ -4,6 +4,55 @@ import { rpc } from "@web/core/network/rpc";
 
 console.log('BOHIO Property Shop JS cargado');
 
+// Ubicación de la oficina principal de BOHIO
+const BOHIO_OFFICE = {
+    name: 'Bohío Consultores Soluciones Inmobiliarias SAS',
+    address: 'Cl. 29 #2, Esquina, Centro, Montería, Córdoba',
+    latitude: 8.7479,  // Coordenadas de Montería, Córdoba
+    longitude: -75.8814,
+    phone: '+57 321 740 3356',
+    email: 'info@bohio.com.co',
+    website: 'bohioconsultores.com',
+    hours: 'Lun - Vie: 7:30 AM - 6:00 PM',
+    rating: '3.7 ⭐ (26 reseñas)'
+};
+
+// Lugares de interés cerca de la oficina en Montería
+const NEARBY_PLACES = [
+    {
+        name: 'Plaza de la Concepción',
+        type: 'landmark',
+        latitude: 8.7496,
+        longitude: -75.8840,
+        icon: 'fa-landmark',
+        color: '#FF9800'
+    },
+    {
+        name: 'Ronda del Sinú',
+        type: 'park',
+        latitude: 8.7586,
+        longitude: -75.8899,
+        icon: 'fa-tree',
+        color: '#4CAF50'
+    },
+    {
+        name: 'Centro Comercial Nuestro',
+        type: 'shopping',
+        latitude: 8.7450,
+        longitude: -75.8743,
+        icon: 'fa-shopping-cart',
+        color: '#2196F3'
+    },
+    {
+        name: 'Universidad de Córdoba',
+        type: 'education',
+        latitude: 8.7851,
+        longitude: -75.8646,
+        icon: 'fa-graduation-cap',
+        color: '#9C27B0'
+    }
+];
+
 class PropertyShop {
     constructor() {
         this.context = 'public';
@@ -11,6 +60,7 @@ class PropertyShop {
         this.comparisonList = [];
         this.map = null;
         this.markers = null;
+        this.officeMarker = null;  // Marker especial para la oficina
         this.autocompleteTimeout = null;
         this.currentProperties = [];
 
@@ -670,23 +720,230 @@ class PropertyShop {
 
                 const marker = L.marker([prop.latitude, prop.longitude], { icon: customIcon });
 
+                // Popup mejorado con imagen y detalles
+                const imageUrl = prop.image_url || '/theme_bohio_real_estate/static/src/img/placeholder.jpg';
+                const bedrooms = prop.bedrooms || 0;
+                const bathrooms = prop.bathrooms || 0;
+                const area = prop.total_area || prop.built_area || 0;
+                const neighborhood = prop.neighborhood || prop.region || '';
+
                 marker.bindPopup(`
-                    <div class="property-popup">
-                        <h6><a href="/property/${prop.id}">${prop.name}</a></h6>
-                        <p class="mb-1"><strong>$${this.formatPrice(prop.list_price)}</strong></p>
-                        <p class="small text-muted mb-2">${prop.city || ''}, ${prop.region || ''}</p>
-                        <a href="/property/${prop.id}" class="btn btn-sm btn-danger w-100">Ver Detalles</a>
+                    <div class="property-popup-card" style="min-width: 280px;">
+                        <div class="popup-image" style="height: 160px; overflow: hidden; border-radius: 8px 8px 0 0; margin: -12px -12px 12px -12px;">
+                            <img src="${imageUrl}"
+                                 alt="${prop.name}"
+                                 style="width: 100%; height: 100%; object-fit: cover;"
+                                 onerror="this.src='/theme_bohio_real_estate/static/src/img/placeholder.jpg'"/>
+                        </div>
+                        <div class="popup-content">
+                            <h6 class="mb-2" style="font-size: 14px; font-weight: 600;">
+                                <a href="/property/${prop.id}" class="text-dark text-decoration-none">
+                                    ${prop.name}
+                                </a>
+                            </h6>
+                            ${neighborhood ? `<p class="small text-muted mb-2"><i class="fa fa-map-marker-alt me-1"></i>${neighborhood}</p>` : ''}
+                            <p class="mb-2" style="font-size: 16px; color: #e31e24; font-weight: 700;">
+                                $${this.formatPrice(prop.list_price)}
+                            </p>
+                            <div class="d-flex gap-3 mb-3" style="font-size: 13px; color: #666;">
+                                ${area > 0 ? `<span><i class="fa fa-ruler-combined me-1"></i>${area} m²</span>` : ''}
+                                ${bedrooms > 0 ? `<span><i class="fa fa-bed me-1"></i>${bedrooms}</span>` : ''}
+                                ${bathrooms > 0 ? `<span><i class="fa fa-bath me-1"></i>${bathrooms}</span>` : ''}
+                            </div>
+                            <a href="/property/${prop.id}" class="btn btn-sm btn-danger w-100">Ver Detalles</a>
+                        </div>
                     </div>
-                `);
+                `, {
+                    maxWidth: 300,
+                    className: 'custom-popup'
+                });
 
                 this.markers.addLayer(marker);
                 bounds.push([prop.latitude, prop.longitude]);
             }
         });
 
+        // Agregar pin especial de la oficina de BOHIO
+        this.addOfficeMarker();
+
         if (bounds.length > 0) {
             this.map.fitBounds(bounds, { padding: [50, 50] });
         }
+    }
+
+    addOfficeMarker() {
+        if (!this.map) return;
+
+        // Remover marker anterior si existe
+        if (this.officeMarker) {
+            this.map.removeLayer(this.officeMarker);
+        }
+
+        // Icono especial para la oficina (rojo con icono de edificio)
+        const officeIcon = L.divIcon({
+            className: 'bohio-office-marker',
+            html: `
+                <div style="position: relative;">
+                    <div style="
+                        background: linear-gradient(135deg, #e31e24 0%, #c01d20 100%);
+                        color: white;
+                        padding: 12px 16px;
+                        border-radius: 25px;
+                        box-shadow: 0 4px 15px rgba(227, 30, 36, 0.4);
+                        font-weight: bold;
+                        font-size: 13px;
+                        white-space: nowrap;
+                        border: 3px solid white;
+                        animation: pulse-office 2s infinite;
+                    ">
+                        <i class="fa fa-building me-2"></i>OFICINA BOHIO
+                    </div>
+                    <div style="
+                        position: absolute;
+                        bottom: -10px;
+                        left: 50%;
+                        transform: translateX(-50%);
+                        width: 0;
+                        height: 0;
+                        border-left: 10px solid transparent;
+                        border-right: 10px solid transparent;
+                        border-top: 10px solid white;
+                    "></div>
+                </div>
+            `,
+            iconSize: [180, 50],
+            iconAnchor: [90, 50]
+        });
+
+        // Crear marker de la oficina
+        this.officeMarker = L.marker([BOHIO_OFFICE.latitude, BOHIO_OFFICE.longitude], {
+            icon: officeIcon,
+            zIndexOffset: 1000  // Siempre al frente
+        }).addTo(this.map);
+
+        // Popup especial para la oficina con botón de Google Maps
+        const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${BOHIO_OFFICE.latitude},${BOHIO_OFFICE.longitude}`;
+
+        const officePopup = `
+            <div class="bohio-office-popup" style="min-width: 300px;">
+                <div style="background: linear-gradient(135deg, #e31e24 0%, #c01d20 100%); color: white; padding: 15px; margin: -12px -12px 15px -12px; border-radius: 8px 8px 0 0;">
+                    <h5 class="mb-1" style="font-size: 16px; font-weight: bold;">
+                        <i class="fa fa-building me-2"></i>${BOHIO_OFFICE.name}
+                    </h5>
+                </div>
+                <div style="padding: 0 5px;">
+                    <p class="mb-2" style="font-size: 14px;">
+                        <i class="fa fa-map-marker-alt me-2" style="color: #e31e24;"></i>
+                        <strong>${BOHIO_OFFICE.address}</strong>
+                    </p>
+                    <p class="mb-2" style="font-size: 13px;">
+                        <i class="fa fa-phone me-2" style="color: #e31e24;"></i>
+                        <a href="tel:${BOHIO_OFFICE.phone}" class="text-dark">${BOHIO_OFFICE.phone}</a>
+                    </p>
+                    <p class="mb-2" style="font-size: 13px;">
+                        <i class="fa fa-envelope me-2" style="color: #e31e24;"></i>
+                        <a href="mailto:${BOHIO_OFFICE.email}" class="text-dark">${BOHIO_OFFICE.email}</a>
+                    </p>
+                    <p class="mb-2" style="font-size: 12px; color: #666;">
+                        <i class="fa fa-clock me-2" style="color: #e31e24;"></i>
+                        ${BOHIO_OFFICE.hours}
+                    </p>
+                    <p class="mb-2" style="font-size: 13px;">
+                        <i class="fa fa-star me-2" style="color: #FFC107;"></i>
+                        <strong>${BOHIO_OFFICE.rating}</strong>
+                    </p>
+                    <p class="mb-3" style="font-size: 13px;">
+                        <i class="fa fa-globe me-2" style="color: #e31e24;"></i>
+                        <a href="https://${BOHIO_OFFICE.website}" target="_blank" class="text-dark">
+                            ${BOHIO_OFFICE.website}
+                        </a>
+                    </p>
+                    <a href="${googleMapsUrl}"
+                       target="_blank"
+                       class="btn btn-danger w-100 mb-2"
+                       style="background: #e31e24; border: none;">
+                        <i class="fa fa-map-marked-alt me-2"></i>Cómo llegar (Google Maps)
+                    </a>
+                    <a href="tel:${BOHIO_OFFICE.phone}"
+                       class="btn btn-outline-danger w-100"
+                       style="border-color: #e31e24; color: #e31e24;">
+                        <i class="fa fa-phone me-2"></i>Llamar ahora
+                    </a>
+                </div>
+            </div>
+        `;
+
+        this.officeMarker.bindPopup(officePopup, {
+            maxWidth: 350,
+            className: 'bohio-office-popup-container'
+        });
+
+        // Agregar lugares de interés cercanos
+        this.addNearbyPlaces();
+
+        // Auto-abrir el popup de la oficina brevemente al cargar el mapa
+        setTimeout(() => {
+            this.officeMarker.openPopup();
+            setTimeout(() => {
+                this.officeMarker.closePopup();
+            }, 3000);  // Cerrar después de 3 segundos
+        }, 1000);
+    }
+
+    addNearbyPlaces() {
+        if (!this.map) return;
+
+        NEARBY_PLACES.forEach(place => {
+            // Icono pequeño para lugares de interés
+            const placeIcon = L.divIcon({
+                className: 'nearby-place-marker',
+                html: `
+                    <div style="
+                        background: ${place.color};
+                        color: white;
+                        width: 32px;
+                        height: 32px;
+                        border-radius: 50%;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+                        border: 2px solid white;
+                        font-size: 14px;
+                    ">
+                        <i class="fa ${place.icon}"></i>
+                    </div>
+                `,
+                iconSize: [32, 32],
+                iconAnchor: [16, 16]
+            });
+
+            const marker = L.marker([place.latitude, place.longitude], {
+                icon: placeIcon,
+                zIndexOffset: 500
+            }).addTo(this.map);
+
+            // Popup para el lugar de interés
+            const placePopup = `
+                <div style="min-width: 200px; text-align: center;">
+                    <div style="color: ${place.color}; font-size: 24px; margin-bottom: 8px;">
+                        <i class="fa ${place.icon}"></i>
+                    </div>
+                    <h6 class="mb-2" style="font-weight: 600;">${place.name}</h6>
+                    <a href="https://www.google.com/maps/dir/?api=1&origin=${BOHIO_OFFICE.latitude},${BOHIO_OFFICE.longitude}&destination=${place.latitude},${place.longitude}"
+                       target="_blank"
+                       class="btn btn-sm btn-outline-secondary"
+                       style="border-color: ${place.color}; color: ${place.color};">
+                        <i class="fa fa-directions me-1"></i>Cómo llegar
+                    </a>
+                </div>
+            `;
+
+            marker.bindPopup(placePopup, {
+                maxWidth: 250,
+                className: 'nearby-place-popup'
+            });
+        });
     }
 
     // =================== COMPARACIÓN ===================
