@@ -13,8 +13,7 @@ const BOHIO_OFFICE = {
     phone: '+57 321 740 3356',
     email: 'info@bohio.com.co',
     website: 'bohioconsultores.com',
-    hours: 'Lun - Vie: 7:30 AM - 6:00 PM',
-    rating: '3.7 ⭐ (26 reseñas)'
+    hours: 'Lun - Vie: 7:30 AM - 6:00 PM'
 };
 
 // Lugares de interés cerca de la oficina en Montería
@@ -847,10 +846,6 @@ class PropertyShop {
                     <p class="mb-2" style="font-size: 12px; color: #666;">
                         <i class="fa fa-clock me-2" style="color: #e31e24;"></i>
                         ${BOHIO_OFFICE.hours}
-                    </p>
-                    <p class="mb-2" style="font-size: 13px;">
-                        <i class="fa fa-star me-2" style="color: #FFC107;"></i>
-                        <strong>${BOHIO_OFFICE.rating}</strong>
                     </p>
                     <p class="mb-3" style="font-size: 13px;">
                         <i class="fa fa-globe me-2" style="color: #e31e24;"></i>

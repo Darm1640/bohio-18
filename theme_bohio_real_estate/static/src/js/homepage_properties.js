@@ -201,13 +201,17 @@ function createPropertyCard(property) {
  */
 async function loadProperties(params) {
     try {
+        console.log('Llamando /property/search/ajax con params:', params);
+
         const result = await rpc('/property/search/ajax', {
             context: 'public',
             filters: params,
             page: 1,
             ppg: params.limit || 20,
-            order: 'relevance'
+            order: params.order || 'newest'
         });
+
+        console.log('Resultado recibido:', result);
         return result;
     } catch (error) {
         console.error('Error cargando propiedades:', error);
@@ -219,11 +223,12 @@ async function loadProperties(params) {
  * Cargar todas las propiedades del homepage
  */
 async function loadHomePropertiesWithMaps() {
-    // Cargar propiedades en arriendo (20 más recientes con ubicación)
+    console.log('=== Iniciando carga de propiedades del homepage ===');
+
+    // Cargar propiedades en arriendo (20 más recientes)
     try {
         const rentData = await loadProperties({
             type_service: 'rent',
-            has_location: true,
             limit: 20,
             order: 'newest'
         });
@@ -243,12 +248,11 @@ async function loadHomePropertiesWithMaps() {
         console.error('Error cargando arriendos:', err);
     }
 
-    // Cargar propiedades usadas en venta (20 más recientes con ubicación)
+    // Cargar propiedades usadas en venta (20 más recientes)
     try {
         const usedSaleData = await loadProperties({
             type_service: 'sale',
             is_project: false,
-            has_location: true,
             limit: 20,
             order: 'newest'
         });
@@ -268,12 +272,11 @@ async function loadHomePropertiesWithMaps() {
         console.error('Error cargando ventas usadas:', err);
     }
 
-    // Cargar proyectos en venta (20 más recientes con ubicación)
+    // Cargar proyectos en venta (20 más recientes)
     try {
         const projectsData = await loadProperties({
             type_service: 'sale',
             is_project: true,
-            has_location: true,
             limit: 20,
             order: 'newest'
         });
