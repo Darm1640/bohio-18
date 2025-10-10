@@ -432,6 +432,20 @@ class PropertySearchController(http.Controller):
             else:
                 domain.append(('type_service', 'in', [ts, 'sale_rent']))
 
+        # Filtro de ubicación (solo propiedades con coordenadas)
+        if filters.get('has_location'):
+            domain.append(('latitude', '!=', False))
+            domain.append(('longitude', '!=', False))
+
+        # Filtro de proyecto (propiedades nuevas vs usadas)
+        if 'has_project' in filters:
+            if filters['has_project']:
+                # Propiedades nuevas/proyectos: tienen proyecto asignado
+                domain.append(('project_worksite_id', '!=', False))
+            else:
+                # Propiedades usadas: NO tienen proyecto
+                domain.append(('project_worksite_id', '=', False))
+
         # Habitaciones y baños
         if filters.get('bedrooms'):
             try:

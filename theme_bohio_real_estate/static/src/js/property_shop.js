@@ -1611,11 +1611,36 @@ if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
         if (document.querySelector('.property_search_container')) {
             window.bohioShop = new PropertyShop();
+            initMapTabListener();
         }
     });
 } else {
     if (document.querySelector('.property_search_container')) {
         window.bohioShop = new PropertyShop();
+        initMapTabListener();
+    }
+}
+
+// Listener para refrescar mapa cuando se cambia al tab
+function initMapTabListener() {
+    const mapTabButton = document.querySelector('[data-bs-target="#map-view"]');
+    if (mapTabButton) {
+        mapTabButton.addEventListener('shown.bs.tab', function () {
+            console.log('[MAP-TAB] Tab del mapa activado');
+            if (window.bohioShop && window.bohioShop.map) {
+                // Invalidar tamaño del mapa para que se ajuste correctamente
+                setTimeout(() => {
+                    console.log('[MAP-TAB] Invalidando tamaño del mapa');
+                    window.bohioShop.map.invalidateSize();
+
+                    // Si hay propiedades cargadas, cargar datos del mapa
+                    if (!window.bohioShop.mapProperties || window.bohioShop.mapProperties.length === 0) {
+                        console.log('[MAP-TAB] Cargando propiedades del mapa');
+                        window.bohioShop.loadMapProperties();
+                    }
+                }, 100);
+            }
+        });
     }
 }
 

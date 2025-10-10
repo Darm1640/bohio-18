@@ -225,10 +225,11 @@ async function loadProperties(params) {
 async function loadHomePropertiesWithMaps() {
     console.log('=== Iniciando carga de propiedades del homepage ===');
 
-    // Cargar propiedades en arriendo (20 más recientes)
+    // Cargar propiedades en arriendo (20 más recientes CON UBICACIÓN)
     try {
         const rentData = await loadProperties({
             type_service: 'rent',
+            has_location: true,  // Solo propiedades con coordenadas
             limit: 20,
             order: 'newest'
         });
@@ -243,16 +244,26 @@ async function loadHomePropertiesWithMaps() {
             console.log('Propiedades de arriendo cargadas:', rentPropertiesData.length);
         } else {
             console.warn('No se encontraron propiedades de arriendo con ubicación');
+            const arriendoContainer = document.getElementById('arriendo-properties-grid');
+            if (arriendoContainer) {
+                arriendoContainer.innerHTML = `
+                    <div class="col-12 text-center py-5">
+                        <i class="fa fa-home fa-3x text-muted mb-3"></i>
+                        <p class="text-muted">No hay propiedades de arriendo disponibles en este momento</p>
+                    </div>
+                `;
+            }
         }
     } catch (err) {
         console.error('Error cargando arriendos:', err);
     }
 
-    // Cargar propiedades usadas en venta (20 más recientes)
+    // Cargar propiedades usadas en venta (20 más recientes CON UBICACIÓN, SIN PROYECTO)
     try {
         const usedSaleData = await loadProperties({
             type_service: 'sale',
-            is_project: false,
+            has_location: true,      // Solo con coordenadas
+            has_project: false,      // Sin proyecto = propiedades usadas
             limit: 20,
             order: 'newest'
         });
@@ -267,16 +278,26 @@ async function loadHomePropertiesWithMaps() {
             console.log('Propiedades usadas cargadas:', usedSaleData.properties.length);
         } else {
             console.warn('No se encontraron propiedades de venta usadas con ubicación');
+            const usedSaleContainer = document.getElementById('used-sale-properties-grid');
+            if (usedSaleContainer) {
+                usedSaleContainer.innerHTML = `
+                    <div class="col-12 text-center py-5">
+                        <i class="fa fa-building fa-3x text-muted mb-3"></i>
+                        <p class="text-muted">No hay propiedades usadas en venta disponibles en este momento</p>
+                    </div>
+                `;
+            }
         }
     } catch (err) {
         console.error('Error cargando ventas usadas:', err);
     }
 
-    // Cargar proyectos en venta (20 más recientes)
+    // Cargar proyectos en venta (20 más recientes CON UBICACIÓN, CON PROYECTO)
     try {
         const projectsData = await loadProperties({
             type_service: 'sale',
-            is_project: true,
+            has_location: true,   // Solo con coordenadas
+            has_project: true,    // Con proyecto = propiedades nuevas/proyectos
             limit: 20,
             order: 'newest'
         });
@@ -291,6 +312,15 @@ async function loadHomePropertiesWithMaps() {
             console.log('Proyectos cargados:', projectsData.properties.length);
         } else {
             console.warn('No se encontraron proyectos con ubicación');
+            const projectsContainer = document.getElementById('projects-properties-grid');
+            if (projectsContainer) {
+                projectsContainer.innerHTML = `
+                    <div class="col-12 text-center py-5">
+                        <i class="fa fa-map-marker-alt fa-3x text-muted mb-3"></i>
+                        <p class="text-muted">No hay proyectos en venta disponibles en este momento</p>
+                    </div>
+                `;
+            }
         }
     } catch (err) {
         console.error('Error cargando proyectos:', err);

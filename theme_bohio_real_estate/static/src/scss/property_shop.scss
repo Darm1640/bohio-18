@@ -172,6 +172,36 @@ $bohio-red-dark: #B81820;
         }
     }
 
+    // Mapa de propiedades
+    #map-view {
+        position: relative;
+        z-index: 1;
+    }
+
+    #properties-map {
+        width: 100%;
+        height: 800px;
+        border-radius: 0.5rem;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        position: relative;
+        z-index: 1;
+
+        // Asegurar que el mapa no sea tapado
+        .leaflet-container {
+            z-index: 1;
+        }
+
+        // Controles del mapa
+        .leaflet-control {
+            z-index: 2;
+        }
+
+        // Popups del mapa
+        .leaflet-popup {
+            z-index: 3;
+        }
+    }
+
     // Badges
     .badge {
         font-weight: 600;
