@@ -28,7 +28,7 @@
         # Layout
         'views/layout/loader_template.xml',
 
-        # Data - Torre Rialto
+        # Data - Torre Rialto (propiedades primero, luego planos)
         'data/torre_rialto_propiedades.xml',
         'data/torre_rialto_planos.xml',
 
