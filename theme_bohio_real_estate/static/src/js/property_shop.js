@@ -725,27 +725,32 @@ class PropertyShop {
     // =================== MAPA ===================
 
     async loadMapProperties() {
-        console.log('[MAP] Cargando propiedades para mapa con filtros:', this.filters);
+        console.log('[MAP] === loadMapProperties ===');
+        console.log('[MAP] Filtros:', JSON.stringify(this.filters));
+
+        // Si el mapa no está inicializado, NO hacer nada
+        if (!this.map || !this.markers) {
+            console.log('[MAP] Mapa no inicializado, saltando...');
+            return;
+        }
 
         try {
             const result = await rpc('/bohio/api/properties/map', {
                 ...this.filters,
-                limit: 30  // Limitar a 30 propiedades para mejor rendimiento
+                limit: 30
             });
 
-            console.log('[MAP] Respuesta del endpoint:', result);
+            console.log('[MAP] Respuesta:', result.success ? `${result.properties.length} propiedades` : 'ERROR');
 
-            if (result.success) {
-                this.mapProperties = result.properties || [];
-                console.log(`[MAP] Propiedades con coordenadas: ${this.mapProperties.length}`);
+            if (result.success && result.properties) {
+                this.mapProperties = result.properties;
                 this.updateMap(this.mapProperties);
             } else {
-                console.error('[MAP] Error en respuesta:', result.error);
                 this.mapProperties = [];
                 this.updateMap([]);
             }
         } catch (error) {
-            console.error('[MAP] Error cargando propiedades del mapa:', error);
+            console.error('[MAP] Error:', error.message);
             this.mapProperties = [];
             this.updateMap([]);
         }
@@ -781,15 +786,10 @@ class PropertyShop {
         if (!mapContainer || this.map) return;
 
         try {
-            console.log('[MAP] Creando mapa...');
+            console.log('[MAP] Creando mapa en Colombia...');
 
-            // Intentar obtener ubicación del usuario
-            let initialLat = 8.7479;  // Montería por defecto
-            let initialLng = -75.8814;
-            let initialZoom = 12;
-
-            // Crear mapa
-            this.map = L.map('properties-map').setView([initialLat, initialLng], initialZoom);
+            // Crear mapa centrado en Colombia
+            this.map = L.map('properties-map').setView([4.5709, -74.2973], 6);
 
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '© OpenStreetMap contributors',
@@ -800,133 +800,58 @@ class PropertyShop {
 
             console.log('[MAP] Mapa creado exitosamente');
 
-            // Intentar obtener ubicación del usuario
-            this.getUserLocation();
-
-            // Cuando se muestra el tab del mapa, actualizar tamaño
+            // Cuando se muestra el tab del mapa, actualizar tamaño y recargar markers
             const mapTab = document.querySelector('[data-bs-target="#map-view"]');
             if (mapTab) {
                 mapTab.addEventListener('shown.bs.tab', () => {
                     setTimeout(() => {
-                        this.map.invalidateSize();
-                        // Usar mapProperties que ya tiene las propiedades con coordenadas
-                        if (this.mapProperties && this.mapProperties.length > 0) {
-                            this.updateMap(this.mapProperties);
+                        if (this.map) {
+                            this.map.invalidateSize();
+                            // Si ya hay propiedades cargadas, mostrarlas
+                            if (this.mapProperties && this.mapProperties.length > 0) {
+                                console.log('[MAP] Tab mostrado - Actualizando markers');
+                                this.updateMap(this.mapProperties);
+                            }
                         }
                     }, 100);
                 });
             }
 
-            console.log('Mapa creado correctamente');
+            console.log('[MAP] Inicializacion completa');
         } catch (error) {
-            console.error('Error creando mapa:', error);
+            console.error('[MAP] Error creando mapa:', error);
         }
     }
 
+    // FUNCIONES DE GEOLOCALIZACIÓN DESACTIVADAS TEMPORALMENTE
+    // Estas funciones causaban conflictos con los filtros de ciudad
+    // TODO: Implementar como feature opcional activada por botón del usuario
+
+    /*
     getUserLocation() {
-        if (!navigator.geolocation) {
-            console.log('[MAP] Geolocalizacion no disponible en este navegador');
-            return;
-        }
-
-        console.log('[MAP] Solicitando ubicacion del usuario...');
-
-        navigator.geolocation.getCurrentPosition(
-            (position) => {
-                const userLat = position.coords.latitude;
-                const userLng = position.coords.longitude;
-
-                console.log(`[MAP] Ubicacion del usuario: ${userLat}, ${userLng}`);
-
-                // Centrar mapa en ubicación del usuario
-                if (this.map) {
-                    this.map.setView([userLat, userLng], 13);
-
-                    // Agregar marcador de ubicación del usuario
-                    const userIcon = L.divIcon({
-                        className: 'user-location-marker',
-                        html: `<div style="
-                            background: #4285F4;
-                            width: 20px;
-                            height: 20px;
-                            border-radius: 50%;
-                            border: 3px solid white;
-                            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-                        "></div>`,
-                        iconSize: [20, 20],
-                        iconAnchor: [10, 10]
-                    });
-
-                    L.marker([userLat, userLng], { icon: userIcon })
-                        .addTo(this.map)
-                        .bindPopup('<b>Tu ubicación</b>');
-                }
-
-                // Cargar propiedades cercanas usando la ubicación del usuario
-                this.loadNearbyProperties(userLat, userLng);
-            },
-            (error) => {
-                console.warn('[MAP] No se pudo obtener ubicacion:', error.message);
-                // Cargar propiedades normales si no se permite la ubicación
-                this.loadMapProperties();
-            },
-            {
-                enableHighAccuracy: true,
-                timeout: 5000,
-                maximumAge: 0
-            }
-        );
+        // Código comentado - causaba conflictos con filtros
     }
 
-    async loadNearbyProperties(userLat, userLng) {
-        console.log(`[MAP] Cargando propiedades cercanas a: ${userLat}, ${userLng}`);
-
-        try {
-            const result = await rpc('/bohio/api/properties/map', {
-                ...this.filters,
-                ref_lat: userLat,
-                ref_lng: userLng,
-                limit: 30  // Solo 30 propiedades más cercanas
-            });
-
-            if (result.success) {
-                this.mapProperties = result.properties || [];
-                console.log(`[MAP] Propiedades cercanas encontradas: ${this.mapProperties.length}`);
-
-                // Centrar mapa en la ubicación del usuario
-                if (this.map && this.mapProperties.length > 0) {
-                    // Ajustar zoom según cantidad de propiedades
-                    const zoom = this.mapProperties.length > 10 ? 12 : 13;
-                    this.map.setView([userLat, userLng], zoom);
-                    console.log(`[MAP] Mapa centrado en usuario: ${userLat}, ${userLng} (zoom: ${zoom})`);
-                }
-
-                this.updateMap(this.mapProperties);
-            }
-        } catch (error) {
-            console.error('[MAP] Error cargando propiedades cercanas:', error);
-            this.loadMapProperties();
-        }
+    loadNearbyProperties(userLat, userLng) {
+        // Código comentado - causaba conflictos con filtros
     }
+    */
 
     updateMap(properties) {
+        console.log(`[MAP] Actualizando mapa con ${properties.length} propiedades`);
+
         if (!this.map || !this.markers) {
-            console.warn('[MAP] Mapa o markers no inicializados');
+            console.log('[MAP] Mapa no inicializado');
             return;
         }
 
-        console.log('[MAP] Actualizando mapa con', properties.length, 'propiedades');
-
+        // Limpiar markers anteriores
         this.markers.clearLayers();
 
         const bounds = [];
-        let markersAdded = 0;
 
         properties.forEach(prop => {
-            console.log('[MAP] Propiedad:', prop.id, 'Lat:', prop.latitude, 'Lng:', prop.longitude);
-
             if (prop.latitude && prop.longitude) {
-                markersAdded++;
                 // Pin personalizado con precio
                 const customIcon = L.divIcon({
                     className: 'custom-property-pin',
@@ -1011,22 +936,16 @@ class PropertyShop {
 
                 this.markers.addLayer(marker);
                 bounds.push([prop.latitude, prop.longitude]);
-            } else {
-                console.warn('[MAP] Propiedad sin coordenadas:', prop.id, prop.name);
             }
         });
 
-        console.log('[MAP] Markers agregados:', markersAdded, 'de', properties.length);
+        console.log(`[MAP] Agregados ${bounds.length} markers al mapa`);
 
-        // Agregar pin especial de la oficina de BOHIO
-        this.addOfficeMarker();
-
+        // Ajustar vista del mapa
         if (bounds.length > 0) {
-            console.log('[MAP] Ajustando vista a', bounds.length, 'puntos');
             this.map.fitBounds(bounds, { padding: [50, 50] });
         } else {
-            console.warn('[MAP] No hay coordenadas para ajustar vista');
-            // Centrar en Colombia si no hay propiedades
+            console.log('[MAP] Sin propiedades, centrando en Colombia');
             this.map.setView([4.5709, -74.2973], 6);
         }
     }
