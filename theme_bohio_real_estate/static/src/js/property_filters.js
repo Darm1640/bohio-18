@@ -1,7 +1,8 @@
 /** @odoo-module **/
 
 import { Component, useState, onWillStart, onMounted } from "@odoo/owl";
-import { jsonrpc } from "@web/legacy/js/core/rpc";
+import { rpc } from "@web/core/network/rpc";
+import { registry } from "@web/core/registry";
 
 /**
  * BOHIO Property Filters - Componente OWL para Filtros Dinámicos
@@ -91,7 +92,7 @@ export class PropertyFilters extends Component {
      */
     async loadInitialFilters() {
         try {
-            const result = await jsonrpc('/property/filters/options', {
+            const result = await rpc('/property/filters/options', {
                 context: 'public',
                 filters: this.state.filters
             });
@@ -111,7 +112,7 @@ export class PropertyFilters extends Component {
         this.state.isLoading = true;
 
         try {
-            const result = await jsonrpc('/property/search/ajax', {
+            const result = await rpc('/property/search/ajax', {
                 context: 'public',
                 filters: this.state.filters,
                 page: this.state.page,
@@ -135,7 +136,7 @@ export class PropertyFilters extends Component {
      */
     async updateFilterOptions() {
         try {
-            const result = await jsonrpc('/property/filters/options', {
+            const result = await rpc('/property/filters/options', {
                 context: 'public',
                 filters: this.state.filters
             });
@@ -322,6 +323,6 @@ export class PropertyFilters extends Component {
 // Template del componente
 PropertyFilters.template = "theme_bohio_real_estate.PropertyFiltersTemplate";
 
-// NOTA: registry no está disponible en web.assets_frontend
-// El componente OWL debe ser montado manualmente en el frontend
-// Ver documentación de montaje manual en homepage_new.xml
+// Registrar componente en el registry de componentes públicos
+// Esto permite que sea montado automáticamente en páginas con <owl-component name="PropertyFilters"/>
+registry.category("public_components").add("PropertyFilters", PropertyFilters);

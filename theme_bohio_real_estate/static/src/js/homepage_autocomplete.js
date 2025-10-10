@@ -1,10 +1,10 @@
 /** @odoo-module **/
 
-import { jsonrpc } from "@web/legacy/js/core/rpc";
+import { rpc } from "@web/core/network/rpc";
 
 /**
  * BOHIO Homepage Autocomplete - Sistema de Autocompletado Inteligente
- * Implementación con RPC nativo de Odoo 18 (sin jQuery)
+ * Implementación con RPC nativo de Odoo 18 (disponible en web.assets_frontend)
  *
  * Características:
  * - Búsqueda en tiempo real con debounce
@@ -135,7 +135,7 @@ class BohioAutocomplete {
         this.isLoading = true;
 
         try {
-            const result = await jsonrpc('/property/search/autocomplete', {
+            const result = await rpc('/property/search/autocomplete', {
                 term: term,
                 context: this.options.context,
                 subdivision: this.options.subdivision,

@@ -1,10 +1,10 @@
 /** @odoo-module **/
 
-import { jsonrpc } from "@web/legacy/js/core/rpc";
+import { rpc } from "@web/core/network/rpc";
 
 /**
  * BOHIO Homepage Properties - Sistema de Carga y Mapas
- * Implementación con RPC nativo de Odoo 18 (sin jQuery)
+ * Implementación con RPC nativo de Odoo 18 (disponible en web.assets_frontend)
  */
 
 // Variables globales para mapas y datos
@@ -192,7 +192,7 @@ function createPropertyCard(property) {
  */
 async function loadProperties(params) {
     try {
-        const result = await jsonrpc('/properties/api/list', params);
+        const result = await rpc('/properties/api/list', params);
         return result;
     } catch (error) {
         console.error('Error cargando propiedades:', error);
