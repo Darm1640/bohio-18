@@ -783,6 +783,145 @@ class BohioRealEstateController(http.Controller):
         """Nueva Homepage BOHIO Real Estate"""
         return request.render('theme_bohio_real_estate.bohio_homepage_new', {})
 
+    @http.route(['/bohio/api/properties/map'], type='json', auth='public', website=True)
+    def api_get_properties_for_map(self, **params):
+        """
+        API para obtener propiedades solo con coordenadas GPS para el mapa
+        Calcula distancia desde punto de referencia (oficina BOHIO)
+        """
+        # Coordenadas de la oficina BOHIO en Montería
+        office_lat = params.get('ref_lat', 8.7479)
+        office_lng = params.get('ref_lng', -75.8814)
+        limit = params.get('limit', 100)
+
+        # Extraer filtros
+        type_service = params.get('type_service')
+        property_type = params.get('property_type')
+        bedrooms = params.get('bedrooms')
+        bathrooms = params.get('bathrooms')
+        min_price = params.get('min_price')
+        max_price = params.get('max_price')
+
+        domain = [
+            ('is_property', '=', True),
+            ('active', '=', True),
+            ('state', '=', 'free'),
+            ('latitude', '!=', False),
+            ('longitude', '!=', False),
+        ]
+
+        # Aplicar filtros si existen
+        if type_service:
+            if type_service == 'sale_rent':
+                domain.append(('type_service', 'in', ['sale', 'rent', 'sale_rent']))
+            else:
+                domain.append(('type_service', 'in', [type_service, 'sale_rent']))
+
+        if property_type:
+            domain.append(('property_type', '=', property_type))
+
+        if bedrooms:
+            try:
+                domain.append(('num_bedrooms', '>=', int(bedrooms)))
+            except ValueError:
+                pass
+
+        if bathrooms:
+            try:
+                domain.append(('num_bathrooms', '>=', int(bathrooms)))
+            except ValueError:
+                pass
+
+        # Precio
+        price_field = 'net_rental_price' if type_service in ['rent', 'vacation_rent'] else 'net_price'
+        if min_price:
+            try:
+                domain.append((price_field, '>=', float(min_price)))
+            except ValueError:
+                pass
+        if max_price:
+            try:
+                domain.append((price_field, '<=', float(max_price)))
+            except ValueError:
+                pass
+
+        try:
+            Property = request.env['product.template'].sudo()
+            properties = Property.search(domain, limit=int(limit))
+
+            _logger.info(f"Propiedades con coordenadas encontradas: {len(properties)}")
+
+            properties_data = []
+            for prop in properties:
+                # Calcular distancia aproximada (en km)
+                import math
+                if prop.latitude and prop.longitude:
+                    lat1, lon1 = math.radians(office_lat), math.radians(office_lng)
+                    lat2, lon2 = math.radians(prop.latitude), math.radians(prop.longitude)
+
+                    dlat = lat2 - lat1
+                    dlon = lon2 - lon1
+
+                    a = math.sin(dlat/2)**2 + math.cos(lat1) * math.cos(lat2) * math.sin(dlon/2)**2
+                    c = 2 * math.asin(math.sqrt(a))
+                    distance_km = 6371 * c  # Radio de la Tierra en km
+
+                    # Determinar precio
+                    price = 0
+                    if prop.type_service == 'sale':
+                        price = float(prop.net_price) if prop.net_price else float(prop.list_price)
+                    elif prop.type_service == 'rent':
+                        price = float(prop.net_rental_price) if prop.net_rental_price else float(prop.list_price)
+                    else:
+                        price = float(prop.list_price) if prop.list_price else 0
+
+                    # Obtener imagen
+                    website = request.website
+                    image_url = website.image_url(prop, 'image_512') if prop.image_512 else None
+
+                    properties_data.append({
+                        'id': prop.id,
+                        'name': prop.name or '',
+                        'default_code': prop.default_code or '',
+                        'list_price': price,
+                        'property_type': prop.property_type or '',
+                        'type_service': prop.type_service or '',
+                        'bedrooms': int(prop.num_bedrooms) if prop.num_bedrooms else 0,
+                        'bathrooms': int(prop.num_bathrooms) if prop.num_bathrooms else 0,
+                        'area_constructed': float(prop.property_area) if prop.property_area else 0,
+                        'total_area': float(prop.property_area) if prop.property_area else 0,
+                        'built_area': float(prop.property_area) if prop.property_area else 0,
+                        'city': prop.city_id.name if prop.city_id else prop.city or '',
+                        'region': prop.neighborhood or '',
+                        'neighborhood': prop.neighborhood or '',
+                        'image_url': image_url,
+                        'latitude': float(prop.latitude),
+                        'longitude': float(prop.longitude),
+                        'distance_km': round(distance_km, 2),
+                    })
+
+            # Ordenar por distancia (más cercanas primero)
+            properties_data.sort(key=lambda x: x['distance_km'])
+
+            return {
+                'success': True,
+                'properties': properties_data,
+                'count': len(properties_data),
+                'reference_point': {
+                    'lat': office_lat,
+                    'lng': office_lng,
+                    'name': 'Oficina BOHIO'
+                }
+            }
+
+        except Exception as e:
+            _logger.error(f"Error en /bohio/api/properties/map: {str(e)}")
+            return {
+                'success': False,
+                'properties': [],
+                'error': str(e)
+            }
+
     @http.route(['/bohio/api/properties'], type='json', auth='public', website=True)
     def api_get_properties(self, **params):
         """API para obtener propiedades con paginación (40 por página) - compatible con homepage y shop"""

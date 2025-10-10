@@ -431,9 +431,11 @@ class PropertyShop {
             console.log(`Propiedades: ${this.currentProperties.length} de ${this.totalItems} total (Página ${this.currentPage}/${this.totalPages})`);
 
             this.renderProperties(this.currentProperties);
-            this.updateMap(this.currentProperties);
             this.updateCounter(this.totalItems);
             this.renderPagination();
+
+            // Cargar propiedades para el mapa con los mismos filtros (solo las que tienen coordenadas)
+            await this.loadMapProperties();
         } catch (error) {
             console.error('Error cargando propiedades:', error);
 
@@ -721,6 +723,31 @@ class PropertyShop {
 
     // =================== MAPA ===================
 
+    async loadMapProperties() {
+        console.log('[MAP] Cargando propiedades para mapa con filtros:', this.filters);
+
+        try {
+            const result = await rpc('/bohio/api/properties/map', {
+                ...this.filters,
+                limit: 200  // Cargar más propiedades para el mapa
+            });
+
+            console.log('[MAP] Respuesta del endpoint:', result);
+
+            if (result.success) {
+                const mapProperties = result.properties || [];
+                console.log(`[MAP] Propiedades con coordenadas: ${mapProperties.length}`);
+                this.updateMap(mapProperties);
+            } else {
+                console.error('[MAP] Error en respuesta:', result.error);
+                this.updateMap([]);
+            }
+        } catch (error) {
+            console.error('[MAP] Error cargando propiedades del mapa:', error);
+            this.updateMap([]);
+        }
+    }
+
     initMap() {
         const mapContainer = document.getElementById('properties-map');
         if (!mapContainer) return;
@@ -766,14 +793,23 @@ class PropertyShop {
     }
 
     updateMap(properties) {
-        if (!this.map || !this.markers) return;
+        if (!this.map || !this.markers) {
+            console.warn('[MAP] Mapa o markers no inicializados');
+            return;
+        }
+
+        console.log('[MAP] Actualizando mapa con', properties.length, 'propiedades');
 
         this.markers.clearLayers();
 
         const bounds = [];
+        let markersAdded = 0;
 
         properties.forEach(prop => {
+            console.log('[MAP] Propiedad:', prop.id, 'Lat:', prop.latitude, 'Lng:', prop.longitude);
+
             if (prop.latitude && prop.longitude) {
+                markersAdded++;
                 // Pin personalizado con precio
                 const customIcon = L.divIcon({
                     className: 'custom-property-pin',
@@ -829,14 +865,23 @@ class PropertyShop {
 
                 this.markers.addLayer(marker);
                 bounds.push([prop.latitude, prop.longitude]);
+            } else {
+                console.warn('[MAP] Propiedad sin coordenadas:', prop.id, prop.name);
             }
         });
+
+        console.log('[MAP] Markers agregados:', markersAdded, 'de', properties.length);
 
         // Agregar pin especial de la oficina de BOHIO
         this.addOfficeMarker();
 
         if (bounds.length > 0) {
+            console.log('[MAP] Ajustando vista a', bounds.length, 'puntos');
             this.map.fitBounds(bounds, { padding: [50, 50] });
+        } else {
+            console.warn('[MAP] No hay coordenadas para ajustar vista');
+            // Centrar en Colombia si no hay propiedades
+            this.map.setView([4.5709, -74.2973], 6);
         }
     }
 
