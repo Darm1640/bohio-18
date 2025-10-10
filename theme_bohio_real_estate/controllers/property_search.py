@@ -570,6 +570,9 @@ class PropertySearchController(http.Controller):
 
     def _serialize_properties(self, properties, search_context):
         """Serializa propiedades para respuesta JSON"""
+        # Obtener website una sola vez (optimización)
+        website = request.env['website'].get_current_website()
+
         data = []
         for prop in properties:
             # Determinar precio según tipo de servicio
@@ -581,6 +584,10 @@ class PropertySearchController(http.Controller):
             # Información del proyecto si existe
             project_id = prop.project_worksite_id.id if prop.project_worksite_id else None
             project_name = prop.project_worksite_id.name if prop.project_worksite_id else None
+
+            # Obtener URL de imagen optimizada usando website.image_url
+            # Esto maneja CDN, cache, lazy loading y tamaños optimizados automáticamente
+            image_url = website.image_url(prop, 'image_512') if prop.image_512 else '/theme_bohio_real_estate/static/src/img/placeholder.jpg'
 
             data.append({
                 'id': prop.id,
@@ -600,7 +607,7 @@ class PropertySearchController(http.Controller):
                 'longitude': float(prop.longitude) if prop.longitude else None,
                 'project_id': project_id,
                 'project_name': project_name,
-                'image_url': f'/web/image/product.template/{prop.id}/image_512',
+                'image_url': image_url,
                 'url': f'/property/{prop.id}',
                 'show_price': search_context.get('show_price', True),
             })

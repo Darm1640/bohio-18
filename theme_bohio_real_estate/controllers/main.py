@@ -1856,6 +1856,9 @@ class BohioRealEstateController(http.Controller):
             # Buscar propiedades más recientes
             properties = Property.search(domain, limit=limit, order='create_date DESC')
 
+            # Obtener website una sola vez fuera del loop (optimización)
+            website = request.env['website'].get_current_website()
+
             # Serializar datos
             properties_data = []
             for prop in properties:
@@ -1875,7 +1878,6 @@ class BohioRealEstateController(http.Controller):
                 project_id = prop.project_worksite_id.id if prop.project_worksite_id else None
 
                 # Obtener URL de imagen optimizada usando website.image_url
-                website = request.env['website'].get_current_website()
                 image_url = website.image_url(prop, 'image_512') if prop.image_512 else '/theme_bohio_real_estate/static/src/img/placeholder.jpg'
 
                 properties_data.append({
