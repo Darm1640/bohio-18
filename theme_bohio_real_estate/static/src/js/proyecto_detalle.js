@@ -235,10 +235,13 @@ function inicializarParallax() {
  * Inicializar cuando Leaflet este listo
  */
 function esperarLeaflet() {
+    console.log('[PROYECTO] Verificando Leaflet...', typeof L !== 'undefined' ? 'DISPONIBLE' : 'NO DISPONIBLE');
+
     if (typeof L !== 'undefined') {
+        console.log('[PROYECTO] Leaflet disponible, inicializando mapa...');
         inicializarMapaProyecto();
     } else {
-        console.log('Esperando a que Leaflet se cargue...');
+        console.log('[PROYECTO] Esperando a que Leaflet se cargue... reintentando en 100ms');
         setTimeout(esperarLeaflet, 100);
     }
 }
@@ -247,14 +250,18 @@ function esperarLeaflet() {
  * Inicializar todo cuando el DOM este listo
  */
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('DOM listo, inicializando proyecto detalle...');
+    console.log('[PROYECTO] DOM listo, inicializando proyecto detalle...');
 
     // Verificar si estamos en una pagina de proyecto
     const proyectoPage = document.querySelector('.hero-proyecto');
+    console.log('[PROYECTO] Elemento .hero-proyecto encontrado:', !!proyectoPage);
+
     if (!proyectoPage) {
-        console.log('No es una pagina de proyecto');
+        console.log('[PROYECTO] No es una pagina de proyecto - saliendo');
         return;
     }
+
+    console.log('[PROYECTO] Inicializando funcionalidades...');
 
     // Inicializar funcionalidades
     inicializarSmoothScroll();
@@ -279,6 +286,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Inicializar parallax
     inicializarParallax();
 
+    console.log('[PROYECTO] Llamando a esperarLeaflet()...');
     // Esperar a que Leaflet este disponible para inicializar mapa
     esperarLeaflet();
 });
