@@ -212,23 +212,29 @@ class BohioAutocomplete {
 
     renderGroup(title, items, icon, colorClass) {
         let html = `<div class="autocomplete-group">`;
-        html += `<div class="group-title px-3 py-2 bg-light border-bottom small fw-bold text-muted">
-                    <i class="fa ${icon} me-2 ${colorClass}"></i>${title}
-                 </div>`;
 
         items.forEach((item, index) => {
             const globalIndex = this.currentResults.indexOf(item);
+
+            // Determinar tipo de icono
+            let iconType = 'city';
+            if (item.type === 'city') iconType = 'city';
+            else if (item.type === 'region') iconType = 'region';
+            else if (item.type === 'project') iconType = 'project';
+            else if (item.type === 'property') iconType = 'property';
+
             html += `
-                <div class="autocomplete-item px-3 py-2 border-bottom" data-index="${globalIndex}">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div class="flex-grow-1">
-                            <div class="item-name">${this.highlightTerm(item.name, this.input.value)}</div>
-                            ${item.full_name && item.full_name !== item.name ?
-                                `<small class="text-muted">${item.full_name}</small>` : ''}
-                        </div>
-                        ${item.property_count ?
-                            `<span class="badge bg-danger rounded-pill ms-2">${item.property_count}</span>` : ''}
+                <div class="autocomplete-item" data-index="${globalIndex}">
+                    <div class="autocomplete-item-icon ${iconType}">
+                        <i class="fa ${icon}"></i>
                     </div>
+                    <div class="autocomplete-item-content">
+                        <span class="autocomplete-item-title">${this.highlightTerm(item.name, this.input.value)}</span>
+                        ${item.full_name && item.full_name !== item.name ?
+                            `<span class="autocomplete-item-subtitle">${item.full_name}</span>` : ''}
+                    </div>
+                    ${item.property_count ?
+                        `<span class="autocomplete-item-badge">${item.property_count}</span>` : ''}
                 </div>
             `;
         });

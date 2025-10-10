@@ -142,11 +142,18 @@ class PropertyShop {
 
     initSearch() {
         const searchInput = document.querySelector('.property-search-input');
-        if (!searchInput) return;
+        if (!searchInput) {
+            console.warn('[AUTOCOMPLETE] Property search input NOT FOUND');
+            return;
+        }
+
+        console.log('[AUTOCOMPLETE] Property search input encontrado, agregando listeners...');
 
         searchInput.addEventListener('input', (e) => {
             clearTimeout(this.autocompleteTimeout);
             const term = e.target.value.trim();
+
+            console.log('[AUTOCOMPLETE] Busqueda input:', term);
 
             if (term.length < 2) {
                 this.hideAutocomplete();
@@ -154,6 +161,7 @@ class PropertyShop {
             }
 
             this.autocompleteTimeout = setTimeout(() => {
+                console.log('[AUTOCOMPLETE] Ejecutando autocomplete para:', term);
                 this.performAutocomplete(term);
             }, 300);
         });
@@ -162,6 +170,12 @@ class PropertyShop {
     async performAutocomplete(term) {
         const subdivision = document.querySelector('.subdivision-filter')?.value || 'all';
 
+        console.log('[AUTOCOMPLETE] Llamando autocompletado:', {
+            url: '/property/search/autocomplete/' + this.context,
+            term: term,
+            subdivision: subdivision
+        });
+
         try {
             const result = await rpc('/property/search/autocomplete/' + this.context, {
                 term: term,
@@ -169,15 +183,26 @@ class PropertyShop {
                 limit: 10
             });
 
-            this.renderAutocompleteResults(result.results || []);
+            console.log('[AUTOCOMPLETE] Resultado autocompletado:', result);
+
+            if (result.success) {
+                this.renderAutocompleteResults(result.results || []);
+            } else {
+                console.error('[AUTOCOMPLETE] Autocomplete fallo:', result);
+            }
         } catch (error) {
-            console.error('Error en autocompletado:', error);
+            console.error('[AUTOCOMPLETE] Error en autocompletado:', error);
         }
     }
 
     renderAutocompleteResults(results) {
         const container = document.querySelector('.autocomplete-container');
-        if (!container) return;
+        if (!container) {
+            console.warn('[AUTOCOMPLETE] Autocomplete container NOT FOUND');
+            return;
+        }
+
+        console.log('[AUTOCOMPLETE] Renderizando resultados:', results.length, 'items');
 
         if (results.length === 0) {
             container.innerHTML = '<div class="p-3 text-muted">No se encontraron resultados</div>';
@@ -187,10 +212,46 @@ class PropertyShop {
 
         let html = '<ul class="list-unstyled mb-0">';
         results.forEach(result => {
+            // Extraer ID numérico basado en el tipo
+            let numericId = '';
+            if (result.city_id) numericId = result.city_id;
+            else if (result.region_id) numericId = result.region_id;
+            else if (result.project_id) numericId = result.project_id;
+            else if (result.property_id) numericId = result.property_id;
+
+            // Determinar ícono según tipo
+            let iconClass = 'fa-map-marker-alt';
+            let iconType = 'city';
+            if (result.type === 'city') {
+                iconClass = 'fa-map-marker-alt';
+                iconType = 'city';
+            } else if (result.type === 'region') {
+                iconClass = 'fa-home';
+                iconType = 'region';
+            } else if (result.type === 'project') {
+                iconClass = 'fa-building';
+                iconType = 'project';
+            } else if (result.type === 'property') {
+                iconClass = 'fa-key';
+                iconType = 'property';
+            }
+
             html += `
-                <li class="autocomplete-item p-3 border-bottom" style="cursor: pointer;" data-type="${result.type}" data-id="${result.id}">
-                    <div>${result.label}</div>
-                    <small class="text-muted">${result.property_count} ${result.property_count === 1 ? 'propiedad' : 'propiedades'}</small>
+                <li class="autocomplete-item"
+                    data-type="${result.type}"
+                    data-id="${numericId}"
+                    data-city-id="${result.city_id || ''}"
+                    data-region-id="${result.region_id || ''}"
+                    data-project-id="${result.project_id || ''}"
+                    data-property-id="${result.property_id || ''}">
+                    <div class="autocomplete-item-icon ${iconType}">
+                        <i class="fa ${iconClass}"></i>
+                    </div>
+                    <div class="autocomplete-item-content">
+                        <span class="autocomplete-item-title">${result.name}</span>
+                        <span class="autocomplete-item-subtitle">${result.full_name || ''}</span>
+                    </div>
+                    <span class="autocomplete-item-badge">${result.property_count}</span>
                 </li>
             `;
         });
@@ -198,6 +259,8 @@ class PropertyShop {
 
         container.innerHTML = html;
         container.style.display = 'block';
+
+        console.log('[AUTOCOMPLETE] Autocomplete renderizado y visible');
 
         // Event listeners para items
         container.querySelectorAll('.autocomplete-item').forEach(item => {
@@ -208,13 +271,20 @@ class PropertyShop {
     }
 
     selectAutocompleteItem(data) {
-        // Agregar filtro según el tipo seleccionado
-        if (data.type === 'city') {
-            this.filters.city_id = data.id;
-        } else if (data.type === 'region') {
-            this.filters.region_id = data.id;
-        } else if (data.type === 'property') {
-            window.location.href = `/property/${data.id}`;
+        console.log('[AUTOCOMPLETE] Item seleccionado:', data);
+
+        // Agregar filtro según el tipo seleccionado usando los IDs específicos
+        if (data.type === 'city' && data.cityId) {
+            this.filters.city_id = data.cityId;
+            console.log('[FILTER] Filtro ciudad agregado:', data.cityId);
+        } else if (data.type === 'region' && data.regionId) {
+            this.filters.region_id = data.regionId;
+            console.log('[FILTER] Filtro region agregado:', data.regionId);
+        } else if (data.type === 'project' && data.projectId) {
+            this.filters.project_id = data.projectId;
+            console.log('[FILTER] Filtro proyecto agregado:', data.projectId);
+        } else if (data.type === 'property' && data.propertyId) {
+            window.location.href = `/property/${data.propertyId}`;
             return;
         }
 
@@ -435,7 +505,7 @@ class PropertyShop {
             .filter(x => x).join(', ');
 
         return `
-            <div class="col-lg-4 col-md-6 mb-4 d-flex justify-content-center">
+            <div class="col-lg-3 col-md-6 mb-4 d-flex justify-content-center">
                 <div class="card property-card shadow-sm border-0" style="width: 100%; max-width: 380px;">
                     <div class="position-relative" style="width: 100%; padding-top: 100%; overflow: hidden;">
                         <img src="${imageUrl}" class="position-absolute top-0 start-0 w-100 h-100" alt="${property.name}" style="object-fit: cover; object-position: center;"/>
