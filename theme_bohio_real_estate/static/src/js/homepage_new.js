@@ -42,20 +42,47 @@ function initHeroBanner() {
     }
 }
 
+// Variables globales para mapas y datos de propiedades
+let arriendoMap = null;
+let usedSaleMap = null;
+let projectsMap = null;
+let rentPropertiesData = [];
+let usedSalePropertiesData = [];
+let projectsPropertiesData = [];
+
 async function loadHomeProperties() {
     console.log('Cargando propiedades...');
 
     try {
-        const arriendoData = await fetchProperties({ type_service: 'rent', limit: 6 });
-        renderProperties(arriendoData.properties, 'arriendo-properties-grid');
+        // Cargar propiedades en arriendo
+        const arriendoData = await fetchProperties({ type_service: 'rent', limit: 4 });
+        if (arriendoData.properties && arriendoData.properties.length > 0) {
+            rentPropertiesData = arriendoData.properties;
+            renderProperties(arriendoData.properties, 'arriendo-properties-grid');
+        }
 
-        const usedSaleData = await fetchProperties({ type_service: 'sale', state: 'used', limit: 6 });
-        renderProperties(usedSaleData.properties, 'used-sale-properties-grid');
+        // Cargar propiedades usadas en venta (NO proyectos)
+        const usedSaleData = await fetchProperties({ type_service: 'sale', is_project: 'false', limit: 4 });
+        if (usedSaleData.properties && usedSaleData.properties.length > 0) {
+            usedSalePropertiesData = usedSaleData.properties;
+            renderProperties(usedSaleData.properties, 'used-sale-properties-grid');
+        }
 
-        const projectsData = await fetchProperties({ type_service: 'sale', is_project: true, limit: 6 });
-        renderProperties(projectsData.properties, 'projects-properties-grid');
+        // Cargar proyectos en venta
+        const projectsData = await fetchProperties({ type_service: 'sale', is_project: 'true', limit: 4 });
+        if (projectsData.properties && projectsData.properties.length > 0) {
+            projectsPropertiesData = projectsData.properties;
+            renderProperties(projectsData.properties, 'projects-properties-grid');
+        }
 
-        console.log('Propiedades cargadas');
+        console.log('Propiedades cargadas:', {
+            arriendos: rentPropertiesData.length,
+            usadas: usedSalePropertiesData.length,
+            proyectos: projectsPropertiesData.length
+        });
+
+        // Configurar eventos de las pestañas de mapas
+        setupMapTabs();
     } catch (error) {
         console.error('Error cargando propiedades:', error);
     }
@@ -63,16 +90,22 @@ async function loadHomeProperties() {
 
 async function fetchProperties(filters) {
     try {
-        const response = await fetch('/bohio/api/properties', {
+        // Usar jsonRpc para llamar al endpoint correcto
+        const response = await fetch('/properties/api/list', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(filters)
+            body: JSON.stringify({
+                jsonrpc: '2.0',
+                method: 'call',
+                params: filters,
+                id: Math.floor(Math.random() * 1000000)
+            })
         });
         const data = await response.json();
-        console.log('Propiedades recibidas:', data);
-        return data;
+        console.log('Respuesta API:', data);
+        return data.result || { properties: [] };
     } catch (error) {
         console.error('Error en fetch:', error);
         return { properties: [], count: 0 };
@@ -96,38 +129,36 @@ function renderProperties(properties, containerId) {
 
 function renderPropertyCard(property) {
     const imageUrl = property.image_url || '/theme_bohio_real_estate/static/src/img/home-banner.jpg';
-    const price = formatPrice(property.list_price);
+    const price = formatPrice(property.price || property.list_price || 0);
     const typeServiceBadge = property.type_service === 'rent' ? '<span class="badge bg-primary">Arriendo</span>' : '<span class="badge bg-success">Venta</span>';
     const newBadge = property.is_new ? '<span class="badge bg-warning ms-1">NUEVO</span>' : '';
 
+    // Adaptar nombres de campos del API a los que usa el frontend
+    const bedrooms = property.bedrooms || property.num_bedrooms || 0;
+    const bathrooms = property.bathrooms || property.num_bathrooms || 0;
+    const area = property.area || property.area_constructed || property.property_area || 0;
+    const city = property.city || '';
+    const region = property.region || property.neighborhood || '';
+
     return `
-        <div class="col-lg-4 col-md-6">
-            <div class="card property-card-homepage shadow-sm rounded-3 h-100">
-                <div class="position-relative">
-                    <img src="${imageUrl}" class="card-img-top property-image" alt="${property.name}" style="height: 250px; object-fit: cover;"/>
-                    <div class="position-absolute top-0 end-0 m-3">
-                        <span class="badge bg-danger px-3 py-2">$${price}</span>
-                    </div>
-                    <div class="position-absolute top-0 start-0 m-3">
-                        ${typeServiceBadge}
-                        ${newBadge}
-                    </div>
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title mb-2">
-                        <a href="/property/${property.id}" class="text-decoration-none text-dark">
-                            ${property.name.substring(0, 50)}${property.name.length > 50 ? '...' : ''}
-                        </a>
-                    </h5>
-                    <p class="text-muted small mb-3">
-                        <i class="fa fa-map-marker-alt me-1"></i>
-                        ${property.city || ''}, ${property.region || ''}
+        <div class="col-md-3">
+            <div class="card h-100 shadow-sm border-0">
+                <img src="${imageUrl}" class="card-img-top" alt="${property.name}" style="height: 200px; object-fit: cover;" loading="lazy"/>
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title text-truncate">${property.name}</h5>
+                    <p class="text-muted small mb-2">
+                        <i class="fa fa-map-marker-alt me-1"></i>${city}${region ? ', ' + region : ''}
                     </p>
-                    ${renderPropertyFeatures(property)}
-                    <div class="mb-3">
-                        <small class="text-muted">Código: <strong>${property.default_code || 'N/A'}</strong></small>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="small"><i class="fa fa-bed me-1"></i>${bedrooms}</span>
+                        <span class="small"><i class="fa fa-bath me-1"></i>${bathrooms}</span>
+                        <span class="small"><i class="fa fa-ruler-combined me-1"></i>${area} m²</span>
                     </div>
-                    <a href="/property/${property.id}" class="btn btn-outline-danger w-100">Ver Detalles</a>
+                    <div class="mb-2">
+                        <small class="text-muted">${property.type_service === 'rent' ? 'Arriendo/mes' : 'Venta'}</small>
+                        <h4 class="text-danger mb-0">$${price}</h4>
+                    </div>
+                    <a href="/property/${property.id}" class="btn btn-outline-danger w-100 mt-auto">Ver detalles</a>
                 </div>
             </div>
         </div>
@@ -159,6 +190,155 @@ function renderPropertyFeatures(property) {
 
 function formatPrice(price) {
     return new Intl.NumberFormat('es-CO').format(price);
+}
+
+/**
+ * Inicializar un mapa específico con Leaflet
+ */
+function initMap(mapId) {
+    if (typeof L === 'undefined') {
+        console.warn('Leaflet no está cargado');
+        return null;
+    }
+
+    try {
+        const mapEl = document.getElementById(mapId);
+        if (!mapEl) {
+            console.warn('Elemento del mapa no encontrado:', mapId);
+            return null;
+        }
+
+        // Crear nuevo mapa centrado en Colombia
+        const newMap = L.map(mapId).setView([4.7110, -74.0721], 11);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors',
+            maxZoom: 19
+        }).addTo(newMap);
+
+        console.log('Mapa inicializado:', mapId);
+        return newMap;
+    } catch (error) {
+        console.error('Error inicializando mapa:', mapId, error);
+        return null;
+    }
+}
+
+/**
+ * Actualizar marcadores en el mapa
+ */
+function updateMapMarkers(map, properties) {
+    if (!map || typeof L === 'undefined') return;
+
+    // Limpiar marcadores existentes
+    map.eachLayer(function(layer) {
+        if (layer instanceof L.Marker) {
+            map.removeLayer(layer);
+        }
+    });
+
+    // Agregar nuevos marcadores
+    const bounds = [];
+    properties.forEach(prop => {
+        if (prop.latitude && prop.longitude) {
+            const marker = L.marker([prop.latitude, prop.longitude]).addTo(map);
+
+            const price = formatPrice(prop.price || 0);
+            const priceLabel = prop.type_service === 'rent' ? 'Arriendo/mes' : 'Venta';
+            const imageUrl = prop.image_url || '/theme_bohio_real_estate/static/src/img/placeholder.jpg';
+            const location = `${prop.neighborhood || ''} ${prop.city || ''}`.trim();
+
+            const popupContent = `
+                <div style="min-width: 250px; max-width: 300px;">
+                    <img src="${imageUrl}" alt="${prop.name}" style="width: 100%; height: 150px; object-fit: cover; border-radius: 8px; margin-bottom: 10px;"/>
+                    <h6 class="fw-bold mb-2" style="font-size: 14px;">${prop.name}</h6>
+                    <p class="small mb-1 text-muted">
+                        <i class="fa fa-map-marker-alt text-danger"></i> ${location}
+                    </p>
+                    <div class="mb-2">
+                        <small class="text-muted d-block">${priceLabel}</small>
+                        <p class="mb-1 text-danger fw-bold" style="font-size: 16px;">$${price}</p>
+                    </div>
+                    <a href="/property/${prop.id}" class="btn btn-sm btn-danger w-100">
+                       <i class="fa fa-eye me-1"></i>Ver detalles
+                    </a>
+                </div>
+            `;
+
+            marker.bindPopup(popupContent, {
+                maxWidth: 300,
+                className: 'custom-popup'
+            });
+
+            bounds.push([prop.latitude, prop.longitude]);
+        }
+    });
+
+    // Ajustar vista del mapa
+    if (bounds.length > 0) {
+        map.fitBounds(bounds, {
+            padding: [50, 50],
+            maxZoom: 13
+        });
+    }
+}
+
+/**
+ * Configurar eventos de las pestañas de mapas
+ */
+function setupMapTabs() {
+    // Pestaña de arriendo
+    const arriendoMapTab = document.getElementById('arriendo-map-tab');
+    if (arriendoMapTab) {
+        arriendoMapTab.addEventListener('shown.bs.tab', function() {
+            console.log('Mostrando mapa de arriendos');
+            if (!arriendoMap) {
+                arriendoMap = initMap('arriendo-properties-map');
+            } else {
+                arriendoMap.invalidateSize();
+            }
+            if (arriendoMap && rentPropertiesData.length > 0) {
+                setTimeout(() => {
+                    updateMapMarkers(arriendoMap, rentPropertiesData);
+                }, 200);
+            }
+        });
+    }
+
+    // Pestaña de ventas usadas
+    const usedSaleMapTab = document.querySelector('[data-bs-target="#used-sale-map"]');
+    if (usedSaleMapTab) {
+        usedSaleMapTab.addEventListener('shown.bs.tab', function() {
+            console.log('Mostrando mapa de ventas usadas');
+            if (!usedSaleMap) {
+                usedSaleMap = initMap('used-sale-properties-map');
+            } else {
+                usedSaleMap.invalidateSize();
+            }
+            if (usedSaleMap && usedSalePropertiesData.length > 0) {
+                setTimeout(() => {
+                    updateMapMarkers(usedSaleMap, usedSalePropertiesData);
+                }, 200);
+            }
+        });
+    }
+
+    // Pestaña de proyectos
+    const projectsMapTab = document.querySelector('[data-bs-target="#projects-map"]');
+    if (projectsMapTab) {
+        projectsMapTab.addEventListener('shown.bs.tab', function() {
+            console.log('Mostrando mapa de proyectos');
+            if (!projectsMap) {
+                projectsMap = initMap('projects-properties-map');
+            } else {
+                projectsMap.invalidateSize();
+            }
+            if (projectsMap && projectsPropertiesData.length > 0) {
+                setTimeout(() => {
+                    updateMapMarkers(projectsMap, projectsPropertiesData);
+                }, 200);
+            }
+        });
+    }
 }
 
 /**

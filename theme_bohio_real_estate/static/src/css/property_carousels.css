@@ -1,0 +1,186 @@
+/**
+ * BOHIO Property Carousels - Estilos
+ * Estilos para carruseles dinámicos de propiedades
+ */
+
+/* Contenedor principal del carrusel */
+.property-carousel-container {
+    position: relative;
+    padding: 2rem 0;
+}
+
+/* Carrusel */
+.property-carousel-container .carousel {
+    padding: 0 3rem;
+}
+
+/* Controles del carrusel */
+.property-carousel-container .carousel-control-prev,
+.property-carousel-container .carousel-control-next {
+    width: 50px;
+    height: 50px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(227, 30, 36, 0.8);
+    border-radius: 50%;
+    opacity: 0.8;
+    transition: all 0.3s ease;
+}
+
+.property-carousel-container .carousel-control-prev:hover,
+.property-carousel-container .carousel-control-next:hover {
+    opacity: 1;
+    background: rgba(227, 30, 36, 1);
+}
+
+.property-carousel-container .carousel-control-prev {
+    left: -25px;
+}
+
+.property-carousel-container .carousel-control-next {
+    right: -25px;
+}
+
+.property-carousel-container .carousel-control-prev-icon,
+.property-carousel-container .carousel-control-next-icon {
+    width: 24px;
+    height: 24px;
+}
+
+/* Indicadores del carrusel */
+.property-carousel-container .carousel-indicators {
+    bottom: -40px;
+    margin-bottom: 0;
+}
+
+.property-carousel-container .carousel-indicators button {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: #dee2e6;
+    border: none;
+    opacity: 0.5;
+    transition: all 0.3s ease;
+}
+
+.property-carousel-container .carousel-indicators button.active {
+    background-color: #E31E24;
+    opacity: 1;
+    transform: scale(1.2);
+}
+
+/* Tarjetas de propiedades en el carrusel */
+.property-carousel-container .bohio-property-card {
+    transition: all 0.3s ease;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.property-carousel-container .bohio-property-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15) !important;
+}
+
+.property-carousel-container .bohio-property-card .card-img-top {
+    transition: transform 0.3s ease;
+}
+
+.property-carousel-container .bohio-property-card:hover .card-img-top {
+    transform: scale(1.05);
+}
+
+/* Badge de proyecto */
+.property-carousel-container .badge {
+    z-index: 10;
+    font-weight: 500;
+    backdrop-filter: blur(4px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    transition: all 0.2s ease;
+}
+
+.property-carousel-container .badge:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Animación de transición entre slides */
+.property-carousel-container .carousel-item {
+    transition: transform 0.6s ease-in-out;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+    .property-carousel-container .carousel {
+        padding: 0 2rem;
+    }
+
+    .property-carousel-container .carousel-control-prev {
+        left: -15px;
+    }
+
+    .property-carousel-container .carousel-control-next {
+        right: -15px;
+    }
+}
+
+@media (max-width: 768px) {
+    .property-carousel-container .carousel {
+        padding: 0 1rem;
+    }
+
+    .property-carousel-container .carousel-control-prev,
+    .property-carousel-container .carousel-control-next {
+        width: 40px;
+        height: 40px;
+    }
+
+    .property-carousel-container .carousel-control-prev {
+        left: -10px;
+    }
+
+    .property-carousel-container .carousel-control-next {
+        right: -10px;
+    }
+
+    .property-carousel-container .carousel-indicators {
+        bottom: -30px;
+    }
+}
+
+@media (max-width: 576px) {
+    .property-carousel-container .carousel {
+        padding: 0;
+    }
+
+    .property-carousel-container .carousel-control-prev,
+    .property-carousel-container .carousel-control-next {
+        display: none;
+    }
+}
+
+/* Loading state */
+.property-carousel-loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 400px;
+}
+
+.property-carousel-loading .spinner-border {
+    width: 3rem;
+    height: 3rem;
+    color: #E31E24;
+}
+
+/* Empty state */
+.property-carousel-empty {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: #6c757d;
+}
+
+.property-carousel-empty i {
+    font-size: 4rem;
+    margin-bottom: 1.5rem;
+    opacity: 0.5;
+}

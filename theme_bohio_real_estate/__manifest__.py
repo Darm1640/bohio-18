@@ -47,6 +47,9 @@
         'views/properties_shop_template.xml',
         'views/property_detail_template.xml',
 
+        # Snippets
+        'views/snippets/property_carousels_snippet.xml',
+
         # Menus
         'views/menus/website_menu.xml',
 
@@ -81,11 +84,15 @@
             'theme_bohio_real_estate/static/src/js/property_compare.js',
             'theme_bohio_real_estate/static/src/js/homepage_autocomplete.js',
             'theme_bohio_real_estate/static/src/js/homepage_properties.js',
+            'theme_bohio_real_estate/static/src/js/property_carousels.js',
             'theme_bohio_real_estate/static/src/js/property_filters.js',
             'theme_bohio_real_estate/static/src/js/homepage_new.js',
             'theme_bohio_real_estate/static/src/js/property_shop.js',
             'theme_bohio_real_estate/static/src/js/proyectos.js',
             'theme_bohio_real_estate/static/src/js/proyecto_detalle.js',
+
+            # CSS Additional
+            'theme_bohio_real_estate/static/src/css/property_carousels.css',
 
             # XML Templates OWL
             'theme_bohio_real_estate/static/src/xml/property_filters_template.xml',

@@ -10,12 +10,12 @@
                 <field name="type"/>
                 <field name="color"/>
                 <field name="unreconciled_advance_count"/>
-                <field name="kanban_dashboard"/>
-                <field name="show_on_dashboard"/>
+                <field name="pending_payment_count"/>
+                <field name="bank_balance"/>
                 <field name="currency_id"/>
                 <templates>
                     <t t-name="card">
-                        <div t-attf-class="o_kanban_color_#{record.color.raw_value} #{kanban_color(record.color.raw_value)}">
+                        <div t-attf-class="o_kanban_color_#{record.color.raw_value}">
                             <div class="o_kanban_card_header">
                                 <div class="o_kanban_card_header_title">
                                     <div class="o_primary">
@@ -52,14 +52,18 @@
                                 <div class="row mt-3">
                                     <div class="col-6">
                                         <div class="o_kanban_card_metric">
-                                            <span class="o_value" t-esc="record.kanban_dashboard.value.number_to_reconcile"/>
-                                            <span class="o_label">Por Conciliar</span>
+                                            <a name="action_view_pending_payments" type="object" class="text-decoration-none">
+                                                <span class="o_value" t-esc="record.pending_payment_count.value"/>
+                                                <span class="o_label">Por Validar</span>
+                                            </a>
                                         </div>
                                     </div>
                                     <div class="col-6">
                                         <div class="o_kanban_card_metric">
-                                            <span class="o_value" t-esc="record.unreconciled_advance_count.value"/>
-                                            <span class="o_label">Anticipos</span>
+                                            <a name="action_view_unreconciled_advances" type="object" class="text-decoration-none">
+                                                <span class="o_value" t-esc="record.unreconciled_advance_count.value"/>
+                                                <span class="o_label">Anticipos</span>
+                                            </a>
                                         </div>
                                     </div>
                                 </div>

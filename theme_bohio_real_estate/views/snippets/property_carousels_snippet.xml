@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ============================================= -->
+    <!-- CARRUSELES DINÁMICOS DE PROPIEDADES          -->
+    <!-- ============================================= -->
+
+    <!-- SECCIÓN: Carrusel de Propiedades en Arriendo -->
+    <template id="carousel_rent_section" name="Carrusel de Arriendo">
+        <section class="bohio-carousel-section py-5 bg-light">
+            <div class="container">
+                <!-- Encabezado -->
+                <div class="mb-4">
+                    <h2 class="d-inline-block bg-danger text-white px-4 py-3 mb-0 rounded-end-pill"
+                        style="font-size: 1.75rem; font-weight: 500;">
+                        Propiedades en Arriendo
+                    </h2>
+                </div>
+                <h2 class="mb-4">
+                    Te <span class="fw-bold">ayudamos</span> a encontrar el
+                    <span class="text-danger fw-bold">lugar ideal</span> para vivir
+                </h2>
+
+                <!-- Contenedor del carrusel -->
+                <div class="property-carousel-container">
+                    <div id="carousel-rent" class="property-carousel-loading">
+                        <div class="spinner-border" role="status">
+                            <span class="visually-hidden">Cargando...</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Botón ver más -->
+                <div class="text-center mt-4">
+                    <a href="/properties?type_service=rent" class="btn btn-danger btn-lg px-5">
+                        <i class="fa fa-search me-2"></i>Explorar todas las propiedades en arriendo
+                    </a>
+                </div>
+            </div>
+        </section>
+    </template>
+
+    <!-- SECCIÓN: Carrusel de Propiedades Usadas en Venta -->
+    <template id="carousel_sale_section" name="Carrusel de Venta">
+        <section class="bohio-carousel-section py-5">
+            <div class="container">
+                <!-- Encabezado -->
+                <div class="mb-4">
+                    <h2 class="d-inline-block bg-danger text-white px-4 py-3 mb-0 rounded-end-pill"
+                        style="font-size: 1.75rem; font-weight: 500;">
+                        Venta de Inmuebles Usados
+                    </h2>
+                </div>
+                <h2 class="mb-4">
+                    Te ayudamos a encontrar el
+                    <span class="text-danger fw-bold">hogar</span> que estás buscando
+                </h2>
+
+                <!-- Contenedor del carrusel -->
+                <div class="property-carousel-container">
+                    <div id="carousel-sale" class="property-carousel-loading">
+                        <div class="spinner-border" role="status">
+                            <span class="visually-hidden">Cargando...</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Botón ver más -->
+                <div class="text-center mt-4">
+                    <a href="/properties?type_service=sale" class="btn btn-danger btn-lg px-5">
+                        <i class="fa fa-search me-2"></i>Explorar todas las propiedades en venta
+                    </a>
+                </div>
+            </div>
+        </section>
+    </template>
+
+    <!-- SECCIÓN: Carrusel de Proyectos/Propiedades Nuevas -->
+    <template id="carousel_projects_section" name="Carrusel de Proyectos">
+        <section class="bohio-carousel-section py-5 bg-light">
+            <div class="container">
+                <!-- Encabezado -->
+                <div class="mb-4">
+                    <h2 class="d-inline-block bg-danger text-white px-4 py-3 mb-0 rounded-end-pill"
+                        style="font-size: 1.75rem; font-weight: 500;">
+                        Proyectos en Venta
+                    </h2>
+                </div>
+                <h2 class="mb-4">
+                    <span class="text-danger fw-bold">Invierte</span> hoy en el
+                    <span class="fw-bold">futuro</span> que sueñas
+                </h2>
+
+                <!-- Contenedor del carrusel -->
+                <div class="property-carousel-container">
+                    <div id="carousel-projects" class="property-carousel-loading">
+                        <div class="spinner-border" role="status">
+                            <span class="visually-hidden">Cargando...</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Botón ver más -->
+                <div class="text-center mt-4">
+                    <a href="/proyectos" class="btn btn-danger btn-lg px-5">
+                        <i class="fa fa-building me-2"></i>Ver todos los proyectos
+                    </a>
+                </div>
+            </div>
+        </section>
+    </template>
+
+    <!-- ============================================= -->
+    <!-- PÁGINA DE EJEMPLO CON TODOS LOS CARRUSELES   -->
+    <!-- ============================================= -->
+
+    <template id="carousels_demo_page" name="Demo Carruseles">
+        <t t-call="website.layout">
+            <div id="wrap" class="oe_structure">
+                <t t-call="theme_bohio_real_estate.carousel_rent_section"/>
+                <t t-call="theme_bohio_real_estate.carousel_sale_section"/>
+                <t t-call="theme_bohio_real_estate.carousel_projects_section"/>
+            </div>
+        </t>
+    </template>
+
+</odoo>

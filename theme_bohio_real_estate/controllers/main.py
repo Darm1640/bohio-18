@@ -1660,6 +1660,8 @@ class BohioRealEstateController(http.Controller):
         """
         try:
             domain = [
+                ('is_property', '=', True),  # Es una propiedad
+                ('active', '=', True),  # Está activa
                 ('state', '=', 'free'),  # Solo propiedades disponibles
                 ('latitude', '!=', False),  # Debe tener latitud
                 ('longitude', '!=', False),  # Debe tener longitud
@@ -1669,10 +1671,15 @@ class BohioRealEstateController(http.Controller):
             if type_service:
                 domain.append(('type_service', '=', type_service))
 
-            # Filtro por proyectos
+            # Filtro por proyectos (usar project_worksite_id en lugar de is_project)
             if is_project is not None:
                 is_proj_bool = str(is_project).lower() in ('true', '1', 'yes')
-                domain.append(('is_project', '=', is_proj_bool))
+                if is_proj_bool:
+                    # Tiene proyecto
+                    domain.append(('project_worksite_id', '!=', False))
+                else:
+                    # NO tiene proyecto (propiedades usadas)
+                    domain.append(('project_worksite_id', '=', False))
 
             # Buscar propiedades
             properties = request.env['product.template'].sudo().search(
@@ -1806,3 +1813,104 @@ class BohioRealEstateController(http.Controller):
     def proyecto_torre_rialto_legacy(self, **kwargs):
         """Redireccion para compatibilidad"""
         return request.redirect('/proyecto/torre-rialto')
+
+    # =================== CARRUSELES DINÁMICOS ===================
+
+    @http.route(['/carousel/properties'], type='json', auth='public', website=True, csrf=False)
+    def carousel_properties(self, carousel_type='sale', limit=12, **kwargs):
+        """
+        Endpoint para cargar propiedades dinámicamente en carruseles
+
+        Args:
+            carousel_type (str): 'sale', 'rent', 'projects'
+            limit (int): Número máximo de propiedades a retornar
+
+        Returns:
+            dict: Lista de propiedades serializadas para el carrusel
+        """
+        try:
+            Property = request.env['product.template'].sudo()
+
+            # Dominio base
+            domain = [
+                ('is_property', '=', True),
+                ('active', '=', True),
+                ('state', '=', 'free'),
+                ('latitude', '!=', False),
+                ('longitude', '!=', False)
+            ]
+
+            # Filtrar según tipo de carrusel
+            if carousel_type == 'rent':
+                # Propiedades en arriendo
+                domain.append(('type_service', 'in', ['rent', 'sale_rent']))
+            elif carousel_type == 'sale':
+                # Propiedades usadas en venta (sin proyecto)
+                domain.append(('type_service', 'in', ['sale', 'sale_rent']))
+                domain.append(('project_worksite_id', '=', False))
+            elif carousel_type == 'projects':
+                # Propiedades nuevas/proyectos (con proyecto)
+                domain.append(('type_service', 'in', ['sale', 'sale_rent']))
+                domain.append(('project_worksite_id', '!=', False))
+
+            # Buscar propiedades más recientes
+            properties = Property.search(domain, limit=limit, order='create_date DESC')
+
+            # Serializar datos
+            properties_data = []
+            for prop in properties:
+                # Determinar precio
+                if prop.type_service in ('rent', 'vacation_rent'):
+                    price = prop.net_rental_price or 0
+                    price_label = 'Arriendo/mes'
+                else:
+                    price = prop.net_price or 0
+                    price_label = 'Venta'
+
+                # Formatear precio
+                price_formatted = f"${price:,.0f}" if price > 0 else "Consultar"
+
+                # Información del proyecto
+                project_name = prop.project_worksite_id.name if prop.project_worksite_id else None
+                project_id = prop.project_worksite_id.id if prop.project_worksite_id else None
+
+                # Obtener URL de imagen optimizada usando website.image_url
+                website = request.env['website'].get_current_website()
+                image_url = website.image_url(prop, 'image_512') if prop.image_512 else '/theme_bohio_real_estate/static/src/img/placeholder.jpg'
+
+                properties_data.append({
+                    'id': prop.id,
+                    'name': prop.name,
+                    'code': prop.default_code or '',
+                    'price': price,
+                    'price_formatted': price_formatted,
+                    'price_label': price_label,
+                    'bedrooms': int(prop.num_bedrooms) if prop.num_bedrooms else 0,
+                    'bathrooms': int(prop.num_bathrooms) if prop.num_bathrooms else 0,
+                    'area': float(prop.property_area) if prop.property_area else 0,
+                    'city': prop.city_id.name if prop.city_id else prop.city or '',
+                    'state': prop.state_id.name if prop.state_id else '',
+                    'neighborhood': prop.neighborhood or '',
+                    'property_type': dict(prop._fields['property_type'].selection).get(prop.property_type, ''),
+                    'image_url': image_url,
+                    'url': f'/property/{prop.id}',
+                    'project_id': project_id,
+                    'project_name': project_name,
+                    'latitude': float(prop.latitude) if prop.latitude else None,
+                    'longitude': float(prop.longitude) if prop.longitude else None,
+                })
+
+            return {
+                'success': True,
+                'properties': properties_data,
+                'total': len(properties_data),
+                'carousel_type': carousel_type
+            }
+
+        except Exception as e:
+            _logger.error(f"Error cargando carrusel de propiedades ({carousel_type}): {str(e)}")
+            return {
+                'success': False,
+                'properties': [],
+                'error': str(e)
+            }
