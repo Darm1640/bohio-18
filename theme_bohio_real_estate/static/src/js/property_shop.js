@@ -750,13 +750,25 @@ class PropertyShop {
 
     initMap() {
         const mapContainer = document.getElementById('properties-map');
-        if (!mapContainer) return;
+        if (!mapContainer) {
+            console.log('[MAP] Contenedor del mapa no encontrado');
+            return;
+        }
 
-        // Esperar a que Leaflet esté disponible
+        console.log('[MAP] Esperando a que Leaflet este disponible...');
+
+        // Esperar a que Leaflet esté disponible (máximo 10 segundos)
+        let attempts = 0;
+        const maxAttempts = 100;
         const checkLeaflet = setInterval(() => {
+            attempts++;
             if (typeof L !== 'undefined') {
                 clearInterval(checkLeaflet);
+                console.log('[MAP] Leaflet disponible, creando mapa...');
                 this.createMap();
+            } else if (attempts >= maxAttempts) {
+                clearInterval(checkLeaflet);
+                console.error('[MAP] Leaflet no se cargo despues de 10 segundos');
             }
         }, 100);
     }
@@ -766,14 +778,27 @@ class PropertyShop {
         if (!mapContainer || this.map) return;
 
         try {
-            // Crear mapa centrado en Barranquilla
-            this.map = L.map('properties-map').setView([10.9685, -74.7813], 12);
+            console.log('[MAP] Creando mapa...');
+
+            // Intentar obtener ubicación del usuario
+            let initialLat = 8.7479;  // Montería por defecto
+            let initialLng = -75.8814;
+            let initialZoom = 12;
+
+            // Crear mapa
+            this.map = L.map('properties-map').setView([initialLat, initialLng], initialZoom);
 
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '© OpenStreetMap contributors'
+                attribution: '© OpenStreetMap contributors',
+                maxZoom: 19
             }).addTo(this.map);
 
             this.markers = L.layerGroup().addTo(this.map);
+
+            console.log('[MAP] Mapa creado exitosamente');
+
+            // Intentar obtener ubicación del usuario
+            this.getUserLocation();
 
             // Cuando se muestra el tab del mapa, actualizar tamaño
             const mapTab = document.querySelector('[data-bs-target="#map-view"]');
@@ -789,6 +814,83 @@ class PropertyShop {
             console.log('Mapa creado correctamente');
         } catch (error) {
             console.error('Error creando mapa:', error);
+        }
+    }
+
+    getUserLocation() {
+        if (!navigator.geolocation) {
+            console.log('[MAP] Geolocalizacion no disponible en este navegador');
+            return;
+        }
+
+        console.log('[MAP] Solicitando ubicacion del usuario...');
+
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                const userLat = position.coords.latitude;
+                const userLng = position.coords.longitude;
+
+                console.log(`[MAP] Ubicacion del usuario: ${userLat}, ${userLng}`);
+
+                // Centrar mapa en ubicación del usuario
+                if (this.map) {
+                    this.map.setView([userLat, userLng], 13);
+
+                    // Agregar marcador de ubicación del usuario
+                    const userIcon = L.divIcon({
+                        className: 'user-location-marker',
+                        html: `<div style="
+                            background: #4285F4;
+                            width: 20px;
+                            height: 20px;
+                            border-radius: 50%;
+                            border: 3px solid white;
+                            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+                        "></div>`,
+                        iconSize: [20, 20],
+                        iconAnchor: [10, 10]
+                    });
+
+                    L.marker([userLat, userLng], { icon: userIcon })
+                        .addTo(this.map)
+                        .bindPopup('<b>Tu ubicación</b>');
+                }
+
+                // Cargar propiedades cercanas usando la ubicación del usuario
+                this.loadNearbyProperties(userLat, userLng);
+            },
+            (error) => {
+                console.warn('[MAP] No se pudo obtener ubicacion:', error.message);
+                // Cargar propiedades normales si no se permite la ubicación
+                this.loadMapProperties();
+            },
+            {
+                enableHighAccuracy: true,
+                timeout: 5000,
+                maximumAge: 0
+            }
+        );
+    }
+
+    async loadNearbyProperties(userLat, userLng) {
+        console.log(`[MAP] Cargando propiedades cercanas a: ${userLat}, ${userLng}`);
+
+        try {
+            const result = await rpc('/bohio/api/properties/map', {
+                ...this.filters,
+                ref_lat: userLat,
+                ref_lng: userLng,
+                limit: 200
+            });
+
+            if (result.success) {
+                const mapProperties = result.properties || [];
+                console.log(`[MAP] Propiedades cercanas encontradas: ${mapProperties.length}`);
+                this.updateMap(mapProperties);
+            }
+        } catch (error) {
+            console.error('[MAP] Error cargando propiedades cercanas:', error);
+            this.loadMapProperties();
         }
     }
 
@@ -829,37 +931,66 @@ class PropertyShop {
                 const imageUrl = prop.image_url || '/theme_bohio_real_estate/static/src/img/placeholder.jpg';
                 const bedrooms = prop.bedrooms || 0;
                 const bathrooms = prop.bathrooms || 0;
-                const area = prop.total_area || prop.built_area || 0;
-                const neighborhood = prop.neighborhood || prop.region || '';
+                const area = prop.total_area || prop.built_area || prop.area_constructed || 0;
+
+                // Construir ubicación: Barrio, Ciudad
+                let locationParts = [];
+                if (prop.neighborhood || prop.region) {
+                    locationParts.push(prop.neighborhood || prop.region);
+                }
+                if (prop.city) {
+                    locationParts.push(prop.city);
+                }
+                const location = locationParts.join(', ');
+
+                // Tipo de propiedad
+                const propertyTypeLabels = {
+                    'apartment': 'Apartamento',
+                    'house': 'Casa',
+                    'lot': 'Lote',
+                    'commercial': 'Comercial',
+                    'farm': 'Finca',
+                    'warehouse': 'Bodega',
+                    'office': 'Oficina',
+                    'local': 'Local'
+                };
+                const propertyType = propertyTypeLabels[prop.property_type] || prop.property_type || '';
+
+                // Distancia si está disponible
+                const distanceText = prop.distance_km ? `<span class="badge bg-info">${prop.distance_km} km</span>` : '';
 
                 marker.bindPopup(`
-                    <div class="property-popup-card" style="min-width: 280px;">
-                        <div class="popup-image" style="height: 160px; overflow: hidden; border-radius: 8px 8px 0 0; margin: -12px -12px 12px -12px;">
+                    <div class="property-popup-card" style="min-width: 300px; max-width: 320px;">
+                        <div class="popup-image" style="height: 180px; overflow: hidden; border-radius: 8px 8px 0 0; margin: -12px -12px 12px -12px;">
                             <img src="${imageUrl}"
                                  alt="${prop.name}"
                                  style="width: 100%; height: 100%; object-fit: cover;"
                                  onerror="this.src='/theme_bohio_real_estate/static/src/img/placeholder.jpg'"/>
+                            ${distanceText ? `<div style="position: absolute; top: 10px; right: 10px;">${distanceText}</div>` : ''}
                         </div>
-                        <div class="popup-content">
-                            <h6 class="mb-2" style="font-size: 14px; font-weight: 600;">
+                        <div class="popup-content" style="padding: 0 4px;">
+                            <h6 class="mb-1" style="font-size: 14px; font-weight: 600; line-height: 1.3;">
                                 <a href="/property/${prop.id}" class="text-dark text-decoration-none">
                                     ${prop.name}
                                 </a>
                             </h6>
-                            ${neighborhood ? `<p class="small text-muted mb-2"><i class="fa fa-map-marker-alt me-1"></i>${neighborhood}</p>` : ''}
-                            <p class="mb-2" style="font-size: 16px; color: #e31e24; font-weight: 700;">
+                            ${propertyType ? `<p class="small text-muted mb-1"><i class="fa fa-building me-1"></i>${propertyType}</p>` : ''}
+                            ${location ? `<p class="small text-muted mb-2"><i class="fa fa-map-marker-alt me-1"></i>${location}</p>` : ''}
+                            <p class="mb-2" style="font-size: 18px; color: #e31e24; font-weight: 700;">
                                 $${this.formatPrice(prop.list_price)}
                             </p>
                             <div class="d-flex gap-3 mb-3" style="font-size: 13px; color: #666;">
                                 ${area > 0 ? `<span><i class="fa fa-ruler-combined me-1"></i>${area} m²</span>` : ''}
-                                ${bedrooms > 0 ? `<span><i class="fa fa-bed me-1"></i>${bedrooms}</span>` : ''}
-                                ${bathrooms > 0 ? `<span><i class="fa fa-bath me-1"></i>${bathrooms}</span>` : ''}
+                                ${bedrooms > 0 ? `<span><i class="fa fa-bed me-1"></i>${bedrooms} hab</span>` : ''}
+                                ${bathrooms > 0 ? `<span><i class="fa fa-bath me-1"></i>${bathrooms} baños</span>` : ''}
                             </div>
-                            <a href="/property/${prop.id}" class="btn btn-sm btn-danger w-100">Ver Detalles</a>
+                            <a href="/property/${prop.id}" class="btn btn-sm w-100" style="background: #E31E24; color: white; border: none;">
+                                Ver Detalles <i class="fa fa-arrow-right ms-1"></i>
+                            </a>
                         </div>
                     </div>
                 `, {
-                    maxWidth: 300,
+                    maxWidth: 320,
                     className: 'custom-popup'
                 });
 
