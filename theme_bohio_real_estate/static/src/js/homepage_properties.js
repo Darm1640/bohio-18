@@ -1,7 +1,6 @@
 /** @odoo-module **/
 
-import { _t } from "@web/core/l10n/translation";
-import { jsonrpc } from "@web/core/network/rpc_service";
+import { jsonrpc } from "@web/legacy/js/core/rpc";
 
 /**
  * BOHIO Homepage Properties - Sistema de Carga y Mapas

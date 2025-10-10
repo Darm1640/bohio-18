@@ -1,8 +1,7 @@
 /** @odoo-module **/
 
 import { Component, useState, onWillStart, onMounted } from "@odoo/owl";
-import { jsonrpc } from "@web/core/network/rpc_service";
-import { registry } from "@web/core/registry";
+import { jsonrpc } from "@web/legacy/js/core/rpc";
 
 /**
  * BOHIO Property Filters - Componente OWL para Filtros Dinámicos
@@ -323,5 +322,6 @@ export class PropertyFilters extends Component {
 // Template del componente
 PropertyFilters.template = "theme_bohio_real_estate.PropertyFiltersTemplate";
 
-// Registrar componente para uso público
-registry.category("public_components").add("PropertyFilters", PropertyFilters);
+// NOTA: registry no está disponible en web.assets_frontend
+// El componente OWL debe ser montado manualmente en el frontend
+// Ver documentación de montaje manual en homepage_new.xml

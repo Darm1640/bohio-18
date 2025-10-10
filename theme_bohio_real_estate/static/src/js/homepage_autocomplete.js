@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import { jsonrpc } from "@web/core/network/rpc_service";
+import { jsonrpc } from "@web/legacy/js/core/rpc";
 
 /**
  * BOHIO Homepage Autocomplete - Sistema de Autocompletado Inteligente
