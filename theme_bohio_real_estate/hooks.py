@@ -93,12 +93,14 @@ def _clean_obsolete_views(cr):
         _logger.warning(f"  ⚠ Error limpiando vistas obsoletas: {e}")
 
 
-def _clean_obsolete_assets(cr, env):
+def _clean_obsolete_assets(cr):
     """
     Limpia assets JS/CSS obsoletos que puedan causar conflictos
 
     Odoo 18 cambió el sistema de assets, algunos registros antiguos
     pueden causar conflictos
+
+    IMPORTANTE: Solo usa SQL directo, no ORM
     """
     _logger.info("→ Limpiando assets obsoletos...")
 
@@ -134,11 +136,13 @@ def _clean_obsolete_assets(cr, env):
         _logger.warning(f"  ⚠ Error limpiando assets obsoletos: {e}")
 
 
-def _clean_duplicate_menus(cr, env):
+def _clean_duplicate_menus(cr):
     """
     Limpia menús duplicados del tema
 
     A veces al actualizar se crean menús duplicados
+
+    IMPORTANTE: Solo usa SQL directo, no ORM
     """
     _logger.info("→ Limpiando menús duplicados...")
 
@@ -182,9 +186,11 @@ def _clean_duplicate_menus(cr, env):
         _logger.warning(f"  ⚠ Error limpiando menús duplicados: {e}")
 
 
-def _clean_theme_cache(cr, env):
+def _clean_theme_cache(cr):
     """
     Limpia datos de caché del tema almacenados en ir.config_parameter
+
+    IMPORTANTE: Solo usa SQL directo, no ORM
     """
     _logger.info("→ Limpiando caché del tema...")
 
