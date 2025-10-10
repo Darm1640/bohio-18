@@ -578,6 +578,10 @@ class PropertySearchController(http.Controller):
             else:
                 price = prop.net_price or 0
 
+            # Información del proyecto si existe
+            project_id = prop.project_worksite_id.id if prop.project_worksite_id else None
+            project_name = prop.project_worksite_id.name if prop.project_worksite_id else None
+
             data.append({
                 'id': prop.id,
                 'name': prop.name,
@@ -592,6 +596,10 @@ class PropertySearchController(http.Controller):
                 'city': prop.city_id.name if prop.city_id else prop.city or '',
                 'state': prop.state_id.name if prop.state_id else '',
                 'neighborhood': prop.neighborhood or '',
+                'latitude': float(prop.latitude) if prop.latitude else None,
+                'longitude': float(prop.longitude) if prop.longitude else None,
+                'project_id': project_id,
+                'project_name': project_name,
                 'image_url': f'/web/image/product.template/{prop.id}/image_512',
                 'url': f'/property/{prop.id}',
                 'show_price': search_context.get('show_price', True),

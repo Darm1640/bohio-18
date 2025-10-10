@@ -215,13 +215,18 @@
                                             </div>
 
                                             <div class="mt-auto">
-                                                <div class="d-flex gap-2">
-                                                    <a href="/properties?project_id=${proyecto.id}" class="btn btn-outline-danger btn-sm flex-fill">
-                                                        <i class="fa fa-th me-1"></i>Ver Unidades
+                                                <div class="d-flex flex-column gap-2">
+                                                    <a href="/proyecto/${proyecto.id}" class="btn btn-danger btn-sm w-100">
+                                                        <i class="fa fa-building me-1"></i>Ver Proyecto Completo
                                                     </a>
-                                                    <a href="/contacto?proyecto=${proyecto.id}" class="btn btn-danger btn-sm flex-fill">
-                                                        <i class="fa fa-envelope me-1"></i>Contactar
-                                                    </a>
+                                                    <div class="d-flex gap-2">
+                                                        <a href="/properties?project_id=${proyecto.id}" class="btn btn-outline-danger btn-sm flex-fill">
+                                                            <i class="fa fa-th me-1"></i>Ver Unidades
+                                                        </a>
+                                                        <a href="/contacto?proyecto=${proyecto.id}" class="btn btn-outline-danger btn-sm flex-fill">
+                                                            <i class="fa fa-envelope me-1"></i>Contactar
+                                                        </a>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -258,15 +263,20 @@
                             const marker = L.marker([proyecto.latitude, proyecto.longitude]);
 
                             const popupContent = `
-                                <div style="min-width: 200px;">
+                                <div style="min-width: 220px;">
                                     <h6 class="fw-bold text-danger mb-2">${proyecto.name}</h6>
                                     <p class="small text-muted mb-2">${proyecto.ubicacion || ''}</p>
                                     <p class="small mb-2">
                                         <strong>${proyecto.disponibles || 0}</strong> unidades disponibles
                                     </p>
-                                    <a href="/properties?project_id=${proyecto.id}" class="btn btn-danger btn-sm w-100">
-                                        Ver Unidades
-                                    </a>
+                                    <div class="d-flex flex-column gap-1">
+                                        <a href="/proyecto/${proyecto.id}" class="btn btn-danger btn-sm w-100">
+                                            <i class="fa fa-building me-1"></i>Ver Proyecto
+                                        </a>
+                                        <a href="/properties?project_id=${proyecto.id}" class="btn btn-outline-danger btn-sm w-100">
+                                            <i class="fa fa-th me-1"></i>Ver Unidades
+                                        </a>
+                                    </div>
                                 </div>
                             `;
 

@@ -163,9 +163,21 @@ function createPropertyCard(property) {
     const description = property.description ? property.description.substring(0, 100) + '...' : '';
     const priceLabel = property.type_service === 'rent' ? 'Arriendo/mes' : 'Venta';
 
+    // Badge de proyecto si la propiedad pertenece a uno
+    const projectBadge = property.project_id && property.project_name ? `
+        <div class="position-absolute top-0 end-0 m-2">
+            <a href="/proyecto/${property.project_id}"
+               class="badge bg-danger text-white text-decoration-none"
+               style="font-size: 0.7rem; padding: 0.4rem 0.6rem;">
+                <i class="fa fa-building me-1"></i>${property.project_name}
+            </a>
+        </div>
+    ` : '';
+
     return `
         <div class="col-md-3">
-            <div class="card h-100 shadow-sm border-0 bohio-property-card">
+            <div class="card h-100 shadow-sm border-0 bohio-property-card position-relative">
+                ${projectBadge}
                 <img src="${imageUrl}"
                      class="card-img-top"
                      alt="${property.name}"
