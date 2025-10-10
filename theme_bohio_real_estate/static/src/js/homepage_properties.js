@@ -192,7 +192,13 @@ function createPropertyCard(property) {
  */
 async function loadProperties(params) {
     try {
-        const result = await rpc('/properties/api/list', params);
+        const result = await rpc('/property/search/ajax', {
+            context: 'public',
+            filters: params,
+            page: 1,
+            ppg: params.limit || 20,
+            order: 'relevance'
+        });
         return result;
     } catch (error) {
         console.error('Error cargando propiedades:', error);

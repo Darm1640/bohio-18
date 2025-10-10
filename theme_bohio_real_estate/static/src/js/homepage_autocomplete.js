@@ -375,23 +375,11 @@ class BohioAutocomplete {
  */
 function initAutocomplete() {
     // Campo de búsqueda en el hero (¿Dónde quieres vivir?)
-    const heroSearchInput = document.querySelector('select[name="search"]');
+    const heroSearchInput = document.getElementById('homepage-search-input');
 
-    // Si es un select, convertirlo a input con autocompletado
-    if (heroSearchInput && heroSearchInput.tagName === 'SELECT') {
-        // Crear input de reemplazo
-        const newInput = document.createElement('input');
-        newInput.type = 'text';
-        newInput.name = 'search_autocomplete';
-        newInput.className = heroSearchInput.className;
-        newInput.placeholder = '¿Dónde quieres vivir?';
-        newInput.style.cssText = heroSearchInput.style.cssText;
-
-        // Reemplazar select por input
-        heroSearchInput.parentElement.replaceChild(newInput, heroSearchInput);
-
-        // Inicializar autocompletado
-        new BohioAutocomplete(newInput, {
+    // Inicializar autocompletado en el input de la homepage
+    if (heroSearchInput) {
+        new BohioAutocomplete(heroSearchInput, {
             context: 'public',
             subdivision: 'all',
             minChars: 2,

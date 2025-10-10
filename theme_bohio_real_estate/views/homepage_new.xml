@@ -75,16 +75,15 @@
                                                         <input type="hidden" name="type_service" id="selectedServiceType" value="rent"/>
 
                                                         <div class="row g-3">
-                                                            <!-- Dónde quieres vivir -->
-                                                            <div class="col-lg-4 col-md-6">
-                                                                <select name="search" class="form-select form-select-lg" style="background: rgba(255,255,255,0.95); border: none; border-radius: 10px; height: 55px; font-size: 15px;">
-                                                                    <option value="">¿Dónde quieres vivir?</option>
-                                                                    <option value="Bogotá">Bogotá</option>
-                                                                    <option value="Medellín">Medellín</option>
-                                                                    <option value="Cali">Cali</option>
-                                                                    <option value="Barranquilla">Barranquilla</option>
-                                                                    <option value="Cartagena">Cartagena</option>
-                                                                </select>
+                                                            <!-- Dónde quieres vivir - Con autocompletado -->
+                                                            <div class="col-lg-4 col-md-6 position-relative">
+                                                                <input type="text"
+                                                                       name="search"
+                                                                       id="homepage-search-input"
+                                                                       class="form-control form-control-lg"
+                                                                       placeholder="¿Dónde quieres vivir?"
+                                                                       autocomplete="off"
+                                                                       style="background: rgba(255,255,255,0.95); border: none; border-radius: 10px; height: 55px; font-size: 15px;"/>
                                                             </div>
 
                                                             <!-- Tipo de inmueble -->

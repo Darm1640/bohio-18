@@ -1,5 +1,7 @@
 /** @odoo-module **/
 
+import { rpc } from "@web/core/network/rpc";
+
 console.log('BOHIO Property Shop JS cargado');
 
 class PropertyShop {
@@ -112,18 +114,11 @@ class PropertyShop {
         const subdivision = document.querySelector('.subdivision-filter')?.value || 'all';
 
         try {
-            const response = await fetch('/property/search/autocomplete/' + this.context, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    term: term,
-                    subdivision: subdivision,
-                    limit: 10
-                })
+            const result = await rpc('/property/search/autocomplete/' + this.context, {
+                term: term,
+                subdivision: subdivision,
+                limit: 10
             });
-            const result = await response.json();
 
             this.renderAutocompleteResults(result.results || []);
         } catch (error) {
@@ -301,30 +296,15 @@ class PropertyShop {
 
         try {
             console.log('Enviando request a /bohio/api/properties con filtros:', this.filters);
-            const response = await fetch('/bohio/api/properties', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    ...this.filters,
-                    context: this.context,
-                    limit: this.itemsPerPage,
-                    offset: (this.currentPage - 1) * this.itemsPerPage
-                })
+            const result = await rpc('/bohio/api/properties', {
+                ...this.filters,
+                context: this.context,
+                limit: this.itemsPerPage,
+                offset: (this.currentPage - 1) * this.itemsPerPage
             });
 
-            console.log('Response recibido, status:', response.status);
+            console.log('Datos recibidos:', result);
 
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-
-            const data = await response.json();
-            console.log('Datos recibidos:', data);
-
-            // Odoo JSON-RPC wrapper: data puede ser {result: {...}} o directamente {...}
-            const result = data.result || data;
             this.currentProperties = result.items || result.properties || [];
             this.totalItems = result.total || this.currentProperties.length;
             this.totalPages = Math.ceil(this.totalItems / this.itemsPerPage);
