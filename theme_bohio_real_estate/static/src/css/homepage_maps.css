@@ -1,0 +1,141 @@
+/* ============================================
+   BOHIO Real Estate - Homepage Maps Styles
+   Estilos para mapas de Leaflet y tarjetas
+   ============================================ */
+
+/* Estilo personalizado para popups de mapas */
+.leaflet-popup-content-wrapper {
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.leaflet-popup-content {
+    margin: 0;
+    padding: 0;
+}
+
+.bohio-map-popup .leaflet-popup-content-wrapper {
+    padding: 8px;
+}
+
+/* Asegurar que los mapas tengan altura mínima */
+#arriendo-properties-map,
+#used-sale-properties-map,
+#projects-properties-map {
+    min-height: 500px;
+    height: 500px;
+    width: 100%;
+    border-radius: 8px;
+    overflow: hidden;
+    z-index: 1;
+}
+
+/* Estilo para marcadores personalizados */
+.leaflet-marker-icon {
+    transition: all 0.3s ease;
+}
+
+.leaflet-marker-icon:hover {
+    transform: scale(1.1);
+    z-index: 1000 !important;
+}
+
+/* Animación para las tarjetas de propiedades */
+.bohio-property-card {
+    transition: all 0.3s ease;
+}
+
+.bohio-property-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15) !important;
+}
+
+/* Botones de tipo de servicio (Arrendar/Comprar) */
+.service-type-btn {
+    transition: all 0.3s ease;
+    min-width: 180px;
+    background: rgba(255,255,255,0.2);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-weight: 600;
+    padding: 12px 30px;
+}
+
+.service-type-btn:hover {
+    background: rgba(255,255,255,0.3) !important;
+    transform: translateY(-2px);
+}
+
+.service-type-btn.active {
+    background: #E31E24 !important;
+    box-shadow: 0 4px 15px rgba(227,30,36,0.4);
+}
+
+/* Tabs de mapas */
+.nav-tabs .nav-link {
+    color: #666;
+    border: none;
+    border-bottom: 3px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.nav-tabs .nav-link:hover {
+    border-bottom-color: #E31E24;
+    color: #E31E24;
+}
+
+.nav-tabs .nav-link.active {
+    color: #E31E24;
+    border-bottom-color: #E31E24;
+    background-color: transparent;
+    font-weight: 600;
+}
+
+/* Mejoras para imágenes en las tarjetas */
+.bohio-property-card .card-img-top {
+    transition: transform 0.3s ease;
+}
+
+.bohio-property-card:hover .card-img-top {
+    transform: scale(1.05);
+}
+
+/* Loader para cuando se cargan propiedades */
+.bohio-loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 300px;
+}
+
+.bohio-loading::after {
+    content: "";
+    width: 50px;
+    height: 50px;
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #E31E24;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Responsive ajustes */
+@media (max-width: 768px) {
+    #arriendo-properties-map,
+    #used-sale-properties-map,
+    #projects-properties-map {
+        height: 400px;
+        min-height: 400px;
+    }
+
+    .service-type-btn {
+        min-width: 140px;
+        padding: 10px 20px;
+        font-size: 14px;
+    }
+}

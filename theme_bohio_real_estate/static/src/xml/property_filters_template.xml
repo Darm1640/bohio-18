@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <!-- Template del componente de filtros -->
+    <t t-name="theme_bohio_real_estate.PropertyFiltersTemplate">
+        <div class="property-filters-container">
+            <!-- Sidebar de Filtros -->
+            <aside class="filters-sidebar">
+                <!-- Header con contador de filtros activos -->
+                <div class="filters-header">
+                    <h3 class="filters-title">
+                        <i class="fa fa-filter me-2"></i>Filtros
+                        <t t-if="activeFiltersCount > 0">
+                            <span class="badge bg-danger rounded-pill ms-2">
+                                <t t-esc="activeFiltersCount"/>
+                            </span>
+                        </t>
+                    </h3>
+                    <button t-if="activeFiltersCount > 0"
+                            class="btn btn-sm btn-outline-danger"
+                            t-on-click="() => this.clearFilters()">
+                        <i class="fa fa-times me-1"></i>Limpiar
+                    </button>
+                </div>
+
+                <!-- Tipo de Servicio (Venta/Arriendo) -->
+                <div class="filter-section">
+                    <div class="filter-section-header"
+                         t-on-click="() => this.toggleSection('type')">
+                        <h4 class="filter-section-title">
+                            <i class="fa fa-tag me-2"></i>Tipo de Servicio
+                        </h4>
+                        <i t-attf-class="fa fa-chevron-{{state.expandedSections.type ? 'up' : 'down'}}"></i>
+                    </div>
+
+                    <div t-if="state.expandedSections.type" class="filter-section-body">
+                        <div class="btn-group w-100" role="group">
+                            <t t-foreach="state.filterOptions.service_types" t-as="service" t-key="service.value">
+                                <button type="button"
+                                        t-attf-class="btn btn-outline-danger {{state.filters.type_service === service.value ? 'active' : ''}}"
+                                        t-on-click="() => this.onFilterChange('type_service', service.value)">
+                                    <t t-esc="service.label"/>
+                                </button>
+                            </t>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tipo de Propiedad -->
+                <div class="filter-section">
+                    <div class="filter-section-header"
+                         t-on-click="() => this.toggleSection('type')">
+                        <h4 class="filter-section-title">
+                            <i class="fa fa-home me-2"></i>Tipo de Inmueble
+                        </h4>
+                        <i t-attf-class="fa fa-chevron-{{state.expandedSections.type ? 'up' : 'down'}}"></i>
+                    </div>
+
+                    <div t-if="state.expandedSections.type" class="filter-section-body">
+                        <t t-foreach="state.filterOptions.property_types" t-as="ptype" t-key="ptype.value">
+                            <div class="form-check">
+                                <input class="form-check-input"
+                                       type="radio"
+                                       t-att-id="'ptype_' + ptype.value"
+                                       name="property_type"
+                                       t-att-checked="state.filters.property_type === ptype.value"
+                                       t-on-change="() => this.onFilterChange('property_type', ptype.value)"/>
+                                <label class="form-check-label d-flex justify-content-between"
+                                       t-att-for="'ptype_' + ptype.value">
+                                    <span t-esc="ptype.label"></span>
+                                    <span class="badge bg-light text-dark" t-esc="ptype.count"></span>
+                                </label>
+                            </div>
+                        </t>
+                    </div>
+                </div>
+
+                <!-- Ubicación -->
+                <div class="filter-section">
+                    <div class="filter-section-header"
+                         t-on-click="() => this.toggleSection('location')">
+                        <h4 class="filter-section-title">
+                            <i class="fa fa-map-marker-alt me-2"></i>Ubicación
+                        </h4>
+                        <i t-attf-class="fa fa-chevron-{{state.expandedSections.location ? 'up' : 'down'}}"></i>
+                    </div>
+
+                    <div t-if="state.expandedSections.location" class="filter-section-body">
+                        <!-- Departamento -->
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold">Departamento</label>
+                            <select class="form-select"
+                                    t-model="state.filters.state_id"
+                                    t-on-change="(ev) => this.onFilterChange('state_id', ev.target.value)">
+                                <option value="">Todos</option>
+                                <t t-foreach="state.filterOptions.states" t-as="dept" t-key="dept.id">
+                                    <option t-att-value="dept.id">
+                                        <t t-esc="dept.name"/> (<t t-esc="dept.count"/>)
+                                    </option>
+                                </t>
+                            </select>
+                        </div>
+
+                        <!-- Ciudad -->
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold">Ciudad</label>
+                            <select class="form-select"
+                                    t-model="state.filters.city_id"
+                                    t-on-change="(ev) => this.onFilterChange('city_id', ev.target.value)">
+                                <option value="">Todas</option>
+                                <t t-foreach="state.filterOptions.cities" t-as="city" t-key="city.id">
+                                    <option t-att-value="city.id">
+                                        <t t-esc="city.name"/> (<t t-esc="city.count"/>)
+                                    </option>
+                                </t>
+                            </select>
+                        </div>
+
+                        <!-- Barrio/Región -->
+                        <div class="mb-3" t-if="state.filterOptions.regions.length > 0">
+                            <label class="form-label small fw-bold">Barrio</label>
+                            <select class="form-select"
+                                    t-model="state.filters.region_id"
+                                    t-on-change="(ev) => this.onFilterChange('region_id', ev.target.value)">
+                                <option value="">Todos</option>
+                                <t t-foreach="state.filterOptions.regions" t-as="region" t-key="region.id">
+                                    <option t-att-value="region.id">
+                                        <t t-esc="region.name"/> (<t t-esc="region.count"/>)
+                                    </option>
+                                </t>
+                            </select>
+                        </div>
+
+                        <!-- Proyecto -->
+                        <div class="mb-3" t-if="state.filterOptions.projects.length > 0">
+                            <label class="form-label small fw-bold">Proyecto</label>
+                            <select class="form-select"
+                                    t-model="state.filters.project_id"
+                                    t-on-change="(ev) => this.onFilterChange('project_id', ev.target.value)">
+                                <option value="">Todos</option>
+                                <t t-foreach="state.filterOptions.projects" t-as="project" t-key="project.id">
+                                    <option t-att-value="project.id">
+                                        <t t-esc="project.name"/> (<t t-esc="project.count"/>)
+                                    </option>
+                                </t>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Precio -->
+                <div class="filter-section">
+                    <div class="filter-section-header"
+                         t-on-click="() => this.toggleSection('price')">
+                        <h4 class="filter-section-title">
+                            <i class="fa fa-dollar-sign me-2"></i>Rango de Precio
+                        </h4>
+                        <i t-attf-class="fa fa-chevron-{{state.expandedSections.price ? 'up' : 'down'}}"></i>
+                    </div>
+
+                    <div t-if="state.expandedSections.price" class="filter-section-body">
+                        <t t-foreach="state.filterOptions.price_ranges" t-as="range" t-key="range_index">
+                            <div class="form-check">
+                                <input class="form-check-input"
+                                       type="radio"
+                                       t-att-id="'price_' + range_index"
+                                       name="price_range"
+                                       t-on-change="() => { this.onFilterChange('min_price', range.min); this.onFilterChange('max_price', range.max); }"/>
+                                <label class="form-check-label" t-att-for="'price_' + range_index">
+                                    <t t-esc="range.label"/>
+                                </label>
+                            </div>
+                        </t>
+                    </div>
+                </div>
+
+                <!-- Características -->
+                <div class="filter-section">
+                    <div class="filter-section-header"
+                         t-on-click="() => this.toggleSection('features')">
+                        <h4 class="filter-section-title">
+                            <i class="fa fa-ruler-combined me-2"></i>Características
+                        </h4>
+                        <i t-attf-class="fa fa-chevron-{{state.expandedSections.features ? 'up' : 'down'}}"></i>
+                    </div>
+
+                    <div t-if="state.expandedSections.features" class="filter-section-body">
+                        <!-- Habitaciones -->
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold">Habitaciones (mínimo)</label>
+                            <select class="form-select"
+                                    t-model="state.filters.bedrooms"
+                                    t-on-change="(ev) => this.onFilterChange('bedrooms', ev.target.value)">
+                                <option value="">Cualquiera</option>
+                                <t t-foreach="state.filterOptions.bedroom_options" t-as="bed" t-key="bed">
+                                    <option t-att-value="bed">
+                                        <t t-esc="bed"/>+
+                                    </option>
+                                </t>
+                            </select>
+                        </div>
+
+                        <!-- Baños -->
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold">Baños (mínimo)</label>
+                            <select class="form-select"
+                                    t-model="state.filters.bathrooms"
+                                    t-on-change="(ev) => this.onFilterChange('bathrooms', ev.target.value)">
+                                <option value="">Cualquiera</option>
+                                <t t-foreach="state.filterOptions.bathroom_options" t-as="bath" t-key="bath">
+                                    <option t-att-value="bath">
+                                        <t t-esc="bath"/>+
+                                    </option>
+                                </t>
+                            </select>
+                        </div>
+
+                        <!-- Área con unidad dinámica -->
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold">
+                                Área (<t t-esc="state.measurementUnit"/>)
+                            </label>
+                            <div class="row g-2">
+                                <div class="col-6">
+                                    <input type="number"
+                                           class="form-control"
+                                           placeholder="Mín"
+                                           t-model="state.filters.min_area"
+                                           t-on-change="(ev) => this.onFilterChange('min_area', ev.target.value)"/>
+                                </div>
+                                <div class="col-6">
+                                    <input type="number"
+                                           class="form-control"
+                                           placeholder="Máx"
+                                           t-model="state.filters.max_area"
+                                           t-on-change="(ev) => this.onFilterChange('max_area', ev.target.value)"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Amenidades -->
+                <div class="filter-section">
+                    <div class="filter-section-header"
+                         t-on-click="() => this.toggleSection('amenities')">
+                        <h4 class="filter-section-title">
+                            <i class="fa fa-star me-2"></i>Amenidades
+                        </h4>
+                        <i t-attf-class="fa fa-chevron-{{state.expandedSections.amenities ? 'up' : 'down'}}"></i>
+                    </div>
+
+                    <div t-if="state.expandedSections.amenities" class="filter-section-body">
+                        <div class="form-check">
+                            <input class="form-check-input"
+                                   type="checkbox"
+                                   id="filter_garage"
+                                   t-model="state.filters.garage"
+                                   t-on-change="() => this.onFilterChange('garage', !state.filters.garage)"/>
+                            <label class="form-check-label" for="filter_garage">
+                                <i class="fa fa-car me-2"></i>Garaje
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input"
+                                   type="checkbox"
+                                   id="filter_garden"
+                                   t-model="state.filters.garden"
+                                   t-on-change="() => this.onFilterChange('garden', !state.filters.garden)"/>
+                            <label class="form-check-label" for="filter_garden">
+                                <i class="fa fa-tree me-2"></i>Jardín
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input"
+                                   type="checkbox"
+                                   id="filter_pool"
+                                   t-model="state.filters.pool"
+                                   t-on-change="() => this.onFilterChange('pool', !state.filters.pool)"/>
+                            <label class="form-check-label" for="filter_pool">
+                                <i class="fa fa-swimming-pool me-2"></i>Piscina
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input"
+                                   type="checkbox"
+                                   id="filter_elevator"
+                                   t-model="state.filters.elevator"
+                                   t-on-change="() => this.onFilterChange('elevator', !state.filters.elevator)"/>
+                            <label class="form-check-label" for="filter_elevator">
+                                <i class="fa fa-building me-2"></i>Ascensor
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Resultados -->
+            <main class="property-results">
+                <!-- Loading -->
+                <div t-if="state.isLoading" class="text-center py-5">
+                    <div class="spinner-border text-danger" role="status">
+                        <span class="visually-hidden">Cargando...</span>
+                    </div>
+                    <p class="mt-3 text-muted">Buscando propiedades...</p>
+                </div>
+
+                <!-- Resultados -->
+                <div t-else="">
+                    <!-- Header de resultados -->
+                    <div class="results-header">
+                        <h2 class="results-count">
+                            <t t-esc="state.total"/>
+                            <t t-if="state.total === 1">propiedad encontrada</t>
+                            <t t-else="">propiedades encontradas</t>
+                        </h2>
+                    </div>
+
+                    <!-- Grid de propiedades -->
+                    <div class="properties-grid">
+                        <t t-foreach="state.properties" t-as="property" t-key="property.id">
+                            <!-- Aquí irían las tarjetas de propiedades -->
+                            <div class="property-card">
+                                <h5 t-esc="property.name"></h5>
+                                <p t-esc="formatPrice(property.price)"></p>
+                            </div>
+                        </t>
+                    </div>
+
+                    <!-- Paginación -->
+                    <div t-if="state.total > state.ppg" class="pagination-container">
+                        <!-- Implementar paginación -->
+                    </div>
+                </div>
+            </main>
+        </div>
+    </t>
+
+</templates>

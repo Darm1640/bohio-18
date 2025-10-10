@@ -18,6 +18,12 @@
         'bohio_real_estate',
         'utm',
     ],
+    'external_dependencies': {
+        'python': [],
+    },
+    'pre_init_hook': 'pre_init_hook',
+    'post_init_hook': 'post_init_hook',
+    'uninstall_hook': 'uninstall_hook',
     'data': [
         # Layout
         'views/layout/loader_template.xml',
@@ -47,7 +53,12 @@
             # External - Leaflet Maps
             'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css',
             'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js',
+
+            # CSS
             'theme_bohio_real_estate/static/src/css/style.css',
+            'theme_bohio_real_estate/static/src/css/homepage_autocomplete.css',
+            'theme_bohio_real_estate/static/src/css/homepage_maps.css',
+
             # SCSS
             'theme_bohio_real_estate/static/src/scss/loader.scss',
             'theme_bohio_real_estate/static/src/scss/homepage.scss',
@@ -60,9 +71,15 @@
             # JavaScript
             'theme_bohio_real_estate/static/src/js/page_loader.js',
             'theme_bohio_real_estate/static/src/js/property_compare.js',
+            'theme_bohio_real_estate/static/src/js/homepage_autocomplete.js',
+            'theme_bohio_real_estate/static/src/js/homepage_properties.js',
+            'theme_bohio_real_estate/static/src/js/property_filters.js',
             'theme_bohio_real_estate/static/src/js/homepage_new.js',
             'theme_bohio_real_estate/static/src/js/property_shop.js',
             'theme_bohio_real_estate/static/src/js/proyectos.js',
+
+            # XML Templates OWL
+            'theme_bohio_real_estate/static/src/xml/property_filters_template.xml',
         ],
     },
     'installable': True,
