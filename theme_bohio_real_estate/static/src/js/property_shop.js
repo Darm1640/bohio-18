@@ -499,13 +499,44 @@ class PropertyShop {
 
     renderPropertyCard(property) {
         const imageUrl = property.image_url || '/theme_bohio_real_estate/static/src/img/banner1.jpg';
-        const price = this.formatPrice(property.list_price);
-        const priceLabel = property.type_service === 'rent' ? `$${price}/mes` : `$${price}`;
         const isInComparison = this.comparisonList.includes(property.id);
+
+        // Determinar precios según type_service
+        let priceDisplay = '';
+        if (property.type_service === 'sale_rent') {
+            // Mostrar AMBOS precios
+            const salePrice = this.formatPrice(property.net_price || property.list_price);
+            const rentPrice = this.formatPrice(property.net_rental_price);
+            priceDisplay = `
+                <div class="d-flex flex-column gap-1">
+                    <span class="badge px-2 py-1 fs-7 fw-bold" style="background: #10B981;">Venta: $${salePrice}</span>
+                    <span class="badge px-2 py-1 fs-7 fw-bold" style="background: #E31E24;">Arriendo: $${rentPrice}/mes</span>
+                </div>
+            `;
+        } else if (property.type_service === 'rent') {
+            const rentPrice = this.formatPrice(property.net_rental_price || property.list_price);
+            priceDisplay = `<span class="badge px-3 py-2 fs-6 fw-bold" style="background: #E31E24;">$${rentPrice}/mes</span>`;
+        } else { // sale
+            const salePrice = this.formatPrice(property.net_price || property.list_price);
+            priceDisplay = `<span class="badge px-3 py-2 fs-6 fw-bold" style="background: #10B981;">$${salePrice}</span>`;
+        }
 
         // Ubicación completa
         const location = [property.address, property.region, property.city, property.state]
             .filter(x => x).join(', ');
+
+        // Badges de tipo de servicio
+        let serviceBadges = '';
+        if (property.type_service === 'sale_rent') {
+            serviceBadges = `
+                <span class="badge me-1" style="background: #10B981;">Venta</span>
+                <span class="badge me-1" style="background: #E31E24;">Arriendo</span>
+            `;
+        } else if (property.type_service === 'rent') {
+            serviceBadges = '<span class="badge me-1" style="background: #E31E24;">Arriendo</span>';
+        } else if (property.type_service === 'sale') {
+            serviceBadges = '<span class="badge me-1" style="background: #10B981;">Venta</span>';
+        }
 
         return `
             <div class="col-lg-3 col-md-6 mb-4 d-flex justify-content-center">
@@ -513,11 +544,10 @@ class PropertyShop {
                     <div class="position-relative" style="width: 100%; padding-top: 100%; overflow: hidden;">
                         <img src="${imageUrl}" class="position-absolute top-0 start-0 w-100 h-100" alt="${property.name}" style="object-fit: cover; object-position: center;"/>
                         <div class="position-absolute top-0 end-0 m-3">
-                            <span class="badge px-3 py-2 fs-6 fw-bold" style="background: #E31E24;">${priceLabel}</span>
+                            ${priceDisplay}
                         </div>
                         <div class="position-absolute top-0 start-0 m-3 d-flex flex-column gap-1">
-                            ${property.type_service === 'rent' ? '<span class="badge me-1" style="background: #E31E24;">Arriendo</span>' : ''}
-                            ${property.type_service === 'sale' ? '<span class="badge me-1" style="background: #10B981;">Venta</span>' : ''}
+                            ${serviceBadges}
                             ${property.is_new ? '<span class="badge bg-warning text-dark">NUEVO</span>' : ''}
                             ${property.property_type_name ? `<span class="badge bg-info text-white">${property.property_type_name}</span>` : ''}
                         </div>
@@ -590,6 +620,19 @@ class PropertyShop {
     renderFeatures(property) {
         let html = '<div class="mb-3 pb-2 border-bottom">';
 
+        // Determinar unidad de medida según tipo de propiedad
+        const isLandType = ['lot', 'farm'].includes(property.property_type);
+        const areaUnit = isLandType ? 'ha' : 'm²';
+
+        // Convertir área a hectáreas si es lote/finca (1 ha = 10,000 m²)
+        const displayArea = (area) => {
+            if (!area || area === 0) return 0;
+            if (isLandType) {
+                return (area / 10000).toFixed(2);  // Convertir m² a hectáreas
+            }
+            return Math.round(area);  // m² sin decimales
+        };
+
         if (['apartment', 'house'].includes(property.property_type)) {
             html += `
                 <div class="d-flex justify-content-between">
@@ -603,7 +646,7 @@ class PropertyShop {
                     </span>
                     <span class="text-muted small">
                         <img src="/theme_bohio_real_estate/static/src/img/areas_1-8.png" style="width: 18px; height: 18px;" alt="Área"/>
-                        <strong>${property.area_constructed || 0}</strong> m²
+                        <strong>${displayArea(property.area_constructed)}</strong> ${areaUnit}
                     </span>
                 </div>
             `;
@@ -612,7 +655,7 @@ class PropertyShop {
                 <div class="d-flex justify-content-start">
                     <span class="text-muted small">
                         <img src="/theme_bohio_real_estate/static/src/img/areas_1-8.png" style="width: 18px; height: 18px;" alt="Área"/>
-                        <strong>${property.area_total || 0}</strong> m²
+                        <strong>${displayArea(property.area_total || property.area_constructed)}</strong> ${areaUnit}
                     </span>
                 </div>
             `;
@@ -1370,7 +1413,7 @@ class PropertyShop {
         html += '</tr></thead><tbody>';
 
         // Comparar campos
-        const fields = ['list_price', 'property_type_name', 'bedrooms', 'bathrooms', 'area_constructed', 'city', 'stratum'];
+        const fields = ['type_service', 'price_sale', 'price_rent', 'property_type_name', 'bedrooms', 'bathrooms', 'area_constructed', 'city', 'stratum'];
         fields.forEach(field => {
             html += '<tr><td><strong>' + this.getFieldLabel(field) + '</strong></td>';
             properties.forEach(prop => {
@@ -1414,6 +1457,9 @@ class PropertyShop {
 
     getFieldLabel(field) {
         const labels = {
+            type_service: 'Tipo de Servicio',
+            price_sale: 'Precio de Venta',
+            price_rent: 'Precio de Arriendo',
             list_price: 'Precio',
             property_type: 'Tipo',
             property_type_name: 'Tipo de Propiedad',
@@ -1427,9 +1473,31 @@ class PropertyShop {
     }
 
     getFieldValue(property, field) {
+        if (field === 'type_service') {
+            const labels = {
+                'sale': 'Venta',
+                'rent': 'Arriendo',
+                'sale_rent': 'Venta y Arriendo'
+            };
+            return labels[property.type_service] || property.type_service || 'N/A';
+        }
+
+        if (field === 'price_sale') {
+            if (property.type_service === 'rent') return '-';
+            const price = property.net_price || property.list_price || 0;
+            return '$' + this.formatPrice(price);
+        }
+
+        if (field === 'price_rent') {
+            if (property.type_service === 'sale') return '-';
+            const price = property.net_rental_price || 0;
+            return price > 0 ? '$' + this.formatPrice(price) + '/mes' : '-';
+        }
+
         if (field === 'list_price') {
             return '$' + this.formatPrice(property[field]);
         }
+
         return property[field] || 'N/A';
     }
 

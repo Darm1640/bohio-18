@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- PROYECTO PRINCIPAL: TORRE RIALTO -->
+        <record id="project_torre_rialto_main" model="project.worksite">
+            <field name="name">Torre Rialto</field>
+            <field name="default_code">RIALTO-MAIN</field>
+            <field name="sequence">10</field>
+            <field name="active" eval="True"/>
+            <field name="is_enabled" eval="True"/>
+
+            <!-- Tipo de Proyecto Principal -->
+            <field name="project_type">tower</field>
+
+            <!-- Descripcion del Proyecto -->
+            <field name="description">Proyecto inmobiliario Torre Rialto ubicado en la exclusiva Milla de Oro de Monteria. El proyecto cuenta con apartamentos de lujo con vistas panoramicas al Rio Sinu y amenidades de primer nivel.</field>
+
+            <!-- Ubicacion (sin region_id por ahora) -->
+            <field name="address">Milla de Oro, Monteria, Cordoba</field>
+
+            <!-- Caracteristicas Generales -->
+            <field name="no_of_floors">18</field>
+            <field name="no_of_towers">1</field>
+            <field name="no_of_property">70</field>
+
+            <!-- Area del Proyecto -->
+            <field name="project_size">15000</field>
+            <field name="unit_of_measure">m</field>
+
+            <!-- Fechas -->
+            <field name="construction_date">2023-01-01</field>
+            <field name="launch_date">2024-06-01</field>
+
+            <!-- Notas HTML -->
+            <field name="note">&lt;h3&gt;Torre Rialto Monteria&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;Ubicacion:&lt;/strong&gt; Milla de Oro de Monteria&lt;/p&gt;&lt;h4&gt;Desarrolladores:&lt;/h4&gt;&lt;ul&gt;&lt;li&gt;Alcielo Constructora S.A.S&lt;/li&gt;&lt;li&gt;Construcciones Crearts&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;&lt;strong&gt;Comercializacion:&lt;/strong&gt; Bohio Consultores&lt;/p&gt;&lt;h4&gt;Amenidades:&lt;/h4&gt;&lt;ul&gt;&lt;li&gt;Piscina&lt;/li&gt;&lt;li&gt;Gimnasio&lt;/li&gt;&lt;li&gt;Yoga&lt;/li&gt;&lt;li&gt;Salon Social&lt;/li&gt;&lt;li&gt;Coworking&lt;/li&gt;&lt;li&gt;Eventos&lt;/li&gt;&lt;li&gt;Lobby&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;Ver mas en: &lt;a href="https://www.rialto-monteria.com/"&gt;www.rialto-monteria.com&lt;/a&gt;&lt;/p&gt;</field>
+
+        </record>
+
+        <!-- SUBPROYECTO: TORRE PRINCIPAL (18 pisos) -->
+        <record id="project_torre_rialto_torre_principal" model="project.worksite">
+            <field name="name">Torre Rialto - Torre Principal</field>
+            <field name="default_code">RIALTO-T1</field>
+            <field name="sequence">11</field>
+            <field name="active" eval="True"/>
+            <field name="is_enabled" eval="True"/>
+
+            <!-- Relacionar con proyecto padre -->
+            <field name="parent_id" ref="project_torre_rialto_main"/>
+
+            <!-- Tipo -->
+            <field name="project_type">tower</field>
+
+            <!-- Descripcion -->
+            <field name="description">Torre principal de 18 pisos con apartamentos tipo A, B, C, D, X, Y y Penthouse Z. Cada piso cuenta con 4 apartamentos.</field>
+
+            <!-- Ubicacion -->
+            <field name="address">Milla de Oro, Monteria, Cordoba</field>
+
+            <!-- Caracteristicas -->
+            <field name="no_of_floors">18</field>
+            <field name="no_of_property">70</field>
+            <field name="props_per_floors">4</field>
+
+            <!-- Area -->
+            <field name="project_size">12000</field>
+            <field name="unit_of_measure">m</field>
+
+            <!-- Notas -->
+            <field name="note">&lt;h4&gt;Torre Principal - 18 Pisos&lt;/h4&gt;&lt;p&gt;La torre cuenta con:&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Pisos 3 al 18&lt;/li&gt;&lt;li&gt;4 apartamentos por piso&lt;/li&gt;&lt;li&gt;Ascensores de alta velocidad&lt;/li&gt;&lt;/ul&gt;&lt;h5&gt;Distribucion:&lt;/h5&gt;&lt;ul&gt;&lt;li&gt;Pisos 3-6: Tipo A y B&lt;/li&gt;&lt;li&gt;Pisos 7-10: Tipo C y D&lt;/li&gt;&lt;li&gt;Pisos 11-14: Tipo X&lt;/li&gt;&lt;li&gt;Pisos 15-17: Tipo Y&lt;/li&gt;&lt;li&gt;Piso 18: Penthouse Z&lt;/li&gt;&lt;/ul&gt;</field>
+
+        </record>
+
+        <!-- Aqui se pueden agregar mas subproyectos si hay otras torres o casas -->
+        <!-- Ejemplo:
+        <record id="project_torre_rialto_casas" model="project.worksite">
+            <field name="name">Torre Rialto - Casas</field>
+            <field name="default_code">RIALTO-CASAS</field>
+            <field name="parent_id" ref="project_torre_rialto_main"/>
+            <field name="project_type">villa</field>
+            ...
+        </record>
+        -->
+
+    </data>
+</odoo>

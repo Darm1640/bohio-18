@@ -1,0 +1,233 @@
+/* BOHIO - Estilos para Pagina de Detalle de Proyecto */
+
+/* Custom Leaflet Popup Styles */
+.bohio-proyecto-popup .leaflet-popup-content-wrapper {
+    border-radius: 12px;
+    padding: 0;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.bohio-proyecto-popup .leaflet-popup-content {
+    margin: 15px;
+    font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.bohio-proyecto-popup .leaflet-popup-tip {
+    background: white;
+}
+
+/* Custom Marker Animation */
+.custom-marker-proyecto {
+    animation: markerBounce 0.6s ease-out;
+}
+
+@keyframes markerBounce {
+    0% {
+        transform: translateY(-100px);
+        opacity: 0;
+    }
+    50% {
+        transform: translateY(10px);
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Hover effect en marcador */
+.leaflet-marker-icon:hover {
+    filter: brightness(1.1);
+    transform: scale(1.1);
+    transition: all 0.3s ease;
+}
+
+/* Estilos para las cards de propiedades */
+.property-type-card {
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.property-type-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 60px rgba(227, 30, 36, 0.3) !important;
+}
+
+.property-type-card .property-img {
+    transition: transform 0.4s ease;
+}
+
+.property-type-card:hover .property-img {
+    transform: scale(1.1);
+}
+
+/* Boton animado */
+.property-type-card .btn {
+    transition: all 0.3s ease;
+}
+
+.property-type-card:hover .btn {
+    background: #E31E24 !important;
+    color: white !important;
+    transform: scale(1.05);
+}
+
+/* Scroll indicator animation */
+.scroll-indicator {
+    animation: fadeInUp 1s ease-out 0.5s both;
+}
+
+/* Hero section animations */
+.fade-in-up {
+    animation: fadeInUp 1s ease-out;
+}
+
+.fade-in-right {
+    animation: fadeInRight 1s ease-out 0.3s both;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInRight {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Float animation para imagenes */
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+/* Loading skeleton para imagenes */
+.property-img {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+}
+
+.property-img[src] {
+    background: none;
+    animation: none;
+}
+
+@keyframes loading {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .hero-proyecto {
+        min-height: auto !important;
+        padding-top: 80px !important;
+        padding-bottom: 50px !important;
+    }
+
+    .display-2 {
+        font-size: 2.5rem !important;
+    }
+
+    .display-4 {
+        font-size: 2rem !important;
+    }
+
+    [id^="map-proyecto-"] {
+        height: 300px !important;
+    }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    .bohio-proyecto-popup .leaflet-popup-content-wrapper {
+        background: #1a1a1a;
+        color: white;
+    }
+
+    .bohio-proyecto-popup .leaflet-popup-tip {
+        background: #1a1a1a;
+    }
+}
+
+/* Print styles */
+@media print {
+    .hero-proyecto,
+    [id^="map-proyecto-"],
+    .btn {
+        display: none !important;
+    }
+
+    .property-type-card {
+        page-break-inside: avoid;
+        box-shadow: none !important;
+        border: 1px solid #ddd !important;
+    }
+}
+
+/* Accessibility improvements */
+.property-type-card:focus-within {
+    outline: 3px solid #E31E24;
+    outline-offset: 2px;
+}
+
+.btn:focus {
+    outline: 2px solid #E31E24;
+    outline-offset: 2px;
+}
+
+/* Smooth transitions para todo */
+* {
+    scroll-behavior: smooth;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #E31E24;
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #c71a1f;
+}
+
+/* Performance optimization */
+.property-type-card,
+.property-img {
+    will-change: transform;
+}
+
+.fade-in-up,
+.fade-in-right {
+    will-change: opacity, transform;
+}

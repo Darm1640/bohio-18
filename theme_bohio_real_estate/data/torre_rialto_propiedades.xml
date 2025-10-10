@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- APARTAMENTO TIPO A PISO 3 -->
+        <record id="property_torre_rialto_a3" model="product.template">
+            <field name="name">Torre Rialto - Apartamento Tipo A Piso 3</field>
+            <field name="default_code">BOH-RIALTO-A3</field>
+            <field name="is_property" eval="True"/>
+            <field name="property_type">apartment</field>
+            <field name="type_service">sale</field>
+            <field name="net_price" eval="550000000"/>
+            <field name="property_area" eval="147.60"/>
+            <field name="num_bedrooms" eval="3"/>
+            <field name="num_bathrooms" eval="2"/>
+            <field name="covered_parking" eval="2"/>
+            <field name="address">Milla de Oro</field>
+            <field name="city">Monteria</field>
+            <field name="neighborhood">Milla de Oro</field>
+            <field name="latitude" eval="8.7523"/>
+            <field name="longitude" eval="-75.8792"/>
+            <field name="description">Apartamento de lujo en Torre Rialto ubicado en la exclusiva Milla de Oro de Monteria. Disfruta de vistas panoramicas al Rio Sinu y acceso a amenidades de primer nivel.</field>
+            <field name="stratum">6</field>
+            <field name="floor_number" eval="3"/>
+            <field name="elevator" eval="True"/>
+            <field name="air_conditioning" eval="True"/>
+            <field name="pools" eval="True"/>
+            <field name="gym" eval="True"/>
+            <field name="social_room" eval="True"/>
+            <field name="balcony" eval="True"/>
+            <field name="active" eval="True"/>
+            <field name="state">free</field>
+            <field name="project_worksite_id" ref="real_estate_bits.project_torre_rialto_main"/>
+        </record>
+
+        <!-- APARTAMENTO TIPO B PISO 5 -->
+        <record id="property_torre_rialto_b5" model="product.template">
+            <field name="name">Torre Rialto - Apartamento Tipo B Piso 5</field>
+            <field name="default_code">BOH-RIALTO-B5</field>
+            <field name="is_property" eval="True"/>
+            <field name="property_type">apartment</field>
+            <field name="type_service">sale</field>
+            <field name="net_price" eval="620000000"/>
+            <field name="property_area" eval="165.80"/>
+            <field name="num_bedrooms" eval="3"/>
+            <field name="num_bathrooms" eval="3"/>
+            <field name="covered_parking" eval="2"/>
+            <field name="address">Milla de Oro</field>
+            <field name="city">Monteria</field>
+            <field name="neighborhood">Milla de Oro</field>
+            <field name="latitude" eval="8.7523"/>
+            <field name="longitude" eval="-75.8792"/>
+            <field name="description">Espacioso apartamento tipo B con 3 habitaciones y 3 banos. Ubicacion estrategica con vistas espectaculares.</field>
+            <field name="stratum">6</field>
+            <field name="floor_number" eval="5"/>
+            <field name="elevator" eval="True"/>
+            <field name="air_conditioning" eval="True"/>
+            <field name="pools" eval="True"/>
+            <field name="gym" eval="True"/>
+            <field name="social_room" eval="True"/>
+            <field name="balcony" eval="True"/>
+            <field name="active" eval="True"/>
+            <field name="state">free</field>
+            <field name="project_worksite_id" ref="real_estate_bits.project_torre_rialto_main"/>
+        </record>
+
+        <!-- APARTAMENTO TIPO C PISO 7 -->
+        <record id="property_torre_rialto_c7" model="product.template">
+            <field name="name">Torre Rialto - Apartamento Tipo C Piso 7</field>
+            <field name="default_code">BOH-RIALTO-C7</field>
+            <field name="is_property" eval="True"/>
+            <field name="property_type">apartment</field>
+            <field name="type_service">sale</field>
+            <field name="net_price" eval="680000000"/>
+            <field name="property_area" eval="178.40"/>
+            <field name="num_bedrooms" eval="3"/>
+            <field name="num_bathrooms" eval="3"/>
+            <field name="covered_parking" eval="2"/>
+            <field name="address">Milla de Oro</field>
+            <field name="city">Monteria</field>
+            <field name="neighborhood">Milla de Oro</field>
+            <field name="latitude" eval="8.7523"/>
+            <field name="longitude" eval="-75.8792"/>
+            <field name="description">Apartamento premium con acabados de lujo y amplios espacios. Ideal para familias que buscan confort y exclusividad.</field>
+            <field name="stratum">6</field>
+            <field name="floor_number" eval="7"/>
+            <field name="elevator" eval="True"/>
+            <field name="air_conditioning" eval="True"/>
+            <field name="pools" eval="True"/>
+            <field name="gym" eval="True"/>
+            <field name="social_room" eval="True"/>
+            <field name="balcony" eval="True"/>
+            <field name="active" eval="True"/>
+            <field name="state">free</field>
+            <field name="project_worksite_id" ref="real_estate_bits.project_torre_rialto_main"/>
+        </record>
+
+        <!-- APARTAMENTO TIPO D PISO 10 -->
+        <record id="property_torre_rialto_d10" model="product.template">
+            <field name="name">Torre Rialto - Apartamento Tipo D Piso 10</field>
+            <field name="default_code">BOH-RIALTO-D10</field>
+            <field name="is_property" eval="True"/>
+            <field name="property_type">apartment</field>
+            <field name="type_service">sale</field>
+            <field name="net_price" eval="750000000"/>
+            <field name="property_area" eval="195.20"/>
+            <field name="num_bedrooms" eval="4"/>
+            <field name="num_bathrooms" eval="3"/>
+            <field name="covered_parking" eval="2"/>
+            <field name="address">Milla de Oro</field>
+            <field name="city">Monteria</field>
+            <field name="neighborhood">Milla de Oro</field>
+            <field name="latitude" eval="8.7523"/>
+            <field name="longitude" eval="-75.8792"/>
+            <field name="description">Apartamento de 4 habitaciones con vistas panoramicas. Perfecto para familias grandes que buscan el maximo confort.</field>
+            <field name="stratum">6</field>
+            <field name="floor_number" eval="10"/>
+            <field name="elevator" eval="True"/>
+            <field name="air_conditioning" eval="True"/>
+            <field name="pools" eval="True"/>
+            <field name="gym" eval="True"/>
+            <field name="social_room" eval="True"/>
+            <field name="balcony" eval="True"/>
+            <field name="active" eval="True"/>
+            <field name="state">free</field>
+            <field name="project_worksite_id" ref="real_estate_bits.project_torre_rialto_main"/>
+        </record>
+
+        <!-- APARTAMENTO TIPO X PISO 12 - VENTA Y ARRIENDO -->
+        <record id="property_torre_rialto_x12" model="product.template">
+            <field name="name">Torre Rialto - Apartamento Tipo X Piso 12</field>
+            <field name="default_code">BOH-RIALTO-X12</field>
+            <field name="is_property" eval="True"/>
+            <field name="property_type">apartment</field>
+            <field name="type_service">sale_rent</field>
+            <field name="net_price" eval="850000000"/>
+            <field name="net_rental_price" eval="3500000"/>
+            <field name="property_area" eval="210.50"/>
+            <field name="num_bedrooms" eval="4"/>
+            <field name="num_bathrooms" eval="4"/>
+            <field name="covered_parking" eval="3"/>
+            <field name="address">Milla de Oro</field>
+            <field name="city">Monteria</field>
+            <field name="neighborhood">Milla de Oro</field>
+            <field name="latitude" eval="8.7523"/>
+            <field name="longitude" eval="-75.8792"/>
+            <field name="description">Apartamento exclusivo con 4 habitaciones y 4 banos. Disponible para venta o arriendo. Incluye 3 parqueaderos cubiertos.</field>
+            <field name="stratum">6</field>
+            <field name="floor_number" eval="12"/>
+            <field name="elevator" eval="True"/>
+            <field name="air_conditioning" eval="True"/>
+            <field name="pools" eval="True"/>
+            <field name="gym" eval="True"/>
+            <field name="social_room" eval="True"/>
+            <field name="balcony" eval="True"/>
+            <field name="active" eval="True"/>
+            <field name="state">free</field>
+            <field name="project_worksite_id" ref="real_estate_bits.project_torre_rialto_main"/>
+        </record>
+
+        <!-- APARTAMENTO TIPO Y PISO 15 -->
+        <record id="property_torre_rialto_y15" model="product.template">
+            <field name="name">Torre Rialto - Apartamento Tipo Y Piso 15</field>
+            <field name="default_code">BOH-RIALTO-Y15</field>
+            <field name="is_property" eval="True"/>
+            <field name="property_type">apartment</field>
+            <field name="type_service">sale</field>
+            <field name="net_price" eval="950000000"/>
+            <field name="property_area" eval="245.30"/>
+            <field name="num_bedrooms" eval="4"/>
+            <field name="num_bathrooms" eval="4"/>
+            <field name="covered_parking" eval="3"/>
+            <field name="address">Milla de Oro</field>
+            <field name="city">Monteria</field>
+            <field name="neighborhood">Milla de Oro</field>
+            <field name="latitude" eval="8.7523"/>
+            <field name="longitude" eval="-75.8792"/>
+            <field name="description">Apartamento de lujo en piso alto con acabados premium. 245 m2 de puro confort y elegancia.</field>
+            <field name="stratum">6</field>
+            <field name="floor_number" eval="15"/>
+            <field name="elevator" eval="True"/>
+            <field name="air_conditioning" eval="True"/>
+            <field name="pools" eval="True"/>
+            <field name="gym" eval="True"/>
+            <field name="social_room" eval="True"/>
+            <field name="balcony" eval="True"/>
+            <field name="active" eval="True"/>
+            <field name="state">free</field>
+            <field name="project_worksite_id" ref="real_estate_bits.project_torre_rialto_main"/>
+        </record>
+
+        <!-- PENTHOUSE TIPO Z PISO 18 -->
+        <record id="property_torre_rialto_z18" model="product.template">
+            <field name="name">Torre Rialto - Penthouse Tipo Z Piso 18</field>
+            <field name="default_code">BOH-RIALTO-Z18</field>
+            <field name="is_property" eval="True"/>
+            <field name="property_type">apartment</field>
+            <field name="type_service">sale</field>
+            <field name="net_price" eval="1200000000"/>
+            <field name="property_area" eval="310.60"/>
+            <field name="num_bedrooms" eval="5"/>
+            <field name="num_bathrooms" eval="5"/>
+            <field name="covered_parking" eval="4"/>
+            <field name="address">Milla de Oro</field>
+            <field name="city">Monteria</field>
+            <field name="neighborhood">Milla de Oro</field>
+            <field name="latitude" eval="8.7523"/>
+            <field name="longitude" eval="-75.8792"/>
+            <field name="description">Penthouse espectacular en el piso 18 con 310 m2 de lujo. Vistas panoramicas de 360 grados al Rio Sinu y la ciudad. 5 habitaciones 5 banos 4 parqueaderos. La cima del lujo en Monteria.</field>
+            <field name="stratum">6</field>
+            <field name="floor_number" eval="18"/>
+            <field name="elevator" eval="True"/>
+            <field name="air_conditioning" eval="True"/>
+            <field name="pools" eval="True"/>
+            <field name="gym" eval="True"/>
+            <field name="social_room" eval="True"/>
+            <field name="balcony" eval="True"/>
+            <field name="active" eval="True"/>
+            <field name="state">free</field>
+            <field name="project_worksite_id" ref="real_estate_bits.project_torre_rialto_main"/>
+        </record>
+
+        <!-- APARTAMENTO TIPO A PISO 6 - VENTA Y ARRIENDO -->
+        <record id="property_torre_rialto_a6" model="product.template">
+            <field name="name">Torre Rialto - Apartamento Tipo A Piso 6</field>
+            <field name="default_code">BOH-RIALTO-A6</field>
+            <field name="is_property" eval="True"/>
+            <field name="property_type">apartment</field>
+            <field name="type_service">sale_rent</field>
+            <field name="net_price" eval="560000000"/>
+            <field name="net_rental_price" eval="2800000"/>
+            <field name="property_area" eval="147.60"/>
+            <field name="num_bedrooms" eval="3"/>
+            <field name="num_bathrooms" eval="2"/>
+            <field name="covered_parking" eval="2"/>
+            <field name="address">Milla de Oro</field>
+            <field name="city">Monteria</field>
+            <field name="neighborhood">Milla de Oro</field>
+            <field name="latitude" eval="8.7523"/>
+            <field name="longitude" eval="-75.8792"/>
+            <field name="description">Apartamento tipo A en piso 6. Disponible para venta o arriendo. Excelente inversion en la Milla de Oro.</field>
+            <field name="stratum">6</field>
+            <field name="floor_number" eval="6"/>
+            <field name="elevator" eval="True"/>
+            <field name="air_conditioning" eval="True"/>
+            <field name="pools" eval="True"/>
+            <field name="gym" eval="True"/>
+            <field name="social_room" eval="True"/>
+            <field name="balcony" eval="True"/>
+            <field name="active" eval="True"/>
+            <field name="state">free</field>
+            <field name="project_worksite_id" ref="real_estate_bits.project_torre_rialto_main"/>
+        </record>
+
+        <!-- APARTAMENTO TIPO B PISO 8 -->
+        <record id="property_torre_rialto_b8" model="product.template">
+            <field name="name">Torre Rialto - Apartamento Tipo B Piso 8</field>
+            <field name="default_code">BOH-RIALTO-B8</field>
+            <field name="is_property" eval="True"/>
+            <field name="property_type">apartment</field>
+            <field name="type_service">sale</field>
+            <field name="net_price" eval="630000000"/>
+            <field name="property_area" eval="165.80"/>
+            <field name="num_bedrooms" eval="3"/>
+            <field name="num_bathrooms" eval="3"/>
+            <field name="covered_parking" eval="2"/>
+            <field name="address">Milla de Oro</field>
+            <field name="city">Monteria</field>
+            <field name="neighborhood">Milla de Oro</field>
+            <field name="latitude" eval="8.7523"/>
+            <field name="longitude" eval="-75.8792"/>
+            <field name="description">Apartamento amplio y luminoso con balcon. Piso alto con mejores vistas.</field>
+            <field name="stratum">6</field>
+            <field name="floor_number" eval="8"/>
+            <field name="elevator" eval="True"/>
+            <field name="air_conditioning" eval="True"/>
+            <field name="pools" eval="True"/>
+            <field name="gym" eval="True"/>
+            <field name="social_room" eval="True"/>
+            <field name="balcony" eval="True"/>
+            <field name="active" eval="True"/>
+            <field name="state">free</field>
+            <field name="project_worksite_id" ref="real_estate_bits.project_torre_rialto_main"/>
+        </record>
+
+        <!-- APARTAMENTO TIPO C PISO 11 -->
+        <record id="property_torre_rialto_c11" model="product.template">
+            <field name="name">Torre Rialto - Apartamento Tipo C Piso 11</field>
+            <field name="default_code">BOH-RIALTO-C11</field>
+            <field name="is_property" eval="True"/>
+            <field name="property_type">apartment</field>
+            <field name="type_service">sale</field>
+            <field name="net_price" eval="695000000"/>
+            <field name="property_area" eval="178.40"/>
+            <field name="num_bedrooms" eval="3"/>
+            <field name="num_bathrooms" eval="3"/>
+            <field name="covered_parking" eval="2"/>
+            <field name="address">Milla de Oro</field>
+            <field name="city">Monteria</field>
+            <field name="neighborhood">Milla de Oro</field>
+            <field name="latitude" eval="8.7523"/>
+            <field name="longitude" eval="-75.8792"/>
+            <field name="description">Apartamento tipo C en piso 11 con excelentes acabados y ubicacion privilegiada.</field>
+            <field name="stratum">6</field>
+            <field name="floor_number" eval="11"/>
+            <field name="elevator" eval="True"/>
+            <field name="air_conditioning" eval="True"/>
+            <field name="pools" eval="True"/>
+            <field name="gym" eval="True"/>
+            <field name="social_room" eval="True"/>
+            <field name="balcony" eval="True"/>
+            <field name="active" eval="True"/>
+            <field name="state">free</field>
+            <field name="project_worksite_id" ref="real_estate_bits.project_torre_rialto_main"/>
+        </record>
+
+    </data>
+</odoo>

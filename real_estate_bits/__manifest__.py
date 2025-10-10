@@ -19,6 +19,7 @@
     "currency": "USD",
     "data": [
         "data/ir_sequence.xml",
+        "data/proyecto_torre_rialto.xml",
         "security/ir.model.access.csv",
         "views/view_installment_template.xml",
         "views/view_project_worksite.xml",

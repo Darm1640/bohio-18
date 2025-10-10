@@ -1,0 +1,374 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- LANDING PAGE - PROYECTO DETALLE (GENERICO PARA CUALQUIER PROYECTO) -->
+    <template id="proyecto_detalle_page" name="Detalle de Proyecto">
+        <t t-call="website.layout">
+            <div id="wrap" class="oe_structure">
+
+                <!-- HERO SECTION con animacion -->
+                <section class="hero-proyecto position-relative overflow-hidden" style="background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%); min-height: 100vh;">
+                    <!-- Background dinamico del proyecto -->
+                    <t t-if="project.image_1920">
+                        <div class="position-absolute w-100 h-100" t-attf-style="background: url('/web/image/project.worksite/#{project.id}/image_1920') center/contain no-repeat; opacity: 0.05; z-index: 1; filter: blur(2px);"></div>
+                    </t>
+
+                    <div class="container position-relative" style="z-index: 2; padding-top: 150px; padding-bottom: 100px;">
+                        <div class="row align-items-center">
+                            <div class="col-lg-6 text-white fade-in-up">
+                                <!-- Logo del proyecto si existe -->
+                                <t t-if="project.image_1920">
+                                    <div class="mb-4">
+                                        <img t-attf-src="/web/image/project.worksite/#{project.id}/image_1920" t-att-alt="project.name" class="img-fluid" style="max-width: 300px; animation: float 3s ease-in-out infinite;"/>
+                                    </div>
+                                </t>
+                                <h1 class="display-2 fw-bold mb-4" style="font-family: 'Montserrat', sans-serif; letter-spacing: -1px;">
+                                    <t t-esc="project.name.upper()"/>
+                                </h1>
+                                <!-- Direccion -->
+                                <p class="fs-4 mb-4" style="color: #cccccc;">
+                                    <t t-if="project.address">
+                                        <t t-esc="project.address"/>
+                                    </t>
+                                    <t t-else="">
+                                        Un proyecto exclusivo de <span style="color: #E31E24; font-weight: 600;">lujo</span>
+                                    </t>
+                                </p>
+                                <!-- Descripcion -->
+                                <p class="lead mb-5" style="color: #999999; line-height: 1.8;">
+                                    <t t-if="project.description">
+                                        <t t-esc="project.description[:250]"/>...
+                                    </t>
+                                    <t t-else="">
+                                        Descubre un estilo de vida exclusivo con acabados de primera calidad y amenidades de lujo.
+                                    </t>
+                                </p>
+                                <div class="d-flex gap-3 mb-5 flex-wrap">
+                                    <a href="#propiedades" class="btn btn-lg px-5 py-3" style="background: #E31E24; color: white; border: none; border-radius: 50px; font-weight: 600; transition: all 0.3s;">
+                                        <t t-if="project.project_type == 'tower'">Ver Apartamentos</t>
+                                        <t t-elif="project.project_type == 'residential'">Ver Casas</t>
+                                        <t t-else="">Ver Propiedades</t>
+                                    </a>
+                                    <a href="#ubicacion" class="btn btn-outline-light btn-lg px-5 py-3" style="border-radius: 50px; font-weight: 600; border-width: 2px;">
+                                        Ubicación
+                                    </a>
+                                </div>
+                                <!-- Stats dinamicos -->
+                                <div class="row mt-5">
+                                    <t t-if="project.no_of_floors">
+                                        <div class="col-4 text-center border-end border-secondary">
+                                            <h3 class="display-4 fw-bold" style="color: #E31E24;"><t t-esc="project.no_of_floors"/></h3>
+                                            <p class="text-uppercase small" style="color: #999;">Pisos</p>
+                                        </div>
+                                    </t>
+                                    <div class="col-4 text-center" t-attf-class="#{project.project_size and 'border-end border-secondary' or ''}">
+                                        <h3 class="display-4 fw-bold" style="color: #E31E24;"><t t-esc="property_count"/></h3>
+                                        <p class="text-uppercase small" style="color: #999;">
+                                            <t t-if="project.project_type == 'tower'">Apartamentos</t>
+                                            <t t-elif="project.project_type == 'residential'">Casas</t>
+                                            <t t-else="">Propiedades</t>
+                                        </p>
+                                    </div>
+                                    <t t-if="project.project_size">
+                                        <div class="col-4 text-center">
+                                            <h3 class="display-4 fw-bold" style="color: #E31E24;"><t t-esc="'{:,.0f}'.format(project.project_size)"/></h3>
+                                            <p class="text-uppercase small" style="color: #999;">m² Total</p>
+                                        </div>
+                                    </t>
+                                </div>
+                            </div>
+                            <!-- Imagen principal -->
+                            <div class="col-lg-6 fade-in-right">
+                                <div class="position-relative" style="animation: float 4s ease-in-out infinite; animation-delay: 1s;">
+                                    <div class="position-absolute top-0 end-0 w-100 h-100 bg-white" style="opacity: 0.03; border-radius: 20px; transform: rotate(-5deg);"></div>
+                                    <div class="bg-white p-2" style="border-radius: 20px; box-shadow: 0 30px 80px rgba(227,30,36,0.2);">
+                                        <t t-if="project.image_1920">
+                                            <img t-attf-src="/web/image/project.worksite/#{project.id}/image_1920" t-att-alt="project.name" class="img-fluid w-100" style="border-radius: 15px; aspect-ratio: 4/5; object-fit: cover;"/>
+                                        </t>
+                                        <t t-else="">
+                                            <img src="/theme_bohio_real_estate/static/src/img/banner1.jpg" alt="Proyecto" class="img-fluid w-100" style="border-radius: 15px; aspect-ratio: 4/5; object-fit: cover;"/>
+                                        </t>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Scroll indicator -->
+                    <div class="position-absolute bottom-0 start-50 translate-middle-x mb-5" style="z-index: 2;">
+                        <div class="scroll-indicator" style="width: 30px; height: 50px; border: 2px solid #fff; border-radius: 20px; position: relative;">
+                            <div style="width: 6px; height: 6px; background: #E31E24; border-radius: 50%; position: absolute; top: 10px; left: 50%; transform: translateX(-50%); animation: scroll-down 2s infinite;"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- UBICACION con mapa (solo si hay coordenadas) -->
+                <t t-if="map_lat and map_lng">
+                    <section id="ubicacion" class="py-5" style="background: #ffffff;">
+                        <div class="container py-5">
+                            <div class="row align-items-center">
+                                <div class="col-lg-6 mb-4 mb-lg-0">
+                                    <div class="badge bg-black text-white px-3 py-2 mb-3">UBICACION PRIVILEGIADA</div>
+                                    <h2 class="display-4 fw-bold mb-4" style="color: #000;">
+                                        <t t-esc="map_address"/>
+                                    </h2>
+                                    <t t-if="project.note">
+                                        <div t-raw="project.note" class="lead mb-4" style="color: #666;"></div>
+                                    </t>
+                                    <t t-else="">
+                                        <p class="lead mb-4" style="color: #666;">
+                                            Estratégicamente ubicado con acceso a los mejores servicios de la ciudad.
+                                        </p>
+                                    </t>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="position-relative" style="height: 500px; border-radius: 20px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.1);">
+                                        <div t-attf-id="map-proyecto-#{project.id}"
+                                             class="w-100 h-100"
+                                             t-att-data-lat="map_lat"
+                                             t-att-data-lng="map_lng"
+                                             t-att-data-name="project.name"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </t>
+
+                <!-- PROPIEDADES AGRUPADAS POR TIPO -->
+                <section id="propiedades" class="py-5" style="background: #000000;">
+                    <div class="container py-5">
+                        <div class="text-center mb-5">
+                            <div class="badge text-white px-3 py-2 mb-3" style="background: #E31E24;">
+                                <t t-if="project.project_type == 'tower'">APARTAMENTOS</t>
+                                <t t-elif="project.project_type == 'residential'">CASAS</t>
+                                <t t-else="">PROPIEDADES</t>
+                            </div>
+                            <h2 class="display-4 fw-bold mb-3 text-white">Encuentra tu Espacio Ideal</h2>
+                            <p class="lead text-white-50" style="max-width: 600px; margin: 0 auto;">
+                                <t t-esc="property_count"/> propiedades disponibles
+                            </p>
+                        </div>
+
+                        <!-- Tipos de propiedades -->
+                        <div class="row g-4">
+                            <t t-foreach="apartments_by_type.items()" t-as="tipo_group">
+                                <t t-set="tipo" t-value="tipo_group[0]"/>
+                                <t t-set="props" t-value="tipo_group[1]"/>
+                                <t t-set="sample_prop" t-value="props[0]"/>
+
+                                <div class="col-lg-4 col-md-6">
+                                    <div class="property-type-card h-100 position-relative overflow-hidden" style="background: #1a1a1a; border-radius: 20px; border: 1px solid #333; transition: all 0.4s;">
+                                        <!-- Floor plan o imagen principal -->
+                                        <div class="position-relative overflow-hidden" style="height: 300px;">
+                                            <t t-if="sample_prop.property_image_ids">
+                                                <t t-set="floor_plan" t-value="sample_prop.property_image_ids.filtered(lambda img: img.image_type == 'floor_plan')"/>
+                                                <t t-if="floor_plan">
+                                                    <img t-att-src="'/web/image/property.image/%s/image_1920' % floor_plan[0].id" class="w-100 h-100 property-img" style="object-fit: cover; transition: transform 0.4s;" alt="Plano"/>
+                                                </t>
+                                                <t t-else="">
+                                                    <!-- Usar imagen principal de la propiedad -->
+                                                    <t t-if="sample_prop.image_1920">
+                                                        <img t-attf-src="/web/image/product.template/#{sample_prop.id}/image_1920" class="w-100 h-100 property-img" style="object-fit: cover; transition: transform 0.4s;" alt="Propiedad"/>
+                                                    </t>
+                                                    <t t-else="">
+                                                        <!-- Placeholder -->
+                                                        <div class="w-100 h-100 d-flex align-items-center justify-content-center" style="background: #2a2a2a;">
+                                                            <i class="fa fa-building" style="font-size: 80px; color: #444;"></i>
+                                                        </div>
+                                                    </t>
+                                                </t>
+                                            </t>
+                                            <t t-else="">
+                                                <!-- Si no hay imagenes, usar placeholder -->
+                                                <t t-if="sample_prop.image_1920">
+                                                    <img t-attf-src="/web/image/product.template/#{sample_prop.id}/image_1920" class="w-100 h-100 property-img" style="object-fit: cover; transition: transform 0.4s;" alt="Propiedad"/>
+                                                </t>
+                                                <t t-else="">
+                                                    <div class="w-100 h-100 d-flex align-items-center justify-content-center" style="background: #2a2a2a;">
+                                                        <i class="fa fa-building" style="font-size: 80px; color: #444;"></i>
+                                                    </div>
+                                                </t>
+                                            </t>
+
+                                            <!-- Badge tipo -->
+                                            <div class="position-absolute top-0 start-0 m-3">
+                                                <span class="badge px-3 py-2" style="background: #E31E24; font-size: 14px; font-weight: 600;">
+                                                    <t t-if="tipo != 'General'">TIPO <t t-esc="tipo"/></t>
+                                                    <t t-else=""><t t-esc="sample_prop.property_type_id.name or 'Propiedad'"/></t>
+                                                </span>
+                                            </div>
+                                            <!-- Area -->
+                                            <div class="position-absolute bottom-0 start-0 end-0 p-3" style="background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);">
+                                                <h4 class="text-white fw-bold mb-0">
+                                                    <t t-if="sample_prop.property_area">
+                                                        <t t-esc="'{:.2f}'.format(sample_prop.property_area)"/> m²
+                                                    </t>
+                                                    <t t-else="">
+                                                        Area no especificada
+                                                    </t>
+                                                </h4>
+                                            </div>
+                                        </div>
+
+                                        <!-- Info -->
+                                        <div class="p-4">
+                                            <h5 class="text-white fw-bold mb-3">
+                                                <t t-if="tipo != 'General'">
+                                                    <t t-if="project.project_type == 'tower'">Apartamento</t>
+                                                    <t t-elif="project.project_type == 'residential'">Casa</t>
+                                                    <t t-else="">Propiedad</t>
+                                                    Tipo <t t-esc="tipo"/>
+                                                </t>
+                                                <t t-else="">
+                                                    <t t-esc="sample_prop.property_type_id.name or 'Propiedad'"/>
+                                                </t>
+                                            </h5>
+
+                                            <!-- Caracteristicas -->
+                                            <div class="d-flex gap-4 mb-3 text-white-50 small flex-wrap">
+                                                <t t-if="sample_prop.num_bedrooms">
+                                                    <div>
+                                                        <i class="fa fa-bed me-1" style="color: #E31E24;"></i>
+                                                        <t t-esc="sample_prop.num_bedrooms"/> Hab
+                                                    </div>
+                                                </t>
+                                                <t t-if="sample_prop.num_bathrooms">
+                                                    <div>
+                                                        <i class="fa fa-bath me-1" style="color: #E31E24;"></i>
+                                                        <t t-esc="sample_prop.num_bathrooms"/> Baños
+                                                    </div>
+                                                </t>
+                                                <t t-if="sample_prop.covered_parking">
+                                                    <div>
+                                                        <i class="fa fa-car me-1" style="color: #E31E24;"></i>
+                                                        <t t-esc="sample_prop.covered_parking"/> Parq
+                                                    </div>
+                                                </t>
+                                            </div>
+
+                                            <!-- Precio -->
+                                            <div class="mb-3">
+                                                <p class="text-white-50 small mb-2"><t t-esc="len(props)"/> disponible<t t-if="len(props) > 1">s</t></p>
+                                                <t t-if="sample_prop.type_service == 'sale_rent'">
+                                                    <div class="mb-2">
+                                                        <div class="small text-white-50">Venta:</div>
+                                                        <h5 class="text-white fw-bold mb-0">$<t t-esc="'{:,.0f}'.format(sample_prop.net_price)"/></h5>
+                                                    </div>
+                                                    <div>
+                                                        <div class="small text-white-50">Arriendo:</div>
+                                                        <h6 class="fw-bold mb-0" style="color: #E31E24;">$<t t-esc="'{:,.0f}'.format(sample_prop.net_rental_price)"/>/mes</h6>
+                                                    </div>
+                                                </t>
+                                                <t t-elif="sample_prop.type_service == 'rent'">
+                                                    <h5 class="fw-bold mb-0" style="color: #E31E24;">$<t t-esc="'{:,.0f}'.format(sample_prop.net_rental_price)"/>/mes</h5>
+                                                </t>
+                                                <t t-else="">
+                                                    <h5 class="text-white fw-bold mb-0">$<t t-esc="'{:,.0f}'.format(sample_prop.net_price)"/></h5>
+                                                </t>
+                                            </div>
+
+                                            <!-- Boton -->
+                                            <a t-attf-href="/propiedades/#{sample_prop.id}" class="btn w-100 py-2" style="background: transparent; border: 2px solid #E31E24; color: #E31E24; border-radius: 50px; font-weight: 600; transition: all 0.3s;">
+                                                Ver Detalles
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </t>
+                        </div>
+
+                        <!-- Ver todas -->
+                        <div class="text-center mt-5">
+                            <a t-attf-href="/propiedades?project=#{project.id}" class="btn btn-lg px-5 py-3" style="background: #E31E24; color: white; border: none; border-radius: 50px; font-weight: 600;">
+                                Ver Todas las Propiedades
+                            </a>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- CONTACTO CTA -->
+                <section class="py-5" style="background: linear-gradient(135deg, #000000 0%, #E31E24 100%);">
+                    <div class="container py-5 text-center text-white">
+                        <h2 class="display-3 fw-bold mb-4">¿Listo para Conocer Este Proyecto?</h2>
+                        <p class="lead mb-4" style="max-width: 600px; margin: 0 auto; opacity: 0.9;">
+                            Agenda una visita y descubre tu nuevo hogar en <t t-esc="project.name"/>
+                        </p>
+                        <div class="d-flex gap-3 justify-content-center flex-wrap">
+                            <a href="https://wa.me/573104563839" target="_blank" class="btn btn-light btn-lg px-5 py-3" style="border-radius: 50px; font-weight: 600;">
+                                <i class="fa fa-whatsapp me-2"></i>WhatsApp
+                            </a>
+                            <a href="/contacto" class="btn btn-outline-light btn-lg px-5 py-3" style="border-radius: 50px; font-weight: 600; border-width: 2px;">
+                                <i class="fa fa-envelope me-2"></i>Contactar
+                            </a>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+
+            <!-- CSS Animations -->
+            <style>
+                @keyframes float {
+                    0%, 100% { transform: translateY(0px); }
+                    50% { transform: translateY(-20px); }
+                }
+
+                @keyframes scroll-down {
+                    0% { opacity: 0; top: 10px; }
+                    40% { opacity: 1; }
+                    80% { opacity: 0; top: 30px; }
+                    100% { opacity: 0; top: 10px; }
+                }
+
+                .fade-in-up {
+                    animation: fadeInUp 1s ease-out;
+                }
+
+                .fade-in-right {
+                    animation: fadeInRight 1s ease-out 0.3s both;
+                }
+
+                @keyframes fadeInUp {
+                    from {
+                        opacity: 0;
+                        transform: translateY(30px);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: translateY(0);
+                    }
+                }
+
+                @keyframes fadeInRight {
+                    from {
+                        opacity: 0;
+                        transform: translateX(30px);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: translateX(0);
+                    }
+                }
+
+                .property-type-card:hover {
+                    transform: translateY(-10px);
+                    border-color: #E31E24 !important;
+                    box-shadow: 0 20px 60px rgba(227,30,36,0.3);
+                }
+
+                .property-type-card:hover .property-img {
+                    transform: scale(1.1);
+                }
+
+                .property-type-card:hover .btn {
+                    background: #E31E24 !important;
+                    color: white !important;
+                }
+            </style>
+
+            <!-- JavaScript cargado desde archivo externo: proyecto_detalle.js -->
+        </t>
+    </template>
+
+</odoo>

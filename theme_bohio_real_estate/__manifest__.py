@@ -28,6 +28,10 @@
         # Layout
         'views/layout/loader_template.xml',
 
+        # Data - Torre Rialto
+        'data/torre_rialto_propiedades.xml',
+        'data/torre_rialto_planos.xml',
+
         # Views - Homepage
         'views/homepage_new.xml',
 
@@ -36,6 +40,7 @@
         'views/pages/sobre_nosotros_page.xml',
         'views/pages/contacto_page.xml',
         'views/pages/proyectos_page.xml',
+        'views/pages/proyecto_detalle.xml',
 
         # Views - Properties
         'views/properties_shop_template.xml',
@@ -59,6 +64,7 @@
             'theme_bohio_real_estate/static/src/css/homepage_autocomplete.css',
             'theme_bohio_real_estate/static/src/css/homepage_maps.css',
             'theme_bohio_real_estate/static/src/css/map_styles.css',
+            'theme_bohio_real_estate/static/src/css/proyecto_detalle.css',
 
             # SCSS
             'theme_bohio_real_estate/static/src/scss/loader.scss',
@@ -78,6 +84,7 @@
             'theme_bohio_real_estate/static/src/js/homepage_new.js',
             'theme_bohio_real_estate/static/src/js/property_shop.js',
             'theme_bohio_real_estate/static/src/js/proyectos.js',
+            'theme_bohio_real_estate/static/src/js/proyecto_detalle.js',
 
             # XML Templates OWL
             'theme_bohio_real_estate/static/src/xml/property_filters_template.xml',

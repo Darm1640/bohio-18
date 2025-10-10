@@ -310,9 +310,9 @@ class BohioRealEstateController(http.Controller):
     # =================== AUTOCOMPLETADO AVANZADO ===================
 
     # DESHABILITADO - Usar endpoint en property_search.py con búsqueda aproximada sin acentos
-    # @http.route(['/property/search/autocomplete'], type='json', auth='public', website=True)
-    def property_search_autocomplete_OLD(self, term='', limit=10):
-        """Autocompletado inteligente con jerarquía y proyectos - DEPRECADO"""
+    @http.route(['/property/search/autocomplete'], type='json', auth='public', website=True)
+    def property_search_autocomplete(self, term='', limit=10, context='public', subdivision='all'):
+        """Autocompletado inteligente con jerarquía y proyectos"""
         if not term or len(term) < 2:
             return {'results': []}
 
@@ -436,7 +436,10 @@ class BohioRealEstateController(http.Controller):
         # Ordenar por prioridad y cantidad
         results.sort(key=lambda x: (x['priority'], x['property_count']), reverse=True)
 
-        return {'results': results[:limit]}
+        return {
+            'success': True,
+            'results': results[:limit]
+        }
 
     @http.route(['/property/characteristics/by_type'], type='json', auth='public', website=True)
     def get_characteristics_by_type(self, property_type=None, **kwargs):
@@ -1727,3 +1730,79 @@ class BohioRealEstateController(http.Controller):
                 'properties': [],
                 'error': str(e)
             }
+
+    @http.route(['/proyecto/<int:project_id>', '/proyecto/<string:project_slug>'], type='http', auth='public', website=True, sitemap=True)
+    def proyecto_detalle(self, project_id=None, project_slug=None, **kwargs):
+        """Pagina generica de detalle de proyecto"""
+        # Buscar proyecto por ID o por slug/default_code
+        if project_id:
+            project = request.env['project.worksite'].sudo().browse(project_id)
+        elif project_slug:
+            # Buscar por default_code o slug
+            project = request.env['project.worksite'].sudo().search([
+                '|',
+                ('default_code', '=ilike', project_slug),
+                ('name', '=ilike', project_slug.replace('-', ' '))
+            ], limit=1)
+        else:
+            return request.render('website.404')
+
+        if not project or not project.exists():
+            return request.render('website.404')
+
+        # Obtener todas las propiedades del proyecto
+        properties = request.env['product.template'].sudo().search([
+            ('project_worksite_id', '=', project.id),
+            ('is_property', '=', True),
+            ('active', '=', True)
+        ], order='floor_number ASC, name ASC')
+
+        # Agrupar apartamentos por tipo
+        apartments_by_type = {}
+        for prop in properties:
+            # Extraer tipo del nombre (ej: "Torre Rialto - Apartamento Tipo A Piso 3" -> "A")
+            if 'Tipo' in prop.name:
+                tipo = prop.name.split('Tipo')[1].strip().split()[0]
+                if tipo not in apartments_by_type:
+                    apartments_by_type[tipo] = []
+                apartments_by_type[tipo].append(prop)
+
+        # Si no hay agrupacion por tipo, agrupar todas
+        if not apartments_by_type and properties:
+            apartments_by_type = {'General': list(properties)}
+
+        # Obtener imagen del proyecto (si existe)
+        project_image = request.env['website'].image_url(project, 'image_1920') if project.image_1920 else '/theme_bohio_real_estate/static/src/img/banner1.jpg'
+
+        # Obtener coordenadas para el mapa
+        # 1. Primero intentar desde el proyecto mismo (si tiene campos de ubicacion)
+        map_lat = None
+        map_lng = None
+        map_address = project.address or project.name
+
+        # 2. Si el proyecto no tiene coordenadas, buscar en las propiedades
+        if properties:
+            for prop in properties:
+                if prop.latitude and prop.longitude:
+                    map_lat = float(prop.latitude)
+                    map_lng = float(prop.longitude)
+                    if not project.address and prop.city_id:
+                        map_address = f"{prop.city_id.name}, {prop.state_id.name if prop.state_id else ''}"
+                    break
+
+        return request.render('theme_bohio_real_estate.proyecto_detalle_page', {
+            'project': project,
+            'properties': properties,
+            'apartments_by_type': apartments_by_type,
+            'property_count': len(properties),
+            'project_image': project_image,
+            'map_lat': map_lat,
+            'map_lng': map_lng,
+            'map_address': map_address
+        })
+
+    # Mantener ruta antigua para compatibilidad
+    @http.route('/proyecto/torre-rialto', type='http', auth='public', website=True)
+    def proyecto_torre_rialto_legacy(self, **kwargs):
+        """Redireccion para compatibilidad"""
+        return request.redirect('/proyecto/torre-rialto')

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- PLANO TIPO A -->
+        <record id="plano_torre_rialto_tipo_a" model="property.image">
+            <field name="name">Plano Apartamento Tipo A</field>
+            <field name="sequence">1</field>
+            <field name="property_id" ref="property_torre_rialto_a3"/>
+            <field name="image_type">floor_plan</field>
+            <field name="is_public" eval="True"/>
+            <field name="description">Plano arquitectonico Tipo A - 257 m2</field>
+            <field name="image_1920" type="base64" file="theme_bohio_real_estate/static/src/img/torre_rialto/plano_tipo_a.jpeg"/>
+        </record>
+
+        <!-- Asignar mismo plano al apartamento A6 -->
+        <record id="plano_torre_rialto_tipo_a_piso6" model="property.image">
+            <field name="name">Plano Apartamento Tipo A</field>
+            <field name="sequence">1</field>
+            <field name="property_id" ref="property_torre_rialto_a6"/>
+            <field name="image_type">floor_plan</field>
+            <field name="is_public" eval="True"/>
+            <field name="description">Plano arquitectonico Tipo A - 257 m2</field>
+            <field name="image_1920" type="base64" file="theme_bohio_real_estate/static/src/img/torre_rialto/plano_tipo_a.jpeg"/>
+        </record>
+
+        <!-- PLANO TIPO B -->
+        <record id="plano_torre_rialto_tipo_b" model="property.image">
+            <field name="name">Plano Apartamento Tipo B</field>
+            <field name="sequence">1</field>
+            <field name="property_id" ref="property_torre_rialto_b5"/>
+            <field name="image_type">floor_plan</field>
+            <field name="is_public" eval="True"/>
+            <field name="description">Plano arquitectonico Tipo B - 169.50 m2</field>
+            <field name="image_1920" type="base64" file="theme_bohio_real_estate/static/src/img/torre_rialto/plano_tipo_b.jpeg"/>
+        </record>
+
+        <!-- Asignar mismo plano al apartamento B8 -->
+        <record id="plano_torre_rialto_tipo_b_piso8" model="property.image">
+            <field name="name">Plano Apartamento Tipo B</field>
+            <field name="sequence">1</field>
+            <field name="property_id" ref="property_torre_rialto_b8"/>
+            <field name="image_type">floor_plan</field>
+            <field name="is_public" eval="True"/>
+            <field name="description">Plano arquitectonico Tipo B - 169.50 m2</field>
+            <field name="image_1920" type="base64" file="theme_bohio_real_estate/static/src/img/torre_rialto/plano_tipo_b.jpeg"/>
+        </record>
+
+        <!-- PLANO TIPO C -->
+        <record id="plano_torre_rialto_tipo_c" model="property.image">
+            <field name="name">Plano Apartamento Tipo C</field>
+            <field name="sequence">1</field>
+            <field name="property_id" ref="property_torre_rialto_c7"/>
+            <field name="image_type">floor_plan</field>
+            <field name="is_public" eval="True"/>
+            <field name="description">Plano arquitectonico Tipo C - 217.60 m2</field>
+            <field name="image_1920" type="base64" file="theme_bohio_real_estate/static/src/img/torre_rialto/plano_tipo_c.jpeg"/>
+        </record>
+
+        <!-- Asignar mismo plano al apartamento C11 -->
+        <record id="plano_torre_rialto_tipo_c_piso11" model="property.image">
+            <field name="name">Plano Apartamento Tipo C</field>
+            <field name="sequence">1</field>
+            <field name="property_id" ref="property_torre_rialto_c11"/>
+            <field name="image_type">floor_plan</field>
+            <field name="is_public" eval="True"/>
+            <field name="description">Plano arquitectonico Tipo C - 217.60 m2</field>
+            <field name="image_1920" type="base64" file="theme_bohio_real_estate/static/src/img/torre_rialto/plano_tipo_c.jpeg"/>
+        </record>
+
+        <!-- PLANO TIPO D -->
+        <record id="plano_torre_rialto_tipo_d" model="property.image">
+            <field name="name">Plano Apartamento Tipo D</field>
+            <field name="sequence">1</field>
+            <field name="property_id" ref="property_torre_rialto_d10"/>
+            <field name="image_type">floor_plan</field>
+            <field name="is_public" eval="True"/>
+            <field name="description">Plano arquitectonico Tipo D - 206.20 m2</field>
+            <field name="image_1920" type="base64" file="theme_bohio_real_estate/static/src/img/torre_rialto/plano_tipo_d.jpeg"/>
+        </record>
+
+        <!-- PLANO TIPO X -->
+        <record id="plano_torre_rialto_tipo_x" model="property.image">
+            <field name="name">Plano Apartamento Tipo X</field>
+            <field name="sequence">1</field>
+            <field name="property_id" ref="property_torre_rialto_x12"/>
+            <field name="image_type">floor_plan</field>
+            <field name="is_public" eval="True"/>
+            <field name="description">Plano arquitectonico Tipo X - 165.60 m2</field>
+            <field name="image_1920" type="base64" file="theme_bohio_real_estate/static/src/img/torre_rialto/plano_tipo_x.jpeg"/>
+        </record>
+
+        <!-- PLANO TIPO Y -->
+        <record id="plano_torre_rialto_tipo_y" model="property.image">
+            <field name="name">Plano Apartamento Tipo Y</field>
+            <field name="sequence">1</field>
+            <field name="property_id" ref="property_torre_rialto_y15"/>
+            <field name="image_type">floor_plan</field>
+            <field name="is_public" eval="True"/>
+            <field name="description">Plano arquitectonico Tipo Y - 147.60 m2</field>
+            <field name="image_1920" type="base64" file="theme_bohio_real_estate/static/src/img/torre_rialto/plano_tipo_y.jpeg"/>
+        </record>
+
+        <!-- PLANO TIPO Z (PENTHOUSE) -->
+        <record id="plano_torre_rialto_tipo_z" model="property.image">
+            <field name="name">Plano Penthouse Tipo Z</field>
+            <field name="sequence">1</field>
+            <field name="property_id" ref="property_torre_rialto_z18"/>
+            <field name="image_type">floor_plan</field>
+            <field name="is_public" eval="True"/>
+            <field name="description">Plano arquitectonico Penthouse Z - 310.60 m2</field>
+            <field name="image_1920" type="base64" file="theme_bohio_real_estate/static/src/img/torre_rialto/plano_tipo_z.jpeg"/>
+        </record>
+
+    </data>
+</odoo>
