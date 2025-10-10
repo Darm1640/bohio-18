@@ -30,7 +30,7 @@
             <field name="balcony" eval="True"/>
             <field name="active" eval="True"/>
             <field name="state">free</field>
-            <field name="project_worksite_id" ref="real_estate_bits.project_torre_rialto_main"/>
+            <field name="project_worksite_id" ref="project_torre_rialto_main"/>
         </record>
 
         <!-- APARTAMENTO TIPO B PISO 5 -->
@@ -61,7 +61,7 @@
             <field name="balcony" eval="True"/>
             <field name="active" eval="True"/>
             <field name="state">free</field>
-            <field name="project_worksite_id" ref="real_estate_bits.project_torre_rialto_main"/>
+            <field name="project_worksite_id" ref="project_torre_rialto_main"/>
         </record>
 
         <!-- APARTAMENTO TIPO C PISO 7 -->
@@ -92,7 +92,7 @@
             <field name="balcony" eval="True"/>
             <field name="active" eval="True"/>
             <field name="state">free</field>
-            <field name="project_worksite_id" ref="real_estate_bits.project_torre_rialto_main"/>
+            <field name="project_worksite_id" ref="project_torre_rialto_main"/>
         </record>
 
         <!-- APARTAMENTO TIPO D PISO 10 -->
@@ -123,7 +123,7 @@
             <field name="balcony" eval="True"/>
             <field name="active" eval="True"/>
             <field name="state">free</field>
-            <field name="project_worksite_id" ref="real_estate_bits.project_torre_rialto_main"/>
+            <field name="project_worksite_id" ref="project_torre_rialto_main"/>
         </record>
 
         <!-- APARTAMENTO TIPO X PISO 12 - VENTA Y ARRIENDO -->
@@ -155,7 +155,7 @@
             <field name="balcony" eval="True"/>
             <field name="active" eval="True"/>
             <field name="state">free</field>
-            <field name="project_worksite_id" ref="real_estate_bits.project_torre_rialto_main"/>
+            <field name="project_worksite_id" ref="project_torre_rialto_main"/>
         </record>
 
         <!-- APARTAMENTO TIPO Y PISO 15 -->
@@ -186,7 +186,7 @@
             <field name="balcony" eval="True"/>
             <field name="active" eval="True"/>
             <field name="state">free</field>
-            <field name="project_worksite_id" ref="real_estate_bits.project_torre_rialto_main"/>
+            <field name="project_worksite_id" ref="project_torre_rialto_main"/>
         </record>
 
         <!-- PENTHOUSE TIPO Z PISO 18 -->
@@ -217,7 +217,7 @@
             <field name="balcony" eval="True"/>
             <field name="active" eval="True"/>
             <field name="state">free</field>
-            <field name="project_worksite_id" ref="real_estate_bits.project_torre_rialto_main"/>
+            <field name="project_worksite_id" ref="project_torre_rialto_main"/>
         </record>
 
         <!-- APARTAMENTO TIPO A PISO 6 - VENTA Y ARRIENDO -->
@@ -249,7 +249,7 @@
             <field name="balcony" eval="True"/>
             <field name="active" eval="True"/>
             <field name="state">free</field>
-            <field name="project_worksite_id" ref="real_estate_bits.project_torre_rialto_main"/>
+            <field name="project_worksite_id" ref="project_torre_rialto_main"/>
         </record>
 
         <!-- APARTAMENTO TIPO B PISO 8 -->
@@ -280,7 +280,7 @@
             <field name="balcony" eval="True"/>
             <field name="active" eval="True"/>
             <field name="state">free</field>
-            <field name="project_worksite_id" ref="real_estate_bits.project_torre_rialto_main"/>
+            <field name="project_worksite_id" ref="project_torre_rialto_main"/>
         </record>
 
         <!-- APARTAMENTO TIPO C PISO 11 -->
@@ -311,7 +311,7 @@
             <field name="balcony" eval="True"/>
             <field name="active" eval="True"/>
             <field name="state">free</field>
-            <field name="project_worksite_id" ref="real_estate_bits.project_torre_rialto_main"/>
+            <field name="project_worksite_id" ref="project_torre_rialto_main"/>
         </record>
 
     </data>
