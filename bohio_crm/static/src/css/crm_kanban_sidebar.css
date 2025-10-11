@@ -1,0 +1,377 @@
+/* ========================================
+   BOHIO CRM - SIDEBAR KANBAN COMPRIMIBLE
+   Con paginación de oportunidades por tipo
+   ======================================== */
+
+/* ============ LAYOUT PRINCIPAL ============ */
+.o_bohio_crm_kanban_layout {
+    display: flex;
+    height: 100%;
+    position: relative;
+}
+
+/* ============ KANBAN PRINCIPAL (IZQ) ============ */
+.o_bohio_kanban_main {
+    flex: 1;
+    overflow-x: auto;
+    transition: margin-right 0.3s ease;
+}
+
+.o_bohio_kanban_main.with-sidebar {
+    margin-right: 320px; /* Ancho del sidebar expandido */
+}
+
+.o_bohio_kanban_main.with-sidebar-collapsed {
+    margin-right: 50px; /* Ancho del sidebar colapsado */
+}
+
+/* ============ SIDEBAR (DER) ============ */
+.o_bohio_crm_sidebar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 320px;
+    background: #f8f9fa;
+    border-left: 1px solid #dee2e6;
+    box-shadow: -2px 0 8px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease, width 0.3s ease;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Sidebar colapsado */
+.o_bohio_crm_sidebar.collapsed {
+    width: 50px;
+}
+
+.o_bohio_crm_sidebar.collapsed .o_bohio_sidebar_content,
+.o_bohio_crm_sidebar.collapsed .o_bohio_sidebar_header h5 {
+    display: none;
+}
+
+/* ============ HEADER DEL SIDEBAR ============ */
+.o_bohio_sidebar_header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #5568d3;
+}
+
+.o_bohio_sidebar_header h5 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+/* Botón de Colapsar/Expandir */
+.o_bohio_sidebar_toggle {
+    background: rgba(255,255,255,0.2);
+    border: 1px solid rgba(255,255,255,0.3);
+    color: white;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.o_bohio_sidebar_toggle:hover {
+    background: rgba(255,255,255,0.3);
+    transform: scale(1.1);
+}
+
+.o_bohio_crm_sidebar.collapsed .o_bohio_sidebar_toggle {
+    margin: 0 auto;
+}
+
+/* ============ CONTENIDO DEL SIDEBAR ============ */
+.o_bohio_sidebar_content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 15px;
+}
+
+/* ============ FILTRO POR TIPO ============ */
+.o_bohio_type_filter {
+    margin-bottom: 20px;
+}
+
+.o_bohio_type_filter select {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    font-size: 14px;
+    background-color: white;
+    cursor: pointer;
+    transition: border-color 0.2s ease;
+}
+
+.o_bohio_type_filter select:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+/* ============ SECCIÓN DE OPORTUNIDADES ============ */
+.o_bohio_opportunities_section {
+    margin-bottom: 20px;
+}
+
+.o_bohio_section_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #e9ecef;
+}
+
+.o_bohio_section_title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #495057;
+    display: flex;
+    align-items: center;
+}
+
+.o_bohio_section_title i {
+    margin-right: 8px;
+    font-size: 16px;
+}
+
+.o_bohio_section_count {
+    background: #667eea;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+/* ============ TARJETAS DE OPORTUNIDAD ============ */
+.o_bohio_opportunity_cards {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.o_bohio_opportunity_card {
+    background: white;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.o_bohio_opportunity_card:hover {
+    border-color: #667eea;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+    transform: translateY(-2px);
+}
+
+/* Card Header */
+.o_bohio_card_mini_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    margin-bottom: 8px;
+}
+
+.o_bohio_card_mini_title {
+    font-size: 13px;
+    font-weight: 600;
+    color: #212529;
+    line-height: 1.3;
+    flex: 1;
+    margin-right: 8px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.o_bohio_card_mini_badge {
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    white-space: nowrap;
+}
+
+/* Card Body */
+.o_bohio_card_mini_body {
+    font-size: 12px;
+    color: #6c757d;
+}
+
+.o_bohio_card_mini_body > div {
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+}
+
+.o_bohio_card_mini_body i {
+    width: 16px;
+    margin-right: 6px;
+    font-size: 11px;
+}
+
+/* Card Footer */
+.o_bohio_card_mini_footer {
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid #f1f3f5;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11px;
+}
+
+.o_bohio_card_mini_revenue {
+    font-weight: 600;
+    color: #28a745;
+}
+
+.o_bohio_card_mini_user {
+    display: flex;
+    align-items: center;
+    color: #6c757d;
+}
+
+.o_bohio_card_mini_user img {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    margin-right: 4px;
+}
+
+/* ============ PAGINACIÓN ============ */
+.o_bohio_sidebar_pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 12px;
+    padding: 8px;
+    background: #f8f9fa;
+    border-radius: 6px;
+}
+
+.o_bohio_pagination_info {
+    font-size: 12px;
+    color: #6c757d;
+    font-weight: 500;
+}
+
+.o_bohio_pagination_controls {
+    display: flex;
+    gap: 4px;
+}
+
+.o_bohio_pagination_btn {
+    background: white;
+    border: 1px solid #dee2e6;
+    color: #495057;
+    width: 28px;
+    height: 28px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 12px;
+}
+
+.o_bohio_pagination_btn:hover:not(:disabled) {
+    background: #667eea;
+    border-color: #667eea;
+    color: white;
+}
+
+.o_bohio_pagination_btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+/* ============ ESTADO VACÍO ============ */
+.o_bohio_empty_state {
+    text-align: center;
+    padding: 30px 20px;
+    color: #adb5bd;
+}
+
+.o_bohio_empty_state i {
+    font-size: 48px;
+    margin-bottom: 12px;
+    opacity: 0.5;
+}
+
+.o_bohio_empty_state p {
+    font-size: 13px;
+    margin: 0;
+    line-height: 1.5;
+}
+
+/* ============ SCROLLBAR PERSONALIZADO ============ */
+.o_bohio_sidebar_content::-webkit-scrollbar {
+    width: 6px;
+}
+
+.o_bohio_sidebar_content::-webkit-scrollbar-track {
+    background: #f1f3f5;
+}
+
+.o_bohio_sidebar_content::-webkit-scrollbar-thumb {
+    background: #adb5bd;
+    border-radius: 3px;
+}
+
+.o_bohio_sidebar_content::-webkit-scrollbar-thumb:hover {
+    background: #868e96;
+}
+
+/* ============ COLORES POR TIPO DE SERVICIO ============ */
+.o_bohio_badge_sale { background-color: #0d6efd; color: white; }
+.o_bohio_badge_rent { background-color: #0dcaf0; color: white; }
+.o_bohio_badge_projects { background-color: #198754; color: white; }
+.o_bohio_badge_consign { background-color: #ffc107; color: #212529; }
+.o_bohio_badge_marketing { background-color: #dc3545; color: white; }
+.o_bohio_badge_legal { background-color: #6c757d; color: white; }
+.o_bohio_badge_corporate { background-color: #6f42c1; color: white; }
+
+/* ============ RESPONSIVE ============ */
+@media (max-width: 1200px) {
+    .o_bohio_crm_sidebar {
+        width: 280px;
+    }
+
+    .o_bohio_kanban_main.with-sidebar {
+        margin-right: 280px;
+    }
+}
+
+@media (max-width: 768px) {
+    .o_bohio_crm_sidebar {
+        width: 100%;
+        transform: translateX(100%);
+    }
+
+    .o_bohio_crm_sidebar:not(.collapsed) {
+        transform: translateX(0);
+    }
+
+    .o_bohio_kanban_main.with-sidebar,
+    .o_bohio_kanban_main.with-sidebar-collapsed {
+        margin-right: 0;
+    }
+}

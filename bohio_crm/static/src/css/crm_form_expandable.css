@@ -1,0 +1,300 @@
+/* ========================================
+   BOHIO CRM - VISTA FORM EXPANDIBLE
+   Con métricas, mapa, sidebar y chatter
+   ======================================== */
+
+/* ============ SECCIÓN DE MÉTRICAS ============ */
+.o_bohio_metrics_section {
+    margin-bottom: 20px;
+}
+
+.o_bohio_metrics_header {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+.o_bohio_toggle_metrics {
+    transition: all 0.3s ease;
+}
+
+.o_bohio_toggle_metrics:hover {
+    transform: scale(1.05);
+}
+
+#bohio_metrics_content .card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+#bohio_metrics_content .card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+}
+
+/* ============ LAYOUT CON SIDEBAR ============ */
+.o_bohio_layout_with_sidebar {
+    display: flex;
+    gap: 20px;
+    position: relative;
+}
+
+.o_bohio_main_content {
+    flex: 1;
+    transition: all 0.3s ease;
+}
+
+.o_bohio_main_content.full-width {
+    flex: 1;
+    max-width: 100%;
+}
+
+.o_bohio_sidebar_right {
+    width: 350px;
+    flex-shrink: 0;
+    transition: all 0.3s ease;
+    position: sticky;
+    top: 20px;
+    align-self: flex-start;
+    max-height: calc(100vh - 100px);
+    overflow-y: auto;
+}
+
+.o_bohio_sidebar_right.collapsed {
+    width: 50px;
+    overflow: hidden;
+}
+
+.o_bohio_sidebar_right.collapsed .o_bohio_sidebar_content {
+    display: none;
+}
+
+/* ============ SIDEBAR HEADER ============ */
+.o_bohio_sidebar_header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+}
+
+.o_bohio_toggle_sidebar {
+    transition: transform 0.3s ease;
+}
+
+.o_bohio_sidebar_right.collapsed .o_bohio_toggle_sidebar i {
+    transform: rotate(180deg);
+}
+
+/* ============ SIDEBAR CONTENT ============ */
+.o_bohio_sidebar_content {
+    max-height: 600px;
+    overflow-y: auto;
+}
+
+.o_bohio_sidebar_content::-webkit-scrollbar {
+    width: 6px;
+}
+
+.o_bohio_sidebar_content::-webkit-scrollbar-track {
+    background: #f1f3f5;
+}
+
+.o_bohio_sidebar_content::-webkit-scrollbar-thumb {
+    background: #adb5bd;
+    border-radius: 3px;
+}
+
+/* ============ OPPORTUNITY CARDS EN SIDEBAR ============ */
+.o_bohio_opportunity_card {
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.o_bohio_opportunity_card:hover {
+    border-color: #667eea !important;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+    transform: translateY(-2px);
+}
+
+/* ============ SECCIÓN DE MAPA ============ */
+.o_bohio_map_container {
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+
+.o_bohio_map_placeholder {
+    background: white;
+    transition: opacity 0.3s ease;
+}
+
+.o_bohio_map_placeholder i.fa-map {
+    opacity: 0.3;
+}
+
+/* Toggle del mapa */
+.form-check-input:checked {
+    background-color: #667eea;
+    border-color: #667eea;
+}
+
+.form-check-input:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 0.25rem rgba(102, 126, 234, 0.25);
+}
+
+/* ============ PAGINACIÓN DEL SIDEBAR ============ */
+.o_bohio_sidebar_pagination {
+    background: #f8f9fa;
+    padding: 10px;
+    border-radius: 6px;
+}
+
+.o_bohio_sidebar_pagination .btn-group-sm button {
+    padding: 4px 8px;
+    font-size: 12px;
+}
+
+.o_bohio_sidebar_pagination .btn:hover:not(:disabled) {
+    background: #667eea;
+    border-color: #667eea;
+    color: white;
+}
+
+/* ============ BADGES DE SERVICIO ============ */
+.badge.text-bg-primary {
+    background-color: #0d6efd !important;
+}
+
+.badge.text-bg-info {
+    background-color: #0dcaf0 !important;
+}
+
+.badge.text-bg-success {
+    background-color: #198754 !important;
+}
+
+.badge.text-bg-warning {
+    background-color: #ffc107 !important;
+    color: #212529 !important;
+}
+
+.badge.text-bg-danger {
+    background-color: #dc3545 !important;
+}
+
+.badge.text-bg-secondary {
+    background-color: #6c757d !important;
+}
+
+.badge.text-bg-dark {
+    background-color: #212529 !important;
+}
+
+/* ============ RESPONSIVE ============ */
+@media (max-width: 1400px) {
+    .o_bohio_sidebar_right {
+        width: 300px;
+    }
+}
+
+@media (max-width: 1200px) {
+    .o_bohio_layout_with_sidebar {
+        flex-direction: column;
+    }
+
+    .o_bohio_sidebar_right {
+        width: 100%;
+        position: relative;
+        max-height: none;
+    }
+
+    .o_bohio_main_content {
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    #bohio_metrics_content .col-md-3 {
+        width: 50%;
+    }
+
+    .o_bohio_metrics_header h5 {
+        font-size: 14px;
+    }
+
+    .o_bohio_sidebar_right {
+        width: 100%;
+    }
+}
+
+/* ============ ANIMACIONES ============ */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.o_bohio_opportunity_card {
+    animation: fadeIn 0.3s ease-out;
+}
+
+/* ============ ESTADO DE CARGA ============ */
+.o_bohio_opportunities_list .fa-spinner {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ============ MEJORAS VISUALES ============ */
+.o_bohio_form_expandable .o_form_sheet_bg {
+    background: #f8f9fa;
+}
+
+.o_bohio_form_expandable sheet {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+/* Títulos de grupos */
+.o_bohio_form_expandable .o_group .o_group_title {
+    font-weight: 600;
+    color: #495057;
+    font-size: 15px;
+}
+
+/* Tabs del notebook */
+.o_bohio_form_expandable .o_notebook .nav-link {
+    font-weight: 500;
+    color: #6c757d;
+}
+
+.o_bohio_form_expandable .o_notebook .nav-link.active {
+    color: #667eea;
+    border-bottom-color: #667eea;
+}
+
+/* ============ FILTRO DE OPORTUNIDADES ============ */
+.o_bohio_filter_type {
+    border-color: #ced4da;
+    transition: border-color 0.2s ease;
+}
+
+.o_bohio_filter_type:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 0.25rem rgba(102, 126, 234, 0.15);
+}
+
+/* ============ AJUSTES DE CHATTER ============ */
+.o_bohio_form_expandable .o_chatter {
+    margin-top: 30px;
+    border-top: 2px solid #e9ecef;
+    padding-top: 20px;
+}

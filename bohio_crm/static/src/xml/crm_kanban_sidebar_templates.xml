@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <!-- ========================================
+         TEMPLATE: Sidebar de Oportunidades
+         ======================================== -->
+    <t t-name="bohio_crm.KanbanSidebarTemplate">
+        <div t-att-class="'o_bohio_crm_sidebar ' + (state.isCollapsed ? 'collapsed' : '')">
+            <!-- ============ HEADER ============ -->
+            <div class="o_bohio_sidebar_header">
+                <h5 t-if="!state.isCollapsed">
+                    <i class="fa fa-list-ul me-2"/>
+                    Oportunidades
+                </h5>
+                <button class="o_bohio_sidebar_toggle"
+                        t-att-title="state.isCollapsed ? 'Expandir' : 'Comprimir'">
+                    <i t-att-class="state.isCollapsed ? 'fa fa-chevron-left' : 'fa fa-chevron-right'"/>
+                </button>
+            </div>
+
+            <!-- ============ CONTENIDO (Solo visible si NO está colapsado) ============ -->
+            <div class="o_bohio_sidebar_content" t-if="!state.isCollapsed">
+
+                <!-- Filtro por Tipo de Servicio -->
+                <div class="o_bohio_type_filter">
+                    <label class="form-label small text-muted fw-bold mb-2">
+                        <i class="fa fa-filter me-1"/>
+                        Filtrar por tipo
+                    </label>
+                    <select class="form-select form-select-sm"
+                            t-model="state.selectedType"
+                            t-on-change="onTypeFilterChange">
+                        <t t-foreach="serviceTypeOptions" t-as="option" t-key="option.value">
+                            <option t-att-value="option.value"
+                                    t-esc="option.label"/>
+                        </t>
+                    </select>
+                </div>
+
+                <!-- Loading Spinner -->
+                <div t-if="state.loading" class="text-center py-5">
+                    <i class="fa fa-spinner fa-spin fa-2x text-muted"/>
+                    <p class="small text-muted mt-2">Cargando...</p>
+                </div>
+
+                <!-- Lista de Oportunidades -->
+                <div t-else="" class="o_bohio_opportunities_section">
+                    <!-- Header de Sección -->
+                    <div class="o_bohio_section_header">
+                        <div class="o_bohio_section_title">
+                            <i class="fa fa-handshake"/>
+                            <span>Oportunidades</span>
+                        </div>
+                        <span class="o_bohio_section_count" t-esc="state.totalCount"/>
+                    </div>
+
+                    <!-- Cards de Oportunidades -->
+                    <div t-if="state.opportunities.length > 0" class="o_bohio_opportunity_cards">
+                        <t t-foreach="state.opportunities" t-as="opp" t-key="opp.id">
+                            <div class="o_bohio_opportunity_card"
+                                 t-on-click="() => this.openOpportunity(opp.id)">
+
+                                <!-- Card Header -->
+                                <div class="o_bohio_card_mini_header">
+                                    <div class="o_bohio_card_mini_title" t-esc="opp.name"/>
+                                    <span t-att-class="'badge o_bohio_card_mini_badge ' + getServiceBadgeClass(opp.service_interested)">
+                                        <i t-att-class="'fa ' + getServiceIcon(opp.service_interested) + ' me-1'"/>
+                                        <t t-esc="opp.service_interested"/>
+                                    </span>
+                                </div>
+
+                                <!-- Card Body -->
+                                <div class="o_bohio_card_mini_body">
+                                    <!-- Contacto -->
+                                    <div>
+                                        <i class="fa fa-user"/>
+                                        <span t-esc="getContactDisplay(opp)"/>
+                                    </div>
+
+                                    <!-- Teléfono (si existe) -->
+                                    <div t-if="opp.mobile or opp.phone">
+                                        <i class="fa fa-phone"/>
+                                        <span t-esc="opp.mobile or opp.phone"/>
+                                    </div>
+
+                                    <!-- Etapa -->
+                                    <div t-if="opp.stage_id">
+                                        <i class="fa fa-flag"/>
+                                        <span t-esc="opp.stage_id[1]"/>
+                                    </div>
+                                </div>
+
+                                <!-- Card Footer -->
+                                <div class="o_bohio_card_mini_footer">
+                                    <!-- Ingreso Esperado -->
+                                    <div class="o_bohio_card_mini_revenue">
+                                        <i class="fa fa-dollar-sign me-1"/>
+                                        <span t-esc="formatCurrency(opp.expected_revenue, opp.company_currency)"/>
+                                    </div>
+
+                                    <!-- Usuario Responsable -->
+                                    <div class="o_bohio_card_mini_user" t-if="opp.user_id">
+                                        <i class="fa fa-user-circle me-1"/>
+                                        <span class="text-truncate" style="max-width: 80px;" t-esc="opp.user_id[1]"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </div>
+
+                    <!-- Estado Vacío -->
+                    <div t-else="" class="o_bohio_empty_state">
+                        <i class="fa fa-inbox"/>
+                        <p>No hay oportunidades<br/>que coincidan con los filtros</p>
+                    </div>
+
+                    <!-- Paginación -->
+                    <div t-if="state.totalCount > state.pageSize" class="o_bohio_sidebar_pagination">
+                        <span class="o_bohio_pagination_info" t-esc="paginationText"/>
+                        <div class="o_bohio_pagination_controls">
+                            <button class="o_bohio_pagination_btn"
+                                    t-att-disabled="!hasPrevPage"
+                                    t-on-click="onPrevPage">
+                                <i class="fa fa-chevron-left"/>
+                            </button>
+                            <button class="o_bohio_pagination_btn"
+                                    t-att-disabled="!hasNextPage"
+                                    t-on-click="onNextPage">
+                                <i class="fa fa-chevron-right"/>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+
+    <!-- ========================================
+         TEMPLATE: KanbanController con Sidebar
+         Extiende el controller estándar de Kanban
+         ======================================== -->
+    <t t-name="bohio_crm.KanbanControllerWithSidebar" t-inherit="web.KanbanController" t-inherit-mode="extension">
+        <xpath expr="//div[hasclass('o_content')]" position="before">
+            <div class="o_bohio_crm_kanban_layout">
+                <!-- Kanban Principal (izquierda) -->
+                <div class="o_bohio_kanban_main with-sidebar">
+                    <!-- El contenido normal del kanban se renderiza aquí -->
+                </div>
+
+                <!-- Sidebar (derecha) -->
+                <BohioCrmKanbanSidebar/>
+            </div>
+        </xpath>
+    </t>
+
+</templates>

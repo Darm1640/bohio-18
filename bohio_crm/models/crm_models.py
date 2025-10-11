@@ -13,6 +13,13 @@ class CrmLead(models.Model):
     # CAMPOS PRINCIPALES
     # ===============================
 
+    # Campo Virtual para Toggle de Mapa
+    show_map_location = fields.Boolean(
+        string='Mostrar Ubicación en Mapa',
+        default=True,
+        help='Controla la visualización de la ubicación genérica en el mapa'
+    )
+
     # Origen de solicitud (de bohio_real_estate)
     request_source = fields.Selection([
         ('website', 'Sitio Web'),
