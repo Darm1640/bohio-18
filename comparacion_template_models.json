@@ -1,0 +1,32 @@
+{
+  "db1": {
+    "nombre": "CloudPepper (Producción)",
+    "total_campos": 449,
+    "campos_propiedades": 130,
+    "campos_exclusivos": [
+      "line_price_reference",
+      "attachment_line_ids",
+      "dr_document_ids",
+      "property_account_refund_id"
+    ]
+  },
+  "db2": {
+    "nombre": "Odoo.com (Desarrollo)",
+    "total_campos": 442,
+    "campos_propiedades": 137,
+    "campos_exclusivos": [
+      "document_count",
+      "property_attachment_ids",
+      "biz_total_sale_count",
+      "image_count",
+      "hover_image",
+      "taxes_id",
+      "lot_valuated",
+      "property_image_ids",
+      "exclusive_salesperson_ids",
+      "uom_po_id",
+      "full_computed_address"
+    ]
+  },
+  "diferencias": []
+}

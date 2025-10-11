@@ -78,6 +78,8 @@
 
             # Form Expandible Completo
             'bohio_crm/static/src/js/crm_form_expandable.js',       # Form Expandible JS
+            'bohio_crm/static/src/js/crm_map_widget.js',             # Widget de Mapa Leaflet
+            'bohio_crm/static/src/xml/crm_map_widget_template.xml', # Template del Mapa
 
             # Salesperson Dashboard
             'bohio_crm/static/src/js/crm_salesperson_dashboard.js',

@@ -1,0 +1,403 @@
+Campos de propiedades en Odoo 18:
+{
+  "website_published": {
+    "tipo": "boolean",
+    "relacion": null
+  },
+  "activity_type_id": {
+    "tipo": "many2one",
+    "relacion": "mail.activity.type"
+  },
+  "activity_type_icon": {
+    "tipo": "char",
+    "relacion": null
+  },
+  "description_sale": {
+    "tipo": "text",
+    "relacion": null
+  },
+  "type": {
+    "tipo": "selection",
+    "relacion": null
+  },
+  "list_price": {
+    "tipo": "float",
+    "relacion": null
+  },
+  "standard_price": {
+    "tipo": "float",
+    "relacion": null
+  },
+  "volume_uom_name": {
+    "tipo": "char",
+    "relacion": null
+  },
+  "weight_uom_name": {
+    "tipo": "char",
+    "relacion": null
+  },
+  "sale_ok": {
+    "tipo": "boolean",
+    "relacion": null
+  },
+  "uom_id": {
+    "tipo": "many2one",
+    "relacion": "uom.uom"
+  },
+  "uom_name": {
+    "tipo": "char",
+    "relacion": null
+  },
+  "uom_po_id": {
+    "tipo": "many2one",
+    "relacion": "uom.uom"
+  },
+  "pricelist_item_count": {
+    "tipo": "integer",
+    "relacion": null
+  },
+  "taxes_id": {
+    "tipo": "many2many",
+    "relacion": "account.tax"
+  },
+  "property_account_income_id": {
+    "tipo": "many2one",
+    "relacion": "account.account"
+  },
+  "property_account_expense_id": {
+    "tipo": "many2one",
+    "relacion": "account.account"
+  },
+  "property_stock_production": {
+    "tipo": "many2one",
+    "relacion": "stock.location"
+  },
+  "property_stock_inventory": {
+    "tipo": "many2one",
+    "relacion": "stock.location"
+  },
+  "sale_delay": {
+    "tipo": "integer",
+    "relacion": null
+  },
+  "show_on_hand_qty_status_button": {
+    "tipo": "boolean",
+    "relacion": null
+  },
+  "show_forecasted_qty_status_button": {
+    "tipo": "boolean",
+    "relacion": null
+  },
+  "property_account_creditor_price_difference": {
+    "tipo": "many2one",
+    "relacion": "account.account"
+  },
+  "service_type": {
+    "tipo": "selection",
+    "relacion": null
+  },
+  "sale_line_warn": {
+    "tipo": "selection",
+    "relacion": null
+  },
+  "sale_line_warn_msg": {
+    "tipo": "text",
+    "relacion": null
+  },
+  "sales_count": {
+    "tipo": "float",
+    "relacion": null
+  },
+  "base_unit_count": {
+    "tipo": "float",
+    "relacion": null
+  },
+  "base_unit_id": {
+    "tipo": "many2one",
+    "relacion": "website.base.unit"
+  },
+  "base_unit_price": {
+    "tipo": "monetary",
+    "relacion": null
+  },
+  "base_unit_name": {
+    "tipo": "char",
+    "relacion": null
+  },
+  "compare_list_price": {
+    "tipo": "monetary",
+    "relacion": null
+  },
+  "property_date": {
+    "tipo": "date",
+    "relacion": null
+  },
+  "property_type_id": {
+    "tipo": "many2one",
+    "relacion": "property.type"
+  },
+  "property_type": {
+    "tipo": "selection",
+    "relacion": null
+  },
+  "geocoding_status": {
+    "tipo": "selection",
+    "relacion": null
+  },
+  "type_service": {
+    "tipo": "selection",
+    "relacion": null
+  },
+  "property_status": {
+    "tipo": "selection",
+    "relacion": null
+  },
+  "property_area": {
+    "tipo": "float",
+    "relacion": null
+  },
+  "unit_of_measure": {
+    "tipo": "selection",
+    "relacion": null
+  },
+  "unit_label": {
+    "tipo": "char",
+    "relacion": null
+  },
+  "area_in_m2": {
+    "tipo": "float",
+    "relacion": null
+  },
+  "unit_iso_code": {
+    "tipo": "char",
+    "relacion": null
+  },
+  "unit_display_name": {
+    "tipo": "char",
+    "relacion": null
+  },
+  "front_meters": {
+    "tipo": "float",
+    "relacion": null
+  },
+  "num_bedrooms": {
+    "tipo": "integer",
+    "relacion": null
+  },
+  "num_bathrooms": {
+    "tipo": "integer",
+    "relacion": null
+  },
+  "property_age": {
+    "tipo": "integer",
+    "relacion": null
+  },
+  "floor_number": {
+    "tipo": "integer",
+    "relacion": null
+  },
+  "service_bathroom": {
+    "tipo": "boolean",
+    "relacion": null
+  },
+  "auxiliary_bathroom": {
+    "tipo": "boolean",
+    "relacion": null
+  },
+  "solar_area": {
+    "tipo": "boolean",
+    "relacion": null
+  },
+  "laundry_area": {
+    "tipo": "boolean",
+    "relacion": null
+  },
+  "floor_type": {
+    "tipo": "selection",
+    "relacion": null
+  },
+  "marble_floor": {
+    "tipo": "boolean",
+    "relacion": null
+  },
+  "door_type": {
+    "tipo": "selection",
+    "relacion": null
+  },
+  "garage": {
+    "tipo": "boolean",
+    "relacion": null
+  },
+  "n_garage": {
+    "tipo": "integer",
+    "relacion": null
+  },
+  "green_areas": {
+    "tipo": "boolean",
+    "relacion": null
+  },
+  "sports_area": {
+    "tipo": "boolean",
+    "relacion": null
+  },
+  "apartment_type": {
+    "tipo": "selection",
+    "relacion": null
+  },
+  "net_price": {
+    "tipo": "float",
+    "relacion": null
+  },
+  "price_before_discount": {
+    "tipo": "float",
+    "relacion": null
+  },
+  "property_price_type": {
+    "tipo": "selection",
+    "relacion": null
+  },
+  "price_per_unit": {
+    "tipo": "float",
+    "relacion": null
+  },
+  "discount_type": {
+    "tipo": "selection",
+    "relacion": null
+  },
+  "rental_price_type": {
+    "tipo": "selection",
+    "relacion": null
+  },
+  "rental_price_per_unit": {
+    "tipo": "float",
+    "relacion": null
+  },
+  "net_rental_price": {
+    "tipo": "float",
+    "relacion": null
+  },
+  "rental_price_before_discount": {
+    "tipo": "float",
+    "relacion": null
+  },
+  "rental_discount_type": {
+    "tipo": "selection",
+    "relacion": null
+  },
+  "rental_discount": {
+    "tipo": "float",
+    "relacion": null
+  },
+  "price_per_m2_ref": {
+    "tipo": "float",
+    "relacion": null
+  },
+  "price_per_hectare_ref": {
+    "tipo": "float",
+    "relacion": null
+  },
+  "price_per_yard_ref": {
+    "tipo": "float",
+    "relacion": null
+  },
+  "rent_value_from": {
+    "tipo": "float",
+    "relacion": null
+  },
+  "rent_value_to": {
+    "tipo": "float",
+    "relacion": null
+  },
+  "sale_value_from": {
+    "tipo": "float",
+    "relacion": null
+  },
+  "sale_value_to": {
+    "tipo": "float",
+    "relacion": null
+  },
+  "property_tax": {
+    "tipo": "float",
+    "relacion": null
+  },
+  "maintenance_type": {
+    "tipo": "selection",
+    "relacion": null
+  },
+  "property_consignee": {
+    "tipo": "selection",
+    "relacion": null
+  },
+  "exclusive_salesperson_ids": {
+    "tipo": "many2many",
+    "relacion": "res.users"
+  },
+  "property_description": {
+    "tipo": "text",
+    "relacion": null
+  },
+  "project_type": {
+    "tipo": "selection",
+    "relacion": null
+  },
+  "floor": {
+    "tipo": "integer",
+    "relacion": null
+  },
+  "project_area": {
+    "tipo": "float",
+    "relacion": null
+  },
+  "rental_fee": {
+    "tipo": "float",
+    "relacion": null
+  },
+  "is_property": {
+    "tipo": "boolean",
+    "relacion": null
+  },
+  "l10n_latam_identification_type_id": {
+    "tipo": "many2one",
+    "relacion": "l10n_latam.identification.type"
+  },
+  "building_unit": {
+    "tipo": "selection",
+    "relacion": null
+  },
+  "notarial_act_type": {
+    "tipo": "selection",
+    "relacion": null
+  },
+  "sale_with_natural_person": {
+    "tipo": "boolean",
+    "relacion": null
+  },
+  "property_filters_config": {
+    "tipo": "json",
+    "relacion": null
+  },
+  "property_search_vector": {
+    "tipo": "text",
+    "relacion": null
+  },
+  "property_popularity_score": {
+    "tipo": "float",
+    "relacion": null
+  },
+  "property_last_viewed": {
+    "tipo": "datetime",
+    "relacion": null
+  },
+  "property_image_ids": {
+    "tipo": "one2many",
+    "relacion": "property.image"
+  },
+  "property_attachment_ids": {
+    "tipo": "one2many",
+    "relacion": "ir.attachment"
+  },
+  "biz_total_sale_count": {
+    "tipo": "integer",
+    "relacion": null
+  }
+}

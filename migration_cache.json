@@ -1,0 +1,28 @@
+{
+  "states": {
+    "Córdoba": 434
+  },
+  "cities": {},
+  "regions": {
+    "street2_Vereda La Montañita": 252,
+    "street2_El Centro": 111,
+    "street2_Urbina": 247,
+    "street2_Villa María": 263,
+    "street2_Nariño": 181,
+    "street2_Berástegui": 68,
+    "street2_La Floresta": 149,
+    "street2_Vallejuelo": 248
+  },
+  "partners": {
+    "24057": 10351,
+    "24058": 10352,
+    "24059": 10353,
+    "24060": 10354,
+    "24061": 10355,
+    "24062": 10356,
+    "24063": 10357,
+    "24064": 10358,
+    "24065": 10359,
+    "24066": 10360
+  }
+}

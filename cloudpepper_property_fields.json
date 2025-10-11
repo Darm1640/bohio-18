@@ -1,0 +1,730 @@
+{
+  "total_campos": 449,
+  "campos_propiedades": 119,
+  "campos_por_categoria": {
+    "Ubicación": [
+      {
+        "nombre": "activity_state",
+        "etiqueta": "Activity State",
+        "tipo": "selection",
+        "relacion": null
+      },
+      {
+        "nombre": "address",
+        "etiqueta": "Dirección",
+        "tipo": "char",
+        "relacion": null
+      },
+      {
+        "nombre": "billing_address_id",
+        "etiqueta": "Dirección de la propiedad",
+        "tipo": "many2one",
+        "relacion": "res.partner"
+      },
+      {
+        "nombre": "city",
+        "etiqueta": "Ciudad",
+        "tipo": "char",
+        "relacion": null
+      },
+      {
+        "nombre": "city_id",
+        "etiqueta": "Ciudad",
+        "tipo": "many2one",
+        "relacion": "res.city"
+      },
+      {
+        "nombre": "electrical_capacity",
+        "etiqueta": "Capacidad Eléctrica",
+        "tipo": "char",
+        "relacion": null
+      },
+      {
+        "nombre": "email_state",
+        "etiqueta": "Calidad del Email",
+        "tipo": "selection",
+        "relacion": null
+      },
+      {
+        "nombre": "keys_location",
+        "etiqueta": "Llaves en",
+        "tipo": "selection",
+        "relacion": null
+      },
+      {
+        "nombre": "latitude",
+        "etiqueta": "Latitud",
+        "tipo": "float",
+        "relacion": null
+      },
+      {
+        "nombre": "license_location",
+        "etiqueta": "Notarización de Licencia",
+        "tipo": "char",
+        "relacion": null
+      },
+      {
+        "nombre": "location_id",
+        "etiqueta": "Location",
+        "tipo": "many2one",
+        "relacion": "stock.location"
+      },
+      {
+        "nombre": "longitude",
+        "etiqueta": "Longitud",
+        "tipo": "float",
+        "relacion": null
+      },
+      {
+        "nombre": "neighborhood",
+        "etiqueta": "Barrio",
+        "tipo": "char",
+        "relacion": null
+      },
+      {
+        "nombre": "phone_state",
+        "etiqueta": "Calidad del Teléfono",
+        "tipo": "selection",
+        "relacion": null
+      },
+      {
+        "nombre": "real_estate_platform",
+        "etiqueta": "¿Está en Biinmo?",
+        "tipo": "boolean",
+        "relacion": null
+      },
+      {
+        "nombre": "real_estate_sign",
+        "etiqueta": "Finca Raíz",
+        "tipo": "char",
+        "relacion": null
+      },
+      {
+        "nombre": "region_id",
+        "etiqueta": "Barrio",
+        "tipo": "many2one",
+        "relacion": "region.region"
+      },
+      {
+        "nombre": "state",
+        "etiqueta": "Estado",
+        "tipo": "selection",
+        "relacion": null
+      },
+      {
+        "nombre": "state_id",
+        "etiqueta": "Departamento",
+        "tipo": "many2one",
+        "relacion": "res.country.state"
+      },
+      {
+        "nombre": "street",
+        "etiqueta": "Dirección Principal",
+        "tipo": "char",
+        "relacion": null
+      },
+      {
+        "nombre": "street2",
+        "etiqueta": "Dirección Secundaria",
+        "tipo": "char",
+        "relacion": null
+      },
+      {
+        "nombre": "zip",
+        "etiqueta": "Código Postal",
+        "tipo": "char",
+        "relacion": null
+      }
+    ],
+    "Características": [
+      {
+        "nombre": "area_in_m2",
+        "etiqueta": "Área en M² (Interno)",
+        "tipo": "float",
+        "relacion": null
+      },
+      {
+        "nombre": "auxiliary_bathroom",
+        "etiqueta": "¿Tiene Baño Auxiliar?",
+        "tipo": "boolean",
+        "relacion": null
+      },
+      {
+        "nombre": "base_unit_count",
+        "etiqueta": "Base Unit Count",
+        "tipo": "float",
+        "relacion": null
+      },
+      {
+        "nombre": "base_unit_id",
+        "etiqueta": "Custom Unit of Measure",
+        "tipo": "many2one",
+        "relacion": "website.base.unit"
+      },
+      {
+        "nombre": "base_unit_name",
+        "etiqueta": "Base Unit Name",
+        "tipo": "char",
+        "relacion": null
+      },
+      {
+        "nombre": "base_unit_price",
+        "etiqueta": "Price Per Unit",
+        "tipo": "monetary",
+        "relacion": null
+      },
+      {
+        "nombre": "building_unit",
+        "etiqueta": "Tipo de unidad",
+        "tipo": "selection",
+        "relacion": null
+      },
+      {
+        "nombre": "floor",
+        "etiqueta": "Piso",
+        "tipo": "integer",
+        "relacion": null
+      },
+      {
+        "nombre": "floor_number",
+        "etiqueta": "N° De Piso",
+        "tipo": "integer",
+        "relacion": null
+      },
+      {
+        "nombre": "floor_type",
+        "etiqueta": "Tipo de piso",
+        "tipo": "selection",
+        "relacion": null
+      },
+      {
+        "nombre": "garage",
+        "etiqueta": "¿Tiene Garaje?",
+        "tipo": "boolean",
+        "relacion": null
+      },
+      {
+        "nombre": "green_areas",
+        "etiqueta": "¿Tiene Zonas Verdes?",
+        "tipo": "boolean",
+        "relacion": null
+      },
+      {
+        "nombre": "laundry_area",
+        "etiqueta": "¿Tiene Zona de lavandería?",
+        "tipo": "boolean",
+        "relacion": null
+      },
+      {
+        "nombre": "marble_floor",
+        "etiqueta": "¿Tiene Piso en Baldosa/Mármol?",
+        "tipo": "boolean",
+        "relacion": null
+      },
+      {
+        "nombre": "n_garage",
+        "etiqueta": "N° Garaje",
+        "tipo": "integer",
+        "relacion": null
+      },
+      {
+        "nombre": "num_bathrooms",
+        "etiqueta": "N° De Baños",
+        "tipo": "integer",
+        "relacion": null
+      },
+      {
+        "nombre": "num_bedrooms",
+        "etiqueta": "N° De Habitaciones",
+        "tipo": "integer",
+        "relacion": null
+      },
+      {
+        "nombre": "price_per_unit",
+        "etiqueta": "Precio por Unidad",
+        "tipo": "float",
+        "relacion": null
+      },
+      {
+        "nombre": "project_area",
+        "etiqueta": "Área del Proyecto",
+        "tipo": "float",
+        "relacion": null
+      },
+      {
+        "nombre": "property_area",
+        "etiqueta": "Área de la Propiedad",
+        "tipo": "float",
+        "relacion": null
+      },
+      {
+        "nombre": "rental_price_per_unit",
+        "etiqueta": "Precio Arriendo por Unidad",
+        "tipo": "float",
+        "relacion": null
+      },
+      {
+        "nombre": "service_bathroom",
+        "etiqueta": "¿Tiene Baño de Servicio?",
+        "tipo": "boolean",
+        "relacion": null
+      },
+      {
+        "nombre": "solar_area",
+        "etiqueta": "¿Tiene Solar?",
+        "tipo": "boolean",
+        "relacion": null
+      },
+      {
+        "nombre": "sports_area",
+        "etiqueta": "¿Tiene Placa Polideportiva?",
+        "tipo": "boolean",
+        "relacion": null
+      },
+      {
+        "nombre": "unit_display_name",
+        "etiqueta": "Nombre Unidad",
+        "tipo": "char",
+        "relacion": null
+      },
+      {
+        "nombre": "unit_iso_code",
+        "etiqueta": "Código ISO",
+        "tipo": "char",
+        "relacion": null
+      },
+      {
+        "nombre": "unit_label",
+        "etiqueta": "Etiqueta Unidad",
+        "tipo": "char",
+        "relacion": null
+      },
+      {
+        "nombre": "unit_of_measure",
+        "etiqueta": "Unidad de Medida",
+        "tipo": "selection",
+        "relacion": null
+      }
+    ],
+    "Precio": [
+      {
+        "nombre": "compare_list_price",
+        "etiqueta": "Compare to Price",
+        "tipo": "monetary",
+        "relacion": null
+      },
+      {
+        "nombre": "description_sale",
+        "etiqueta": "Sales Description",
+        "tipo": "text",
+        "relacion": null
+      },
+      {
+        "nombre": "line_price_reference",
+        "etiqueta": "Precio de referencia",
+        "tipo": "float",
+        "relacion": null
+      },
+      {
+        "nombre": "list_price",
+        "etiqueta": "Sales Price",
+        "tipo": "float",
+        "relacion": null
+      },
+      {
+        "nombre": "net_price",
+        "etiqueta": "Precio Final de Venta",
+        "tipo": "float",
+        "relacion": null
+      },
+      {
+        "nombre": "net_rental_price",
+        "etiqueta": "Precio Final de Arriendo",
+        "tipo": "float",
+        "relacion": null
+      },
+      {
+        "nombre": "price_before_discount",
+        "etiqueta": "Precio Antes Descuento",
+        "tipo": "float",
+        "relacion": null
+      },
+      {
+        "nombre": "price_per_hectare_ref",
+        "etiqueta": "Precio por Ha (Ref)",
+        "tipo": "float",
+        "relacion": null
+      },
+      {
+        "nombre": "price_per_m2_ref",
+        "etiqueta": "Precio por m² (Ref)",
+        "tipo": "float",
+        "relacion": null
+      },
+      {
+        "nombre": "price_per_yard_ref",
+        "etiqueta": "Precio por Yd² (Ref)",
+        "tipo": "float",
+        "relacion": null
+      },
+      {
+        "nombre": "pricelist_item_count",
+        "etiqueta": "Number of price rules",
+        "tipo": "integer",
+        "relacion": null
+      },
+      {
+        "nombre": "property_account_creditor_price_difference",
+        "etiqueta": "Price Difference Account",
+        "tipo": "many2one",
+        "relacion": "account.account"
+      },
+      {
+        "nombre": "property_price_type",
+        "etiqueta": "Tipo Precio Venta",
+        "tipo": "selection",
+        "relacion": null
+      },
+      {
+        "nombre": "rent_value_from",
+        "etiqueta": "Valor arriendo desde",
+        "tipo": "float",
+        "relacion": null
+      },
+      {
+        "nombre": "rent_value_to",
+        "etiqueta": "Valor arriendo hasta",
+        "tipo": "float",
+        "relacion": null
+      },
+      {
+        "nombre": "rental_discount",
+        "etiqueta": "Descuento Arriendo",
+        "tipo": "float",
+        "relacion": null
+      },
+      {
+        "nombre": "rental_discount_type",
+        "etiqueta": "Tipo Descuento Arriendo",
+        "tipo": "selection",
+        "relacion": null
+      },
+      {
+        "nombre": "rental_fee",
+        "etiqueta": "Tarifa de alquiler",
+        "tipo": "float",
+        "relacion": null
+      },
+      {
+        "nombre": "rental_price_before_discount",
+        "etiqueta": "Precio Arriendo Antes Descuento",
+        "tipo": "float",
+        "relacion": null
+      },
+      {
+        "nombre": "rental_price_type",
+        "etiqueta": "Tipo Precio Arriendo",
+        "tipo": "selection",
+        "relacion": null
+      },
+      {
+        "nombre": "sale_delay",
+        "etiqueta": "Customer Lead Time",
+        "tipo": "integer",
+        "relacion": null
+      },
+      {
+        "nombre": "sale_line_warn",
+        "etiqueta": "Sales Order Line",
+        "tipo": "selection",
+        "relacion": null
+      },
+      {
+        "nombre": "sale_line_warn_msg",
+        "etiqueta": "Message for Sales Order Line",
+        "tipo": "text",
+        "relacion": null
+      },
+      {
+        "nombre": "sale_ok",
+        "etiqueta": "Can be Sold",
+        "tipo": "boolean",
+        "relacion": null
+      },
+      {
+        "nombre": "sale_value_from",
+        "etiqueta": "Valor venta desde",
+        "tipo": "float",
+        "relacion": null
+      },
+      {
+        "nombre": "sale_value_to",
+        "etiqueta": "Valor venta hasta",
+        "tipo": "float",
+        "relacion": null
+      },
+      {
+        "nombre": "sale_with_natural_person",
+        "etiqueta": "Venta con Persona Natural",
+        "tipo": "boolean",
+        "relacion": null
+      },
+      {
+        "nombre": "sales_count",
+        "etiqueta": "Sold",
+        "tipo": "float",
+        "relacion": null
+      },
+      {
+        "nombre": "standard_price",
+        "etiqueta": "Cost",
+        "tipo": "float",
+        "relacion": null
+      }
+    ],
+    "Tipo/Estado": [
+      {
+        "nombre": "activity_type_icon",
+        "etiqueta": "Activity Type Icon",
+        "tipo": "char",
+        "relacion": null
+      },
+      {
+        "nombre": "activity_type_id",
+        "etiqueta": "Next Activity Type",
+        "tipo": "many2one",
+        "relacion": "mail.activity.type"
+      },
+      {
+        "nombre": "apartment_type",
+        "etiqueta": "Tipo de apartamento",
+        "tipo": "selection",
+        "relacion": null
+      },
+      {
+        "nombre": "commission_type",
+        "etiqueta": "Tipo de Comisión",
+        "tipo": "selection",
+        "relacion": null
+      },
+      {
+        "nombre": "detailed_type",
+        "etiqueta": "Product Type",
+        "tipo": "selection",
+        "relacion": null
+      },
+      {
+        "nombre": "discount_type",
+        "etiqueta": "Tipo Descuento Venta",
+        "tipo": "selection",
+        "relacion": null
+      },
+      {
+        "nombre": "door_type",
+        "etiqueta": "Tipo de Puerta",
+        "tipo": "selection",
+        "relacion": null
+      },
+      {
+        "nombre": "is_property",
+        "etiqueta": "¿Es Propiedad?",
+        "tipo": "boolean",
+        "relacion": null
+      },
+      {
+        "nombre": "l10n_latam_identification_type_id",
+        "etiqueta": "Tipo documento",
+        "tipo": "many2one",
+        "relacion": "l10n_latam.identification.type"
+      },
+      {
+        "nombre": "maintenance_type",
+        "etiqueta": "Maintenance Type",
+        "tipo": "selection",
+        "relacion": null
+      },
+      {
+        "nombre": "notarial_act_type",
+        "etiqueta": "Tipo de Acto Notarial",
+        "tipo": "selection",
+        "relacion": null
+      },
+      {
+        "nombre": "project_type",
+        "etiqueta": "Project Type",
+        "tipo": "selection",
+        "relacion": null
+      },
+      {
+        "nombre": "property_account_expense_id",
+        "etiqueta": "Expense Account",
+        "tipo": "many2one",
+        "relacion": "account.account"
+      },
+      {
+        "nombre": "property_account_income_id",
+        "etiqueta": "Income Account",
+        "tipo": "many2one",
+        "relacion": "account.account"
+      },
+      {
+        "nombre": "property_account_refund_id",
+        "etiqueta": "Refund Account",
+        "tipo": "many2one",
+        "relacion": "account.account"
+      },
+      {
+        "nombre": "property_age",
+        "etiqueta": "Antigüedad del Inmueble",
+        "tipo": "integer",
+        "relacion": null
+      },
+      {
+        "nombre": "property_consignee",
+        "etiqueta": "Quién Consignó el Inmueble",
+        "tipo": "selection",
+        "relacion": null
+      },
+      {
+        "nombre": "property_date",
+        "etiqueta": "Fecha",
+        "tipo": "date",
+        "relacion": null
+      },
+      {
+        "nombre": "property_description",
+        "etiqueta": "Descripción Propiedad",
+        "tipo": "text",
+        "relacion": null
+      },
+      {
+        "nombre": "property_filters_config",
+        "etiqueta": "Configuración de Filtros",
+        "tipo": "json",
+        "relacion": null
+      },
+      {
+        "nombre": "property_last_viewed",
+        "etiqueta": "Última Visualización",
+        "tipo": "datetime",
+        "relacion": null
+      },
+      {
+        "nombre": "property_popularity_score",
+        "etiqueta": "Score de Popularidad",
+        "tipo": "float",
+        "relacion": null
+      },
+      {
+        "nombre": "property_search_vector",
+        "etiqueta": "Vector de Búsqueda",
+        "tipo": "text",
+        "relacion": null
+      },
+      {
+        "nombre": "property_status",
+        "etiqueta": "Estado del Inmueble",
+        "tipo": "selection",
+        "relacion": null
+      },
+      {
+        "nombre": "property_stock_inventory",
+        "etiqueta": "Inventory Location",
+        "tipo": "many2one",
+        "relacion": "stock.location"
+      },
+      {
+        "nombre": "property_stock_production",
+        "etiqueta": "Production Location",
+        "tipo": "many2one",
+        "relacion": "stock.location"
+      },
+      {
+        "nombre": "property_tax",
+        "etiqueta": "Impuesto predial",
+        "tipo": "float",
+        "relacion": null
+      },
+      {
+        "nombre": "property_type",
+        "etiqueta": "Tipo de Inmueble",
+        "tipo": "selection",
+        "relacion": null
+      },
+      {
+        "nombre": "property_type_id",
+        "etiqueta": "Tipo de Propiedad",
+        "tipo": "many2one",
+        "relacion": "property.type"
+      },
+      {
+        "nombre": "service_type",
+        "etiqueta": "Track Service",
+        "tipo": "selection",
+        "relacion": null
+      },
+      {
+        "nombre": "show_forecasted_qty_status_button",
+        "etiqueta": "Show Forecasted Qty Status Button",
+        "tipo": "boolean",
+        "relacion": null
+      },
+      {
+        "nombre": "show_on_hand_qty_status_button",
+        "etiqueta": "Show On Hand Qty Status Button",
+        "tipo": "boolean",
+        "relacion": null
+      },
+      {
+        "nombre": "type",
+        "etiqueta": "Type",
+        "tipo": "selection",
+        "relacion": null
+      },
+      {
+        "nombre": "type_service",
+        "etiqueta": "Tipo De Servicios",
+        "tipo": "selection",
+        "relacion": null
+      }
+    ],
+    "Otros": [
+      {
+        "nombre": "front_meters",
+        "etiqueta": "Frente (metros)",
+        "tipo": "float",
+        "relacion": null
+      },
+      {
+        "nombre": "uom_id",
+        "etiqueta": "Unit of Measure",
+        "tipo": "many2one",
+        "relacion": "uom.uom"
+      },
+      {
+        "nombre": "uom_name",
+        "etiqueta": "Unit of Measure Name",
+        "tipo": "char",
+        "relacion": null
+      },
+      {
+        "nombre": "volume_uom_name",
+        "etiqueta": "Volume unit of measure label",
+        "tipo": "char",
+        "relacion": null
+      },
+      {
+        "nombre": "website_published",
+        "etiqueta": "Visible on current website",
+        "tipo": "boolean",
+        "relacion": null
+      },
+      {
+        "nombre": "weight_uom_name",
+        "etiqueta": "Weight unit of measure label",
+        "tipo": "char",
+        "relacion": null
+      }
+    ]
+  }
+}
