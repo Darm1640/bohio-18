@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ========================================
+         VISTA FORM CON DISEÑO KANBAN VERTICAL
+         Todas las funcionalidades en formato vertical elegante
+         ======================================== -->
+
+    <record id="view_crm_lead_form_kanban_vertical" model="ir.ui.view">
+        <field name="name">crm.lead.form.kanban.vertical</field>
+        <field name="model">crm.lead</field>
+        <field name="priority">5</field>
+        <field name="arch" type="xml">
+            <form string="Oportunidad - Vista Kanban Vertical" class="o_bohio_form_kanban_vertical">
+                <header class="o_bohio_form_header">
+                    <!-- BOTONES DE ACCIÓN -->
+                    <button name="action_send_email_report"
+                            string="Enviar por Email"
+                            type="object"
+                            class="btn-primary"
+                            icon="fa-envelope"/>
+                    <button name="action_print_report"
+                            string="Imprimir Reporte"
+                            type="object"
+                            class="btn-secondary"
+                            icon="fa-print"/>
+                    <button name="action_select_opportunity"
+                            string="Seleccionar Esta"
+                            type="object"
+                            class="btn-success"
+                            icon="fa-check-circle"/>
+
+                    <!-- STATUSBAR -->
+                    <field name="stage_id"
+                           widget="statusbar"
+                           options="{'clickable': '1', 'fold_field': 'fold'}"/>
+                </header>
+
+                <sheet class="o_bohio_kanban_sheet">
+
+                    <!-- ========== SECCIÓN 1: ENCABEZADO CON MÉTRICAS ========== -->
+                    <div class="o_bohio_section o_section_header">
+                        <div class="o_section_title_row">
+                            <h1 class="o_bohio_main_title">
+                                <field name="name" placeholder="Nombre de la Oportunidad" required="1"/>
+                            </h1>
+                            <div class="o_bohio_badges_group">
+                                <field name="priority" widget="priority"/>
+                                <field name="color" widget="label_selection"
+                                       options="{'colors': {'1': 'danger', '2': 'warning', '3': 'success'}}"/>
+                            </div>
+                        </div>
+
+                        <!-- MÉTRICAS PRINCIPALES -->
+                        <div class="o_bohio_metrics_grid">
+                            <div class="o_metric_box o_metric_revenue">
+                                <div class="o_metric_icon">
+                                    <i class="fa fa-dollar-sign fa-2x"/>
+                                </div>
+                                <div class="o_metric_info">
+                                    <span class="o_metric_label">Ingreso Esperado</span>
+                                    <field name="expected_revenue"
+                                           widget="monetary"
+                                           options="{'currency_field': 'company_currency'}"
+                                           class="o_metric_value"/>
+                                    <span class="o_metric_sublabel">
+                                        Probabilidad: <field name="probability"/>%
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="o_metric_box o_metric_commission">
+                                <div class="o_metric_icon">
+                                    <i class="fa fa-percentage fa-2x"/>
+                                </div>
+                                <div class="o_metric_info">
+                                    <span class="o_metric_label">Comisión Estimada</span>
+                                    <field name="estimated_commission"
+                                           widget="monetary"
+                                           options="{'currency_field': 'company_currency'}"
+                                           class="o_metric_value"/>
+                                    <span class="o_metric_sublabel">
+                                        <field name="commission_percentage"/>% del total
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="o_metric_box o_metric_deadline">
+                                <div class="o_metric_icon">
+                                    <i class="fa fa-calendar-check fa-2x"/>
+                                </div>
+                                <div class="o_metric_info">
+                                    <span class="o_metric_label">Fecha de Cierre</span>
+                                    <field name="date_deadline" class="o_metric_value"/>
+                                    <span class="o_metric_sublabel">
+                                        Esperado
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="o_metric_box o_metric_days">
+                                <div class="o_metric_icon">
+                                    <i class="fa fa-clock fa-2x"/>
+                                </div>
+                                <div class="o_metric_info">
+                                    <span class="o_metric_label">Tiempo Activo</span>
+                                    <field name="create_date" class="o_metric_value" invisible="1"/>
+                                    <span class="o_metric_value">
+                                        <field name="create_date" widget="relative"/>
+                                    </span>
+                                    <span class="o_metric_sublabel">
+                                        Desde creación
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ========== SECCIÓN 2: INFORMACIÓN DEL CONTRATO ========== -->
+                    <div class="o_bohio_section o_section_contract"
+                         invisible="not contract_template_id">
+                        <div class="o_section_header_bar">
+                            <i class="fa fa-file-contract fa-lg me-2"/>
+                            <h2 class="o_section_title">Información del Contrato</h2>
+                        </div>
+                        <div class="o_section_content">
+                            <group col="4">
+                                <field name="contract_template_id"
+                                       options="{'no_create': True}"
+                                       placeholder="Seleccionar template de contrato"/>
+                                <field name="contract_start_date"/>
+                                <field name="contract_duration_months"/>
+                                <field name="contract_end_date"/>
+                            </group>
+                            <group col="2" invisible="not reservation_id">
+                                <field name="reservation_id" readonly="1"/>
+                                <field name="reservation_count" invisible="1"/>
+                            </group>
+                        </div>
+                    </div>
+
+                    <!-- ========== SECCIÓN 3: CLIENTE Y CONTACTO ========== -->
+                    <div class="o_bohio_section o_section_client">
+                        <div class="o_section_header_bar">
+                            <i class="fa fa-user fa-lg me-2"/>
+                            <h2 class="o_section_title">Información del Cliente</h2>
+                        </div>
+                        <div class="o_section_content">
+                            <group col="2">
+                                <group string="Datos Básicos">
+                                    <field name="partner_id"
+                                           options="{'no_quick_create': True}"
+                                           placeholder="Seleccionar o crear cliente"/>
+                                    <field name="client_type"
+                                           widget="badge"
+                                           decoration-info="client_type == 'buyer'"
+                                           decoration-success="client_type == 'owner'"
+                                           decoration-warning="client_type == 'tenant'"/>
+                                    <field name="service_interested"
+                                           widget="badge"
+                                           decoration-primary="service_interested == 'sale'"
+                                           decoration-info="service_interested == 'rent'"
+                                           decoration-success="service_interested == 'projects'"/>
+                                    <field name="request_source"
+                                           widget="badge"
+                                           decoration-warning="request_source == 'website'"/>
+                                </group>
+                                <group string="Contacto">
+                                    <field name="email_from" widget="email"/>
+                                    <field name="mobile" widget="phone"/>
+                                    <field name="phone" widget="phone"/>
+                                    <field name="user_id"
+                                           widget="many2one_avatar_user"
+                                           options="{'no_quick_create': True}"/>
+                                </group>
+                            </group>
+                            <group col="2" string="Información Adicional">
+                                <field name="occupation"/>
+                                <field name="monthly_income"
+                                       widget="monetary"
+                                       options="{'currency_field': 'company_currency'}"/>
+                                <field name="num_occupants"/>
+                                <field name="property_purpose"/>
+                            </group>
+                        </div>
+                    </div>
+
+                    <!-- ========== SECCIÓN 4: PROPIEDADES DE INTERÉS ========== -->
+                    <div class="o_bohio_section o_section_properties">
+                        <div class="o_section_header_bar">
+                            <i class="fa fa-home fa-lg me-2"/>
+                            <h2 class="o_section_title">Propiedades de Interés</h2>
+                            <span class="badge bg-primary ms-auto">
+                                <field name="property_ids" invisible="1"/>
+                                <t t-if="property_ids">
+                                    <t t-esc="len(property_ids)"/> propiedades
+                                </t>
+                            </span>
+                        </div>
+                        <div class="o_section_content">
+                            <field name="property_ids"
+                                   widget="many2many_tags"
+                                   options="{'color_field': 'color', 'no_create': True}"
+                                   domain="[('is_property', '=', True)]"
+                                   placeholder="Agregar propiedades de interés"
+                                   class="o_field_many2many_tags_full"/>
+
+                            <!-- PREFERENCIAS DE BÚSQUEDA -->
+                            <group string="Preferencias de Búsqueda" col="2">
+                                <group>
+                                    <label for="budget_min" string="Presupuesto"/>
+                                    <div class="o_row">
+                                        <field name="budget_min"
+                                               widget="monetary"
+                                               options="{'currency_field': 'company_currency'}"
+                                               placeholder="Mínimo"/>
+                                        <span class="mx-2">-</span>
+                                        <field name="budget_max"
+                                               widget="monetary"
+                                               options="{'currency_field': 'company_currency'}"
+                                               placeholder="Máximo"/>
+                                    </div>
+                                    <field name="desired_city"/>
+                                    <field name="desired_neighborhood"/>
+                                    <field name="desired_property_type_id"
+                                           options="{'no_create': True}"/>
+                                </group>
+                                <group>
+                                    <label for="num_bedrooms_min" string="Habitaciones"/>
+                                    <div class="o_row">
+                                        <field name="num_bedrooms_min" placeholder="Min"/>
+                                        <span class="mx-2">-</span>
+                                        <field name="num_bedrooms_max" placeholder="Max"/>
+                                    </div>
+                                    <field name="num_bathrooms_min"/>
+                                    <label for="property_area_min" string="Área (m²)"/>
+                                    <div class="o_row">
+                                        <field name="property_area_min" placeholder="Min"/>
+                                        <span class="mx-2">-</span>
+                                        <field name="property_area_max" placeholder="Max"/>
+                                    </div>
+                                </group>
+                            </group>
+
+                            <!-- AMENIDADES Y CARACTERÍSTICAS -->
+                            <group string="Requerimientos">
+                                <group col="2">
+                                    <field name="requires_parking"/>
+                                    <field name="parking_spots" invisible="not requires_parking"/>
+                                    <field name="has_pets"/>
+                                    <field name="pet_type" invisible="not has_pets"/>
+                                </group>
+                                <group col="2" string="Amenidades">
+                                    <field name="requires_common_areas"/>
+                                    <field name="requires_gym"/>
+                                    <field name="requires_pool"/>
+                                    <field name="requires_security"/>
+                                    <field name="requires_elevator"/>
+                                </group>
+                            </group>
+                        </div>
+                    </div>
+
+                    <!-- ========== SECCIÓN 5: FINANCIAMIENTO (CONDICIONAL) ========== -->
+                    <div class="o_bohio_section o_section_financing"
+                         invisible="not requires_financing">
+                        <div class="o_section_header_bar">
+                            <i class="fa fa-university fa-lg me-2"/>
+                            <h2 class="o_section_title">Financiamiento</h2>
+                        </div>
+                        <div class="o_section_content">
+                            <group col="2">
+                                <field name="requires_financing"/>
+                                <field name="loan_type" invisible="not requires_financing"/>
+                                <field name="loan_amount"
+                                       invisible="not requires_financing"
+                                       widget="monetary"
+                                       options="{'currency_field': 'company_currency'}"/>
+                                <field name="loan_bank_id"
+                                       invisible="not requires_financing"
+                                       domain="[('is_company', '=', True)]"
+                                       options="{'no_create': True}"/>
+                                <field name="loan_approval_status"
+                                       invisible="not requires_financing"
+                                       widget="badge"
+                                       decoration-success="loan_approval_status == 'approved'"
+                                       decoration-warning="loan_approval_status == 'pending'"
+                                       decoration-danger="loan_approval_status == 'rejected'"/>
+                            </group>
+                        </div>
+                    </div>
+
+                    <!-- ========== SECCIÓN 6: MARKETING (CONDICIONAL) ========== -->
+                    <div class="o_bohio_section o_section_marketing"
+                         invisible="not campaign_id and not marketing_campaign_type">
+                        <div class="o_section_header_bar">
+                            <i class="fa fa-bullhorn fa-lg me-2"/>
+                            <h2 class="o_section_title">Campaña de Marketing</h2>
+                        </div>
+                        <div class="o_section_content">
+                            <group col="2">
+                                <group string="Campaña">
+                                    <field name="campaign_id" options="{'no_create': True}"/>
+                                    <field name="source_id" options="{'no_create': True}"/>
+                                    <field name="medium_id" options="{'no_create': True}"/>
+                                    <field name="marketing_campaign_type"/>
+                                </group>
+                                <group string="Presupuesto y Alcance">
+                                    <field name="marketing_budget_allocated"
+                                           widget="monetary"
+                                           options="{'currency_field': 'company_currency'}"/>
+                                    <field name="marketing_estimated_reach"/>
+                                    <field name="marketing_quantity"/>
+                                    <field name="marketing_schedule"/>
+                                </group>
+                            </group>
+                            <group col="2" string="Período">
+                                <field name="marketing_start_date"/>
+                                <field name="marketing_end_date"/>
+                            </group>
+                        </div>
+                    </div>
+
+                    <!-- ========== SECCIÓN 7: CAPTACIÓN (CONDICIONAL) ========== -->
+                    <div class="o_bohio_section o_section_capture"
+                         invisible="service_interested != 'consign' or not captured_by_id">
+                        <div class="o_section_header_bar">
+                            <i class="fa fa-handshake fa-lg me-2"/>
+                            <h2 class="o_section_title">Información de Captación</h2>
+                        </div>
+                        <div class="o_section_content">
+                            <group col="2">
+                                <field name="captured_by_id"
+                                       options="{'no_create': True}"
+                                       widget="many2one_avatar_user"/>
+                                <field name="capture_date"/>
+                                <field name="capture_source" widget="badge"/>
+                                <field name="capture_commission_rate"/>
+                                <field name="capture_commission_amount"
+                                       widget="monetary"
+                                       options="{'currency_field': 'company_currency'}"/>
+                            </group>
+                        </div>
+                    </div>
+
+                    <!-- ========== SECCIÓN 8: COMPARACIÓN DE PROPIEDADES ========== -->
+                    <div class="o_bohio_section o_section_comparison"
+                         invisible="not compared_properties_ids">
+                        <div class="o_section_header_bar">
+                            <i class="fa fa-balance-scale fa-lg me-2"/>
+                            <h2 class="o_section_title">Propiedades en Comparación</h2>
+                        </div>
+                        <div class="o_section_content">
+                            <field name="compared_properties_ids"
+                                   widget="many2many_tags"
+                                   options="{'color_field': 'color', 'no_create': True}"
+                                   domain="[('is_property', '=', True)]"/>
+                            <div class="mt-2">
+                                <button name="action_compare_properties"
+                                        string="Ver Comparación Detallada"
+                                        type="object"
+                                        class="btn-primary"
+                                        icon="fa-chart-bar"
+                                        invisible="not compared_properties_ids"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CAMPOS OCULTOS NECESARIOS -->
+                    <group invisible="1">
+                        <field name="type"/>
+                        <field name="company_currency"/>
+                        <field name="partner_latitude"/>
+                        <field name="partner_longitude"/>
+                    </group>
+
+                </sheet>
+
+                <!-- CHATTER -->
+                <chatter/>
+
+            </form>
+        </field>
+    </record>
+
+    <!-- ========================================
+         ACCIÓN: Form Kanban Vertical
+         ======================================== -->
+    <record id="action_crm_lead_form_kanban_vertical" model="ir.actions.act_window">
+        <field name="name">Oportunidad - Vista Kanban Vertical</field>
+        <field name="res_model">crm.lead</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_crm_lead_form_kanban_vertical"/>
+        <field name="target">current</field>
+        <field name="context">{
+            'default_type': 'opportunity',
+        }</field>
+    </record>
+
+</odoo>

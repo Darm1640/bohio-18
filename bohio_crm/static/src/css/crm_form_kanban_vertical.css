@@ -1,0 +1,568 @@
+/* ============================================
+   BOHIO CRM - VISTA FORM KANBAN VERTICAL
+   Diseño elegante vertical tipo reporte
+   ============================================ */
+
+/* ========== SHEET PRINCIPAL ========== */
+.o_bohio_form_kanban_vertical .o_form_sheet {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem;
+    background: #f8f9fa;
+}
+
+.o_bohio_kanban_sheet {
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    padding: 0;
+    overflow: hidden;
+}
+
+/* ========== HEADER CON BOTONES ========== */
+.o_bohio_form_header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 1rem 2rem;
+}
+
+.o_bohio_form_header button {
+    margin-right: 0.5rem;
+    border: 2px solid white;
+    font-weight: 600;
+}
+
+.o_bohio_form_header .o_statusbar_status {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+}
+
+/* ========== SECCIONES ========== */
+.o_bohio_section {
+    margin-bottom: 0;
+    border-bottom: 1px solid #e9ecef;
+    background: #ffffff;
+}
+
+.o_bohio_section:last-child {
+    border-bottom: none;
+}
+
+/* ========== ENCABEZADO DE SECCIÓN ========== */
+.o_section_header_bar {
+    display: flex;
+    align-items: center;
+    padding: 1.5rem 2rem;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-bottom: 3px solid #667eea;
+}
+
+.o_section_header_bar i {
+    color: #667eea;
+    font-size: 1.5rem;
+}
+
+.o_section_title {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #212529;
+}
+
+/* ========== CONTENIDO DE SECCIÓN ========== */
+.o_section_content {
+    padding: 2rem;
+}
+
+/* ========== SECCIÓN 1: HEADER CON MÉTRICAS ========== */
+.o_section_header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 2rem;
+}
+
+.o_section_title_row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 2rem;
+}
+
+.o_bohio_main_title {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 700;
+    color: white;
+    flex: 1;
+}
+
+.o_bohio_main_title input {
+    background: rgba(255, 255, 255, 0.15);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
+    color: white;
+    padding: 0.75rem 1rem;
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.o_bohio_main_title input::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.o_bohio_main_title input:focus {
+    background: rgba(255, 255, 255, 0.25);
+    border-color: white;
+    outline: none;
+}
+
+.o_bohio_badges_group {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+/* ========== MÉTRICAS GRID ========== */
+.o_bohio_metrics_grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+}
+
+.o_metric_box {
+    background: rgba(255, 255, 255, 0.15);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 12px;
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    transition: all 0.3s ease;
+}
+
+.o_metric_box:hover {
+    background: rgba(255, 255, 255, 0.25);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.o_metric_icon {
+    flex-shrink: 0;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    color: white;
+}
+
+.o_metric_info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.o_metric_label {
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+.o_metric_value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 0.25rem;
+}
+
+.o_metric_sublabel {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* ========== SECCIÓN CONTRATO ========== */
+.o_section_contract .o_section_header_bar {
+    background: linear-gradient(135deg, #fff3bf 0%, #ffd43b 100%);
+    border-bottom-color: #fab005;
+}
+
+.o_section_contract .o_section_header_bar i {
+    color: #fab005;
+}
+
+/* ========== SECCIÓN CLIENTE ========== */
+.o_section_client .o_section_header_bar {
+    background: linear-gradient(135deg, #e7f5ff 0%, #74c0fc 100%);
+    border-bottom-color: #1971c2;
+}
+
+.o_section_client .o_section_header_bar i {
+    color: #1971c2;
+}
+
+/* ========== SECCIÓN PROPIEDADES ========== */
+.o_section_properties .o_section_header_bar {
+    background: linear-gradient(135deg, #d3f9d8 0%, #51cf66 100%);
+    border-bottom-color: #2f9e44;
+}
+
+.o_section_properties .o_section_header_bar i {
+    color: #2f9e44;
+}
+
+.o_field_many2many_tags_full .o_field_many2many_tags {
+    margin-bottom: 1.5rem;
+}
+
+.o_field_many2many_tags_full .badge {
+    font-size: 0.875rem;
+    padding: 0.5rem 1rem;
+    margin: 0.25rem;
+}
+
+/* ========== SECCIÓN FINANCIAMIENTO ========== */
+.o_section_financing .o_section_header_bar {
+    background: linear-gradient(135deg, #ffe3e3 0%, #ffa8a8 100%);
+    border-bottom-color: #e03131;
+}
+
+.o_section_financing .o_section_header_bar i {
+    color: #e03131;
+}
+
+/* ========== SECCIÓN MARKETING ========== */
+.o_section_marketing .o_section_header_bar {
+    background: linear-gradient(135deg, #ffdeeb 0%, #ff6b9d 100%);
+    border-bottom-color: #c92a2a;
+}
+
+.o_section_marketing .o_section_header_bar i {
+    color: #c92a2a;
+}
+
+/* ========== SECCIÓN CAPTACIÓN ========== */
+.o_section_capture .o_section_header_bar {
+    background: linear-gradient(135deg, #fff4e6 0%, #ffd8a8 100%);
+    border-bottom-color: #fd7e14;
+}
+
+.o_section_capture .o_section_header_bar i {
+    color: #fd7e14;
+}
+
+/* ========== SECCIÓN COMPARACIÓN ========== */
+.o_section_comparison .o_section_header_bar {
+    background: linear-gradient(135deg, #e7f5ff 0%, #a5d8ff 100%);
+    border-bottom-color: #339af0;
+}
+
+.o_section_comparison .o_section_header_bar i {
+    color: #339af0;
+}
+
+/* ========== GRUPOS DENTRO DE SECCIONES ========== */
+.o_section_content .o_group {
+    margin-bottom: 1.5rem;
+}
+
+.o_section_content .o_group_title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #e9ecef;
+}
+
+.o_section_content .o_form_label {
+    font-weight: 500;
+    color: #495057;
+}
+
+/* ========== CAMPOS ========== */
+.o_section_content input,
+.o_section_content select,
+.o_section_content textarea {
+    border: 2px solid #e9ecef;
+    border-radius: 6px;
+    padding: 0.625rem 1rem;
+    font-size: 0.9375rem;
+    transition: all 0.2s ease;
+}
+
+.o_section_content input:focus,
+.o_section_content select:focus,
+.o_section_content textarea:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.15);
+    outline: none;
+}
+
+/* ========== BADGES ========== */
+.o_section_content .o_field_badge span {
+    font-size: 0.875rem;
+    padding: 0.375rem 0.75rem;
+    border-radius: 6px;
+    font-weight: 500;
+}
+
+/* ========== MONETARY FIELDS ========== */
+.o_section_content .o_field_monetary {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #198754;
+}
+
+/* ========== PHONE FIELDS ========== */
+.o_section_content .o_field_phone a,
+.o_section_content .o_field_email a {
+    color: #0d6efd;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.o_section_content .o_field_phone a:hover,
+.o_section_content .o_field_email a:hover {
+    text-decoration: underline;
+}
+
+/* ========== MANY2ONE AVATAR USER ========== */
+.o_section_content .o_field_many2one_avatar_user .o_m2o_avatar {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.o_section_content .o_field_many2one_avatar_user img {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 2px solid #e9ecef;
+}
+
+/* ========== ROW PARA RANGOS ========== */
+.o_row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.o_row input {
+    flex: 1;
+}
+
+.o_row .mx-2 {
+    color: #6c757d;
+    font-weight: 500;
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 1200px) {
+    .o_bohio_metrics_grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .o_bohio_form_kanban_vertical .o_form_sheet {
+        padding: 1rem;
+    }
+
+    .o_section_header_bar {
+        padding: 1rem;
+    }
+
+    .o_section_content {
+        padding: 1rem;
+    }
+
+    .o_bohio_metrics_grid {
+        grid-template-columns: 1fr;
+    }
+
+    .o_section_title_row {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .o_bohio_main_title {
+        font-size: 1.5rem;
+    }
+
+    .o_bohio_main_title input {
+        font-size: 1.5rem;
+    }
+}
+
+/* ========== CHATTER ========== */
+.o_bohio_form_kanban_vertical .o_FormRenderer_chatterContainer {
+    margin-top: 2rem;
+    background: #f8f9fa;
+    padding: 2rem;
+    border-radius: 12px;
+}
+
+/* ========== BOTONES DE ACCIÓN EN SECCIONES ========== */
+.o_section_content button.btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    border-radius: 6px;
+    padding: 0.625rem 1.25rem;
+    font-weight: 600;
+    color: white;
+    transition: all 0.2s ease;
+}
+
+.o_section_content button.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+/* ========== SEPARADORES ========== */
+.o_section_content hr {
+    border-top: 2px solid #e9ecef;
+    margin: 2rem 0;
+}
+
+/* ========== TÍTULOS DE GRUPO ========== */
+.o_section_content .o_horizontal_separator {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #495057;
+    margin: 1.5rem 0 1rem 0;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #e9ecef;
+}
+
+/* ========== CHECKBOXES ========== */
+.o_section_content input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #667eea;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.o_section_content input[type="checkbox"]:checked {
+    background-color: #667eea;
+    border-color: #667eea;
+}
+
+/* ========== ANIMACIONES ========== */
+.o_bohio_section {
+    animation: fadeInUp 0.5s ease;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ========== PRINT STYLES ========== */
+@media print {
+    .o_bohio_form_header button {
+        display: none;
+    }
+
+    .o_FormRenderer_chatterContainer {
+        display: none;
+    }
+
+    .o_bohio_section {
+        page-break-inside: avoid;
+    }
+
+    .o_section_header_bar {
+        background: #f8f9fa !important;
+        color: #000 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    .o_section_header {
+        background: #667eea !important;
+        color: white !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+}
+
+/* ========== TOOLTIPS ========== */
+.o_section_content [title]:hover::after {
+    content: attr(title);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #212529;
+    color: white;
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    white-space: nowrap;
+    z-index: 1000;
+}
+
+/* ========== BADGE MS-AUTO (para header) ========== */
+.badge.ms-auto {
+    margin-left: auto;
+    font-size: 0.875rem;
+    padding: 0.5rem 1rem;
+}
+
+/* ========== MEJORA VISUAL DE STATUSBAR ========== */
+.o_bohio_form_kanban_vertical .o_statusbar_status .o_arrow_button {
+    background: rgba(255, 255, 255, 0.3);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.o_bohio_form_kanban_vertical .o_statusbar_status .o_arrow_button:hover {
+    background: rgba(255, 255, 255, 0.5);
+}
+
+.o_bohio_form_kanban_vertical .o_statusbar_status .o_arrow_button.btn-primary {
+    background: white;
+    color: #667eea;
+}
+
+/* ========== MEJORA DE MANY2MANY TAGS ========== */
+.o_section_properties .o_field_many2many_tags .badge {
+    background: #667eea;
+    color: white;
+    font-size: 0.9375rem;
+    padding: 0.625rem 1.125rem;
+    border-radius: 20px;
+    margin: 0.375rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.o_section_properties .o_field_many2many_tags .badge:hover {
+    background: #764ba2;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3);
+}
+
+.o_section_properties .o_field_many2many_tags .o_delete {
+    color: white;
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
+}
+
+.o_section_properties .o_field_many2many_tags .o_delete:hover {
+    opacity: 1;
+}
