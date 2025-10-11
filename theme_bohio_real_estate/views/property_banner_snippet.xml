@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- Snippet Base: Property Banner -->
+    <template id="s_property_banner" name="Property Banner">
+        <section class="bohio_property_banner show-property-label show-property-rating show-contact-btn show-view-btn pt64 pb64"
+                 property_id=""
+                 data-prop-select-id=""
+                 style="">
+            <div class="container">
+                <h3 class="no-property-text text-center text-muted">
+                    <i class="fa fa-home fa-3x mb-3 d-block"></i>
+                    No Property Selected - Click '+' to select a property
+                </h3>
+            </div>
+        </section>
+    </template>
+
+    <!-- Snippet Options: Opciones de edición del banner -->
+    <template id="property_banner_snippet_options_inherit" inherit_id="website.snippet_options">
+        <xpath expr="//div[@data-js='HeaderBox']" position="after">
+            <div data-selector=".bohio_property_banner" data-js="add_property_banner">
+                <!-- Selección de propiedad -->
+                <we-row string="Select Property">
+                    <we-button class="bohio_add_property">
+                        <i class="fa fa-fw fa-plus"/>
+                    </we-button>
+                </we-row>
+
+                <!-- Opciones de visualización -->
+                <we-row string="Display Options">
+                    <we-button data-select-class="show-property-label"
+                               title="Show Property Type Label"
+                               class="bohio_hide_property_label">
+                        <i class="fa fa-fw fa-bookmark"/>
+                    </we-button>
+                    <we-button data-select-class="show-property-rating"
+                               title="Show Property Features"
+                               class="bohio_hide_property_rating">
+                        <i class="fa fa-fw fa-star"/>
+                    </we-button>
+                    <we-button data-select-class="show-contact-btn"
+                               title="Show Contact Button"
+                               class="bohio_hide_contact_btn">
+                        <i class="fa fa-fw fa-phone"/>
+                    </we-button>
+                    <we-button data-select-class="show-view-btn"
+                               title="Show View Details Button"
+                               class="bohio_hide_view_btn">
+                        <i class="fa fa-fw fa-eye"/>
+                    </we-button>
+                </we-row>
+            </div>
+        </xpath>
+    </template>
+
+    <!-- Modal de selección de propiedad (usado en modo edición) -->
+    <template id="select_property_banner_modal">
+        <div class="modal fade" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Select Property for Banner</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"/>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="select_property_banner">Choose a Property:</label>
+                            <select id="select_property_banner" class="form-control">
+                                <option value="0">-- Select Property --</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" id="cancel" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary" id="prop_sub_data" data-bs-dismiss="modal">Confirm</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- Vista previa en modo edición -->
+    <template id="edit_mode_property_banner">
+        <div class="edit_mode_property_banner d-none">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <img class="edit_mode_property_image img-fluid rounded shadow"
+                         src="/web/static/img/placeholder.png"
+                         alt="Property Preview"/>
+                </div>
+                <div class="col-md-6">
+                    <h3 class="property-name fw-bold mb-3">Property Name</h3>
+                    <p class="description text-muted mb-3">Property description will appear here</p>
+                    <div class="d-flex gap-2">
+                        <span class="badge bg-primary">Preview Mode</span>
+                        <span class="badge bg-info">Edit to customize</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- Datos dinámicos para modo público -->
+    <template id="property_banner_dynamic_data">
+        <div class="property_banner_main_section">
+            <t t-if="property">
+                <div id="property_detail_main"
+                     class="row align-items-center justify-content-center"
+                     t-att-data-property-id="property.id">
+
+                    <!-- Columna de información -->
+                    <div class="col-md-12 col-lg-6 order-1 order-lg-0" id="property_details">
+                        <div class="property-info shadow-sm bg-white rounded p-4 h-100">
+
+                            <!-- Labels de tipo de propiedad -->
+                            <div class="d-flex property_labels align-items-center mb-3">
+                                <t t-if="property.property_type">
+                                    <span class="badge bg-primary me-2">
+                                        <i class="fa fa-home me-1"/>
+                                        <t t-out="dict(property._fields['property_type'].selection).get(property.property_type, property.property_type)"/>
+                                    </span>
+                                </t>
+                                <t t-if="property.type_service">
+                                    <span class="badge bg-success">
+                                        <i class="fa fa-tag me-1"/>
+                                        <t t-if="property.type_service == 'rent'">For Rent</t>
+                                        <t t-elif="property.type_service == 'sale'">For Sale</t>
+                                        <t t-else="">Rent/Sale</t>
+                                    </span>
+                                </t>
+                            </div>
+
+                            <!-- Nombre y precio -->
+                            <div class="property-name-price mb-3">
+                                <h3 class="property-name fw-bold mb-2" t-out="property.name">Property Name</h3>
+
+                                <div class="property-price d-flex flex-wrap gap-3">
+                                    <t t-if="property.type_service in ['rent', 'sale_rent'] and property.rent_price">
+                                        <div class="rent-price">
+                                            <small class="text-muted d-block">Rent Price</small>
+                                            <h4 class="text-primary mb-0">
+                                                <t t-out="'${:,.0f}'.format(property.rent_price)"/>
+                                                <small class="text-muted">/month</small>
+                                            </h4>
+                                        </div>
+                                    </t>
+                                    <t t-if="property.type_service in ['sale', 'sale_rent'] and property.list_price">
+                                        <div class="sale-price">
+                                            <small class="text-muted d-block">Sale Price</small>
+                                            <h4 class="text-success mb-0">
+                                                <t t-out="'${:,.0f}'.format(property.list_price)"/>
+                                            </h4>
+                                        </div>
+                                    </t>
+                                </div>
+                            </div>
+
+                            <!-- Descripción -->
+                            <div class="property-desc pb-3" t-if="property.description_sale">
+                                <p class="description mb-0 text-muted" t-out="property.description_sale[:200] + ('...' if len(property.description_sale or '') > 200 else '')"/>
+                            </div>
+
+                            <!-- Características principales -->
+                            <div class="property-features mb-3">
+                                <div class="row g-3">
+                                    <div class="col-4 text-center" t-if="property.rooms">
+                                        <i class="fa fa-bed fa-2x text-primary mb-2 d-block"/>
+                                        <strong t-out="int(property.rooms)">0</strong>
+                                        <small class="d-block text-muted">Rooms</small>
+                                    </div>
+                                    <div class="col-4 text-center" t-if="property.bathrooms">
+                                        <i class="fa fa-bath fa-2x text-primary mb-2 d-block"/>
+                                        <strong t-out="int(property.bathrooms)">0</strong>
+                                        <small class="d-block text-muted">Baths</small>
+                                    </div>
+                                    <div class="col-4 text-center" t-if="property.area">
+                                        <i class="fa fa-arrows-alt fa-2x text-primary mb-2 d-block"/>
+                                        <strong t-out="int(property.area)">0</strong>
+                                        <small class="d-block text-muted">m²</small>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Ubicación -->
+                            <div class="property-location mb-3" t-if="property.city_id or property.region_id">
+                                <p class="mb-0">
+                                    <i class="fa fa-map-marker text-danger me-2"/>
+                                    <span t-if="property.region_id" t-out="property.region_id.name">Region</span>
+                                    <span t-if="property.city_id">
+                                        <t t-if="property.region_id">, </t>
+                                        <t t-out="property.city_id.name">City</t>
+                                    </span>
+                                </p>
+                            </div>
+
+                            <!-- Botones de acción -->
+                            <div class="property-actions d-flex gap-2 mt-4">
+                                <a t-att-href="'/properties/%s' % property.id"
+                                   class="btn btn-primary flex-fill show-view-btn">
+                                    <i class="fa fa-eye me-2"/>
+                                    View Full Details
+                                </a>
+                                <a t-att-href="'/contactus?property=%s' % property.id"
+                                   class="btn btn-success flex-fill show-contact-btn">
+                                    <i class="fa fa-phone me-2"/>
+                                    Contact Us
+                                </a>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- Columna de imagen y mapa -->
+                    <div class="col-md-12 col-lg-6 property-img-section">
+                        <div class="property-images-map position-relative h-100">
+
+                            <!-- Tabs: Imagen / Mapa -->
+                            <ul class="nav nav-tabs mb-3" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link active"
+                                            id="image-tab"
+                                            data-bs-toggle="tab"
+                                            data-bs-target="#image-content"
+                                            type="button"
+                                            role="tab">
+                                        <i class="fa fa-image me-2"/>Images
+                                    </button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link"
+                                            id="map-tab"
+                                            data-bs-toggle="tab"
+                                            data-bs-target="#map-content"
+                                            type="button"
+                                            role="tab">
+                                        <i class="fa fa-map-marker me-2"/>Location
+                                    </button>
+                                </li>
+                            </ul>
+
+                            <!-- Tab content -->
+                            <div class="tab-content">
+                                <!-- Imagen -->
+                                <div class="tab-pane fade show active"
+                                     id="image-content"
+                                     role="tabpanel">
+                                    <div class="property-img-box rounded overflow-hidden shadow">
+                                        <t t-set="image_url" t-value="'/web/image/product.template/%s/image_1920' % property.id"/>
+                                        <img class="img-fluid w-100"
+                                             t-att-src="image_url"
+                                             t-att-alt="property.name"
+                                             style="max-height: 500px; object-fit: cover;"/>
+
+                                        <!-- Badge de estado -->
+                                        <t t-if="property.state">
+                                            <div class="position-absolute top-0 end-0 m-3">
+                                                <t t-if="property.state == 'free'">
+                                                    <span class="badge bg-success fs-6">Available</span>
+                                                </t>
+                                                <t t-elif="property.state == 'reserved'">
+                                                    <span class="badge bg-warning fs-6">Reserved</span>
+                                                </t>
+                                                <t t-elif="property.state == 'sold'">
+                                                    <span class="badge bg-danger fs-6">Sold</span>
+                                                </t>
+                                            </div>
+                                        </t>
+                                    </div>
+                                </div>
+
+                                <!-- Mapa -->
+                                <div class="tab-pane fade"
+                                     id="map-content"
+                                     role="tabpanel">
+                                    <div class="property-map-box rounded overflow-hidden shadow"
+                                         style="min-height: 500px;">
+                                        <t t-if="property.latitude and property.longitude">
+                                            <div class="property-single-map"
+                                                 t-att-data-latitude="property.latitude"
+                                                 t-att-data-longitude="property.longitude"
+                                                 t-att-data-property-name="property.name"
+                                                 t-att-data-property-id="property.id"
+                                                 style="height: 500px; width: 100%;">
+                                            </div>
+                                        </t>
+                                        <t t-else="">
+                                            <div class="d-flex align-items-center justify-content-center h-100 bg-light">
+                                                <div class="text-center text-muted p-5">
+                                                    <i class="fa fa-map-marker fa-3x mb-3"/>
+                                                    <p>Map location not available for this property</p>
+                                                </div>
+                                            </div>
+                                        </t>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </t>
+        </div>
+    </template>
+
+</odoo>
