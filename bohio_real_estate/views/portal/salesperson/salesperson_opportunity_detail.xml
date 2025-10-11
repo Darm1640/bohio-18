@@ -101,14 +101,14 @@
                                                 <t t-esc="'{:,.0f}'.format(property.list_price)"/>
                                             </h4>
                                             <div class="mb-3">
-                                                <t t-if="property.num_bedrooms">
-                                                    <i class="fa fa-bed"></i> <span t-esc="property.num_bedrooms"/> hab.
+                                                <t t-if="property.num_bedrooms and property.num_bedrooms > 0">
+                                                    <i class="fa fa-bed"></i> <span t-esc="int(property.num_bedrooms)"/> hab.
                                                 </t>
-                                                <t t-if="property.num_bathrooms">
-                                                    | <i class="fa fa-bath"></i> <span t-esc="property.num_bathrooms"/> baños
+                                                <t t-if="property.num_bathrooms and property.num_bathrooms > 0">
+                                                    | <i class="fa fa-bath"></i> <span t-esc="int(property.num_bathrooms)"/> baños
                                                 </t>
-                                                <t t-if="property.property_area">
-                                                    | <i class="fa fa-arrows-alt"></i> <span t-esc="property.property_area"/> m²
+                                                <t t-if="property.property_area and property.property_area > 0">
+                                                    | <i class="fa fa-arrows-alt"></i> <span t-esc="'{:,.0f}'.format(property.property_area)"/> m²
                                                 </t>
                                             </div>
                                             <a t-attf-href="/property/{{property.id}}" class="btn btn-sm btn-outline-danger" target="_blank">

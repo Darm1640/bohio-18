@@ -332,7 +332,7 @@
                                    options="{'color_field': 'color', 'no_create': True}"
                                    domain="[('is_property', '=', True)]"/>
                             <div class="mt-2">
-                                <button name="action_compare_properties"
+                                <button name="action_generate_comparison_report"
                                         string="Ver Comparación Detallada"
                                         type="object"
                                         class="btn-primary"

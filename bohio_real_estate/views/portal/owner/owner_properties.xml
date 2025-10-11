@@ -39,17 +39,17 @@
 
                                     <!-- Características -->
                                     <div class="property-features mb-3">
-                                        <t t-if="prop.num_bedrooms">
+                                        <t t-if="prop.num_bedrooms and prop.num_bedrooms > 0">
                                             <span class="badge bg-light text-dark me-1">
-                                                <i class="fa fa-bed"></i> <t t-esc="prop.num_bedrooms"/>
+                                                <i class="fa fa-bed"></i> <t t-esc="int(prop.num_bedrooms)"/>
                                             </span>
                                         </t>
-                                        <t t-if="prop.num_bathrooms">
+                                        <t t-if="prop.num_bathrooms and prop.num_bathrooms > 0">
                                             <span class="badge bg-light text-dark me-1">
-                                                <i class="fa fa-bath"></i> <t t-esc="prop.num_bathrooms"/>
+                                                <i class="fa fa-bath"></i> <t t-esc="int(prop.num_bathrooms)"/>
                                             </span>
                                         </t>
-                                        <t t-if="prop.property_area">
+                                        <t t-if="prop.property_area and prop.property_area > 0">
                                             <span class="badge bg-light text-dark">
                                                 <i class="fa fa-ruler-combined"></i>
                                                 <t t-esc="'{:,.0f}'.format(prop.property_area)"/> m²
@@ -137,13 +137,13 @@
                                     <div class="col-md-6">
                                         <h5>Características</h5>
                                         <ul class="list-unstyled">
-                                            <li t-if="property.num_bedrooms">
-                                                <i class="fa fa-bed"></i> <strong>Habitaciones:</strong> <t t-esc="property.num_bedrooms"/>
+                                            <li t-if="property.num_bedrooms and property.num_bedrooms > 0">
+                                                <i class="fa fa-bed"></i> <strong>Habitaciones:</strong> <t t-esc="int(property.num_bedrooms)"/>
                                             </li>
-                                            <li t-if="property.num_bathrooms">
-                                                <i class="fa fa-bath"></i> <strong>Baños:</strong> <t t-esc="property.num_bathrooms"/>
+                                            <li t-if="property.num_bathrooms and property.num_bathrooms > 0">
+                                                <i class="fa fa-bath"></i> <strong>Baños:</strong> <t t-esc="int(property.num_bathrooms)"/>
                                             </li>
-                                            <li t-if="property.property_area">
+                                            <li t-if="property.property_area and property.property_area > 0">
                                                 <i class="fa fa-ruler-combined"></i> <strong>Área:</strong> <t t-esc="'{:,.2f}'.format(property.property_area)"/> m²
                                             </li>
                                             <li t-if="property.stratum">
