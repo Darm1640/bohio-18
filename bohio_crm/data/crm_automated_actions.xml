@@ -1,17 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- ============================================
-         ACCIONES AUTOMÁTICAS DEL CRM
-         ============================================ -->
-
-    <!-- Acción: Crear Actividad al Programar Visita -->
-    <record id="action_create_visit_activity" model="base.automation">
-        <field name="name">CRM: Crear Actividad al Programar Visita</field>
-        <field name="model_id" ref="crm.model_crm_lead"/>
-        <field name="active">True</field>
-        <field name="trigger">on_create_or_write</field>
-        <field name="filter_domain">[('ideal_visit_date', '!=', False), ('type', '=', 'opportunity')]</field>
-        <field name="code">
+    <data>
+        <!-- Accion: Crear Actividad al Programar Visita -->
+        <record id="action_create_visit_activity" model="base.automation">
+            <field name="name">CRM: Crear Actividad al Programar Visita</field>
+            <field name="model_id" ref="crm.model_crm_lead"/>
+            <field name="active">True</field>
+            <field name="trigger">on_create_or_write</field>
+            <field name="filter_domain">[('ideal_visit_date', '!=', False), ('type', '=', 'opportunity')]</field>
+            <field name="code">
 # Crear actividad de visita si no existe
 if record.ideal_visit_date:
     # Buscar actividades existentes de visita
@@ -41,20 +38,20 @@ if record.ideal_visit_date:
             subject='Visita Programada',
             message_type='notification'
         )
-        </field>
-    </record>
+            </field>
+        </record>
 
-    <!-- Acción: Notificar Conflicto de Visitas -->
-    <record id="action_notify_visit_conflict" model="base.automation">
-        <field name="name">CRM: Notificar Conflicto de Visitas</field>
-        <field name="model_id" ref="crm.model_crm_lead"/>
-        <field name="active">True</field>
-        <field name="trigger">on_create_or_write</field>
-        <field name="filter_domain">[('ideal_visit_date', '!=', False), ('has_conflicting_visit', '=', True)]</field>
-        <field name="code">
+        <!-- Accion: Notificar Conflicto de Visitas -->
+        <record id="action_notify_visit_conflict" model="base.automation">
+            <field name="name">CRM: Notificar Conflicto de Visitas</field>
+            <field name="model_id" ref="crm.model_crm_lead"/>
+            <field name="active">True</field>
+            <field name="trigger">on_create_or_write</field>
+            <field name="filter_domain">[('ideal_visit_date', '!=', False), ('has_conflicting_visit', '=', True)]</field>
+            <field name="code">
 # Notificar sobre conflicto de visitas
 if record.has_conflicting_visit and record.conflicting_visit_info:
-    # Crear notificación para el vendedor
+    # Crear notificacion para el vendedor
     record.activity_schedule(
         'mail.mail_activity_data_warning',
         summary='Conflicto de Visitas Detectado',
@@ -64,24 +61,24 @@ if record.has_conflicting_visit and record.conflicting_visit_info:
 
     # Mensaje en el chatter
     record.message_post(
-        body=f'<div class="alert alert-warning">' +
-             f'<strong>⚠️ Conflicto de Visitas</strong><br/>' +
-             f'{record.conflicting_visit_info}</div>',
+        body=f'&lt;div class="alert alert-warning"&gt;' +
+             f'&lt;strong&gt;Conflicto de Visitas&lt;/strong&gt;&lt;br/&gt;' +
+             f'{record.conflicting_visit_info}&lt;/div&gt;',
         subject='Conflicto de Visitas',
         message_type='notification'
     )
-        </field>
-    </record>
+            </field>
+        </record>
 
-    <!-- Acción: Recordatorio Documentos de Crédito -->
-    <record id="action_remind_loan_documents" model="base.automation">
-        <field name="name">CRM: Recordar Documentos de Crédito Pendientes</field>
-        <field name="model_id" ref="crm.model_crm_lead"/>
-        <field name="active">True</field>
-        <field name="trigger">on_create_or_write</field>
-        <field name="filter_domain">[('requires_financing', '=', True), ('loan_approval_status', '=', 'not_applied'), ('type', '=', 'opportunity')]</field>
-        <field name="code">
-# Recordar sobre documentos pendientes si han pasado 3 días
+        <!-- Accion: Recordatorio Documentos de Credito -->
+        <record id="action_remind_loan_documents" model="base.automation">
+            <field name="name">CRM: Recordar Documentos de Credito Pendientes</field>
+            <field name="model_id" ref="crm.model_crm_lead"/>
+            <field name="active">True</field>
+            <field name="trigger">on_create_or_write</field>
+            <field name="filter_domain">[('requires_financing', '=', True), ('loan_approval_status', '=', 'not_applied'), ('type', '=', 'opportunity')]</field>
+            <field name="code">
+# Recordar sobre documentos pendientes si han pasado 3 dias
 if record.requires_financing and record.loan_approval_status == 'not_applied':
     from datetime import datetime, timedelta
 
@@ -89,40 +86,40 @@ if record.requires_financing and record.loan_approval_status == 'not_applied':
     existing_reminder = env['mail.activity'].search([
         ('res_model', '=', 'crm.lead'),
         ('res_id', '=', record.id),
-        ('summary', 'ilike', 'Documentos de crédito'),
+        ('summary', 'ilike', 'Documentos de credito'),
         ('state', 'not in', ['done', 'cancel'])
     ], limit=1)
 
     if not existing_reminder:
-        # Crear recordatorio para dentro de 3 días
+        # Crear recordatorio para dentro de 3 dias
         env['mail.activity'].create({
             'res_model_id': env['ir.model'].search([('model', '=', 'crm.lead')], limit=1).id,
             'res_id': record.id,
             'activity_type_id': env.ref('mail.mail_activity_data_todo').id,
-            'summary': 'Solicitar documentos de crédito al cliente',
+            'summary': 'Solicitar documentos de credito al cliente',
             'date_deadline': (datetime.now() + timedelta(days=3)).date(),
             'user_id': record.user_id.id if record.user_id else env.user.id,
             'note': f'Cliente requiere financiamiento por {record.loan_amount or 0:,.2f}\n\n' +
                    'Documentos necesarios:\n' +
-                   '- Cédula de ciudadanía\n' +
+                   '- Cedula de ciudadania\n' +
                    '- Certificado laboral\n' +
-                   '- Extractos bancarios (últimos 6 meses)\n' +
-                   '- Declaración de renta (últimos 2 años)',
+                   '- Extractos bancarios (ultimos 6 meses)\n' +
+                   '- Declaracion de renta (ultimos 2 anos)',
         })
-        </field>
-    </record>
+            </field>
+        </record>
 
-    <!-- Acción: Actualizar Comisión de Captación Automáticamente -->
-    <record id="action_update_capture_commission" model="base.automation">
-        <field name="name">CRM: Actualizar Comisión de Captación</field>
-        <field name="model_id" ref="crm.model_crm_lead"/>
-        <field name="active">True</field>
-        <field name="trigger">on_create_or_write</field>
-        <field name="filter_domain">[('service_interested', '=', 'consign'), ('captured_by_id', '!=', False)]</field>
-        <field name="code">
-# Recalcular comisión y notificar al captador
+        <!-- Accion: Actualizar Comision de Captacion Automaticamente -->
+        <record id="action_update_capture_commission" model="base.automation">
+            <field name="name">CRM: Actualizar Comision de Captacion</field>
+            <field name="model_id" ref="crm.model_crm_lead"/>
+            <field name="active">True</field>
+            <field name="trigger">on_create_or_write</field>
+            <field name="filter_domain">[('service_interested', '=', 'consign'), ('captured_by_id', '!=', False)]</field>
+            <field name="code">
+# Recalcular comision y notificar al captador
 if record.service_interested == 'consign' and record.captured_by_id:
-    # Forzar recálculo
+    # Forzar recalculo
     record._compute_capture_commission()
 
     # Si es nuevo registro, notificar
@@ -130,57 +127,57 @@ if record.service_interested == 'consign' and record.captured_by_id:
         # Enviar mensaje al captador
         if record.capture_commission_amount > 0:
             record.message_post(
-                body=f'Se ha registrado una comisión de captación de {record.capture_commission_amount:,.2f} ' +
+                body=f'Se ha registrado una comision de captacion de {record.capture_commission_amount:,.2f} ' +
                      f'para {record.captured_by_id.name}.',
-                subject='Comisión de Captación Registrada',
+                subject='Comision de Captacion Registrada',
                 message_type='notification',
                 partner_ids=[record.captured_by_id.partner_id.id] if record.captured_by_id.partner_id else []
             )
-        </field>
-    </record>
+            </field>
+        </record>
 
-    <!-- Acción: Notificar Aprobación de Crédito -->
-    <record id="action_notify_loan_approval" model="base.automation">
-        <field name="name">CRM: Notificar Aprobación de Crédito</field>
-        <field name="model_id" ref="crm.model_crm_lead"/>
-        <field name="active">True</field>
-        <field name="trigger">on_write</field>
-        <field name="filter_domain">[('loan_approval_status', '=', 'approved')]</field>
-        <field name="code">
-# Notificar cuando el crédito sea aprobado
+        <!-- Accion: Notificar Aprobacion de Credito -->
+        <record id="action_notify_loan_approval" model="base.automation">
+            <field name="name">CRM: Notificar Aprobacion de Credito</field>
+            <field name="model_id" ref="crm.model_crm_lead"/>
+            <field name="active">True</field>
+            <field name="trigger">on_write</field>
+            <field name="filter_domain">[('loan_approval_status', '=', 'approved')]</field>
+            <field name="code">
+# Notificar cuando el credito sea aprobado
 if record.loan_approval_status == 'approved':
     # Crear actividad de seguimiento
     env['mail.activity'].create({
         'res_model_id': env['ir.model'].search([('model', '=', 'crm.lead')], limit=1).id,
         'res_id': record.id,
         'activity_type_id': env.ref('mail.mail_activity_data_call').id,
-        'summary': 'Llamar al cliente - Crédito Aprobado',
+        'summary': 'Llamar al cliente - Credito Aprobado',
         'date_deadline': env.context.get('today', fields.Date.today()),
         'user_id': record.user_id.id if record.user_id else env.user.id,
-        'note': f'El crédito ha sido aprobado. Contactar al cliente para continuar con el proceso de compra.\n' +
+        'note': f'El credito ha sido aprobado. Contactar al cliente para continuar con el proceso de compra.\n' +
                f'Monto aprobado: {record.loan_amount or 0:,.2f}\n' +
                f'Banco: {record.loan_bank_id.name if record.loan_bank_id else "N/A"}',
     })
 
     # Notificar en chatter
     record.message_post(
-        body=f'<div class="alert alert-success">' +
-             f'<strong>✅ Crédito Aprobado</strong><br/>' +
-             f'El crédito ha sido aprobado. Proceder con el cierre de la venta.</div>',
-        subject='Crédito Aprobado',
+        body=f'&lt;div class="alert alert-success"&gt;' +
+             f'&lt;strong&gt;Credito Aprobado&lt;/strong&gt;&lt;br/&gt;' +
+             f'El credito ha sido aprobado. Proceder con el cierre de la venta.&lt;/div&gt;',
+        subject='Credito Aprobado',
         message_type='notification'
     )
-        </field>
-    </record>
+            </field>
+        </record>
 
-    <!-- Acción: Crear Reserva Automática al Ganar Oportunidad -->
-    <record id="action_create_reservation_on_won" model="base.automation">
-        <field name="name">CRM: Sugerir Crear Reserva al Ganar Oportunidad</field>
-        <field name="model_id" ref="crm.model_crm_lead"/>
-        <field name="active">True</field>
-        <field name="trigger">on_write</field>
-        <field name="filter_domain">[('stage_id.is_won', '=', True), ('property_ids', '!=', False), ('reservation_id', '=', False)]</field>
-        <field name="code">
+        <!-- Accion: Crear Reserva Automatica al Ganar Oportunidad -->
+        <record id="action_create_reservation_on_won" model="base.automation">
+            <field name="name">CRM: Sugerir Crear Reserva al Ganar Oportunidad</field>
+            <field name="model_id" ref="crm.model_crm_lead"/>
+            <field name="active">True</field>
+            <field name="trigger">on_write</field>
+            <field name="filter_domain">[('stage_id.is_won', '=', True), ('property_ids', '!=', False), ('reservation_id', '=', False)]</field>
+            <field name="code">
 # Sugerir crear reserva cuando se gana la oportunidad
 if record.stage_id.is_won and record.property_ids and not record.reservation_id:
     # Crear actividad para crear reserva
@@ -195,18 +192,18 @@ if record.stage_id.is_won and record.property_ids and not record.reservation_id:
                f'- Propiedad: {record.property_ids[0].name}\n' +
                f'- Cliente: {record.partner_id.name if record.partner_id else record.email_from}\n' +
                f'- Valor: {record.expected_revenue or 0:,.2f}\n\n' +
-               'Use el botón "Crear Reserva" en la oportunidad.',
+               'Use el boton "Crear Reserva" en la oportunidad.',
     })
 
     # Mensaje en chatter
     record.message_post(
-        body='<div class="alert alert-info">' +
-             '<strong>📋 Siguiente Paso</strong><br/>' +
-             'La oportunidad ha sido ganada. Recuerde crear la reserva formal de la propiedad.</div>',
+        body='&lt;div class="alert alert-info"&gt;' +
+             '&lt;strong&gt;Siguiente Paso&lt;/strong&gt;&lt;br/&gt;' +
+             'La oportunidad ha sido ganada. Recuerde crear la reserva formal de la propiedad.&lt;/div&gt;',
         subject='Crear Reserva',
         message_type='notification'
     )
-        </field>
-    </record>
-
+            </field>
+        </record>
+    </data>
 </odoo>
