@@ -154,13 +154,21 @@ class PropertySearchController(http.Controller):
         if filters is None:
             filters = {}
 
+        # LOG DE DEBUG
+        _logger.info(f"[HOMEPAGE] /property/search/ajax llamado con:")
+        _logger.info(f"  context={context}, filters={filters}, page={page}, ppg={ppg}, order={order}")
+
         # Validar contexto
         search_context = self.SEARCH_CONTEXTS.get(context, self.SEARCH_CONTEXTS['public'])
 
         # Construir dominio
         domain = self._build_context_domain(search_context, filters)
+        _logger.info(f"[HOMEPAGE] Dominio base: {domain}")
+
         domain = self._apply_location_filters(domain, filters)
         domain = self._apply_property_filters(domain, filters)
+        _logger.info(f"[HOMEPAGE] Dominio después de filtros: {domain}")
+
         domain = self._apply_price_area_filters(domain, filters)
         domain = self._apply_amenities_filters(domain, filters)
 
@@ -172,6 +180,8 @@ class PropertySearchController(http.Controller):
         # Búsqueda
         Property = request.env['product.template'].sudo()
         total = Property.search_count(domain)
+        _logger.info(f"[HOMEPAGE] Total propiedades encontradas: {total}")
+
         properties = Property.search(domain, limit=ppg, offset=offset, order=order_sql)
 
         # Serializar propiedades para JSON
@@ -438,13 +448,20 @@ class PropertySearchController(http.Controller):
             domain.append(('longitude', '!=', False))
 
         # Filtro de proyecto (propiedades nuevas vs usadas)
+        # MEJORADO: Manejo explícito de booleanos y strings
         if 'has_project' in filters:
-            if filters['has_project']:
+            has_project_value = filters['has_project']
+            _logger.info(f"[HOMEPAGE] Aplicando filtro has_project={has_project_value} (tipo: {type(has_project_value)})")
+
+            # Manejar tanto booleanos como strings
+            if has_project_value in (True, 'true', '1', 1):
                 # Propiedades nuevas/proyectos: tienen proyecto asignado
                 domain.append(('project_worksite_id', '!=', False))
-            else:
+                _logger.info("[HOMEPAGE] Filtrando CON proyecto")
+            elif has_project_value in (False, 'false', '0', 0, None):
                 # Propiedades usadas: NO tienen proyecto
                 domain.append(('project_worksite_id', '=', False))
+                _logger.info("[HOMEPAGE] Filtrando SIN proyecto")
 
         # Habitaciones y baños
         if filters.get('bedrooms'):
