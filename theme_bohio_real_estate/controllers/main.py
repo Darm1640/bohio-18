@@ -952,11 +952,17 @@ class BohioRealEstateController(http.Controller):
         order = params.get('order')
         context = params.get('context', 'public')
 
+        # FILTROS DE UBICACIÓN (agregados para property_shop)
+        city_id = params.get('city_id')
+        region_id = params.get('region_id')
+        project_id = params.get('project_id')
+
         _logger.info(f"API /bohio/api/properties LLAMADO - Parámetros recibidos:")
         _logger.info(f"  type_service={type_service}, property_type={property_type}")
         _logger.info(f"  bedrooms={bedrooms}, bathrooms={bathrooms}")
         _logger.info(f"  min_price={min_price}, max_price={max_price}")
         _logger.info(f"  garage={garage}, pool={pool}, garden={garden}, elevator={elevator}")
+        _logger.info(f"  city_id={city_id}, region_id={region_id}, project_id={project_id}")
         _logger.info(f"  order={order}, limit={limit}, offset={offset}")
 
         domain = [
@@ -1033,6 +1039,27 @@ class BohioRealEstateController(http.Controller):
             domain.append(('garden', '=', True))
         if elevator:
             domain.append(('elevator', '=', True))
+
+        # FILTROS DE UBICACIÓN JERÁRQUICOS
+        # Orden de prioridad: proyecto > barrio > ciudad
+        if project_id:
+            try:
+                domain.append(('project_worksite_id', '=', int(project_id)))
+                _logger.info(f"Filtro project_id aplicado: {project_id}")
+            except (ValueError, TypeError):
+                _logger.warning(f"project_id inválido: {project_id}")
+        elif region_id:
+            try:
+                domain.append(('region_id', '=', int(region_id)))
+                _logger.info(f"Filtro region_id aplicado: {region_id}")
+            except (ValueError, TypeError):
+                _logger.warning(f"region_id inválido: {region_id}")
+        elif city_id:
+            try:
+                domain.append(('city_id', '=', int(city_id)))
+                _logger.info(f"Filtro city_id aplicado: {city_id}")
+            except (ValueError, TypeError):
+                _logger.warning(f"city_id inválido: {city_id}")
 
         try:
             Property = request.env['product.template'].sudo()
@@ -1916,3 +1943,136 @@ class BohioRealEstateController(http.Controller):
                 'properties': [],
                 'error': str(e)
             }
+
+    @http.route('/contact/property', type='http', auth='public', website=True, methods=['POST'], csrf=True)
+    def contact_property(self, **post):
+        """
+        Endpoint para formulario de contacto desde detalle de propiedad.
+        Crea una oportunidad en CRM con los datos del formulario.
+        """
+        try:
+            property_id = post.get('property_id')
+            name = post.get('name', '').strip()
+            email = post.get('email', '').strip()
+            phone = post.get('phone', '').strip()
+            client_type = post.get('client_type', 'buyer')
+            message = post.get('message', '').strip()
+            ideal_visit_date = post.get('ideal_visit_date')  # Nueva fecha de visita
+
+            # Validaciones básicas
+            if not property_id or not name or not email or not phone:
+                return request.render('theme_bohio_real_estate.property_contact_error', {
+                    'error': 'Por favor complete todos los campos obligatorios.'
+                })
+
+            # Obtener la propiedad
+            property_obj = request.env['product.template'].sudo().browse(int(property_id))
+            if not property_obj.exists():
+                return request.render('theme_bohio_real_estate.property_contact_error', {
+                    'error': 'Propiedad no encontrada.'
+                })
+
+            # Buscar o crear partner
+            partner = request.env['res.partner'].sudo().search([
+                '|', ('email', '=', email), ('phone', '=', phone)
+            ], limit=1)
+
+            if not partner:
+                partner = request.env['res.partner'].sudo().create({
+                    'name': name,
+                    'email': email,
+                    'phone': phone,
+                    'customer_rank': 1,
+                })
+
+            # Determinar servicio de interés según tipo de propiedad
+            service_interested = 'sale' if property_obj.type_service == 'sale' else 'rent'
+
+            # Preparar fecha de visita
+            visit_date = False
+            if ideal_visit_date:
+                try:
+                    visit_date = datetime.strptime(ideal_visit_date, '%Y-%m-%dT%H:%M')
+                except:
+                    _logger.warning(f"Formato de fecha inválido: {ideal_visit_date}")
+
+            # Crear oportunidad en CRM
+            lead_vals = {
+                'name': f"Interés en {property_obj.name}",
+                'partner_id': partner.id,
+                'email_from': email,
+                'phone': phone,
+                'type': 'opportunity',
+                'client_type': client_type,
+                'service_interested': service_interested,
+                'request_source': 'property_inquiry',
+                'property_ids': [(6, 0, [property_obj.id])],
+                'description': message or f"Cliente interesado en {property_obj.name}",
+                'ideal_visit_date': visit_date,
+            }
+
+            # Agregar campos específicos según tipo de servicio
+            if service_interested == 'sale' and property_obj.net_price:
+                lead_vals['expected_revenue'] = property_obj.net_price
+                lead_vals['budget_min'] = property_obj.net_price * 0.9
+                lead_vals['budget_max'] = property_obj.net_price * 1.1
+            elif service_interested == 'rent' and property_obj.net_rental_price:
+                lead_vals['budget_min'] = property_obj.net_rental_price
+
+            # Agregar ubicación y características
+            if property_obj.city:
+                lead_vals['desired_city'] = property_obj.city
+            if property_obj.region_id:
+                lead_vals['desired_neighborhood'] = property_obj.region_id.name
+            if property_obj.property_type_id:
+                lead_vals['desired_property_type_id'] = property_obj.property_type_id.id
+            if property_obj.num_bedrooms:
+                lead_vals['num_bedrooms_min'] = property_obj.num_bedrooms
+            if property_obj.num_bathrooms:
+                lead_vals['num_bathrooms_min'] = property_obj.num_bathrooms
+            if property_obj.property_area:
+                lead_vals['property_area_min'] = property_obj.property_area
+
+            lead = request.env['crm.lead'].sudo().create(lead_vals)
+
+            # Si hay fecha de visita, crear actividad
+            if visit_date:
+                request.env['mail.activity'].sudo().create({
+                    'res_model_id': request.env['ir.model'].sudo().search([('model', '=', 'crm.lead')], limit=1).id,
+                    'res_id': lead.id,
+                    'activity_type_id': request.env.ref('mail.mail_activity_data_meeting').id,
+                    'summary': f'Visita programada a {property_obj.name}',
+                    'date_deadline': visit_date.date(),
+                    'user_id': lead.user_id.id if lead.user_id else request.env.user.id,
+                    'note': f'El cliente {name} solicitó visita para {visit_date.strftime("%d/%m/%Y %H:%M")}',
+                })
+
+            # Enviar notificación al equipo de ventas
+            lead.message_post(
+                body=f"""
+                <p><strong>Nueva consulta desde página web</strong></p>
+                <ul>
+                    <li><strong>Cliente:</strong> {name}</li>
+                    <li><strong>Email:</strong> {email}</li>
+                    <li><strong>Teléfono:</strong> {phone}</li>
+                    <li><strong>Propiedad:</strong> {property_obj.name} ({property_obj.default_code or 'Sin código'})</li>
+                    <li><strong>Tipo de cliente:</strong> {dict(request.env['crm.lead']._fields['client_type'].selection).get(client_type, client_type)}</li>
+                    {f'<li><strong>Fecha visita solicitada:</strong> {visit_date.strftime("%d/%m/%Y %H:%M")}</li>' if visit_date else ''}
+                    {f'<li><strong>Mensaje:</strong> {message}</li>' if message else ''}
+                </ul>
+                """,
+                subject='Nueva Consulta desde Web',
+                message_type='comment'
+            )
+
+            # Redirigir a página de éxito
+            return request.render('theme_bohio_real_estate.property_contact_success', {
+                'property': property_obj,
+                'lead': lead,
+            })
+
+        except Exception as e:
+            _logger.error(f"Error procesando formulario de contacto: {str(e)}")
+            return request.render('theme_bohio_real_estate.property_contact_error', {
+                'error': 'Ocurrió un error al procesar su solicitud. Por favor intente nuevamente.'
+            })

@@ -42,6 +42,7 @@
         'views/pages/contacto_page.xml',
         'views/pages/proyectos_page.xml',
         'views/pages/proyecto_detalle.xml',
+        'views/pages/property_contact_response.xml',
 
         # Views - Properties
         'views/properties_shop_template.xml',

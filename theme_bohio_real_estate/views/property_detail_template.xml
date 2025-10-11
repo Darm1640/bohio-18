@@ -543,6 +543,13 @@
                                         </div>
 
                                         <div class="mb-3">
+                                            <label class="form-label fw-bold">Fecha Ideal para Visita (Opcional)</label>
+                                            <input type="datetime-local" name="ideal_visit_date" class="form-control"
+                                                   placeholder="Seleccione fecha y hora"/>
+                                            <small class="form-text text-muted">Si desea programar una visita, seleccione fecha y hora</small>
+                                        </div>
+
+                                        <div class="mb-3">
                                             <label class="form-label fw-bold">Mensaje</label>
                                             <textarea name="message" class="form-control" rows="4" placeholder="Estoy interesado en esta propiedad..."></textarea>
                                         </div>
