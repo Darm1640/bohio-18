@@ -194,14 +194,12 @@
                                 </small>
                             </div>
                             <div class="col-md-6 text-center text-md-end">
-                                <small class="text-muted">
-                                    <a href="/properties" class="text-decoration-none me-3">
-                                        <i class="fa fa-search me-1"></i> Buscar Propiedades
-                                    </a>
-                                    <a href="/contactus" class="text-decoration-none">
-                                        <i class="fa fa-envelope me-1"></i> Contacto
-                                    </a>
-                                </small>
+                                <a href="/properties" class="btn btn-sm btn-outline-secondary me-2">
+                                    <i class="fa fa-search me-1"></i> Buscar Propiedades
+                                </a>
+                                <a href="/contactus" class="btn btn-sm btn-outline-secondary">
+                                    <i class="fa fa-envelope me-1"></i> Contacto
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -270,21 +268,27 @@
                 /* Área contenido */
                 .mybohio-content-area {
                     min-height: calc(100vh - 200px);
-                    background-color: #F5F5DC;
+                    background-color: #F8F9FA;
                 }
 
                 /* Footer */
                 .mybohio-footer {
                     background-color: white !important;
+                    box-shadow: 0 -2px 8px rgba(0,0,0,0.1);
                 }
 
-                .mybohio-footer a {
+                .mybohio-footer .btn-outline-secondary {
+                    border-color: #6c757d;
                     color: #6c757d;
-                    transition: color 0.2s ease;
+                    transition: all 0.3s ease;
                 }
 
-                .mybohio-footer a:hover {
-                    color: #E31E24;
+                .mybohio-footer .btn-outline-secondary:hover {
+                    background-color: #E31E24;
+                    border-color: #E31E24;
+                    color: white;
+                    transform: translateY(-2px);
+                    box-shadow: 0 4px 8px rgba(227, 30, 36, 0.3);
                 }
 
                 /* Mobile responsive */
