@@ -265,10 +265,10 @@
                             <div class="o_bohio_sidebar_content p-3 border border-top-0 rounded-bottom bg-white">
                                 <!-- Filtros -->
                                 <div class="mb-3">
-                                    <label class="form-label small text-muted fw-bold">
+                                    <div class="o_form_label small text-muted fw-bold mb-2">
                                         <i class="fa fa-filter me-1"/>
                                         Filtrar por:
-                                    </label>
+                                    </div>
                                     <select class="form-select form-select-sm o_bohio_filter_type">
                                         <option value="same_partner">Mismo Cliente</option>
                                         <option value="same_service">Mismo Servicio</option>
