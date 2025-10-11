@@ -29,6 +29,15 @@
                   sequence="5"/>
 
         <!-- ========================================== -->
+        <!-- 2.5. CREAR OPORTUNIDAD RÁPIDA (sequence 7) -->
+        <!-- ========================================== -->
+        <menuitem id="menu_bohio_crm_quick_create"
+                  name="Crear Oportunidad Rápida"
+                  parent="menu_bohio_crm_root"
+                  action="action_bohio_crm_quick_create_opportunity"
+                  sequence="7"/>
+
+        <!-- ========================================== -->
         <!-- 3. OPORTUNIDADES (sequence 10) -->
         <!-- ========================================== -->
         <menuitem id="menu_bohio_crm_opportunities"

@@ -169,5 +169,19 @@
             </field>
         </record>
 
+        <!-- Acción: Crear Oportunidad Rápida (Quick Create Inteligente) -->
+        <record id="action_bohio_crm_quick_create_opportunity" model="ir.actions.act_window">
+            <field name="name">Crear Oportunidad Rápida</field>
+            <field name="res_model">crm.lead</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_crm_lead_quick_create_form_bohio"/>
+            <field name="target">new</field>
+            <field name="context">{
+                'default_type': 'opportunity',
+                'default_probability': 30,
+                'form_view_initial_mode': 'edit',
+            }</field>
+        </record>
+
     </data>
 </odoo>
