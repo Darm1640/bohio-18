@@ -274,6 +274,11 @@ class PropertyShop {
     selectAutocompleteItem(data) {
         console.log('[AUTOCOMPLETE] Item seleccionado:', data);
 
+        // Limpiar filtros de ubicación previos
+        delete this.filters.city_id;
+        delete this.filters.region_id;
+        delete this.filters.project_id;
+
         // Agregar filtro según el tipo seleccionado usando los IDs específicos
         if (data.type === 'city' && data.cityId) {
             this.filters.city_id = data.cityId;
@@ -289,7 +294,14 @@ class PropertyShop {
             return;
         }
 
+        // Limpiar el input de búsqueda
+        const searchInput = document.querySelector('.property-search-input');
+        if (searchInput) {
+            searchInput.value = '';
+        }
+
         this.hideAutocomplete();
+        this.updateURL();
         this.loadProperties();
     }
 

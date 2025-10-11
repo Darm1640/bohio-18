@@ -616,7 +616,13 @@ class PropertySearchController(http.Controller):
     # =================== MÉTODOS AUXILIARES - AUTOCOMPLETADO ===================
 
     def _normalize_search_term(self, term):
-        """Normaliza término de búsqueda sin acentos"""
+        """
+        Normaliza término de búsqueda sin acentos.
+
+        NOTA: Este método NO es necesario cuando se usa 'ilike' en PostgreSQL,
+        ya que Odoo automáticamente aplica unaccent() de PostgreSQL.
+        Se mantiene solo por compatibilidad con búsquedas en Python.
+        """
         import unicodedata
         normalized = ''.join(
             c for c in unicodedata.normalize('NFD', term)
@@ -625,16 +631,31 @@ class PropertySearchController(http.Controller):
         return normalized.lower().strip()
 
     def _autocomplete_cities(self, term, search_context, limit):
-        """Autocompletado de ciudades"""
-        results = []
-        normalized_term = self._normalize_search_term(term)
+        """
+        Autocompletado de ciudades con búsqueda optimizada.
 
-        cities = request.env['res.city'].sudo().search([
+        OPTIMIZACIÓN: PostgreSQL's ilike automáticamente usa unaccent()
+        por lo que no necesitamos normalizar manualmente el término.
+        La búsqueda 'ilike' es case-insensitive y accent-insensitive.
+        """
+        results = []
+
+        # Construir dominio con búsqueda flexible
+        # ilike ya incluye unaccent() de PostgreSQL automáticamente
+        # Solo necesitamos buscar con y sin wildcards para mayor flexibilidad
+        domain = [
             '|',
-            ('name', 'ilike', term),
-            ('name', 'ilike', normalized_term),
-            ('country_id', '=', request.env.company.country_id.id)
-        ], limit=limit * 2)
+            ('name', 'ilike', term),           # Encuentra: "monter" en "Montería"
+            ('name', 'ilike', f'%{term}%'),    # Encuentra: "onter" en "Montería"
+        ]
+
+        # Agregar filtro de país si está configurado
+        if request.env.company.country_id:
+            domain.append(('country_id', '=', request.env.company.country_id.id))
+
+        cities = request.env['res.city'].sudo().search(domain, limit=limit * 2)
+
+        _logger.debug(f'[AUTOCOMPLETE] Ciudades encontradas para "{term}": {len(cities)} ({[c.name for c in cities[:5]]})')
 
         for city in cities:
             domain = [
@@ -644,35 +665,43 @@ class PropertySearchController(http.Controller):
             ]
             property_count = request.env['product.template'].sudo().search_count(domain)
 
-            if property_count > 0:
-                results.append({
-                    'id': f'city_{city.id}',
-                    'type': 'city',
-                    'name': city.name,
-                    'full_name': f'{city.name}, {city.state_id.name}',
-                    'label': f'<i class="fa fa-map-marker text-primary"></i> <b>{city.name}</b>, {city.state_id.name}',
-                    'property_count': property_count,
-                    'priority': 3,
-                    'city_id': city.id,
-                    'state_id': city.state_id.id,
-                })
+            # Siempre incluir la ciudad aunque no tenga propiedades (para mejor UX)
+            results.append({
+                'id': f'city_{city.id}',
+                'type': 'city',
+                'name': city.name,
+                'full_name': f'{city.name}, {city.state_id.name if city.state_id else ""}',
+                'label': f'<i class="fa fa-map-marker text-primary"></i> <b>{city.name}</b>, {city.state_id.name if city.state_id else ""}',
+                'property_count': property_count,
+                'priority': 3 if property_count > 0 else 1,
+                'city_id': city.id,
+                'state_id': city.state_id.id if city.state_id else None,
+            })
 
         return results
 
     def _autocomplete_regions(self, term, search_context, limit):
-        """Autocompletado de regiones/barrios"""
+        """
+        Autocompletado de regiones/barrios con búsqueda optimizada.
+
+        OPTIMIZACIÓN: Usa ilike de PostgreSQL con unaccent() automático.
+        """
         results = []
         Region = request.env['region.region'].sudo()
 
         if 'region.region' not in request.env:
             return results
 
-        normalized_term = self._normalize_search_term(term)
-        regions = Region.search([
+        # Búsqueda optimizada con ilike (incluye unaccent automático)
+        domain = [
             '|',
             ('name', 'ilike', term),
-            ('name', 'ilike', normalized_term)
-        ], limit=limit * 2)
+            ('name', 'ilike', f'%{term}%'),
+        ]
+
+        regions = Region.search(domain, limit=limit * 2)
+
+        _logger.debug(f'[AUTOCOMPLETE] Regiones encontradas para "{term}": {len(regions)} ({[r.name for r in regions[:5]]})')
 
         for region in regions:
             domain = [
@@ -682,34 +711,38 @@ class PropertySearchController(http.Controller):
             ]
             property_count = request.env['product.template'].sudo().search_count(domain)
 
-            if property_count > 0:
-                results.append({
-                    'id': f'region_{region.id}',
-                    'type': 'region',
-                    'name': region.name,
-                    'full_name': f'{region.name}, {region.city_id.name}',
-                    'label': f'<i class="fa fa-home text-success"></i> {region.name} <small class="text-muted">({region.city_id.name})</small>',
-                    'property_count': property_count,
-                    'priority': 2,
-                    'region_id': region.id,
-                    'city_id': region.city_id.id,
-                })
+            # Siempre incluir la región aunque no tenga propiedades
+            results.append({
+                'id': f'region_{region.id}',
+                'type': 'region',
+                'name': region.name,
+                'full_name': f'{region.name}, {region.city_id.name if region.city_id else ""}',
+                'label': f'<i class="fa fa-home text-success"></i> {region.name} <small class="text-muted">({region.city_id.name if region.city_id else ""})</small>',
+                'property_count': property_count,
+                'priority': 2 if property_count > 0 else 1,
+                'region_id': region.id,
+                'city_id': region.city_id.id if region.city_id else None,
+            })
 
         return results
 
     def _autocomplete_projects(self, term, search_context, limit):
-        """Autocompletado de proyectos"""
+        """
+        Autocompletado de proyectos con búsqueda optimizada.
+
+        OPTIMIZACIÓN: Usa ilike de PostgreSQL con unaccent() automático.
+        """
         results = []
         Project = request.env['project.worksite'].sudo()
 
         if 'project.worksite' not in request.env:
             return results
 
-        normalized_term = self._normalize_search_term(term)
+        # Búsqueda optimizada con ilike (incluye unaccent automático)
         projects = Project.search([
             '|',
             ('name', 'ilike', term),
-            ('name', 'ilike', normalized_term)
+            ('name', 'ilike', f'%{term}%'),
         ], limit=limit * 2)
 
         for project in projects:
@@ -735,20 +768,25 @@ class PropertySearchController(http.Controller):
         return results
 
     def _autocomplete_properties(self, term, search_context, limit):
-        """Autocompletado de propiedades por código o nombre"""
-        results = []
-        normalized_term = self._normalize_search_term(term)
+        """
+        Autocompletado de propiedades por código o nombre.
 
+        OPTIMIZACIÓN: Usa ilike de PostgreSQL con unaccent() automático.
+        Búsqueda optimizada en nombre, código y barcode.
+        """
+        results = []
+
+        # Búsqueda optimizada con ilike (incluye unaccent automático)
         domain = [
             ('is_property', '=', True),
             ('state', 'in', search_context.get('allowed_states', ['free'])),
             '|', '|', '|', '|', '|',
             ('name', 'ilike', term),
-            ('name', 'ilike', normalized_term),
+            ('name', 'ilike', f'%{term}%'),
             ('default_code', 'ilike', term),
-            ('default_code', 'ilike', normalized_term),
+            ('default_code', 'ilike', f'%{term}%'),
             ('barcode', 'ilike', term),
-            ('barcode', 'ilike', normalized_term),
+            ('barcode', 'ilike', f'%{term}%'),
         ]
 
         properties = request.env['product.template'].sudo().search(domain, limit=limit)
