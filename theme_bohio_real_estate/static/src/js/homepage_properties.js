@@ -237,25 +237,24 @@ async function loadProperties(params) {
 async function loadHomePropertiesWithMaps() {
     console.log('=== Iniciando carga de propiedades del homepage ===');
 
-    // Cargar propiedades en arriendo (20 más recientes CON UBICACIÓN)
+    // Cargar propiedades en arriendo (10 más recientes para grid + 20 con ubicación para mapa)
     try {
-        const rentData = await loadProperties({
+        // Primero: cargar propiedades para el GRID (sin requerir ubicación)
+        const rentDataGrid = await loadProperties({
             type_service: 'rent',
-            has_location: true,  // Solo propiedades con coordenadas
-            limit: 20,
+            limit: 10,
             order: 'newest'
         });
 
-        if (rentData.properties && rentData.properties.length > 0) {
-            rentPropertiesData = rentData.properties;
+        if (rentDataGrid.properties && rentDataGrid.properties.length > 0) {
             const arriendoContainer = document.getElementById('arriendo-properties-grid');
             if (arriendoContainer) {
                 // Mostrar solo las primeras 4 en el grid
-                arriendoContainer.innerHTML = rentPropertiesData.slice(0, 4).map(prop => createPropertyCard(prop)).join('');
+                arriendoContainer.innerHTML = rentDataGrid.properties.slice(0, 4).map(prop => createPropertyCard(prop)).join('');
             }
-            console.log('Propiedades de arriendo cargadas:', rentPropertiesData.length);
+            console.log('Propiedades de arriendo cargadas (grid):', rentDataGrid.properties.length);
         } else {
-            console.warn('No se encontraron propiedades de arriendo con ubicación');
+            console.warn('No se encontraron propiedades de arriendo');
             const arriendoContainer = document.getElementById('arriendo-properties-grid');
             if (arriendoContainer) {
                 arriendoContainer.innerHTML = `
@@ -266,30 +265,45 @@ async function loadHomePropertiesWithMaps() {
                 `;
             }
         }
-    } catch (err) {
-        console.error('Error cargando arriendos:', err);
-    }
 
-    // Cargar propiedades usadas en venta (20 más recientes CON UBICACIÓN, SIN PROYECTO)
-    try {
-        const usedSaleData = await loadProperties({
-            type_service: 'sale',
-            has_location: true,      // Solo con coordenadas
-            has_project: false,      // Sin proyecto = propiedades usadas
+        // Segundo: cargar propiedades CON ubicación para el MAPA
+        const rentDataMap = await loadProperties({
+            type_service: 'rent',
+            has_location: true,  // Solo con coordenadas para mapa
             limit: 20,
             order: 'newest'
         });
 
-        if (usedSaleData.properties && usedSaleData.properties.length > 0) {
-            usedSalePropertiesData = usedSaleData.properties;
+        if (rentDataMap.properties && rentDataMap.properties.length > 0) {
+            rentPropertiesData = rentDataMap.properties;
+            console.log('Propiedades de arriendo con ubicación (mapa):', rentPropertiesData.length);
+        } else {
+            console.warn('No hay propiedades de arriendo con ubicación para el mapa');
+            rentPropertiesData = [];
+        }
+    } catch (err) {
+        console.error('Error cargando arriendos:', err);
+    }
+
+    // Cargar propiedades usadas en venta (10 para grid + 20 con ubicación para mapa, SIN PROYECTO)
+    try {
+        // Primero: cargar propiedades para el GRID (sin requerir ubicación)
+        const usedSaleDataGrid = await loadProperties({
+            type_service: 'sale',
+            has_project: false,      // Sin proyecto = propiedades usadas
+            limit: 10,
+            order: 'newest'
+        });
+
+        if (usedSaleDataGrid.properties && usedSaleDataGrid.properties.length > 0) {
             const usedSaleContainer = document.getElementById('used-sale-properties-grid');
             if (usedSaleContainer) {
                 // Mostrar solo las primeras 4 en el grid
-                usedSaleContainer.innerHTML = usedSaleData.properties.slice(0, 4).map(prop => createPropertyCard(prop)).join('');
+                usedSaleContainer.innerHTML = usedSaleDataGrid.properties.slice(0, 4).map(prop => createPropertyCard(prop)).join('');
             }
-            console.log('Propiedades usadas cargadas:', usedSaleData.properties.length);
+            console.log('Propiedades usadas cargadas (grid):', usedSaleDataGrid.properties.length);
         } else {
-            console.warn('No se encontraron propiedades de venta usadas con ubicación');
+            console.warn('No se encontraron propiedades de venta usadas');
             const usedSaleContainer = document.getElementById('used-sale-properties-grid');
             if (usedSaleContainer) {
                 usedSaleContainer.innerHTML = `
@@ -300,30 +314,46 @@ async function loadHomePropertiesWithMaps() {
                 `;
             }
         }
-    } catch (err) {
-        console.error('Error cargando ventas usadas:', err);
-    }
 
-    // Cargar proyectos en venta (20 más recientes CON UBICACIÓN, CON PROYECTO)
-    try {
-        const projectsData = await loadProperties({
+        // Segundo: cargar propiedades CON ubicación para el MAPA
+        const usedSaleDataMap = await loadProperties({
             type_service: 'sale',
-            has_location: true,   // Solo con coordenadas
-            has_project: true,    // Con proyecto = propiedades nuevas/proyectos
+            has_location: true,      // Solo con coordenadas para mapa
+            has_project: false,      // Sin proyecto = propiedades usadas
             limit: 20,
             order: 'newest'
         });
 
-        if (projectsData.properties && projectsData.properties.length > 0) {
-            projectsPropertiesData = projectsData.properties;
+        if (usedSaleDataMap.properties && usedSaleDataMap.properties.length > 0) {
+            usedSalePropertiesData = usedSaleDataMap.properties;
+            console.log('Propiedades usadas con ubicación (mapa):', usedSalePropertiesData.length);
+        } else {
+            console.warn('No hay propiedades usadas con ubicación para el mapa');
+            usedSalePropertiesData = [];
+        }
+    } catch (err) {
+        console.error('Error cargando ventas usadas:', err);
+    }
+
+    // Cargar proyectos en venta (10 para grid + 20 con ubicación para mapa, CON PROYECTO)
+    try {
+        // Primero: cargar proyectos para el GRID (sin requerir ubicación)
+        const projectsDataGrid = await loadProperties({
+            type_service: 'sale',
+            has_project: true,    // Con proyecto = propiedades nuevas/proyectos
+            limit: 10,
+            order: 'newest'
+        });
+
+        if (projectsDataGrid.properties && projectsDataGrid.properties.length > 0) {
             const projectsContainer = document.getElementById('projects-properties-grid');
             if (projectsContainer) {
                 // Mostrar solo los primeros 4 en el grid
-                projectsContainer.innerHTML = projectsData.properties.slice(0, 4).map(prop => createPropertyCard(prop)).join('');
+                projectsContainer.innerHTML = projectsDataGrid.properties.slice(0, 4).map(prop => createPropertyCard(prop)).join('');
             }
-            console.log('Proyectos cargados:', projectsData.properties.length);
+            console.log('Proyectos cargados (grid):', projectsDataGrid.properties.length);
         } else {
-            console.warn('No se encontraron proyectos con ubicación');
+            console.warn('No se encontraron proyectos');
             const projectsContainer = document.getElementById('projects-properties-grid');
             if (projectsContainer) {
                 projectsContainer.innerHTML = `
@@ -333,6 +363,23 @@ async function loadHomePropertiesWithMaps() {
                     </div>
                 `;
             }
+        }
+
+        // Segundo: cargar proyectos CON ubicación para el MAPA
+        const projectsDataMap = await loadProperties({
+            type_service: 'sale',
+            has_location: true,   // Solo con coordenadas para mapa
+            has_project: true,    // Con proyecto = propiedades nuevas/proyectos
+            limit: 20,
+            order: 'newest'
+        });
+
+        if (projectsDataMap.properties && projectsDataMap.properties.length > 0) {
+            projectsPropertiesData = projectsDataMap.properties;
+            console.log('Proyectos con ubicación (mapa):', projectsPropertiesData.length);
+        } else {
+            console.warn('No hay proyectos con ubicación para el mapa');
+            projectsPropertiesData = [];
         }
     } catch (err) {
         console.error('Error cargando proyectos:', err);
@@ -351,15 +398,32 @@ function setupMapTabs() {
     if (arriendoMapTab) {
         arriendoMapTab.addEventListener('shown.bs.tab', function(e) {
             console.log('Mostrando mapa de arriendos');
-            if (!arriendoMap) {
-                arriendoMap = initMap('arriendo-properties-map', arriendoMap);
+            const mapContainer = document.getElementById('arriendo-properties-map');
+
+            if (rentPropertiesData.length === 0) {
+                // Sin propiedades con ubicación, mostrar mensaje
+                if (mapContainer) {
+                    mapContainer.innerHTML = `
+                        <div class="d-flex align-items-center justify-content-center h-100 bg-light">
+                            <div class="text-center p-4">
+                                <i class="fa fa-map-marked-alt fa-3x text-muted mb-3"></i>
+                                <p class="text-muted">No hay propiedades con ubicación disponible para mostrar en el mapa</p>
+                            </div>
+                        </div>
+                    `;
+                }
             } else {
-                arriendoMap.invalidateSize();
-            }
-            if (arriendoMap && rentPropertiesData.length > 0) {
-                setTimeout(() => {
-                    updateMapMarkers(arriendoMap, rentPropertiesData);
-                }, 200);
+                // Hay propiedades, mostrar mapa
+                if (!arriendoMap) {
+                    arriendoMap = initMap('arriendo-properties-map', arriendoMap);
+                } else {
+                    arriendoMap.invalidateSize();
+                }
+                if (arriendoMap) {
+                    setTimeout(() => {
+                        updateMapMarkers(arriendoMap, rentPropertiesData);
+                    }, 200);
+                }
             }
         });
     }
@@ -369,15 +433,32 @@ function setupMapTabs() {
     if (usedSaleMapTab) {
         usedSaleMapTab.addEventListener('shown.bs.tab', function(e) {
             console.log('Mostrando mapa de ventas usadas');
-            if (!usedSaleMap) {
-                usedSaleMap = initMap('used-sale-properties-map', usedSaleMap);
+            const mapContainer = document.getElementById('used-sale-properties-map');
+
+            if (usedSalePropertiesData.length === 0) {
+                // Sin propiedades con ubicación, mostrar mensaje
+                if (mapContainer) {
+                    mapContainer.innerHTML = `
+                        <div class="d-flex align-items-center justify-content-center h-100 bg-light">
+                            <div class="text-center p-4">
+                                <i class="fa fa-map-marked-alt fa-3x text-muted mb-3"></i>
+                                <p class="text-muted">No hay propiedades con ubicación disponible para mostrar en el mapa</p>
+                            </div>
+                        </div>
+                    `;
+                }
             } else {
-                usedSaleMap.invalidateSize();
-            }
-            if (usedSaleMap && usedSalePropertiesData.length > 0) {
-                setTimeout(() => {
-                    updateMapMarkers(usedSaleMap, usedSalePropertiesData);
-                }, 200);
+                // Hay propiedades, mostrar mapa
+                if (!usedSaleMap) {
+                    usedSaleMap = initMap('used-sale-properties-map', usedSaleMap);
+                } else {
+                    usedSaleMap.invalidateSize();
+                }
+                if (usedSaleMap) {
+                    setTimeout(() => {
+                        updateMapMarkers(usedSaleMap, usedSalePropertiesData);
+                    }, 200);
+                }
             }
         });
     }
@@ -387,15 +468,32 @@ function setupMapTabs() {
     if (projectsMapTab) {
         projectsMapTab.addEventListener('shown.bs.tab', function(e) {
             console.log('Mostrando mapa de proyectos');
-            if (!projectsMap) {
-                projectsMap = initMap('projects-properties-map', projectsMap);
+            const mapContainer = document.getElementById('projects-properties-map');
+
+            if (projectsPropertiesData.length === 0) {
+                // Sin propiedades con ubicación, mostrar mensaje
+                if (mapContainer) {
+                    mapContainer.innerHTML = `
+                        <div class="d-flex align-items-center justify-content-center h-100 bg-light">
+                            <div class="text-center p-4">
+                                <i class="fa fa-map-marked-alt fa-3x text-muted mb-3"></i>
+                                <p class="text-muted">No hay proyectos con ubicación disponible para mostrar en el mapa</p>
+                            </div>
+                        </div>
+                    `;
+                }
             } else {
-                projectsMap.invalidateSize();
-            }
-            if (projectsMap && projectsPropertiesData.length > 0) {
-                setTimeout(() => {
-                    updateMapMarkers(projectsMap, projectsPropertiesData);
-                }, 200);
+                // Hay propiedades, mostrar mapa
+                if (!projectsMap) {
+                    projectsMap = initMap('projects-properties-map', projectsMap);
+                } else {
+                    projectsMap.invalidateSize();
+                }
+                if (projectsMap) {
+                    setTimeout(() => {
+                        updateMapMarkers(projectsMap, projectsPropertiesData);
+                    }, 200);
+                }
             }
         });
     }
