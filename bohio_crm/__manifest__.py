@@ -28,7 +28,7 @@
         'security/ir.model.access.csv',
 
         # Datos
-        # 'data/crm_automated_actions.xml',  # TEMPORALMENTE DESACTIVADO: Error de formato XML
+        'data/crm_automated_actions.xml',  # REACTIVADO: Archivo limpiado y corregido
 
         # Vistas
         'views/bohio_crm_complete_views.xml',
