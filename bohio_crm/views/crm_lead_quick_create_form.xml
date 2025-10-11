@@ -30,41 +30,26 @@
                         </h1>
 
                         <!-- Badges Dinámicos de Estado (como Bank Widget: To check, Matched) -->
-                        <div class="o_bohio_stage_badges mt-2" name="stage_badges_section">
-                            <!-- NUEVO: Sin etapa asignada -->
-                            <span class="badge text-bg-info me-2"
-                                  invisible="stage_id">
-                                <i class="fa fa-star me-1"/>Nueva Oportunidad
-                            </span>
-
-                            <!-- SEGUIMIENTO: Probabilidad baja (< 20%) -->
-                            <span class="badge text-bg-warning me-2"
-                                  invisible="not stage_id or stage_id.probability &gt;= 20">
-                                <i class="fa fa-flag me-1"/>Seguimiento Requerido
-                            </span>
-
-                            <!-- NEGOCIACIÓN: Probabilidad media (20-69%) -->
-                            <span class="badge text-bg-primary me-2"
-                                  invisible="not stage_id or stage_id.probability &lt; 20 or stage_id.probability &gt;= 70">
-                                <i class="fa fa-handshake me-1"/>En Negociación
-                            </span>
-
-                            <!-- PROPUESTA: Probabilidad alta (70-99%) -->
-                            <span class="badge text-bg-success me-2"
-                                  invisible="not stage_id or stage_id.probability &lt; 70 or stage_id.is_won">
-                                <i class="fa fa-chart-line me-1"/>Propuesta Enviada
-                            </span>
-
-                            <!-- GANADA: is_won = True -->
-                            <span class="badge text-bg-success me-2"
-                                  invisible="not stage_id or not stage_id.is_won">
-                                <i class="fa fa-check-circle me-1"/>✓ Ganada
-                            </span>
+                        <div class="o_bohio_stage_badges mt-2" name="stage_badges_section" invisible="not id">
+                            <!-- NOTA: Toda la sección de badges solo visible si ya existe el registro (id != False) -->
+                            <!-- Esto evita errores de evaluación cuando stage_id es undefined en registros nuevos -->
 
                             <!-- CAPTACIÓN: service = consign -->
                             <span class="badge text-bg-warning me-2"
                                   invisible="service_interested != 'consign'">
-                                <i class="fa fa-building me-1"/>📝 Captación
+                                <i class="fa fa-building me-1"/>Captación
+                            </span>
+
+                            <!-- NUEVO: Sin etapa asignada aún -->
+                            <span class="badge text-bg-info me-2"
+                                  invisible="stage_id">
+                                <i class="fa fa-star me-1"/>Nueva
+                            </span>
+
+                            <!-- Badge genérico con nombre de etapa -->
+                            <span class="badge text-bg-secondary me-2"
+                                  invisible="not stage_id">
+                                <field name="stage_id" readonly="1" nolabel="1"/>
                             </span>
                         </div>
                     </div>
