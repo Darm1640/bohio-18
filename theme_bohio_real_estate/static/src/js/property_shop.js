@@ -64,6 +64,10 @@ class PropertyShop {
         this.currentProperties = [];
         this.mapProperties = [];  // Propiedades con coordenadas para el mapa
 
+        // Preview de autocomplete
+        this.previewFilters = null;  // Guardar filtros antes del preview
+        this.isPreviewActive = false;  // Flag para saber si estamos en modo preview
+
         // Paginación
         this.currentPage = 1;
         this.itemsPerPage = 40;
@@ -265,8 +269,23 @@ class PropertyShop {
 
         // Event listeners para items
         container.querySelectorAll('.autocomplete-item').forEach(item => {
+            // Click: seleccionar definitivamente
             item.addEventListener('click', () => {
                 this.selectAutocompleteItem(item.dataset);
+            });
+
+            // Hover: mostrar preview en el mapa
+            item.addEventListener('mouseenter', () => {
+                // Solo preview si NO es una propiedad (las propiedades redirigen al detalle)
+                if (item.dataset.type !== 'property') {
+                    this.previewAutocompleteItem(item.dataset);
+                }
+            });
+
+            item.addEventListener('mouseleave', () => {
+                if (item.dataset.type !== 'property') {
+                    this.clearAutocompletePreview();
+                }
             });
         });
     }
@@ -309,6 +328,95 @@ class PropertyShop {
         const container = document.querySelector('.autocomplete-container');
         if (container) {
             container.style.display = 'none';
+        }
+    }
+
+    // =================== PREVIEW DE AUTOCOMPLETADO ===================
+
+    previewAutocompleteItem(data) {
+        console.log('[AUTOCOMPLETE-PREVIEW] Mostrando preview para:', data);
+
+        // Solo hacer preview si el mapa está inicializado
+        if (!this.map || !this.markers) {
+            console.log('[AUTOCOMPLETE-PREVIEW] Mapa no inicializado, saltando preview');
+            return;
+        }
+
+        // Marcar que estamos en modo preview
+        this.isPreviewActive = true;
+
+        // Guardar los filtros actuales SOLO la primera vez
+        if (!this.previewFilters) {
+            this.previewFilters = { ...this.filters };
+            console.log('[AUTOCOMPLETE-PREVIEW] Filtros guardados:', this.previewFilters);
+        }
+
+        // Crear filtros temporales para el preview
+        const tempFilters = { ...this.filters };
+
+        // Limpiar filtros de ubicación previos
+        delete tempFilters.city_id;
+        delete tempFilters.region_id;
+        delete tempFilters.project_id;
+
+        // Agregar filtro según el tipo usando los IDs específicos
+        if (data.type === 'city' && data.cityId) {
+            tempFilters.city_id = data.cityId;
+            console.log('[AUTOCOMPLETE-PREVIEW] Preview ciudad:', data.cityId);
+        } else if (data.type === 'region' && data.regionId) {
+            tempFilters.region_id = data.regionId;
+            console.log('[AUTOCOMPLETE-PREVIEW] Preview region:', data.regionId);
+        } else if (data.type === 'project' && data.projectId) {
+            tempFilters.project_id = data.projectId;
+            console.log('[AUTOCOMPLETE-PREVIEW] Preview proyecto:', data.projectId);
+        }
+
+        // Cargar propiedades del mapa con los filtros temporales
+        this.loadMapPropertiesPreview(tempFilters);
+    }
+
+    clearAutocompletePreview() {
+        console.log('[AUTOCOMPLETE-PREVIEW] Limpiando preview');
+
+        // Solo limpiar si estamos en modo preview
+        if (!this.isPreviewActive) {
+            return;
+        }
+
+        // Restaurar filtros originales
+        if (this.previewFilters) {
+            console.log('[AUTOCOMPLETE-PREVIEW] Restaurando filtros originales:', this.previewFilters);
+            this.loadMapPropertiesPreview(this.previewFilters);
+            this.previewFilters = null;
+        }
+
+        this.isPreviewActive = false;
+    }
+
+    async loadMapPropertiesPreview(filters) {
+        console.log('[AUTOCOMPLETE-PREVIEW] Cargando mapa con filtros:', filters);
+
+        if (!this.map || !this.markers) {
+            console.log('[AUTOCOMPLETE-PREVIEW] Mapa no inicializado');
+            return;
+        }
+
+        try {
+            const result = await rpc('/bohio/api/properties/map', {
+                ...filters,
+                limit: 30
+            });
+
+            console.log('[AUTOCOMPLETE-PREVIEW] Respuesta:', result.success ? `${result.properties.length} propiedades` : 'ERROR');
+
+            if (result.success && result.properties) {
+                this.updateMap(result.properties);
+            } else {
+                this.updateMap([]);
+            }
+        } catch (error) {
+            console.error('[AUTOCOMPLETE-PREVIEW] Error:', error.message);
+            this.updateMap([]);
         }
     }
 
