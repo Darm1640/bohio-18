@@ -805,6 +805,17 @@ class BohioRealEstateController(http.Controller):
         min_price = params.get('min_price')
         max_price = params.get('max_price')
 
+        # FILTROS DE UBICACIÓN (agregados para filtrado dinámico del mapa)
+        city_id = params.get('city_id')
+        region_id = params.get('region_id')
+        project_id = params.get('project_id')
+
+        _logger.info(f"API /bohio/api/properties/map - Filtros recibidos:")
+        _logger.info(f"  type_service={type_service}, property_type={property_type}")
+        _logger.info(f"  city_id={city_id}, region_id={region_id}, project_id={project_id}")
+        _logger.info(f"  bedrooms={bedrooms}, bathrooms={bathrooms}")
+        _logger.info(f"  min_price={min_price}, max_price={max_price}")
+
         domain = [
             ('is_property', '=', True),
             ('active', '=', True),
@@ -853,6 +864,27 @@ class BohioRealEstateController(http.Controller):
                 domain.append((price_field, '<=', float(max_price)))
             except ValueError:
                 pass
+
+        # FILTROS DE UBICACIÓN JERÁRQUICOS (mismo patrón que /bohio/api/properties)
+        # Orden de prioridad: proyecto > barrio > ciudad
+        if project_id:
+            try:
+                domain.append(('project_worksite_id', '=', int(project_id)))
+                _logger.info(f"[MAPA] Filtro project_id aplicado: {project_id}")
+            except (ValueError, TypeError):
+                _logger.warning(f"[MAPA] project_id inválido: {project_id}")
+        elif region_id:
+            try:
+                domain.append(('region_id', '=', int(region_id)))
+                _logger.info(f"[MAPA] Filtro region_id aplicado: {region_id}")
+            except (ValueError, TypeError):
+                _logger.warning(f"[MAPA] region_id inválido: {region_id}")
+        elif city_id:
+            try:
+                domain.append(('city_id', '=', int(city_id)))
+                _logger.info(f"[MAPA] Filtro city_id aplicado: {city_id}")
+            except (ValueError, TypeError):
+                _logger.warning(f"[MAPA] city_id inválido: {city_id}")
 
         try:
             Property = request.env['product.template'].sudo()
