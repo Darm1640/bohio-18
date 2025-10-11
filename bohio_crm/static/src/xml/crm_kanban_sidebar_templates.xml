@@ -137,20 +137,19 @@
 
     <!-- ========================================
          TEMPLATE: KanbanController con Sidebar
-         Extiende el controller estándar de Kanban
+         Template propio para el controller personalizado
          ======================================== -->
-    <t t-name="bohio_crm.KanbanControllerWithSidebar" t-inherit="web.KanbanController" t-inherit-mode="extension">
-        <xpath expr="//div[hasclass('o_content')]" position="before">
-            <div class="o_bohio_crm_kanban_layout">
-                <!-- Kanban Principal (izquierda) -->
-                <div class="o_bohio_kanban_main with-sidebar">
-                    <!-- El contenido normal del kanban se renderiza aquí -->
-                </div>
-
-                <!-- Sidebar (derecha) -->
-                <BohioCrmKanbanSidebar/>
+    <t t-name="bohio_crm.KanbanControllerWithSidebar">
+        <div class="o_bohio_crm_kanban_layout">
+            <!-- Kanban Principal (izquierda) -->
+            <div class="o_bohio_kanban_main with-sidebar">
+                <!-- Contenido del Kanban estándar -->
+                <t t-call="web.KanbanView"/>
             </div>
-        </xpath>
+
+            <!-- Sidebar (derecha) -->
+            <BohioCrmKanbanSidebar/>
+        </div>
     </t>
 
 </templates>
