@@ -12,23 +12,6 @@
         <field name="arch" type="xml">
             <form string="Oportunidad - Vista Kanban Vertical" class="o_bohio_form_kanban_vertical">
                 <header class="o_bohio_form_header">
-                    <!-- BOTONES DE ACCIÓN -->
-                    <button name="action_send_email_report"
-                            string="Enviar por Email"
-                            type="object"
-                            class="btn-primary"
-                            icon="fa-envelope"/>
-                    <button name="action_print_report"
-                            string="Imprimir Reporte"
-                            type="object"
-                            class="btn-secondary"
-                            icon="fa-print"/>
-                    <button name="action_select_opportunity"
-                            string="Seleccionar Esta"
-                            type="object"
-                            class="btn-success"
-                            icon="fa-check-circle"/>
-
                     <!-- STATUSBAR -->
                     <field name="stage_id"
                            widget="statusbar"

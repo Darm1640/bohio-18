@@ -270,7 +270,8 @@
                 /* Área contenido */
                 .mybohio-content-area {
                     min-height: calc(100vh - 200px);
-                    background-color: #f5f5f5;
+                    background: linear-gradient(135deg, #FEE2E2 0%, #FECACA 50%, #FCA5A5 100%);
+                    background-attachment: fixed;
                 }
 
                 /* Footer */
@@ -315,6 +316,112 @@
                     to {
                         opacity: 1;
                     }
+                }
+
+                /* BOTONES BOHIO - Rojo con blanco */
+                .mybohio-content-area .btn-primary,
+                .mybohio-content-area .btn-danger,
+                .mybohio-content-area .btn-bohio {
+                    background: linear-gradient(135deg, #E31E24 0%, #B81820 100%);
+                    border: none;
+                    color: white !important;
+                    font-weight: 600;
+                    padding: 0.5rem 1.5rem;
+                    border-radius: 6px;
+                    transition: all 0.3s ease;
+                    box-shadow: 0 2px 6px rgba(227, 30, 36, 0.3);
+                }
+
+                .mybohio-content-area .btn-primary:hover,
+                .mybohio-content-area .btn-danger:hover,
+                .mybohio-content-area .btn-bohio:hover {
+                    background: linear-gradient(135deg, #B81820 0%, #8B1419 100%);
+                    transform: translateY(-2px);
+                    box-shadow: 0 4px 12px rgba(227, 30, 36, 0.4);
+                    color: white !important;
+                }
+
+                .mybohio-content-area .btn-outline-primary,
+                .mybohio-content-area .btn-outline-danger {
+                    background: transparent;
+                    border: 2px solid #E31E24;
+                    color: #E31E24 !important;
+                    font-weight: 600;
+                    padding: 0.5rem 1.5rem;
+                    border-radius: 6px;
+                    transition: all 0.3s ease;
+                }
+
+                .mybohio-content-area .btn-outline-primary:hover,
+                .mybohio-content-area .btn-outline-danger:hover {
+                    background: linear-gradient(135deg, #E31E24 0%, #B81820 100%);
+                    border-color: #E31E24;
+                    color: white !important;
+                    transform: translateY(-2px);
+                    box-shadow: 0 4px 12px rgba(227, 30, 36, 0.4);
+                }
+
+                /* Cards con fondo blanco en el fondo gris rojizo */
+                .mybohio-content-area .card {
+                    background: white;
+                    border: none;
+                    border-radius: 12px;
+                    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+                    transition: all 0.3s ease;
+                }
+
+                .mybohio-content-area .card:hover {
+                    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+                    transform: translateY(-2px);
+                }
+
+                /* Headers de cards con gradiente rojo */
+                .mybohio-content-area .card-header {
+                    background: linear-gradient(135deg, #E31E24 0%, #B81820 100%);
+                    color: white;
+                    font-weight: 600;
+                    border-radius: 12px 12px 0 0 !important;
+                    border: none;
+                }
+
+                /* Tablas con fondo blanco */
+                .mybohio-content-area .table {
+                    background: white;
+                    border-radius: 8px;
+                }
+
+                .mybohio-content-area .table thead {
+                    background: linear-gradient(135deg, #E31E24 0%, #B81820 100%);
+                    color: white;
+                }
+
+                /* Badges rojos */
+                .mybohio-content-area .badge-primary,
+                .mybohio-content-area .badge-danger {
+                    background: #E31E24;
+                    color: white;
+                }
+
+                /* Alerts con fondo blanco */
+                .mybohio-content-area .alert {
+                    background: white;
+                    border-left: 4px solid #E31E24;
+                    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+                }
+
+                /* Font Awesome Icons - Asegurar visibilidad */
+                .mybohio-content-area .fa,
+                .mybohio-content-area .fas,
+                .mybohio-content-area .far,
+                .mybohio-content-area .fab {
+                    font-family: "Font Awesome 5 Free", "Font Awesome 5 Brands" !important;
+                    font-weight: 900;
+                    -webkit-font-smoothing: antialiased;
+                    display: inline-block;
+                    font-style: normal;
+                    font-variant: normal;
+                    text-rendering: auto;
+                    line-height: 1;
                 }
             </style>
         </xpath>
