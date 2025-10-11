@@ -45,10 +45,6 @@
                         <button class="oe_stat_button" type="object" name="action_view_loan_documents" icon="fa-folder-open"
                                 invisible="not requires_financing">
                             <div class="o_field_widget o_stat_info">
-                                <span class="o_stat_value">
-                                    <field name="loan_document_ids" widget="many2many_tags" invisible="1"/>
-                                    <t t-esc="len(record.loan_document_ids.ids) if record.loan_document_ids else 0"/>
-                                </span>
                                 <span class="o_stat_text">Documentos</span>
                             </div>
                         </button>
