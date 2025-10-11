@@ -29,15 +29,23 @@ export class BohioCrmFormExpandable extends FormController {
             totalCount: 0,
             filterType: 'same_partner',
             loading: false,
+            autoRefresh: true,            // Auto-refresh activado por defecto
+            refreshInterval: 30000,        // 30 segundos
+            lastRefresh: Date.now(),
         });
+
+        // Referencia al polling interval
+        this.pollingInterval = null;
 
         onMounted(() => {
             this.setupEventListeners();
             this.loadRelatedOpportunities();
+            this.startPolling();  // Iniciar polling automático
         });
 
         onWillUnmount(() => {
             this.removeEventListeners();
+            this.stopPolling();   // Detener polling al desmontar
         });
     }
 
@@ -444,6 +452,81 @@ export class BohioCrmFormExpandable extends FormController {
             currency: 'COP',
             minimumFractionDigits: 0
         }).format(value);
+    }
+
+    /**
+     * Inicia el polling automático para actualizar sidebar
+     */
+    startPolling() {
+        if (!this.state.autoRefresh || this.pollingInterval) {
+            return;
+        }
+
+        console.log(`[Polling] Starting auto-refresh every ${this.state.refreshInterval / 1000} seconds`);
+
+        this.pollingInterval = setInterval(async () => {
+            // Solo actualizar si el sidebar está expandido y no está en proceso de carga
+            if (this.state.sidebarExpanded && !this.state.loading) {
+                console.log('[Polling] Auto-refreshing opportunities...');
+                await this.loadRelatedOpportunities();
+                this.state.lastRefresh = Date.now();
+                this.updateLastRefreshDisplay();
+            }
+        }, this.state.refreshInterval);
+    }
+
+    /**
+     * Detiene el polling automático
+     */
+    stopPolling() {
+        if (this.pollingInterval) {
+            clearInterval(this.pollingInterval);
+            this.pollingInterval = null;
+            console.log('[Polling] Auto-refresh stopped');
+        }
+    }
+
+    /**
+     * Alterna el estado de auto-refresh
+     */
+    toggleAutoRefresh() {
+        this.state.autoRefresh = !this.state.autoRefresh;
+
+        if (this.state.autoRefresh) {
+            this.startPolling();
+        } else {
+            this.stopPolling();
+        }
+    }
+
+    /**
+     * Actualiza el display de última actualización
+     */
+    updateLastRefreshDisplay() {
+        const lastRefreshEl = this.el?.querySelector('.o_bohio_last_refresh');
+        if (!lastRefreshEl) return;
+
+        const timeAgo = this.getTimeAgo(this.state.lastRefresh);
+        lastRefreshEl.textContent = `Actualizado: ${timeAgo}`;
+    }
+
+    /**
+     * Obtiene el tiempo transcurrido desde la última actualización
+     */
+    getTimeAgo(timestamp) {
+        const seconds = Math.floor((Date.now() - timestamp) / 1000);
+
+        if (seconds < 60) {
+            return 'hace unos segundos';
+        }
+
+        const minutes = Math.floor(seconds / 60);
+        if (minutes < 60) {
+            return `hace ${minutes} ${minutes === 1 ? 'minuto' : 'minutos'}`;
+        }
+
+        const hours = Math.floor(minutes / 60);
+        return `hace ${hours} ${hours === 1 ? 'hora' : 'horas'}`;
     }
 }
 

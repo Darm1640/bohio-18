@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <!-- ========================================
+         TEMPLATE: Widget de Mapa con Leaflet
+         ======================================== -->
+    <t t-name="bohio_crm.MapWidgetTemplate">
+        <div class="o_bohio_map_widget">
+            <!-- Mapa Container -->
+            <div class="o_bohio_map_container"
+                 t-ref="mapContainer"
+                 style="height: 400px; border-radius: 8px; overflow: hidden; position: relative;">
+            </div>
+
+            <!-- Loading Overlay -->
+            <div t-if="!state.map" class="o_bohio_map_loading">
+                <i class="fa fa-spinner fa-spin fa-2x text-primary"/>
+                <p class="mt-2 text-muted">Cargando mapa...</p>
+            </div>
+
+            <!-- Info Panel -->
+            <div class="o_bohio_map_info mt-2 p-2 bg-light rounded">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="small text-muted">
+                        <i class="fa fa-map-marked-alt me-2"/>
+                        <span t-esc="state.properties.length"/> propiedades en mapa
+                    </div>
+                    <div class="btn-group btn-group-sm">
+                        <button type="button"
+                                class="btn btn-outline-primary"
+                                t-on-click="() => this.centerOnOffice()"
+                                title="Centrar en oficina">
+                            <i class="fa fa-home"/>
+                        </button>
+                        <button type="button"
+                                class="btn btn-outline-primary"
+                                t-on-click="() => this.loadProperties()"
+                                title="Recargar propiedades">
+                            <i class="fa fa-sync-alt"/>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+
+</templates>
