@@ -270,8 +270,7 @@
                 /* Área contenido */
                 .mybohio-content-area {
                     min-height: calc(100vh - 200px);
-                    background: linear-gradient(135deg, #FEE2E2 0%, #FECACA 50%, #FCA5A5 100%);
-                    background-attachment: fixed;
+                    background-color: #F5F5DC;
                 }
 
                 /* Footer */

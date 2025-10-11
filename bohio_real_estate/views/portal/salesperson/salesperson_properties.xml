@@ -111,16 +111,16 @@
                                                 <small class="text-muted d-block">Tipo</small>
                                                 <strong class="small" t-esc="prop.property_type_id.name"/>
                                             </div>
-                                            <div class="col-4 text-center" t-if="prop.bedrooms">
+                                            <div class="col-4 text-center" t-if="prop.num_bedrooms">
                                                 <small class="text-muted d-block">Habitaciones</small>
                                                 <strong class="small">
-                                                    <i class="fa fa-bed"></i> <span t-esc="int(prop.bedrooms)"/>
+                                                    <i class="fa fa-bed"></i> <span t-esc="int(prop.num_bedrooms)"/>
                                                 </strong>
                                             </div>
-                                            <div class="col-4 text-center" t-if="prop.bathrooms">
+                                            <div class="col-4 text-center" t-if="prop.num_bathrooms">
                                                 <small class="text-muted d-block">Baños</small>
                                                 <strong class="small">
-                                                    <i class="fa fa-bath"></i> <span t-esc="int(prop.bathrooms)"/>
+                                                    <i class="fa fa-bath"></i> <span t-esc="int(prop.num_bathrooms)"/>
                                                 </strong>
                                             </div>
                                         </div>
@@ -349,13 +349,13 @@
                                     <small class="text-muted d-block">Tipo</small>
                                     <strong t-esc="property.property_type_id.name"/>
                                 </div>
-                                <div class="mb-3" t-if="property.bedrooms">
+                                <div class="mb-3" t-if="property.num_bedrooms">
                                     <small class="text-muted d-block">Habitaciones</small>
-                                    <strong><i class="fa fa-bed"></i> <span t-esc="property.bedrooms"/></strong>
+                                    <strong><i class="fa fa-bed"></i> <span t-esc="property.num_bedrooms"/></strong>
                                 </div>
-                                <div class="mb-3" t-if="property.bathrooms">
+                                <div class="mb-3" t-if="property.num_bathrooms">
                                     <small class="text-muted d-block">Baños</small>
-                                    <strong><i class="fa fa-bath"></i> <span t-esc="property.bathrooms"/></strong>
+                                    <strong><i class="fa fa-bath"></i> <span t-esc="property.num_bathrooms"/></strong>
                                 </div>
                                 <div class="mb-3" t-if="property.property_area">
                                     <small class="text-muted d-block">Área</small>
