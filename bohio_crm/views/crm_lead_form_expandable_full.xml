@@ -316,7 +316,7 @@
                                     <field name="type_service"/>
                                     <field name="city_id"/>
                                     <field name="region_id"/>
-                                    <field name="price" widget="monetary"/>
+                                    <field name="list_price" string="Precio" widget="monetary"/>
                                     <field name="state"/>
                                 </list>
                             </field>

@@ -155,7 +155,7 @@ export class CrmMapWidget extends Component {
                     'id',
                     'name',
                     'type_service',
-                    'price',
+                    'list_price',
                     'street',
                     'city_id',
                     'region_id',
@@ -263,7 +263,7 @@ export class CrmMapWidget extends Component {
             style: 'currency',
             currency: 'COP',
             minimumFractionDigits: 0
-        }).format(property.price);
+        }).format(property.list_price || 0);
 
         return `
             <div class="map-popup-property" style="min-width: 200px;">
