@@ -781,10 +781,97 @@ class BohioRealEstateController(http.Controller):
 
     # =================== NEW HOMEPAGE API ===================
 
-    @http.route(['/'], type='http', auth='public', website=True)
-    def homepage_new(self, **kwargs):
-        """Nueva Homepage BOHIO Real Estate"""
-        return request.render('theme_bohio_real_estate.bohio_homepage_new', {})
+    @http.route(['/'], type='http', auth='public', website=True, sitemap=False)
+    def index_redirect(self, **kwargs):
+        """Redirige / a /home para evitar conflictos con otros módulos"""
+        return request.redirect('/home')
+
+    @http.route(['/home', '/homepage'], type='http', auth='public', website=True)
+    def homepage_bohio(self, **kwargs):
+        """Homepage BOHIO Real Estate con propiedades dinámicas"""
+        _logger.info("[HOMEPAGE] Renderizando homepage_bohio")
+        return request.render('theme_bohio_real_estate.bohio_homepage_new', {
+            'page_name': 'homepage_bohio',
+        })
+
+    # =================== ENDPOINTS ESPECÍFICOS POR SECCIÓN ===================
+
+    @http.route(['/api/properties/arriendo'], type='json', auth='public', website=True, csrf=False)
+    def api_properties_arriendo(self, limit=4, **kwargs):
+        """Endpoint específico para propiedades de arriendo en homepage"""
+        _logger.info(f"[HOMEPAGE] Cargando {limit} propiedades de arriendo")
+
+        Property = request.env['product.template'].sudo()
+
+        domain = [
+            ('is_property', '=', True),
+            ('active', '=', True),
+            ('state', '=', 'free'),
+            ('type_service', 'in', ['rent', 'sale_rent'])
+        ]
+
+        total = Property.search_count(domain)
+        properties = Property.search(domain, limit=int(limit), order='write_date desc')
+
+        _logger.info(f"[HOMEPAGE] Encontradas {len(properties)} de {total} propiedades de arriendo")
+
+        return {
+            'success': True,
+            'properties': self._serialize_properties(properties, self.SEARCH_CONTEXTS['public']),
+            'total': total
+        }
+
+    @http.route(['/api/properties/venta-usada'], type='json', auth='public', website=True, csrf=False)
+    def api_properties_venta_usada(self, limit=4, **kwargs):
+        """Endpoint específico para propiedades de venta usadas (sin proyecto)"""
+        _logger.info(f"[HOMEPAGE] Cargando {limit} propiedades de venta usada")
+
+        Property = request.env['product.template'].sudo()
+
+        domain = [
+            ('is_property', '=', True),
+            ('active', '=', True),
+            ('state', '=', 'free'),
+            ('type_service', 'in', ['sale', 'sale_rent']),
+            ('project_worksite_id', '=', False)
+        ]
+
+        total = Property.search_count(domain)
+        properties = Property.search(domain, limit=int(limit), order='write_date desc')
+
+        _logger.info(f"[HOMEPAGE] Encontradas {len(properties)} de {total} propiedades usadas")
+
+        return {
+            'success': True,
+            'properties': self._serialize_properties(properties, self.SEARCH_CONTEXTS['public']),
+            'total': total
+        }
+
+    @http.route(['/api/properties/proyectos'], type='json', auth='public', website=True, csrf=False)
+    def api_properties_proyectos(self, limit=4, **kwargs):
+        """Endpoint específico para propiedades en proyectos"""
+        _logger.info(f"[HOMEPAGE] Cargando {limit} propiedades en proyectos")
+
+        Property = request.env['product.template'].sudo()
+
+        domain = [
+            ('is_property', '=', True),
+            ('active', '=', True),
+            ('state', '=', 'free'),
+            ('type_service', 'in', ['sale', 'sale_rent']),
+            ('project_worksite_id', '!=', False)
+        ]
+
+        total = Property.search_count(domain)
+        properties = Property.search(domain, limit=int(limit), order='write_date desc')
+
+        _logger.info(f"[HOMEPAGE] Encontradas {len(properties)} de {total} propiedades en proyectos")
+
+        return {
+            'success': True,
+            'properties': self._serialize_properties(properties, self.SEARCH_CONTEXTS['public']),
+            'total': total
+        }
 
     @http.route(['/bohio/api/properties/map'], type='json', auth='public', website=True)
     def api_get_properties_for_map(self, **params):

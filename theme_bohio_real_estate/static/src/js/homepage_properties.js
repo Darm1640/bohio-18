@@ -232,158 +232,84 @@ async function loadProperties(params) {
 }
 
 /**
- * Cargar todas las propiedades del homepage
+ * Cargar todas las propiedades del homepage usando endpoints específicos
  */
 async function loadHomePropertiesWithMaps() {
-    console.log('=== Iniciando carga de propiedades del homepage ===');
+    console.log('=== [HOMEPAGE] Iniciando carga de propiedades ===');
 
-    // Cargar propiedades en arriendo (10 más recientes para grid + 20 con ubicación para mapa)
+    // 1. ARRIENDO - Usar endpoint específico
     try {
-        // Primero: cargar propiedades para el GRID (sin requerir ubicación)
-        const rentDataGrid = await loadProperties({
-            type_service: 'rent',
-            limit: 10,
-            order: 'newest'
-        });
+        console.log('[HOMEPAGE] Cargando propiedades de ARRIENDO...');
+        const rentData = await rpc('/api/properties/arriendo', { limit: 4 });
 
-        if (rentDataGrid.properties && rentDataGrid.properties.length > 0) {
-            const arriendoContainer = document.getElementById('arriendo-properties-grid');
-            if (arriendoContainer) {
-                // Mostrar solo las primeras 4 en el grid
-                arriendoContainer.innerHTML = rentDataGrid.properties.slice(0, 4).map(prop => createPropertyCard(prop)).join('');
-            }
-            console.log('Propiedades de arriendo cargadas (grid):', rentDataGrid.properties.length);
+        const arriendoContainer = document.getElementById('arriendo-properties-grid');
+        if (!arriendoContainer) {
+            console.error('[HOMEPAGE] ❌ Contenedor arriendo-properties-grid NO ENCONTRADO');
+        } else if (rentData.success && rentData.properties && rentData.properties.length > 0) {
+            arriendoContainer.innerHTML = rentData.properties.map(prop => createPropertyCard(prop)).join('');
+            console.log(`[HOMEPAGE] ✅ ${rentData.properties.length} propiedades de arriendo cargadas (de ${rentData.total} total)`);
         } else {
-            console.warn('No se encontraron propiedades de arriendo');
-            const arriendoContainer = document.getElementById('arriendo-properties-grid');
-            if (arriendoContainer) {
-                arriendoContainer.innerHTML = `
-                    <div class="col-12 text-center py-5">
-                        <i class="fa fa-home fa-3x text-muted mb-3"></i>
-                        <p class="text-muted">No hay propiedades de arriendo disponibles en este momento</p>
-                    </div>
-                `;
-            }
-        }
-
-        // Segundo: cargar propiedades CON ubicación para el MAPA
-        const rentDataMap = await loadProperties({
-            type_service: 'rent',
-            has_location: true,  // Solo con coordenadas para mapa
-            limit: 20,
-            order: 'newest'
-        });
-
-        if (rentDataMap.properties && rentDataMap.properties.length > 0) {
-            rentPropertiesData = rentDataMap.properties;
-            console.log('Propiedades de arriendo con ubicación (mapa):', rentPropertiesData.length);
-        } else {
-            console.warn('No hay propiedades de arriendo con ubicación para el mapa');
-            rentPropertiesData = [];
+            arriendoContainer.innerHTML = `
+                <div class="col-12 text-center py-5">
+                    <i class="fa fa-home fa-3x text-muted mb-3"></i>
+                    <p class="text-muted">No hay propiedades de arriendo disponibles en este momento</p>
+                </div>
+            `;
+            console.warn('[HOMEPAGE] ⚠️  No se encontraron propiedades de arriendo');
         }
     } catch (err) {
-        console.error('Error cargando arriendos:', err);
+        console.error('[HOMEPAGE] ❌ Error cargando arriendos:', err);
     }
 
-    // Cargar propiedades usadas en venta (10 para grid + 20 con ubicación para mapa, SIN PROYECTO)
+    // 2. VENTA USADA - Usar endpoint específico
     try {
-        // Primero: cargar propiedades para el GRID (sin requerir ubicación)
-        const usedSaleDataGrid = await loadProperties({
-            type_service: 'sale',
-            has_project: false,      // Sin proyecto = propiedades usadas
-            limit: 10,
-            order: 'newest'
-        });
+        console.log('[HOMEPAGE] Cargando propiedades de VENTA USADA...');
+        const usedSaleData = await rpc('/api/properties/venta-usada', { limit: 4 });
 
-        if (usedSaleDataGrid.properties && usedSaleDataGrid.properties.length > 0) {
-            const usedSaleContainer = document.getElementById('used-sale-properties-grid');
-            if (usedSaleContainer) {
-                // Mostrar solo las primeras 4 en el grid
-                usedSaleContainer.innerHTML = usedSaleDataGrid.properties.slice(0, 4).map(prop => createPropertyCard(prop)).join('');
-            }
-            console.log('Propiedades usadas cargadas (grid):', usedSaleDataGrid.properties.length);
+        const usedSaleContainer = document.getElementById('used-sale-properties-grid');
+        if (!usedSaleContainer) {
+            console.error('[HOMEPAGE] ❌ Contenedor used-sale-properties-grid NO ENCONTRADO');
+        } else if (usedSaleData.success && usedSaleData.properties && usedSaleData.properties.length > 0) {
+            usedSaleContainer.innerHTML = usedSaleData.properties.map(prop => createPropertyCard(prop)).join('');
+            console.log(`[HOMEPAGE] ✅ ${usedSaleData.properties.length} propiedades usadas cargadas (de ${usedSaleData.total} total)`);
         } else {
-            console.warn('No se encontraron propiedades de venta usadas');
-            const usedSaleContainer = document.getElementById('used-sale-properties-grid');
-            if (usedSaleContainer) {
-                usedSaleContainer.innerHTML = `
-                    <div class="col-12 text-center py-5">
-                        <i class="fa fa-building fa-3x text-muted mb-3"></i>
-                        <p class="text-muted">No hay propiedades usadas en venta disponibles en este momento</p>
-                    </div>
-                `;
-            }
-        }
-
-        // Segundo: cargar propiedades CON ubicación para el MAPA
-        const usedSaleDataMap = await loadProperties({
-            type_service: 'sale',
-            has_location: true,      // Solo con coordenadas para mapa
-            has_project: false,      // Sin proyecto = propiedades usadas
-            limit: 20,
-            order: 'newest'
-        });
-
-        if (usedSaleDataMap.properties && usedSaleDataMap.properties.length > 0) {
-            usedSalePropertiesData = usedSaleDataMap.properties;
-            console.log('Propiedades usadas con ubicación (mapa):', usedSalePropertiesData.length);
-        } else {
-            console.warn('No hay propiedades usadas con ubicación para el mapa');
-            usedSalePropertiesData = [];
+            usedSaleContainer.innerHTML = `
+                <div class="col-12 text-center py-5">
+                    <i class="fa fa-building fa-3x text-muted mb-3"></i>
+                    <p class="text-muted">No hay propiedades usadas en venta disponibles en este momento</p>
+                </div>
+            `;
+            console.warn('[HOMEPAGE] ⚠️  No se encontraron propiedades usadas');
         }
     } catch (err) {
-        console.error('Error cargando ventas usadas:', err);
+        console.error('[HOMEPAGE] ❌ Error cargando ventas usadas:', err);
     }
 
-    // Cargar proyectos en venta (10 para grid + 20 con ubicación para mapa, CON PROYECTO)
+    // 3. PROYECTOS - Usar endpoint específico
     try {
-        // Primero: cargar proyectos para el GRID (sin requerir ubicación)
-        const projectsDataGrid = await loadProperties({
-            type_service: 'sale',
-            has_project: true,    // Con proyecto = propiedades nuevas/proyectos
-            limit: 10,
-            order: 'newest'
-        });
+        console.log('[HOMEPAGE] Cargando PROYECTOS...');
+        const projectsData = await rpc('/api/properties/proyectos', { limit: 4 });
 
-        if (projectsDataGrid.properties && projectsDataGrid.properties.length > 0) {
-            const projectsContainer = document.getElementById('projects-properties-grid');
-            if (projectsContainer) {
-                // Mostrar solo los primeros 4 en el grid
-                projectsContainer.innerHTML = projectsDataGrid.properties.slice(0, 4).map(prop => createPropertyCard(prop)).join('');
-            }
-            console.log('Proyectos cargados (grid):', projectsDataGrid.properties.length);
+        const projectsContainer = document.getElementById('projects-properties-grid');
+        if (!projectsContainer) {
+            console.error('[HOMEPAGE] ❌ Contenedor projects-properties-grid NO ENCONTRADO');
+        } else if (projectsData.success && projectsData.properties && projectsData.properties.length > 0) {
+            projectsContainer.innerHTML = projectsData.properties.map(prop => createPropertyCard(prop)).join('');
+            console.log(`[HOMEPAGE] ✅ ${projectsData.properties.length} proyectos cargados (de ${projectsData.total} total)`);
         } else {
-            console.warn('No se encontraron proyectos');
-            const projectsContainer = document.getElementById('projects-properties-grid');
-            if (projectsContainer) {
-                projectsContainer.innerHTML = `
-                    <div class="col-12 text-center py-5">
-                        <i class="fa fa-map-marker-alt fa-3x text-muted mb-3"></i>
-                        <p class="text-muted">No hay proyectos en venta disponibles en este momento</p>
-                    </div>
-                `;
-            }
-        }
-
-        // Segundo: cargar proyectos CON ubicación para el MAPA
-        const projectsDataMap = await loadProperties({
-            type_service: 'sale',
-            has_location: true,   // Solo con coordenadas para mapa
-            has_project: true,    // Con proyecto = propiedades nuevas/proyectos
-            limit: 20,
-            order: 'newest'
-        });
-
-        if (projectsDataMap.properties && projectsDataMap.properties.length > 0) {
-            projectsPropertiesData = projectsDataMap.properties;
-            console.log('Proyectos con ubicación (mapa):', projectsPropertiesData.length);
-        } else {
-            console.warn('No hay proyectos con ubicación para el mapa');
-            projectsPropertiesData = [];
+            projectsContainer.innerHTML = `
+                <div class="col-12 text-center py-5">
+                    <i class="fa fa-map-marker-alt fa-3x text-muted mb-3"></i>
+                    <p class="text-muted">No hay proyectos en venta disponibles en este momento</p>
+                </div>
+            `;
+            console.warn('[HOMEPAGE] ⚠️  No se encontraron proyectos');
         }
     } catch (err) {
-        console.error('Error cargando proyectos:', err);
+        console.error('[HOMEPAGE] ❌ Error cargando proyectos:', err);
     }
+
+    console.log('[HOMEPAGE] === Carga de propiedades completada ===');
 
     // Configurar eventos de las pestañas de mapas
     setupMapTabs();
