@@ -172,12 +172,6 @@
                         <div class="o_section_header_bar">
                             <i class="fa fa-home fa-lg me-2"/>
                             <h2 class="o_section_title">Propiedades de Interés</h2>
-                            <span class="badge bg-primary ms-auto">
-                                <field name="property_ids" invisible="1"/>
-                                <t t-if="property_ids">
-                                    <t t-esc="len(property_ids)"/> propiedades
-                                </t>
-                            </span>
                         </div>
                         <div class="o_section_content">
                             <field name="property_ids"
