@@ -31,20 +31,20 @@
         'data/crm_server_actions.xml',       # Server actions con codigo Python (Odoo 18)
         'data/crm_automated_actions_v2.xml',  # Base automations que referencian server actions
 
-        # Vistas
+        # Acciones y Reportes - ANTES de las vistas que las referencian
+        'views/bohio_crm_actions.xml',
+        'report/property_comparison_report.xml',
+        'views/crm_capture_commission_report.xml',  # Define action_crm_capture_commission_report
+
+        # Vistas - DESPUES de las acciones
         'views/bohio_crm_complete_views.xml',
-        'views/crm_lead_form_complete.xml',
-        'views/crm_lead_quick_create_form.xml',  # NUEVA: Quick Create Inteligente
+        'views/crm_lead_form_complete.xml',          # USA action_crm_capture_commission_report
+        'views/crm_lead_quick_create_form.xml',
         'views/company_contract_config_views.xml',
         'views/crm_salesperson_dashboard_views.xml',
 
-        # Acciones y Menús
-        'views/bohio_crm_actions.xml',
+        # Menús - Al final
         'views/bohio_crm_menu.xml',
-
-        # Reportes
-        'report/property_comparison_report.xml',
-        'views/crm_capture_commission_report.xml',  # NUEVO: Reportes de Comisiones y Campañas
 
         # Timeline View
         'views/bohio_timeline_view_actions.xml',
