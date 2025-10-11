@@ -76,8 +76,6 @@ if record.has_conflicting_visit and record.conflicting_visit_info:
             <field name="code"><![CDATA[
 # Recordar sobre documentos pendientes si han pasado 3 dias
 if record.requires_financing and record.loan_approval_status == 'not_applied':
-    from datetime import datetime, timedelta
-
     # Verificar si ya hay actividad de recordatorio
     existing_reminder = env['mail.activity'].search([
         ('res_model', '=', 'crm.lead'),
@@ -87,13 +85,17 @@ if record.requires_financing and record.loan_approval_status == 'not_applied':
     ], limit=1)
 
     if not existing_reminder:
-        # Crear recordatorio para dentro de 3 dias
+        # Calcular fecha para dentro de 3 dias usando fields.Date
+        today = fields.Date.context_today(record)
+        deadline = today + relativedelta(days=3)
+
+        # Crear recordatorio
         env['mail.activity'].create({
             'res_model_id': env['ir.model'].search([('model', '=', 'crm.lead')], limit=1).id,
             'res_id': record.id,
             'activity_type_id': env.ref('mail.mail_activity_data_todo').id,
             'summary': 'Solicitar documentos de credito al cliente',
-            'date_deadline': (datetime.now() + timedelta(days=3)).date(),
+            'date_deadline': deadline,
             'user_id': record.user_id.id if record.user_id else env.user.id,
             'note': f'Cliente requiere financiamiento por {record.loan_amount or 0:,.2f}\n\n' +
                    'Documentos necesarios:\n' +
