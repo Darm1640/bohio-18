@@ -798,7 +798,10 @@ class BohioRealEstateController(http.Controller):
 
     @http.route(['/api/properties/arriendo'], type='json', auth='public', website=True, csrf=False)
     def api_properties_arriendo(self, limit=4, **kwargs):
-        """Endpoint específico para propiedades de arriendo en homepage"""
+        """
+        Endpoint específico para propiedades de arriendo en homepage
+        OPTIMIZADO: Usa search_read para cargar todos los campos en 1 query SQL
+        """
         _logger.info(f"[HOMEPAGE] Cargando {limit} propiedades de arriendo")
 
         Property = request.env['product.template'].sudo()
@@ -810,20 +813,41 @@ class BohioRealEstateController(http.Controller):
             ('type_service', 'in', ['rent', 'sale_rent'])
         ]
 
+        # OPTIMIZACIÓN: search_count para total
         total = Property.search_count(domain)
-        properties = Property.search(domain, limit=int(limit), order='write_date desc')
 
-        _logger.info(f"[HOMEPAGE] Encontradas {len(properties)} de {total} propiedades de arriendo")
+        # OPTIMIZACIÓN: search_read carga todos los campos en 1 query
+        properties_data = Property.search_read(
+            domain,
+            fields=[
+                'id', 'name', 'default_code',
+                'property_type', 'type_service',
+                'net_rental_price', 'net_price', 'currency_id',
+                'num_bedrooms', 'num_bathrooms', 'property_area',
+                'city_id', 'city', 'state_id', 'neighborhood',
+                'latitude', 'longitude',
+                'project_worksite_id',
+                'image_512',
+                'state'
+            ],
+            limit=int(limit),
+            order='write_date desc'
+        )
+
+        _logger.info(f"[HOMEPAGE] Encontradas {len(properties_data)} de {total} propiedades de arriendo")
 
         return {
             'success': True,
-            'properties': self._serialize_properties(properties, self.SEARCH_CONTEXTS['public']),
+            'properties': self._serialize_properties_fast(properties_data, self.SEARCH_CONTEXTS['public']),
             'total': total
         }
 
     @http.route(['/api/properties/venta-usada'], type='json', auth='public', website=True, csrf=False)
     def api_properties_venta_usada(self, limit=4, **kwargs):
-        """Endpoint específico para propiedades de venta usadas (sin proyecto)"""
+        """
+        Endpoint específico para propiedades de venta usadas (sin proyecto)
+        OPTIMIZADO: Usa search_read para cargar todos los campos en 1 query SQL
+        """
         _logger.info(f"[HOMEPAGE] Cargando {limit} propiedades de venta usada")
 
         Property = request.env['product.template'].sudo()
@@ -836,20 +860,41 @@ class BohioRealEstateController(http.Controller):
             ('project_worksite_id', '=', False)
         ]
 
+        # OPTIMIZACIÓN: search_count para total
         total = Property.search_count(domain)
-        properties = Property.search(domain, limit=int(limit), order='write_date desc')
 
-        _logger.info(f"[HOMEPAGE] Encontradas {len(properties)} de {total} propiedades usadas")
+        # OPTIMIZACIÓN: search_read carga todos los campos en 1 query
+        properties_data = Property.search_read(
+            domain,
+            fields=[
+                'id', 'name', 'default_code',
+                'property_type', 'type_service',
+                'net_rental_price', 'net_price', 'currency_id',
+                'num_bedrooms', 'num_bathrooms', 'property_area',
+                'city_id', 'city', 'state_id', 'neighborhood',
+                'latitude', 'longitude',
+                'project_worksite_id',
+                'image_512',
+                'state'
+            ],
+            limit=int(limit),
+            order='write_date desc'
+        )
+
+        _logger.info(f"[HOMEPAGE] Encontradas {len(properties_data)} de {total} propiedades usadas")
 
         return {
             'success': True,
-            'properties': self._serialize_properties(properties, self.SEARCH_CONTEXTS['public']),
+            'properties': self._serialize_properties_fast(properties_data, self.SEARCH_CONTEXTS['public']),
             'total': total
         }
 
     @http.route(['/api/properties/proyectos'], type='json', auth='public', website=True, csrf=False)
     def api_properties_proyectos(self, limit=4, **kwargs):
-        """Endpoint específico para propiedades en proyectos"""
+        """
+        Endpoint específico para propiedades en proyectos
+        OPTIMIZADO: Usa search_read para cargar todos los campos en 1 query SQL
+        """
         _logger.info(f"[HOMEPAGE] Cargando {limit} propiedades en proyectos")
 
         Property = request.env['product.template'].sudo()
@@ -862,14 +907,32 @@ class BohioRealEstateController(http.Controller):
             ('project_worksite_id', '!=', False)
         ]
 
+        # OPTIMIZACIÓN: search_count para total
         total = Property.search_count(domain)
-        properties = Property.search(domain, limit=int(limit), order='write_date desc')
 
-        _logger.info(f"[HOMEPAGE] Encontradas {len(properties)} de {total} propiedades en proyectos")
+        # OPTIMIZACIÓN: search_read carga todos los campos en 1 query
+        properties_data = Property.search_read(
+            domain,
+            fields=[
+                'id', 'name', 'default_code',
+                'property_type', 'type_service',
+                'net_rental_price', 'net_price', 'currency_id',
+                'num_bedrooms', 'num_bathrooms', 'property_area',
+                'city_id', 'city', 'state_id', 'neighborhood',
+                'latitude', 'longitude',
+                'project_worksite_id',
+                'image_512',
+                'state'
+            ],
+            limit=int(limit),
+            order='write_date desc'
+        )
+
+        _logger.info(f"[HOMEPAGE] Encontradas {len(properties_data)} de {total} propiedades en proyectos")
 
         return {
             'success': True,
-            'properties': self._serialize_properties(properties, self.SEARCH_CONTEXTS['public']),
+            'properties': self._serialize_properties_fast(properties_data, self.SEARCH_CONTEXTS['public']),
             'total': total
         }
 
