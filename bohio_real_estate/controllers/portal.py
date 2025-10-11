@@ -1315,8 +1315,8 @@ class BohioPortal(CustomerPortal):
                 'probability': opp.probability,
                 'stage': opp.stage_id.name if opp.stage_id else '',
                 'date_deadline': opp.date_deadline.isoformat() if opp.date_deadline else None,
-                'property_id': opp.property_id.id if opp.property_id else None,
-                'property_name': opp.property_id.name if opp.property_id else '',
+                'property_ids': opp.property_ids.ids if opp.property_ids else [],
+                'property_names': ', '.join(opp.property_ids.mapped('name')) if opp.property_ids else '',
             } for opp in opportunities]
         }
 
@@ -1350,8 +1350,8 @@ class BohioPortal(CustomerPortal):
                 'stage_id': opportunity.stage_id.id if opportunity.stage_id else None,
                 'stage_name': opportunity.stage_id.name if opportunity.stage_id else '',
                 'date_deadline': opportunity.date_deadline.isoformat() if opportunity.date_deadline else None,
-                'property_id': opportunity.property_id.id if opportunity.property_id else None,
-                'property_name': opportunity.property_id.name if opportunity.property_id else '',
+                'property_ids': opportunity.property_ids.ids if opportunity.property_ids else [],
+                'property_names': ', '.join(opportunity.property_ids.mapped('name')) if opportunity.property_ids else '',
                 'description': opportunity.description or '',
             }
         }
@@ -1682,7 +1682,7 @@ class BohioPortal(CustomerPortal):
 
         # Oportunidades relacionadas con esta propiedad
         opportunities = request.env['crm.lead'].search([
-            ('property_id', '=', prop.id)
+            ('property_ids', 'in', [prop.id])
         ], order='create_date desc')
 
         values = {
