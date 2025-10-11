@@ -20,12 +20,12 @@
                   groups="sales_team.group_sale_salesman"/>
 
         <!-- ========================================== -->
-        <!-- 2. PIPELINE (sequence 5) -->
+        <!-- 2. PIPELINE CANVAS (VISTA PRINCIPAL) (sequence 5) -->
         <!-- ========================================== -->
         <menuitem id="menu_bohio_crm_pipeline"
-                  name="Pipeline"
+                  name="Pipeline Canvas"
                   parent="menu_bohio_crm_root"
-                  action="action_bohio_crm_pipeline_dashboard"
+                  action="action_crm_lead_kanban_canvas_bohio"
                   sequence="5"/>
 
         <!-- ========================================== -->
@@ -36,24 +36,6 @@
                   parent="menu_bohio_crm_root"
                   action="action_bohio_crm_quick_create_opportunity"
                   sequence="7"/>
-
-        <!-- ========================================== -->
-        <!-- 2.7. VISTA KANBAN EXPANDIBLE (sequence 8) -->
-        <!-- ========================================== -->
-        <menuitem id="menu_bohio_crm_kanban_expandable"
-                  name="Pipeline Expandible"
-                  parent="menu_bohio_crm_root"
-                  action="action_crm_lead_kanban_bohio_expandable"
-                  sequence="8"/>
-
-        <!-- ========================================== -->
-        <!-- 2.8. VISTA FORM COMPLETA (sequence 9) -->
-        <!-- ========================================== -->
-        <menuitem id="menu_bohio_crm_form_expandable"
-                  name="Vista Completa Oportunidad"
-                  parent="menu_bohio_crm_root"
-                  action="action_crm_lead_form_expandable_full"
-                  sequence="9"/>
 
         <!-- ========================================== -->
         <!-- 3. OPORTUNIDADES (sequence 10) -->

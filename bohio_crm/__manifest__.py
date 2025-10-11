@@ -40,8 +40,8 @@
         'views/bohio_crm_complete_views.xml',
         'views/crm_lead_form_complete.xml',          # USA action_crm_capture_commission_report
         'views/crm_lead_quick_create_form.xml',
-        'views/crm_lead_kanban_expandable.xml',      # Vista Kanban Expandible con Sidebar
         'views/crm_lead_form_expandable_full.xml',   # Vista Form Expandible Completa
+        'views/crm_lead_kanban_canvas.xml',          # Vista Kanban Canvas ÚNICA (con mapa y lista)
         'views/company_contract_config_views.xml',
         'views/crm_salesperson_dashboard_views.xml',
 
@@ -59,8 +59,8 @@
             'bohio_crm/static/src/css/bohio_crm_list.css',
             'bohio_crm/static/src/css/bohio_dashboard.css',
             'bohio_crm/static/src/css/crm_quick_create_smart.css',  # Quick Create CSS
-            'bohio_crm/static/src/css/crm_kanban_sidebar.css',      # Kanban Sidebar CSS
             'bohio_crm/static/src/css/crm_form_expandable.css',     # Form Expandible CSS
+            'bohio_crm/static/src/css/crm_kanban_canvas.css',       # Kanban Canvas CSS ÚNICA
 
             # JS - Dashboard
             'bohio_crm/static/src/js/crm_bohio_form.js',

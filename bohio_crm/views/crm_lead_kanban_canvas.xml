@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ========================================
+         VISTA KANBAN CANVAS ÚNICA
+         Diseño elegante con mapa comprimido y lista agrupada
+         ======================================== -->
+
+    <record id="view_crm_lead_kanban_canvas_bohio" model="ir.ui.view">
+        <field name="name">crm.lead.kanban.canvas.bohio</field>
+        <field name="model">crm.lead</field>
+        <field name="priority">5</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="stage_id"
+                    class="o_kanban_small_column o_bohio_kanban_canvas"
+                    sample="1"
+                    quick_create="true"
+                    records_draggable="true"
+                    on_create="quick_create">
+
+                <!-- ============ CAMPOS ============ -->
+                <field name="id"/>
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="email_from"/>
+                <field name="phone"/>
+                <field name="mobile"/>
+                <field name="user_id"/>
+                <field name="stage_id"/>
+                <field name="priority"/>
+                <field name="color"/>
+                <field name="activity_state"/>
+                <field name="activity_ids"/>
+                <field name="create_date"/>
+
+                <!-- Clasificación -->
+                <field name="client_type"/>
+                <field name="service_interested"/>
+                <field name="request_source"/>
+
+                <!-- Financiero -->
+                <field name="expected_revenue"/>
+                <field name="probability"/>
+                <field name="company_currency"/>
+                <field name="estimated_commission"/>
+                <field name="date_deadline"/>
+
+                <!-- Propiedades -->
+                <field name="property_ids"/>
+                <field name="partner_latitude"/>
+                <field name="partner_longitude"/>
+
+                <!-- Preferencias -->
+                <field name="budget_min"/>
+                <field name="budget_max"/>
+                <field name="desired_city"/>
+                <field name="num_bedrooms_min"/>
+                <field name="property_area_min"/>
+
+                <!-- Contrato -->
+                <field name="contract_template_id"/>
+                <field name="reservation_id"/>
+
+                <!-- Marketing y otros -->
+                <field name="campaign_id"/>
+                <field name="requires_financing"/>
+
+                <!-- ============ TEMPLATES ============ -->
+                <templates>
+                    <t t-name="card">
+                        <aside class="o_kanban_aside">
+                            <field name="priority" widget="priority"/>
+                            <field name="color" widget="kanban_color_picker"/>
+                        </aside>
+
+                        <main class="o_bohio_canvas_card">
+
+                            <!-- HEADER COMPACTO -->
+                            <div class="o_canvas_header">
+                                <div class="o_canvas_title_section">
+                                    <strong class="o_kanban_record_title">
+                                        <field name="name"/>
+                                    </strong>
+                                    <div class="o_canvas_badges">
+                                        <span t-if="record.service_interested.raw_value"
+                                              t-attf-class="badge bg-{{
+                                                  record.service_interested.raw_value == 'sale' ? 'primary' :
+                                                  record.service_interested.raw_value == 'rent' ? 'info' :
+                                                  record.service_interested.raw_value == 'projects' ? 'success' :
+                                                  record.service_interested.raw_value == 'consign' ? 'warning' :
+                                                  'secondary'
+                                              }}">
+                                            <field name="service_interested"/>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- CLIENTE -->
+                            <div class="o_canvas_client">
+                                <div t-if="record.partner_id.raw_value" class="o_client_info">
+                                    <i class="fa fa-user me-1"/>
+                                    <field name="partner_id"/>
+                                </div>
+                                <div t-if="record.mobile.raw_value" class="o_client_contact">
+                                    <i class="fa fa-phone me-1"/>
+                                    <a t-attf-href="tel:{{record.mobile.raw_value}}"
+                                       class="text-decoration-none">
+                                        <field name="mobile"/>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <!-- MÉTRICAS PRINCIPALES -->
+                            <div class="o_canvas_metrics">
+                                <div t-if="record.expected_revenue.raw_value" class="o_metric_item">
+                                    <i class="fa fa-dollar-sign text-success me-1"/>
+                                    <strong>
+                                        <field name="expected_revenue" widget="monetary"/>
+                                    </strong>
+                                </div>
+                                <div t-if="record.estimated_commission.raw_value" class="o_metric_item">
+                                    <i class="fa fa-percentage text-primary me-1"/>
+                                    <span>
+                                        <field name="estimated_commission" widget="monetary"/>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <!-- PROPIEDADES -->
+                            <div t-if="record.property_ids.raw_value.length > 0" class="o_canvas_properties">
+                                <div class="o_properties_count">
+                                    <i class="fa fa-home me-1"/>
+                                    <strong><t t-esc="record.property_ids.raw_value.length"/> Propiedades</strong>
+                                </div>
+                            </div>
+
+                            <!-- PREFERENCIAS RESUMIDAS -->
+                            <div class="o_canvas_prefs">
+                                <t t-if="record.desired_city.raw_value">
+                                    <span class="o_pref_badge">
+                                        <i class="fa fa-map-marker-alt me-1"/>
+                                        <field name="desired_city"/>
+                                    </span>
+                                </t>
+                                <t t-if="record.budget_min.raw_value">
+                                    <span class="o_pref_badge">
+                                        <i class="fa fa-dollar-sign me-1"/>
+                                        <field name="budget_min" widget="monetary"/>
+                                    </span>
+                                </t>
+                                <t t-if="record.num_bedrooms_min.raw_value">
+                                    <span class="o_pref_badge">
+                                        <i class="fa fa-bed me-1"/>
+                                        <field name="num_bedrooms_min"/> HAB
+                                    </span>
+                                </t>
+                            </div>
+
+                            <!-- MAPA COMPRIMIDO (COLAPSABLE) -->
+                            <div class="o_canvas_map_section">
+                                <a role="button"
+                                   class="o_map_toggle collapsed"
+                                   data-bs-toggle="collapse"
+                                   t-attf-data-bs-target="#map_{{record.id.raw_value}}">
+                                    <i class="fa fa-map me-1"/>
+                                    <span class="when-collapsed">Ver Mapa</span>
+                                    <span class="when-expanded">Ocultar Mapa</span>
+                                </a>
+
+                                <div t-attf-id="map_{{record.id.raw_value}}"
+                                     class="collapse o_map_container">
+                                    <div t-if="record.partner_latitude.raw_value and record.partner_longitude.raw_value"
+                                         class="o_mini_map"
+                                         t-attf-data-lat="{{record.partner_latitude.raw_value}}"
+                                         t-attf-data-lng="{{record.partner_longitude.raw_value}}">
+                                        <!-- Mapa se renderiza via JS -->
+                                        <div class="o_map_placeholder">
+                                            <i class="fa fa-map-marked-alt fa-2x text-muted"/>
+                                            <p class="text-muted small mt-2">
+                                                Ubicación basada en propiedades de interés
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div t-else="" class="o_map_empty">
+                                        <i class="fa fa-map-marked-alt text-muted me-1"/>
+                                        <span class="text-muted">Sin ubicación disponible</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- DETALLES ADICIONALES (COLAPSABLE) -->
+                            <div class="o_canvas_details_section">
+                                <a role="button"
+                                   class="o_details_toggle collapsed"
+                                   data-bs-toggle="collapse"
+                                   t-attf-data-bs-target="#details_{{record.id.raw_value}}">
+                                    <i class="fa fa-info-circle me-1"/>
+                                    <span class="when-collapsed">Ver Más Detalles</span>
+                                    <span class="when-expanded">Ocultar Detalles</span>
+                                </a>
+
+                                <div t-attf-id="details_{{record.id.raw_value}}"
+                                     class="collapse o_details_content">
+
+                                    <!-- Email y Teléfono -->
+                                    <div class="o_detail_group">
+                                        <div t-if="record.email_from.raw_value" class="o_detail_item">
+                                            <i class="fa fa-envelope text-primary me-1"/>
+                                            <a t-attf-href="mailto:{{record.email_from.raw_value}}"
+                                               class="small">
+                                                <field name="email_from"/>
+                                            </a>
+                                        </div>
+                                        <div t-if="record.phone.raw_value" class="o_detail_item">
+                                            <i class="fa fa-phone text-info me-1"/>
+                                            <a t-attf-href="tel:{{record.phone.raw_value}}"
+                                               class="small">
+                                                <field name="phone"/>
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                    <!-- Tipo de Cliente -->
+                                    <div t-if="record.client_type.raw_value" class="o_detail_group">
+                                        <div class="o_detail_item">
+                                            <i class="fa fa-user-tag text-secondary me-1"/>
+                                            <strong class="small">Tipo:</strong>
+                                            <span class="badge bg-secondary small">
+                                                <field name="client_type"/>
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Origen -->
+                                    <div t-if="record.request_source.raw_value" class="o_detail_group">
+                                        <div class="o_detail_item">
+                                            <i class="fa fa-bullseye text-warning me-1"/>
+                                            <strong class="small">Origen:</strong>
+                                            <span class="badge bg-info small">
+                                                <field name="request_source"/>
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Contrato -->
+                                    <div t-if="record.contract_template_id.raw_value" class="o_detail_group">
+                                        <div class="o_detail_item">
+                                            <i class="fa fa-file-contract text-success me-1"/>
+                                            <strong class="small">Contrato:</strong>
+                                            <span class="small">
+                                                <field name="contract_template_id"/>
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Fecha de Cierre -->
+                                    <div t-if="record.date_deadline.raw_value" class="o_detail_group">
+                                        <div class="o_detail_item">
+                                            <i class="fa fa-calendar-check text-danger me-1"/>
+                                            <strong class="small">Cierre:</strong>
+                                            <span class="small">
+                                                <field name="date_deadline"/>
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Badges Adicionales -->
+                                    <div class="o_detail_badges mt-2">
+                                        <span t-if="record.campaign_id.raw_value"
+                                              class="badge bg-danger small"
+                                              title="Campaña de Marketing">
+                                            <i class="fa fa-bullhorn me-1"/>
+                                            Marketing
+                                        </span>
+                                        <span t-if="record.requires_financing.raw_value"
+                                              class="badge bg-warning small"
+                                              title="Requiere Financiamiento">
+                                            <i class="fa fa-university me-1"/>
+                                            Financiamiento
+                                        </span>
+                                        <span t-if="record.reservation_id.raw_value"
+                                              class="badge bg-success small"
+                                              title="Tiene Reserva">
+                                            <i class="fa fa-bookmark me-1"/>
+                                            Reservado
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- FOOTER CON RESPONSABLE Y ACTIVIDADES -->
+                            <div class="o_canvas_footer">
+                                <div t-if="record.user_id.raw_value" class="o_footer_user">
+                                    <field name="user_id" widget="many2one_avatar_user"/>
+                                </div>
+                                <div class="o_footer_activity">
+                                    <field name="activity_ids" widget="kanban_activity"/>
+                                </div>
+                            </div>
+
+                        </main>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- ========================================
+         ACCIÓN: Kanban Canvas
+         ======================================== -->
+    <record id="action_crm_lead_kanban_canvas_bohio" model="ir.actions.act_window">
+        <field name="name">CRM - Pipeline Canvas</field>
+        <field name="res_model">crm.lead</field>
+        <field name="view_mode">kanban,list,form,calendar,pivot,graph</field>
+        <field name="view_id" ref="view_crm_lead_kanban_canvas_bohio"/>
+        <field name="domain">[('type', '=', 'opportunity')]</field>
+        <field name="context">{
+            'default_type': 'opportunity',
+            'search_default_assigned_to_me': 1,
+        }</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                ¡Crea tu primera oportunidad!
+            </p>
+            <p>
+                Usa la vista canvas para gestionar tus oportunidades de forma visual.
+            </p>
+        </field>
+    </record>
+
+</odoo>
