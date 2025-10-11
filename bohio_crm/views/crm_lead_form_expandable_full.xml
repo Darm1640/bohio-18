@@ -192,12 +192,12 @@
                             <!-- ============ SECCIÓN 3: MAPA CON UBICACIÓN ============ -->
                             <group name="map_section" string="Ubicación de Propiedades" invisible="not id">
                                 <!-- Toggle para Mostrar/Ocultar Ubicación -->
-                                <div class="form-check form-switch mb-3">
-                                    <field name="show_map_location" widget="boolean_toggle" nolabel="1"/>
-                                    <label class="form-check-label ms-2">
+                                <div class="d-flex align-items-center mb-3">
+                                    <field name="show_map_location" widget="boolean_toggle" nolabel="1" class="me-2"/>
+                                    <span class="o_form_label">
                                         <i class="fa fa-map-marker-alt me-1"/>
                                         Mostrar ubicaciones en mapa
-                                    </label>
+                                    </span>
                                 </div>
 
                                 <!-- Widget de Mapa Interactivo con Leaflet -->
