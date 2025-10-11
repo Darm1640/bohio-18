@@ -13,9 +13,9 @@
                     <div class="container-fluid">
                         <!-- Logo -->
                         <a class="navbar-brand d-flex align-items-center" href="/mybohio">
-                            <img src="/bohio_real_estate/static/img/logo-horizontal-bohio.png"
+                            <img src="/bohio_real_estate/static/img/logo-blanco.png"
                                  alt="BOHIO"
-                                 style="height: 40px; filter: brightness(0) invert(1);"
+                                 style="height: 40px;"
                                  class="me-2"/>
                             <span class="fw-bold">Portal MyBOHIO</span>
                         </a>
