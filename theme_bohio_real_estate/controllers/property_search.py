@@ -607,11 +607,13 @@ class PropertySearchController(http.Controller):
             image_url = website.image_url(prop, 'image_512') if prop.image_512 else '/theme_bohio_real_estate/static/src/img/placeholder.jpg'
 
             # Obtener valores de selection fields correctamente
+            # En Odoo 18, selection puede ser una función que recibe el modelo
             property_type_label = ''
             if prop.property_type:
                 selection_field = prop._fields['property_type']
                 if callable(selection_field.selection):
-                    selection_list = selection_field.selection(prop.env)
+                    # La función selection recibe el modelo, no el env
+                    selection_list = selection_field.selection(prop)
                 else:
                     selection_list = selection_field.selection
                 property_type_label = dict(selection_list).get(prop.property_type, '')
@@ -620,7 +622,8 @@ class PropertySearchController(http.Controller):
             if prop.type_service:
                 selection_field = prop._fields['type_service']
                 if callable(selection_field.selection):
-                    selection_list = selection_field.selection(prop.env)
+                    # La función selection recibe el modelo, no el env
+                    selection_list = selection_field.selection(prop)
                 else:
                     selection_list = selection_field.selection
                 type_service_label = dict(selection_list).get(prop.type_service, '')
