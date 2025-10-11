@@ -361,9 +361,9 @@
                                     <small class="text-muted d-block">Área</small>
                                     <strong><span t-esc="property.property_area"/> m²</strong>
                                 </div>
-                                <div class="mb-3" t-if="property.parking_spaces and property.parking_spaces > 0">
+                                <div class="mb-3" t-if="(property.covered_parking or 0) + (property.uncovered_parking or 0) and (property.covered_parking or 0) + (property.uncovered_parking or 0) > 0">
                                     <small class="text-muted d-block">Parqueaderos</small>
-                                    <strong><i class="fa fa-car"></i> <span t-esc="int(property.parking_spaces)"/></strong>
+                                    <strong><i class="fa fa-car"></i> <span t-esc="int((property.covered_parking or 0) + (property.uncovered_parking or 0))"/></strong>
                                 </div>
                                 <div class="mb-0" t-if="property.stratum">
                                     <small class="text-muted d-block">Estrato</small>
