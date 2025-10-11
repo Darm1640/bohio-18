@@ -27,9 +27,13 @@
         # Seguridad
         'security/ir.model.access.csv',
 
+        # Datos
+        'data/crm_automated_actions.xml',  # NUEVO: Automatizaciones
+
         # Vistas
         'views/bohio_crm_complete_views.xml',
         'views/crm_lead_form_complete.xml',
+        'views/crm_lead_quick_create_form.xml',  # NUEVA: Quick Create Inteligente
         'views/company_contract_config_views.xml',
         'views/crm_salesperson_dashboard_views.xml',
 
@@ -39,6 +43,7 @@
 
         # Reportes
         'report/property_comparison_report.xml',
+        'views/crm_capture_commission_report.xml',  # NUEVO: Reportes de Comisiones y Campañas
 
         # Timeline View
         'views/bohio_timeline_view_actions.xml',
@@ -50,6 +55,7 @@
             'bohio_crm/static/src/css/bohio_crm_kanban.css',
             'bohio_crm/static/src/css/bohio_crm_list.css',
             'bohio_crm/static/src/css/bohio_dashboard.css',
+            'bohio_crm/static/src/css/crm_quick_create_smart.css',  # NUEVO: Quick Create CSS
 
             # JS - Dashboard
             'bohio_crm/static/src/js/crm_bohio_form.js',
@@ -57,6 +63,9 @@
             'bohio_crm/static/src/views/bohio_crm_dashboard.xml',
             'bohio_crm/static/src/views/bohio_crm_kanbanview.js',
             'bohio_crm/static/src/views/bohio_crm_kanbanview.xml',
+
+            # Quick Create Inteligente
+            'bohio_crm/static/src/js/crm_quick_create_smart.js',  # NUEVO: Quick Create JS
 
             # Salesperson Dashboard
             'bohio_crm/static/src/js/crm_salesperson_dashboard.js',

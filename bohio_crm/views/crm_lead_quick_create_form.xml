@@ -1,0 +1,705 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ========================================
+         VISTA QUICK CREATE INTELIGENTE BOHIO CRM
+         Inspirada en Bank Reconciliation Widget
+         Campos condicionales dinámicos
+         ======================================== -->
+
+    <record id="view_crm_lead_quick_create_form_bohio" model="ir.ui.view">
+        <field name="name">crm.lead.quick.create.form.bohio</field>
+        <field name="model">crm.lead</field>
+        <field name="priority">1</field>
+        <field name="arch" type="xml">
+            <form string="Nueva Oportunidad" class="o_bohio_quick_create_form">
+                <!-- ============ CAMPOS INVISIBLES PARA CONTROL ============ -->
+                <field name="id" invisible="1"/>
+                <field name="stage_id" invisible="1"/>
+                <field name="company_currency" invisible="1"/>
+                <field name="type" invisible="1"/>
+                <field name="active" invisible="1"/>
+
+                <sheet>
+                    <!-- ============ HEADER CON BADGES CONDICIONALES ============ -->
+                    <div class="oe_title mb-3">
+                        <h1>
+                            <field name="name"
+                                   placeholder="Ej: Venta apartamento para Juan Pérez..."
+                                   required="1"
+                                   class="o_text_overflow"/>
+                        </h1>
+
+                        <!-- Badges Dinámicos de Estado (como Bank Widget: To check, Matched) -->
+                        <div class="o_bohio_stage_badges mt-2" name="stage_badges_section">
+                            <!-- NUEVO: Sin etapa asignada -->
+                            <span class="badge text-bg-info me-2"
+                                  invisible="stage_id">
+                                <i class="fa fa-star me-1"/>Nueva Oportunidad
+                            </span>
+
+                            <!-- SEGUIMIENTO: Probabilidad baja (< 20%) -->
+                            <span class="badge text-bg-warning me-2"
+                                  invisible="not stage_id or stage_id.probability &gt;= 20">
+                                <i class="fa fa-flag me-1"/>Seguimiento Requerido
+                            </span>
+
+                            <!-- NEGOCIACIÓN: Probabilidad media (20-69%) -->
+                            <span class="badge text-bg-primary me-2"
+                                  invisible="not stage_id or stage_id.probability &lt; 20 or stage_id.probability &gt;= 70">
+                                <i class="fa fa-handshake me-1"/>En Negociación
+                            </span>
+
+                            <!-- PROPUESTA: Probabilidad alta (70-99%) -->
+                            <span class="badge text-bg-success me-2"
+                                  invisible="not stage_id or stage_id.probability &lt; 70 or stage_id.is_won">
+                                <i class="fa fa-chart-line me-1"/>Propuesta Enviada
+                            </span>
+
+                            <!-- GANADA: is_won = True -->
+                            <span class="badge text-bg-success me-2"
+                                  invisible="not stage_id or not stage_id.is_won">
+                                <i class="fa fa-check-circle me-1"/>✓ Ganada
+                            </span>
+
+                            <!-- CAPTACIÓN: service = consign -->
+                            <span class="badge text-bg-warning me-2"
+                                  invisible="service_interested != 'consign'">
+                                <i class="fa fa-building me-1"/>📝 Captación
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- ============ SECCIÓN 1: CLASIFICACIÓN PRINCIPAL (SIEMPRE VISIBLE) ============ -->
+                    <group name="main_classification" string="Clasificación">
+                        <group name="service_classification">
+                            <!-- Campo CLAVE que controla visibilidad -->
+                            <field name="service_interested"
+                                   widget="radio"
+                                   options="{'horizontal': true}"
+                                   required="1"
+                                   class="o_bohio_service_selector"/>
+
+                            <!-- Cliente: REQUERIDO si NO es servicio corporativo -->
+                            <field name="client_type"
+                                   widget="badge"
+                                   required="service_interested not in ['legal', 'marketing', 'corporate']"
+                                   decoration-info="client_type in ['buyer', 'tenant']"
+                                   decoration-success="client_type in ['owner', 'seller']"
+                                   decoration-warning="client_type == 'investor'"/>
+                        </group>
+
+                        <group name="origin_tracking">
+                            <!-- Origen: REQUERIDO siempre -->
+                            <field name="request_source"
+                                   widget="badge"
+                                   required="1"
+                                   decoration-primary="request_source == 'website'"
+                                   decoration-info="request_source == 'whatsapp'"
+                                   decoration-success="request_source == 'property_inquiry'"
+                                   decoration-warning="request_source == 'pqrs'"/>
+
+                            <!-- Responsable: REQUERIDO siempre -->
+                            <field name="user_id"
+                                   string="Responsable"
+                                   widget="many2one_avatar_user"
+                                   required="1"/>
+                        </group>
+                    </group>
+
+                    <!-- ============ SEPARADOR CONDICIONAL: CAPTACIÓN (Como Bank Widget "Statement") ============ -->
+                    <div class="o_bohio_consign_separator alert alert-warning text-center mb-3"
+                         invisible="service_interested != 'consign'"
+                         name="consign_action_section">
+                        <i class="fa fa-building fa-2x mb-2 text-danger"/>
+                        <p class="mb-2 fw-bold fs-5">¿El cliente quiere consignar un inmueble?</p>
+                        <button name="action_create_property_from_lead"
+                                type="object"
+                                string="Crear Ficha de Inmueble"
+                                class="btn btn-danger btn-lg"
+                                icon="fa-plus-circle">
+                            <i class="fa fa-plus-circle me-2"/>Crear Ficha de Inmueble
+                        </button>
+                        <p class="small text-muted mt-2 mb-0">
+                            <i class="fa fa-info-circle me-1"/>
+                            Esto creará una nueva propiedad vinculada automáticamente
+                        </p>
+                    </div>
+
+                    <!-- ============ SECCIÓN 2: CLIENTE (SIEMPRE VISIBLE) ============ -->
+                    <group name="customer_info" string="Información del Cliente">
+                        <group>
+                            <!-- Partner: REQUERIDO si NO es lead nuevo -->
+                            <field name="partner_id"
+                                   required="type == 'opportunity'"
+                                   options="{'no_create': False, 'no_open': False}"
+                                   context="{'show_address': 1, 'show_email': 1, 'show_vat': 1}"/>
+
+                            <!-- Email: REQUERIDO si NO hay partner -->
+                            <field name="email_from"
+                                   widget="email"
+                                   required="not partner_id"
+                                   placeholder="correo@ejemplo.com"/>
+                        </group>
+                        <group>
+                            <!-- Teléfono: REQUERIDO si NO hay partner -->
+                            <field name="phone"
+                                   widget="phone"
+                                   required="not partner_id"
+                                   placeholder="+57 300 123 4567"/>
+
+                            <field name="referred_by_partner_id"
+                                   string="Referido Por"
+                                   options="{'no_create': True}"/>
+                        </group>
+                    </group>
+
+                    <!-- ============ SECCIÓN 3: VENTA - Preferencias de Compra ============ -->
+                    <group name="sale_fields"
+                           string="Preferencias de Compra"
+                           invisible="service_interested not in ['sale', 'projects']">
+                        <group>
+                            <label for="budget_min" string="Rango de Presupuesto"/>
+                            <div class="o_row">
+                                <field name="budget_min"
+                                       class="oe_inline"
+                                       widget="monetary"
+                                       required="service_interested in ['sale', 'projects']"
+                                       options="{'currency_field': 'company_currency'}"/>
+                                <span class="mx-2 text-muted fw-bold">—</span>
+                                <field name="budget_max"
+                                       class="oe_inline"
+                                       widget="monetary"
+                                       options="{'currency_field': 'company_currency'}"/>
+                            </div>
+
+                            <!-- Tipo: REQUERIDO para venta -->
+                            <field name="desired_property_type_id"
+                                   string="Tipo de Inmueble"
+                                   required="service_interested == 'sale'"/>
+
+                            <field name="property_purpose" string="Propósito"/>
+                        </group>
+                        <group>
+                            <!-- Ciudad: REQUERIDO para venta -->
+                            <field name="desired_city"
+                                   placeholder="Ej: Bogotá, Medellín..."
+                                   required="service_interested == 'sale'"/>
+
+                            <field name="desired_neighborhood"
+                                   placeholder="Ej: Chapinero, Poblado..."/>
+
+                            <!-- Habitaciones: Al menos 1 si es venta -->
+                            <field name="num_bedrooms_min"
+                                   string="Habitaciones Mínimas"
+                                   placeholder="Ej: 2"/>
+                        </group>
+                    </group>
+
+                    <!-- ============ SECCIÓN 4: ARRIENDO - Información de Arrendamiento ============ -->
+                    <group name="rent_fields"
+                           string="Información de Arriendo"
+                           invisible="service_interested != 'rent'">
+                        <group>
+                            <label for="budget_min" string="Presupuesto Mensual"/>
+                            <div class="o_row">
+                                <field name="budget_min"
+                                       class="oe_inline"
+                                       widget="monetary"
+                                       required="service_interested == 'rent'"
+                                       options="{'currency_field': 'company_currency'}"/>
+                                <span class="mx-2 text-muted">hasta</span>
+                                <field name="budget_max"
+                                       class="oe_inline"
+                                       widget="monetary"
+                                       options="{'currency_field': 'company_currency'}"/>
+                            </div>
+
+                            <!-- Ingresos: REQUERIDO para arriendo -->
+                            <field name="monthly_income"
+                                   string="Ingresos Mensuales"
+                                   widget="monetary"
+                                   required="service_interested == 'rent'"
+                                   help="Importante para validar capacidad de pago"/>
+
+                            <field name="number_of_occupants"
+                                   string="Número de Ocupantes"
+                                   placeholder="Ej: 3"/>
+                        </group>
+                        <group>
+                            <!-- Mascotas: Trigger para mostrar tipo -->
+                            <field name="has_pets"/>
+
+                            <!-- Tipo de mascota: REQUERIDO si has_pets=True -->
+                            <field name="pet_type"
+                                   invisible="not has_pets"
+                                   required="has_pets"
+                                   widget="radio"/>
+
+                            <!-- Parqueadero: Trigger para mostrar cantidad -->
+                            <field name="requires_parking"/>
+
+                            <!-- Cantidad: REQUERIDO si requires_parking=True -->
+                            <field name="parking_spots"
+                                   invisible="not requires_parking"
+                                   required="requires_parking"/>
+                        </group>
+                    </group>
+
+                    <!-- ============ SECCIÓN 5: PROYECTOS - Información de Inversión ============ -->
+                    <group name="project_fields"
+                           string="Información de Proyecto"
+                           invisible="service_interested != 'projects'">
+                        <!-- Proyecto: REQUERIDO para proyectos -->
+                        <field name="project_id"
+                               required="service_interested == 'projects'"
+                               options="{'no_create': False}"
+                               domain="[('is_enabled', '=', True)]"
+                               context="{'default_is_enabled': True}"/>
+
+                        <field name="property_purpose"
+                               string="Propósito de la Inversión"
+                               required="service_interested == 'projects'"/>
+                    </group>
+
+                    <!-- ============ SECCIÓN 6: CONSIGNACIÓN - Datos del Inmueble ============ -->
+                    <group name="consign_fields"
+                           string="Información del Inmueble a Consignar"
+                           invisible="service_interested != 'consign'">
+                        <group>
+                            <!-- Ubicación: REQUERIDO para consignación -->
+                            <field name="desired_city"
+                                   string="Ciudad"
+                                   placeholder="Ciudad del inmueble"
+                                   required="service_interested == 'consign'"/>
+
+                            <field name="desired_neighborhood"
+                                   string="Barrio"
+                                   placeholder="Barrio/Sector"
+                                   required="service_interested == 'consign'"/>
+
+                            <!-- Tipo: REQUERIDO para consignación -->
+                            <field name="desired_property_type_id"
+                                   string="Tipo de Inmueble"
+                                   required="service_interested == 'consign'"/>
+                        </group>
+                        <group>
+                            <!-- Valor: REQUERIDO para consignación -->
+                            <field name="expected_revenue"
+                                   string="Valor Estimado"
+                                   widget="monetary"
+                                   required="service_interested == 'consign'"
+                                   help="Valor aproximado del inmueble"/>
+
+                            <field name="property_area_min"
+                                   string="Área (m²)"
+                                   placeholder="Ej: 80"/>
+
+                            <field name="num_bedrooms_min"
+                                   string="Habitaciones"/>
+                        </group>
+                    </group>
+
+                    <!-- ============ SECCIÓN 6B: CAPTACIÓN - Información de Captación ============ -->
+                    <group name="capture_fields"
+                           string="Información de Captación"
+                           invisible="service_interested != 'consign'">
+                        <group>
+                            <!-- Captado Por -->
+                            <field name="captured_by_id"
+                                   string="Captado Por"
+                                   widget="many2one_avatar_user"
+                                   help="Vendedor que consiguió la propiedad"/>
+
+                            <!-- Fecha de Captación -->
+                            <field name="capture_date"
+                                   string="Fecha de Captación"
+                                   help="Fecha en que se consiguió la propiedad"/>
+
+                            <!-- Fuente de Captación -->
+                            <field name="capture_source"
+                                   string="Fuente de Captación"
+                                   help="Cómo se consiguió esta propiedad"/>
+                        </group>
+                        <group>
+                            <!-- Tasa de Comisión -->
+                            <field name="capture_commission_rate"
+                                   string="% Comisión"
+                                   placeholder="Ej: 2.0"
+                                   help="Porcentaje de comisión por captación"/>
+
+                            <!-- Monto de Comisión (CALCULADO) -->
+                            <field name="capture_commission_amount"
+                                   string="Comisión Estimada"
+                                   widget="monetary"
+                                   readonly="1"
+                                   class="text-success fw-bold"
+                                   help="Calculada automáticamente: ingreso esperado × % comisión"/>
+                        </group>
+                    </group>
+
+                    <!-- ============ SECCIÓN 7A: MARKETING - Campaña Publicitaria ============ -->
+                    <group name="marketing_campaign_fields"
+                           string="Campaña de Marketing"
+                           invisible="service_interested != 'marketing'">
+                        <group>
+                            <!-- Tipo de Campaña: REQUERIDO para marketing -->
+                            <field name="marketing_campaign_type"
+                                   required="service_interested == 'marketing'"
+                                   widget="radio"/>
+
+                            <!-- Cantidad de Publicaciones: REQUERIDO para marketing -->
+                            <field name="marketing_quantity"
+                                   string="Cantidad de Anuncios"
+                                   placeholder="Ej: 10"
+                                   required="service_interested == 'marketing'"
+                                   help="Número total de publicaciones o anuncios a crear"/>
+
+                            <!-- Horario de Publicación -->
+                            <field name="marketing_schedule"
+                                   string="Horario Preferido"
+                                   help="Horario en que se publicarán los anuncios"/>
+                        </group>
+                        <group>
+                            <!-- Alcance Estimado -->
+                            <field name="marketing_estimated_reach"
+                                   string="Personas a Alcanzar"
+                                   placeholder="Ej: 5000"
+                                   help="Cantidad estimada de personas que verán la campaña"/>
+
+                            <!-- Presupuesto Asignado: REQUERIDO para marketing -->
+                            <field name="marketing_budget_allocated"
+                                   string="Presupuesto Asignado"
+                                   widget="monetary"
+                                   required="service_interested == 'marketing'"
+                                   help="Presupuesto total para la campaña"/>
+
+                            <!-- Valor del Servicio -->
+                            <field name="expected_revenue"
+                                   string="Valor del Servicio"
+                                   widget="monetary"
+                                   required="service_interested == 'marketing'"
+                                   help="Lo que cobramos al cliente por la campaña"/>
+                        </group>
+
+                        <!-- Fechas de Campaña -->
+                        <group string="Fechas de la Campaña">
+                            <label for="marketing_start_date" string="Período de Ejecución"/>
+                            <div class="o_row">
+                                <field name="marketing_start_date"
+                                       class="oe_inline"
+                                       required="service_interested == 'marketing'"/>
+                                <span class="mx-2">—</span>
+                                <field name="marketing_end_date"
+                                       class="oe_inline"
+                                       required="service_interested == 'marketing'"/>
+                            </div>
+                        </group>
+
+                        <!-- Descripción de la Campaña -->
+                        <field name="description"
+                               string="Descripción de la Campaña"
+                               placeholder="Describe los objetivos, público objetivo, mensajes clave..."
+                               required="service_interested == 'marketing'"
+                               nolabel="1"/>
+                    </group>
+
+                    <!-- ============ SECCIÓN 7B: OTROS SERVICIOS (Legal, Corporate, etc.) ============ -->
+                    <group name="service_fields"
+                           string="Detalles del Servicio"
+                           invisible="service_interested not in ['legal', 'corporate', 'valuation']">
+                        <!-- Valor: REQUERIDO para servicios -->
+                        <field name="expected_revenue"
+                               string="Valor Estimado del Servicio"
+                               widget="monetary"
+                               required="service_interested in ['legal', 'corporate', 'valuation']"/>
+
+                        <!-- Descripción: REQUERIDO para servicios -->
+                        <field name="description"
+                               string="Descripción del Requerimiento"
+                               placeholder="Describe los detalles del servicio solicitado..."
+                               required="service_interested in ['legal', 'corporate', 'valuation']"
+                               nolabel="1"/>
+                    </group>
+
+                    <!-- ============ SECCIÓN 8: CARACTERÍSTICAS (Solo Venta/Arriendo) ============ -->
+                    <group name="general_preferences"
+                           string="Características Deseadas"
+                           invisible="service_interested not in ['sale', 'rent']">
+                        <group>
+                            <label for="num_bedrooms_min" string="Habitaciones"/>
+                            <div class="o_row">
+                                <field name="num_bedrooms_min"
+                                       class="oe_inline"
+                                       placeholder="Mín: 2"/>
+                                <span class="mx-2 text-muted">a</span>
+                                <field name="num_bedrooms_max"
+                                       class="oe_inline"
+                                       placeholder="Máx: 4"/>
+                            </div>
+
+                            <field name="num_bathrooms_min"
+                                   string="Baños Mínimos"
+                                   placeholder="Ej: 2"/>
+                        </group>
+                        <group>
+                            <label for="property_area_min" string="Área (m²)"/>
+                            <div class="o_row">
+                                <field name="property_area_min"
+                                       class="oe_inline"
+                                       placeholder="Mín: 60"/>
+                                <span class="mx-2 text-muted">a</span>
+                                <field name="property_area_max"
+                                       class="oe_inline"
+                                       placeholder="Máx: 120"/>
+                            </div>
+                        </group>
+                    </group>
+
+                    <!-- ============ SECCIÓN 9: AMENIDADES (Solo Venta/Arriendo) ============ -->
+                    <group name="amenities"
+                           string="Amenidades Requeridas"
+                           invisible="service_interested not in ['sale', 'rent']">
+                        <group>
+                            <field name="requires_gym" widget="boolean_toggle"/>
+                            <field name="requires_pool" widget="boolean_toggle"/>
+                            <field name="requires_elevator" widget="boolean_toggle"/>
+                        </group>
+                        <group>
+                            <field name="requires_security" widget="boolean_toggle"/>
+                            <field name="requires_common_areas" widget="boolean_toggle"/>
+                        </group>
+                    </group>
+
+                    <!-- ============ SECCIÓN 10: PROPIEDADES DE INTERÉS (NO en Consignación) ============ -->
+                    <group name="related_properties"
+                           string="Propiedades de Interés"
+                           invisible="service_interested in ['consign', 'legal', 'marketing', 'corporate', 'valuation']">
+                        <field name="property_ids"
+                               widget="many2many_tags"
+                               options="{'color_field': 'color', 'no_create': True}"
+                               domain="[('is_property', '=', True), ('state', '=', 'free'), ('type_service', '=', service_interested if service_interested in ['sale', 'rent'] else False)]"
+                               placeholder="Busca propiedades disponibles..."
+                               nolabel="1"
+                               help="Propiedades que el cliente ha visto o le interesan"/>
+                    </group>
+
+                    <!-- ============ SECCIÓN 10B: FINANCIAMIENTO - Información de Préstamo ============ -->
+                    <group name="financing_fields"
+                           string="Información de Financiamiento"
+                           invisible="service_interested not in ['sale', 'projects']">
+                        <group>
+                            <!-- Requiere Financiamiento -->
+                            <field name="requires_financing"
+                                   widget="boolean_toggle"/>
+
+                            <!-- Tipo de Préstamo: REQUERIDO si requires_financing -->
+                            <field name="loan_type"
+                                   invisible="not requires_financing"
+                                   required="requires_financing"
+                                   help="Tipo de financiamiento que buscará el cliente"/>
+
+                            <!-- Banco: Visible si es hipoteca bancaria -->
+                            <field name="loan_bank_id"
+                                   string="Banco"
+                                   invisible="loan_type != 'bank_mortgage'"
+                                   help="Entidad bancaria para la hipoteca"/>
+                        </group>
+                        <group>
+                            <!-- Monto del Préstamo -->
+                            <field name="loan_amount"
+                                   string="Monto del Préstamo"
+                                   widget="monetary"
+                                   invisible="not requires_financing"
+                                   help="Monto que el cliente necesita financiar"/>
+
+                            <!-- Estado de Aprobación -->
+                            <field name="loan_approval_status"
+                                   string="Estado de Aprobación"
+                                   invisible="not requires_financing"
+                                   widget="badge"
+                                   decoration-info="loan_approval_status == 'not_applied'"
+                                   decoration-warning="loan_approval_status in ['pending', 'study']"
+                                   decoration-success="loan_approval_status == 'approved'"
+                                   decoration-danger="loan_approval_status == 'rejected'"/>
+
+                            <!-- Documentos del Crédito -->
+                            <field name="loan_document_ids"
+                                   string="Documentos para Estudio"
+                                   widget="many2many_tags"
+                                   invisible="not requires_financing"
+                                   help="Documentos necesarios para el estudio de crédito"/>
+                        </group>
+
+                        <!-- Alerta si necesita documentos -->
+                        <div class="alert alert-info text-center"
+                             invisible="not requires_financing or loan_approval_status != 'not_applied'">
+                            <i class="fa fa-info-circle me-2"/>
+                            <strong>Documentos necesarios para estudio de crédito</strong>
+                            <p class="mb-0 mt-2">El cliente debe entregar: cédula, certificado laboral, extractos bancarios</p>
+                        </div>
+                    </group>
+
+                    <!-- ============ SECCIÓN 10C: RESERVA Y VISITAS ============ -->
+                    <group name="visit_reservation_fields"
+                           string="Programación de Visita y Reserva"
+                           invisible="service_interested in ['legal', 'marketing', 'corporate', 'valuation', 'consign']">
+                        <group>
+                            <!-- Fecha Ideal para Visita -->
+                            <field name="ideal_visit_date"
+                                   string="Fecha Ideal para Visita"
+                                   help="Fecha y hora ideal para programar visita a la propiedad"/>
+
+                            <!-- Conflicto de Visita (CALCULADO) -->
+                            <field name="has_conflicting_visit" invisible="1"/>
+                            <div class="alert alert-warning"
+                                 invisible="not has_conflicting_visit">
+                                <i class="fa fa-exclamation-triangle me-2"/>
+                                <field name="conflicting_visit_info" nolabel="1" readonly="1" class="fw-bold"/>
+                            </div>
+
+                            <!-- Notas de la Visita -->
+                            <field name="visit_notes"
+                                   string="Notas de la Visita"
+                                   placeholder="Preferencias de horario, instrucciones especiales..."
+                                   nolabel="1"/>
+                        </group>
+                        <group>
+                            <!-- Reserva Asociada -->
+                            <field name="reservation_id"
+                                   string="Reserva Asociada"
+                                   readonly="1"
+                                   help="Reserva creada desde esta oportunidad"/>
+
+                            <!-- Contador de Reservas (CALCULADO) -->
+                            <field name="reservation_count"
+                                   string="Reservas"
+                                   invisible="1"/>
+
+                            <!-- Botón para crear reserva -->
+                            <button name="action_create_reservation"
+                                    type="object"
+                                    string="Crear Reserva"
+                                    class="btn btn-primary"
+                                    icon="fa-calendar-check"
+                                    invisible="reservation_id or not property_ids or not partner_id"
+                                    help="Crear reserva de la propiedad para este cliente"/>
+                        </group>
+                    </group>
+
+                    <!-- ============ SECCIÓN 10D: TEMPLATE DE CONTRATO ============ -->
+                    <group name="contract_template_fields"
+                           string="Template de Contrato"
+                           invisible="service_interested in ['legal', 'corporate', 'valuation', 'consign']">
+                        <field name="contract_template_id"
+                               string="Template de Contrato"
+                               options="{'no_create': True}"
+                               help="Selecciona el tipo de contrato que se usará al convertir a contrato"
+                               domain="[('applies_to_rent', '=', True)]"
+                               invisible="service_interested != 'rent'"
+                               placeholder="Ej: Arrendamiento Vivienda Urbana"/>
+
+                        <field name="contract_template_id"
+                               string="Template de Contrato"
+                               options="{'no_create': True}"
+                               help="Selecciona el tipo de contrato que se usará al convertir a contrato"
+                               domain="[('applies_to_sale', '=', True)]"
+                               invisible="service_interested not in ['sale', 'projects']"
+                               placeholder="Ej: Compraventa con Hipoteca"/>
+
+                        <field name="contract_template_id"
+                               string="Template de Contrato"
+                               options="{'no_create': True}"
+                               help="Selecciona el tipo de contrato que se usará para la campaña"
+                               invisible="service_interested != 'marketing'"
+                               placeholder="Ej: Contrato Servicios Marketing"/>
+                    </group>
+
+                    <!-- ============ SECCIÓN 11: INFORMACIÓN FINANCIERA ============ -->
+                    <group name="financial_info" string="Información Financiera">
+                        <group>
+                            <!-- Ingreso Esperado: READONLY si ya fue calculado, REQUIRED si es servicio -->
+                            <field name="expected_revenue"
+                                   string="Ingreso Esperado"
+                                   widget="monetary"
+                                   readonly="service_interested in ['sale', 'rent', 'projects', 'consign']"
+                                   required="service_interested in ['legal', 'marketing', 'corporate', 'valuation']"
+                                   invisible="service_interested in ['legal', 'marketing', 'corporate', 'valuation']"/>
+
+                            <!-- Probabilidad: DEFAULT según etapa -->
+                            <field name="probability"
+                                   widget="progressbar"
+                                   help="Se ajusta automáticamente según la etapa"/>
+                        </group>
+                        <group>
+                            <field name="date_deadline"
+                                   string="Fecha Esperada de Cierre"
+                                   placeholder="¿Cuándo espera cerrar?"/>
+
+                            <!-- Comisión: READONLY (calculada) -->
+                            <field name="estimated_commission"
+                                   string="Comisión Estimada"
+                                   widget="monetary"
+                                   readonly="1"
+                                   class="text-warning fw-bold"
+                                   help="Calculada automáticamente según ingreso esperado y probabilidad"/>
+                        </group>
+                    </group>
+
+                    <!-- ============ SECCIÓN 12: NOTAS ADICIONALES ============ -->
+                    <group name="notes"
+                           string="Notas Adicionales"
+                           invisible="service_interested in ['legal', 'marketing', 'corporate', 'valuation']">
+                        <field name="description"
+                               nolabel="1"
+                               placeholder="Escribe aquí cualquier información adicional relevante..."/>
+                    </group>
+
+                    <!-- ============ SECCIÓN 13: ETIQUETAS ============ -->
+                    <group name="tags">
+                        <field name="tag_ids"
+                               widget="many2many_tags"
+                               options="{'color_field': 'color', 'no_create_edit': True}"
+                               placeholder="+ Agregar etiquetas..."
+                               nolabel="1"/>
+                    </group>
+                </sheet>
+
+                <!-- ============ CHATTER ============ -->
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- ========================================
+         ACCIÓN: Abrir Quick Create como Modal
+         ======================================== -->
+    <record id="action_crm_lead_quick_create_bohio" model="ir.actions.act_window">
+        <field name="name">Nueva Oportunidad Rápida</field>
+        <field name="res_model">crm.lead</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_crm_lead_quick_create_form_bohio"/>
+        <field name="target">new</field>
+        <field name="context">{
+            'default_type': 'opportunity',
+            'form_view_initial_mode': 'edit',
+            'default_probability': 30,
+        }</field>
+    </record>
+
+    <!-- ========================================
+         INTEGRACIÓN CON KANBAN
+         Usar esta vista en quick_create del kanban
+         ======================================== -->
+    <record id="bohio_crm.view_crm_lead_kanban_bohio" model="ir.ui.view">
+        <field name="name">crm.lead.kanban.bohio</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="bohio_crm.view_crm_lead_kanban_bohio"/>
+        <field name="arch" type="xml">
+            <!-- Habilitar quick_create con nuestra vista personalizada -->
+            <kanban position="attributes">
+                <attribute name="quick_create_view">bohio_crm.view_crm_lead_quick_create_form_bohio</attribute>
+            </kanban>
+        </field>
+    </record>
+
+</odoo>

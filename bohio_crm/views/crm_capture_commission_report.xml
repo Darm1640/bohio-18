@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ============================================
+         REPORTE DE COMISIONES POR CAPTACIÓN
+         ============================================ -->
+
+    <!-- Vista Árbol: Comisiones por Captación -->
+    <record id="view_crm_capture_commission_tree" model="ir.ui.view">
+        <field name="name">crm.lead.capture.commission.tree</field>
+        <field name="model">crm.lead</field>
+        <field name="arch" type="xml">
+            <list string="Comisiones por Captación" default_order="capture_date desc"
+                  decoration-success="loan_approval_status == 'approved'"
+                  decoration-warning="loan_approval_status in ['pending', 'study']"
+                  decoration-muted="loan_approval_status == 'rejected'">
+                <field name="capture_date"/>
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="captured_by_id" widget="many2one_avatar_user"/>
+                <field name="desired_city"/>
+                <field name="desired_property_type_id"/>
+                <field name="expected_revenue" widget="monetary" sum="Total Ingresos"/>
+                <field name="capture_commission_rate" string="% Com."/>
+                <field name="capture_commission_amount" widget="monetary" sum="Total Comisiones"/>
+                <field name="stage_id" widget="badge" decoration-success="stage_id.is_won"/>
+                <field name="loan_approval_status" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Vista Gráfico: Comisiones por Vendedor -->
+    <record id="view_crm_capture_commission_graph" model="ir.ui.view">
+        <field name="name">crm.lead.capture.commission.graph</field>
+        <field name="model">crm.lead</field>
+        <field name="arch" type="xml">
+            <graph string="Comisiones por Captación" type="bar" stacked="0">
+                <field name="captured_by_id"/>
+                <field name="capture_commission_amount" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <!-- Vista Pivot: Análisis de Comisiones -->
+    <record id="view_crm_capture_commission_pivot" model="ir.ui.view">
+        <field name="name">crm.lead.capture.commission.pivot</field>
+        <field name="model">crm.lead</field>
+        <field name="arch" type="xml">
+            <pivot string="Análisis de Comisiones por Captación">
+                <field name="captured_by_id" type="row"/>
+                <field name="capture_date" interval="month" type="col"/>
+                <field name="capture_commission_amount" type="measure"/>
+                <field name="expected_revenue" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <!-- Vista Search: Filtros de Comisiones -->
+    <record id="view_crm_capture_commission_search" model="ir.ui.view">
+        <field name="name">crm.lead.capture.commission.search</field>
+        <field name="model">crm.lead</field>
+        <field name="arch" type="xml">
+            <search string="Buscar Comisiones">
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="captured_by_id"/>
+                <field name="desired_city"/>
+                <field name="capture_date"/>
+
+                <filter string="Captaciones Activas" name="active_captures"
+                        domain="[('service_interested', '=', 'consign'), ('captured_by_id', '!=', False)]"/>
+                <filter string="Con Comisión" name="with_commission"
+                        domain="[('capture_commission_amount', '>', 0)]"/>
+                <separator/>
+                <filter string="Este Mes" name="this_month"
+                        domain="[('capture_date', '>=', (context_today() - relativedelta(months=1)).strftime('%Y-%m-01'))]"/>
+                <filter string="Este Año" name="this_year"
+                        domain="[('capture_date', '>=', context_today().strftime('%Y-01-01'))]"/>
+                <separator/>
+                <group expand="0" string="Agrupar Por">
+                    <filter string="Vendedor" name="group_by_captured_by" context="{'group_by': 'captured_by_id'}"/>
+                    <filter string="Mes Captación" name="group_by_capture_month" context="{'group_by': 'capture_date:month'}"/>
+                    <filter string="Ciudad" name="group_by_city" context="{'group_by': 'desired_city'}"/>
+                    <filter string="Tipo Propiedad" name="group_by_type" context="{'group_by': 'desired_property_type_id'}"/>
+                    <filter string="Fuente Captación" name="group_by_source" context="{'group_by': 'capture_source'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Acción: Reporte de Comisiones -->
+    <record id="action_crm_capture_commission_report" model="ir.actions.act_window">
+        <field name="name">Comisiones por Captación</field>
+        <field name="res_model">crm.lead</field>
+        <field name="view_mode">list,graph,pivot,form</field>
+        <field name="domain">[('service_interested', '=', 'consign'), ('captured_by_id', '!=', False)]</field>
+        <field name="context">{
+            'search_default_active_captures': 1,
+            'search_default_this_year': 1,
+            'search_default_group_by_captured_by': 1,
+        }</field>
+        <field name="search_view_id" ref="view_crm_capture_commission_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No hay comisiones registradas
+            </p>
+            <p>
+                Las comisiones por captación se generan automáticamente cuando
+                un vendedor consigue una propiedad para consignar.
+            </p>
+        </field>
+    </record>
+
+    <!-- Menú: Reportes > Comisiones -->
+    <menuitem id="menu_crm_capture_commission_report"
+              name="Comisiones Captación"
+              parent="crm.crm_menu_report"
+              action="action_crm_capture_commission_report"
+              sequence="30"/>
+
+
+    <!-- ============================================
+         REPORTE DE EFECTIVIDAD DE CAMPAÑAS
+         ============================================ -->
+
+    <!-- Vista Árbol: Campañas de Marketing -->
+    <record id="view_crm_marketing_campaign_tree" model="ir.ui.view">
+        <field name="name">crm.lead.marketing.campaign.tree</field>
+        <field name="model">crm.lead</field>
+        <field name="arch" type="xml">
+            <list string="Campañas de Marketing" default_order="marketing_start_date desc"
+                  decoration-success="stage_id.is_won"
+                  decoration-info="stage_id.probability &gt;= 70">
+                <field name="marketing_start_date"/>
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="marketing_campaign_type"/>
+                <field name="marketing_quantity"/>
+                <field name="marketing_estimated_reach"/>
+                <field name="marketing_budget_allocated" widget="monetary" sum="Total Presupuesto"/>
+                <field name="expected_revenue" widget="monetary" sum="Total Ingresos"/>
+                <field name="stage_id" widget="badge"/>
+                <field name="probability" widget="progressbar"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Vista Kanban: Campañas -->
+    <record id="view_crm_marketing_campaign_kanban" model="ir.ui.view">
+        <field name="name">crm.lead.marketing.campaign.kanban</field>
+        <field name="model">crm.lead</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="marketing_campaign_type">
+                <field name="marketing_campaign_type"/>
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="marketing_budget_allocated"/>
+                <field name="expected_revenue"/>
+                <field name="marketing_estimated_reach"/>
+                <templates>
+                    <t t-name="card">
+                        <main>
+                            <field name="name" class="fw-bold"/>
+                            <div class="text-muted">
+                                <i class="fa fa-user"/> <field name="partner_id"/>
+                            </div>
+                            <div class="mt-2">
+                                <span class="badge bg-primary">
+                                    <field name="marketing_quantity"/> anuncios
+                                </span>
+                                <span class="badge bg-info">
+                                    <field name="marketing_estimated_reach"/> personas
+                                </span>
+                            </div>
+                            <div class="mt-2">
+                                <strong>Presupuesto:</strong>
+                                <field name="marketing_budget_allocated" widget="monetary"/>
+                            </div>
+                            <div>
+                                <strong>Valor Servicio:</strong>
+                                <field name="expected_revenue" widget="monetary"/>
+                            </div>
+                        </main>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Vista Search: Campañas -->
+    <record id="view_crm_marketing_campaign_search" model="ir.ui.view">
+        <field name="name">crm.lead.marketing.campaign.search</field>
+        <field name="model">crm.lead</field>
+        <field name="arch" type="xml">
+            <search string="Buscar Campañas">
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="marketing_campaign_type"/>
+
+                <filter string="Campañas Activas" name="active_campaigns"
+                        domain="[('service_interested', '=', 'marketing')]"/>
+                <filter string="En Ejecución" name="running"
+                        domain="[('marketing_start_date', '&lt;=', context_today()),
+                                 ('marketing_end_date', '&gt;=', context_today())]"/>
+                <filter string="Ganadas" name="won"
+                        domain="[('stage_id.is_won', '=', True)]"/>
+                <separator/>
+                <group expand="0" string="Agrupar Por">
+                    <filter string="Tipo Campaña" name="group_by_type" context="{'group_by': 'marketing_campaign_type'}"/>
+                    <filter string="Mes Inicio" name="group_by_month" context="{'group_by': 'marketing_start_date:month'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Acción: Campañas de Marketing -->
+    <record id="action_crm_marketing_campaigns" model="ir.actions.act_window">
+        <field name="name">Campañas de Marketing</field>
+        <field name="res_model">crm.lead</field>
+        <field name="view_mode">kanban,list,graph,pivot,form</field>
+        <field name="domain">[('service_interested', '=', 'marketing')]</field>
+        <field name="context">{
+            'default_service_interested': 'marketing',
+            'search_default_active_campaigns': 1,
+        }</field>
+        <field name="search_view_id" ref="view_crm_marketing_campaign_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No hay campañas de marketing registradas
+            </p>
+            <p>
+                Cree una nueva oportunidad con servicio "Marketing Inmobiliario"
+                para registrar una campaña.
+            </p>
+        </field>
+    </record>
+
+    <!-- Menú: Reportes > Campañas Marketing -->
+    <menuitem id="menu_crm_marketing_campaigns"
+              name="Campañas Marketing"
+              parent="crm.crm_menu_report"
+              action="action_crm_marketing_campaigns"
+              sequence="31"/>
+
+</odoo>

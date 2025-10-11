@@ -34,6 +34,35 @@
                                 <span class="o_stat_text">Contratos</span>
                             </div>
                         </button>
+
+                        <!-- Reservas -->
+                        <button class="oe_stat_button" type="object" name="action_view_reservations" icon="fa-calendar-check-o"
+                                invisible="service_interested not in ['sale', 'rent', 'projects']">
+                            <field string="Reservas" name="reservation_count" widget="statinfo"/>
+                        </button>
+
+                        <!-- Documentos de Crédito -->
+                        <button class="oe_stat_button" type="object" name="action_view_loan_documents" icon="fa-folder-open"
+                                invisible="not requires_financing">
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_value">
+                                    <field name="loan_document_ids" widget="many2many_tags" invisible="1"/>
+                                    <t t-esc="len(record.loan_document_ids.ids) if record.loan_document_ids else 0"/>
+                                </span>
+                                <span class="o_stat_text">Documentos</span>
+                            </div>
+                        </button>
+
+                        <!-- Comisión de Captación -->
+                        <button class="oe_stat_button" type="action" name="%(bohio_crm.action_crm_capture_commission_report)d" icon="fa-money"
+                                invisible="service_interested != 'consign' or not captured_by_id">
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_value">
+                                    <field name="capture_commission_amount" widget="monetary"/>
+                                </span>
+                                <span class="o_stat_text">Comisión</span>
+                            </div>
+                        </button>
                     </div>
 
                     <!-- Título -->

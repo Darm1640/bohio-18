@@ -1,0 +1,358 @@
+/* ============================================
+   BOHIO CRM - Quick Create Inteligente
+   Vista condicional estilo Bank Reconciliation
+   Colores: Rojo #ff1d25 y Negro #000000
+   ============================================ */
+
+/* ===== FORMULARIO PRINCIPAL ===== */
+.o_bohio_quick_create_form {
+    background: #f8f9fa;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.o_bohio_quick_create_form .oe_title h1 {
+    color: #000000;
+    font-weight: 700;
+    font-size: 24px;
+    border-bottom: 3px solid #ff1d25;
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+}
+
+/* ===== BADGES DE ESTADO POR ETAPA ===== */
+.o_bohio_stage_badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+    animation: fadeInDown 0.5s ease;
+}
+
+.o_bohio_stage_badges .badge {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 20px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+
+.o_bohio_stage_badges .badge:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.o_bohio_stage_badges .badge.text-bg-info {
+    background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%) !important;
+    border: 1px solid #ff1d25;
+}
+
+.o_bohio_stage_badges .badge.text-bg-warning {
+    background: linear-gradient(135deg, #f39c12 0%, #d68910 100%) !important;
+    border: 1px solid #000000;
+}
+
+.o_bohio_stage_badges .badge.text-bg-primary {
+    background: linear-gradient(135deg, #5dade2 0%, #3498db 100%) !important;
+    border: 1px solid #ff1d25;
+}
+
+.o_bohio_stage_badges .badge.text-bg-success {
+    background: linear-gradient(135deg, #50c878 0%, #3fa463 100%) !important;
+    border: 1px solid #000000;
+}
+
+/* ===== SELECTOR DE SERVICIO (RADIO HORIZONTAL) ===== */
+.o_bohio_service_selector .o_radio_input {
+    display: inline-flex;
+    align-items: center;
+    padding: 10px 20px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    border: 2px solid #e0e0e0;
+    border-radius: 25px;
+    background: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.o_bohio_service_selector .o_radio_input:hover {
+    border-color: #ff1d25;
+    background: #fff5f5;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(255, 29, 37, 0.15);
+}
+
+.o_bohio_service_selector .o_radio_input input[type="radio"]:checked + label {
+    background: linear-gradient(135deg, #ff1d25 0%, #cc0000 100%);
+    color: white;
+    border-color: #ff1d25;
+    box-shadow: 0 6px 15px rgba(255, 29, 37, 0.3);
+}
+
+/* ===== SEPARADOR DE CAPTACIÓN (Estilo Bank Widget) ===== */
+.o_bohio_consign_separator {
+    background: linear-gradient(135deg, #fff3cd 0%, #ffefb8 100%);
+    border: 2px dashed #ff1d25;
+    border-radius: 12px;
+    padding: 25px;
+    margin: 20px 0;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(255, 29, 37, 0.1);
+    animation: pulse 2s ease infinite;
+}
+
+.o_bohio_consign_separator .fa {
+    color: #ff1d25;
+    margin-bottom: 10px;
+}
+
+.o_bohio_consign_separator p.fw-bold {
+    color: #000000;
+    font-size: 16px;
+    margin-bottom: 15px;
+}
+
+.o_bohio_consign_separator .btn-primary {
+    background: linear-gradient(135deg, #ff1d25 0%, #cc0000 100%);
+    border: none;
+    color: white;
+    font-weight: 700;
+    padding: 12px 30px;
+    border-radius: 30px;
+    font-size: 15px;
+    box-shadow: 0 4px 10px rgba(255, 29, 37, 0.3);
+    transition: all 0.3s ease;
+}
+
+.o_bohio_consign_separator .btn-primary:hover {
+    background: linear-gradient(135deg, #cc0000 0%, #990000 100%);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(255, 29, 37, 0.4);
+}
+
+.o_bohio_consign_separator .btn-primary i {
+    margin-right: 8px;
+}
+
+/* ===== GRUPOS CONDICIONALES ===== */
+.o_bohio_quick_create_form .o_group {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    margin-bottom: 20px;
+    border-left: 4px solid #ff1d25;
+    transition: all 0.3s ease;
+}
+
+.o_bohio_quick_create_form .o_group:hover {
+    box-shadow: 0 4px 15px rgba(255, 29, 37, 0.1);
+    transform: translateX(5px);
+}
+
+.o_bohio_quick_create_form .o_group > .o_group_title {
+    color: #000000;
+    font-weight: 700;
+    font-size: 15px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #ff1d25;
+}
+
+/* ===== CAMPOS DE FORMULARIO ===== */
+.o_bohio_quick_create_form .o_field_widget {
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.o_bohio_quick_create_form .o_field_widget input,
+.o_bohio_quick_create_form .o_field_widget select,
+.o_bohio_quick_create_form .o_field_widget textarea {
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 10px 15px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.o_bohio_quick_create_form .o_field_widget input:focus,
+.o_bohio_quick_create_form .o_field_widget select:focus,
+.o_bohio_quick_create_form .o_field_widget textarea:focus {
+    border-color: #ff1d25;
+    box-shadow: 0 0 0 3px rgba(255, 29, 37, 0.1);
+    outline: none;
+}
+
+/* ===== BADGES DE BADGE WIDGET ===== */
+.o_field_badge .badge {
+    font-size: 12px;
+    padding: 6px 12px;
+    border-radius: 15px;
+    font-weight: 600;
+}
+
+.o_field_badge .badge[decoration-info="True"] {
+    background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%);
+    border: 1px solid #ff1d25;
+}
+
+.o_field_badge .badge[decoration-success="True"] {
+    background: linear-gradient(135deg, #50c878 0%, #3fa463 100%);
+    border: 1px solid #000000;
+}
+
+.o_field_badge .badge[decoration-warning="True"] {
+    background: linear-gradient(135deg, #f39c12 0%, #d68910 100%);
+    border: 1px solid #000000;
+}
+
+.o_field_badge .badge[decoration-primary="True"] {
+    background: linear-gradient(135deg, #5dade2 0%, #3498db 100%);
+    border: 1px solid #ff1d25;
+}
+
+/* ===== MONETARY FIELDS ===== */
+.o_field_monetary {
+    color: #000000;
+    font-weight: 700;
+    font-size: 16px;
+}
+
+.o_field_monetary.text-warning {
+    color: #f39c12 !important;
+}
+
+/* ===== MANY2MANY TAGS ===== */
+.o_field_many2many_tags .badge {
+    background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%);
+    border: 1px solid #ff1d25;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 15px;
+    margin: 3px;
+    font-size: 11px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.o_field_many2many_tags .badge:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+/* ===== RANGE INPUTS (Min - Max) ===== */
+.o_row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.o_row .oe_inline {
+    flex: 1;
+}
+
+.o_row span {
+    color: #95a5a6;
+    font-weight: 600;
+    font-size: 13px;
+}
+
+/* ===== PROGRESSBAR (Probabilidad) ===== */
+.o_field_progressbar {
+    background: #e9ecef;
+    border-radius: 10px;
+    overflow: hidden;
+    height: 8px;
+    position: relative;
+}
+
+.o_field_progressbar .progress-bar {
+    background: linear-gradient(90deg, #ff1d25 0%, #cc0000 100%);
+    height: 100%;
+    transition: width 0.5s ease;
+    border-radius: 10px;
+}
+
+/* ===== AVATAR USUARIO ===== */
+.o_field_many2one_avatar_user img {
+    border: 3px solid #ff1d25;
+    border-radius: 50%;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+/* ===== CHATTER ===== */
+.o_FormRenderer_chatterContainer {
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    border-top: 4px solid #ff1d25;
+}
+
+/* ===== ANIMACIONES ===== */
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.02);
+    }
+}
+
+/* ===== BOTONES DE ACCIÓN ===== */
+.o_bohio_quick_create_form .o_form_button_save,
+.o_bohio_quick_create_form .o_form_button_create {
+    background: linear-gradient(135deg, #ff1d25 0%, #cc0000 100%);
+    border: none;
+    color: white;
+    font-weight: 700;
+    padding: 12px 25px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(255, 29, 37, 0.3);
+}
+
+.o_bohio_quick_create_form .o_form_button_save:hover,
+.o_bohio_quick_create_form .o_form_button_create:hover {
+    background: linear-gradient(135deg, #cc0000 0%, #990000 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(255, 29, 37, 0.4);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+    .o_bohio_quick_create_form .oe_title h1 {
+        font-size: 20px;
+    }
+
+    .o_bohio_stage_badges {
+        justify-content: center;
+    }
+
+    .o_bohio_consign_separator {
+        padding: 15px;
+    }
+
+    .o_bohio_service_selector .o_radio_input {
+        width: 100%;
+        margin-right: 0;
+    }
+}

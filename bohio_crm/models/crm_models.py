@@ -103,6 +103,133 @@ class CrmLead(models.Model):
     is_for_office = fields.Boolean('Para Uso Comercial/Oficina', tracking=True)
     is_for_vacation = fields.Boolean('Para Uso Vacacional', tracking=True)
 
+    # ===============================
+    # CAMPOS DE MARKETING
+    # ===============================
+    marketing_campaign_type = fields.Selection([
+        ('social_media', 'Redes Sociales'),
+        ('google_ads', 'Google Ads'),
+        ('facebook_ads', 'Facebook Ads'),
+        ('instagram_ads', 'Instagram Ads'),
+        ('email_marketing', 'Email Marketing'),
+        ('print_media', 'Medios Impresos'),
+        ('outdoor', 'Publicidad Exterior (Vallas)'),
+        ('radio_tv', 'Radio/TV'),
+        ('property_portals', 'Portales Inmobiliarios'),
+        ('event', 'Eventos/Ferias'),
+        ('other', 'Otro'),
+    ], string='Tipo de Campaña', tracking=True)
+
+    marketing_quantity = fields.Integer('Cantidad de Publicaciones/Anuncios', tracking=True,
+                                       help='Número de publicaciones, anuncios o impresiones')
+
+    marketing_schedule = fields.Selection([
+        ('morning', 'Mañana (6am - 12pm)'),
+        ('afternoon', 'Tarde (12pm - 6pm)'),
+        ('evening', 'Noche (6pm - 12am)'),
+        ('full_day', 'Todo el día'),
+        ('weekend', 'Fin de semana'),
+        ('business_hours', 'Horario laboral'),
+    ], string='Horario Preferido para Publicidad', tracking=True)
+
+    marketing_estimated_reach = fields.Integer('Personas Estimadas a Alcanzar', tracking=True,
+                                              help='Estimación de audiencia o alcance')
+
+    marketing_budget_allocated = fields.Monetary('Presupuesto Asignado al Marketing',
+                                                 currency_field='company_currency', tracking=True)
+
+    marketing_start_date = fields.Date('Fecha Inicio de Campaña', tracking=True)
+    marketing_end_date = fields.Date('Fecha Fin de Campaña', tracking=True)
+
+    marketing_description = fields.Text('Descripción de la Campaña',
+                                       help='Objetivos, público objetivo, mensaje clave, etc.')
+
+    # ===============================
+    # CAMPOS DE CAPTACIÓN (CONSIGNACIÓN)
+    # ===============================
+    captured_by_id = fields.Many2one('res.users', 'Captado Por', tracking=True,
+                                    help='Vendedor o asesor que consiguió el inmueble')
+
+    capture_date = fields.Date('Fecha de Captación', tracking=True,
+                              default=fields.Date.context_today)
+
+    capture_source = fields.Selection([
+        ('referral', 'Referido'),
+        ('cold_call', 'Llamada en Frío'),
+        ('door_to_door', 'Puerta a Puerta'),
+        ('website', 'Sitio Web'),
+        ('social_media', 'Redes Sociales'),
+        ('advertising', 'Publicidad'),
+        ('existing_client', 'Cliente Existente'),
+        ('other', 'Otro'),
+    ], string='Fuente de Captación', tracking=True)
+
+    capture_commission_rate = fields.Float('% Comisión de Captación', tracking=True,
+                                          default=2.0,
+                                          help='Porcentaje de comisión para quien captó')
+
+    capture_commission_amount = fields.Monetary('Monto Comisión Captación',
+                                               currency_field='company_currency',
+                                               compute='_compute_capture_commission',
+                                               store=True)
+
+    # ===============================
+    # CAMPOS DE PRÉSTAMO/FINANCIACIÓN
+    # ===============================
+    requires_financing = fields.Boolean('Requiere Financiación', tracking=True)
+
+    loan_type = fields.Selection([
+        ('bank_mortgage', 'Hipoteca Bancaria'),
+        ('developer_financing', 'Financiación Constructora'),
+        ('leasing', 'Leasing Habitacional'),
+        ('subsidized', 'Vivienda Subsidiada'),
+        ('other', 'Otro'),
+    ], string='Tipo de Préstamo/Financiación', tracking=True)
+
+    loan_amount = fields.Monetary('Monto del Préstamo', currency_field='company_currency', tracking=True)
+
+    loan_bank_id = fields.Many2one('res.partner', 'Entidad Financiera',
+                                   domain=[('is_company', '=', True)],
+                                   tracking=True)
+
+    loan_approval_status = fields.Selection([
+        ('not_applied', 'No Solicitado'),
+        ('pending', 'En Estudio'),
+        ('pre_approved', 'Pre-aprobado'),
+        ('approved', 'Aprobado'),
+        ('rejected', 'Rechazado'),
+    ], string='Estado de Aprobación', default='not_applied', tracking=True)
+
+    loan_document_ids = fields.Many2many('ir.attachment', 'crm_lead_loan_doc_rel',
+                                        'lead_id', 'attachment_id',
+                                        string='Documentos para Estudio',
+                                        help='Certificados laborales, extractos, declaraciones, etc.')
+
+    # ===============================
+    # CAMPOS DE RESERVA
+    # ===============================
+    reservation_id = fields.Many2one('property.reservation', 'Reserva Asociada',
+                                    tracking=True, readonly=True)
+
+    reservation_count = fields.Integer('# Reservas', compute='_compute_reservation_count')
+
+    ideal_visit_date = fields.Datetime('Fecha Ideal para Visita', tracking=True)
+
+    visit_notes = fields.Text('Notas de Visita',
+                             help='Preferencias de horario, personas que asistirán, etc.')
+
+    has_conflicting_visit = fields.Boolean('Hay Otra Visita', compute='_compute_conflicting_visit',
+                                          help='Indica si hay otra visita programada para la misma propiedad')
+
+    conflicting_visit_info = fields.Char('Información de Conflicto', compute='_compute_conflicting_visit')
+
+    # ===============================
+    # TEMPLATE DE CONTRATO
+    # ===============================
+    contract_template_id = fields.Many2one('property.contract.type', 'Template de Contrato',
+                                          tracking=True,
+                                          help='Tipo de contrato a usar para esta oportunidad')
+
     # Información contractual
     contract_start_date = fields.Date('Fecha Inicio Estimada', tracking=True)
     contract_duration_months = fields.Integer('Duración Estimada (meses)', tracking=True)
@@ -657,6 +784,52 @@ class CrmLead(models.Model):
             }
             lead.dashboard_data = lead_data
 
+    @api.depends('captured_by_id', 'expected_revenue', 'capture_commission_rate')
+    def _compute_capture_commission(self):
+        """Calcular comisión de captación"""
+        for lead in self:
+            if lead.captured_by_id and lead.expected_revenue and lead.capture_commission_rate:
+                lead.capture_commission_amount = lead.expected_revenue * (lead.capture_commission_rate / 100)
+            else:
+                lead.capture_commission_amount = 0.0
+
+    def _compute_reservation_count(self):
+        """Contar reservas relacionadas al lead"""
+        for lead in self:
+            # Buscar reservas vinculadas por cliente y propiedades de interés
+            reservation_count = 0
+            if lead.partner_id:
+                reservation_count = self.env['property.reservation'].search_count([
+                    ('partner_id', '=', lead.partner_id.id)
+                ])
+            lead.reservation_count = reservation_count
+
+    def _compute_conflicting_visit(self):
+        """Verificar si hay visitas conflictivas para la misma propiedad"""
+        for lead in self:
+            if not lead.ideal_visit_date or not lead.property_ids:
+                lead.has_conflicting_visit = False
+                lead.conflicting_visit_info = ''
+                continue
+
+            # Buscar otros leads con visita en la misma fecha y mismas propiedades
+            date_start = lead.ideal_visit_date - timedelta(hours=2)
+            date_end = lead.ideal_visit_date + timedelta(hours=2)
+
+            conflicting_leads = self.search([
+                ('id', '!=', lead.id),
+                ('ideal_visit_date', '>=', date_start),
+                ('ideal_visit_date', '<=', date_end),
+                ('property_ids', 'in', lead.property_ids.ids),
+            ], limit=1)
+
+            if conflicting_leads:
+                lead.has_conflicting_visit = True
+                lead.conflicting_visit_info = f"⚠️ {conflicting_leads.user_id.name} tiene visita programada"
+            else:
+                lead.has_conflicting_visit = False
+                lead.conflicting_visit_info = ''
+
     @api.depends('compared_properties_ids')
     def _compute_property_recommendations_data(self):
         """Calcular datos de recomendaciones"""
@@ -1140,6 +1313,298 @@ class CrmLead(models.Model):
             raise ValidationError(_('No hay propiedades para comparar.'))
 
         return self.env.ref('bohio_crm.property_comparison_report').report_action(self)
+
+    def action_create_property_from_lead(self):
+        """
+        Crear ficha de inmueble desde oportunidad de captación
+        Usado desde quick_create cuando service_interested='consign'
+        """
+        self.ensure_one()
+
+        if self.service_interested != 'consign':
+            raise ValidationError(_('Esta acción solo está disponible para oportunidades de consignación.'))
+
+        # Preparar valores para la nueva propiedad
+        property_vals = {
+            'name': f'[CAPTACIÓN] {self.name}',
+            'is_property': True,
+            'active': True,
+            'state': 'draft',  # Estado inicial
+            'type_service': 'sale',  # Por defecto venta
+
+            # Información del propietario
+            'owner_id': self.partner_id.id if self.partner_id else False,
+
+            # Ubicación
+            'city': self.desired_city or '',
+            'neighborhood': self.desired_neighborhood or '',
+
+            # Tipo de propiedad
+            'property_type_id': self.desired_property_type_id.id if self.desired_property_type_id else False,
+
+            # Precio
+            'list_price': self.expected_revenue or 0,
+            'net_price': self.expected_revenue or 0,
+
+            # Área
+            'property_area': self.property_area_min or 0,
+
+            # Notas
+            'description': f'''
+Propiedad creada desde oportunidad CRM: {self.name}
+
+Cliente: {self.partner_id.name if self.partner_id else 'No especificado'}
+Teléfono: {self.phone or 'No especificado'}
+Email: {self.email_from or 'No especificado'}
+
+Observaciones:
+{self.description or 'Sin observaciones adicionales'}
+            '''.strip(),
+
+            # Responsable
+            'user_id': self.user_id.id if self.user_id else False,
+        }
+
+        # Crear la propiedad
+        new_property = self.env['product.template'].create(property_vals)
+
+        # Vincular la propiedad con el lead
+        self.write({
+            'property_ids': [(4, new_property.id)],
+        })
+
+        # Registrar captación si hay usuario captador
+        if self.captured_by_id:
+            self.message_post(
+                body=f'📝 Propiedad captada por: {self.captured_by_id.name}<br/>Comisión estimada: {self.capture_commission_amount:,.0f} COP',
+                subject='Comisión de Captación'
+            )
+
+        # Mensaje en el chatter
+        self.message_post(
+            body=f'✅ Se creó la ficha de inmueble: <a href="/web#id={new_property.id}&model=product.template">{new_property.name}</a>',
+            subject='Ficha de Inmueble Creada'
+        )
+
+        # Abrir la ficha creada
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Ficha de Inmueble Creada',
+            'res_model': 'product.template',
+            'res_id': new_property.id,
+            'view_mode': 'form',
+            'target': 'current',
+            'context': {
+                'default_is_property': True,
+                'crm_lead_id': self.id,
+            }
+        }
+
+    def action_create_reservation(self):
+        """Crear reserva desde oportunidad"""
+        self.ensure_one()
+
+        if not self.property_ids:
+            raise ValidationError(_('Debe seleccionar al menos una propiedad para crear la reserva.'))
+
+        if not self.partner_id:
+            raise ValidationError(_('Debe asignar un cliente antes de crear la reserva.'))
+
+        # Tomar la primera propiedad si hay varias
+        property_id = self.property_ids[0]
+
+        # Determinar tipo de reserva según servicio
+        booking_type = 'is_ownership' if self.service_interested in ['sale', 'projects'] else 'is_rental'
+
+        # Valores para la reserva
+        reservation_vals = {
+            'partner_id': self.partner_id.id,
+            'property_id': property_id.id,
+            'booking_type': booking_type,
+            'user_id': self.user_id.id,
+            'date': fields.Datetime.now(),
+            'net_price': self.expected_revenue or property_id.net_price,
+            'project_id': self.project_id.id if self.project_id else property_id.project_worksite_id.id,
+        }
+
+        # Crear reserva
+        reservation = self.env['property.reservation'].create(reservation_vals)
+
+        # Vincular con el lead
+        self.write({'reservation_id': reservation.id})
+
+        # Mensaje en chatter
+        self.message_post(
+            body=f'📋 Se creó la reserva: <a href="/web#id={reservation.id}&model=property.reservation">{reservation.name}</a>',
+            subject='Reserva Creada'
+        )
+
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Reserva Creada',
+            'res_model': 'property.reservation',
+            'res_id': reservation.id,
+            'view_mode': 'form',
+            'target': 'current',
+        }
+
+    def action_view_reservations(self):
+        """Ver reservas del cliente"""
+        self.ensure_one()
+
+        if not self.partner_id:
+            raise ValidationError(_('No hay cliente asignado.'))
+
+        reservations = self.env['property.reservation'].search([
+            ('partner_id', '=', self.partner_id.id)
+        ])
+
+        return {
+            'name': f'Reservas de {self.partner_id.name}',
+            'type': 'ir.actions.act_window',
+            'res_model': 'property.reservation',
+            'view_mode': 'list,form',
+            'domain': [('id', 'in', reservations.ids)],
+            'context': {'default_partner_id': self.partner_id.id}
+        }
+
+    def action_view_loan_documents(self):
+        """Ver documentos de préstamo"""
+        self.ensure_one()
+
+        return {
+            'name': 'Documentos para Estudio de Crédito',
+            'type': 'ir.actions.act_window',
+            'res_model': 'ir.attachment',
+            'view_mode': 'list,form',
+            'domain': [('id', 'in', self.loan_document_ids.ids)],
+            'context': {
+                'default_res_model': 'crm.lead',
+                'default_res_id': self.id,
+            }
+        }
+
+    def action_upload_loan_document(self):
+        """Subir documento para estudio de crédito"""
+        self.ensure_one()
+
+        return {
+            'name': 'Subir Documento',
+            'type': 'ir.actions.act_window',
+            'res_model': 'ir.attachment',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {
+                'default_res_model': 'crm.lead',
+                'default_res_id': self.id,
+                'default_name': 'Documento para estudio de crédito',
+            }
+        }
+
+    def action_schedule_visit(self):
+        """Programar visita a propiedad"""
+        self.ensure_one()
+
+        # Verificar si hay conflictos
+        if self.has_conflicting_visit:
+            return {
+                'type': 'ir.actions.client',
+                'tag': 'display_notification',
+                'params': {
+                    'title': _('⚠️ Conflicto de Visitas'),
+                    'message': self.conflicting_visit_info,
+                    'type': 'warning',
+                    'sticky': True,
+                }
+            }
+
+        # Crear actividad de visita
+        activity_type = self.env.ref('mail.mail_activity_data_meeting', raise_if_not_found=False)
+
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Programar Visita',
+            'res_model': 'mail.activity',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {
+                'default_res_model': 'crm.lead',
+                'default_res_id': self.id,
+                'default_activity_type_id': activity_type.id if activity_type else 1,
+                'default_summary': f'Visita a propiedad - {self.name}',
+                'default_date_deadline': self.ideal_visit_date.date() if self.ideal_visit_date else fields.Date.today(),
+                'default_note': self.visit_notes or '',
+                'default_user_id': self.user_id.id,
+            }
+        }
+
+    @api.model
+    def get_smart_suggestions(self):
+        """
+        Obtener sugerencias inteligentes basadas en estadísticas de uso
+        Llamado desde JavaScript para autocompletar campos
+        """
+        # Obtener usuario actual
+        user_id = self.env.user.id
+
+        # Estadísticas de los últimos 30 días
+        date_limit = fields.Datetime.now() - timedelta(days=30)
+
+        # Servicios más usados
+        service_stats = self.read_group(
+            [('user_id', '=', user_id), ('create_date', '>=', date_limit)],
+            ['service_interested'],
+            ['service_interested']
+        )
+
+        # Tipos de cliente más comunes
+        client_type_stats = self.read_group(
+            [('user_id', '=', user_id), ('create_date', '>=', date_limit)],
+            ['client_type'],
+            ['client_type']
+        )
+
+        # Fuentes de solicitud más comunes
+        source_stats = self.read_group(
+            [('user_id', '=', user_id), ('create_date', '>=', date_limit)],
+            ['request_source'],
+            ['request_source']
+        )
+
+        # Proyectos más usados
+        project_stats = self.read_group(
+            [('user_id', '=', user_id), ('create_date', '>=', date_limit), ('project_id', '!=', False)],
+            ['project_id'],
+            ['project_id']
+        )
+
+        # Tags más usados
+        tag_stats = self.env['crm.tag'].search_read(
+            [],
+            ['id', 'name', 'color'],
+            order='id desc',
+            limit=10
+        )
+
+        return {
+            'most_used_services': [
+                {'value': item['service_interested'], 'count': item['service_interested_count']}
+                for item in service_stats if item['service_interested']
+            ],
+            'most_used_client_types': [
+                {'value': item['client_type'], 'count': item['client_type_count']}
+                for item in client_type_stats if item['client_type']
+            ],
+            'most_used_sources': [
+                {'value': item['request_source'], 'count': item['request_source_count']}
+                for item in source_stats if item['request_source']
+            ],
+            'frequent_projects': [
+                {'id': item['project_id'][0], 'name': item['project_id'][1], 'count': item['project_id_count']}
+                for item in project_stats if item['project_id']
+            ],
+            'suggested_tags': tag_stats,
+        }
 
     def action_view_recommended_properties(self):
         """Ver propiedades recomendadas generadas"""
