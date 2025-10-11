@@ -606,12 +606,31 @@ class PropertySearchController(http.Controller):
             # Esto maneja CDN, cache, lazy loading y tamaños optimizados automáticamente
             image_url = website.image_url(prop, 'image_512') if prop.image_512 else '/theme_bohio_real_estate/static/src/img/placeholder.jpg'
 
+            # Obtener valores de selection fields correctamente
+            property_type_label = ''
+            if prop.property_type:
+                selection_field = prop._fields['property_type']
+                if callable(selection_field.selection):
+                    selection_list = selection_field.selection(prop.env)
+                else:
+                    selection_list = selection_field.selection
+                property_type_label = dict(selection_list).get(prop.property_type, '')
+
+            type_service_label = ''
+            if prop.type_service:
+                selection_field = prop._fields['type_service']
+                if callable(selection_field.selection):
+                    selection_list = selection_field.selection(prop.env)
+                else:
+                    selection_list = selection_field.selection
+                type_service_label = dict(selection_list).get(prop.type_service, '')
+
             data.append({
                 'id': prop.id,
                 'name': prop.name,
                 'default_code': prop.default_code or '',
-                'property_type': dict(prop._fields['property_type'].selection).get(prop.property_type, ''),
-                'type_service': dict(prop._fields['type_service'].selection).get(prop.type_service, ''),
+                'property_type': property_type_label,
+                'type_service': type_service_label,
                 'price': price,
                 'currency_symbol': prop.currency_id.symbol or '$',
                 'bedrooms': int(prop.num_bedrooms) if prop.num_bedrooms else 0,
