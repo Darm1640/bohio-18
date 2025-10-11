@@ -27,8 +27,9 @@
         # Seguridad
         'security/ir.model.access.csv',
 
-        # Datos
-        'data/crm_automated_actions.xml',  # REACTIVADO: Archivo limpiado y corregido
+        # Datos - IMPORTANTE: server_actions ANTES de automated_actions
+        'data/crm_server_actions.xml',       # Server actions con codigo Python (Odoo 18)
+        'data/crm_automated_actions_v2.xml',  # Base automations que referencian server actions
 
         # Vistas
         'views/bohio_crm_complete_views.xml',

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- ACCIONES AUTOMATICAS (base.automation) -->
+        <!-- Estas acciones disparan las server actions que contienen el codigo Python -->
+
+        <!-- Accion: Crear Actividad al Programar Visita -->
+        <record id="automation_create_visit_activity" model="base.automation">
+            <field name="name">CRM: Crear Actividad al Programar Visita</field>
+            <field name="model_id" ref="crm.model_crm_lead"/>
+            <field name="active">True</field>
+            <field name="trigger">on_create_or_write</field>
+            <field name="filter_domain">[('ideal_visit_date', '!=', False), ('type', '=', 'opportunity')]</field>
+            <field name="action_server_ids" eval="[(4, ref('action_code_create_visit_activity'))]"/>
+        </record>
+
+        <!-- Accion: Notificar Conflicto de Visitas -->
+        <record id="automation_notify_visit_conflict" model="base.automation">
+            <field name="name">CRM: Notificar Conflicto de Visitas</field>
+            <field name="model_id" ref="crm.model_crm_lead"/>
+            <field name="active">True</field>
+            <field name="trigger">on_create_or_write</field>
+            <field name="filter_domain">[('ideal_visit_date', '!=', False), ('has_conflicting_visit', '=', True)]</field>
+            <field name="action_server_ids" eval="[(4, ref('action_code_notify_visit_conflict'))]"/>
+        </record>
+
+        <!-- Accion: Recordatorio Documentos de Credito -->
+        <record id="automation_remind_loan_documents" model="base.automation">
+            <field name="name">CRM: Recordar Documentos de Credito Pendientes</field>
+            <field name="model_id" ref="crm.model_crm_lead"/>
+            <field name="active">True</field>
+            <field name="trigger">on_create_or_write</field>
+            <field name="filter_domain">[('requires_financing', '=', True), ('loan_approval_status', '=', 'not_applied'), ('type', '=', 'opportunity')]</field>
+            <field name="action_server_ids" eval="[(4, ref('action_code_remind_loan_documents'))]"/>
+        </record>
+
+        <!-- Accion: Actualizar Comision de Captacion -->
+        <record id="automation_update_capture_commission" model="base.automation">
+            <field name="name">CRM: Actualizar Comision de Captacion</field>
+            <field name="model_id" ref="crm.model_crm_lead"/>
+            <field name="active">True</field>
+            <field name="trigger">on_create_or_write</field>
+            <field name="filter_domain">[('service_interested', '=', 'consign'), ('captured_by_id', '!=', False)]</field>
+            <field name="action_server_ids" eval="[(4, ref('action_code_update_capture_commission'))]"/>
+        </record>
+
+        <!-- Accion: Notificar Aprobacion de Credito -->
+        <record id="automation_notify_loan_approval" model="base.automation">
+            <field name="name">CRM: Notificar Aprobacion de Credito</field>
+            <field name="model_id" ref="crm.model_crm_lead"/>
+            <field name="active">True</field>
+            <field name="trigger">on_write</field>
+            <field name="filter_domain">[('loan_approval_status', '=', 'approved')]</field>
+            <field name="action_server_ids" eval="[(4, ref('action_code_notify_loan_approval'))]"/>
+        </record>
+
+        <!-- Accion: Sugerir Crear Reserva al Ganar Oportunidad -->
+        <record id="automation_create_reservation_on_won" model="base.automation">
+            <field name="name">CRM: Sugerir Crear Reserva al Ganar Oportunidad</field>
+            <field name="model_id" ref="crm.model_crm_lead"/>
+            <field name="active">True</field>
+            <field name="trigger">on_write</field>
+            <field name="filter_domain">[('stage_id.is_won', '=', True), ('property_ids', '!=', False), ('reservation_id', '=', False)]</field>
+            <field name="action_server_ids" eval="[(4, ref('action_code_create_reservation_on_won'))]"/>
+        </record>
+
+    </data>
+</odoo>
