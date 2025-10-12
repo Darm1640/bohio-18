@@ -36,7 +36,7 @@
                                     <div class="card-body p-4">
                                         <div class="d-flex align-items-center mb-3">
                                             <div class="me-3 d-flex align-items-center justify-content-center bg-danger bg-opacity-10 rounded-circle" style="width: 60px; height: 60px;">
-                                                <i class="fa fa-key text-danger fa-2x"></i>
+                                                <img src="/theme_bohio_real_estate/static/src/img/icono-arriendo.png" alt="Arriendo" style="width: 40px; height: 40px; object-fit: contain;" loading="lazy"/>
                                             </div>
                                             <h3 class="h4 mb-0 text-danger">Arriendo</h3>
                                         </div>
@@ -70,7 +70,7 @@
                                     <div class="card-body p-4">
                                         <div class="d-flex align-items-center mb-3">
                                             <div class="me-3 d-flex align-items-center justify-content-center bg-danger bg-opacity-10 rounded-circle" style="width: 60px; height: 60px;">
-                                                <i class="fa fa-home text-danger fa-2x"></i>
+                                                <img src="/theme_bohio_real_estate/static/src/img/icono-venta.png" alt="Venta" style="width: 40px; height: 40px; object-fit: contain;" loading="lazy"/>
                                             </div>
                                             <h3 class="h4 mb-0 text-danger">Venta</h3>
                                         </div>
@@ -104,7 +104,7 @@
                                     <div class="card-body p-4">
                                         <div class="d-flex align-items-center mb-3">
                                             <div class="me-3 d-flex align-items-center justify-content-center bg-danger bg-opacity-10 rounded-circle" style="width: 60px; height: 60px;">
-                                                <i class="fa fa-bullhorn text-danger fa-2x"></i>
+                                                <img src="/theme_bohio_real_estate/static/src/img/icono-marketing.png" alt="Marketing" style="width: 40px; height: 40px; object-fit: contain;" loading="lazy"/>
                                             </div>
                                             <h3 class="h4 mb-0 text-danger">Marketing Inmobiliario</h3>
                                         </div>
@@ -138,7 +138,7 @@
                                     <div class="card-body p-4">
                                         <div class="d-flex align-items-center mb-3">
                                             <div class="me-3 d-flex align-items-center justify-content-center bg-danger bg-opacity-10 rounded-circle" style="width: 60px; height: 60px;">
-                                                <i class="fa fa-balance-scale text-danger fa-2x"></i>
+                                                <img src="/theme_bohio_real_estate/static/src/img/icono-servicios.png" alt="Servicios Jurídicos" style="width: 40px; height: 40px; object-fit: contain;" loading="lazy"/>
                                             </div>
                                             <h3 class="h4 mb-0 text-danger">Servicios Jurídicos</h3>
                                         </div>
@@ -172,7 +172,7 @@
                                     <div class="card-body p-4">
                                         <div class="d-flex align-items-center mb-3">
                                             <div class="me-3 d-flex align-items-center justify-content-center bg-danger bg-opacity-10 rounded-circle" style="width: 60px; height: 60px;">
-                                                <i class="fa fa-briefcase text-danger fa-2x"></i>
+                                                <img src="/theme_bohio_real_estate/static/src/img/icono-negocios-corporativos.png" alt="Corporativos" style="width: 40px; height: 40px; object-fit: contain;" loading="lazy"/>
                                             </div>
                                             <h3 class="h4 mb-0 text-danger">Negocios Corporativos</h3>
                                         </div>
@@ -206,7 +206,7 @@
                                     <div class="card-body p-4">
                                         <div class="d-flex align-items-center mb-3">
                                             <div class="me-3 d-flex align-items-center justify-content-center bg-danger bg-opacity-10 rounded-circle" style="width: 60px; height: 60px;">
-                                                <i class="fa fa-pencil-square text-danger fa-2x"></i>
+                                                <img src="/theme_bohio_real_estate/static/src/img/icono-firma.png" alt="Firma Digital" style="width: 40px; height: 40px; object-fit: contain;" loading="lazy"/>
                                             </div>
                                             <h3 class="h4 mb-0 text-danger">Firma Digital</h3>
                                         </div>
