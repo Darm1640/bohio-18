@@ -542,17 +542,12 @@ Iniciar Sesión
                             Te <span class="fw-bold">ayudamos</span> a encontrar el <span class="text-danger fw-bold">lugar ideal</span> para vivir
                             </h2>
 
-                            <!-- SNIPPET DINÁMICO: Propiedades en Arriendo -->
-                            <section class="s_dynamic_snippet_properties s_dynamic s_dynamic_empty pt32 pb32"
-                                     t-att-data-filter-id="env.ref('theme_bohio_real_estate.website_snippet_filter_rent').id"
-                                     data-template-key="theme_bohio_real_estate.dynamic_filter_template_product_template_property_card"
-                                     data-number-of-records="12"
-                                     data-number-of-elements="4"
-                                     data-number-of-elements-sm="1">
-                                <div class="container">
-                                    <div class="row dynamic_snippet_template"></div>
+                            <!-- CARRUSEL DE PROPIEDADES EN ARRIENDO -->
+                            <div id="carousel-rent" class="property-carousel-loading">
+                                <div class="spinner-border text-danger" role="status">
+                                    <span class="visually-hidden">Cargando...</span>
                                 </div>
-                            </section>
+                            </div>
 
                             <div class="text-center mt-4">
                                 <a href="/properties?type_service=rent" class="btn btn-danger btn-lg px-5">
@@ -575,17 +570,12 @@ Iniciar Sesión
                             Te ayudamos a encontrar el <span class="text-danger fw-bold">hogar</span> que estás buscando
                             </h2>
 
-                            <!-- SNIPPET DINÁMICO: Propiedades Usadas en Venta (sin proyecto) -->
-                            <section class="s_dynamic_snippet_properties s_dynamic s_dynamic_empty pt32 pb32"
-                                     t-att-data-filter-id="env.ref('theme_bohio_real_estate.website_snippet_filter_sale_used').id"
-                                     data-template-key="theme_bohio_real_estate.dynamic_filter_template_property_card"
-                                     data-number-of-records="12"
-                                     data-number-of-elements="4"
-                                     data-number-of-elements-sm="1">
-                                <div class="container">
-                                    <div class="dynamic_snippet_template"></div>
+                            <!-- CARRUSEL DE PROPIEDADES USADAS EN VENTA -->
+                            <div id="carousel-sale" class="property-carousel-loading">
+                                <div class="spinner-border text-danger" role="status">
+                                    <span class="visually-hidden">Cargando...</span>
                                 </div>
-                            </section>
+                            </div>
 
                             <div class="text-center mt-4">
                                 <a href="/properties?type_service=sale" class="btn btn-danger btn-lg px-5">
@@ -608,17 +598,12 @@ Iniciar Sesión
                                 <span class="text-danger fw-bold">Invierte</span> hoy en el <span class="fw-bold">futuro</span> que sueñas
                             </h2>
 
-                            <!-- SNIPPET DINÁMICO: Proyectos Nuevos (con proyecto) -->
-                            <section class="s_dynamic_snippet_properties s_dynamic s_dynamic_empty pt32 pb32"
-                                     t-att-data-filter-id="env.ref('theme_bohio_real_estate.website_snippet_filter_projects').id"
-                                     data-template-key="theme_bohio_real_estate.dynamic_filter_template_property_card"
-                                     data-number-of-records="6"
-                                     data-number-of-elements="3"
-                                     data-number-of-elements-sm="1">
-                                <div class="container">
-                                    <div class="dynamic_snippet_template"></div>
+                            <!-- CARRUSEL DE PROYECTOS EN VENTA -->
+                            <div id="carousel-projects" class="property-carousel-loading">
+                                <div class="spinner-border text-danger" role="status">
+                                    <span class="visually-hidden">Cargando...</span>
                                 </div>
-                            </section>
+                            </div>
 
                             <div class="text-center mt-4">
                                 <a href="/proyectos" class="btn btn-danger btn-lg px-5">

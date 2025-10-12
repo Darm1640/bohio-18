@@ -36,22 +36,34 @@ class PropertyCarousel {
     }
 
     /**
-     * Cargar propiedades desde el servidor
+     * Cargar propiedades desde el servidor usando endpoints optimizados
      */
     async loadProperties() {
         try {
             console.log(`[CAROUSEL] Cargando propiedades tipo: ${this.carouselType}`);
 
-            const result = await rpc('/carousel/properties', {
-                carousel_type: this.carouselType,
+            // Mapear tipo de carrusel a endpoint específico optimizado
+            const endpointMap = {
+                'rent': '/api/properties/arriendo',
+                'sale': '/api/properties/venta-usada',
+                'projects': '/api/properties/proyectos'
+            };
+
+            const endpoint = endpointMap[this.carouselType];
+            if (!endpoint) {
+                console.error(`[CAROUSEL] Tipo de carrusel no válido: ${this.carouselType}`);
+                return;
+            }
+
+            const result = await rpc(endpoint, {
                 limit: 12
             });
 
-            if (result.success) {
+            if (result.success && result.properties) {
                 this.properties = result.properties;
-                console.log(`[CAROUSEL] ${this.properties.length} propiedades cargadas para ${this.carouselType}`);
+                console.log(`[CAROUSEL] ${this.properties.length} propiedades cargadas para ${this.carouselType} (de ${result.total} total)`);
             } else {
-                console.error('[CAROUSEL] Error:', result.error);
+                console.error('[CAROUSEL] Error:', result.error || 'No properties returned');
             }
         } catch (error) {
             console.error('[CAROUSEL] Error cargando propiedades:', error);
@@ -131,9 +143,22 @@ class PropertyCarousel {
      */
     createPropertyCard(property) {
         const imageUrl = property.image_url || '/theme_bohio_real_estate/static/src/img/placeholder.jpg';
+
+        // Construir ubicación
         const location = property.neighborhood ?
             `${property.neighborhood}, ${property.city}` :
-            `${property.city}, ${property.state}`;
+            `${property.city}${property.state ? ', ' + property.state : ''}`;
+
+        // Formatear precio
+        const priceFormatted = property.price ?
+            new Intl.NumberFormat('es-CO', {
+                style: 'currency',
+                currency: 'COP',
+                minimumFractionDigits: 0
+            }).format(property.price) : 'Consultar';
+
+        // Label de precio según tipo
+        const priceLabel = property.type_service === 'Arriendo' ? 'Arriendo/mes' : 'Venta';
 
         // Badge de proyecto si existe
         const projectBadge = property.project_id ? `
@@ -164,13 +189,13 @@ class PropertyCarousel {
                             <i class="fa fa-map-marker-alt me-1"></i>${location}
                         </p>
                         <div class="d-flex justify-content-between mb-2 text-muted small">
+                            ${property.area > 0 ? `<span><i class="fa fa-ruler-combined me-1"></i>${property.area} m²</span>` : ''}
                             ${property.bedrooms > 0 ? `<span><i class="fa fa-bed me-1"></i>${property.bedrooms}</span>` : ''}
                             ${property.bathrooms > 0 ? `<span><i class="fa fa-bath me-1"></i>${property.bathrooms}</span>` : ''}
-                            ${property.area > 0 ? `<span><i class="fa fa-ruler-combined me-1"></i>${property.area} m²</span>` : ''}
                         </div>
                         <div class="mb-2">
-                            <small class="text-muted">${property.price_label}</small>
-                            <h4 class="text-danger mb-0">${property.price_formatted}</h4>
+                            <small class="text-muted">${priceLabel}</small>
+                            <h4 class="text-danger mb-0">${priceFormatted}</h4>
                         </div>
                         <a href="${property.url}"
                            class="btn btn-outline-danger w-100 mt-auto">
