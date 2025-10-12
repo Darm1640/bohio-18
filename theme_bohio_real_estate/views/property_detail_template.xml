@@ -743,7 +743,8 @@
                     const link = document.getElementById('propertyShareLink').value;
                     const title = document.querySelector('#shareModal h6').textContent.trim();
                     const text = encodeURIComponent('¡Mira esta propiedad en BOHIO! ' + title);
-                    window.open('https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent(link), '_blank', 'width=600,height=400');
+                    const url = 'https://twitter.com/intent/tweet?text=' + text + '&amp;url=' + encodeURIComponent(link);
+                    window.open(url, '_blank', 'width=600,height=400');
                 }
 
                 // Compartir por Email
@@ -752,7 +753,8 @@
                     const title = document.querySelector('#shareModal h6').textContent.trim();
                     const subject = encodeURIComponent('Te comparto esta propiedad de BOHIO: ' + title);
                     const body = encodeURIComponent('Hola,\n\nQuiero compartirte esta propiedad que encontré en BOHIO:\n\n' + title + '\n\nPuedes ver más detalles aquí:\n' + link + '\n\nSaludos');
-                    window.location.href = 'mailto:?subject=' + subject + '&body=' + body;
+                    const mailto = 'mailto:?subject=' + subject + '&amp;body=' + body;
+                    window.location.href = mailto;
                 }
 
                 // ============= FUNCIONES DE REPORTE/PQRS =============
@@ -826,7 +828,8 @@
                     );
 
                     // Enviar por email (abre cliente de correo)
-                    window.location.href = 'mailto:reportes@bohio.com?subject=' + emailSubject + '&body=' + emailBody;
+                    const mailtoUrl = 'mailto:reportes@bohio.com?subject=' + emailSubject + '&amp;body=' + emailBody;
+                    window.location.href = mailtoUrl;
 
                     // Mostrar mensaje de éxito
                     setTimeout(function() {
