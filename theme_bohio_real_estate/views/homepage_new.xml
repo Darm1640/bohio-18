@@ -543,12 +543,16 @@ Iniciar Sesión
                             </h2>
 
                             <!-- SNIPPET DINÁMICO: Propiedades en Arriendo -->
-                            <div class="s_dynamic_snippet_properties"
-                                 t-att-data-filter-id="website.env.ref('theme_bohio_real_estate.website_snippet_filter_rent').id"
-                                 data-template-key="theme_bohio_real_estate.dynamic_filter_template_property_card"
-                                 data-number-of-records="12">
-                                <div class="dynamic_snippet_template"></div>
-                            </div>
+                            <section class="s_dynamic_snippet_properties s_dynamic s_dynamic_empty pt32 pb32"
+                                     t-att-data-filter-id="env.ref('theme_bohio_real_estate.website_snippet_filter_rent').id"
+                                     data-template-key="theme_bohio_real_estate.dynamic_filter_template_property_card"
+                                     data-number-of-records="12"
+                                     data-number-of-elements="4"
+                                     data-number-of-elements-sm="1">
+                                <div class="container">
+                                    <div class="dynamic_snippet_template"></div>
+                                </div>
+                            </section>
 
                             <div class="text-center mt-4">
                                 <a href="/properties?type_service=rent" class="btn btn-danger btn-lg px-5">
@@ -572,12 +576,16 @@ Iniciar Sesión
                             </h2>
 
                             <!-- SNIPPET DINÁMICO: Propiedades Usadas en Venta (sin proyecto) -->
-                            <div class="s_dynamic_snippet_properties"
-                                 t-att-data-filter-id="website.env.ref('theme_bohio_real_estate.website_snippet_filter_sale_used').id"
-                                 data-template-key="theme_bohio_real_estate.dynamic_filter_template_property_card"
-                                 data-number-of-records="12">
-                                <div class="dynamic_snippet_template"></div>
-                            </div>
+                            <section class="s_dynamic_snippet_properties s_dynamic s_dynamic_empty pt32 pb32"
+                                     t-att-data-filter-id="env.ref('theme_bohio_real_estate.website_snippet_filter_sale_used').id"
+                                     data-template-key="theme_bohio_real_estate.dynamic_filter_template_property_card"
+                                     data-number-of-records="12"
+                                     data-number-of-elements="4"
+                                     data-number-of-elements-sm="1">
+                                <div class="container">
+                                    <div class="dynamic_snippet_template"></div>
+                                </div>
+                            </section>
 
                             <div class="text-center mt-4">
                                 <a href="/properties?type_service=sale" class="btn btn-danger btn-lg px-5">
@@ -601,12 +609,16 @@ Iniciar Sesión
                             </h2>
 
                             <!-- SNIPPET DINÁMICO: Proyectos Nuevos (con proyecto) -->
-                            <div class="s_dynamic_snippet_properties"
-                                 t-att-data-filter-id="website.env.ref('theme_bohio_real_estate.website_snippet_filter_projects').id"
-                                 data-template-key="theme_bohio_real_estate.dynamic_filter_template_property_card"
-                                 data-number-of-records="6">
-                                <div class="dynamic_snippet_template"></div>
-                            </div>
+                            <section class="s_dynamic_snippet_properties s_dynamic s_dynamic_empty pt32 pb32"
+                                     t-att-data-filter-id="env.ref('theme_bohio_real_estate.website_snippet_filter_projects').id"
+                                     data-template-key="theme_bohio_real_estate.dynamic_filter_template_property_card"
+                                     data-number-of-records="6"
+                                     data-number-of-elements="3"
+                                     data-number-of-elements-sm="1">
+                                <div class="container">
+                                    <div class="dynamic_snippet_template"></div>
+                                </div>
+                            </section>
 
                             <div class="text-center mt-4">
                                 <a href="/proyectos" class="btn btn-danger btn-lg px-5">
