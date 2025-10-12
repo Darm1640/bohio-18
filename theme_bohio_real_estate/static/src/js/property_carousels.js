@@ -10,10 +10,12 @@
     'use strict';
 
     /**
-     * Helper para hacer llamadas RPC a Odoo
+     * Helper para hacer llamadas RPC a Odoo usando JSON-RPC 2.0
      */
     async function rpcCall(endpoint, params) {
         try {
+            console.log(`[RPC] Llamando a ${endpoint} con params:`, params);
+
             const response = await fetch(endpoint, {
                 method: 'POST',
                 headers: {
@@ -23,17 +25,25 @@
                     jsonrpc: '2.0',
                     method: 'call',
                     params: params || {},
-                    id: Math.random().toString(36).substr(2, 9)
                 })
             });
 
-            const data = await response.json();
-            if (data.error) {
-                throw new Error(data.error.message || 'RPC Error');
+            if (!response.ok) {
+                throw new Error(`HTTP Error: ${response.status} ${response.statusText}`);
             }
+
+            const data = await response.json();
+
+            console.log(`[RPC] Respuesta de ${endpoint}:`, data);
+
+            if (data.error) {
+                console.error('[RPC] Error en respuesta:', data.error);
+                throw new Error(data.error.data?.message || data.error.message || 'RPC Error');
+            }
+
             return data.result;
         } catch (error) {
-            console.error('[RPC] Error:', error);
+            console.error('[RPC] Error en llamada:', error);
             throw error;
         }
     }
