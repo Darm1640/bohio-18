@@ -877,7 +877,7 @@ class BohioRealEstateController(http.Controller):
             ('active', '=', True),
             ('state', '=', 'free'),
             ('type_service', 'in', ['rent', 'sale_rent']),
-            ('image_512', '!=', False)  # Solo propiedades con imagen
+            ('image_1920', '!=', False)  # Solo propiedades con imagen 1920
         ]
 
         # OPTIMIZACIÓN: search_count para total
@@ -894,7 +894,7 @@ class BohioRealEstateController(http.Controller):
                 'city_id', 'city', 'state_id', 'neighborhood',
                 'latitude', 'longitude',
                 'project_worksite_id',
-                'image_512',
+                'image_1920',
                 'state'
             ],
             limit=int(limit),
@@ -943,7 +943,7 @@ class BohioRealEstateController(http.Controller):
                 'city_id', 'city', 'state_id', 'neighborhood',
                 'latitude', 'longitude',
                 'project_worksite_id',
-                'image_512',
+                'image_1920',
                 'state'
             ],
             limit=int(limit),
@@ -951,7 +951,7 @@ class BohioRealEstateController(http.Controller):
         )
 
         # Filtrar solo propiedades con imagen (las usadas normalmente no tienen proyecto)
-        properties_data = [p for p in properties_data if p.get('image_512')]
+        properties_data = [p for p in properties_data if p.get('image_1920')]
 
         _logger.info(f"[HOMEPAGE] Encontradas {len(properties_data)} de {total} propiedades usadas con imagen")
 
@@ -971,7 +971,7 @@ class BohioRealEstateController(http.Controller):
         _logger.info(f"[HOMEPAGE] Cargando {limit} propiedades en proyectos")
 
         Property = request.env['product.template'].sudo()
-        Project = request.env['project.project'].sudo()
+        Project = request.env['project.worksite'].sudo()
 
         domain = [
             ('is_property', '=', True),
@@ -995,7 +995,7 @@ class BohioRealEstateController(http.Controller):
                 'city_id', 'city', 'state_id', 'neighborhood',
                 'latitude', 'longitude',
                 'project_worksite_id',
-                'image_512',
+                'image_1920',
                 'state'
             ],
             limit=int(limit),
@@ -1005,7 +1005,7 @@ class BohioRealEstateController(http.Controller):
         # MEJORA: Para propiedades sin imagen, cargar imagen del proyecto
         project_ids_to_fetch = []
         for prop in properties_data:
-            if not prop.get('image_512'):
+            if not prop.get('image_1920'):
                 project_id = prop.get('project_worksite_id')
                 if project_id and isinstance(project_id, (list, tuple)):
                     project_ids_to_fetch.append(project_id[0])
@@ -1021,12 +1021,12 @@ class BohioRealEstateController(http.Controller):
 
         # Asignar imágenes de proyecto a propiedades sin imagen
         for prop in properties_data:
-            if not prop.get('image_512'):
+            if not prop.get('image_1920'):
                 project_id = prop.get('project_worksite_id')
                 if project_id and isinstance(project_id, (list, tuple)):
                     proj_id = project_id[0]
                     if proj_id in project_images:
-                        prop['image_512'] = project_images[proj_id]
+                        prop['image_1920'] = project_images[proj_id]
                         prop['_using_project_image'] = True
 
         _logger.info(f"[HOMEPAGE] Encontradas {len(properties_data)} de {total} propiedades en proyectos")

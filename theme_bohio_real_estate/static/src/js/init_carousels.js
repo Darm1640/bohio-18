@@ -99,10 +99,9 @@ class PropertyCarousel {
 
     getItemsPerSlide() {
         const width = window.innerWidth;
-        if (width >= 1200) return 4;
-        if (width >= 992) return 3;
-        if (width >= 768) return 2;
-        return 1;
+        // Cards horizontales: 2 por fila en desktop, 1 en móvil
+        if (width >= 992) return 2;  // lg y xl: 2 cards
+        return 1;  // móvil y tablet: 1 card
     }
 
     renderPropertyCard(prop) {
@@ -112,45 +111,66 @@ class PropertyCarousel {
         const imageUrl = prop.image_url || '/theme_bohio_real_estate/static/src/img/placeholder.jpg';
 
         return `
-            <div class="col-12 col-md-6 col-lg-3">
-                <div class="card h-100 shadow-sm border-0 position-relative">
-                    ${prop.project_id ? `
-                        <div class="position-absolute top-0 end-0 m-2">
-                            <a href="/proyecto/${prop.project_id}" class="badge bg-danger text-white text-decoration-none">
-                                <i class="fa fa-building me-1"></i>
-                                ${prop.project_name}
-                            </a>
+            <div class="col-lg-6">
+                <div class="card border-0 shadow-sm hover-lift h-100">
+                    <div class="row g-0">
+                        <div class="col-md-5">
+                            <div class="position-relative" style="height: 100%; min-height: 250px;">
+                                <img src="${imageUrl}"
+                                     alt="${prop.name}"
+                                     class="w-100 h-100"
+                                     style="object-fit: cover;"
+                                     loading="lazy"/>
+                                ${prop.project_id ? `
+                                    <span class="badge bg-danger position-absolute top-0 start-0 m-3">
+                                        <i class="fa fa-building me-1"></i>${prop.project_name}
+                                    </span>
+                                ` : ''}
+                            </div>
                         </div>
-                    ` : ''}
+                        <div class="col-md-7">
+                            <div class="card-body p-4 d-flex flex-column h-100">
+                                <h3 class="h5 fw-bold text-danger mb-2">${prop.name}</h3>
+                                <p class="text-muted small mb-3">
+                                    <i class="fa fa-map-marker-alt text-danger me-1"></i>
+                                    ${location}
+                                </p>
 
-                    <img src="${imageUrl}"
-                         alt="${prop.name}"
-                         class="card-img-top"
-                         style="height: 200px; object-fit: cover;"
-                         loading="lazy">
+                                <div class="mb-3">
+                                    <div class="row g-2 small">
+                                        ${prop.area > 0 ? `
+                                            <div class="col-4">
+                                                <i class="fa fa-ruler-combined text-muted me-1"></i>
+                                                <span class="text-muted">${prop.area} m²</span>
+                                            </div>
+                                        ` : ''}
+                                        ${prop.bedrooms > 0 ? `
+                                            <div class="col-4">
+                                                <i class="fa fa-bed text-muted me-1"></i>
+                                                <span class="text-muted">${prop.bedrooms} Hab</span>
+                                            </div>
+                                        ` : ''}
+                                        ${prop.bathrooms > 0 ? `
+                                            <div class="col-4">
+                                                <i class="fa fa-bath text-muted me-1"></i>
+                                                <span class="text-muted">${prop.bathrooms} Baños</span>
+                                            </div>
+                                        ` : ''}
+                                    </div>
+                                </div>
 
-                    <div class="card-body d-flex flex-column">
-                        <h5 class="card-title text-truncate" title="${prop.name}">${prop.name}</h5>
+                                <div class="mb-3">
+                                    <small class="text-muted d-block">${priceLabel}</small>
+                                    <h4 class="text-danger fw-bold mb-0">${price}</h4>
+                                </div>
 
-                        <p class="text-muted small mb-2">
-                            <i class="fa fa-map-marker-alt me-1"></i>
-                            ${location}
-                        </p>
-
-                        <div class="d-flex justify-content-between mb-2 text-muted small">
-                            ${prop.area > 0 ? `<span><i class="fa fa-ruler-combined me-1"></i>${prop.area} m²</span>` : ''}
-                            ${prop.bedrooms > 0 ? `<span><i class="fa fa-bed me-1"></i>${prop.bedrooms}</span>` : ''}
-                            ${prop.bathrooms > 0 ? `<span><i class="fa fa-bath me-1"></i>${prop.bathrooms}</span>` : ''}
+                                <div class="mt-auto">
+                                    <a href="${prop.url}" class="btn btn-danger btn-sm w-100">
+                                        <i class="fa fa-eye me-1"></i>Ver Detalles
+                                    </a>
+                                </div>
+                            </div>
                         </div>
-
-                        <div class="mb-2">
-                            <small class="text-muted">${priceLabel}</small>
-                            <h4 class="text-danger mb-0">${price}</h4>
-                        </div>
-
-                        <a href="${prop.url}" class="btn btn-outline-danger w-100 mt-auto">
-                            <i class="fa fa-eye me-1"></i> Ver detalles
-                        </a>
                     </div>
                 </div>
             </div>
