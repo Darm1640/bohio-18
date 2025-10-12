@@ -206,28 +206,52 @@ window.goToSlide = function(index) {
 
 // Alternar entre imagen y mapa
 window.toggleMapView = function() {
-    console.log('🗺️ Toggle mapa');
+    console.log('🗺️ Toggle mapa - START');
     const mapSection = document.getElementById('mapViewSection');
     const carouselContainer = document.querySelector('.property-gallery-container');
 
-    if (!mapSection || !carouselContainer) return;
+    console.log('  - mapSection:', mapSection ? 'OK' : 'NO ENCONTRADO');
+    console.log('  - carouselContainer:', carouselContainer ? 'OK' : 'NO ENCONTRADO');
+
+    if (!mapSection || !carouselContainer) {
+        console.error('❌ Elementos de mapa/carrusel no encontrados');
+        return;
+    }
 
     if (mapSection.style.display === 'none' || !mapSection.style.display) {
+        console.log('  - Mostrando mapa, ocultando carrusel');
         mapSection.style.display = 'block';
         carouselContainer.style.display = 'none';
 
-        // Forzar re-renderizado del mapa
-        if (window.propertyMap) {
-            window.propertyMap.invalidateSize();
-        }
-        // Si no está inicializado, inicializarlo ahora
-        if (typeof window.initPropertyMap === 'function') {
-            window.initPropertyMap();
-        }
+        // Esperar a que el DOM se actualice antes de inicializar
+        setTimeout(() => {
+            console.log('  - Verificando Leaflet:', typeof L !== 'undefined' ? 'Cargado' : 'NO CARGADO');
+
+            if (window.propertyMap) {
+                console.log('  - Mapa ya existe, invalidando tamaño');
+                window.propertyMap.invalidateSize();
+            } else if (typeof window.initPropertyMap === 'function') {
+                console.log('  - Inicializando mapa por primera vez');
+                window.initPropertyMap();
+
+                // Forzar resize después de crear
+                setTimeout(() => {
+                    if (window.propertyMap) {
+                        console.log('  - Forzando resize del mapa');
+                        window.propertyMap.invalidateSize();
+                    }
+                }, 200);
+            } else {
+                console.error('❌ initPropertyMap no está definida');
+            }
+        }, 150);
     } else {
+        console.log('  - Ocultando mapa, mostrando carrusel');
         mapSection.style.display = 'none';
         carouselContainer.style.display = 'block';
     }
+
+    console.log('🗺️ Toggle mapa - END');
 };
 
 // Inicializar mapa de Leaflet

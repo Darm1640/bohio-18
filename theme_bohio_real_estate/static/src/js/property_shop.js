@@ -105,8 +105,13 @@ class PropertyShop {
         const params = new URLSearchParams(window.location.search);
         this.filters = {};
 
-        // Leer todos los parámetros de filtro
-        const filterKeys = ['type_service', 'property_type', 'bedrooms', 'bathrooms', 'min_price', 'max_price', 'garage', 'pool', 'garden', 'elevator', 'order'];
+        // Leer todos los parámetros de filtro - INCLUIR FILTROS DE UBICACIÓN
+        const filterKeys = [
+            'type_service', 'property_type', 'bedrooms', 'bathrooms',
+            'min_price', 'max_price', 'garage', 'pool', 'garden', 'elevator',
+            'city_id', 'state_id', 'region_id', 'project_id', 'search',  // AGREGADOS
+            'order'
+        ];
         filterKeys.forEach(key => {
             const value = params.get(key);
             if (value) {
@@ -120,7 +125,7 @@ class PropertyShop {
             this.currentPage = parseInt(page);
         }
 
-        console.log('Filtros leídos de URL:', this.filters);
+        console.log('✅ Filtros leídos de URL:', this.filters);
     }
 
     updateURL() {
