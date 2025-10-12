@@ -112,7 +112,7 @@ class HomepageAutocomplete {
             console.log('[HOMEPAGE-AUTOCOMPLETE] Resultado:', result);
 
             if (result.success) {
-                this.renderAutocompleteResults(result.results || []);
+                this.renderAutocompleteResults(result.results || [], term);
             } else {
                 console.error('[HOMEPAGE-AUTOCOMPLETE] Error en resultado:', result);
                 this.showError('Error al buscar');
@@ -123,7 +123,7 @@ class HomepageAutocomplete {
         }
     }
 
-    renderAutocompleteResults(results) {
+    renderAutocompleteResults(results, term = '') {
         if (!this.autocompleteContainer) return;
 
         console.log('[HOMEPAGE-AUTOCOMPLETE] Renderizando', results.length, 'resultados');

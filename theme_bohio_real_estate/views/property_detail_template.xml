@@ -355,7 +355,7 @@
             </div>
 
             <!-- JavaScript para Funcionalidad de Galería -->
-            <script>
+            <script type="text/javascript">
                 // Variables globales para el zoom
                 let currentZoomIndex = 0;
                 let zoomImages = [];
@@ -552,7 +552,7 @@
                             }).addTo(window.propertyMap);
 
                             L.marker([lat, lng]).addTo(window.propertyMap)
-                                .bindPopup(`&lt;b&gt;${name}&lt;/b&gt;`)
+                                .bindPopup('&lt;b&gt;' + name + '&lt;/b&gt;')
                                 .openPopup();
                         };
                     }
