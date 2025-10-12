@@ -76,10 +76,15 @@ class BohioRealEstateController(http.Controller):
             project_name = project_id[1] if project_id and isinstance(project_id, (list, tuple)) else ''
             project_id_int = project_id[0] if project_id and isinstance(project_id, (list, tuple)) else None
 
-            # Imagen - search_read devuelve el campo directamente
-            image_data = prop.get('image_512')
+            # Imagen - usar base64 directamente si existe
+            image_data = prop.get('image_1920')
             if image_data:
-                image_url = f"{base_url}/web/image/product.template/{prop['id']}/image_512"
+                # Si es base64, usarlo directamente
+                if isinstance(image_data, str):
+                    image_url = f"data:image/jpeg;base64,{image_data}"
+                else:
+                    # Fallback a URL de Odoo
+                    image_url = f"{base_url}/web/image/product.template/{prop['id']}/image_1920"
             else:
                 image_url = f"{base_url}/theme_bohio_real_estate/static/src/img/placeholder.jpg"
 
@@ -101,7 +106,7 @@ class BohioRealEstateController(http.Controller):
                 'project_id': project_id_int,
                 'project_name': project_name,
                 'image_url': image_url,
-                'url': f"/propiedad/{prop['id']}/{prop.get('name', '').replace(' ', '-').lower()}",
+                'url': f"/property/{prop['id']}",
             })
 
         return serialized
@@ -862,7 +867,7 @@ class BohioRealEstateController(http.Controller):
     # =================== ENDPOINTS ESPECÍFICOS POR SECCIÓN ===================
 
     @http.route(['/api/properties/arriendo'], type='json', auth='public', website=True, csrf=False)
-    def api_properties_arriendo(self, limit=4, **kwargs):
+    def api_properties_arriendo(self, limit=16, **kwargs):
         """
         Endpoint específico para propiedades de arriendo en homepage
         OPTIMIZADO: Usa search_read para cargar todos los campos en 1 query SQL
@@ -877,7 +882,7 @@ class BohioRealEstateController(http.Controller):
             ('active', '=', True),
             ('state', '=', 'free'),
             ('type_service', 'in', ['rent', 'sale_rent']),
-            ('image_1920', '!=', False)  # Solo propiedades con imagen 1920
+            ('image_1920', '!=', False)  
         ]
 
         # OPTIMIZACIÓN: search_count para total
@@ -910,7 +915,7 @@ class BohioRealEstateController(http.Controller):
         }
 
     @http.route(['/api/properties/venta-usada'], type='json', auth='public', website=True, csrf=False)
-    def api_properties_venta_usada(self, limit=4, **kwargs):
+    def api_properties_venta_usada(self, limit=16, **kwargs):
         """
         Endpoint específico para propiedades de venta usadas
         OPTIMIZADO: Usa search_read para cargar todos los campos en 1 query SQL

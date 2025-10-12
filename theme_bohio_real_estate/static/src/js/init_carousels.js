@@ -105,7 +105,6 @@ class PropertyCarousel {
     }
 
     renderPropertyCard(prop) {
-        const location = this.getLocation(prop);
         const price = this.formatPrice(prop);
         const priceLabel = this.getPriceLabel(prop);
         const imageUrl = prop.image_url || '/theme_bohio_real_estate/static/src/img/placeholder.jpg';
@@ -131,29 +130,43 @@ class PropertyCarousel {
                         <div class="col-md-7">
                             <div class="card-body p-4 d-flex flex-column h-100">
                                 <h3 class="h5 fw-bold text-danger mb-2">${prop.name}</h3>
+
+                                ${prop.neighborhood ? `
+                                    <p class="text-muted small mb-1">
+                                        <i class="fa fa-home text-danger me-1"></i>
+                                        <strong>${prop.neighborhood}</strong>
+                                    </p>
+                                ` : ''}
+
                                 <p class="text-muted small mb-3">
                                     <i class="fa fa-map-marker-alt text-danger me-1"></i>
-                                    ${location}
+                                    ${prop.city}${prop.state ? ', ' + prop.state : ''}
                                 </p>
 
                                 <div class="mb-3">
                                     <div class="row g-2 small">
                                         ${prop.area > 0 ? `
-                                            <div class="col-4">
-                                                <i class="fa fa-ruler-combined text-muted me-1"></i>
+                                            <div class="col-6">
+                                                <i class="fa fa-ruler-combined text-danger me-1"></i>
                                                 <span class="text-muted">${prop.area} m²</span>
                                             </div>
                                         ` : ''}
                                         ${prop.bedrooms > 0 ? `
-                                            <div class="col-4">
-                                                <i class="fa fa-bed text-muted me-1"></i>
+                                            <div class="col-6">
+                                                <i class="fa fa-bed text-danger me-1"></i>
                                                 <span class="text-muted">${prop.bedrooms} Hab</span>
                                             </div>
                                         ` : ''}
                                         ${prop.bathrooms > 0 ? `
-                                            <div class="col-4">
-                                                <i class="fa fa-bath text-muted me-1"></i>
+                                            <div class="col-6">
+                                                <i class="fa fa-bath text-danger me-1"></i>
                                                 <span class="text-muted">${prop.bathrooms} Baños</span>
+                                            </div>
+                                        ` : ''}
+                                        ${prop.code ? `
+                                            <div class="col-6">
+                                                <i class="fa fa-hashtag text-danger me-1"></i>
+                                                <span class="text-muted">${prop.code}</span>
                                             </div>
                                         ` : ''}
                                     </div>
