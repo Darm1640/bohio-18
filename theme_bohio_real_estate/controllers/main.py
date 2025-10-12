@@ -924,14 +924,13 @@ class BohioRealEstateController(http.Controller):
         _logger.info(f"[HOMEPAGE] Cargando {limit} propiedades de venta usada")
 
         Property = request.env['product.template'].sudo()
-        Project = request.env['project.project'].sudo()
 
         domain = [
             ('is_property', '=', True),
             ('active', '=', True),
             ('state', '=', 'free'),
             ('type_service', 'in', ['sale', 'sale_rent']),
-            ('project_worksite_id', '=', False)  # Sin proyecto (usadas)
+            ('image_1920', '!=', False)  # Solo con imagen
         ]
 
         # OPTIMIZACIÓN: search_count para total
@@ -955,10 +954,7 @@ class BohioRealEstateController(http.Controller):
             order='write_date desc'
         )
 
-        # Filtrar solo propiedades con imagen (las usadas normalmente no tienen proyecto)
-        properties_data = [p for p in properties_data if p.get('image_1920')]
-
-        _logger.info(f"[HOMEPAGE] Encontradas {len(properties_data)} de {total} propiedades usadas con imagen")
+        _logger.info(f"[HOMEPAGE] Encontradas {len(properties_data)} de {total} propiedades de venta con imagen")
 
         return {
             'success': True,
@@ -969,77 +965,92 @@ class BohioRealEstateController(http.Controller):
     @http.route(['/api/properties/proyectos'], type='json', auth='public', website=True, csrf=False)
     def api_properties_proyectos(self, limit=4, **kwargs):
         """
-        Endpoint específico para propiedades en proyectos
-        OPTIMIZADO: Usa search_read para cargar todos los campos en 1 query SQL
-        MEJORA: Si propiedad no tiene imagen, usa imagen del proyecto
+        Endpoint específico para PROYECTOS (no propiedades individuales)
+        Muestra proyectos con propiedades disponibles
         """
-        _logger.info(f"[HOMEPAGE] Cargando {limit} propiedades en proyectos")
+        _logger.info(f"[HOMEPAGE] Cargando {limit} proyectos")
 
-        Property = request.env['product.template'].sudo()
         Project = request.env['project.worksite'].sudo()
+        Property = request.env['product.template'].sudo()
 
+        # Buscar proyectos activos
         domain = [
-            ('is_property', '=', True),
             ('active', '=', True),
-            ('state', '=', 'free'),
-            ('type_service', 'in', ['sale', 'sale_rent']),
-            ('project_worksite_id', '!=', False)
+            ('is_enabled', '=', True),
         ]
 
-        # OPTIMIZACIÓN: search_count para total
-        total = Property.search_count(domain)
-
-        # OPTIMIZACIÓN: search_read carga todos los campos en 1 query
-        properties_data = Property.search_read(
+        # OPTIMIZACIÓN: search_read de proyectos
+        projects_data = Project.search_read(
             domain,
             fields=[
                 'id', 'name', 'default_code',
-                'property_type', 'type_service',
-                'net_rental_price', 'net_price', 'currency_id',
-                'num_bedrooms', 'num_bathrooms', 'property_area',
-                'city_id', 'city', 'state_id', 'neighborhood',
-                'latitude', 'longitude',
-                'project_worksite_id',
                 'image_1920',
-                'state'
+                'city', 'state_id',
+                'address', 'description',
+                'no_of_property',
             ],
             limit=int(limit),
-            order='write_date desc'
+            order='id desc'
         )
 
-        # MEJORA: Para propiedades sin imagen, cargar imagen del proyecto
-        project_ids_to_fetch = []
-        for prop in properties_data:
-            if not prop.get('image_1920'):
-                project_id = prop.get('project_worksite_id')
-                if project_id and isinstance(project_id, (list, tuple)):
-                    project_ids_to_fetch.append(project_id[0])
+        # Para cada proyecto, contar propiedades disponibles
+        serialized = []
+        base_url = request.httprequest.url_root.rstrip('/')
 
-        # Cargar imágenes de proyectos en 1 query batch
-        project_images = {}
-        if project_ids_to_fetch:
-            projects_data = Project.search_read(
-                [('id', 'in', project_ids_to_fetch)],
-                fields=['id', 'image_1920']
-            )
-            project_images = {p['id']: p.get('image_1920') for p in projects_data}
+        for project in projects_data:
+            # Contar propiedades disponibles en el proyecto
+            available_count = Property.search_count([
+                ('project_worksite_id', '=', project['id']),
+                ('is_property', '=', True),
+                ('active', '=', True),
+                ('state', '=', 'free'),
+            ])
 
-        # Asignar imágenes de proyecto a propiedades sin imagen
-        for prop in properties_data:
-            if not prop.get('image_1920'):
-                project_id = prop.get('project_worksite_id')
-                if project_id and isinstance(project_id, (list, tuple)):
-                    proj_id = project_id[0]
-                    if proj_id in project_images:
-                        prop['image_1920'] = project_images[proj_id]
-                        prop['_using_project_image'] = True
+            # Solo mostrar proyectos con propiedades disponibles
+            if available_count == 0:
+                continue
 
-        _logger.info(f"[HOMEPAGE] Encontradas {len(properties_data)} de {total} propiedades en proyectos")
+            # Imagen del proyecto
+            image_data = project.get('image_1920')
+            if image_data:
+                if isinstance(image_data, str):
+                    image_url = f"data:image/jpeg;base64,{image_data}"
+                else:
+                    image_url = f"{base_url}/web/image/project.worksite/{project['id']}/image_1920"
+            else:
+                image_url = f"{base_url}/theme_bohio_real_estate/static/src/img/placeholder.jpg"
+
+            state_id = project.get('state_id')
+            state_name = state_id[1] if state_id and isinstance(state_id, (list, tuple)) else ''
+
+            serialized.append({
+                'id': project['id'],
+                'name': project.get('name', 'Sin nombre'),
+                'code': project.get('default_code', ''),
+                'city': project.get('city', ''),
+                'state': state_name,
+                'neighborhood': '',  # Proyectos no tienen barrio
+                'area': 0,  # Proyectos no tienen área individual
+                'bedrooms': 0,
+                'bathrooms': 0,
+                'price': 0,  # Proyectos no tienen precio individual
+                'type_service': 'sale',
+                'image_url': image_url,
+                'url': f"/proyecto/{project['id']}",
+                'project_id': project['id'],
+                'project_name': project.get('name', ''),
+                # Datos adicionales del proyecto
+                'available_units': available_count,
+                'total_units': project.get('no_of_property', 0),
+                'description': project.get('description', ''),
+            })
+
+        _logger.info(f"[HOMEPAGE] Encontrados {len(serialized)} proyectos con unidades disponibles")
 
         return {
             'success': True,
-            'properties': self._serialize_properties_fast(properties_data, 'public'),
-            'total': total
+            'properties': serialized,  # Devolver proyectos serializados
+            'total': len(serialized)
         }
 
     @http.route(['/bohio/api/properties/map'], type='json', auth='public', website=True)

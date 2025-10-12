@@ -145,37 +145,50 @@ class PropertyCarousel {
 
                                 <div class="mb-3">
                                     <div class="row g-2 small">
-                                        ${prop.area > 0 ? `
+                                        ${prop.available_units !== undefined ? `
                                             <div class="col-6">
-                                                <i class="fa fa-ruler-combined text-danger me-1"></i>
-                                                <span class="text-muted">${prop.area} m²</span>
+                                                <i class="fa fa-building text-danger me-1"></i>
+                                                <span class="text-muted">${prop.available_units} Disponibles</span>
                                             </div>
-                                        ` : ''}
-                                        ${prop.bedrooms > 0 ? `
                                             <div class="col-6">
-                                                <i class="fa fa-bed text-danger me-1"></i>
-                                                <span class="text-muted">${prop.bedrooms} Hab</span>
+                                                <i class="fa fa-home text-danger me-1"></i>
+                                                <span class="text-muted">${prop.total_units || 0} Total</span>
                                             </div>
-                                        ` : ''}
-                                        ${prop.bathrooms > 0 ? `
-                                            <div class="col-6">
-                                                <i class="fa fa-bath text-danger me-1"></i>
-                                                <span class="text-muted">${prop.bathrooms} Baños</span>
-                                            </div>
-                                        ` : ''}
-                                        ${prop.code ? `
-                                            <div class="col-6">
-                                                <i class="fa fa-hashtag text-danger me-1"></i>
-                                                <span class="text-muted">${prop.code}</span>
-                                            </div>
-                                        ` : ''}
+                                        ` : `
+                                            ${prop.area > 0 ? `
+                                                <div class="col-6">
+                                                    <i class="fa fa-ruler-combined text-danger me-1"></i>
+                                                    <span class="text-muted">${prop.area} m²</span>
+                                                </div>
+                                            ` : ''}
+                                            ${prop.bedrooms > 0 ? `
+                                                <div class="col-6">
+                                                    <i class="fa fa-bed text-danger me-1"></i>
+                                                    <span class="text-muted">${prop.bedrooms} Hab</span>
+                                                </div>
+                                            ` : ''}
+                                            ${prop.bathrooms > 0 ? `
+                                                <div class="col-6">
+                                                    <i class="fa fa-bath text-danger me-1"></i>
+                                                    <span class="text-muted">${prop.bathrooms} Baños</span>
+                                                </div>
+                                            ` : ''}
+                                            ${prop.code ? `
+                                                <div class="col-6">
+                                                    <i class="fa fa-hashtag text-danger me-1"></i>
+                                                    <span class="text-muted">${prop.code}</span>
+                                                </div>
+                                            ` : ''}
+                                        `}
                                     </div>
                                 </div>
 
-                                <div class="mb-3">
-                                    <small class="text-muted d-block">${priceLabel}</small>
-                                    <h4 class="text-danger fw-bold mb-0">${price}</h4>
-                                </div>
+                                ${prop.available_units === undefined ? `
+                                    <div class="mb-3">
+                                        <small class="text-muted d-block">${priceLabel}</small>
+                                        <h4 class="text-danger fw-bold mb-0">${price}</h4>
+                                    </div>
+                                ` : ''}
 
                                 <div class="mt-auto">
                                     <a href="${prop.url}" class="btn btn-danger btn-sm w-100">
