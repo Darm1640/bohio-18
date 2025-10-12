@@ -109,9 +109,15 @@ class PropertyCarousel {
         const priceLabel = this.getPriceLabel(prop);
         const imageUrl = prop.image_url || '/theme_bohio_real_estate/static/src/img/placeholder.jpg';
 
+        // Si es un proyecto, usar diseño especial
+        if (prop.available_units !== undefined) {
+            return this.renderProjectCard(prop, imageUrl);
+        }
+
+        // Diseño normal para propiedades
         return `
             <div class="col-lg-6">
-                <div class="card border-0 shadow-sm hover-lift h-100">
+                <div class="card border-0 shadow-sm hover-lift h-100 bg-white">
                     <div class="row g-0">
                         <div class="col-md-5">
                             <div class="position-relative" style="height: 100%; min-height: 250px;">
@@ -145,54 +151,102 @@ class PropertyCarousel {
 
                                 <div class="mb-3">
                                     <div class="row g-2 small">
-                                        ${prop.available_units !== undefined ? `
+                                        ${prop.area > 0 ? `
                                             <div class="col-6">
-                                                <i class="fa fa-building text-danger me-1"></i>
-                                                <span class="text-muted">${prop.available_units} Disponibles</span>
+                                                <i class="fa fa-ruler-combined text-danger me-1"></i>
+                                                <span class="text-muted">${prop.area} m²</span>
                                             </div>
+                                        ` : ''}
+                                        ${prop.bedrooms > 0 ? `
                                             <div class="col-6">
-                                                <i class="fa fa-home text-danger me-1"></i>
-                                                <span class="text-muted">${prop.total_units || 0} Total</span>
+                                                <i class="fa fa-bed text-danger me-1"></i>
+                                                <span class="text-muted">${prop.bedrooms} Hab</span>
                                             </div>
-                                        ` : `
-                                            ${prop.area > 0 ? `
-                                                <div class="col-6">
-                                                    <i class="fa fa-ruler-combined text-danger me-1"></i>
-                                                    <span class="text-muted">${prop.area} m²</span>
-                                                </div>
-                                            ` : ''}
-                                            ${prop.bedrooms > 0 ? `
-                                                <div class="col-6">
-                                                    <i class="fa fa-bed text-danger me-1"></i>
-                                                    <span class="text-muted">${prop.bedrooms} Hab</span>
-                                                </div>
-                                            ` : ''}
-                                            ${prop.bathrooms > 0 ? `
-                                                <div class="col-6">
-                                                    <i class="fa fa-bath text-danger me-1"></i>
-                                                    <span class="text-muted">${prop.bathrooms} Baños</span>
-                                                </div>
-                                            ` : ''}
-                                            ${prop.code ? `
-                                                <div class="col-6">
-                                                    <i class="fa fa-hashtag text-danger me-1"></i>
-                                                    <span class="text-muted">${prop.code}</span>
-                                                </div>
-                                            ` : ''}
-                                        `}
+                                        ` : ''}
+                                        ${prop.bathrooms > 0 ? `
+                                            <div class="col-6">
+                                                <i class="fa fa-bath text-danger me-1"></i>
+                                                <span class="text-muted">${prop.bathrooms} Baños</span>
+                                            </div>
+                                        ` : ''}
+                                        ${prop.code ? `
+                                            <div class="col-6">
+                                                <i class="fa fa-hashtag text-danger me-1"></i>
+                                                <span class="text-muted">${prop.code}</span>
+                                            </div>
+                                        ` : ''}
                                     </div>
                                 </div>
 
-                                ${prop.available_units === undefined ? `
-                                    <div class="mb-3">
-                                        <small class="text-muted d-block">${priceLabel}</small>
-                                        <h4 class="text-danger fw-bold mb-0">${price}</h4>
-                                    </div>
-                                ` : ''}
+                                <div class="mb-3">
+                                    <small class="text-muted d-block">${priceLabel}</small>
+                                    <h4 class="text-danger fw-bold mb-0">${price}</h4>
+                                </div>
 
                                 <div class="mt-auto">
                                     <a href="${prop.url}" class="btn btn-danger btn-sm w-100">
                                         <i class="fa fa-eye me-1"></i>Ver Detalles
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    renderProjectCard(project, imageUrl) {
+        return `
+            <div class="col-lg-6">
+                <div class="card border-0 shadow-sm hover-lift h-100 bg-white">
+                    <div class="position-relative" style="height: 300px;">
+                        <span class="badge bg-warning text-dark position-absolute top-0 start-0 m-3" style="z-index: 10;">
+                            En Construcción
+                        </span>
+                        <img src="${imageUrl}"
+                             alt="${project.name}"
+                             class="w-100 h-100"
+                             style="object-fit: cover;"
+                             loading="lazy"/>
+                    </div>
+                    <div class="card-body p-4">
+                        <h3 class="h4 fw-bold text-danger mb-2">${project.name}</h3>
+
+                        <p class="text-muted small mb-3">
+                            ${project.description || 'Sin ubicación'}
+                        </p>
+
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <div class="text-center">
+                                <div class="d-flex align-items-center">
+                                    <i class="fa fa-building text-muted me-2" style="font-size: 1.2rem;"></i>
+                                    <span class="h5 mb-0">${project.total_units || 0}</span>
+                                </div>
+                                <small class="text-muted">Unidades</small>
+                            </div>
+                            <div class="text-center">
+                                <div class="d-flex align-items-center">
+                                    <i class="fa fa-home text-danger me-2" style="font-size: 1.2rem;"></i>
+                                    <span class="h5 mb-0 text-danger">${project.available_units}</span>
+                                </div>
+                                <small class="text-muted">Disponibles</small>
+                            </div>
+                        </div>
+
+                        <div class="d-flex flex-column gap-2">
+                            <a href="${project.url}" class="btn btn-danger w-100">
+                                <i class="fa fa-building me-1"></i>Ver Proyecto Completo
+                            </a>
+                            <div class="row g-2">
+                                <div class="col-6">
+                                    <a href="/properties?project_id=${project.id}" class="btn btn-outline-danger btn-sm w-100">
+                                        <i class="fa fa-th me-1"></i>Ver Unidades
+                                    </a>
+                                </div>
+                                <div class="col-6">
+                                    <a href="/contacto?proyecto=${project.id}" class="btn btn-outline-danger btn-sm w-100">
+                                        <i class="fa fa-envelope me-1"></i>Contactar
                                     </a>
                                 </div>
                             </div>
