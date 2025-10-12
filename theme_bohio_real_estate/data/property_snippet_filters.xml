@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ========================================== -->
+    <!-- IR FILTERS para Dynamic Snippets          -->
+    <!-- ========================================== -->
+
+    <!-- FILTRO 1: Propiedades en Arriendo -->
+    <record id="ir_filter_properties_rent" model="ir.filters">
+        <field name="name">Propiedades en Arriendo</field>
+        <field name="model_id">product.template</field>
+        <field name="domain">[('is_property', '=', True), ('active', '=', True), ('state', '=', 'free'), ('type_service', 'in', ['rent', 'sale_rent'])]</field>
+        <field name="context">{}</field>
+        <field name="sort">["create_date DESC"]</field>
+        <field name="is_default" eval="False"/>
+    </record>
+
+    <!-- FILTRO 2: Propiedades Usadas en Venta (sin proyecto) -->
+    <record id="ir_filter_properties_sale_used" model="ir.filters">
+        <field name="name">Propiedades Usadas en Venta</field>
+        <field name="model_id">product.template</field>
+        <field name="domain">[('is_property', '=', True), ('active', '=', True), ('state', '=', 'free'), ('type_service', 'in', ['sale', 'sale_rent']), ('project_worksite_id', '=', False)]</field>
+        <field name="context">{}</field>
+        <field name="sort">["create_date DESC"]</field>
+        <field name="is_default" eval="False"/>
+    </record>
+
+    <!-- FILTRO 3: Proyectos (con proyecto) -->
+    <record id="ir_filter_properties_projects" model="ir.filters">
+        <field name="name">Proyectos Nuevos</field>
+        <field name="model_id">product.template</field>
+        <field name="domain">[('is_property', '=', True), ('active', '=', True), ('state', '=', 'free'), ('type_service', 'in', ['sale', 'sale_rent']), ('project_worksite_id', '!=', False)]</field>
+        <field name="context">{}</field>
+        <field name="sort">["create_date DESC"]</field>
+        <field name="is_default" eval="False"/>
+    </record>
+
+    <!-- ========================================== -->
+    <!-- WEBSITE SNIPPET FILTERS                    -->
+    <!-- ========================================== -->
+
+    <!-- SNIPPET FILTER 1: Arriendo -->
+    <record id="website_snippet_filter_rent" model="website.snippet.filter">
+        <field name="name">Propiedades en Arriendo</field>
+        <field name="filter_id" ref="ir_filter_properties_rent"/>
+        <field name="field_names">id,name,list_price,currency_id,city_id,region_id,bedrooms,bathrooms,area,property_type,image_1920,website_url</field>
+        <field name="limit">12</field>
+        <field name="website_id" ref="website.default_website"/>
+        <field name="is_published" eval="True"/>
+    </record>
+
+    <!-- SNIPPET FILTER 2: Venta Usados -->
+    <record id="website_snippet_filter_sale_used" model="website.snippet.filter">
+        <field name="name">Propiedades Usadas en Venta</field>
+        <field name="filter_id" ref="ir_filter_properties_sale_used"/>
+        <field name="field_names">id,name,list_price,currency_id,city_id,region_id,bedrooms,bathrooms,area,property_type,image_1920,website_url</field>
+        <field name="limit">12</field>
+        <field name="website_id" ref="website.default_website"/>
+        <field name="is_published" eval="True"/>
+    </record>
+
+    <!-- SNIPPET FILTER 3: Proyectos -->
+    <record id="website_snippet_filter_projects" model="website.snippet.filter">
+        <field name="name">Proyectos Nuevos</field>
+        <field name="filter_id" ref="ir_filter_properties_projects"/>
+        <field name="field_names">id,name,list_price,currency_id,city_id,region_id,bedrooms,bathrooms,area,property_type,image_1920,website_url,project_worksite_id</field>
+        <field name="limit">6</field>
+        <field name="website_id" ref="website.default_website"/>
+        <field name="is_published" eval="True"/>
+    </record>
+
+</odoo>

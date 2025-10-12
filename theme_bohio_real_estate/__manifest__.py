@@ -30,6 +30,9 @@
         'views/layout/loader_template.xml',
         'views/layout/pwa_fix.xml',
 
+        # Data - Snippet Filters
+        'data/property_snippet_filters.xml',
+
         # Data - Torre Rialto (orden: proyecto, propiedades, planos)
         'data/torre_rialto_proyecto.xml',
         'data/torre_rialto_propiedades.xml',
