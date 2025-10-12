@@ -97,9 +97,17 @@
 
             # CSS Additional
             'theme_bohio_real_estate/static/src/css/property_carousels.css',
+            'theme_bohio_real_estate/static/src/css/property_snippets.css',
+
+            # JavaScript - Property Dynamic Snippets
+            'theme_bohio_real_estate/static/src/snippets/s_dynamic_snippet_properties/000.js',
 
             # XML Templates OWL
             'theme_bohio_real_estate/static/src/xml/property_filters_template.xml',
+        ],
+        'web.assets_backend': [
+            # JavaScript - Property Snippet Options (Website Builder)
+            'theme_bohio_real_estate/static/src/snippets/s_dynamic_snippet_properties/options.js',
         ],
     },
     'installable': True,

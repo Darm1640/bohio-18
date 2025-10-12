@@ -186,21 +186,8 @@
     </template>
 
     <!-- ========================================================== -->
-    <!-- ASSETS: JavaScript y CSS                                   -->
+    <!-- NOTA: Los assets JavaScript se cargan desde __manifest__.py -->
+    <!-- Ver sección 'assets' en __manifest__.py                     -->
     <!-- ========================================================== -->
-
-    <!-- JavaScript: Lógica del snippet -->
-    <record id="s_dynamic_snippet_properties_js" model="ir.asset">
-        <field name="name">Dynamic Snippet Properties JS</field>
-        <field name="bundle">web.assets_frontend</field>
-        <field name="path">theme_bohio_real_estate/static/src/snippets/s_dynamic_snippet_properties/000.js</field>
-    </record>
-
-    <!-- JavaScript: Opciones del snippet -->
-    <record id="s_dynamic_snippet_properties_options_js" model="ir.asset">
-        <field name="name">Dynamic Snippet Properties Options JS</field>
-        <field name="bundle">web.assets_backend</field>
-        <field name="path">theme_bohio_real_estate/static/src/snippets/s_dynamic_snippet_properties/options.js</field>
-    </record>
 
 </odoo>
