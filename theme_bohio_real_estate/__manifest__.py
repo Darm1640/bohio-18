@@ -94,8 +94,6 @@
             'theme_bohio_real_estate/static/src/js/homepage_autocomplete.js',
             'theme_bohio_real_estate/static/src/js/homepage_properties.js',
             'theme_bohio_real_estate/static/src/js/property_filters.js',
-            # 'theme_bohio_real_estate/static/src/js/property_carousels.js',  # DEPRECATED: Reemplazado por OWL Component
-            # 'theme_bohio_real_estate/static/src/js/homepage_new.js',  # DEPRECATED: Reemplazado por OWL Component
             'theme_bohio_real_estate/static/src/js/property_shop.js',
             'theme_bohio_real_estate/static/src/js/proyectos.js',
             'theme_bohio_real_estate/static/src/js/proyecto_detalle.js',
@@ -104,13 +102,7 @@
             'theme_bohio_real_estate/static/src/css/property_carousels.css',
             'theme_bohio_real_estate/static/src/css/property_snippets.css',
 
-            # XML Templates OWL (MUST BE LOADED BEFORE COMPONENTS)
-            'theme_bohio_real_estate/static/src/xml/property_filters_template.xml',
-            'theme_bohio_real_estate/static/src/components/property_carousel/property_carousel.xml',
-
-            # JavaScript - OWL Components (AFTER TEMPLATES)
-            'theme_bohio_real_estate/static/src/services/property_data_service.js',
-            'theme_bohio_real_estate/static/src/components/property_carousel/property_carousel.js',
+            # JavaScript - Property Carousels (Vanilla JS with RPC)
             'theme_bohio_real_estate/static/src/js/init_carousels.js',
         ],
         'web.assets_backend': [
