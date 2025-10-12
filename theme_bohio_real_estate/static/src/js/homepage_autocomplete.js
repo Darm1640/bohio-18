@@ -1,88 +1,84 @@
 /** @odoo-module **/
 
 import { rpc } from "@web/core/network/rpc";
+import publicWidget from "@web/legacy/js/public/public_widget";
 
 console.log('[HOMEPAGE-AUTOCOMPLETE] Módulo cargado');
 
 /**
- * Sistema de Autocompletado para Homepage
- * Funciona igual que en la página de propiedades
+ * Widget de Autocompletado para Homepage
+ * Se inicializa automáticamente en la homepage
  */
-class HomepageAutocomplete {
-    constructor() {
+const HomepageAutocomplete = publicWidget.Widget.extend({
+    selector: '.search-bar-container',
+
+    events: {
+        'input .property-search-input': '_onSearchInput',
+        'click .autocomplete-item': '_onItemClick',
+    },
+
+    /**
+     * Inicialización del widget
+     */
+    start: function () {
+        console.log('[HOMEPAGE-AUTOCOMPLETE] Widget inicializado');
         this.autocompleteTimeout = null;
-        this.searchInput = null;
-        this.autocompleteContainer = null;
-
-        this.init();
-    }
-
-    init() {
-        console.log('[HOMEPAGE-AUTOCOMPLETE] Inicializando...');
-
-        // Buscar el input de búsqueda (puede tener diferentes clases/IDs)
-        this.searchInput = document.querySelector('.property-search-input') ||
-                          document.getElementById('homepage-search-input') ||
-                          document.querySelector('input[name="search_query"]');
+        this.searchInput = this.$('.property-search-input')[0];
+        this.autocompleteContainer = this.$('.autocomplete-container')[0];
 
         if (!this.searchInput) {
             console.warn('[HOMEPAGE-AUTOCOMPLETE] Input de búsqueda NO encontrado');
+            return this._super.apply(this, arguments);
+        }
+
+        if (!this.autocompleteContainer) {
+            console.warn('[HOMEPAGE-AUTOCOMPLETE] Contenedor NO encontrado, creando...');
+            this.autocompleteContainer = document.createElement('div');
+            this.autocompleteContainer.className = 'autocomplete-container shadow-lg';
+            this.autocompleteContainer.style.cssText = 'display: none; position: absolute; top: 100%; left: 0; right: 0; z-index: 2000; margin-top: 5px; background: white; border-radius: 8px; max-height: 400px; overflow-y: auto; border: 2px solid #E31E24;';
+            this.el.appendChild(this.autocompleteContainer);
+        }
+
+        console.log('[HOMEPAGE-AUTOCOMPLETE] ✅ Widget listo');
+
+        // Cerrar al hacer click fuera
+        $(document).on('click', (e) => {
+            if (!$(e.target).closest('.search-bar-container').length) {
+                this._hideAutocomplete();
+            }
+        });
+
+        return this._super.apply(this, arguments);
+    },
+
+    /**
+     * Handler del input de búsqueda
+     */
+    _onSearchInput: function (ev) {
+        clearTimeout(this.autocompleteTimeout);
+        const term = $(ev.currentTarget).val().trim();
+
+        console.log('[HOMEPAGE-AUTOCOMPLETE] Input detectado:', term);
+
+        if (term.length < 2) {
+            this._hideAutocomplete();
             return;
         }
 
-        console.log('[HOMEPAGE-AUTOCOMPLETE] Input encontrado:', this.searchInput);
+        // Mostrar indicador de carga
+        this._showLoading();
 
-        // Buscar o crear contenedor de resultados
-        this.autocompleteContainer = this.searchInput.closest('.search-bar-container')?.querySelector('.autocomplete-container');
+        // Debounce de 300ms
+        this.autocompleteTimeout = setTimeout(() => {
+            console.log('[HOMEPAGE-AUTOCOMPLETE] Ejecutando búsqueda para:', term);
+            this._performAutocomplete(term);
+        }, 300);
+    },
 
-        if (!this.autocompleteContainer) {
-            console.warn('[HOMEPAGE-AUTOCOMPLETE] Contenedor de autocompletado NO encontrado');
-            // Crear contenedor si no existe
-            this.autocompleteContainer = document.createElement('div');
-            this.autocompleteContainer.className = 'autocomplete-container shadow-lg';
-            this.autocompleteContainer.style.display = 'none';
-
-            const parent = this.searchInput.closest('.search-bar-container');
-            if (parent) {
-                parent.appendChild(this.autocompleteContainer);
-                console.log('[HOMEPAGE-AUTOCOMPLETE] Contenedor creado');
-            }
-        }
-
-        // Agregar event listener al input
-        this.searchInput.addEventListener('input', (e) => {
-            clearTimeout(this.autocompleteTimeout);
-            const term = e.target.value.trim();
-
-            console.log('[HOMEPAGE-AUTOCOMPLETE] Input detectado:', term);
-
-            if (term.length < 2) {
-                this.hideAutocomplete();
-                return;
-            }
-
-            // Mostrar indicador de carga
-            this.showLoading();
-
-            // Debounce de 300ms
-            this.autocompleteTimeout = setTimeout(() => {
-                console.log('[HOMEPAGE-AUTOCOMPLETE] Ejecutando búsqueda para:', term);
-                this.performAutocomplete(term);
-            }, 300);
-        });
-
-        // Cerrar al hacer click fuera
-        document.addEventListener('click', (e) => {
-            if (!this.searchInput.contains(e.target) &&
-                !this.autocompleteContainer.contains(e.target)) {
-                this.hideAutocomplete();
-            }
-        });
-
-        console.log('[HOMEPAGE-AUTOCOMPLETE] ✅ Inicialización completa');
-    }
-
-    showLoading() {
+    /**
+     * Mostrar indicador de carga
+     */
+    _showLoading: function () {
         if (!this.autocompleteContainer) return;
 
         this.autocompleteContainer.innerHTML = `
@@ -94,17 +90,18 @@ class HomepageAutocomplete {
             </div>
         `;
         this.autocompleteContainer.style.display = 'block';
-    }
+    },
 
-    async performAutocomplete(term) {
-        const subdivision = 'all'; // En homepage siempre buscar todo
-
+    /**
+     * Realizar búsqueda de autocompletado
+     */
+    _performAutocomplete: async function (term) {
         console.log('[HOMEPAGE-AUTOCOMPLETE] Llamando a /property/search/autocomplete');
 
         try {
             const result = await rpc('/property/search/autocomplete', {
                 term: term,
-                subdivision: subdivision,
+                subdivision: 'all',
                 context: 'public',
                 limit: 10
             });
@@ -112,18 +109,21 @@ class HomepageAutocomplete {
             console.log('[HOMEPAGE-AUTOCOMPLETE] Resultado:', result);
 
             if (result.success) {
-                this.renderAutocompleteResults(result.results || [], term);
+                this._renderResults(result.results || [], term);
             } else {
                 console.error('[HOMEPAGE-AUTOCOMPLETE] Error en resultado:', result);
-                this.showError('Error al buscar');
+                this._showError('Error al buscar');
             }
         } catch (error) {
             console.error('[HOMEPAGE-AUTOCOMPLETE] Error en RPC:', error);
-            this.showError('Error de conexión');
+            this._showError('Error de conexión');
         }
-    }
+    },
 
-    renderAutocompleteResults(results, term = '') {
+    /**
+     * Renderizar resultados
+     */
+    _renderResults: function (results, term) {
         if (!this.autocompleteContainer) return;
 
         console.log('[HOMEPAGE-AUTOCOMPLETE] Renderizando', results.length, 'resultados');
@@ -143,32 +143,23 @@ class HomepageAutocomplete {
 
         results.forEach(result => {
             // Extraer IDs numéricos
-            let numericId = '';
-            if (result.city_id) numericId = result.city_id;
-            else if (result.region_id) numericId = result.region_id;
-            else if (result.project_id) numericId = result.project_id;
-            else if (result.property_id) numericId = result.property_id;
+            let numericId = result.city_id || result.region_id || result.project_id || result.property_id || '';
 
-            // Determinar ícono
+            // Determinar ícono y color
             let iconClass = 'fa-map-marker-alt';
-            let iconType = 'city';
             let badgeColor = 'primary';
 
             if (result.type === 'city') {
                 iconClass = 'fa-map-marker-alt';
-                iconType = 'city';
                 badgeColor = 'primary';
             } else if (result.type === 'region') {
                 iconClass = 'fa-home';
-                iconType = 'region';
                 badgeColor = 'success';
             } else if (result.type === 'project') {
                 iconClass = 'fa-building';
-                iconType = 'project';
                 badgeColor = 'warning';
             } else if (result.type === 'property') {
                 iconClass = 'fa-key';
-                iconType = 'property';
                 badgeColor = 'info';
             }
 
@@ -184,16 +175,16 @@ class HomepageAutocomplete {
                     onmouseover="this.style.background='#f8f9fa'"
                     onmouseout="this.style.background='white'">
 
-                    <div class="autocomplete-item-icon ${iconType}" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content-center; background: rgba(227, 30, 36, 0.1); border-radius: 50%; margin-right: 12px;">
+                    <div style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background: rgba(227, 30, 36, 0.1); border-radius: 50%; margin-right: 12px;">
                         <i class="fa ${iconClass}" style="color: #E31E24; font-size: 16px;"></i>
                     </div>
 
-                    <div class="autocomplete-item-content" style="flex: 1;">
-                        <div class="autocomplete-item-title" style="font-weight: 600; color: #333; margin-bottom: 2px;">
-                            ${this.highlightTerm(result.name, term)}
+                    <div style="flex: 1;">
+                        <div style="font-weight: 600; color: #333; margin-bottom: 2px;">
+                            ${this._highlightTerm(result.name, term)}
                         </div>
                         ${result.full_name && result.full_name !== result.name ? `
-                            <div class="autocomplete-item-subtitle" style="font-size: 12px; color: #666;">
+                            <div style="font-size: 12px; color: #666;">
                                 ${result.full_name}
                             </div>
                         ` : ''}
@@ -212,51 +203,46 @@ class HomepageAutocomplete {
 
         this.autocompleteContainer.innerHTML = html;
         this.autocompleteContainer.style.display = 'block';
-        this.autocompleteContainer.style.position = 'absolute';
-        this.autocompleteContainer.style.top = '100%';
-        this.autocompleteContainer.style.left = '0';
-        this.autocompleteContainer.style.right = '0';
-        this.autocompleteContainer.style.background = 'white';
-        this.autocompleteContainer.style.borderRadius = '8px';
-        this.autocompleteContainer.style.maxHeight = '400px';
-        this.autocompleteContainer.style.overflowY = 'auto';
-        this.autocompleteContainer.style.zIndex = '1050';
-        this.autocompleteContainer.style.marginTop = '5px';
 
         console.log('[HOMEPAGE-AUTOCOMPLETE] Resultados renderizados');
+    },
 
-        // Agregar event listeners a los items
-        this.autocompleteContainer.querySelectorAll('.autocomplete-item').forEach(item => {
-            item.addEventListener('click', () => {
-                this.selectAutocompleteItem(item.dataset);
-            });
-        });
-    }
-
-    highlightTerm(text, term) {
+    /**
+     * Highlight del término de búsqueda
+     */
+    _highlightTerm: function (text, term) {
         if (!term) return text;
-        const regex = new RegExp(`(${this.escapeRegex(term)})`, 'gi');
+        const regex = new RegExp(`(${this._escapeRegex(term)})`, 'gi');
         return text.replace(regex, '<strong style="color: #E31E24;">$1</strong>');
-    }
+    },
 
-    escapeRegex(string) {
+    /**
+     * Escapar caracteres especiales para regex
+     */
+    _escapeRegex: function (string) {
         return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    }
+    },
 
-    selectAutocompleteItem(data) {
+    /**
+     * Handler del click en un item
+     */
+    _onItemClick: function (ev) {
+        const $item = $(ev.currentTarget);
+        const data = $item.data();
+
         console.log('[HOMEPAGE-AUTOCOMPLETE] Item seleccionado:', data);
 
         // Construir URL de redirección
         let params = new URLSearchParams();
 
         // Agregar tipo de servicio si existe
-        const serviceTypeSelect = document.getElementById('selectedServiceType');
-        if (serviceTypeSelect && serviceTypeSelect.value) {
-            params.set('type_service', serviceTypeSelect.value);
+        const serviceTypeInput = document.getElementById('selectedServiceType');
+        if (serviceTypeInput && serviceTypeInput.value) {
+            params.set('type_service', serviceTypeInput.value);
         }
 
         // Agregar el término de búsqueda actual
-        const searchTerm = this.searchInput.value.trim();
+        const searchTerm = $(this.searchInput).val().trim();
         if (searchTerm) {
             params.set('search', searchTerm);
         }
@@ -276,9 +262,12 @@ class HomepageAutocomplete {
 
         // Redirigir a la página de propiedades con filtros
         window.location.href = `/properties?${params.toString()}`;
-    }
+    },
 
-    showError(message) {
+    /**
+     * Mostrar mensaje de error
+     */
+    _showError: function (message) {
         if (!this.autocompleteContainer) return;
 
         this.autocompleteContainer.innerHTML = `
@@ -287,41 +276,19 @@ class HomepageAutocomplete {
             </div>
         `;
         this.autocompleteContainer.style.display = 'block';
-    }
+    },
 
-    hideAutocomplete() {
+    /**
+     * Ocultar autocompletado
+     */
+    _hideAutocomplete: function () {
         if (this.autocompleteContainer) {
             this.autocompleteContainer.style.display = 'none';
         }
-    }
-}
+    },
+});
 
-// Inicializar cuando el DOM esté listo
-function initHomepageAutocomplete() {
-    console.log('[HOMEPAGE-AUTOCOMPLETE] Ejecutando inicialización...');
+// Registrar el widget para que se active automáticamente
+publicWidget.registry.HomepageAutocomplete = HomepageAutocomplete;
 
-    // Verificar que estemos en la página correcta
-    const searchInput = document.querySelector('.property-search-input') ||
-                       document.getElementById('homepage-search-input') ||
-                       document.querySelector('input[name="search_query"]');
-
-    if (searchInput) {
-        console.log('[HOMEPAGE-AUTOCOMPLETE] Creando instancia...');
-        window.homepageAutocomplete = new HomepageAutocomplete();
-    } else {
-        console.log('[HOMEPAGE-AUTOCOMPLETE] No se encontró input de búsqueda, saltando inicialización');
-    }
-}
-
-// Ejecutar al cargar el DOM
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initHomepageAutocomplete);
-} else {
-    initHomepageAutocomplete();
-}
-
-// También escuchar el evento de Odoo para páginas cargadas dinámicamente
-window.addEventListener('website:page_loaded', initHomepageAutocomplete);
-
-// Exportar para uso global
-export { HomepageAutocomplete, initHomepageAutocomplete };
+export default HomepageAutocomplete;

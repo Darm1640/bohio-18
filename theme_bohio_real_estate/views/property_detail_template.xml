@@ -21,16 +21,16 @@
                                         <button class="btn btn-light rounded-circle shadow" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;" title="Favorito">
                                             <i class="fa fa-heart text-danger"></i>
                                         </button>
-                                        <button class="btn btn-light rounded-circle shadow" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;" title="Compartir">
+                                        <button class="btn btn-light rounded-circle shadow" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;" title="Compartir" onclick="openShareModal()">
                                             <i class="fa fa-share-alt text-primary"></i>
                                         </button>
-                                        <button class="btn btn-light rounded-circle shadow" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;" title="Reportar">
+                                        <button class="btn btn-light rounded-circle shadow" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;" title="Reportar" onclick="openReportModal()">
                                             <i class="fa fa-flag text-warning"></i>
                                         </button>
                                     </div>
 
-                                    <!-- Carrusel de Imágenes -->
-                                    <div id="propertyImageCarousel" class="carousel slide" data-bs-ride="false">
+                                    <!-- Carrusel de Imágenes con transición suave -->
+                                    <div id="propertyImageCarousel" class="carousel slide carousel-fade" data-bs-ride="false" data-bs-interval="false">
                                         <div class="carousel-inner">
                                             <!-- Usar product_template_image_ids de website_sale -->
                                             <t t-set="images_list" t-value="property.product_template_image_ids or []"/>
@@ -354,6 +354,128 @@
                 </div>
             </div>
 
+            <!-- MODAL DE COMPARTIR -->
+            <div class="modal fade" id="shareModal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header" style="background: linear-gradient(135deg, #E31E24 0%, #c91920 100%); color: white;">
+                            <h5 class="modal-title">
+                                <i class="fa fa-share-alt me-2"></i>Compartir Propiedad
+                            </h5>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <!-- Información de la Propiedad -->
+                            <div class="card mb-3 border-0 bg-light">
+                                <div class="card-body">
+                                    <h6 class="text-danger mb-2">
+                                        <i class="fa fa-home me-2"></i><span t-esc="property.name"/>
+                                    </h6>
+                                    <div class="row g-2 small text-muted">
+                                        <div class="col-6" t-if="property.default_code">
+                                            <i class="fa fa-tag me-1"></i><strong>Código:</strong> <span t-esc="property.default_code"/>
+                                        </div>
+                                        <div class="col-6" t-if="property.property_type">
+                                            <i class="fa fa-building me-1"></i><strong>Tipo:</strong> <span t-esc="dict(property._fields['property_type'].selection).get(property.property_type)"/>
+                                        </div>
+                                        <div class="col-6" t-if="property.city">
+                                            <i class="fa fa-map-marker me-1"></i><strong>Ciudad:</strong> <span t-esc="property.city"/>
+                                        </div>
+                                        <div class="col-6" t-if="property.property_area">
+                                            <i class="fa fa-arrows-alt me-1"></i><strong>Área:</strong> <span t-esc="'%.0f m²' % property.property_area"/>
+                                        </div>
+                                    </div>
+
+                                    <!-- Precio -->
+                                    <div class="mt-2 pt-2 border-top">
+                                        <t t-if="property.type_service == 'sale' and property.net_price">
+                                            <h5 class="text-primary mb-0">
+                                                <span t-field="property.net_price" t-options="{'widget': 'monetary', 'display_currency': property.currency_id}"/>
+                                            </h5>
+                                            <small class="text-muted">Precio de Venta</small>
+                                        </t>
+                                        <t t-elif="property.type_service == 'rent' and property.net_rental_price">
+                                            <h5 class="text-primary mb-0">
+                                                <span t-field="property.net_rental_price" t-options="{'widget': 'monetary', 'display_currency': property.currency_id}"/>
+                                                <small class="fs-6 text-muted">/ mes</small>
+                                            </h5>
+                                            <small class="text-muted">Precio de Arriendo</small>
+                                        </t>
+                                    </div>
+
+                                    <!-- Observaciones (primeras 150 caracteres) -->
+                                    <t t-if="property.observations">
+                                        <div class="mt-2 pt-2 border-top">
+                                            <small class="text-muted">
+                                                <i class="fa fa-comment-o me-1"></i>
+                                                <span t-esc="property.observations[:150] + ('...' if len(property.observations) > 150 else '')"/>
+                                            </small>
+                                        </div>
+                                    </t>
+                                </div>
+                            </div>
+
+                            <!-- Link para Copiar -->
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">
+                                    <i class="fa fa-link me-1"></i>Link de la Propiedad
+                                </label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="propertyShareLink" readonly="readonly" t-att-value="request.httprequest.url_root.rstrip('/') + '/property/' + str(property.id)"/>
+                                    <button class="btn btn-outline-danger" type="button" onclick="copyToClipboard()">
+                                        <i class="fa fa-copy me-1"></i>Copiar
+                                    </button>
+                                </div>
+                                <small class="text-success" id="copySuccess" style="display: none;">
+                                    <i class="fa fa-check-circle me-1"></i>Link copiado al portapapeles
+                                </small>
+                            </div>
+
+                            <hr/>
+
+                            <!-- Compartir en Redes Sociales -->
+                            <div>
+                                <label class="form-label fw-bold mb-3">
+                                    <i class="fa fa-share-alt me-1"></i>Compartir en Redes Sociales
+                                </label>
+                                <div class="d-grid gap-2">
+                                    <!-- WhatsApp -->
+                                    <button class="btn btn-success text-start" onclick="shareOnWhatsApp()">
+                                        <i class="fab fa-whatsapp fa-lg me-2"></i>
+                                        <strong>WhatsApp</strong>
+                                        <small class="d-block text-white-50">Enviar por mensaje</small>
+                                    </button>
+
+                                    <!-- Facebook -->
+                                    <button class="btn text-start text-white" style="background: #1877F2;" onclick="shareOnFacebook()">
+                                        <i class="fab fa-facebook fa-lg me-2"></i>
+                                        <strong>Facebook</strong>
+                                        <small class="d-block opacity-75">Publicar en tu muro</small>
+                                    </button>
+
+                                    <!-- Twitter/X -->
+                                    <button class="btn btn-dark text-start" onclick="shareOnTwitter()">
+                                        <i class="fab fa-twitter fa-lg me-2"></i>
+                                        <strong>Twitter / X</strong>
+                                        <small class="d-block text-white-50">Compartir en tweet</small>
+                                    </button>
+
+                                    <!-- Email -->
+                                    <button class="btn btn-secondary text-start" onclick="shareViaEmail()">
+                                        <i class="fa fa-envelope fa-lg me-2"></i>
+                                        <strong>Correo Electrónico</strong>
+                                        <small class="d-block text-white-50">Enviar por email</small>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- JavaScript para Funcionalidad de Galería -->
             <script type="text/javascript">
                 // Variables globales para el zoom
@@ -573,14 +695,91 @@
                         };
                     }
                 }
+
+                // ============= FUNCIONES DE COMPARTIR =============
+
+                // Abrir modal de compartir
+                function openShareModal() {
+                    const modal = new bootstrap.Modal(document.getElementById('shareModal'));
+                    modal.show();
+                }
+
+                // Copiar link al portapapeles
+                function copyToClipboard() {
+                    const linkInput = document.getElementById('propertyShareLink');
+                    linkInput.select();
+                    linkInput.setSelectionRange(0, 99999); // Para móviles
+
+                    try {
+                        document.execCommand('copy');
+                        // Mostrar mensaje de éxito
+                        const successMsg = document.getElementById('copySuccess');
+                        successMsg.style.display = 'block';
+                        setTimeout(() => {
+                            successMsg.style.display = 'none';
+                        }, 3000);
+                    } catch (err) {
+                        console.error('Error al copiar:', err);
+                        alert('No se pudo copiar el link. Por favor cópialo manualmente.');
+                    }
+                }
+
+                // Compartir por WhatsApp
+                function shareOnWhatsApp() {
+                    const link = document.getElementById('propertyShareLink').value;
+                    const title = document.querySelector('#shareModal h6').textContent.trim();
+                    const text = encodeURIComponent(`¡Mira esta propiedad en BOHIO!\n\n${title}\n\n${link}`);
+                    window.open(`https://api.whatsapp.com/send?text=${text}`, '_blank');
+                }
+
+                // Compartir en Facebook
+                function shareOnFacebook() {
+                    const link = document.getElementById('propertyShareLink').value;
+                    window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(link)}`, '_blank', 'width=600,height=400');
+                }
+
+                // Compartir en Twitter/X
+                function shareOnTwitter() {
+                    const link = document.getElementById('propertyShareLink').value;
+                    const title = document.querySelector('#shareModal h6').textContent.trim();
+                    const text = encodeURIComponent(`¡Mira esta propiedad en BOHIO! ${title}`);
+                    window.open(`https://twitter.com/intent/tweet?text=${text}&amp;url=${encodeURIComponent(link)}`, '_blank', 'width=600,height=400');
+                }
+
+                // Compartir por Email
+                function shareViaEmail() {
+                    const link = document.getElementById('propertyShareLink').value;
+                    const title = document.querySelector('#shareModal h6').textContent.trim();
+                    const subject = encodeURIComponent(`Te comparto esta propiedad de BOHIO: ${title}`);
+                    const body = encodeURIComponent(`Hola,\n\nQuiero compartirte esta propiedad que encontré en BOHIO:\n\n${title}\n\nPuedes ver más detalles aquí:\n${link}\n\nSaludos`);
+                    window.location.href = `mailto:?subject=${subject}&amp;body=${body}`;
+                }
             </script>
 
             <!-- Estilos adicionales -->
             <style>
+                /* Transición suave del carrusel */
+                .carousel-fade .carousel-item {
+                    opacity: 0;
+                    transition: opacity 0.6s ease-in-out;
+                }
+
+                .carousel-fade .carousel-item.active,
+                .carousel-fade .carousel-item-next.carousel-item-start,
+                .carousel-fade .carousel-item-prev.carousel-item-end {
+                    opacity: 1;
+                }
+
+                .carousel-fade .carousel-item-next:not(.carousel-item-start),
+                .carousel-fade .carousel-item-prev:not(.carousel-item-end) {
+                    opacity: 0;
+                }
+
+                /* Controles del carrusel */
                 .property-gallery-container .carousel-control-prev,
                 .property-gallery-container .carousel-control-next {
                     opacity: 0;
-                    transition: opacity 0.3s;
+                    transition: opacity 0.3s ease;
                 }
 
                 .property-gallery-container:hover .carousel-control-prev,
