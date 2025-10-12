@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<template id="s_biz_theme_snazzy_homepage_four_order_features" name="Order Features">
+
+        <section class="biz_theme_snazzy_homepage_four_order_features pt48 pb48 custom_padding_top custom_padding_bottom">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-3 col-md-6 block">
+                        <div class="content_border d-flex align-items-center p-4 rounded-1">
+                            <div class="pe-3 d-flex align-items-center pb-md-4">
+                                <i class="ri ri-global-line fa-2x"></i>
+                            </div>
+                            <div>
+                                <p class="fw-bold">International Shipment</p>
+                                <small>Orders are shipped seamlessly between countries</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 block">
+                        <div class="content_border d-flex align-items-center justify-content-center p-4 rounded-1">
+                            <div class="pe-3 d-flex align-items-center pb-md-4">
+                                <i class="ri ri-customer-service-2-fill fa-2x"></i>
+                            </div>
+                            <div>
+                                <p class="fw-bold">Online Support 24/7</p>
+                                <small>Reliable online support available 24/7 to assist with any inquiries or issues.</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 block">
+                        <div class="content_border d-flex align-items-center justify-content-center p-4 rounded-1">
+                            <div class="pe-3 d-flex align-items-center pb-md-4">
+                                <i class="ri ri-hand-coin-line fa-2x"></i>
+                            </div>
+                            <div>
+                                <p class="fw-bold">Money Return</p>
+                                <small>Hassle-free money return policy for a seamless shopping experience.</small>
+                            </div>
+                        </div>
+                    </div> 
+                    <div class="col-lg-3 col-md-6 block">
+                        <div class="content_border d-flex align-items-center justify-content-center p-4 rounded-1">
+                            <div class="pe-3 d-flex align-items-center pb-md-4">
+                                <i class="fa fa-money fa-2x"></i>
+                            </div>
+                            <div>
+                                <p class="fw-bold">Member Discount</p>
+                                <small>Exclusive member discounts to help you save on every purchase.</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div class="oe_structure oe_empty"></div>
+
+	</template>
+</odoo>

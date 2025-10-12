@@ -1,0 +1,41 @@
+.theme_snazzy_images_wall_snippet{
+    .main_block_content{
+        margin-bottom: 1rem !important;
+        .text_content_main_class{
+            background-color: #0000008f;
+            .text_content{
+                color: #ffff;
+                font-size: 20px;
+            }
+        }
+    }
+}
+.biz_theme_snazzy_electronics_homepage{
+    a.btn-lg{
+        font-size: 14px;
+    }
+    @media (max-width:767px) {
+        .section-left .content{
+           padding: 20px 5px 0 5px !important; 
+        }
+        .section-right .section-section{
+            text-align: center; 
+            padding: 0px 20px 0px 0px;
+        }
+        .section-left,.section-right p{
+            font-size: 12px;
+        }
+        .section-right{
+            padding: 20px 5px 0px 5px;
+        }
+    }
+    @media (min-width : 1024px) and (max-width:1366px) {
+        .section-right p{
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+        a.btn-lg{
+            font-size: 12px !important;
+        }
+    }
+}

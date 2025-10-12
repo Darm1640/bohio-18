@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<template id="s_biz_theme_snazzy_homepage_two_hover_img_effect" name=" Hover Img Effect ">
+	
+        <section class="biz_theme_snazzy_homepage_two_hover_img_effect pt48 custom_padding_top ">
+            <div class="container-fluid ps-0 pe-0">
+                <div class="row gx-0 align-items-center">
+
+                    <div class="col-lg-2 col-md-4 col-6 content-hover-style p-0">
+                        <div class="features-image">
+                            <img class="img img-fluid mx-auto w-100" src="/theme_snazzy/static/src/img/page_one_gallery_two_img_one.jpg" loading="lazy"/>
+                        </div>
+                        <div class="hover-content text-white">
+                            <a href="#" class="btn">
+                                <i class="fa fa-instagram fa-3x text-white"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-4 col-6 content-hover-style p-0">
+                        <div class="features-image">
+                            <img class="img img-fluid mx-auto w-100" src="/theme_snazzy/static/src/img/page_one_gallery_two_img_two.jpg" loading="lazy"/>
+                        </div>
+                        <div class="hover-content text-white">
+                            <a href="#" class="btn">
+                                <i class="fa fa-instagram fa-3x text-white"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-4 col-6 content-hover-style p-0">
+                        <div class="features-image">
+                            <img class="img img-fluid mx-auto w-100" src="/theme_snazzy/static/src/img/page_one_gallery_two_img_three.jpg" loading="lazy"/>
+                        </div>
+                        <div class="hover-content text-white">
+                            <a href="#" class="btn">
+                                <i class="fa fa-instagram fa-3x text-white"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-4 col-6 content-hover-style p-0">
+                        <div class="features-image">
+                            <img class="img img-fluid mx-auto w-100" src="/theme_snazzy/static/src/img/page_one_gallery_two_img_four.jpg" loading="lazy"/>
+                        </div>
+                        <div class="hover-content text-white">
+                            <a href="#" class="btn">
+                                <i class="fa fa-instagram fa-3x text-white"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-4 col-6 content-hover-style p-0">
+                        <div class="features-image">
+                            <img class="img img-fluid mx-auto w-100" src="/theme_snazzy/static/src/img/page_one_gallery_two_img_five.jpg" loading="lazy"/>
+                        </div>
+                        <div class="hover-content text-white">
+                            <a href="#" class="btn">
+                                <i class="fa fa-instagram fa-3x text-white"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-4 col-6 content-hover-style p-0">
+                        <div class="features-image">
+                            <img class="img img-fluid mx-auto w-100" src="/theme_snazzy/static/src/img/page_one_gallery_two_img_six.jpg" loading="lazy"/>
+                        </div>
+                        <div class="hover-content text-white">
+                            <a href="#" class="btn">
+                                <i class="fa fa-instagram fa-3x text-white"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+        <div class="oe_structure oe_empty"></div>
+
+	</template>
+</odoo>

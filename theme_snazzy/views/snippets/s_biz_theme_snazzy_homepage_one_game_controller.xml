@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<template id="s_biz_theme_snazzy_homepage_one_game_controller" name="Image Banner">
+	
+        <section class="biz_theme_snazzy_homepage_one_game_controller pb200 mb-lg-5 mb-xl-0">
+            <section class="pt64 pb64 custom_padding container rounded-4" style="background-image: url(/theme_snazzy/static/src/img/game_controller_bg.png); background-position: center;">
+                <div class="container">
+                    <div class="two_block_content justify-content-center">
+                        <div class="row align-items-center">
+                            <div class="col-xl-3 mb-2 mb-xl-0">
+                                <h1 class="text-center">50 <span ><span>%</span> <span class="fs-5">OFF</span></span></h1>
+                            </div>
+                            <div class="col-xl-5 ps-xl-4">
+                                <div class="text_content">
+                                    <h3>SEASONAL MONTHLY SALE 2024</h3>
+                                    <p>Use Code <span class="bg-white rounded-pill p-1">Sale 2024</span> to get best offer</p>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="game_controller_img_position">
+                                    <img class="img img-fluid mx-auto" src="/theme_snazzy/static/src/img/page_two_game_controller.png" loading="lazy"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </section>
+        <div class="oe_structure oe_empty"></div>
+
+	</template>
+</odoo>

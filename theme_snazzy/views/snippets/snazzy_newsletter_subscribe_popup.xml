@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="snazzy_newsletter_subscribe_popup" name="Snazzy Newsletter Popup">
+        <section>
+            <div class="s_popup o_newsletter_popup o_snippet_invisible" data-name="Newsletter Popup" data-vcss="001" data-invisible="1">
+                <div class="modal fade s_popup_middle o_newsletter_modal"
+                    style="background-color: var(--black-50) !important;"
+                    data-show-after="5000" data-display="afterDelay" data-consents-duration="7"
+                    data-bs-focus="false" data-bs-backdrop="false" tabindex="-1" role="dialog">
+                    <div class="modal-dialog d-flex">
+                        <div class="modal-content oe_structure">
+                            <div class="s_popup_close js_close_popup o_we_no_overlay o_not_editable" aria-label="Close">&#215;</div>
+                            <section class="snazzy-newsletter-blocks">
+                                <div class="container-fluid s_allow_columns">
+                                    <div class="row align-items-center">
+                                        <div class="col-lg-6 p-0">
+                                            <div class="popup-image">
+                                                <img src="/theme_snazzy/static/src/img/newsletter-bg.jpg" class="img img-fluid w-100"/>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 px-5">
+                                            <h4 class="text-center">Sign Up For Newsletter and get 20% Off!</h4>
+                                            <p class="text-center">Sign up to be a first hear about exclusive deals,special offers and upcoming collection</p>
+                                            <div class="block-subscribe">
+                                                <form class="s_newsletter_subscribe_form s_newsletter_list js_subscribe" data-vxml="001" data-list-id="2">
+                                                    <div class="js_subscribed_wrap d-none">
+                                                        <p class="h4-fs text-center text-success js_subscribed_btn"><i class="fa fa-check-circle-o" role="img"/>Thanks for registering!</p>
+                                                    </div>
+                                                    <div class="js_subscribe_wrap">
+                                                        <div class="input-group">
+                                                            <input type="email" name="email" class="js_subscribe_value form-control" placeholder="Enter Your Email"/>
+                                                            <span class="input-group-append">
+                                                                <button role="button" class="btn btn-primary js_subscribe_btn h-100 o_submit">Subscribe</button>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>   
+        <div class="oe_structure"></div> 
+    </template>
+    
+</odoo>

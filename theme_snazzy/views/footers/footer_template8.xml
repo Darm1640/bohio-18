@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<template id="theme_common_footer8" inherit_id="website.layout" name="Footer Eight" active="False">
+       	<xpath expr="//div[@id='footer']" position="replace">
+            <div id="footer" class="oe_structure oe_structure_solo" t-ignore="true" t-if="not no_footer">
+                <section id="footer_theme_common8" class="footer_theme_common8 o_footer pt24 pb24">
+                    <section class="subscribe-content">
+                        <div class="container">
+                            <div class="user-content d-flex align-items-center justify-content-between py-3 flex-wrap">
+                                <div class="address-contact d-flex">
+                                    <p class="m-0"><span class="ri ri-mail-send-line me-3 text-primary"/></p>
+                                    <p class="m-0">Subscribe and get a 20% discount.</p>
+                                </div>
+                                <div class="block-subscribe w-100 w-lg-50">
+                                    <!-- <form class="input-group js_subscribe d-flex" data-list-id="1">
+                                        <input type="email" name="email" class="js_subscribe_value form-control bg-white" placeholder="Email Address"/>
+                                        <span class="input-group-append">
+                                            <a role="button" href="#" class="btn btn-primary js_subscribe_btn h-100">Subscribe</a>
+                                            <a role="button" href="#" class="btn btn-success js_subscribed_btn h-100 d-none" disabled="disabled">Thanks</a>
+                                        </span>
+                                    </form> -->
+                                    <form class="s_newsletter_subscribe_form s_newsletter_list js_subscribe" data-vxml="001" data-list-id="2">
+                                        <div class="js_subscribed_wrap d-none">
+                                            <p class="h4-fs text-center text-success js_subscribed_btn"><i class="fa fa-check-circle-o" role="img"/>Thanks for registering!</p>
+                                        </div>
+                                        <div class="js_subscribe_wrap">
+                                            <div class="input-group">
+                                                <input type="email" name="email" class="js_subscribe_value form-control" placeholder="Enter Your Email"/>
+                                                <span class="input-group-append">
+                                                    <button role="button" class="btn btn-primary js_subscribe_btn h-100 o_submit">Subscribe</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="top-footer font-14">
+                        <div class="f2-middle pt48 pb24">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-md-3 mb-3 mb-lg-0 col-lg-3">
+                                        <div class="footer-links">
+                                            <h6 class="mb-3">OUR SERVICES</h6>
+                                            <p><a href="#">About Us</a></p>
+                                            <p><a href="#">Contact</a></p>
+                                            <p><a href="#">Shipping Return</a></p>
+                                            <p><a href="#">FAQ</a></p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 mb-3 mb-lg-0 col-lg-3">
+                                        <div class="footer-links">
+                                            <h6 class="mb-3">ABOUT US</h6>
+                                            <p><a href="#">My Account</a></p>
+                                            <p><a href="#">Login</a></p>
+                                            <p><a href="#">My Cart</a></p>
+                                            <p><a href="#">Wishlist</a></p>
+                                            <p><a href="#">Checkout</a></p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 mb-3 mb-lg-0 col-lg-3">
+                                        <div class="footer-links">
+                                            <h6 class="mb-3">MORE INFORMATION</h6>
+                                            <p><a href="#">Customer Service</a></p>
+                                            <p><a href="#">Store Locator</a></p>
+                                            <p><a href="#">Wholesale</a></p>
+                                            <p><a href="#">Career</a></p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 mb-3 mb-lg-0 col-lg-3">
+                                        <div class="social-share">
+                                            <h6 class="me-5 mb-3">SOCIAL MEDIA</h6>
+                                            <div class="social-icons">
+                                                <div class="s_social_media o_not_editable" data-snippet="s_social_media" data-name="Social Media" contenteditable="false">
+                                                    <a href="/website/social/facebook" class="link s_social_media_facebook" target="_blank" aria-label="Facebook">
+                                                        <i class="fa fa-facebook o_editable_media"/>
+                                                    </a>
+                                                    <a href="/website/social/twitter" class="link s_social_media_twitter" target="_blank" aria-label="X">
+                                                        <i class="fa fa-twitter o_editable_media"/>
+                                                    </a>
+                                                    <a href="/website/social/linkedin" class="link s_social_media_linkedin" target="_blank" aria-label="LinkedIn">
+                                                        <i class="fa fa-linkedin o_editable_media"/>
+                                                    </a>
+                                                    <a href="/website/social/youtube" class="link s_social_media_youtube" target="_blank" aria-label="Youtube">
+                                                        <i class="fa fa-youtube-play o_editable_media"/>
+                                                    </a>
+                                                    <a href="/website/social/instagram" class="link s_social_media_instagram" target="_blank" aria-label="Instagram">
+                                                        <i class="fa fa-instagram o_editable_media"/>
+                                                    </a>
+                                                    <a href="/website/social/github" class="link s_social_media_github" target="_blank" aria-label="Github">
+                                                        <i class="fa fa-github o_editable_media"/>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="middle-footer">
+                        <div class="container">
+                            <div class="categories-footer">
+                                <ul>
+                                    <li>
+                                        <span class="">MOBILES:</span>
+                                        <a href="#">Xiaomi Mi3</a> | <a href="#">Digiflip Pro XT 712 Tablet</a> | <a href="#">Mi 3 Phones</a> | <a href="#" class="text-primary">View all</a>
+                                    </li>
+                                    <li>
+                                        <span class="">COMPUTER:</span>
+                                        <a href="#">Moto E</a> | <a href="#">Samsung Mobile</a> | <a href="#">Micromax Mobile</a> | <a href="#">Nokia Mobile</a> | <a href="#">HTC Mobile</a> | <a href="#">Sony Mobile</a> | <a href="#">Apple Mobile</a> | <a href="#">LG Mobile</a> | <a href="#">Karbonn Mobile</a> | <a href="#" class="text-primary">View all</a>
+                                    </li>
+                                    <li>
+                                        <span class="">CAMERA:</span>
+                                        <a href="#">Nikon Camera</a> | <a href="#">Canon Camera</a> | <a href="#">Sony Camera</a> | <a href="#">Samsung Camera</a> | <a href="#">Point shoot camera</a> | <a href="#">Camera Lens</a> | <a href="#">Camera Tripod</a> | <a href="#">Camera Bag</a> | <a href="#" class="text-primary">View all</a>
+                                    </li>
+                                    <li>
+                                        <span class="">LAPTOPS:</span>
+                                        <a href="#">Apple Laptop</a> | <a href="#">Acer Laptop</a> | <a href="#">Samsung Laptop</a> | <a href="#">Lenovo Laptop</a> | <a href="#">Sony Laptop</a> | <a href="#">Dell Laptop</a> | <a href="#">Asus Laptop</a> | <a href="#">Toshiba Laptop</a> | <a href="#">LG Laptop</a> | <a href="#">HP Laptop</a> | <a href="#">Notebook</a> | <a href="#" class="text-primary">View all</a>
+                                    </li>
+                                    <li>
+                                        <span class="">TV &amp; AUDIO:</span>
+                                        <a href="#">Sony TV</a> | <a href="#">Samsung TV</a> | <a href="#">LG TV</a> | <a href="#">Panasonic TV</a> | <a href="#">Onida TV</a> | <a href="#">Toshiba TV</a> | <a href="#">Philips TV</a> | <a href="#">Micromax TV</a> | <a href="#">LED TV</a> | <a href="#">LCD TV</a> | <a href="#">Plasma TV</a> | <a href="#">3D TV</a> | <a href="#">Smart TV</a> | <a href="#" class="text-primary">View all</a>
+                                    </li>
+                                    <li>
+                                        <span class="">TABLETS:</span>
+                                        <a href="#">Micromax Tablets</a> | <a href="#">HCL Tablets</a> | <a href="#">Samsung Tablets</a> | <a href="#">Lenovo Tablets</a> | <a href="#">Karbonn Tablets</a> | <a href="#">Asus Tablets</a> | <a href="#">Apple Tablets</a> | <a href="#" class="text-primary">View all</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </section>
+                </section>
+            </div>
+        </xpath>
+    </template>
+</odoo>

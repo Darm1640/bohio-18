@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<template id="s_biz_theme_snazzy_homepage_one_order_features" name="Order Features">
+        <section class="biz_theme_snazzy_homepage_one_order_features pt48 pb48 custom_padding_top custom_padding_bottom">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-3 col-md-6">
+                        <div class="d-flex">
+                            <div class="pe-4">
+                                <img class="img img-fluid mx-auto" src="/theme_snazzy/static/src/img/easy_shipping.png" loading="lazy"/>
+                            </div>
+                            <div>
+                                <h6>Wireless Charging</h6>
+                                <small>Full battery in no time</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <div class="d-flex">
+                            <div class="pe-4">
+                                <img class="img img-fluid mx-auto" src="/theme_snazzy/static/src/img/easy_returns.png" loading="lazy"/>
+                            </div>
+                            <div>
+                                <h6>Fast Charge</h6>
+                                <small>Full battery in no time</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <div class="d-flex">
+                            <div class="pe-4">
+                                <img class="img img-fluid mx-auto" src="/theme_snazzy/static/src/img/secure_payment.png" loading="lazy"/>
+                            </div>
+                            <div>
+                                <h6>Multi-Color</h6>
+                                <small>Full battery in no time</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <div class="d-flex">
+                            <div class="pe-4">
+                                <img class="img img-fluid mx-auto" src="/theme_snazzy/static/src/img/support_24_7.png" loading="lazy"/>
+                            </div>
+                            <div>
+                                <h6>Lite Weight</h6>
+                                <small>Full battery in no time</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div class="oe_structure oe_empty"></div>
+	</template>
+</odoo>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.load.more</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="website.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <block id="website_shop_checkout" position="after">
+                <block title="Progressive Web Application Setting" id="website_pwa_setting">
+                    <setting>
+                        <field name="enable_pwa"/>
+                        <div class="mt16" invisible="not enable_pwa">
+                            <div class="">
+                                <label class="col-lg-5 o_light_label" string="PWA Name" for="app_name_pwa"/>
+                                <field name="app_name_pwa" required="enable_pwa"/>
+                            </div>
+                            <div class="">
+                            <label class="col-lg-5 o_light_label" string="Short Name" for="app_name_pwa"/>
+                            <field name="short_name_pwa" required="enable_pwa"/>
+                            </div>
+                            <div class="">
+                            <label class="col-lg-5 o_light_label" string="Description" for="description_pwa"/>
+                            <field name="description_pwa" required="enable_pwa"/>
+                            </div>
+                            <div class="">
+                            <label class="col-lg-5 o_light_label" string="Start url" for="start_url_pwa"/>
+                            <field name="start_url_pwa" required="enable_pwa"/>
+                            </div>
+                            <div class="">
+                            <label class="col-lg-5 o_light_label" string="PWA Shortcuts" for="pwa_shortcuts_ids"/>
+                            <field name="pwa_shortcuts_ids"  widget="many2many_tags"  required="enable_pwa"/>
+                            </div>
+                            <div class="">
+                            <label class="col-lg-5 o_light_label" string="Background Color" for="background_color_pwa"/>
+                            <field name="background_color_pwa" widget="color" required="enable_pwa"/>
+                            </div>
+                            <div class="">
+                            <label class="col-lg-5 o_light_label" string="Theme Color" for="theme_color_pwa"/>
+                            <field name="theme_color_pwa" widget="color" required="enable_pwa"/>
+                            </div>
+                            <div class="">
+                            <label class="col-lg-5 o_light_label" string="PWA Icon 512" for="image_512_pwa"/>
+                                <field name="image_512_pwa" widget="image" required="enable_pwa"/>
+                            </div>
+                            <div class="">
+                            <label class="col-lg-5 o_light_label" string="PWA Icon 192" for="image_192_pwa"/>
+                                <field name="image_192_pwa" widget="image" required="enable_pwa"/>
+                            </div>
+                        </div>
+                    </setting>
+                </block>
+            </block>
+        </field>
+    </record>
+</odoo>

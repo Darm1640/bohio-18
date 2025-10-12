@@ -1,0 +1,179 @@
+//Snazzy Header Five
+@if o-website-value('header-template') == "snazzy-header-5"{
+    .snazzy_header_five{
+        .top-header, .middle-header, .bottom-header{
+            @include dropdown-caret-mixin;
+        }
+        .top-header{
+            li{
+                list-style-type: none;
+            }
+            p{
+                margin-bottom: 0 !important;
+            }
+            @include header-color-sections('header-custom-top-background');
+            @include header-curruncy-language-option;
+            .js_language_selector{
+                @include header-language-flag;
+                .dropdown-toggle {
+                    padding-right: 10px !important;
+                }
+            }
+            .auto_assign_categ{
+                .categ_link{
+                  color: inherit !important;
+                }
+            }
+            .snazzy_header_social_links{
+                .btn{
+                    padding-right: 0 !important;
+                }
+                .s_social_media{
+                    display: flex;
+                    a{
+                        margin: 0 8px !important;
+                        transition: 0.2s;
+                        &:hover{
+                            color: $primary !important;
+                        }
+                    }
+                }
+            }
+            .curruncy-selector .btn,.js_language_selector .btn{
+                line-height: 1 !important;
+                border-left: 1px solid #929292 !important;
+                border-radius: 0 !important;
+                padding-left: 10px !important; 
+                padding-right: 0px !important; 
+                margin-left: 10px;
+            }
+        }
+        .middle-header{
+            @media (min-width: 992px){
+                border-bottom: 1px solid #ececec;
+            }
+            .contact-content{
+                i{
+                    font-size: 30px;
+                }
+                .content-info{
+                    .sub-content{
+                      font-size: 8px;
+                    }
+                }
+            }
+            .header_right{
+                @include header-icon-badge;
+                @include header-wishlist-icon; 
+                @include header-cart-icon; 
+                @include header-user-account-info; 
+                .header-myaccount{
+                    .dropdown-toggle{
+                        padding-right: 0 !important;
+                    }
+                }
+                .wishlist, .bizople-add-to-cart, .header-myaccount{
+                    a.nav-link{
+                        display: block;
+                        padding: 0.5rem 1rem;
+                        color: inherit !important;
+                    }
+                }
+            }
+            .snazzy-logo {
+                .navbar-brand.logo{
+                    margin: auto !important;
+                    img {
+                        display: unset !important;
+                    }
+                }
+            }
+        }
+        .bottom-header{
+            .bottom_content{
+                position: relative;
+                @include header-navbar-dropdown;
+                .navbar{
+                    position: unset !important;
+                    #top_menu {
+                        .nav-item > a.nav-link {
+                            padding-left: 0px !important;
+                            padding-right: 40px !important;
+                            position: relative;
+                            transition: 0.3s;
+                            // color: #1b1b1b !important;
+                            color: inherit;
+                            &:hover{
+                                transform: translateY(-2px);
+                            }
+                            >span{ 
+                                position: relative;
+                                font-weight: 500;
+                                &::after,&::before {
+                                    content: "";
+                                    width: 0px;
+                                    height: 2px;
+                                    position: absolute;
+                                    bottom: 0;
+                                    background-color: $primary;
+                                    transition: 0.3s;
+                                }
+                                &::after{
+                                  left: 0;
+                                }
+                                &::before{
+                                  right: 0;
+                                }
+    
+                                &:focus, &:hover{
+                                    color: $primary !important;
+                                    &::after,&::before {
+                                        width: 50%;
+                                    }
+                                }
+                            }
+                            &.active{
+                                >span{
+                                    color: $primary !important;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            .bizople-search{
+                position: relative;
+                    .bizople-search-results{
+                        right: 0;
+                    }
+                .o_wsale_products_searchbar_form{
+                    @include header-search-categ-menu;
+                    background-color: #fff;
+                    border: 1px solid #dee2e6;
+                    height: 40px;
+                    .search-query-bizople{
+                        border-bottom-left-radius: 25px !important;
+                        border-top-left-radius: 25px !important;
+                    }
+                    .search-category-input-box{
+                        display: flex;
+                        width: 100%;
+                    }
+                    .search-categ{
+                        #categbtn{
+                            padding:0 !important;
+                        }
+                    } 
+                }
+            }
+        }
+    }
+}
+
+
+.o_header_overlay #snazzy-header5 {
+	@media (max-width: 767.98px) {
+	    position: unset !important;
+	    z-index: unset !important;
+    }
+}

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<template id="s_biz_theme_snazzy_homepage_three_banner" name="Page One Banner">
+
+        <section class="biz_theme_snazzy_homepage_three_banner pb48 custom_padding_bottom">
+            <section class="pt256 pb256" style="background-image: url(/theme_snazzy/static/src/img/page_one_banner.jpg); background-position: center;">
+                <div class="container-fluid">
+                    <div class="text-center pt32 pb32">
+                        <h1 class="text-white custom_fw_700">Seamless Furniture</h1>
+                        <h1 class="text-white custom_fw_700 pb-2">With Natural Fabrics</h1>
+                        <a href="#" class="btn btn-lg btn-outline-secondary px-4 mt-3"> SHOP ALL </a>
+                    </div>
+                </div>
+            </section>
+        </section>
+        <div class="oe_structure oe_empty"></div>
+
+	</template>
+</odoo>

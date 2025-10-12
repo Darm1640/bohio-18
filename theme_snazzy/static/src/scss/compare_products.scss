@@ -1,0 +1,130 @@
+.snazzy-compare-products{
+    table {
+	    thead{
+		    td{
+                .o_comparelist_remove{
+                    background: $primary;
+                    width: 35px;
+                    height: 35px;
+                    padding: 0;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    border-radius: 100%;
+                    top: 5px !important;
+                    right: 15px !important;
+                }
+            
+            }
+            .compare_product_titile{
+                font-weight: 500;
+            }
+        }
+        tbody{
+            tr{
+                td{
+                    .attribute_titile{
+                     font-weight: 500 !important;
+                    }
+                }
+            }
+            
+        }
+    }
+}
+.o_product_feature_panel.d-none.css_editable_mode_hidden.d-md-block {
+    display: block !important;
+
+    .o_comparelist_button{
+    	display: block !important;
+    }
+}
+
+.o_product_feature_panel{
+    position: fixed;
+    left: 0;
+    top: 50%;
+    bottom: unset;
+    border-width: 0px;
+    transform: translateY(-50%);
+    padding: 15px 5px !important;
+    writing-mode: tb;
+    cursor: pointer;
+    background-color: #000000 !important;
+    border-radius: 0 6px 6px 0 !important;
+    z-index: 10;
+    .o_product_panel_header{
+        margin: 0 !important;
+        display: flex;
+        align-items: baseline;
+        .o_product_icon{
+            display: none !important;
+        }
+        .o_product_text {
+            text-transform: capitalize !important;
+            font-size: 15px !important;
+            color: #fff !important;
+            margin: 4px 0;
+        }
+        .o_product_circle {
+            width: 20px;
+            height: 20px;
+            display: inline-block;
+            text-align: center;
+            line-height: 20px;
+            font-size: 12px;
+            margin-top: 5px;
+            padding: 0px 3px;
+            border-radius: 50%;
+        }
+    }
+
+    .comparator-popover{
+        border: 0 !important;
+        box-shadow: 0 0 20px 0 rgba(0,0,0,0.15);
+        writing-mode: horizontal-tb;
+        border-radius: 0 !important;
+        .popover-header{
+          background-color: transparent !important;      
+        }
+        .o_comparelist_products{
+            a{
+                text-decoration: none !important;
+                font-size: 14px !important;
+            }
+            h6{
+                >div{
+                    display: flex;
+                    flex-direction: row-reverse;
+                    justify-content: start;
+                }
+            }
+           
+            span[data-oe-expression="combination_info['price']"]{
+              color: #E02B2B !important;
+            }
+            span{
+                font-size: 14px !important;
+                font-weight: 500 !important;
+            }
+            del{
+                font-size: 14px;
+                margin-left: 5px;
+                color: #929292 !important;
+                .small{
+                    font-size: 14px;
+                    font-style: normal !important;
+                }
+            }
+        }
+        .o_comparelist_button{
+            .btn{
+                border-radius: 0 !important;
+            }
+        }
+        @media(max-width:767px){
+            left: 25%;
+            bottom: 65px;
+        }
+    }
+}

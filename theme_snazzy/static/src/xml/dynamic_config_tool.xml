@@ -1,0 +1,503 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates>
+    <t t-name="theme_snazzy.dynamic_config_modal">
+        <div class="modal fade" contenteditable="False" role="dialog" style="z-index:1050">
+            <div class="modal-dialog modal-fullscreen modal-dialog-scrollable py-0" id="s_dynamic_config_modal">
+                <div class="modal-content">
+                   
+                    <div class="modal-body product_configurator_modal p-0" contenteditable="false">
+                        <div class="row g-0 h-100">
+                            <div class="col-md-9">
+                                <div class="config-heading">
+                                    <h2 class="mb-0">Dynamic Configurator Tool</h2>
+                                    <!-- <div class="mb-0"><a class="btn btn-primary">How it works</a></div> -->
+                                </div>
+                                <div class="preview-container">
+                                    <div class="container-fluid">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="setting-wrapper d-flex flex-column">
+                                    <div class="save-discard d-flex align-items-center">
+                                        <a class="discard_config flex-fill p-2">
+                                            <span>Discard</span>
+                                        </a>
+                                        <a class="save_config flex-fill p-2">
+                                            <span>Save</span>
+                                        </a>
+                                    </div>
+                                    <div class="tab-section">
+                                        <ul class="nav nav-pills gap-2">
+                                            <li class="nav-item nav_item_right li_bg_color">
+                                                <a class="nav-link p-2 active nav_link_right type_selection_tab" data-bs-toggle="pill" href="#config_type_selection">Type</a>
+                                            </li>
+                                            <li class="nav-item nav_item_right">
+                                                <a class="nav-link p-2 nav_link_right record_selection_tab" data-bs-toggle="pill" href="#record_selection">Record Selection</a>
+                                            </li>
+                                            <li class="nav-item nav_item_right">
+                                                <a class="nav-link p-2 nav_link_right design_selection_tab" data-bs-toggle="pill" href="#design_selection">Design Selection</a>
+                                            </li>
+                                        </ul>
+                                        <div class="tab-content">
+                                            <div class="tab-pane container active" id="config_type_selection">
+                                                <div class="row align-items-center g-3">
+                                                    <div class="col-6">
+                                                        <t t-if="model == 'product.template'">
+                                                            <input type="radio" class="form-check-input d-none" id="product_config" name="config_type" value="product_config" data-model="product.template" has_custom_domain="true" checked="true"/>
+                                                        </t>
+                                                        <t t-else="">
+                                                            <input type="radio" class="form-check-input d-none" id="product_config" name="config_type" value="product_config" data-model="product.template" has_custom_domain="true"/>
+                                                        </t>
+                                                        <label class="form-check-label cursor-pointer w-100 p-2 text-center border rounded" for="product_config">Product Configurator</label>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <t t-if="model == 'product.public.category'">
+                                                            <input type="radio" class="form-check-input d-none" id="category_config" name="config_type" value="category_config" data-model="product.public.category" has_custom_domain="false" checked="true"/>
+                                                        </t>
+                                                        <t t-else="">
+                                                            <input type="radio" class="form-check-input d-none" id="category_config" name="config_type" value="category_config" data-model="product.public.category" has_custom_domain="false"/>
+                                                        </t>
+                                                        <label class="form-check-label cursor-pointer w-100 p-2 text-center border rounded" for="category_config">Category Configurator</label>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <t t-if="model == 'product.brand'">
+                                                            <input type="radio" class="form-check-input d-none" id="brand_config" name="config_type" value="brand_config" data-model="product.brand" has_custom_domain="false" checked="true"/>
+                                                        </t>
+                                                        <t t-else="">
+                                                            <input type="radio" class="form-check-input d-none" id="brand_config" name="config_type" value="brand_config" data-model="product.brand" has_custom_domain="false"/>
+                                                        </t>
+                                                        <label class="form-check-label cursor-pointer w-100 p-2 text-center border rounded" for="brand_config">Brand Configurator</label>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <t t-if="model == 'blog.post'">
+                                                            <input type="radio" class="form-check-input d-none" id="blog_config" name="config_type" value="blog_config" data-model="blog.post" has_custom_domain="false" checked="true"/>
+                                                        </t>
+                                                        <t t-else="">
+                                                            <input type="radio" class="form-check-input d-none" id="blog_config" name="config_type" value="blog_config" data-model="blog.post" has_custom_domain="false"/>
+                                                        </t>
+                                                        <label class="form-check-label cursor-pointer w-100 p-2 text-center border rounded" for="blog_config">Blog Configurator</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="tab-pane container fade" id="record_selection">
+                                                <div t-attf-class="record_selection_mode mb-3 #{model == 'product.template' ? '' : 'd-none'}">
+                                                    <label for="record_selection_mode" class="form-label">Mode:</label>
+                                                    <select class="form-select" id="record_selection_mode" name="record_selection_mode">
+                                                        <option value="manual">Manual</option>
+                                                        <option value="custom">Custom</option>
+                                                    </select>
+                                                </div>
+                                                <div class="record_selection_match mb-3 d-none">
+                                                    <label for="record_selection_match" class="form-label">Condition Should Match:</label>
+                                                    <select class="form-select" id="record_selection_match" name="record_selection_match">
+                                                        <t t-if="record_match == 'and'">
+                                                            <option value="and" selected="">All</option>
+                                                        </t>
+                                                        <t t-else="">
+                                                            <option value="and">All</option>
+                                                        </t>
+
+                                                        <t t-if="record_match == 'or'">
+                                                            <option value="or" selected="">Any</option>
+                                                        </t>
+                                                        <t t-else="">
+                                                            <option value="or">Any</option>
+                                                        </t>
+                                                    </select>
+                                                </div>
+                                                <div class="search-section position-relative">
+                                                    <div class="form-floating mb-3 mt-3">
+                                                        <input type="text" class="form-control" id="search_record" placeholder="Search..." name="search_record" data-model="product.template"/>
+                                                        <label for="search_record">Search...</label>
+                                                    </div>
+                                                    <div class="searched_results"/>
+                                                </div>
+                                                <div class="selected_results"/>
+                                                <div class="add_new_rule text-center d-none">
+                                                    <a class="btn btn-primary add_rule">Add New Rule</a>
+                                                </div>
+
+                                                <div class="record_limit my-3">
+                                                    <label for="record_limit" class="form-label d-flex align-items-center justify-content-between">
+                                                        <span>Max Items</span>
+                                                        <span>
+                                                            <span class="current_record_limit">
+                                                                <t t-out="record_limit"/>
+                                                            </span>
+                                                            <span> / 20</span>
+                                                        </span>
+                                                    </label>
+                                                    <input type="range" id="record_limit" t-att-value="record_limit" class="w-100 slider" min="1" max="20" step="1"/>
+                                                </div>
+
+                                                <div class="record_sortby mb-3">
+                                                    <label for="record_sortby" class="form-label">Sortby:</label>
+                                                    <select class="form-select" id="record_sortby" name="record_sortby">
+                                                        <t t-if="sortby == 'default'">
+                                                            <option value="default" selected="">Default</option>
+                                                        </t>
+                                                        <t t-else="">
+                                                            <option value="default">Default</option>
+                                                        </t>
+
+                                                        <t t-if="sortby == 'name asc'">
+                                                            <option value="name asc" selected="">Name: A to Z</option>
+                                                        </t>
+                                                        <t t-else="">
+                                                            <option value="name asc">Name: A to Z</option>
+                                                        </t>
+
+                                                        <t t-if="sortby == 'name desc'">
+                                                            <option value="name desc" selected="">Name: Z to A</option>
+                                                        </t>
+                                                        <t t-else="">
+                                                            <option value="name desc">Name: Z to A</option>
+                                                        </t>
+
+                                                        <t t-if="sortby == 'list_price asc'">
+                                                            <option value="list_price asc" selected="">Price: Low to High</option>
+                                                        </t>
+                                                        <t t-else="">
+                                                            <option value="list_price asc">Price: Low to High</option>
+                                                        </t>
+                                                        
+                                                        <t t-if="sortby == 'list_price desc'">
+                                                            <option value="list_price desc" selected="">Price: High to Low</option>
+                                                        </t>
+                                                        <t t-else="">
+                                                            <option value="list_price desc">Price: High to Low</option>
+                                                        </t>
+                                                        
+                                                    </select>
+                                                </div>
+
+                                                <div class="record_orderby mb-3">
+                                                    <label for="record_orderby" class="form-label">OrderBy:</label>
+                                                    <select class="form-select" id="record_orderby" name="record_orderby">
+                                                        <t t-if="orderby == 'default'">
+                                                            <option value="default" selected="">Default</option>
+                                                        </t>
+                                                        <t t-else="">
+                                                            <option value="default">Default</option>
+                                                        </t>
+
+                                                        <t t-if="orderby == 'id desc'">
+                                                            <option value="id desc" selected="">Latest</option>
+                                                        </t>
+                                                        <t t-else="">
+                                                            <option value="id desc">Latest</option>
+                                                        </t>
+
+                                                        <t t-if="orderby == 'id asc'">
+                                                            <option value="id asc" selected="">Oldest</option>
+                                                        </t>
+                                                        <t t-else="">
+                                                            <option value="id asc">Oldest</option>
+                                                        </t>
+
+                                                        <t t-if="orderby == 'biz_total_sale_count desc'">
+                                                            <option value="biz_total_sale_count desc" selected="">Best Seller</option>
+                                                        </t>
+                                                        <t t-else="">
+                                                            <option value="biz_total_sale_count desc">Best Seller</option>
+                                                        </t>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="tab-pane container fade" id="design_selection">
+                                                <div class="row g-3">
+                                                    <div class="col-lg-6 select_Layout mb-3">
+                                                        <label for="mode_selection" class="form-label">Mode:</label>
+                                                        <select class="form-select" id="mode_selection" name="mode_selection">
+                                                            <t t-if="mode == 'grid'">
+                                                                <option value="grid" selected="true">Grid</option>
+                                                            </t>
+                                                            <t t-else="">
+                                                                <option value="grid">Grid</option>
+                                                            </t>
+
+                                                            <t t-if="mode == 'slider'">
+                                                                <option value="slider" selected="true">Slider</option>
+                                                            </t>
+                                                            <t t-else="">
+                                                                <option value="slider">Slider</option>
+                                                            </t>
+
+                                                            <t t-if="mode == 'list'">
+                                                                <option class="list_layout" value="list" selected="true">List</option>
+                                                            </t>
+                                                            <t t-else="">
+                                                                <option class="list_layout" value="list">List</option>
+                                                            </t>
+                                                        </select>
+                                                    </div>
+
+                                                    <div class="col-lg-6 select_Layout mb-3">
+                                                        <label for="layout_selection" class="form-label">Layout:</label>
+                                                        <select class="form-select" id="layout_selection" name="layout_selection">
+                                                            <t t-if="style == 'style_1'">
+                                                                <option value="style_1" selected="true">Style 1</option>
+                                                            </t>
+                                                            <t t-else="">
+                                                                <option value="style_1">Style 1</option>
+                                                            </t>
+
+                                                            <t t-if="style == 'style_2'">
+                                                                <option value="style_2" selected="true">Style 2</option>
+                                                            </t>
+                                                            <t t-else="">
+                                                                <option value="style_2">Style 2</option>
+                                                            </t>
+
+                                                            <t t-if="style == 'style_3'">
+                                                                <option value="style_3" selected="true">Style 3</option>
+                                                            </t>
+                                                            <t t-else="">
+                                                                <option value="style_3">Style 3</option>
+                                                            </t>
+
+                                                            <t t-if="style == 'style_4'">
+                                                                <option class="no_list" value="style_4" selected="true">Style 4</option>
+                                                            </t>
+                                                            <t t-else="">
+                                                                <option class="no_list" value="style_4">Style 4</option>
+                                                            </t>
+
+                                                            <t t-if="style == 'style_5'">
+                                                                <option class="no_list" value="style_5" selected="true">Style 5</option>
+                                                            </t>
+                                                            <t t-else="">
+                                                                <option class="no_list" value="style_5">Style 5</option>
+                                                            </t>
+
+                                                            <t t-if="style == 'style_6'">
+                                                                <option class="no_list" value="style_6" selected="true">Style 6</option>
+                                                            </t>
+                                                            <t t-else="">
+                                                                <option class="no_list" value="style_6">Style 6</option>
+                                                            </t>
+
+                                                            <t t-if="style == 'style_7'">
+                                                                <option class="no_list" value="style_7" selected="true">Style 7</option>
+                                                            </t>
+                                                            <t t-else="">
+                                                                <option class="no_list" value="style_7">Style 7</option>
+                                                            </t>
+
+                                                            <t t-if="style == 'style_8'">
+                                                                <option class="only_categ" value="style_8" selected="true">Style 8</option>
+                                                            </t>
+                                                            <t t-else="">
+                                                                <option class="only_categ" value="style_8">Style 8</option>
+                                                            </t>
+
+                                                            <t t-if="style == 'style_9'">
+                                                                <option class="only_categ" value="style_9" selected="true">Style 9</option>
+                                                            </t>
+                                                            <t t-else="">
+                                                                <option class="only_categ" value="style_9">Style 9</option>
+                                                            </t>
+
+                                                            <t t-if="style == 'style_10'">
+                                                                <option class="only_categ" value="style_10" selected="true">Style 10</option>
+                                                            </t>
+                                                            <t t-else="">
+                                                                <option class="only_categ" value="style_10">Style 10</option>
+                                                            </t>
+
+                                                        </select>
+                                                    </div>
+
+                                                    <div class="col-lg-12 item_limit mb-3">
+                                                        <label for="item_per_row" class="form-label d-flex align-items-center justify-content-between">
+                                                            <span>Item Per Row</span>
+                                                            <span>
+                                                                <span class="current_item_limit">
+                                                                    <t t-out="item_per_row"/>
+                                                                </span>
+                                                                <span> / 6</span>
+                                                            </span>
+                                                        </label>
+                                                        <input type="range" id="item_per_row" t-att-value="item_per_row" class="w-100 slider" min="1" max="6" step="1"/>
+                                                    </div>
+
+                                                    <div t-attf-class="col-lg-12 display_options d-flex flex-wrap gap-2 mt-0 #{model == 'product.template' ? 'd-flex' : 'd-none'}">
+                                                        <a t-attf-class="btn btn-primary #{actionbutton['show_cart'] == 'on' ? 'on' : ''}" display_options="show_cart" title="Add to Cart Button"><span class="ri ri-shopping-cart-line"/> Add to Cart</a>
+
+                                                        <a t-attf-class="btn btn-primary #{actionbutton['show_wishlist'] == 'on' ? 'on' : ''}" display_options="show_wishlist" title="Wishlist Button"><span class="ri ri-heart-line"/> Wishlist</a>
+
+                                                        <a t-attf-class="btn btn-primary #{actionbutton['show_compare'] == 'on' ? 'on' : ''}" display_options="show_compare" title="Compare Button"><span class="ri ri-arrow-left-right-line"/> Compare</a>
+
+                                                        <a t-attf-class="btn btn-primary #{actionbutton['show_quickview'] == 'on' ? 'on' : ''}" display_options="show_quickview" title="Quick View Button"><span class="ri ri-eye-line"/>Quick View</a>
+
+                                                        <a t-attf-class="btn btn-primary #{actionbutton['show_label'] == 'on' ? 'on' : ''}" display_options="show_label" title="Lables"><span class="ri ri-bookmark-line"/> Lables</a>
+
+                                                        <a t-attf-class="btn btn-primary #{actionbutton['show_price'] == 'on' ? 'on' : ''}" display_options="show_price" title="Product Price"><span class="ri ri-coins-line"/> Product Price</a>
+
+                                                        <a t-attf-class="btn btn-primary #{actionbutton['show_ratings'] == 'on' ? 'on' : ''}" display_options="show_ratings" title="Product Ratings"><span class="ri ri-star-fill"/> Ratings</a>
+
+                                                        <a t-attf-class="btn btn-primary #{actionbutton['show_description'] == 'on' ? 'on' : ''}" display_options="show_description" title="Product Description"><span class="ri ri-bar-chart-horizontal-line"/> Product Description</a>
+
+                                                        <a t-attf-class="btn btn-primary #{actionbutton['img_bg_color'] == 'on' ? 'on' : ''}" display_options="img_bg_color" title="Background Color"><span class="ri ri-paint-fill"/> Background Color</a>
+
+                                                        <a t-attf-class="btn btn-primary #{actionbutton['show_similar_products'] == 'on' ? 'on' : ''}" display_options="show_similar_products" title="Similar Products"><span class="ri ri-file-copy-line"/> Similar Products</a>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="next-back d-flex align-items-center justify-content-between mt-auto">
+                                        <a class="back_tab p-2">
+                                            <span>Back</span>
+                                        </a>
+                                        <a class="next_tab p-2">
+                                            <span>Next</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    
+                   
+                </div>
+            </div>
+        </div>
+    </t>
+
+    <t t-name="theme_snazzy.custom_domain_selector">
+        <div class="custom_domain_selector border p-3 my-3">
+            <div class="row g-3 justify-content-center">
+                
+                <div class="col-lg-12 domain-div">
+                    <select class="custom_domain_field form-select" id="custom_domain_field" name="custom_domain_field">
+                        <t t-if="field_name == 'name'">
+                            <option value="name" type="text" selected="">Name</option>
+                        </t>
+                        <t t-else="">
+                            <option value="name" type="text">Name</option>
+                        </t>
+
+                        <t t-if="field_name == 'public_categ_ids'">
+                            <option value="public_categ_ids" type="many2many" model="product.public.category" selected="">Category</option>
+                        </t>
+                        <t t-else="">
+                            <option value="public_categ_ids" type="many2many" model="product.public.category">Category</option>
+                        </t>
+
+                        <t t-if="field_name == 'brand_id.id'">
+                            <option value="brand_id.id" type="many2one" model="product.brand" selected="">Brand</option>
+                        </t>
+                        <t t-else="">
+                            <option value="brand_id.id" type="many2one" model="product.brand">Brand</option>
+                        </t>
+
+                        <t t-if="field_name == 'attribute_line_ids.value_ids'">
+                            <option value="attribute_line_ids.value_ids" model="product.attribute.value" type="many2one" selected="">Attributes</option>
+                        </t>
+                        <t t-else="">
+                            <option value="attribute_line_ids.value_ids" model="product.attribute.value" type="many2one">Attributes</option>
+                        </t>
+
+                        <t t-if="field_name == 'list_price'">
+                            <option value="list_price" type="integer" selected="">Price</option>
+                        </t>
+                        <t t-else="">
+                            <option value="list_price" type="integer">Price</option>
+                        </t>
+
+                        <t t-if="field_name == 'biz_is_discounted_product'">
+                            <option value="biz_is_discounted_product" type="boolean" selected="">Discount</option>
+                        </t>
+                        <t t-else="">
+                            <option value="biz_is_discounted_product" type="boolean">Discount</option>
+                        </t>
+                    </select>
+                </div>
+
+                <div class="col-lg-12 domain-div">
+                    <select class="custom_domain_operator form-select" id="custom_domain_operator" name="custom_domain_operator">
+                        <option value="ilike">contains</option>
+                        <option value="not ilike">doesn't contain</option>
+                        <option value="=">is equal to</option>
+                        <option value="!=">is not equal to</option>
+                    </select>
+                </div>
+                <div class="col-lg-12 domain-div position-relative">
+                    <t t-if="multiple_record">
+                        <input type="text" class="form-control" id="custom_domain_value"  placeholder="Search..." name="custom_domain_value"/>
+                    </t>
+                    <t t-else="">
+                        <input type="text" class="form-control" id="custom_domain_value" t-att-value="value" placeholder="Search..." name="custom_domain_value"/>
+                    </t>
+                    <div class="selected_domain_record_list d-flex align-items-center flex-wrap gap-2">
+                        <t t-if="multiple_record">
+                            <t t-foreach="value" t-as="record" t-key="record['id']">
+                                <span class="selected_record d-inline-block p-2 border" t-att-id="record['id']" t-att-name="record['name']"><t t-esc="record['name']"/> <span class="remove_record ms-3">x</span></span>
+                            </t>
+                        </t>
+                    </div>
+                </div>
+                <div class="col-lg-12 domain-div text-center">
+                    <a class="btn btn-primary apply_rule">Apply</a>
+                </div>
+            </div>
+            <!-- add AND / OR text -->
+            <div class="condition_match_label small">
+                <t t-if="record_match == 'and'">
+                    <span>AND</span>
+                </t>
+                <t t-else="">
+                    <span>OR</span>
+                </t>
+            </div>
+        </div>
+    </t>
+
+    
+    <t t-name="theme_snazzy.selected_domain_text">
+        <div class="custom_domain_selector border p-3 my-3">
+            <div class="row g-3 justify-content-center">
+                <div class="col-lg-12 text-div d-flex align-items-center justify-content-between">
+                    <div class="domain_text">
+                        Product "<span class="operator fw-bolder text-capitalize" t-att-operator_value="operator_value" t-esc="operator"/>" <span class="field" t-att-field_value="field_name" t-esc="name"/>
+                        <t t-if="multi_record">
+                            <t t-set='count' t-value='1'/>
+                            <t t-set='total' t-value='value.length'/>
+                            <t t-foreach="value" t-as="recorddata" t-key="recorddata['id']">
+                                <span class="selected_record ms-1" t-att-id="recorddata['id']" t-att-name="recorddata['name']">
+                                    <t t-esc="recorddata['name']"/><span>,</span>
+                                </span>
+                                <t t-set="count" t-value="count + 1"/>
+                            </t>
+                        </t>
+                        <t t-else="">
+                            <span class="value fw-bolder" t-esc="value"/>
+                        </t>
+                    </div>
+                    <div class="domain_edit_dlt d-flex">
+                        <a class="btn btn-primary edit_custom_domain">
+                            <span class="ri ri-pencil-line" />
+                        </a>
+                        <a class="btn btn-primary delete_custom_domain ms-2">
+                            <span class="ri ri-delete-bin-6-line" />
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <!-- add AND / OR text -->
+            <div class="condition_match_label small">
+                <t t-if="record_match == 'and'">
+                    <span>AND</span>
+                </t>
+                <t t-else="">
+                    <span>OR</span>
+                </t>
+            </div>
+        </div>
+    </t>
+</templates>

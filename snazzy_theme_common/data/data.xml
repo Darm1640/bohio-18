@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="website_default_image" model="res.config.settings">
+            <!-- <field name="infinite_load_image" type="base64" file="snazzy_theme_common/static/src/img/infinity-image.gif" /> -->
+            <!-- <field name="shop_page_banner_image" type="base64" file="snazzy_theme_common/static/src/img/login-banner.jpg" />
+            <field name="login_page_banner_image" type="base64" file="snazzy_theme_common/static/src/img/login-banner.jpg" /> -->
+            <!-- <field name="lazy_load_image" type="base64" file="snazzy_theme_common/static/src/img/lazyload.gif" /> -->
+            <!-- <field name="login_popup_image" type="base64" file="snazzy_theme_common/static/src/img/login-popup.jpg" /> -->
+        </record>
+    </data>
+</odoo>

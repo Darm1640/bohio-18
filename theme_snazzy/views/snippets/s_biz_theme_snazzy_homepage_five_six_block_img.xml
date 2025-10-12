@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<template id="s_biz_theme_snazzy_homepage_five_six_block_img" name="Six Block Images">
+
+        <section class="biz_theme_snazzy_homepage_five_six_block_img pt16 pb16 ">
+            <div class="container-fluid">
+                <div class="row row_div">
+
+                    <div class="col-lg-6">
+                        <div class="row row_div">
+                            <div class="col-md-6">
+                                <div class="row row_div">
+                                    <div class="col-md-12">
+                                        <div class="data_wrapper_one">
+                                            <img class="img img-fluid mx-auto" src="/theme_snazzy/static/src/img/homepage_five_six_block_img_2.jpg" loading="lazy" style=""/>
+                                            <div class="data_wrapper_two">
+                                                <a href="#" class="text-decoration-none">New in</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="data_wrapper_one">
+                                            <img class="img img-fluid mx-auto" src="/theme_snazzy/static/src/img/homepage_five_six_block_img_3.jpg" loading="lazy" style=""/>
+                                            <div class="data_wrapper_two"> 
+                                                <a href="#" class="text-decoration-none">Popupal Collection</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="data_wrapper_one h-100">
+                                    <img class="img img-fluid mx-auto h-100" src="/theme_snazzy/static/src/img/homepage_five_six_block_img_1.jpg" loading="lazy" style=""/>
+                                    <div class="data_wrapper_two">
+                                        <a href="#" class="text-decoration-none">Complete You Look</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="row row_div">
+                            <div class="col-md-6">
+                                <div class="data_wrapper_one">
+                                    <img class="img img-fluid mx-auto" src="/theme_snazzy/static/src/img/homepage_five_six_block_img_4.jpg" loading="lazy" style=""/>
+                                    <div class="data_wrapper_two">
+                                        <a href="#" class="text-decoration-none">Perfect Style</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="data_wrapper_one">
+                                    <img class="img img-fluid mx-auto" src="/theme_snazzy/static/src/img/homepage_five_six_block_img_5.jpg" loading="lazy" style=""/>
+                                    <div class="data_wrapper_two">
+                                        <a href="#" class="text-decoration-none">Top Trending</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="data_wrapper_one">
+                                    <img class="img img-fluid mx-auto" src="/theme_snazzy/static/src/img/homepage_five_six_block_img_6.png" loading="lazy" style=""/>
+                                    <div class="data_wrapper_two">
+                                        <a href="#" class="text-decoration-none">The All-in-one</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+        <div class="oe_structure oe_empty"></div>
+	
+	</template>
+</odoo>

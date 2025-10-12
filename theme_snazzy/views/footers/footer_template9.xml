@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<template id="theme_common_footer9" inherit_id="website.layout" name="Footer Nine" active="False">
+       	<xpath expr="//div[@id='footer']" position="replace">
+            <div id="footer" class="oe_structure oe_structure_solo" t-ignore="true" t-if="not no_footer">
+                <section id="footer_theme_common9" class="o_footer footer_theme_common9 pt24 pb24 o_colored_level o_cc">
+                    <section class="top-footer">
+                        <div class="container">
+                            <div class="row justify-content-center pt48 pb48">
+                                <div class="col-md-2 mb-3 mb-lg-0 col-lg-2">
+                                    <div class="footer-logo">
+                                        <a href="/" class="navbar-brand logo p-0 m-0">
+                                            <img src="/theme_snazzy/static/src/img/snazzy-logo-white.png" class="img-fluid"/>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 mb-3 mb-lg-0 col-lg-2">
+                                    <div class="footer-links ">
+                                        <h6 class="mb-3 title-content">SHOP</h6>
+                                        <p><a href="#">Mobile</a></p>
+                                        <p><a href="#">Laptop</a></p>
+                                        <p><a href="#">Headphone</a></p>
+                                        <p><a href="#">DSLR</a></p>
+                                        <p><a href="#">Mobile</a></p>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 mb-3 mb-lg-0 col-lg-2">
+                                    <div class="footer-links ">
+                                        <h6 class="mb-3 title-content">COMMUNITY</h6>
+                                        <p><a href="#">RI Business Forum</a></p>
+                                        <p><a href="#">Meet RI Business</a></p>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 mb-3 mb-lg-0 col-lg-2">
+                                    <div class="footer-links ">
+                                        <h6 class="mb-3 title-content">ABOUT</h6>
+                                        <p><a href="#">Customer Service</a></p>
+                                        <p><a href="#">Store Locator</a></p>
+                                        <p><a href="#">Wholesale</a></p>
+                                        <p><a href="#">Career</a></p>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 mb-3 mb-lg-0 col-lg-2">
+                                    <div class="footer-links mb-4 ">
+                                        <h6 class="mb-3 title-content">BUSINESS</h6>
+                                        <p><a href="#">About Us</a></p>
+                                        <p><a href="#">Login</a></p>
+                                    </div>
+                                    <div class="footer-links ">
+                                        <p><a href="#">Contact</a></p>
+                                        <p><a href="#">Shipping Return</a></p>
+                                        <p><a href="#">FAQ</a></p>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 mb-3 mb-lg-0 col-lg-2 ">
+                                    <div class="footer-links ">
+                                        <h6 class="mb-3 title-content">CONNECT</h6>
+                                        <p><a href="#">My Account</a></p>
+                                        <p><a href="#">Login</a></p>
+                                        <p><a href="#">My Cart</a></p>
+                                        <p><a href="#">Wishlist</a></p>
+                                        <p><a href="#">Checkout</a></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="bottom-footer">
+                        <div class="container brand-border-style">
+                            <div class="row align-items-center">
+                                <div class="col-lg-2 col-md-4 col-6">
+                                    <img src="/theme_snazzy/static/src/img/footer-brand-1.png" class="img-fluid"/>
+                                </div>
+                                <div class="col-lg-2 col-md-4 col-6">
+                                    <img src="/theme_snazzy/static/src/img/brand-2.png" class="img-fluid"/>
+                                </div>
+                                <div class="col-lg-2 col-md-4 col-6">
+                                    <img src="/theme_snazzy/static/src/img/brand-3.png" class="img-fluid"/>
+                                </div>
+                                <div class="col-lg-2 col-md-4 col-6">
+                                    <img src="/theme_snazzy/static/src/img/brand-4.png" class="img-fluid"/>
+                                </div>
+                                <div class="col-lg-2 col-md-4 col-6">
+                                    <img src="/theme_snazzy/static/src/img/brand-5.png" class="img-fluid"/>
+                                </div>
+                                <div class="col-lg-2 col-md-4 col-6">
+                                    <img src="/theme_snazzy/static/src/img/brand-6.png" class="img-fluid"/>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </section>
+            </div>
+        </xpath>
+        <xpath expr="//div[hasclass('o_footer_copyright')]" position="replace">
+			<div t-if="not no_copyright" class="o_footer_copyright footer9_copyright">
+				<section class="copyright-section py-4">
+                    <div class="container">
+                        <div class="row align-items-center">
+                            <div class="col-md-7 mb-4 mb-md-0 footer-langage-option">
+                                <p class="m-0 o_footer_copyright_name ">All Rights Are Reserved By ©<span t-field="res_company.name" /> 2023</p>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="payment-image text-md-end">
+                                    <img src="/theme_snazzy/static/src/img/payment-footer.png" class="img-fluid"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+				</section>
+			</div>
+		</xpath>
+    </template>
+</odoo>

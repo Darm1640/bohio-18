@@ -1,0 +1,81 @@
+// common styles
+#footer_theme_common1,#footer_theme_common2,#footer_theme_common3,#footer_theme_common4,#footer_theme_common5,#footer_theme_common6,#footer_theme_common7,#footer_theme_common8,#footer_theme_common9{
+    @include o-apply-colors('footer');
+    @include o-apply-colors('footer-custom');
+    @include o-add-gradient('footer-gradient');
+    h1,h2,h3,h4,h5,h6{
+        color: inherit !important;
+    }
+    .footer-links{
+        h6{
+            color: inherit !important;
+        }
+        a.nav-link{
+            color: inherit !important;
+            &:hover{
+                color: $primary !important;
+            }
+        }
+        p{
+            a{	
+                line-height: 30px;
+                text-decoration: none;
+                transition: all 0.3s ease-in-out;
+                color: inherit !important;
+                &:hover{
+                    color: $primary !important;
+                }
+            }
+            margin: 0;
+        }
+    }
+    .social-icons{
+        a.link{
+            font-size: 18px;
+            margin-right: 27px;
+            text-decoration: none;
+            color: inherit !important;
+        }
+    }
+}
+
+footer{
+    .js_language_selector{
+        .dropdown-toggle{
+            text-decoration: none !important;
+            box-shadow: none !important;
+            background: transparent !important;
+            color: inherit !important;
+            font-size: 14px !important;
+            text-transform: uppercase;
+            margin-left: 10px;
+            &.show{
+                background-color: transparent !important;
+            }
+        }
+        .dropdown-menu.show{
+            border: 0 !important;
+            box-shadow: 0 0 20px 0 rgba(0,0,0,0.15);
+            border-radius: 0 !important;
+            padding: 16px !important;
+            min-width: unset !important;
+            .dropdown-item{
+                background-color: transparent !important;
+                color: #929292 !important;
+                border-bottom: 1px solid #ececec !important;
+                text-decoration: none !important;
+                padding: 5px 0 !important;
+                &.active{
+                    color: $primary !important; 
+                }
+                &:hover{
+                    color: $primary !important; 
+                }
+                span{
+                  text-transform: uppercase;
+                  text-decoration: none;
+                }
+            }
+        }
+    }
+}

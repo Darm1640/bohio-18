@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<template id="s_biz_theme_snazzy_homepage_two_hot_this_week" name=" Hot This Week ">
+	
+        <section class="biz_theme_snazzy_homepage_two_hot_this_week pt48 pb48 custom_padding_top custom_padding_bottom">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-4">
+                        <div class="position-relative img_content custom_padding_top_lg_down_30 block-hover-effect custom_padding_top_sm_down_15">
+                            <img class="img img-fluid mx-auto w-100" src="/theme_snazzy/static/src/img/page_one_hot_this_week_img_one.jpg" loading="lazy"/>
+                            <div class="position-absolute p-3 bottom-0 w-100">
+                                <div class="d-flex justify-content-center">
+                                    <a href="#" class="btn btn-light py-1 px-5">NEW</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 order-lg-last">
+                        <div class="text_content text-center px-5 custom_padding_top_lg_down_30 ">
+                            <h6 class="custom_fw_300">CATEGORIES</h6>
+                            <h3 class="fw-normal">HOT THIS WEEK</h3>
+                            <p class="mb-2 custom_fw_500" >
+                                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's
+                            </p>
+                            <a href="#" class="text-decoration-underline fs-6 custom_fw_500" data-bs-original-title="" title="" aria-describedby="popover843531" contenteditable="true">SHOP ALL ITEMS</a>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="position-relative img_content block-hover-effect custom_padding_top_lg_down_30 ">
+                            <img class="img img-fluid mx-auto w-100" src="/theme_snazzy/static/src/img/page_one_hot_this_week_img_two.jpg" loading="lazy"/>
+                            <div class="position-absolute p-3 bottom-0 w-100">
+                                <div class="d-flex justify-content-center">
+                                    <a href="#" class="btn btn-light py-1 px-5">NEW</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div class="oe_structure oe_empty"></div>
+
+	</template>
+</odoo>

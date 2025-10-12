@@ -1,0 +1,161 @@
+.outlet_addresses{
+	.store-data{
+		.store-label{
+			cursor: pointer;
+			width: 100%;
+			height: 100%;
+			border: 1px solid;
+			border-color: inherit;
+			border-radius: 5px;
+			transition: 0.3s;
+
+			.store-content{
+				.store-details{
+					.store-name{
+						span{
+							text-transform: uppercase;
+							font-size: 20px;
+							font-weight: 600;
+						}
+					}
+					.store-address{
+						margin-top: 5px;
+						p{
+							margin-bottom: 0;
+						}
+					}
+				}
+				.store-contact{
+					margin-top: 5px;
+					.contact-phone, .contact-email, .contact-location{
+						a{
+							color: $primary;
+							transition: 0.3s;
+							span{
+							    display: inline-block;
+							    background-color: #fff;
+							    width: 30px;
+							    height: 30px;
+							    line-height: 30px;
+							    text-align: center;
+							    border-radius: 5px;
+							    font-size: 16px;
+								transition: 0.3s;
+							}
+							&:hover{
+								color: inherit;
+
+								span{
+									background-color: $primary;
+								}
+							}
+						}
+					}
+					> div:not(:first-child){
+						margin-left: 7px;
+					}
+				}
+			}
+		}
+		&:hover{
+			.store-label{
+				border-color: $primary;
+				background-color: rgba($primary, 0.08);
+			}
+		}
+	}
+	.outlet_box{
+		.title{
+
+		}
+		.address{
+			font-size: 12px;
+		}
+		p.button{
+			a{
+				color: #fff !important;
+				padding: 0 !important;
+				font-size: 14px;
+				font-weight: 500;
+			}
+		}
+		transition: 0.3s;
+		--webkit-transition: 0.3s;
+		&:hover{
+			background-color: #e6e6e6 !important;
+			color: #000 !important;
+		    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+		    p.button{
+				a{
+					color: #000 !important;
+				}
+			}
+		}
+	}
+}
+
+.outlet-contact{
+	.upper-content{
+		.title{
+	    	font-weight: 500;
+	    	margin-bottom: 15px;
+		}
+		p{
+			line-height: 30px;
+		    font-weight: 400;
+	        margin-bottom: 15px;
+		}
+		padding-bottom: 30px;
+		border-bottom: 2px solid $primary;
+	}
+	.lower-content{
+		padding-top: 45px;
+		h6{
+		    margin-bottom: 20px;
+	        color: $primary;
+		}
+		p{
+			line-height: 30px;
+		    font-weight: 400;
+	        margin-bottom: 0;
+		}
+	}
+	.form-group, .s_website_form_field{
+		input.form-control{
+		    padding: 15px 0;
+		    height: unset;
+		    border: 0;
+		    border-bottom: 2px solid rgba($color: $primary, $alpha: 0.3);;
+		    border-radius: 0;
+		    background-color: transparent;
+		    color: inherit;
+		    outline: 0;
+		    box-shadow: unset;
+	        font-size: 14px;
+		    &::placeholder {
+			  color: inherit;
+			}
+		}
+		textarea{
+			padding: 15px 0;
+		    border: 0;
+		    border-bottom: 2px solid rgba($color: $primary, $alpha: 0.3);;
+		    border-radius: 0;
+		    background-color: transparent;
+		    color: inherit;
+		    outline: 0;
+		    box-shadow: unset;
+	        font-size: 14px;
+		    &::placeholder {
+			  color: inherit;
+			}
+		}
+	}
+    .s_website_form_submit{
+        a.s_website_form_send{
+            border-radius: 0;
+            font-size: 16px;
+            padding: 10px 40px;
+        }
+    }
+}

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<template id="s_mega_menu_three_snippet" name="Mega Menu Three" groups="base.group_user">
+		<section class="s_mega_menu_three_snippet py-3 snazzy_mega_menu">
+			<div class="container extended-container">
+				<div class="row">
+                    <div class="col-lg-6 align-self-center mb16">
+						<div class="row">
+							<div class="col-lg-4 col-md-4 col-sm-4 col-12">
+								<div class="heading-contents">
+									<a class="menuheading" href="#">Products</a>
+									<ul>
+										<li><a class="menu_item" href="#">All Products</a></li>
+										<li><a class="menu_item" href="#">Best Seller</a></li>
+										<li><a class="menu_item" href="#">New</a></li>
+										<li><a class="menu_item" href="#">Minis</a></li>
+										<li><a class="menu_item" href="#">Combo</a></li>
+                                        <li><a class="menu_item" href="#">Coupons</a></li>
+									</ul>
+								</div>
+							</div>
+							<div class="col-lg-4 col-md-4 col-sm-4 col-12">
+								<div class="heading-contents">
+									<a class="menuheading" href="#">Electronics</a>
+									<ul>
+										<li><a href="#" class="menu_item">Headphones</a></li>
+										<li><a href="#" class="menu_item">Mobiles</a></li>
+										<li><a href="#" class="menu_item">Tablets</a></li>
+										<li><a href="#" class="menu_item">Television</a></li>
+										<li><a href="#" class="menu_item">Computers</a></li>
+                                        <li><a href="#" class="menu_item">Ear Buds</a></li>
+									</ul>
+								</div>
+							</div>
+							<div class="col-lg-4 col-md-4 col-sm-4 col-12">
+								<div class="heading-contents">
+									<a class="menuheading" href="#">Product Type</a>
+									<ul>
+										<li><a href="#" class="menu_item">Mobile</a></li>
+										<li><a href="#" class="menu_item">Laptop</a></li>
+										<li><a href="#" class="menu_item">Headphones</a></li>
+										<li><a href="#" class="menu_item">Ear Buds</a></li>
+										<li><a href="#" class="menu_item">Television</a></li>
+                                        <li><a href="#" class="menu_item">Iphone</a></li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-6 image mb16">
+                        <div class="oe_structure"></div>
+					</div>
+				</div>
+			</div>
+		</section>
+	</template>
+</odoo>

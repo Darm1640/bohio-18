@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<template id="search_snazzy">
+		<t t-if='searched_product or searched_categ or searched_brand or suggestion_list'>
+			<div class="dropdown-menu show w-100 bizople-search-results" style="min-width: 100% !important;top:100%;">
+				<div class="search-filter-show">
+					<t t-if="searched_categ">
+						<div class="search-title d-flex align-items-center gap-2 px-2">
+							<span class="ri ri-checkbox-blank-circle-fill text-warning small"/>
+							Categories
+						</div>
+						<div class="categ_badges d-flex flex-wrap align-items-center gap-2 px-2 my-2 pb-3 border-bottom">
+							<t t-foreach="searched_categ" t-as="categ">
+								<a t-attf-href="/shop?category=#{categ.id}" class="badge border fw-normal text-decoration-none text-bg-light">
+									<t t-out="categ.name"/>
+								</a>
+							</t>
+						</div>
+					</t>
+					<t t-if="searched_product">
+						<div class="search-title d-flex align-items-center gap-2 px-2">
+							<span class="ri ri-checkbox-blank-circle-fill text-primary small"/>
+							Products
+						</div>
+						<t t-foreach="searched_product" t-as="product">
+							<t t-set="combination_info" t-value="product._get_combination_info(combination,only_template=True, add_qty=add_qty)"/>
+							<a t-att-href="product.website_url" class="dropdown-item p-2 text-wrap">
+								<div t-attf-class="media o_search_result_item align-items-center d-flex border-bottom pb-2 {{'add_bg_color' if is_view_active('theme_snazzy.product_background_color') else ''}}">
+										<img t-attf-src="/web/image/product.template/#{product.id}/image_128" class="flex-shrink-0 o_image_64_contain"/>
+									<div class="media-body px-3 w-100">
+										<div class="h6 font-weight-bold search-product-title"><t t-out="product.name"/></div>
+										<p t-if="product.description_sale" class="mb-0"><t t-out="product.description_sale"/></p>
+									</div>
+									<div class="flex-shrink-0 ms-auto search-product-price">
+										<t t-if="is_view_active('theme_snazzy.snazzy_b2b_mode') and request.env.user._is_public()">
+                                        </t>
+                                        <t t-else="">
+                                            <t t-call="website_sale.product_price"/>
+                                        </t>              
+									</div>
+								</div>
+							</a>
+						</t>
+					</t>
+					<t t-if="suggestion_list">
+						<t t-set="count" t-value="0"/>
+						<div class="search-title d-flex align-items-center gap-2 px-2">
+							<span class="ri ri-checkbox-blank-circle-fill text-danger small"/>
+							Suggestions
+						</div>
+						<div class="suggestion_list px-2 my-2">
+							<t t-foreach="suggestion_list" t-as="suggestion">
+								<t t-if="count &lt; 5">
+									<a t-att-href="suggestion.get('url')" class="dropdown-item p-2 d-flex flex-wrap w-100 text-decoration-none gap-2 align-items-center">
+										<span class="ri ri-search-line text-muted lh-1"/>
+										<span><t t-out="suggestion.get('name')"/></span>
+									</a>
+									<t t-set="count" t-value="count + 1"/>
+								</t>
+							</t>
+						</div>
+					</t>
+					<t t-if="len(searched_brand) == 1">
+						<a t-attf-href="/shop?brand=#{searched_brand.id}" class="dropdown-item p-2 text-center all-brand-btn">Show all products of <span class="text-primary"><t t-out="searched_brand.name"/></span> brand</a>
+					</t>
+				</div>
+	    	</div>
+	    </t>
+	    <t t-else=''>
+	    	<div class="dropdown-menu bizople-search-text show w-100" style="min-width: 300px;">
+			    <span class="dropdown-item-text text-muted ">No results found. Please try another search.</span>
+			</div>
+	    </t>
+	</template>
+</odoo>

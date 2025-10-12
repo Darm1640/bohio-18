@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="slider_direction_snippet_options_inherit" inherit_id="website.snippet_options">
+        <xpath expr="//div[@data-js='HeaderBox']" position="after">
+            <div data-selector=".slider_direction_snippet">
+                <we-select string="Slider Direction" data-variable="">
+                    <we-button data-select-class="slider_direction_right_to_left">Right to Left</we-button>
+                    <we-button data-select-class="slider_direction_left_to_right">Left to Right</we-button>
+                    <we-button data-select-class="slider_direction_bottom_to_top">Bottom to Top</we-button>
+                    <we-button data-select-class="slider_direction_top_to_bottom">Top to Bottom</we-button>
+                </we-select>
+            </div>
+        </xpath>
+
+        <xpath expr="//we-select[@data-name='variants_opt']" position="after">
+            <we-select string="Product Page Layouts">
+                <we-button data-name="product_page_layout1" data-customize-website-views="theme_snazzy.snazzy_productpage_layout1">Layout 1</we-button>
+                <we-button data-name="product_page_layout2" data-customize-website-views="theme_snazzy.snazzy_productpage_layout2">Layout 2</we-button>
+                <we-button data-name="product_page_layout3" data-customize-website-views="theme_snazzy.snazzy_productpage_layout3">Layout 3</we-button>
+            </we-select>
+        </xpath>
+    </template>
+
+    <template id="dynamic_config_snippet_options_inherit" inherit_id="website.snippet_options">
+		<xpath expr="//div[@data-js='HeaderBox']" position="after">
+			<div data-selector=".dynamic_config_main_section" data-target=".bizople_dynamic_config_tool" data-js="dynamic_config_tool">
+				<we-row string="Select Product">
+                    
+	                <we-button class="biz_change_product"><i class="fa fa-fw fa-plus"/> Change Products</we-button>
+		        </we-row>
+			</div>
+
+			<div data-selector=".config_slider_title, #biz_blog_slider_snippet">
+	            <we-select string="Title Alignment" data-variable="config-title-align">
+            		<we-button data-select-class="text-center">Center</we-button>
+                 	<we-button data-select-class="text-start">Left</we-button>
+                 	<we-button data-select-class="text-end">Right</we-button>
+	            </we-select>
+		    </div>
+		</xpath>
+	</template>
+
+</odoo>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<template id="s_biz_theme_snazzy_homepage_four_banner" name="Banner">
+
+        <section class="biz_theme_snazzy_homepage_four_banner">
+            <section class="s_carousel_wrapper" data-vxml="001"  data-name="Carousel">
+                <div class="s_carousel s_carousel_rounded carousel slide" data-bs-interval="3000" id="theme_snazzy_homepage_four_banner_s_one" style="background-image: none;">
+                <div class="carousel-indicators o_we_no_overlay">
+                    <button data-bs-slide-to="0" class="active" data-bs-target="#theme_snazzy_homepage_four_banner_s_one"/>
+                    <button data-bs-slide-to="1" data-bs-target="#theme_snazzy_homepage_four_banner_s_one"/>
+                    <button data-bs-slide-to="2" data-bs-target="#theme_snazzy_homepage_four_banner_s_one"/>
+                </div>
+                <div class="carousel-inner">
+
+                    <div class="carousel-item pt256 pb256 oe_img_bg o_bg_img_center o_colored_level active" style="background-image: url(/theme_snazzy/static/src/img/page_one_banner_img_one.jpg); background-position: center;" data-name="Slide">
+                        <div class="container oe_unremovable">
+                            <div class="row content">
+                                <div class="carousel-content col-lg-5 col-md-7">
+                                    <h1>Lorem Ipsum is Giving Lasting Joy</h1>
+                                    <!-- <h1>Giving Lasting Joy</h1> -->
+                                    <p class="m-0">Our nkm favorites as small sets</p>
+                                    <p>- packed in limited edition gift boxes.</p>
+                                    <a href="#" class="btn btn-primary text-white flat">Shop Now</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="carousel-item pt256 pb256 oe_img_bg o_bg_img_center o_colored_level" style="background-image: url(/theme_snazzy/static/src/img/page_one_banner_img_two.jpg); background-position: center;" data-name="Slide">
+                        <div class="container oe_unremovable">
+                            <div class="row content">
+                                <div class="carousel-content col-lg-5 col-md-7">
+                                    <h1>Lorem Ipsum is Giving Lasting Joy</h1>
+                                    <!-- <h1>Giving Lasting Joy</h1> -->
+                                    <p class="m-0">Our nkm favorites as small sets</p>
+                                    <p>- packed in limited edition gift boxes.</p>
+                                    <a href="#" class="btn btn-primary text-white flat">Shop Now</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="carousel-item pt256 pb256 oe_img_bg o_bg_img_center o_colored_level" style="background-image: url(/theme_snazzy/static/src/img/page_one_banner_img_three.jpg); background-position: center;" data-name="Slide">
+                        <div class="container oe_unremovable">
+                            <div class="row content">
+                                <div class="carousel-content col-lg-5 col-md-5">
+                                    <h1>Lorem Ipsum is Giving Lasting Joy</h1>
+                                    <!-- <h1>Giving Lasting Joy</h1> -->
+                                    <p class="m-0">Our nkm favorites as small sets</p>
+                                    <p>- packed in limited edition gift boxes.</p>
+                                    <a href="#" class="btn btn-primary text-white flat">Shop Now</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <a class="carousel-control-prev o_not_editable o_we_no_overlay" data-bs-slide="prev" role="img" aria-label="Previous" title="Previous" href="#theme_snazzy_homepage_four_banner_s_one">
+                    <span class="carousel-control-prev-icon"/>
+                    <span class="visually-hidden o_default_snippet_text">Previous</span>
+                </a>
+                <a class="carousel-control-next o_not_editable o_we_no_overlay" data-bs-slide="next" role="img" aria-label="Next" title="Next" href="#theme_snazzy_homepage_four_banner_s_one">
+                    <span class="carousel-control-next-icon"/>
+                    <span class="visually-hidden o_default_snippet_text">Next</span>
+                </a>
+                </div>
+            </section>
+        </section>
+        <div class="oe_structure oe_empty"></div>
+
+	</template>
+</odoo>

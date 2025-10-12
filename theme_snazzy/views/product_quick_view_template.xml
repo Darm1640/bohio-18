@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+	<template id="add_cover_quickview" inherit_id="website.layout" active="True">
+        <xpath expr="//header" position="before">
+            <div class="quick_modal_wrap"></div>
+        </xpath>
+    </template>
+	
+    <template id="sale_variants_inherit_snazzy" inherit_id="website_sale.variants">
+        <xpath expr="//li[hasclass('js_attribute_value')][1]" position="attributes">
+            <attribute name="class" remove="mb-3" separator=" "/>
+        </xpath>
+    </template>
+
+     <!--Quick variant popup start -->
+    <template id="get_product_qv_details_template" name="Quick View Details">
+        <t t-if="product">
+            <t t-set="combination" t-value="product._get_first_possible_combination()"/>
+            <t t-set="combination_info" t-value="product._get_combination_info(combination, add_qty=add_qty)"/>
+            <t t-set="product_variant" t-value="product.env['product.product'].browse(combination_info['product_id'])"/>
+            
+            <div class="quick-modal-backdrop"></div>
+ 
+            <div class="quick-modal">
+                <div itemscope="itemscope" itemtype="http://schema.org/Product" class="js_sale quick-popout">
+                  <div class="container oe_website_sale" id="product_detail">
+                    <div class="row" id="product_detail_main" t-att-data-image_width="website.product_page_image_width" t-att-data-image_layout="website.product_page_image_layout">
+                        <div class="col-md-5 product-img-section p-0 bg-white">
+                            <div t-attf-class="o_wsale_product_images position-relative {{'add_bg_color' if is_view_active('theme_snazzy.product_background_color') else ''}}">
+                                <t t-set="product_images" t-value="product_variant._get_images() if product_variant else product._get_images()"/>
+                                <t t-set="image_classes" t-value="'d-flex align-items-center justify-content-center h-100'"/>
+                                <t t-set="ribbon" t-value="product_variant.sudo().variant_ribbon_id or product.sudo().website_ribbon_id"/>
+                                <t t-set="bg_color" t-value="ribbon['bg_color'] or ''"/>
+                                <t t-set="text_color" t-value="ribbon['text_color']"/>
+                                <t t-set="bg_class" t-value="ribbon._get_position_class()"/>
+                                <t t-call="website_sale.shop_product_#{website.product_page_image_layout}"/>
+                            </div>
+                        </div>
+                        <div class="col-md-7 quick_modal_product_details" id="product_details">
+                            <button class="quick_close btn p-0"><div class="position-relative close_icon"></div></button>
+                            
+                            <form t-if="product._is_add_to_cart_possible()" action="/shop/cart/update" method="POST">
+                                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                <div class="js_product js_main_product mb-1 pt32">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <h4 itemprop="name" t-field="product.name" class="fw-normal m-0">Product Name</h4>
+                                        <t t-if="is_view_active('website_sale.product_comment')">
+                                            <t t-call="theme_snazzy.product_item_stars" />
+                                        </t>
+                                    </div>
+                                    
+                                    <t t-if="is_view_active('theme_snazzy.snazzy_b2b_mode') and request.env.user._is_public()">
+                                    </t>
+                                    <t t-else="">
+                                        <div class="quick_view_price_rating">
+                                            <t t-call="website_sale.product_price"/>
+                                        </div>
+                                    </t>
+                                    <p t-field="product.description_sale" class="text-muted mb-2 snazzy_product_description" placeholder="A short description that will also appear on documents." />
+                                    <a href="javascript:void(0)" class="d-none text-decoration-none show_more_deacription mb-2">View more</a>
+                                  
+                                    <t t-placeholder="select">
+                                        <input type="hidden" class="product_id" name="product_id" t-att-value="product_variant.id" />
+                                        <input type="hidden" class="product_template_id" name="product_template_id" t-att-value="product.id" />
+                                        <input t-if="product.public_categ_ids.ids" type="hidden" class="product_category_id" name="product_category_id" t-att-value="product.public_categ_ids.ids[0]" />
+                                        <t t-if="combination" t-call="website_sale.variants">
+                                            <t t-set="ul_class" t-valuef="flex-column" />
+                                            <t t-set="parent_combination" t-value="None" />
+                                        </t>
+                                        <t t-else="">
+                                            <ul class="d-none js_add_cart_variants mb-0" t-att-data-attribute_exclusions="{'exclusions: []'}"/>
+                                        </t>
+                                    </t>
+                                    <p t-if="True" class="css_not_available_msg alert alert-warning">This combination does not exist.</p>
+                              
+                                    <div id="o_wsale_cta_wrapper" class="d-flex flex-wrap align-items-center">
+                                        <t t-set="hasQuantities" t-value="false"/>
+                                        <t t-set="hasBuyNow" t-value="false"/>
+                                        <t t-set="ctaSizeBig" t-value="not hasQuantities or not hasBuyNow"/>
+                                        <div class="d-flex w-100">
+                                            <t t-if="is_view_active('website_sale.product_quantity')">
+                                                <t t-if="is_view_active('theme_snazzy.snazzy_b2b_mode') and request.env.user._is_public()"/>
+                                                <t t-else="">
+                                                    <div t-attf-class="css_quantity input-group {{'d-none' if combination_info['prevent_zero_price_sale'] else 'd-inline-flex'}} align-items-center justify-content-center #{'input-group-lg' if ctaSizeBig else ''}" contenteditable="false">
+                                                        <a t-attf-href="#" class="btn btn-link js_add_cart_json" aria-label="Remove one" title="Remove one">
+                                                            <i class="fa fa-minus"></i>
+                                                        </a>
+                                                        <input type="text" class="form-control quantity text-center text-secondary" data-min="1" name="add_qty" t-att-value="add_qty or 1"/>
+                                                        <a t-attf-href="#" class="btn btn-link float_left js_add_cart_json" aria-label="Add one" title="Add one">
+                                                            <i class="fa fa-plus"></i>
+                                                        </a>
+                                                    </div>
+                                                </t>
+                                            </t>
+                                            <t t-if="is_view_active('theme_snazzy.snazzy_b2b_mode') and request.env.user._is_public()">
+                                                <div class="">
+                                                    <t t-if="is_view_active('theme_snazzy.loginsignup_popup_bizt')">
+                                                        <a href='#' data-bs-toggle="modal" data-bs-target="#popupuserlogin" t-att-data-theme_name = "request.website.sudo().theme_id.name" class="btn btn-primary b2bloginbtn flat lpopen d-block d-md-inline-block">
+                                                            <span class="fa fa-user-circle me-1"/>
+                                                            Login to See Price
+                                                        </a>
+                                                    </t>
+                                                    <t t-else=''>
+                                                        <a role="button" class="btn btn-primary b2bloginbtn flat d-block d-md-inline-block" href="/web/login">
+                                                            <span class="fa fa-user-circle me-1"/>
+                                                            Login to See Price</a>
+                                                    </t>
+                                                </div>
+                                            </t>
+                                            <t t-else="">
+                                                <div id="add_to_cart_wrap" class="d-flex align-items-center w-100">
+                                                    <a role="button" t-attf-class="btn btn-secondary border-secondary flat  d-flex align-items-center justify-content-center js_check_product a-submit flex-grow-1 me-2" href="#">
+                                                        <span>ADD TO CART</span>
+                                                    </a>
+                                                </div>
+                                            </t>
+                                            <button t-if="product_variant" type="button" role="button" class="btn o_add_wishlist_dyn" t-att-disabled='in_wish or None' t-att-data-product-template-id="product.id" t-att-data-product-product-id="product_variant.id" data-action="o_wishlist" title="Add to wishlist"><i class="ri ri-heart-line fa-lg" role="img" aria-label="Add to wishlist"/></button>
+                                        </div>
+                                        <t t-if="is_view_active('website_sale.product_buy_now')">
+                                            <t t-if="is_view_active('theme_snazzy.snazzy_b2b_mode') and request.env.user._is_public()"/>
+                                            <t t-else="">
+                                                <a role="button" t-attf-class="{{'d-none' if combination_info['prevent_zero_price_sale'] else 'd-flex'}} btn align-items-center justify-content-center o_we_buy_now w-100" href="#">
+                                                    <span>BUY NOW</span>
+                                                </a>
+                                            </t>
+                                        </t>
+                                    </div>
+                                    <div class="availability_messages o_not_editable"/>
+                                    <t t-nocache="The wishlist depends on the user and must not be shared with other users. The product come from the controller.">
+                                        <t t-set="product_variant" t-value="product_variant or product._create_first_product_variant()"/>
+                                        <t t-set="in_wish" t-value="product_variant and product_variant._is_in_wishlist()"/>
+                                        <button t-if="product_variant" type="button" role="button" class="btn btn-link px-0 pe-3 o_add_wishlist_dyn d-none" t-att-disabled='in_wish or None' t-att-data-product-template-id="product.id" t-att-data-product-product-id="product_variant.id" data-action="o_wishlist" title="Add to wishlist"><i class="ri ri-heart-line me-2" role="img" aria-label="Add to wishlist"/>Add to wishlist</button>
+                                    </t>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                   </div>
+                </div>
+            </div>
+        </t>
+        <t t-if="error">
+            <div class="quick-modal-backdrop"></div>
+            <div class="quick-modal">
+                <div class="quick-popout">
+                    <button class="quick_close btn p-0"><div class="position-relative close_icon"></div></button>
+                    <div class="alert alert-warning m-4" t-out="error"/>
+                </div>
+            </div>
+        </t>
+    </template>
+     <!--Quick variant popup start -->
+
+    <!--select variant popup start -->
+    <template id="get_product_so_details_template" name="Select Option Details">
+        <t t-if="product">
+            <t t-set="combination" t-value="product._get_first_possible_combination()"/>
+            <t t-set="combination_info" t-value="product._get_combination_info(combination, add_qty=add_qty)"/>
+            <t t-set="product_variant" t-value="product.env['product.product'].browse(combination_info['product_id'])"/>
+            
+            <div class="select-modal-backdrop"></div>
+
+            <div class="select-modal">
+                <div itemscope="itemscope" itemtype="http://schema.org/Product" class="js_sale select-popout">
+                    <button class="select_close btn p-0"><div class="position-relative close_icon"></div></button>
+                    <div class="container oe_website_sale gx-0" id="product_detail">
+                        <div id="product_detail_main" class="row m-0" t-att-data-image_width="website.product_page_image_width" t-att-data-image_layout="website.product_page_image_layout">
+                            <div class="col-md-12 p-0" id="product_details">
+                                <form t-if="product._is_add_to_cart_possible()" action="/shop/cart/update" method="POST">
+                                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
+                                    <div class="js_product js_main_product">
+                                        <div class="product-img-section">
+                                            <div class="d-flex align-items-center">
+                                                <div t-attf-class="product-img-box {{'add_bg_color' if is_view_active('theme_snazzy.product_background_color') else ''}}">
+                                                    <t t-set="product_images" t-value="product_variant._get_images() if product_variant else product._get_images()"/>
+                                                    <t t-set="image_classes" t-value="'d-flex align-items-center justify-content-center h-100'"/>
+                                                    <t t-set="ribbon" t-value="product_variant.sudo().variant_ribbon_id or product.sudo().website_ribbon_id"/>
+                                                    <t t-set="bg_color" t-value="ribbon['bg_color'] or ''"/>
+                                                    <t t-set="text_color" t-value="ribbon['text_color']"/>
+                                                    <t t-set="bg_class" t-value="ribbon._get_position_class()"/>
+                                                    <t t-call="website_sale.shop_product_#{website.product_page_image_layout}"/>
+                                                </div>
+                                                <div class="full-info-text ms-2">
+                                                    <h6 itemprop="name" t-field="product.name" class="product-name mb-1">Product Name</h6>
+                                                    <t t-call="website_sale.product_price"/>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <t t-placeholder="select">
+                                            <input type="hidden" class="product_id" name="product_id" t-att-value="product_variant.id" />
+                                            <input type="hidden" class="product_template_id" name="product_template_id" t-att-value="product.id" />
+                                            <input t-if="product.public_categ_ids.ids" type="hidden" class="product_category_id" name="product_category_id" t-att-value="product.public_categ_ids.ids[0]" />
+                                            <t t-if="combination" t-call="website_sale.variants">
+                                                <t t-set="ul_class" t-valuef="flex-column" />
+                                                <t t-set="parent_combination" t-value="None" />
+                                            </t>
+                                            <t t-else="">
+                                                <ul class="d-none js_add_cart_variants mb-0" t-att-data-attribute_exclusions="{'exclusions: []'}"/>
+                                            </t>
+                                        </t>
+                                        <p t-if="True" class="css_not_available_msg alert alert-warning">This combination does not exist.</p>
+                                       
+                                        <div id="o_wsale_cta_wrapper" class="d-flex flex-wrap align-items-center justify-content-center">
+                                            <t t-set="hasQuantities" t-value="false"/>
+                                            <t t-set="hasBuyNow" t-value="false"/>
+                                            <t t-set="ctaSizeBig" t-value="not hasQuantities or not hasBuyNow"/>
+                                           
+                                            <div t-attf-class="css_quantity input-group {{'d-none' if combination_info['prevent_zero_price_sale'] else 'd-inline-flex'}} me-2 align-middle mb-3 #{'input-group-lg' if ctaSizeBig else ''}" contenteditable="false">
+                                                <a t-attf-href="#" class="btn btn-link js_add_cart_json" aria-label="Remove one" title="Remove one">
+                                                    <i class="fa fa-minus"></i>
+                                                </a>
+                                                <input type="text" class="form-control quantity text-center" data-min="1" name="add_qty" t-att-value="add_qty or 1"/>
+                                                <a t-attf-href="#" class="btn btn-link float_left js_add_cart_json" aria-label="Add one" title="Add one">
+                                                    <i class="fa fa-plus"></i>
+                                                </a>
+                                            </div>
+
+                                            <div id="add_to_cart_wrap" t-attf-class="{{'d-none' if combination_info['prevent_zero_price_sale'] else 'd-inline-flex'}} align-items-center">
+                                                <div class="ajax_cart_modal_tools flex-fill w-100">
+                                                    <a role="button" id="add_to_cart" t-attf-class="btn btn-lg btn-cart btn-primary flat a-submit ajax-cart-btn text-white js_check_product w-100 mb-2" href="#" t-att-data-bs-target="'#AjaxcartModal-%s' %(product.id)">
+                                                        <span>ADD TO CART</span>
+                                                    </a>
+                                                </div>
+                                                <a role="button" t-attf-class="btn btn-secondary flat o_we_buy_now mb-0" href="#">
+                                                    <span>BUY NOW</span>
+                                                </a>
+                                            </div>
+                                        </div>
+
+                                        <div class="availability_messages o_not_editable text-center"/>
+                                        <t t-nocache="The wishlist depends on the user and must not be shared with other users. The product come from the controller.">
+                                            <t t-set="product_variant" t-value="product_variant or product._create_first_product_variant()"/>
+                                            <t t-set="in_wish" t-value="product_variant and product_variant._is_in_wishlist()"/>
+                                            <button t-if="product_variant" type="button" role="button" class="btn btn-link px-0 pe-3 o_add_wishlist_dyn d-none" t-att-disabled='in_wish or None' t-att-data-product-template-id="product.id" t-att-data-product-product-id="product_variant.id" data-action="o_wishlist" title="Add to wishlist"><i class="ri ri-heart-line me-2" role="img" aria-label="Add to wishlist"/>Add to wishlist</button>
+                                        </t>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+        <t t-if="error">
+            <div class="select-modal-backdrop"></div>
+            <div class="select-modal">
+                <div class="select-popout">
+                    <button class="select_close btn p-0"><div class="position-relative close_icon"></div></button>
+                    <div class="alert alert-warning m-4" t-out="error"/>
+                </div>
+            </div>
+        </t>
+    </template>
+     <!--select variant popup end -->
+
+
+    <!-- similar variant popup start -->
+    <template id="get_product_similar_details_template" name="Similar View Details">
+        <t t-if="product">
+            <t t-set="combination" t-value="product._get_first_possible_combination()"/>
+            <t t-set="combination_info" t-value="product._get_combination_info(combination, add_qty=add_qty)"/>
+            <t t-set="product_variant" t-value="product.env['product.product'].browse(combination_info['product_id'])"/>
+            
+            <div class="similar-modal-backdrop"></div>
+ 
+            <div class="similar-modal">
+                <div itemscope="itemscope" itemtype="http://schema.org/Product" class="js_sale similar-popout">
+                    <button class="similar_close btn p-0"><div class="position-relative close_icon"></div></button>
+                    <h4 class="cart-title text-center mt24">
+                        <span>Related Products</span>
+                    </h4>
+                    <div class="container oe_website_sale pt24 pb24" id="product_detail">
+                        <div class="" id="product_detail_main" t-att-data-image_width="website.product_page_image_width" t-att-data-image_layout="website.product_page_image_layout">
+                            <div t-if="not product" class="empty_cart">
+                                no similar
+                        </div>
+                        <div class="similar-products-list px-md-5">
+                            <div class="owl-carousel" id="snazzy_similar_popup">
+                                <t t-foreach="product.alternative_product_ids" t-as="ap">
+                                    <div class="similar_product_box">
+                                        <div t-attf-class="similar-product-image {{'add_bg_color' if is_view_active('theme_snazzy.product_background_color') else ''}}">
+                                            <a t-attf-href="/shop/#{ap.id}">
+                                                <img class="img img-fluid lazyload mx-auto" t-attf-src="/web/image/product.template/#{ap.id}/image_1920"></img>
+                                            </a>
+                                        </div>
+                                        <div class="similar-text-box mt-1">
+                                            <div class="similar_product_information_text m-0">
+                                                <a t-attf-href="/shop/#{ap.id}" class="h6 text-decoration-none product_name">
+                                                    <t t-out="ap.name"/>
+                                                </a>
+                                            </div>
+
+                                            <div itemprop="description" class="text-o-color-5 mb-1 small product_desc" t-field="ap.description_sale"/>
+                                            
+                                            <div class="d-flex justify-content-between">
+                                                <t t-set="combination_info" t-value="ap._get_combination_info(combination,only_template=True, add_qty=add_qty)"/>
+                                                <t t-if="is_view_active('theme_snazzy.snazzy_b2b_mode') and request.env.user._is_public()"></t>
+
+                                                <t t-else="">
+                                                    <div class="product_price" itemprop="offers" itemscope="itemscope" itemtype="http://schema.org/Offer">
+                                                        <span class="mb-0 price" t-if="combination_info['price']" t-out="combination_info['price']" t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
+                                                        <del t-attf-class="text-danger ms-1 mb-0 h6 {{'' if combination_info['has_discounted_price'] else 'd-none'}}" style="white-space: nowrap;" t-out="combination_info['list_price']" t-options="{'widget': 'monetary', 'display_currency': website.currency_id}" />
+                                                        <span itemprop="price" style="display:none;" t-out="combination_info['price']" />
+                                                        <span itemprop="priceCurrency" style="display:none;" t-out="website.currency_id.name" />
+                                                    </div>
+                                                    <t t-if="combination_info['has_discounted_price']">
+                                                        <t t-set="diff_amount" t-value="round(combination_info['list_price'] - combination_info['price'],2)"/>
+                                                        <t t-set="dis_per" t-value="round(diff_amount*100/combination_info['list_price'])"/>
+                                                    </t>
+                                                </t>
+                                                <t t-if="is_view_active('website_sale.product_comment')">
+                                                    <t t-call="theme_snazzy.product_item_stars"/>
+                                                </t>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </t>
+                            </div>
+                        </div>
+                     </div>
+                    </div>
+                 </div>
+            </div>
+        </t>
+        <t t-if="error">
+            <div class="similar-modal-backdrop"></div>
+            <div class="similar-modal">
+                <div class="similar-popout">
+                    <button class="similar_close btn p-0"><div class="position-relative close_icon"></div></button>
+                    <div class="alert alert-warning m-4" t-out="error"/>
+                </div>
+            </div>
+        </t>
+    </template>
+    <!--similar variant popup start -->
+</odoo>

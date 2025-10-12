@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<template id="s_biz_theme_snazzy_homepage_three_hostport_image" name="Hostport Image">
+
+        <section class="biz_theme_snazzy_homepage_three_hostport_image pt48 custom_padding_top pb48 custom_padding_bottom">
+            <div class="container-fluid px-0">
+                <img class="img img-fluid mx-auto w-100" src="/theme_snazzy/static/src/img/page_one_hostport_image.jpg" loading="lazy"/>
+            </div>
+        </section>
+        <div class="oe_structure oe_empty"></div>
+
+	</template>
+</odoo>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<template id="s_biz_theme_snazzy_electronic_homepage_two_news_letter" name="News Lette">
+        
+        <section class="biz_theme_snazzy_electronic_homepage_two_news_letter">
+            <section class="pt176 pb176" style="background-image: url(/theme_snazzy/static/src/img/electronic_page_two_news_letter.jpg); background-position: center;">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <h4 class="text-secondary pb-4">Get Weekly update</h4>
+                            <div class="yoga-subscribe  mx-auto">
+                                <form class="input-group js_subscribe flex-column flex-md-row" data-list-id="1">
+                                    <input type="email" name="email" class="js_subscribe_value form-control ps-2 ps-xl-3 border-0 bg-white w-100 mb-3 mb-md-0" placeholder="Enter your Email" />
+                                    <span class="input-group-append ms-0 ms-md-3">
+                                        <a role="button" href="#" class="btn btn-lg btn-secondary js_subscribe_btn h-100 py-2 py-md-3 px-0 px-md-5 d-none w-100 w-md-auto"><p class="custom_fw_500 custom_font_size_18 m-0">Subscribe</p></a>
+                                        <a role="button" href="#" class="btn btn-lg btn-secondary js_subscribed_btn h-100 py-2 py-md-3 px-0 px-md-5 w-100 w-md-auto" disabled="disabled"><p class="custom_fw_500 custom_font_size_18 m-0">Thanks</p></a>
+                                    </span>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </section>
+        <div class="oe_structure oe_empty"></div>
+
+	</template>
+</odoo>

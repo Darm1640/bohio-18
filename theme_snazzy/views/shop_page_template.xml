@@ -1,0 +1,739 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<template id="snazzy_infinite_load" name="snazzy infinite load"></template>
+	<template id="snazzy_lazy_load" name="snazzy lazy load"></template>
+	<!-- Category, Brand Product Count  -->
+	<template id="categories_list_count" inherit_id="website_sale.categorie_link" name="Enable Category Product Count" customize_show="True" active="True">
+		<xpath expr="//a" position="replace">
+			<a
+				t-att-href="keep('/shop/category/' + slug(c), category=0)"
+				t-attf-class="{{c.id == category.id}} p-0 text-decoration-none">
+				<input 
+					type="radio" 
+					class="form-check-input pe-none o_not_editable" 
+					t-att-checked="'true' if (c.id == category.id) else None"
+				/>
+                <label class="custom-control-label font-weight-normal">
+                    <span t-field="c.name" />
+                    <span class="product_count">
+                        (<span><t t-out="c.with_context(product_categ_search=search).product_tmpl_count" /></span>)
+                    </span>
+                </label>
+            </a>
+		</xpath>
+	</template>
+	
+	<template id="snazzy_hover_product_image" inherit_id="website_sale.products_item" customize_show="True" active="True" name="Show Product Hover Image">
+		<xpath expr="//form[hasclass('oe_product_cart')]" position="attributes">
+			<attribute name="t-attf-class">oe_product_cart h-100 d-flex {{'product_extra_hover_image' if product.hover_image else 'none'}}</attribute>
+		</xpath>
+	</template>
+	
+	<template id="snazzy_shop_inherited" inherit_id="website_sale.products" name="Snazzy Shop Page">
+		<xpath expr="//div[hasclass('oe_website_sale')]" position="attributes">
+			<attribute name="class">container oe_website_sale snazzy_shop</attribute>
+		</xpath>
+		<xpath expr="//div[hasclass('oe_website_sale')]" position="before">
+			<input type="hidden" class="product_extra_hover_image_input" t-att-pager="pager" t-att-next-page-url="pager['page_next']['url']" t-att-current-page-number="pager['page']['num']" t-att-current-page-url="pager['page']['url']" t-att-prev-page-num="pager['page_previous']['num']" t-att-next-page-num="pager['page_next']['num']" t-att-total-page="pager['page_count']" t-att-page-number="pager['page']['num']" t-att-first-page-url="pager['page_first']['url']" t-att-last-page-url="pager['page_last']['url']" t-att-prev-page-url="pager['page_previous']['url']" />
+			<t t-if="is_view_active('theme_snazzy.snazzy_infinite_load')">
+				<input type="hidden" class="infinite_load_next_page" t-att-pager="pager" t-att-next-page-url="pager['page_next']['url']" t-att-current-page-number="pager['page']['num']" t-att-current-page-url="pager['page']['url']" t-att-prev-page-num="pager['page_previous']['num']" t-att-next-page-num="pager['page_next']['num']" t-att-total-page="pager['page_count']" t-att-page-number="pager['page']['num']" t-att-first-page-url="pager['page_first']['url']" t-att-last-page-url="pager['page_last']['url']" t-att-prev-page-url="pager['page_previous']['url']" />
+			</t>
+		</xpath>
+		<xpath expr="//div[@id='products_grid']//div[hasclass('o_wsale_products_grid_table_wrapper')]/section" position="before">
+			<t t-if="is_view_active('theme_snazzy.snazzy_infinite_load')">
+				<div class="infinite_loader_div d-none">
+					<div class="infinite_loader_image_div">
+						<img t-attf-src="/snazzy_theme_common/static/src/img/infinity-image.gif" class="img img-fluid mx-auto" style="width:5%"/>
+					</div>
+				</div>
+			</t>
+		</xpath>
+		<xpath expr="//div[@id='products_grid']//div[hasclass('o_wsale_products_grid_table_wrapper')]/section" position="after">
+			<t t-if="is_view_active('theme_snazzy.snazzy_infinite_load')">
+				<div class="d-none infinite_loader_div_next">
+					<div class="infinite_loader_image_div">
+						<img t-attf-src="/snazzy_theme_common/static/src/img/infinity-image.gif" class="img img-fluid mx-auto" style="width:5%"/>
+					</div>
+				</div>
+			</t>
+		</xpath>
+		<xpath expr="//div[contains(@t-att-class, 'products_categories')]" position="after">
+			<t t-if="is_view_active('website_sale.filter_products_price')">
+				<t t-if="is_view_active('theme_snazzy.snazzy_b2b_mode') and request.env.user._is_public()">
+				</t>
+				<t t-else="">
+					<div class="price-range-option">
+						<label t-attf-class="m-0 h6 lh-1 o_products_attributes_title d-flex align-items-center justify-content-between collapsed {{_classes_title}}" data-bs-target="#o_wsale_price_range_option" data-bs-toggle="collapse">
+							Price
+						</label>
+						<div id="o_wsale_price_range_option" t-attf-class="position-relative collapse {{_classes}} {{isDisabled and 'opacity-75 pe-none user-select-none'}}">
+							<input type="range" multiple="multiple"
+								t-attf-class="form-range range-with-input {{_classes_input}}"
+								t-att-data-currency="website.currency_id.symbol"
+								t-att-data-currency-position="website.currency_id.position"
+								t-att-step="website.currency_id.rounding" 
+								t-att-min="'%f' % (available_min_price)"
+								t-att-max="'%f' % (available_max_price)" 
+								t-att-value="'%f,%f' % (min_price, max_price)"/>
+						</div>
+					</div>
+				</t>
+			</t>
+		</xpath>
+
+	</template>
+
+	<template id="snazzy_top_shop_categories_mbl" inherit_id="website_sale.products" name="Hide Top Category In Mobile" customize_show="True" active="False">
+	</template>
+ 
+	<template id="snazzy_categories_shop" inherit_id="website_sale.products" customize_show="True" active="True" name="Categories Slider" priority="3">
+		<xpath expr="//div[hasclass('oe_website_sale')]" position="before">
+			<t t-set="snazzy_categories_top" t-value="is_view_active('website_sale.products_categories_top')"/>
+			<t t-if="snazzy_categories_top">
+				<div t-attf-class="container snazzy_categories_shop_page_container pt-3 {{'d-none d-md-block' if is_view_active('theme_snazzy.snazzy_top_shop_categories_mbl') else 'd-block'}}">
+					<h6 t-if="categories" class="snazzy_categories_shop_page">
+						Categories
+					</h6>
+					<t t-call="website_sale.filmstrip_categories">
+					</t>
+					<div class="d-flex filter_content justify-content-start shop-clear-filters">
+						<t t-set="brands" t-value="website.get_product_brands(category)"/>
+						<a href="/shop" t-if="attrib_set or active_brand_list or isFilteringByPrice or tags" t-attf-class="nav-link">
+							<span class="d-flex align-items-center">
+								<p class="m-0 clear_filter">Clear All Filters</p>
+								<i class="ri ri-close-fill ms-1 align-middle"/>
+							</span>
+						</a>
+						<t t-foreach="attributes" t-as="a">
+							<t t-foreach="a.value_ids" t-as="v">
+								<t t-if="v.id in attrib_set">
+									<span class="active_attributes d-flex align-items-center justify-content-center ms-2">
+										<span t-out="v.name"></span>
+										<span t-att-id="'%s-%s' % (a.id,v.id)" class="cancel-attributes d-flex align-items-center">
+											<i class="ri ri-close-fill ms-1 align-middle"/>
+										</span>
+									</span>
+								</t>
+							</t>
+						</t>
+						<t t-if="opt_wsale_filter_tags">
+							<t t-foreach="all_tags" t-as="tag">
+								<t t-if="tag.id in tags">
+									<span class="active_attributes d-flex align-items-center justify-content-center ms-2">
+										<span t-out="tag.name"></span>
+										<span class="cancel-attributes d-flex align-items-center">
+											<i class="ri ri-close-fill ms-1 align-middle"/>
+										</span>
+									</span>
+								</t>
+							</t>
+						</t>
+						<t t-foreach="brands" t-as="b">
+							<t t-if="b.id in active_brand_list">
+								<span class="active_attributes d-flex align-items-center justify-content-center ms-2">
+									<span t-out="b.name"></span>
+									<span t-att-id="slug(b)" class="cancel-attributes d-flex align-items-center">
+										<i class="ri ri-close-fill ms-1 align-middle"/>
+									</span>
+								</span>
+							</t>
+						</t>
+						<t t-if="isFilteringByPrice">
+							<t t-set="isDisabled" t-value="available_min_price == available_max_price"/>
+							<div id="o_wsale_price_range_option"
+								t-attf-class="position-relative">
+								<input type="range" multiple="multiple"
+									t-attf-class="form-range range-with-input {{_classes_input}}"
+									t-att-data-currency="website.currency_id.symbol"
+									t-att-data-currency-position="website.currency_id.position"
+									t-att-step="website.currency_id.rounding" t-att-min="'%f' % (available_min_price)"
+									t-att-max="'%f' % (available_max_price)" t-att-value="'%f,%f' % (min_price, max_price)"/>
+								<span class="price-cancel-attributes">
+									<i class="ri ri-close-fill ms-1 align-middle"/>
+								</span>
+							</div>
+						</t>
+					</div>
+				</div>
+			</t>
+		</xpath>
+	</template>
+
+	<template id="snazzy_product_pager" inherit_id="website_sale.products" name="snazzy Product Pager">
+		<xpath expr="//div[hasclass('products_pager')]" position="replace">
+			<div class="products_pager snazzy_bottom_pager form-inline d-flex justify-content-center pt-5 pb-3">
+				<ul t-if="pager['page_count'] > 1" t-attf-class="#{ classname or '' } pagination m-0 #{_classes}" t-att-style="style or None">
+					<li t-attf-class="page-item #{'disabled' if pager['page']['num'] == 1 else ''}">
+						<a t-att-href=" pager['page_previous']['url'] if pager['page']['num'] != 1 else None" t-attf-class="page-link #{extraLinkClass}">
+							<i class="fa fa-angle-left"/>
+						</a>
+					</li>
+					<t t-foreach="pager['pages']" t-as="page">
+						<li t-attf-class="page-item #{'active' if page['num'] == pager['page']['num'] else ''}">
+							<a t-att-href="page['url']" t-attf-class="page-link #{extraLinkClass}" t-out="page['num']"/>
+						</li>
+					</t>
+					<li t-attf-class="page-item #{'disabled' if pager['page']['num'] == pager['page_count'] else ''}">
+						<a t-att-href="pager['page_next']['url'] if pager['page']['num'] != pager['page_count'] else None" t-attf-class="page-link #{extraLinkClass}">
+							<i class="fa fa-angle-right"/>
+						</a>
+					</li>
+				</ul>
+			</div>
+		</xpath>
+	</template>
+
+	<template id="product_icons_and_description" inherit_id="website_sale.products_item" name="Snazzy Products Icon and Description" priority="2">
+		<xpath expr="//div[hasclass('oe_product_image')]" position="inside">
+			<div class="icons_and_description">
+				<a class="snazzy-product-icons-toggle btn btn-secondary d-xl-none"><i class="fa fa-angle-down"></i></a>
+				<div class="snazzy-product-icons" t-att-b2b_mode="request.env.user._is_public()">
+					<t t-set="product_variant_id" t-value="product._get_first_possible_variant_id()"/>
+					<t t-set="bg_color" t-value="td_product['ribbon'].bg_color"/>
+                    <t t-set="text_color" t-value="td_product['ribbon'].text_color"/>
+                    <t t-set="bg_class" t-value="td_product['ribbon']._get_position_class()"/>
+					<t t-if="is_view_active('website_sale.products_add_to_cart')">
+						<t t-call="theme_snazzy.snazzy_product_add_cart_main_template">
+							<t t-set="_icon" t-value="True"/>
+							<t t-set="_text" t-value="False"/>
+						</t>
+					</t>
+					<t t-if="is_view_active('website_sale_wishlist.add_to_wishlist')">
+						<t t-set="in_wish" t-value="product in products_in_wishlist"/>
+						<t t-set="product_variant_id" t-value="in_wish or product._get_first_possible_variant_id()"/>
+						<button t-if="product_variant_id and product.type != 'combo'" type="button" role="button" class="btn btn-secondary o_add_wishlist button-style-one shadow"  t-att-disabled='in_wish' title="Add to Wishlist" t-att-data-product-template-id="product.id" t-att-data-product-product-id="product_variant_id" data-action="o_wishlist">
+							<span class="fa fa-heart" role="img" aria-label="Add to wishlist"></span>
+						</button>
+                    </t>
+
+					<t t-if="is_view_active('website_sale_comparison.add_to_compare')">
+						<t t-set="categories" t-value="product.valid_product_template_attribute_line_ids._prepare_categories_for_display()"/>
+            			<t t-set="product_variant_id" t-value="product._get_first_possible_variant_id()"/>
+						<button t-if="product_variant_id and categories" type="button" role="button" class="btn btn-secondary o_add_compare shadow" data-bs-toggle="tooltip" data-bs-placement="top" title="Compare" aria-label="Compare" t-att-data-product-product-id="product_variant_id" data-action="o_comparelist">
+							<span class="ri ri-arrow-left-right-fill"></span>
+						</button>
+					</t>
+					<t t-if="is_view_active('theme_snazzy.add_to_quick_btn')">
+						<a type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Quick View" class="btn btn-link quick_btn shadow" t-att-data-product-product-id="product_variant_id" t-att-data-product_template_id="product.id">
+							<span class="ri ri-eye-line"></span>
+						</a>
+					</t>
+					<t t-if="product.alternative_product_ids">
+						<t t-if="is_view_active('theme_snazzy.add_to_similar_btn')">
+							<a type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Similar Product" class="btn btn-link similar_btn d-flex align-items-center shadow" t-att-data-product-product-id="product_variant_id" t-att-data-product_template_id="product.id">
+								<span class="ri ri-file-copy-line"></span>
+							</a>
+						</t>
+					</t>
+				</div>
+			</div>
+		</xpath>
+	</template>
+
+	<template id="add_to_similar_btn" inherit_id="website_sale.products_item" active="True" name="Similar Product">
+		<xpath expr="//div[hasclass('o_wsale_product_btn')]" position="inside">
+			<t t-if="product.alternative_product_ids">
+				<a type="button" data-bs-placement="top" title="Similar Product" class="btn btn-link similar_btn d-flex align-items-center" t-att-data-product-product-id="product_variant_id" t-att-data-product_template_id="product.id">
+					<span class="ri ri-file-copy-line"></span>
+				</a>
+			</t>
+        </xpath>
+    </template>
+    
+	<template id="add_to_quick_btn" inherit_id="website_sale.products_item" active="True" name="Quick View">
+        <xpath expr="//div[hasclass('o_wsale_product_btn')]" position="inside">
+            <a type="button" data-bs-placement="top" title="Quick View" class="btn btn-link quick_btn" t-att-data-product-product-id="product.product_variant_ids[0].id" t-att-data-product_template_id="product.id">
+                <span class="ri ri-eye-line"></span>
+            </a>
+        </xpath>
+    </template>
+    
+	<template id="shop_btn_option" name="Shop Buttons" inherit_id="website.snippet_options">
+		<xpath expr="//we-button[hasclass('o_we_add_to_cart_btn')]" position="after">
+			<we-button title="Quick View" class="ri ri-eye-line" data-customize-website-views="theme_snazzy.add_to_quick_btn" data-no-preview="true" data-reload="/"/>
+			<we-button title="similar Products" class="ri ri-file-copy-line" data-customize-website-views="theme_snazzy.add_to_similar_btn" data-no-preview="true" data-reload="/"/>
+		</xpath>
+	</template>
+
+	<template id="products_grid_before_category" inherit_id="website_sale.products_categories_list" priority="20">
+		<xpath expr="//h6[contains(@t-attf-class,'o_categories_collapse_title')]" position="replace">
+			<h6 t-attf-class="o_categories_collapse_title mb-0 collapsed {{_titleClasses}}">Categories</h6>
+		</xpath>
+		<xpath expr="//a" position="replace">
+			<a t-att-href="keep('/shop', category=0)" class="custom-control custom-radio mb-1 mt-2 d-inline-block text-decoration-none">
+				<input 
+					type="radio" 
+					style="pointer-events:none;" 
+					class="form-check-input pe-none"
+					t-att-checked="'true' if not category else None"
+				/>
+				<label class="custom-control-label font-weight-normal">
+					All Products
+				</label>
+			</a>
+		</xpath>
+	</template>
+
+	<template id="hide_default_price_slider_layout" inherit_id="website_sale.filter_products_price" name="Hide default price slider layout">
+		<xpath expr="//div[@id='o_wsale_price_range_option']"  position="replace">
+		</xpath>
+	</template>
+
+	<template id="shop_btn_option" name="Shop Buttons" inherit_id="website.snippet_options">
+		<xpath expr="//we-button[hasclass('o_we_add_to_cart_btn')]" position="after">
+			<we-button title="Quick View" class="fa fa-eye" data-customize-website-views="theme_snazzy.add_to_quick_btn" data-no-preview="true" data-reload="/"/>
+			<we-button title="similar Products" class="fa fa-clone" data-customize-website-views="theme_snazzy.add_to_similar_btn" data-no-preview="true" data-reload="/"/>
+		</xpath>
+	</template>
+
+	<template id="snazzy_filter_instock_products" inherit_id="website_sale.products_attributes" active="True" name="Filter Products By Stock">
+	</template>
+
+	<template id="snazzy_attributes_inherited" name="Snazzy Attributes" inherit_id="website_sale.products_attributes">
+		<xpath expr="//div[@id='wsale_products_attributes_collapse']" position="replace">
+			<div id="wsale_products_attributes_collapse" class="position-relative">
+				<form t-if="opt_wsale_attributes or opt_wsale_attributes_top" class="js_attributes position-relative mb32 pb8" method="get">
+					<input t-if="category" type="hidden" name="category" t-att-value="category.id" />
+					<input type="hidden" name="search" t-att-value="search" />
+					<input type="hidden" name="order" t-att-value="order"/>
+					<ul class="nav nav-pills flex-column shop_attributes">
+						<t t-if="is_view_active('theme_snazzy.snazzy_filter_instock_products')">
+							<div class="stock_availability_option d-flex align-items-center flex-wrap">
+								<h6 class="stock_title mb-0 me-3">Out Of Stock</h6>
+								<div class="onoff_option btn-group  btn-toggle"> 
+									<div class="custom-control custom-checkbox">
+										<input type="checkbox" class="custom-control-input" id="stock_filter" name="show_instock" t-att-value="'on' if show_instock == 'true' else off" t-att-checked="'true' if show_instock == 'on' else false"/>
+										<label class="custom-control-label font-weight-normal" for="stock_filter">
+											<span class="stock_label_show">Show</span>
+											<span class="stock_label_hide">Hide</span>
+										</label>
+									</div>
+								</div>
+							</div>
+						</t>
+						<t t-foreach="attributes" t-as="a">
+							<li t-if="a.value_ids and len(a.value_ids) &gt; 1">
+								<div data-bs-toggle="collapse" aria-expanded="true" t-att-href="'#attr_%s_collapse' % (a.id)" class="attribute_title collapse-title d-flex align-items-center collapsed ">
+									<strong t-field="a.name" class="" />
+									<span class="collapse-icons ms-auto float-end">
+										<i class="ri ri-arrow-down-s-line pulse-icon"></i>
+										<i class="ri ri-arrow-up-s-line sub-icon"></i>
+									</span>
+								</div>
+								<t t-if="a.display_type == 'select'">
+									<div class="collapse pt-1" t-att-id="'attr_%s_collapse' % (a.id)">
+										<select class="form-control" name="attrib" t-att-id="'attr_%s' % (a.id)">
+											<option value="" selected="true">-</option>
+											<t t-foreach="a.value_ids" t-as="v">
+												<option t-att-value="'%s-%s' % (a.id,v.id)" t-out="v.name" t-att-selected="v.id in attrib_set">
+												</option>
+											</t>
+										</select>
+									</div>
+								</t>
+								<t t-if="a.display_type in ('radio', 'pills', 'multi')">
+									<ul t-att-class="'collapse nav nav-pills radio-attribute'" t-att-id="'attr_%s_collapse' % (a.id)">
+										<textarea rows="1" type="text" t-att-placeholder="'Search %s' % (a.name)" t-if="not a.display_type == 'select'" t-att-class="'search_filter_attributes'" t-att-id="'attr_%s' % (a.id)"/>
+										<i class="ri ri-search-line search_filter" t-if="not a.display_type == 'select'" t-att-id="'attr_%s' % (a.id)"/>
+										<span class="radio-height-overflow w-100">
+											<t t-set="count_value" t-value="0" />
+											<t t-foreach="a.value_ids" t-as="v">
+												<t t-set="count_value" t-value="count_value + 1" />
+												<li t-att-class="'active' if v.id in attrib_set else None">
+													<t t-if="v.with_context(product_attribute_search=search).attribute_count > 0">
+														<div class="form-check mb-1">
+															<input type="checkbox"
+																name="attribute_value"
+																t-att-id="'%s-%s' % (a.id, v.id)"
+																t-att-value="'%s-%s' % (a.id, v.id)"
+																t-att-checked="'checked' if v.id in attrib_set else None" />
+															
+															<label t-att-class="'form-check-label fw-normal get_attribute_name'"
+																t-field="v.name"
+																t-att-id="'%s-%s' % (a.id, v.id)"
+																t-att-value="'%s-%s' % (a.id, v.id)"/>
+															
+															<span class="products_count" style="font-weight: normal">
+																(<t t-out="v.with_context(product_attribute_search=search).attribute_count" />)
+															</span>
+														</div>
+													</t>
+												</li>
+											</t>
+										</span>
+									</ul>
+								</t>
+											
+								<t t-if="a.display_type == 'color'" class="mb-3">
+									<ul class="nav nav-pills collapse m-0 pt-1" t-att-id="'attr_%s_collapse' % (a.id)">
+										<span class="colors-attributes-style-design d-flex">
+											<t t-foreach="a.value_ids" t-as="v">
+												<li t-if="v.is_used_on_products" class="color-name nav-item">
+													<label t-attf-style="background-color:#{v.html_color or v.name}" t-attf-class="css_attribute_color mb-1 me-0 #{'active' if v.id in attrib_set else ''}">
+														<input type="checkbox" name="attribute_value" t-att-id="'%s-%s' % (a.id,v.id)" t-att-value="'%s-%s' % (a.id,v.id)" t-att-checked="'checked' if v.id in attrib_set else None" t-att-title="v.name" />
+													</label>
+												</li>
+											</t>
+										</span>
+									</ul>
+								</t>
+							</li>
+						</t>
+						<li t-if="all_tags">
+							<div data-bs-toggle="collapse" aria-expanded="true" href="#snazzy_tags_attributes" class="attribute_title collapse-title d-flex align-items-center collapsed ">
+								<strong>Tags</strong>
+								<span class="collapse-icons ms-auto float-end">
+									<i class="ri ri-arrow-down-s-line pulse-icon"></i>
+									<i class="ri ri-arrow-up-s-line sub-icon"></i>
+								</span>
+							</div>
+							<t t-set="all_tags" t-value="all_tags"/>
+							<ul t-att-class="'collapse nav nav-pills radio-attribute'" id="snazzy_tags_attributes">
+								<textarea rows="1" type="text" placeholder="Search Tags" t-att-class="'search_filter_attributes'" id=""/>
+								<i class="ri ri-search-line search_filter" id=""/>
+								<span class="radio-height-overflow w-100">
+									<t t-foreach="all_tags" t-as="tag">
+										<li t-att-class="'active' if tag.id in tags else None">
+											<div class="form-check mb-1">
+												<input type="checkbox" name="tags" t-att-id="tag.id" t-att-value="tag.id" t-att-checked="'checked' if tag.id in tags else None"/>
+												<label class="form-check-label fw-normal get_attribute_name"  t-field="tag.name"/>
+											</div>
+										</li>
+									</t>
+								</span>
+							</ul>
+						</li>
+					</ul>
+				</form>
+			</div>
+		</xpath>
+	</template>
+
+	<template id="snazzy_shop_page_quantity">
+		<div class="shop_page_quantity d-none">
+			<div t-attf-class="css_quantity input-group {{'d-none' if combination_info['prevent_zero_price_sale'] else 'd-inline-flex'}} align-items-center justify-content-center #{'input-group-lg' if ctaSizeBig else ''}" contenteditable="false">
+				<a t-attf-href="#" class="btn btn-link js_add_cart_json" aria-label="Remove one" title="Remove one">
+					<i class="fa fa-minus"></i>
+				</a>
+				<input type="text" class="form-control quantity text-center text-secondary" data-min="1" name="add_qty" t-att-value="add_qty or 1"/>
+				<a t-attf-href="#" class="btn btn-link float_left js_add_cart_json" aria-label="Add one" title="Add one">
+					<i class="fa fa-plus"></i>
+				</a>
+			</div>
+		</div>
+	</template>
+
+	<template id="snazzy_products_inherited" inherit_id="website_sale.products_item">
+		<xpath expr="//form//t[@t-set='product_href']" position="before">
+			<t t-set="combination" t-value="product._get_first_possible_combination()"/>
+			<t t-set="combination_info" t-value="product._get_combination_info(combination, add_qty=add_qty)"/>
+			<t t-set="product_variant" t-value="product.env['product.product'].browse(combination_info['product_id'])"/>
+		</xpath>
+		<xpath expr="//div[hasclass('o_wsale_product_btn')]" position="inside">
+			<t t-if="is_view_active('theme_snazzy.snazzy_b2b_mode') and request.env.user._is_public()">
+			</t>
+			<t t-else="">
+				<t t-set="product_variant_id" t-value="product._get_first_possible_variant_id()"/>
+				<t t-set="first_variant" t-value="product.env['product.product'].sudo().browse([product_variant_id])"/>
+				<t t-set="free_qty" t-value="first_variant.with_context(warehouse=request.website.warehouse_id.id).free_qty"/>
+				<t t-set="allow_out_of_stock_order" t-value="first_variant.allow_out_of_stock_order"/>
+				<t t-if="product.type == 'combo'">
+					<t t-if="allow_out_of_stock_order">
+						<t t-call="theme_snazzy.snazzy_shop_page_quantity"></t>
+					</t>
+					<t t-else="">
+						<t t-if="free_qty &gt; 0">
+							<t t-call="theme_snazzy.snazzy_shop_page_quantity"></t>
+						</t>
+					</t>
+				</t>
+				<t t-else="">
+					<t t-call="theme_snazzy.snazzy_shop_page_quantity"></t>
+				</t>
+			</t>
+		</xpath>
+		<xpath expr="//form[hasclass('oe_product_cart')]//div[hasclass('o_wsale_product_information')]" position="attributes">
+			<attribute name="t-attf-class" add="o_wsale_product_information position-relative d-flex flex-column flex-grow-1 flex-shrink-1 {{'add_min_height' if is_view_active('website_sale.products_description') else ''}}" separator=" "/>
+		</xpath>
+		<xpath expr="//div[hasclass('o_wsale_product_information_text')]" position="replace">
+			<div class="h6 o_wsale_product_information_text mb-1">
+				<div class="o_wsale_products_item_title mb-1 justify-content-between align-items-baseline d-flex">
+					<a class="text-primary text-decoration-none" itemprop="name" t-att-href="product_href" t-att-content="product.name" t-field="product.name" />
+					<a t-if="not product.website_published" role="button" t-att-href="product_href" class="btn btn-sm btn-danger" title="This product is unpublished.">
+						Unpublished
+					</a>
+					<t t-if="is_view_active('website_sale.product_comment')">
+						<t t-call="theme_snazzy.product_item_stars" />
+					</t>
+				</div>
+			</div>
+		</xpath>
+		<xpath expr="//div[hasclass('oe_product_image')]//a[hasclass('d-block')]" position="replace">
+			<a t-att-href="product_href" t-attf-class="oe_product_image_link d-block h-100 position-relative {{'has_extra_hover_image' if product.hover_image else 'none'}} {{'add_bg_color' if is_view_active('theme_snazzy.product_background_color') else ''}}" itemprop="url">
+				<t t-set="image_holder" t-value="product._get_image_holder()"/>
+				<t t-if="is_view_active('theme_snazzy.snazzy_lazy_load')">
+					<span class="oe_product_image_img_wrapper d-flex h-100 justify-content-center align-items-center product_image_holder position-absolute">
+						<img class="img img-fluid lazyload h-100 w-100 position-absolute" t-attf-data-src="/web/image/product.template/#{product.id}/image_1920" t-attf-src="/snazzy_theme_common/static/src/img/lazyload.gif"></img>
+					</span>
+				</t>
+				<t t-else="">
+					<span t-field="image_holder.image_1920" t-options="{'widget': 'image', 'preview_image': 'image_1024', 'class': 'h-100 w-100 position-absolute'}" 
+						class="oe_product_image_img_wrapper d-flex h-100 justify-content-center align-items-center product_image_holder position-absolute"/>
+				</t>
+				<!-- PRODUCT HOVER IMAGE -->
+				<span t-if="product.hover_image" class="d-flex h-100 justify-content-center align-items-center extra_hover_image position-absolute oe_product_image_img_wrapper" t-att-productid="product.id">
+					<img class="img img-fluid lazyload extra h-100 w-100 position-absolute" data-src="" t-attf-src="/snazzy_theme_common/static/src/img/lazyload.gif"></img>
+				</span>
+				<t t-set="bg_color" t-value="td_product['ribbon'].bg_color"/>
+				<t t-set="text_color" t-value="td_product['ribbon'].text_color"/>
+				<t t-set="bg_class" t-value="td_product['ribbon']._get_position_class()"/>
+				<span
+					t-attf-class="o_ribbon o_not_editable #{bg_class}"
+					t-attf-style="#{text_color and ('color: %s;' % text_color)} #{bg_color and 'background-color:' + bg_color}"
+					t-out="td_product['ribbon'].name or ''"
+				/>
+            </a>
+		</xpath>
+
+		<xpath expr="//div[hasclass('oe_product_image')]" position="inside">
+			<div class="d-flex flex-column shop_labels">
+				<t t-set="combination" t-value="product._get_first_possible_combination()"/>
+				<t t-set="combination_info" t-value="product._get_combination_info(combination, add_qty=add_qty)"/>
+				<t t-set="product_variant" t-value="product.env['product.product'].browse(combination_info['product_id'])"/>
+				<t t-if="product.product_label_id">
+					<t t-call="theme_snazzy.snazzy_product_label_common" />
+				</t>
+				<t t-call="theme_snazzy.snazzy_product_discount_label"></t>
+			</div>
+			<t t-call="theme_snazzy.snazzy_deal_of_the_day"/>
+        </xpath>
+	</template>
+
+	<template id="shop_page_add_to_cart_inherited" inherit_id="website_sale.products_add_to_cart">
+		<xpath expr="//a[@t-if='product._website_show_quick_add()']" position="replace">
+			<t t-if="is_view_active('website_sale.products_add_to_cart')">
+				<t t-if="is_view_active('theme_snazzy.snazzy_b2b_mode') and request.env.user._is_public()"></t>
+				<t t-else="">
+					<div class="bizople_cart_btn_one d-none">
+						<t t-call="theme_snazzy.snazzy_product_add_cart_main_template">
+							<t t-set="_icon" t-value="True"/>
+							<t t-set="_text" t-value="True"/>
+						</t>
+					</div>
+				</t>
+			</t>
+		</xpath>
+	</template>
+
+	<template id="shop_page_rating_inherited" inherit_id="website_sale.products_item">
+		<xpath expr="//div[hasclass('o_wsale_product_sub')]//div[hasclass('product_price')]" position="after">
+			<div class="bizople_product_desription">
+				<div class="d-none oe_subdescription mb-2 text-muted small" contenteditable="false">
+					<div itemprop="description" t-field="product.description_sale"/>
+				</div>
+			</div>
+			<!-- <t t-if="is_view_active('website_sale.product_comment')">
+				<t t-call="theme_snazzy.product_item_stars" />
+			</t> -->
+			<t t-call="theme_snazzy.shop_page_color_attributes" />
+		</xpath>
+		<xpath expr="//div[hasclass('o_wsale_product_sub')]//div[hasclass('product_price')]" position="replace">
+			<t t-if="is_view_active('theme_snazzy.snazzy_b2b_mode') and request.env.user._is_public()">
+				<div class="">
+					<t t-if="is_view_active('theme_snazzy.loginsignup_popup_bizt')">
+						<a href='#' data-bs-toggle="modal" data-bs-target="#popupuserlogin" t-att-data-theme_name = "request.website.sudo().theme_id.name" class="btn btn-link b2bloginbtn lpopen d-block d-md-inline-block">
+							<span class="fa fa-user-circle me-1 text-primary"/>
+							<span class="text-primary">Login </span>to See Price
+						</a>
+					</t>
+					<t t-else=''>
+						<a role="button" class="btn btn-link b2bloginbtn d-block d-md-inline-block" href="/web/login">
+							<span class="fa fa-user-circle me-1 text-primary"/>
+							<span class="text-primary">Login </span>to See Price</a>
+					</t>
+				</div>
+            </t>
+            <t t-else="">
+                <div class="product_price" itemprop="offers" itemscope="itemscope" itemtype="http://schema.org/Offer">
+					<t t-if="'base_price' in template_price_vals and template_price_vals['base_price'] &gt; template_price_vals['price_reduce']">
+						<del t-attf-class="text-muted me-1 h6 mb-0" style="white-space: nowrap;">
+							<em class="small" t-esc="template_price_vals['base_price']" t-options="{'widget': 'monetary', 'display_currency': website.currency_id}" />
+						</del>
+					</t>
+					<span class="h6 mb-0" t-if="template_price_vals['price_reduce'] or not website.prevent_zero_price_sale" t-esc="template_price_vals['price_reduce']" t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
+					<span class="h6 mb-0" t-else="" t-field="website.prevent_zero_price_sale_text"/>
+					<span itemprop="price" style="display:none;" t-esc="template_price_vals['price_reduce']" />
+					<span itemprop="priceCurrency" style="display:none;" t-esc="website.currency_id.name" />
+				</div>
+            </t>
+		</xpath>
+	</template>
+
+	<template id="one_product_in_mobile" inherit_id="website_sale.products" name="One Products In Mobile" customize_show="True" active="False">
+		<xpath expr="//div[hasclass('o_wsale_products_grid_table_wrapper')]" position="attributes">
+			<attribute name="class" separator=" " add="mobile_one_products"></attribute>
+		</xpath>
+	</template>
+
+	<template id="o_wsale_offcanvas_inherited" inherit_id="website_sale.o_wsale_offcanvas" name="Offcanvas Inherited">
+		<xpath expr="//aside[hasclass('offcanvas')]" position="attributes">
+			<attribute name="class" remove="offcanvas-end" add="offcanvas-start" separator=" "/>
+		</xpath>
+
+		<xpath expr="//t[@t-if='opt_wsale_filter_tags and (opt_wsale_attributes or opt_wsale_attributes_top)']" position="replace">
+			<t t-if="opt_wsale_filter_tags and (opt_wsale_attributes or opt_wsale_attributes_top)">
+				<div t-if="all_tags" class="accordion-item order-2">
+					<h2 class="accordion-header mb-0" id="o_wsale_offcanvas_attribute_1_header">
+						<button type="button" data-bs-toggle="collapse" class="o_wsale_offcanvas_title accordion-button border-top-0 rounded-0 collapsed" data-status="inactive" data-bs-target="#snazzy_tags_attributes_offcanvas" aria-expanded="true" aria-controls="snazzy_tags_attributes_offcanvas">
+								<b>Tags</b>
+						</button>
+					</h2>
+					<t t-set="all_tags" t-value="all_tags"/>
+					<div id="snazzy_tags_attributes_offcanvas" class="accordion-collapse collapse" aria-expanded="False" aria-labelledby="o_wsale_offcanvas_attribute_1_header">
+						<div class="accordion-body pt-0">
+                            <div class="list-group list-group-flush">
+								<textarea rows="1" type="text" placeholder="Search Tags" t-att-class="'search_filter_attributes'" id=""/>
+								<i class="ri ri-search-line search_filter" id=""/>
+								<t t-foreach="all_tags" t-as="tag">
+									<div class="list-group-item border-0 ps-0 pb-0">
+										<div class="form-check mb-1">
+											<input type="checkbox" name="tags" t-att-id="tag.id" t-att-value="tag.id" t-att-checked="'checked' if tag.id in tags else None" class="form-check-input"/>
+											<label class="form-check-label fw-normal get_attribute_name"  t-field="tag.name"/>
+										</div>
+									</div>
+								</t>
+							</div>
+						</div>
+					</div>
+				</div>
+			</t>
+		</xpath>
+		
+		<xpath expr="//form[@t-if='opt_wsale_attributes or opt_wsale_attributes_top']" position="after">
+			<div class="accordion-item">
+				<t t-call="theme_snazzy.product_brand_filter_template">
+					<t t-set="button_classes" t-value="'border-top'"/>
+					<t t-set="body_classes" t-value="'accordion-body'"/>
+				</t>
+			</div>
+		</xpath>
+
+		<xpath expr="//form//t[@t-foreach='attributes']" position="before">
+			<t t-if="is_view_active('theme_snazzy.snazzy_filter_instock_products')">
+				<div class="stock_availability_option d-flex align-items-center flex-wrap">
+					<h6 class="stock_title mb-0 me-3">Out Of Stock</h6>
+					<div class="onoff_option btn-group  btn-toggle"> 
+						<div class="custom-control custom-checkbox">
+							<input type="checkbox" class="custom-control-input" id="stock_filter" name="show_instock" t-att-value="'on' if show_instock == 'true' else off" t-att-checked="'true' if show_instock == 'on' else false"/>
+							<label class="custom-control-label font-weight-normal" for="stock_filter">
+								<span class="stock_label_show">Show</span>
+								<span class="stock_label_hide">Hide</span>
+							</label>
+						</div>
+					</div>
+				</div>
+			</t>
+		</xpath>
+
+		<xpath expr="//form[@t-if='opt_wsale_attributes or opt_wsale_attributes_top']" position="before">
+			<t t-if="is_view_active('website_sale.filter_products_price')">
+				<t t-if="is_view_active('theme_snazzy.snazzy_b2b_mode') and request.env.user._is_public()">
+				</t>
+				<t t-else="">
+					<t t-set="isDisabled" t-value="available_min_price == available_max_price"/>
+					<div id="o_wsale_price_range_option"
+						t-attf-class="price-range-option position-relative {{_classes}} {{isDisabled and 'opacity-75 pe-none user-select-none'}}"> 
+						<label t-attf-class="m-0 h6 lh-1 o_products_attributes_title d-flex align-items-center justify-content-between collapsed {{_classes_title}}" data-bs-target="#attributes_top_o_wsale_price_range_option" data-bs-toggle="collapse">
+							Price
+						</label>
+						<div id="attributes_top_o_wsale_price_range_option" t-attf-class="position-relative collapse {{_classes}} {{isDisabled and 'opacity-75 pe-none user-select-none'}}">
+						<input type="range" multiple="multiple"
+								t-attf-class="form-range range-with-input {{_classes_input}}"
+								t-att-data-currency="website.currency_id.symbol"
+								t-att-data-currency-position="website.currency_id.position"
+								t-att-step="website.currency_id.rounding" t-att-min="'%f' % (available_min_price)"
+								t-att-max="'%f' % (available_max_price)" t-att-value="'%f,%f' % (min_price, max_price)"/>
+						</div>
+					</div>
+				</t>
+			</t>
+		</xpath>
+
+		<xpath expr="//form[@t-if='opt_wsale_attributes or opt_wsale_attributes_top']//t[@t-foreach='attributes']//div[hasclass('accordion-body')]//div[hasclass('list-group-item')]" position="before">
+			<textarea rows="1" type="text" t-att-placeholder="'Search %s' % (a.name)" t-if="not a.display_type == 'select'" t-att-class="'search_filter_attributes'" t-att-id="'attr_%s' % (a.id)"/>
+			<i class="ri ri-search-line search_filter" t-if="not a.display_type == 'select'" t-att-id="'attr_%s' % (a.id)"/>
+		</xpath>
+
+		<xpath expr="//form[@t-if='opt_wsale_attributes or opt_wsale_attributes_top']//t[@t-foreach='attributes']//div[hasclass('accordion-body')]//div[hasclass('list-group-item')]//label[hasclass('form-check-label')]" position="attributes">
+			<attribute name="class" separator=" " add="get_attribute_name" />
+		</xpath>
+
+		<xpath expr="//div[hasclass('offcanvas-body')]/a" position="replace">
+			<a t-attf-class="btn btn-outline-secondary rounded-0 d-flex py-1 {{(not attrib_values and not isFilteringByPrice and not active_brand_list and not tags) and 'disabled' }}" t-att-aria-disabled="(not attrib_values and not isFilteringByPrice and not active_brand_list and not tags) and 'true' or 'false'" href="/shop" title="Clear Filters">
+				Clear Filters
+			</a>
+			<a class="btn btn-outline-secondary rounded-0 d-flex py-1" href="#" title="Close" data-bs-dismiss="offcanvas">
+				Close
+			</a>
+		</xpath>
+	</template>
+
+	<template id="snazzy_products_stock_available" customize_show="True" inherit_id="website_sale.products_item" active="False" name="Show Product Availability" priority="1">
+		<xpath expr="//div[hasclass('oe_product_image')]" position="inside">	
+			<t t-call="theme_snazzy.products_stock_available"/>			
+		</xpath>
+   	</template>
+
+	<!-- Template for Products Stock Availability-->
+	<template id="products_stock_available" name="Products Stock Availability">
+		<t t-set="product_variant_id" t-value="product._get_first_possible_variant_id()"/>
+		<t t-set="first_variant" t-value="product.env['product.product'].sudo().browse([product_variant_id])"/>
+		<t t-set="free_qty" t-value="first_variant.with_context(warehouse=request.website.warehouse_id.id).free_qty"/>
+
+		<t t-set="available_threshold" t-value="first_variant.available_threshold"/>
+		<t t-set="show_availability" t-value="first_variant.show_availability"/>
+		<t t-set="uom" t-value="first_variant.uom_name"/>
+
+		<t t-set="out_of_stock_message" t-value="first_variant.out_of_stock_message"/>
+		<t t-set="allow_out_of_stock_order" t-value="first_variant.allow_out_of_stock_order"/>
+
+		<t t-if="product.type == 'consu' and product.is_storable">
+			<div class="snazzy_product_stock_availability">
+				<t t-if="out_of_stock_message or show_availability">
+					<t t-if="out_of_stock_message and show_availability">
+						<t t-if="free_qty &lt;= available_threshold">
+							<div class="bg-danger out-stock-badge out_stock_message_shop text-center" t-if="out_of_stock_message != '&lt;p&gt;&lt;br&gt;&lt;/p&gt;'">
+								<t t-out='out_of_stock_message'/>
+							</div>
+						</t>
+					</t>
+					<t t-if="not(out_of_stock_message) and show_availability and free_qty &lt;= available_threshold">
+						<div t-attf-class="bg-warning available-stock-badge out_stock_message_shop text-center {{'d-block' if show_availability else 'd-none'}}">
+							<t t-out='free_qty' />
+							<t t-out="uom" />
+								Left In Stock
+						</div>
+					</t>
+					<t t-if="not(show_availability) and out_of_stock_message and free_qty &lt; 1">
+						<div class="bg-danger out-stock-badge out_stock_message_shop text-center" t-if="out_of_stock_message != '&lt;p&gt;&lt;br&gt;&lt;/p&gt;'">
+							<t t-out='out_of_stock_message'/>
+						</div>
+					</t>
+				</t>
+				<t t-else="">
+					<t t-if="product.sudo().qty_available &lt; 1">
+						<p class="out_stock_message_shop out-stock-badge bg-danger text-center">Out of Stock</p>
+					</t>
+					<t t-else="">
+						<p class="out_stock_message_shop in-stock-badge bg-success text-center">In Stock</p>
+					</t>
+				</t>
+			</div>
+		</t>
+	</template>
+
+	<template id="hide_default_offcanvas_search_bar" inherit_id="website_sale.o_wsale_offcanvas">
+		<xpath expr="//div[hasclass('offcanvas-body')]" position="replace">
+		</xpath>
+	</template>
+</odoo>

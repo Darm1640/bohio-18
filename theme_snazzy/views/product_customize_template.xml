@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="product_brand_filter_template" name="Product Brand Filter Template">
+        <t t-set="brands" t-value="website.get_product_brands(category)"/>
+        <t t-if="brands">
+            <div class="snazzy-shop-brand-filter">
+                <button t-attf-class="collapsed o_wsale_offcanvas_title accordion-button snazzy_brands_filter shadow-none rounded-0 h6 pt-0 px-0 pb-0 mb-0 {{button_classes}} {{ not active_brand_list and 'collapsed'}}"
+                    type="button"
+                    t-att-data-status="_status"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#snazzy_brands"
+                    t-att-aria-expanded="_status == 'active' and 'True' or 'False'"
+                    aria-controls="snazzy_brands">
+                    Brands
+                </button>
+                
+                <div t-attf-class="accordion-collapse collapse nav nav-pills brand-c ms-0 {{ (_status == 'active') and 'show'}}" 
+                        t-att-aria-expanded="(_status == 'active') and 'True' or 'False'" id="snazzy_brands">
+                    <div t-attf-class="brand-height-overflow w-100 {{body_classes}}">
+                        <t t-set="count_value" t-value="0"/>
+                        <t t-foreach="brands" t-as="b">
+                            <t t-set="count_value" t-value="count_value + 1"/>
+                            <t t-if="count_value == 1">
+                                <textarea rows="1" type="text" placeholder="Search Brands" t-att-class="'search_filter_attributes'" t-att-id="'attr_%s' % (b.id)"/>
+                                <i class="ri ri-search-line search_filter" t-att-id="'attr_%s' % (b.id)"/>
+                            </t>
+                            <div class="form-check brand_content">
+                                <li>
+                                    <label>
+                                        <input name="brand" t-att-id="'%s-%s' % (b.id,slug(b))" type="checkbox" class="form-check-input me-2" t-att-value="slug(b)" t-att-checked="'checked' if b.id in active_brand_list else None"/>
+                                        <label class="form-check-label h-100 d-flex align-items-center justify-content-center" t-att-for="'%s-%s' % (b.id,slug(b))"><span itemprop="image" t-field="b.image" t-options='{"widget": "image", "resize": None if image else "90x90"}' t-att-alt="b.name" />
+                                        </label>
+                                        <span style="font-weight: normal;display:none;" t-field="b.name" t-att-class="'get_attribute_name'"/>
+                                    </label>
+                                </li>
+                            </div>
+                        </t>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="products_brands" inherit_id="theme_snazzy.snazzy_attributes_inherited" active="False"  name="Brands">
+        <xpath expr="//form" position="inside">
+			<t t-call="theme_snazzy.product_brand_filter_template">
+				<t t-set="button_classes" t-value="'h6 pt-0 px-0 pb-2 mb-0'"/>
+				<t t-set="show_classes" t-value="'show'"/>
+			</t>
+        </xpath>
+    </template>
+    
+</odoo>

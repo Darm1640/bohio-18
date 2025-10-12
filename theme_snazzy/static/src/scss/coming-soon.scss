@@ -1,0 +1,22 @@
+
+.thank-you-banner{
+	background-color: rgba($color: $primary, $alpha: 0.3);;
+	.content{
+		h3{
+			font-size:60px;
+			font-weight:800;
+			color:$secondary;
+		}
+		h5{
+			font-size:24px;
+			font-weight:500;
+			color:$secondary;
+			margin: 20px 0;
+		}
+		p{
+			font-size:18px;
+			font-weight:400;
+			color: #555;
+		}
+	}
+}

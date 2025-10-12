@@ -1,0 +1,46 @@
+.bizople_dynamic_config_tool, .preview-container{
+    .brand_box {
+        &.style_3 {
+            .image_wrapper{
+                &:after{
+                    content: "";
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    transition: 0.2s;
+                    background-color: transparent;
+                    pointer-events: none;
+                }
+            }
+            .brand_info {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%,-50%);
+                transition: 0.2s;
+                width: 100%;
+                padding: 0 10px;
+                text-align: center;
+                opacity: 0;
+                visibility: hidden;
+            }
+            &:hover {
+                .image_wrapper {
+                    &:after{
+                        background-color: rgba(0,0,0,0.5);
+                    }
+                }
+                .brand_info {
+                    opacity: 1;
+                    visibility: visible;
+                }
+            }
+        }
+        .small {
+            font-size: 12px;
+        }
+        position: relative;
+    }
+}
