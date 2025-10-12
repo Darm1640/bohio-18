@@ -111,7 +111,8 @@
         ],
         'web.assets_backend': [
             # JavaScript - Property Snippet Options (Website Builder)
-            'theme_bohio_real_estate/static/src/snippets/s_dynamic_snippet_properties/options.js',
+            # NO necesitamos options.js porque usamos el sistema nativo de filtros
+            # 'theme_bohio_real_estate/static/src/snippets/s_dynamic_snippet_properties/options.js',
         ],
     },
     'installable': True,
