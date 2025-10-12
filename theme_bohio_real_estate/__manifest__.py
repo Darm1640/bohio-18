@@ -100,18 +100,18 @@
             'theme_bohio_real_estate/static/src/js/proyectos.js',
             'theme_bohio_real_estate/static/src/js/proyecto_detalle.js',
 
-            # JavaScript - OWL Components (NEW)
-            'theme_bohio_real_estate/static/src/services/property_data_service.js',
-            'theme_bohio_real_estate/static/src/components/property_carousel/property_carousel.js',
-            'theme_bohio_real_estate/static/src/js/init_carousels.js',
-
             # CSS Additional
             'theme_bohio_real_estate/static/src/css/property_carousels.css',
             'theme_bohio_real_estate/static/src/css/property_snippets.css',
 
-            # XML Templates OWL
+            # XML Templates OWL (MUST BE LOADED BEFORE COMPONENTS)
             'theme_bohio_real_estate/static/src/xml/property_filters_template.xml',
             'theme_bohio_real_estate/static/src/components/property_carousel/property_carousel.xml',
+
+            # JavaScript - OWL Components (AFTER TEMPLATES)
+            'theme_bohio_real_estate/static/src/services/property_data_service.js',
+            'theme_bohio_real_estate/static/src/components/property_carousel/property_carousel.js',
+            'theme_bohio_real_estate/static/src/js/init_carousels.js',
         ],
         'web.assets_backend': [
             # JavaScript - Property Snippet Options (Website Builder)
