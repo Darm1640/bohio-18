@@ -35,8 +35,8 @@
                                     </div>
                                     <div class="card-body p-4">
                                         <div class="d-flex align-items-center mb-3">
-                                            <div class="me-3 d-flex align-items-center justify-content-center bg-danger bg-opacity-10 rounded-circle" style="width: 60px; height: 60px;">
-                                                <img src="/theme_bohio_real_estate/static/src/img/icono-arriendo.png" alt="Arriendo" style="width: 40px; height: 40px; object-fit: contain;" loading="lazy"/>
+                                            <div class="me-3 d-flex align-items-center justify-content-center bg-white rounded-circle" style="width: 60px; height: 60px; box-shadow: 0 4px 8px rgba(0,0,0,0.1), 0 2px 4px rgba(0,0,0,0.08);">
+                                                <img src="/theme_bohio_real_estate/static/src/img/icono-arriendo.png" alt="Arriendo" style="width: 40px; height: 40px; object-fit: contain; filter: drop-shadow(2px 2px 3px rgba(0,0,0,0.15));" loading="lazy"/>
                                             </div>
                                             <h3 class="h4 mb-0 text-danger">Arriendo</h3>
                                         </div>
@@ -69,8 +69,8 @@
                                     </div>
                                     <div class="card-body p-4">
                                         <div class="d-flex align-items-center mb-3">
-                                            <div class="me-3 d-flex align-items-center justify-content-center bg-danger bg-opacity-10 rounded-circle" style="width: 60px; height: 60px;">
-                                                <img src="/theme_bohio_real_estate/static/src/img/icono-venta.png" alt="Venta" style="width: 40px; height: 40px; object-fit: contain;" loading="lazy"/>
+                                            <div class="me-3 d-flex align-items-center justify-content-center bg-white rounded-circle" style="width: 60px; height: 60px; box-shadow: 0 4px 8px rgba(0,0,0,0.1), 0 2px 4px rgba(0,0,0,0.08);">
+                                                <img src="/theme_bohio_real_estate/static/src/img/icono-venta.png" alt="Venta" style="width: 40px; height: 40px; object-fit: contain; filter: drop-shadow(2px 2px 3px rgba(0,0,0,0.15));" loading="lazy"/>
                                             </div>
                                             <h3 class="h4 mb-0 text-danger">Venta</h3>
                                         </div>
@@ -103,8 +103,8 @@
                                     </div>
                                     <div class="card-body p-4">
                                         <div class="d-flex align-items-center mb-3">
-                                            <div class="me-3 d-flex align-items-center justify-content-center bg-danger bg-opacity-10 rounded-circle" style="width: 60px; height: 60px;">
-                                                <img src="/theme_bohio_real_estate/static/src/img/icono-marketing.png" alt="Marketing" style="width: 40px; height: 40px; object-fit: contain;" loading="lazy"/>
+                                            <div class="me-3 d-flex align-items-center justify-content-center bg-white rounded-circle" style="width: 60px; height: 60px; box-shadow: 0 4px 8px rgba(0,0,0,0.1), 0 2px 4px rgba(0,0,0,0.08);">
+                                                <img src="/theme_bohio_real_estate/static/src/img/icono-marketing.png" alt="Marketing" style="width: 40px; height: 40px; object-fit: contain; filter: drop-shadow(2px 2px 3px rgba(0,0,0,0.15));" loading="lazy"/>
                                             </div>
                                             <h3 class="h4 mb-0 text-danger">Marketing Inmobiliario</h3>
                                         </div>
@@ -137,8 +137,8 @@
                                     </div>
                                     <div class="card-body p-4">
                                         <div class="d-flex align-items-center mb-3">
-                                            <div class="me-3 d-flex align-items-center justify-content-center bg-danger bg-opacity-10 rounded-circle" style="width: 60px; height: 60px;">
-                                                <img src="/theme_bohio_real_estate/static/src/img/icono-servicios.png" alt="Servicios Jurídicos" style="width: 40px; height: 40px; object-fit: contain;" loading="lazy"/>
+                                            <div class="me-3 d-flex align-items-center justify-content-center bg-white rounded-circle" style="width: 60px; height: 60px; box-shadow: 0 4px 8px rgba(0,0,0,0.1), 0 2px 4px rgba(0,0,0,0.08);">
+                                                <img src="/theme_bohio_real_estate/static/src/img/icono-servicios.png" alt="Servicios Jurídicos" style="width: 40px; height: 40px; object-fit: contain; filter: drop-shadow(2px 2px 3px rgba(0,0,0,0.15));" loading="lazy"/>
                                             </div>
                                             <h3 class="h4 mb-0 text-danger">Servicios Jurídicos</h3>
                                         </div>
@@ -171,8 +171,8 @@
                                     </div>
                                     <div class="card-body p-4">
                                         <div class="d-flex align-items-center mb-3">
-                                            <div class="me-3 d-flex align-items-center justify-content-center bg-danger bg-opacity-10 rounded-circle" style="width: 60px; height: 60px;">
-                                                <img src="/theme_bohio_real_estate/static/src/img/icono-negocios-corporativos.png" alt="Corporativos" style="width: 40px; height: 40px; object-fit: contain;" loading="lazy"/>
+                                            <div class="me-3 d-flex align-items-center justify-content-center bg-white rounded-circle" style="width: 60px; height: 60px; box-shadow: 0 4px 8px rgba(0,0,0,0.1), 0 2px 4px rgba(0,0,0,0.08);">
+                                                <img src="/theme_bohio_real_estate/static/src/img/icono-negocios-corporativos.png" alt="Corporativos" style="width: 40px; height: 40px; object-fit: contain; filter: drop-shadow(2px 2px 3px rgba(0,0,0,0.15));" loading="lazy"/>
                                             </div>
                                             <h3 class="h4 mb-0 text-danger">Negocios Corporativos</h3>
                                         </div>
@@ -205,8 +205,8 @@
                                     </div>
                                     <div class="card-body p-4">
                                         <div class="d-flex align-items-center mb-3">
-                                            <div class="me-3 d-flex align-items-center justify-content-center bg-danger bg-opacity-10 rounded-circle" style="width: 60px; height: 60px;">
-                                                <img src="/theme_bohio_real_estate/static/src/img/icono-firma.png" alt="Firma Digital" style="width: 40px; height: 40px; object-fit: contain;" loading="lazy"/>
+                                            <div class="me-3 d-flex align-items-center justify-content-center bg-white rounded-circle" style="width: 60px; height: 60px; box-shadow: 0 4px 8px rgba(0,0,0,0.1), 0 2px 4px rgba(0,0,0,0.08);">
+                                                <img src="/theme_bohio_real_estate/static/src/img/icono-firma.png" alt="Firma Digital" style="width: 40px; height: 40px; object-fit: contain; filter: drop-shadow(2px 2px 3px rgba(0,0,0,0.15));" loading="lazy"/>
                                             </div>
                                             <h3 class="h4 mb-0 text-danger">Firma Digital</h3>
                                         </div>
