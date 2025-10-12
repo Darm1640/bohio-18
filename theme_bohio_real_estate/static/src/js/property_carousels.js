@@ -1,54 +1,13 @@
+/** @odoo-module **/
+
+import { rpc } from "@web/core/network/rpc";
+
 /**
  * BOHIO Property Carousels - Sistema de Carruseles Dinámicos
  * Carga propiedades desde la base de datos para Venta, Renta y Proyectos
- *
- * IMPORTANTE: Este archivo NO usa @odoo-module porque necesita ejecutarse
- * directamente al cargar la página (DOMContentLoaded)
  */
 
-(function() {
-    'use strict';
-
-    /**
-     * Helper para hacer llamadas RPC a Odoo usando JSON-RPC 2.0
-     */
-    async function rpcCall(endpoint, params) {
-        try {
-            console.log(`[RPC] Llamando a ${endpoint} con params:`, params);
-
-            const response = await fetch(endpoint, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    jsonrpc: '2.0',
-                    method: 'call',
-                    params: params || {},
-                })
-            });
-
-            if (!response.ok) {
-                throw new Error(`HTTP Error: ${response.status} ${response.statusText}`);
-            }
-
-            const data = await response.json();
-
-            console.log(`[RPC] Respuesta de ${endpoint}:`, data);
-
-            if (data.error) {
-                console.error('[RPC] Error en respuesta:', data.error);
-                throw new Error(data.error.data?.message || data.error.message || 'RPC Error');
-            }
-
-            return data.result;
-        } catch (error) {
-            console.error('[RPC] Error en llamada:', error);
-            throw error;
-        }
-    }
-
-    class PropertyCarousel {
+class PropertyCarousel {
     constructor(containerId, carouselType) {
         this.containerId = containerId;
         this.carouselType = carouselType;
@@ -62,9 +21,11 @@
      */
     async init() {
         if (!this.container) {
-            console.warn(`Contenedor ${this.containerId} no encontrado`);
+            console.warn(`[CAROUSEL] Contenedor ${this.containerId} no encontrado`);
             return;
         }
+
+        console.log(`[CAROUSEL] Inicializando carrusel ${this.containerId}`);
 
         // Cargar propiedades
         await this.loadProperties();
@@ -96,7 +57,7 @@
                 return;
             }
 
-            const result = await rpcCall(endpoint, {
+            const result = await rpc(endpoint, {
                 limit: 12
             });
 
@@ -268,26 +229,31 @@
     }
 }
 
-    /**
-     * Inicializar todos los carruseles al cargar la página
-     */
-    document.addEventListener('DOMContentLoaded', function() {
-        console.log('=== Inicializando carruseles de propiedades ===');
+/**
+ * Inicializar todos los carruseles al cargar la página
+ */
+function initPropertyCarousels() {
+    console.log('=== Inicializando carruseles de propiedades ===');
 
-        // Carrusel de propiedades en arriendo
-        const rentCarousel = new PropertyCarousel('carousel-rent', 'rent');
-        rentCarousel.init();
+    // Carrusel de propiedades en arriendo
+    const rentCarousel = new PropertyCarousel('carousel-rent', 'rent');
+    rentCarousel.init();
 
-        // Carrusel de propiedades usadas en venta
-        const saleCarousel = new PropertyCarousel('carousel-sale', 'sale');
-        saleCarousel.init();
+    // Carrusel de propiedades usadas en venta
+    const saleCarousel = new PropertyCarousel('carousel-sale', 'sale');
+    saleCarousel.init();
 
-        // Carrusel de proyectos/propiedades nuevas
-        const projectsCarousel = new PropertyCarousel('carousel-projects', 'projects');
-        projectsCarousel.init();
-    });
+    // Carrusel de proyectos/propiedades nuevas
+    const projectsCarousel = new PropertyCarousel('carousel-projects', 'projects');
+    projectsCarousel.init();
+}
 
-    // Exportar para uso global
-    window.PropertyCarousel = PropertyCarousel;
+// Inicializar cuando el DOM esté listo
+document.addEventListener('DOMContentLoaded', initPropertyCarousels);
 
-})(); // Fin del IIFE
+// Exportar clase y función de inicialización
+export { PropertyCarousel, initPropertyCarousels };
+
+// También exportar globalmente para uso desde plantillas
+window.PropertyCarousel = PropertyCarousel;
+window.initPropertyCarousels = initPropertyCarousels;
