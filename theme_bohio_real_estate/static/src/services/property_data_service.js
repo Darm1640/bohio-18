@@ -1,15 +1,16 @@
 /** @odoo-module **/
 
 import { registry } from "@web/core/registry";
+import { rpc } from "@web/core/network/rpc";
 
 /**
  * Servicio para cargar datos de propiedades
  * Maneja cache, abort controllers y reintentos
  */
 export const propertyDataService = {
-    dependencies: ["rpc"],
+    dependencies: [],
 
-    start(env, { rpc }) {
+    start(env) {
         const cache = new Map();
         const abortControllers = new Map();
 
