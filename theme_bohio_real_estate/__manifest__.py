@@ -15,6 +15,7 @@
     """,
     'depends': [
         'website',
+        'web_editor',
         'bohio_real_estate',
         'utm',
     ],
