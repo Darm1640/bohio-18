@@ -1,165 +1,116 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<templates xml:space="preserve">
+<templates id="template" xml:space="preserve">
 
-    <t t-name="theme_bohio_real_estate.PropertyCarousel">
-        <div class="bohio-property-carousel">
-            <!-- Loading State -->
-            <t t-if="state.loading">
-                <div class="row g-4">
-                    <t t-foreach="[1,2,3,4]" t-as="i" t-key="i">
-                        <div class="col-12 col-md-6 col-lg-3">
-                            <div class="card h-100 border-0 shadow-sm">
-                                <div class="skeleton-image" style="height: 200px; background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%); background-size: 200% 100%; animation: loading 1.5s infinite;"/>
-                                <div class="card-body">
-                                    <div class="skeleton-title mb-2" style="height: 20px; width: 80%; background: #f0f0f0; border-radius: 4px;"/>
-                                    <div class="skeleton-text mb-2" style="height: 14px; width: 60%; background: #f0f0f0; border-radius: 4px;"/>
-                                    <div class="skeleton-price mt-3" style="height: 24px; width: 50%; background: #f0f0f0; border-radius: 4px;"/>
-                                </div>
-                            </div>
-                        </div>
-                    </t>
-                </div>
-            </t>
+<t t-name="theme_bohio_real_estate.PropertyCarousel" owl="1">
+    <div class="bohio-property-carousel">
+        <!-- Loading -->
+        <div t-if="state.loading" class="text-center py-5">
+            <div class="spinner-border text-danger" role="status">
+                <span class="visually-hidden">Cargando propiedades...</span>
+            </div>
+        </div>
 
-            <!-- Error State -->
-            <t t-elif="state.error">
-                <div class="alert alert-warning d-flex align-items-center" role="alert">
-                    <i class="fa fa-exclamation-triangle me-2"/>
-                    <span t-esc="state.error"/>
-                    <button class="btn btn-link ms-auto" t-on-click="loadProperties">
-                        Reintentar
-                    </button>
-                </div>
-            </t>
+        <!-- Error -->
+        <div t-elif="state.error" class="alert alert-warning" role="alert">
+            <i class="fa fa-exclamation-triangle me-2"/>
+            <span t-esc="state.error"/>
+            <button class="btn btn-link ms-auto" t-on-click="loadProperties">
+                Reintentar
+            </button>
+        </div>
 
-            <!-- Empty State -->
-            <t t-elif="state.properties.length === 0">
-                <div class="text-center py-5">
-                    <i class="fa fa-home fa-3x text-muted mb-3"/>
-                    <p class="text-muted">No hay propiedades disponibles en este momento</p>
-                </div>
-            </t>
+        <!-- Empty -->
+        <div t-elif="state.properties.length === 0" class="text-center py-5">
+            <i class="fa fa-home fa-3x text-muted mb-3"/>
+            <p class="text-muted">No hay propiedades disponibles</p>
+        </div>
 
-            <!-- Carousel -->
-            <t t-else="">
-                <div class="carousel slide" data-bs-ride="carousel">
-                    <div class="carousel-inner">
-                        <t t-foreach="slides" t-as="slide" t-key="slide_index">
-                            <div t-attf-class="carousel-item {{ slide_index === 0 ? 'active' : '' }}">
-                                <div class="row g-4">
-                                    <t t-foreach="slide" t-as="property" t-key="property.id">
-                                        <div class="col-12 col-md-6 col-lg-3">
-                                            <div class="card h-100 shadow-sm border-0 bohio-property-card position-relative">
-                                                <!-- Badge de Proyecto -->
-                                                <t t-if="property.project_id">
-                                                    <div class="position-absolute top-0 end-0 m-2">
-                                                        <a t-attf-href="/proyecto/{{ property.project_id }}"
-                                                           class="badge bg-danger text-white text-decoration-none"
-                                                           style="font-size: 0.7rem; padding: 0.4rem 0.6rem;">
-                                                            <i class="fa fa-building me-1"/>
-                                                            <t t-esc="property.project_name"/>
-                                                        </a>
-                                                    </div>
-                                                </t>
-
-                                                <!-- Imagen -->
-                                                <img t-attf-src="{{ property.image_url or '/theme_bohio_real_estate/static/src/img/placeholder.jpg' }}"
-                                                     t-att-alt="property.name"
-                                                     class="card-img-top"
-                                                     style="height: 200px; object-fit: cover;"
-                                                     loading="lazy"/>
-
-                                                <!-- Body -->
-                                                <div class="card-body d-flex flex-column">
-                                                    <h5 class="card-title text-truncate" t-att-title="property.name">
-                                                        <t t-esc="property.name"/>
-                                                    </h5>
-
-                                                    <!-- Ubicación -->
-                                                    <p class="text-muted small mb-2">
-                                                        <i class="fa fa-map-marker-alt me-1"/>
-                                                        <t t-esc="getLocation(property)"/>
-                                                    </p>
-
-                                                    <!-- Características -->
-                                                    <div class="d-flex justify-content-between mb-2 text-muted small">
-                                                        <t t-if="property.area > 0">
-                                                            <span>
-                                                                <i class="fa fa-ruler-combined me-1"/>
-                                                                <t t-esc="property.area"/> m²
-                                                            </span>
-                                                        </t>
-                                                        <t t-if="property.bedrooms > 0">
-                                                            <span>
-                                                                <i class="fa fa-bed me-1"/>
-                                                                <t t-esc="property.bedrooms"/>
-                                                            </span>
-                                                        </t>
-                                                        <t t-if="property.bathrooms > 0">
-                                                            <span>
-                                                                <i class="fa fa-bath me-1"/>
-                                                                <t t-esc="property.bathrooms"/>
-                                                            </span>
-                                                        </t>
-                                                    </div>
-
-                                                    <!-- Precio -->
-                                                    <div class="mb-2">
-                                                        <small class="text-muted">
-                                                            <t t-esc="priceLabel(property)"/>
-                                                        </small>
-                                                        <h4 class="text-danger mb-0">
-                                                            <t t-esc="formatPrice(property)"/>
-                                                        </h4>
-                                                    </div>
-
-                                                    <!-- Botón -->
-                                                    <a t-attf-href="{{ property.url }}"
-                                                       class="btn btn-outline-danger w-100 mt-auto">
-                                                        <i class="fa fa-eye me-1"/> Ver detalles
-                                                    </a>
-                                                </div>
-                                            </div>
+        <!-- Carousel -->
+        <div t-else="" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <t t-foreach="slides" t-as="slide" t-key="slide_index">
+                    <div t-attf-class="carousel-item {{slide_index === 0 ? 'active' : ''}}">
+                        <div class="row g-4">
+                            <t t-foreach="slide" t-as="prop" t-key="prop.id">
+                                <div class="col-12 col-md-6 col-lg-3">
+                                    <div class="card h-100 shadow-sm border-0 position-relative">
+                                        <!-- Proyecto Badge -->
+                                        <div t-if="prop.project_id" class="position-absolute top-0 end-0 m-2">
+                                            <a t-attf-href="/proyecto/{{prop.project_id}}"
+                                               class="badge bg-danger text-white text-decoration-none">
+                                                <i class="fa fa-building me-1"/>
+                                                <t t-esc="prop.project_name"/>
+                                            </a>
                                         </div>
-                                    </t>
+
+                                        <!-- Imagen -->
+                                        <img t-attf-src="{{prop.image_url or '/theme_bohio_real_estate/static/src/img/placeholder.jpg'}}"
+                                             t-att-alt="prop.name"
+                                             class="card-img-top"
+                                             style="height: 200px; object-fit: cover;"
+                                             loading="lazy"/>
+
+                                        <!-- Body -->
+                                        <div class="card-body d-flex flex-column">
+                                            <h5 class="card-title text-truncate" t-att-title="prop.name">
+                                                <t t-esc="prop.name"/>
+                                            </h5>
+
+                                            <p class="text-muted small mb-2">
+                                                <i class="fa fa-map-marker-alt me-1"/>
+                                                <t t-esc="getLocation(prop)"/>
+                                            </p>
+
+                                            <div class="d-flex justify-content-between mb-2 text-muted small">
+                                                <span t-if="prop.area > 0">
+                                                    <i class="fa fa-ruler-combined me-1"/>
+                                                    <t t-esc="prop.area"/> m²
+                                                </span>
+                                                <span t-if="prop.bedrooms > 0">
+                                                    <i class="fa fa-bed me-1"/>
+                                                    <t t-esc="prop.bedrooms"/>
+                                                </span>
+                                                <span t-if="prop.bathrooms > 0">
+                                                    <i class="fa fa-bath me-1"/>
+                                                    <t t-esc="prop.bathrooms"/>
+                                                </span>
+                                            </div>
+
+                                            <div class="mb-2">
+                                                <small class="text-muted">
+                                                    <t t-esc="priceLabel(prop)"/>
+                                                </small>
+                                                <h4 class="text-danger mb-0">
+                                                    <t t-esc="formatPrice(prop)"/>
+                                                </h4>
+                                            </div>
+
+                                            <a t-attf-href="{{prop.url}}"
+                                               class="btn btn-outline-danger w-100 mt-auto">
+                                                <i class="fa fa-eye me-1"/> Ver detalles
+                                            </a>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </t>
-                    </div>
-
-                    <!-- Controles (solo si hay más de 1 slide) -->
-                    <t t-if="slides.length > 1">
-                        <button class="carousel-control-prev" type="button" data-bs-slide="prev">
-                            <span class="carousel-control-prev-icon" aria-hidden="true"/>
-                            <span class="visually-hidden">Anterior</span>
-                        </button>
-                        <button class="carousel-control-next" type="button" data-bs-slide="next">
-                            <span class="carousel-control-next-icon" aria-hidden="true"/>
-                            <span class="visually-hidden">Siguiente</span>
-                        </button>
-
-                        <!-- Indicadores -->
-                        <div class="carousel-indicators">
-                            <t t-foreach="slides" t-as="slide" t-key="'ind_' + slide_index">
-                                <button type="button"
-                                        t-att-data-bs-slide-to="slide_index"
-                                        t-attf-class="{{ slide_index === 0 ? 'active' : '' }}"
-                                        t-att-aria-current="slide_index === 0 ? 'true' : null"
-                                        t-attf-aria-label="Slide {{ slide_index + 1 }}"/>
                             </t>
                         </div>
-                    </t>
-                </div>
+                    </div>
+                </t>
+            </div>
+
+            <!-- Controles -->
+            <t t-if="slides.length > 1">
+                <button class="carousel-control-prev" type="button" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"/>
+                    <span class="visually-hidden">Anterior</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"/>
+                    <span class="visually-hidden">Siguiente</span>
+                </button>
             </t>
         </div>
-    </t>
-
-    <!-- Estilos inline para skeleton (temporal) -->
-    <style>
-        @keyframes loading {
-            0% { background-position: 200% 0; }
-            100% { background-position: -200% 0; }
-        }
-    </style>
+    </div>
+</t>
 
 </templates>
