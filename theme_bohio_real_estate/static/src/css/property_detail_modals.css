@@ -1,0 +1,96 @@
+/* ============================================
+   BOHIO Real Estate - Property Detail Modals & Gallery
+   Estilos para la página de detalle de propiedad
+   ============================================ */
+
+/* Transición suave del carrusel */
+.carousel-fade .carousel-item {
+    opacity: 0;
+    transition: opacity 0.6s ease-in-out;
+}
+
+.carousel-fade .carousel-item.active,
+.carousel-fade .carousel-item-next.carousel-item-start,
+.carousel-fade .carousel-item-prev.carousel-item-end {
+    opacity: 1;
+}
+
+.carousel-fade .carousel-item-next:not(.carousel-item-start),
+.carousel-fade .carousel-item-prev:not(.carousel-item-end) {
+    opacity: 0;
+}
+
+/* Controles del carrusel */
+.property-gallery-container .carousel-control-prev,
+.property-gallery-container .carousel-control-next {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.property-gallery-container:hover .carousel-control-prev,
+.property-gallery-container:hover .carousel-control-next {
+    opacity: 1;
+}
+
+.hover-lift:hover {
+    transform: translateY(-5px);
+    transition: transform 0.3s;
+}
+
+/* Zoom Modal Styles */
+#imageZoomModal .modal-content {
+    background: rgba(0, 0, 0, 0.95) !important;
+}
+
+#imageZoomModal img#zoomImage {
+    cursor: zoom-in;
+    transition: transform 0.3s ease;
+}
+
+#imageZoomModal #zoomPrevBtn,
+#imageZoomModal #zoomNextBtn {
+    opacity: 0.8;
+    transition: opacity 0.3s, transform 0.3s;
+}
+
+#imageZoomModal #zoomPrevBtn:hover,
+#imageZoomModal #zoomNextBtn:hover {
+    opacity: 1;
+    transform: translateY(-50%) scale(1.1);
+}
+
+#zoomThumbnails {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255,255,255,0.3) transparent;
+}
+
+#zoomThumbnails::-webkit-scrollbar {
+    height: 6px;
+}
+
+#zoomThumbnails::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+#zoomThumbnails::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.3);
+    border-radius: 3px;
+}
+
+#zoomThumbnails::-webkit-scrollbar-thumb:hover {
+    background: rgba(255,255,255,0.5);
+}
+
+.zoom-thumbnail {
+    flex-shrink: 0;
+}
+
+.zoom-thumbnail:hover {
+    opacity: 1 !important;
+    transform: scale(1.05);
+}
+
+/* Cursor zoom-in en las imágenes del carrusel */
+.carousel-item > div[style*="cursor: zoom-in"]:hover {
+    opacity: 0.95;
+}

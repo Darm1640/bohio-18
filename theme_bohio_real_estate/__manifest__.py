@@ -78,6 +78,7 @@
             'theme_bohio_real_estate/static/src/css/homepage_maps.css',
             'theme_bohio_real_estate/static/src/css/map_styles.css',
             'theme_bohio_real_estate/static/src/css/proyecto_detalle.css',
+            'theme_bohio_real_estate/static/src/css/property_detail_modals.css',
 
             # SCSS
             'theme_bohio_real_estate/static/src/scss/loader.scss',
@@ -97,6 +98,7 @@
             'theme_bohio_real_estate/static/src/js/property_shop.js',
             'theme_bohio_real_estate/static/src/js/proyectos.js',
             'theme_bohio_real_estate/static/src/js/proyecto_detalle.js',
+            'theme_bohio_real_estate/static/src/js/property_detail_gallery.js',
 
             # CSS Additional
             'theme_bohio_real_estate/static/src/css/property_carousels.css',
