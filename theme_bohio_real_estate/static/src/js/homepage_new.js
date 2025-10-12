@@ -1,5 +1,7 @@
 /** @odoo-module **/
 
+import { initPropertyCarousels } from "@theme_bohio_real_estate/js/property_carousels";
+
 console.log('BOHIO Homepage JS cargado');
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -11,8 +13,11 @@ document.addEventListener('DOMContentLoaded', function() {
     // Iniciar banner (GIF → Carrusel)
     initHeroBanner();
 
-    // Cargar propiedades
-    loadHomeProperties();
+    // Inicializar carruseles de propiedades
+    initPropertyCarousels();
+
+    // Cargar propiedades (para otros componentes si existen)
+    // loadHomeProperties();
 });
 
 function initTransparentNavbar() {
