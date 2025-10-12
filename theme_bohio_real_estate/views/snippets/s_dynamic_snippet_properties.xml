@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ========================================================== -->
+    <!-- SNIPPET DINÁMICO DE PROPIEDADES                            -->
+    <!-- ========================================================== -->
+
+    <!-- Definición del snippet principal -->
+    <template id="s_dynamic_snippet_properties" name="Properties">
+        <t t-call="website.s_dynamic_snippet_template">
+            <t t-set="snippet_name" t-value="'s_dynamic_snippet_properties'"/>
+            <t t-call="theme_bohio_real_estate.s_dynamic_snippet_properties_preview_data"/>
+        </t>
+    </template>
+
+    <!-- Vista previa del snippet (para el editor) -->
+    <template id="s_dynamic_snippet_properties_preview_data" name="Properties Preview Data">
+        <div class="carousel slide s_dialog_preview">
+            <div class="carousel-inner row w-100 mx-auto">
+                <div role="option" class="carousel-item active" style="min-height: 400px;">
+                    <div class="row">
+                        <!-- Tarjeta 1 -->
+                        <div class="d-flex flex-grow-0 flex-shrink-0 col-3">
+                            <div class="o_carousel_property_card card h-100 w-100">
+                                <img class="card-img-top" src="/theme_bohio_real_estate/static/src/img/property_placeholder.jpg" alt="Propiedad"/>
+                                <div class="card-body">
+                                    <h6 class="card-title">Apartamento en El Poblado</h6>
+                                    <p class="text-muted small"><i class="fa fa-map-marker"></i> El Poblado, Medellín</p>
+                                    <div class="d-flex justify-content-between">
+                                        <span class="text-primary fw-bold">$450,000,000</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Tarjeta 2 -->
+                        <div class="d-flex flex-grow-0 flex-shrink-0 col-3">
+                            <div class="o_carousel_property_card card h-100 w-100">
+                                <img class="card-img-top" src="/theme_bohio_real_estate/static/src/img/property_placeholder.jpg" alt="Propiedad"/>
+                                <div class="card-body">
+                                    <h6 class="card-title">Casa en Laureles</h6>
+                                    <p class="text-muted small"><i class="fa fa-map-marker"></i> Laureles, Medellín</p>
+                                    <div class="d-flex justify-content-between">
+                                        <span class="text-primary fw-bold">$650,000,000</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Tarjeta 3 -->
+                        <div class="d-flex flex-grow-0 flex-shrink-0 col-3">
+                            <div class="o_carousel_property_card card h-100 w-100">
+                                <img class="card-img-top" src="/theme_bohio_real_estate/static/src/img/property_placeholder.jpg" alt="Propiedad"/>
+                                <div class="card-body">
+                                    <h6 class="card-title">Oficina en Centro</h6>
+                                    <p class="text-muted small"><i class="fa fa-map-marker"></i> Centro, Medellín</p>
+                                    <div class="d-flex justify-content-between">
+                                        <span class="text-primary fw-bold">$280,000,000</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Tarjeta 4 -->
+                        <div class="d-flex flex-grow-0 flex-shrink-0 col-3">
+                            <div class="o_carousel_property_card card h-100 w-100">
+                                <img class="card-img-top" src="/theme_bohio_real_estate/static/src/img/property_placeholder.jpg" alt="Propiedad"/>
+                                <div class="card-body">
+                                    <h6 class="card-title">Local Comercial</h6>
+                                    <p class="text-muted small"><i class="fa fa-map-marker"></i> Envigado</p>
+                                    <div class="d-flex justify-content-between">
+                                        <span class="text-primary fw-bold">$380,000,000</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <a class="carousel-control-prev" data-bs-slide="prev" role="button" aria-label="Previous" title="Previous" href="#">
+                <span class="fa fa-chevron-circle-left fa-2x"></span>
+            </a>
+            <a class="carousel-control-next" data-bs-slide="next" role="button" aria-label="Next" title="Next" href="#">
+                <span class="fa fa-chevron-circle-right fa-2x"></span>
+            </a>
+        </div>
+    </template>
+
+    <!-- ========================================================== -->
+    <!-- OPCIONES DEL SNIPPET PARA WEBSITE BUILDER                  -->
+    <!-- ========================================================== -->
+
+    <template id="s_dynamic_snippet_properties_options" inherit_id="website.snippet_options">
+        <xpath expr="." position="inside">
+            <t t-call="website.dynamic_snippet_carousel_options_template">
+                <t t-set="snippet_name" t-value="'dynamic_snippet_properties'"/>
+                <t t-set="snippet_selector" t-value="'.s_dynamic_snippet_properties'"/>
+            </t>
+        </xpath>
+    </template>
+
+    <!-- Opciones adicionales del snippet -->
+    <template id="s_dynamic_snippet_properties_template_options" inherit_id="website.s_dynamic_snippet_options_template">
+        <xpath expr="//we-select[@data-name='filter_opt']" position="after">
+            <t t-if="snippet_name == 'dynamic_snippet_properties'">
+
+                <!-- Tipo de Servicio -->
+                <we-select string="Tipo de Servicio" data-name="type_service_opt" data-attribute-name="typeService" data-no-preview="true">
+                    <we-button data-select-data-attribute="all">Todas</we-button>
+                    <we-button data-select-data-attribute="rent">En Arriendo</we-button>
+                    <we-button data-select-data-attribute="sale">En Venta</we-button>
+                    <we-button data-select-data-attribute="sale_used">Venta Usadas</we-button>
+                    <we-button data-select-data-attribute="projects">Proyectos Nuevos</we-button>
+                </we-select>
+
+                <!-- Tipo de Propiedad -->
+                <we-select string="Tipo de Propiedad" data-name="property_type_opt" data-attribute-name="propertyType" data-no-preview="true">
+                    <we-button data-select-data-attribute="all">Todas</we-button>
+                    <we-button data-select-data-attribute="apartment">Apartamento</we-button>
+                    <we-button data-select-data-attribute="house">Casa</we-button>
+                    <we-button data-select-data-attribute="office">Oficina</we-button>
+                    <we-button data-select-data-attribute="warehouse">Bodega</we-button>
+                    <we-button data-select-data-attribute="land">Lote</we-button>
+                    <we-button data-select-data-attribute="commercial_premises">Local Comercial</we-button>
+                    <we-button data-select-data-attribute="building">Edificio</we-button>
+                    <we-button data-select-data-attribute="farm">Finca</we-button>
+                    <we-button data-select-data-attribute="cabin">Cabaña</we-button>
+                    <we-button data-select-data-attribute="hotel">Hotel</we-button>
+                    <we-button data-select-data-attribute="parking">Parqueadero</we-button>
+                    <we-button data-select-data-attribute="room">Habitación</we-button>
+                    <we-button data-select-data-attribute="other">Otro</we-button>
+                </we-select>
+
+                <!-- Ciudad -->
+                <we-select string="Ciudad" data-name="property_city_opt" data-attribute-name="cityId" data-no-preview="true">
+                    <we-button data-select-data-attribute="all">Todas las Ciudades</we-button>
+                    <!-- Las ciudades se cargarán dinámicamente desde options.js -->
+                </we-select>
+
+                <!-- Región/Barrio -->
+                <we-select string="Barrio/Región" data-name="property_region_opt" data-attribute-name="regionId" data-no-preview="true">
+                    <we-button data-select-data-attribute="all">Todos los Barrios</we-button>
+                    <!-- Las regiones se cargarán dinámicamente desde options.js -->
+                </we-select>
+
+                <!-- Rango de Precios -->
+                <we-input string="Precio Mínimo" class="o_we_large"
+                    data-name="property_price_min_opt"
+                    data-attribute-name="priceMin"
+                    data-no-preview="true"
+                    data-select-data-attribute=""
+                    placeholder="Ej: 100000000"
+                    title="Precio mínimo en pesos"/>
+
+                <we-input string="Precio Máximo" class="o_we_large"
+                    data-name="property_price_max_opt"
+                    data-attribute-name="priceMax"
+                    data-no-preview="true"
+                    data-select-data-attribute=""
+                    placeholder="Ej: 500000000"
+                    title="Precio máximo en pesos"/>
+
+                <!-- Características Mínimas -->
+                <we-input string="Habitaciones Mínimas"
+                    data-name="property_min_bedrooms_opt"
+                    data-attribute-name="minBedrooms"
+                    data-no-preview="true"
+                    data-select-data-attribute=""
+                    placeholder="Ej: 2"
+                    title="Número mínimo de habitaciones"/>
+
+                <we-input string="Baños Mínimos"
+                    data-name="property_min_bathrooms_opt"
+                    data-attribute-name="minBathrooms"
+                    data-no-preview="true"
+                    data-select-data-attribute=""
+                    placeholder="Ej: 2"
+                    title="Número mínimo de baños"/>
+
+                <we-input string="Área Mínima (m²)"
+                    data-name="property_min_area_opt"
+                    data-attribute-name="minArea"
+                    data-no-preview="true"
+                    data-select-data-attribute=""
+                    placeholder="Ej: 50"
+                    title="Área mínima en metros cuadrados"/>
+
+            </t>
+        </xpath>
+    </template>
+
+    <!-- ========================================================== -->
+    <!-- ASSETS: JavaScript y CSS                                   -->
+    <!-- ========================================================== -->
+
+    <!-- JavaScript: Lógica del snippet -->
+    <record id="s_dynamic_snippet_properties_js" model="ir.asset">
+        <field name="name">Dynamic Snippet Properties JS</field>
+        <field name="bundle">web.assets_frontend</field>
+        <field name="path">theme_bohio_real_estate/static/src/snippets/s_dynamic_snippet_properties/000.js</field>
+    </record>
+
+    <!-- JavaScript: Opciones del snippet -->
+    <record id="s_dynamic_snippet_properties_options_js" model="ir.asset">
+        <field name="name">Dynamic Snippet Properties Options JS</field>
+        <field name="bundle">web._assets_primary_variables</field>
+        <field name="path">theme_bohio_real_estate/static/src/snippets/s_dynamic_snippet_properties/options.js</field>
+    </record>
+
+</odoo>

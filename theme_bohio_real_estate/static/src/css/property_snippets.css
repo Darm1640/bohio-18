@@ -1,0 +1,222 @@
+/* ========================================================== */
+/* ESTILOS PARA PROPERTY SNIPPETS DINÁMICOS                  */
+/* ========================================================== */
+
+/* Container general de property cards */
+.o_carousel_property_card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    overflow: hidden;
+}
+
+.o_carousel_property_card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Imagen con hover effect */
+.o_carousel_property_img_link {
+    position: relative;
+    display: block;
+    overflow: hidden;
+}
+
+.o_carousel_property_img_link img {
+    transition: transform 0.5s ease;
+}
+
+.o_dynamic_property_hovered:hover img {
+    transform: scale(1.1);
+}
+
+/* Imagen cover responsive */
+.o_img_property_cover {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Badge positioning */
+.o_carousel_property_card .badge {
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+    z-index: 10;
+}
+
+/* Property card body */
+.o_carousel_property_card_body {
+    padding: 1.5rem;
+}
+
+/* Características icons */
+.o_carousel_property_card_body .fa {
+    color: #dc3545;
+}
+
+/* Precio destacado */
+.o_carousel_property_card .text-primary {
+    font-weight: 700;
+}
+
+/* Hover en tarjetas compactas */
+.o_dynamic_property_hovered {
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.o_dynamic_property_hovered:hover {
+    opacity: 0.95;
+}
+
+/* Ribbon para propiedades destacadas */
+.o_ribbon_right {
+    position: absolute;
+    top: 20px;
+    right: -30px;
+    padding: 5px 40px;
+    font-size: 0.8rem;
+    transform: rotate(45deg);
+    z-index: 100;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Banner grande responsive */
+@media (max-width: 991px) {
+    .o_carousel_property_card .card-body {
+        padding: 2rem !important;
+    }
+}
+
+@media (max-width: 767px) {
+    .o_carousel_property_card .card-body {
+        padding: 1.5rem !important;
+    }
+
+    .o_carousel_property_card h2 {
+        font-size: 1.5rem;
+    }
+
+    .o_carousel_property_card .h3 {
+        font-size: 1.25rem;
+    }
+}
+
+/* Multiple rows carousel */
+.o_carousel_multiple_rows .o_carousel_property_card {
+    margin-bottom: 1rem;
+}
+
+/* Gradient overlay para imágenes */
+.bg-gradient {
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent) !important;
+}
+
+/* Loading spinner para snippets */
+.property-carousel-loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 300px;
+}
+
+/* Card title ellipsis */
+.o_carousel_property_card .card-title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+/* Botones de ver más */
+.o_carousel_property_card .btn {
+    transition: all 0.3s ease;
+}
+
+.o_carousel_property_card .btn:hover {
+    transform: scale(1.05);
+}
+
+/* Características en lista horizontal */
+.o_carousel_property_card .small {
+    font-size: 0.875rem;
+}
+
+/* Border top sutil */
+.o_carousel_property_card .border-top {
+    border-top: 1px solid rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Ubicación con icono */
+.o_carousel_property_card .fa-map-marker {
+    color: #dc3545;
+}
+
+/* Estilo para badges de tipo de propiedad */
+.o_carousel_property_card .badge.bg-secondary {
+    background-color: #6c757d !important;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Características en banner grande */
+.o_carousel_property_card .fa-2x {
+    font-size: 1.5rem;
+}
+
+/* Ajustes para property list horizontal */
+.o_carousel_property_card.bg-light {
+    background-color: #f8f9fa !important;
+    border-radius: 0.5rem;
+}
+
+/* Estilo para enlaces sin decoración */
+.o_carousel_property_card a.text-decoration-none:hover {
+    text-decoration: none !important;
+}
+
+/* Shadow para cards */
+.o_carousel_property_card.shadow-lg {
+    box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175) !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 575px) {
+    .o_carousel_property_card .badge {
+        font-size: 0.65rem;
+        padding: 0.35rem 0.75rem;
+    }
+
+    .o_carousel_property_card_body {
+        padding: 1rem;
+    }
+}
+
+/* Animation para loading */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.property-carousel-loading .spinner-border {
+    width: 3rem;
+    height: 3rem;
+    border-width: 0.3rem;
+    color: #dc3545;
+}
+
+/* Hover state para el card completo */
+.o_carousel_property_card {
+    cursor: pointer;
+}
+
+/* Evitar que el stretched-link afecte otros elementos */
+.o_carousel_property_card .position-static {
+    position: static !important;
+}
+
+/* Z-index para badges sobre imagen */
+.o_carousel_property_card .position-absolute.badge {
+    z-index: 10;
+}

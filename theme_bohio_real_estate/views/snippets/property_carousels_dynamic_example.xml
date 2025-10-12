@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ============================================================ -->
+    <!-- EJEMPLO: MIGRACIÓN DE CARRUSELES A SNIPPETS DINÁMICOS       -->
+    <!-- ============================================================ -->
+
+    <!--
+        Este archivo muestra cómo reemplazar los carruseles actuales
+        (property_carousels_snippet.xml) con el nuevo sistema de
+        snippets dinámicos.
+
+        VENTAJAS:
+        ✅ Editable desde Website Builder
+        ✅ Cacheable y más rápido
+        ✅ Sin JavaScript custom
+        ✅ Filtros avanzados
+        ✅ Múltiples plantillas de diseño
+    -->
+
+    <!-- ============================================================ -->
+    <!-- VERSIÓN 1: CON SNIPPET DINÁMICO (RECOMENDADO)               -->
+    <!-- ============================================================ -->
+
+    <template id="carousel_rent_section_dynamic" name="Carrusel Arriendo (Dinámico)">
+        <section class="bohio-carousel-section py-5 bg-light">
+            <div class="container">
+                <!-- Encabezado -->
+                <div class="mb-4">
+                    <h2 class="d-inline-block bg-danger text-white px-4 py-3 mb-0 rounded-end-pill"
+                        style="font-size: 1.75rem; font-weight: 500;">
+                        Propiedades en Arriendo
+                    </h2>
+                </div>
+                <h2 class="mb-4">
+                    Te <span class="fw-bold">ayudamos</span> a encontrar el
+                    <span class="text-danger fw-bold">lugar ideal</span> para vivir
+                </h2>
+
+                <!-- SNIPPET DINÁMICO -->
+                <div class="s_dynamic_snippet_properties"
+                     data-type-service="rent"
+                     data-template-key="theme_bohio_real_estate.dynamic_filter_template_property_card"
+                     data-limit="12">
+                    <!-- Se carga automáticamente -->
+                </div>
+
+                <!-- Botón ver más -->
+                <div class="text-center mt-4">
+                    <a href="/properties?type_service=rent" class="btn btn-danger btn-lg px-5">
+                        <i class="fa fa-search me-2"></i>Explorar todas las propiedades en arriendo
+                    </a>
+                </div>
+            </div>
+        </section>
+    </template>
+
+    <template id="carousel_sale_section_dynamic" name="Carrusel Venta (Dinámico)">
+        <section class="bohio-carousel-section py-5">
+            <div class="container">
+                <!-- Encabezado -->
+                <div class="mb-4">
+                    <h2 class="d-inline-block bg-danger text-white px-4 py-3 mb-0 rounded-end-pill"
+                        style="font-size: 1.75rem; font-weight: 500;">
+                        Venta de Inmuebles Usados
+                    </h2>
+                </div>
+                <h2 class="mb-4">
+                    Te ayudamos a encontrar el
+                    <span class="text-danger fw-bold">hogar</span> que estás buscando
+                </h2>
+
+                <!-- SNIPPET DINÁMICO -->
+                <div class="s_dynamic_snippet_properties"
+                     data-type-service="sale_used"
+                     data-template-key="theme_bohio_real_estate.dynamic_filter_template_property_card"
+                     data-limit="12">
+                    <!-- Se carga automáticamente -->
+                </div>
+
+                <!-- Botón ver más -->
+                <div class="text-center mt-4">
+                    <a href="/properties?type_service=sale" class="btn btn-danger btn-lg px-5">
+                        <i class="fa fa-search me-2"></i>Explorar todas las propiedades en venta
+                    </a>
+                </div>
+            </div>
+        </section>
+    </template>
+
+    <template id="carousel_projects_section_dynamic" name="Carrusel Proyectos (Dinámico)">
+        <section class="bohio-carousel-section py-5 bg-light">
+            <div class="container">
+                <!-- Encabezado -->
+                <div class="mb-4">
+                    <h2 class="d-inline-block bg-danger text-white px-4 py-3 mb-0 rounded-end-pill"
+                        style="font-size: 1.75rem; font-weight: 500;">
+                        Proyectos en Venta
+                    </h2>
+                </div>
+                <h2 class="mb-4">
+                    <span class="text-danger fw-bold">Invierte</span> hoy en el
+                    <span class="fw-bold">futuro</span> que sueñas
+                </h2>
+
+                <!-- SNIPPET DINÁMICO - Usando plantilla BANNER para destacar -->
+                <div class="s_dynamic_snippet_properties"
+                     data-type-service="projects"
+                     data-template-key="theme_bohio_real_estate.dynamic_filter_template_property_banner"
+                     data-limit="3">
+                    <!-- Se carga automáticamente -->
+                </div>
+
+                <!-- Botón ver más -->
+                <div class="text-center mt-4">
+                    <a href="/proyectos" class="btn btn-danger btn-lg px-5">
+                        <i class="fa fa-building me-2"></i>Ver todos los proyectos
+                    </a>
+                </div>
+            </div>
+        </section>
+    </template>
+
+    <!-- ============================================================ -->
+    <!-- PÁGINA DE EJEMPLO CON SNIPPETS DINÁMICOS                    -->
+    <!-- ============================================================ -->
+
+    <template id="carousels_demo_page_dynamic" name="Demo Carruseles (Dinámico)">
+        <t t-call="website.layout">
+            <div id="wrap" class="oe_structure">
+                <t t-call="theme_bohio_real_estate.carousel_rent_section_dynamic"/>
+                <t t-call="theme_bohio_real_estate.carousel_sale_section_dynamic"/>
+                <t t-call="theme_bohio_real_estate.carousel_projects_section_dynamic"/>
+            </div>
+        </t>
+    </template>
+
+    <!-- ============================================================ -->
+    <!-- VERSIÓN 2: SNIPPETS COMPACTOS (PARA SIDEBARS)               -->
+    <!-- ============================================================ -->
+
+    <template id="sidebar_featured_properties" name="Propiedades Destacadas (Sidebar)">
+        <aside class="py-4">
+            <h4 class="mb-3">Propiedades Destacadas</h4>
+            <!-- Usando plantilla COMPACT para sidebar -->
+            <div class="s_dynamic_snippet_properties"
+                 data-template-key="theme_bohio_real_estate.dynamic_filter_template_property_compact"
+                 data-limit="4">
+            </div>
+        </aside>
+    </template>
+
+    <!-- ============================================================ -->
+    <!-- VERSIÓN 3: FILTROS AVANZADOS                                 -->
+    <!-- ============================================================ -->
+
+    <template id="properties_by_city_example" name="Propiedades por Ciudad">
+        <section class="py-5">
+            <div class="container">
+                <h2>Apartamentos en Medellín</h2>
+                <p class="text-muted">De 2+ habitaciones, máximo $500,000,000</p>
+
+                <!-- Snippet con múltiples filtros -->
+                <div class="s_dynamic_snippet_properties"
+                     data-type-service="rent"
+                     data-property-type="apartment"
+                     data-city-id="12"
+                     data-price-max="500000000"
+                     data-min-bedrooms="2"
+                     data-template-key="theme_bohio_real_estate.dynamic_filter_template_property_card"
+                     data-limit="16">
+                </div>
+            </div>
+        </section>
+    </template>
+
+    <!-- ============================================================ -->
+    <!-- VERSIÓN 4: LISTA HORIZONTAL (PARA COMPARACIÓN)              -->
+    <!-- ============================================================ -->
+
+    <template id="property_comparison_list" name="Lista de Comparación">
+        <section class="py-5 bg-light">
+            <div class="container">
+                <h2>Compara Propiedades Similares</h2>
+
+                <!-- Usando plantilla LIST para comparación fácil -->
+                <div class="s_dynamic_snippet_properties"
+                     data-type-service="sale"
+                     data-property-type="house"
+                     data-template-key="theme_bohio_real_estate.dynamic_filter_template_property_list"
+                     data-limit="6">
+                </div>
+            </div>
+        </section>
+    </template>
+
+    <!-- ============================================================ -->
+    <!-- VERSIÓN 5: HERO SECTION CON BANNER                          -->
+    <!-- ============================================================ -->
+
+    <template id="hero_featured_property" name="Hero Propiedad Destacada">
+        <section class="py-5">
+            <div class="container">
+                <!-- Banner grande para la propiedad más destacada -->
+                <div class="s_dynamic_snippet_properties"
+                     data-template-key="theme_bohio_real_estate.dynamic_filter_template_property_banner"
+                     data-limit="1">
+                </div>
+            </div>
+        </section>
+    </template>
+
+    <!-- ============================================================ -->
+    <!-- INSTRUCCIONES DE MIGRACIÓN                                   -->
+    <!-- ============================================================ -->
+
+    <!--
+        CÓMO MIGRAR LOS CARRUSELES EXISTENTES:
+
+        PASO 1: Backup
+        ─────────────────────────────────────────────────────────────
+        Hacer backup de:
+        - views/snippets/property_carousels_snippet.xml
+        - static/src/js/property_carousels.js
+        - static/src/css/property_carousels.css
+
+        PASO 2: Reemplazar en Homepage
+        ─────────────────────────────────────────────────────────────
+        En views/homepage_new.xml, buscar:
+
+            <t t-call="theme_bohio_real_estate.carousel_rent_section"/>
+
+        Reemplazar por:
+
+            <t t-call="theme_bohio_real_estate.carousel_rent_section_dynamic"/>
+
+        Repetir para sale y projects.
+
+        PASO 3: Actualizar Módulo
+        ─────────────────────────────────────────────────────────────
+        python odoo-bin -u theme_bohio_real_estate -d bohio_db
+
+        PASO 4: Limpiar Assets (Opcional)
+        ─────────────────────────────────────────────────────────────
+        Si los carruseles antiguos no se usan más, puedes eliminar:
+        - static/src/js/property_carousels.js
+        - Y removerlo de __manifest__.py assets
+
+        PASO 5: Verificar
+        ─────────────────────────────────────────────────────────────
+        1. Abrir homepage
+        2. Verificar que carruseles se cargan
+        3. Abrir Website Builder
+        4. Verificar que son editables
+
+        ROLLBACK (Si algo falla)
+        ─────────────────────────────────────────────────────────────
+        Revertir cambios en homepage_new.xml y actualizar módulo.
+    -->
+
+    <!-- ============================================================ -->
+    <!-- COMPARACIÓN: ANTES vs AHORA                                  -->
+    <!-- ============================================================ -->
+
+    <!--
+        ANTES (property_carousels_snippet.xml):
+        ────────────────────────────────────────────────────────────
+
+        <template id="carousel_rent_section">
+            <div class="container">
+                <div id="carousel-rent" class="property-carousel-loading">
+                    <div class="spinner-border"></div>
+                </div>
+            </div>
+        </template>
+
+        + property_carousels.js (200+ líneas)
+        + Endpoint custom en controllers
+        + No editable desde Website Builder
+
+
+        AHORA (Snippet Dinámico):
+        ────────────────────────────────────────────────────────────
+
+        <div class="s_dynamic_snippet_properties"
+             data-type-service="rent"
+             data-limit="12">
+        </div>
+
+        ✅ Sin JavaScript custom
+        ✅ Editable desde Website Builder
+        ✅ Usa endpoints estándar de Odoo
+        ✅ Cacheable
+        ✅ Múltiples plantillas
+        ✅ Filtros avanzados
+    -->
+
+</odoo>

@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ========================================================== -->
+    <!-- PLANTILLAS DINÁMICAS PARA PROPERTY SNIPPETS               -->
+    <!-- ========================================================== -->
+
+    <!-- PLANTILLA 1: Property Card con Imagen y Detalles -->
+    <template id="dynamic_filter_template_property_card" name="Property Card">
+        <t t-foreach="records" t-as="data" data-thumb="/theme_bohio_real_estate/static/src/img/snippets/property_card.svg">
+            <t t-set="record" t-value="data['_record']"/>
+            <div class="o_carousel_property_card card h-100 w-100">
+                <div t-if="is_sample" class="h5 o_ribbon_right bg-danger text-uppercase">Destacada</div>
+
+                <!-- Imagen de la propiedad -->
+                <a class="o_carousel_property_img_link o_dynamic_property_hovered overflow-hidden" t-att-href="'/properties/' + str(record.id)">
+                    <img class="card-img-top o_img_property_cover h-auto"
+                         loading="lazy"
+                         t-att-src="data.get('image_512', '/web/static/img/placeholder.png')"
+                         t-att-alt="record.display_name"
+                         style="height: 250px; object-fit: cover;"/>
+
+                    <!-- Badge de tipo de servicio -->
+                    <span class="badge position-absolute top-0 start-0 m-3"
+                          t-att-class="'bg-danger' if data.get('type_service_label') == 'Arriendo' else 'bg-primary'">
+                        <t t-esc="data.get('type_service_label', 'Venta')"/>
+                    </span>
+
+                    <!-- Badge de proyecto si existe -->
+                    <span t-if="data.get('has_project')"
+                          class="badge bg-success position-absolute top-0 end-0 m-3">
+                        Proyecto Nuevo
+                    </span>
+                </a>
+
+                <!-- Cuerpo de la tarjeta -->
+                <div class="o_carousel_property_card_body card-body d-flex flex-column">
+                    <!-- Título -->
+                    <a t-att-href="'/properties/' + str(record.id)" class="text-decoration-none">
+                        <h5 class="card-title mb-2 text-dark" t-field="record.name"/>
+                    </a>
+
+                    <!-- Ubicación -->
+                    <div class="text-muted mb-2 small">
+                        <i class="fa fa-map-marker me-1"></i>
+                        <span t-if="data.get('region_name')" t-esc="data.get('region_name')"/><t t-if="data.get('region_name') and data.get('city_name')">, </t>
+                        <span t-if="data.get('city_name')" t-esc="data.get('city_name')"/>
+                    </div>
+
+                    <!-- Tipo de propiedad -->
+                    <div class="mb-3">
+                        <span class="badge bg-secondary" t-esc="data.get('property_type_label', 'Propiedad')"/>
+                    </div>
+
+                    <!-- Características -->
+                    <div class="d-flex justify-content-between mb-3 text-muted small">
+                        <span t-if="data.get('bedrooms', 0) > 0">
+                            <i class="fa fa-bed me-1"></i>
+                            <t t-esc="int(data.get('bedrooms', 0))"/> Hab.
+                        </span>
+                        <span t-if="data.get('bathrooms', 0) > 0">
+                            <i class="fa fa-bath me-1"></i>
+                            <t t-esc="int(data.get('bathrooms', 0))"/> Baños
+                        </span>
+                        <span t-if="data.get('garages', 0) > 0">
+                            <i class="fa fa-car me-1"></i>
+                            <t t-esc="int(data.get('garages', 0))"/> Garage
+                        </span>
+                        <span t-if="data.get('area', 0) > 0">
+                            <i class="fa fa-arrows-alt me-1"></i>
+                            <t t-esc="'%.0f' % data.get('area', 0)"/> m²
+                        </span>
+                    </div>
+
+                    <!-- Precio -->
+                    <div class="d-flex justify-content-between align-items-center mt-auto pt-3 border-top">
+                        <div class="h5 mb-0 text-primary">
+                            <span t-esc="data.get('list_price_formatted', 0)"
+                                  t-options="{'widget': 'monetary', 'display_currency': record.currency_id}"/>
+                        </div>
+                        <a t-att-href="'/properties/' + str(record.id)"
+                           class="btn btn-sm btn-outline-danger">
+                            Ver Más
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- PLANTILLA 2: Property Banner Grande -->
+    <template id="dynamic_filter_template_property_banner" name="Property Banner">
+        <t t-foreach="records" t-as="data"
+           data-number-of-elements="1"
+           data-number-of-elements-sm="1"
+           data-thumb="/theme_bohio_real_estate/static/src/img/snippets/property_banner.svg">
+            <t t-set="record" t-value="data['_record']"/>
+            <div class="o_carousel_property_card card w-100 border-0 shadow-lg">
+                <div t-if="is_sample" class="h5 o_ribbon_right bg-danger text-uppercase">Destacada</div>
+                <div class="row g-0">
+                    <!-- Imagen -->
+                    <div class="col-lg-6 position-relative">
+                        <img class="img-fluid w-100 h-100 o_img_property_cover"
+                             loading="lazy"
+                             t-att-src="data.get('image_512', '/web/static/img/placeholder.png')"
+                             t-att-alt="record.display_name"
+                             style="min-height: 400px; object-fit: cover;"/>
+
+                        <!-- Badges sobre imagen -->
+                        <span class="badge position-absolute top-0 start-0 m-3 fs-6"
+                              t-att-class="'bg-danger' if data.get('type_service_label') == 'Arriendo' else 'bg-primary'">
+                            <t t-esc="data.get('type_service_label', 'Venta')"/>
+                        </span>
+                    </div>
+
+                    <!-- Contenido -->
+                    <div class="col-lg-6 d-flex align-items-center">
+                        <div class="card-body p-5">
+                            <!-- Tipo de propiedad -->
+                            <span class="badge bg-secondary mb-3" t-esc="data.get('property_type_label', 'Propiedad')"/>
+
+                            <!-- Título -->
+                            <h2 class="card-title mb-3" t-field="record.name"/>
+
+                            <!-- Ubicación -->
+                            <div class="text-muted mb-3">
+                                <i class="fa fa-map-marker me-2"></i>
+                                <span t-if="data.get('region_name')" t-esc="data.get('region_name')"/><t t-if="data.get('region_name') and data.get('city_name')">, </t>
+                                <span t-if="data.get('city_name')" t-esc="data.get('city_name')"/>
+                            </div>
+
+                            <!-- Descripción corta -->
+                            <p class="card-text text-muted mb-4" t-if="record.description_sale">
+                                <t t-esc="record.description_sale[:150]"/>...
+                            </p>
+
+                            <!-- Características -->
+                            <div class="row mb-4">
+                                <div class="col-3 text-center" t-if="data.get('bedrooms', 0) > 0">
+                                    <i class="fa fa-bed fa-2x text-danger mb-2"></i>
+                                    <div><t t-esc="int(data.get('bedrooms', 0))"/> Habitaciones</div>
+                                </div>
+                                <div class="col-3 text-center" t-if="data.get('bathrooms', 0) > 0">
+                                    <i class="fa fa-bath fa-2x text-danger mb-2"></i>
+                                    <div><t t-esc="int(data.get('bathrooms', 0))"/> Baños</div>
+                                </div>
+                                <div class="col-3 text-center" t-if="data.get('garages', 0) > 0">
+                                    <i class="fa fa-car fa-2x text-danger mb-2"></i>
+                                    <div><t t-esc="int(data.get('garages', 0))"/> Garajes</div>
+                                </div>
+                                <div class="col-3 text-center" t-if="data.get('area', 0) > 0">
+                                    <i class="fa fa-arrows-alt fa-2x text-danger mb-2"></i>
+                                    <div><t t-esc="'%.0f' % data.get('area', 0)"/> m²</div>
+                                </div>
+                            </div>
+
+                            <!-- Precio y botón -->
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <div class="text-muted small">Precio</div>
+                                    <div class="h3 text-primary mb-0">
+                                        <span t-esc="data.get('list_price_formatted', 0)"
+                                              t-options="{'widget': 'monetary', 'display_currency': record.currency_id}"/>
+                                    </div>
+                                </div>
+                                <a t-att-href="'/properties/' + str(record.id)"
+                                   class="btn btn-danger btn-lg">
+                                    Ver Detalles
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- PLANTILLA 3: Property Compact (Solo Imagen y Precio) -->
+    <template id="dynamic_filter_template_property_compact" name="Property Compact">
+        <t t-foreach="records" t-as="data"
+           data-number-of-elements="4"
+           data-thumb="/theme_bohio_real_estate/static/src/img/snippets/property_compact.svg">
+            <t t-set="record" t-value="data['_record']"/>
+            <div class="card border-0 h-100 w-100 o_dynamic_property_hovered">
+                <div t-if="is_sample" class="h5 o_ribbon_right bg-danger text-uppercase">Destacada</div>
+
+                <a class="o_carousel_property_img_link" t-att-href="'/properties/' + str(record.id)">
+                    <div class="position-relative overflow-hidden rounded">
+                        <img class="card-img-top h-auto"
+                             loading="lazy"
+                             t-att-src="data.get('image_512', '/web/static/img/placeholder.png')"
+                             t-att-alt="record.display_name"
+                             style="height: 200px; object-fit: cover;"/>
+
+                        <!-- Overlay con precio -->
+                        <div class="position-absolute bottom-0 start-0 w-100 p-3 bg-gradient"
+                             style="background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);">
+                            <div class="text-white">
+                                <div class="small mb-1" t-esc="data.get('region_name', 'Sin ubicación')"/>
+                                <div class="h6 mb-0">
+                                    <span t-esc="data.get('list_price_formatted', 0)"
+                                          t-options="{'widget': 'monetary', 'display_currency': record.currency_id}"/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Badge de tipo -->
+                        <span class="badge position-absolute top-0 end-0 m-2"
+                              t-att-class="'bg-danger' if data.get('type_service_label') == 'Arriendo' else 'bg-primary'">
+                            <t t-esc="data.get('type_service_label', 'Venta')"/>
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Nombre solo -->
+                <div class="card-body p-2">
+                    <h6 class="card-title mb-0" t-field="record.name"/>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- PLANTILLA 4: Property List (Horizontal) -->
+    <template id="dynamic_filter_template_property_list" name="Property List">
+        <t t-foreach="records" t-as="data"
+           data-number-of-elements="2"
+           data-number-of-elements-sm="1"
+           data-row-per-slide="2"
+           data-arrow-position="bottom"
+           data-extra-classes="o_carousel_multiple_rows"
+           data-thumb="/theme_bohio_real_estate/static/src/img/snippets/property_list.svg">
+            <t t-set="record" t-value="data['_record']"/>
+            <div class="o_carousel_property_card card w-100 border-0 bg-light p-3">
+                <div t-if="is_sample" class="h5 o_ribbon_right bg-danger text-uppercase">Destacada</div>
+                <div class="row g-0">
+                    <!-- Imagen -->
+                    <div class="col-md-4 position-static">
+                        <a class="stretched-link" t-att-href="'/properties/' + str(record.id)">
+                            <img class="img-fluid rounded"
+                                 loading="lazy"
+                                 t-att-src="data.get('image_512', '/web/static/img/placeholder.png')"
+                                 t-att-alt="record.display_name"
+                                 style="height: 150px; width: 100%; object-fit: cover;"/>
+                        </a>
+                    </div>
+
+                    <!-- Contenido -->
+                    <div class="col-md-8 ps-md-3 d-flex flex-column justify-content-between">
+                        <div>
+                            <!-- Título y tipo -->
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <h6 class="card-title mb-0" t-field="record.name"/>
+                                <span class="badge bg-secondary ms-2" t-esc="data.get('property_type_label', 'Propiedad')"/>
+                            </div>
+
+                            <!-- Ubicación -->
+                            <div class="text-muted small mb-2">
+                                <i class="fa fa-map-marker me-1"></i>
+                                <span t-if="data.get('region_name')" t-esc="data.get('region_name')"/><t t-if="data.get('region_name') and data.get('city_name')">, </t>
+                                <span t-if="data.get('city_name')" t-esc="data.get('city_name')"/>
+                            </div>
+                        </div>
+
+                        <!-- Footer con características y precio -->
+                        <div class="d-flex justify-content-between align-items-center">
+                            <!-- Características -->
+                            <div class="small text-muted">
+                                <span t-if="data.get('bedrooms', 0) > 0" class="me-2">
+                                    <i class="fa fa-bed"></i> <t t-esc="int(data.get('bedrooms', 0))"/>
+                                </span>
+                                <span t-if="data.get('bathrooms', 0) > 0" class="me-2">
+                                    <i class="fa fa-bath"></i> <t t-esc="int(data.get('bathrooms', 0))"/>
+                                </span>
+                                <span t-if="data.get('area', 0) > 0">
+                                    <i class="fa fa-arrows-alt"></i> <t t-esc="'%.0f' % data.get('area', 0)"/> m²
+                                </span>
+                            </div>
+
+                            <!-- Precio -->
+                            <div class="h6 mb-0 text-primary">
+                                <span t-esc="data.get('list_price_formatted', 0)"
+                                      t-options="{'widget': 'monetary', 'display_currency': record.currency_id}"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- Assets: CSS para property snippets -->
+    <record id="property_snippets_css" model="ir.asset">
+        <field name="name">Property Snippets CSS</field>
+        <field name="bundle">web.assets_frontend</field>
+        <field name="path">theme_bohio_real_estate/static/src/css/property_snippets.css</field>
+    </record>
+
+</odoo>

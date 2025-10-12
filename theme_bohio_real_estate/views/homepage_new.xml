@@ -530,6 +530,7 @@ Iniciar Sesión
                     </section>
 
 
+                    <!-- SECCIÓN ARRIENDO - CON SNIPPET DINÁMICO -->
                     <section class="bohio-arriendo py-5 bg-light">
                         <div class="container">
                             <div class="mb-4">
@@ -541,37 +542,30 @@ Iniciar Sesión
                             Te <span class="fw-bold">ayudamos</span> a encontrar el <span class="text-danger fw-bold">lugar ideal</span> para vivir
                             </h2>
 
-                            <ul class="nav nav-tabs mb-4" id="arriendoTabs" role="tablist">
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link active" id="arriendo-grid-tab" data-bs-toggle="tab" data-bs-target="#arriendo-grid" type="button" role="tab">
-                                        <i class="fa fa-th-large me-1"/>
- Vista Grid
-                                    </button>
-                                </li>
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link" id="arriendo-map-tab" data-bs-toggle="tab" data-bs-target="#arriendo-map" type="button" role="tab">
-                                        <i class="fa fa-map-marker me-1"/>
- Vista Mapa
-                                    </button>
-                                </li>
-                            </ul>
-
-                            <div class="tab-content" id="arriendoTabContent">
-                                <div class="tab-pane fade show active" id="arriendo-grid" role="tabpanel">
-                                    <div class="row g-4" id="arriendo-properties-grid"/>
-                                </div>
-                                <div class="tab-pane fade" id="arriendo-map" role="tabpanel">
-                                    <div id="arriendo-properties-map" style="height: 500px; width: 100%;"/>
+                            <!-- SNIPPET DINÁMICO: Propiedades en Arriendo -->
+                            <div class="s_dynamic_snippet_properties"
+                                 data-type-service="rent"
+                                 data-template-key="theme_bohio_real_estate.dynamic_filter_template_property_card"
+                                 data-limit="12">
+                                <!-- Loading spinner mientras carga -->
+                                <div class="text-center py-5">
+                                    <div class="spinner-border text-danger" role="status">
+                                        <span class="visually-hidden">Cargando propiedades...</span>
+                                    </div>
+                                    <p class="mt-3 text-muted">Cargando propiedades en arriendo...</p>
                                 </div>
                             </div>
 
                             <div class="text-center mt-4">
-                                <a href="/properties?type_service=rent" class="btn btn-danger px-4">Explora la categoría</a>
+                                <a href="/properties?type_service=rent" class="btn btn-danger btn-lg px-5">
+                                    <i class="fa fa-search me-2"></i>Explorar todas las propiedades en arriendo
+                                </a>
                             </div>
                         </div>
                     </section>
 
 
+                    <!-- SECCIÓN VENTA USADOS - CON SNIPPET DINÁMICO -->
                     <section class="bohio-used-sale py-5">
                         <div class="container">
                             <div class="mb-4">
@@ -583,37 +577,30 @@ Iniciar Sesión
                             Te ayudamos a encontrar el <span class="text-danger fw-bold">hogar</span> que estás buscando
                             </h2>
 
-                            <ul class="nav nav-tabs mb-4">
-                                <li class="nav-item">
-                                    <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#used-sale-grid">
-                                        <i class="fa fa-th-large me-1"/>
- Vista Grid
-                                    </button>
-                                </li>
-                                <li class="nav-item">
-                                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#used-sale-map">
-                                        <i class="fa fa-map-marker me-1"/>
- Vista Mapa
-                                    </button>
-                                </li>
-                            </ul>
-
-                            <div class="tab-content">
-                                <div class="tab-pane fade show active" id="used-sale-grid">
-                                    <div class="row g-4" id="used-sale-properties-grid"/>
-                                </div>
-                                <div class="tab-pane fade" id="used-sale-map">
-                                    <div id="used-sale-properties-map" style="height: 500px; width: 100%;"/>
+                            <!-- SNIPPET DINÁMICO: Propiedades Usadas en Venta (sin proyecto) -->
+                            <div class="s_dynamic_snippet_properties"
+                                 data-type-service="sale_used"
+                                 data-template-key="theme_bohio_real_estate.dynamic_filter_template_property_card"
+                                 data-limit="12">
+                                <!-- Loading spinner mientras carga -->
+                                <div class="text-center py-5">
+                                    <div class="spinner-border text-danger" role="status">
+                                        <span class="visually-hidden">Cargando propiedades...</span>
+                                    </div>
+                                    <p class="mt-3 text-muted">Cargando propiedades en venta...</p>
                                 </div>
                             </div>
 
                             <div class="text-center mt-4">
-                                <a href="/properties?type_service=sale" class="btn btn-danger px-4">Explora la categoría</a>
+                                <a href="/properties?type_service=sale" class="btn btn-danger btn-lg px-5">
+                                    <i class="fa fa-search me-2"></i>Explorar todas las propiedades en venta
+                                </a>
                             </div>
                         </div>
                     </section>
 
 
+                    <!-- SECCIÓN PROYECTOS - CON SNIPPET DINÁMICO -->
                     <section class="bohio-projects py-5 bg-light">
                         <div class="container">
                             <div class="mb-4">
@@ -625,32 +612,24 @@ Iniciar Sesión
                                 <span class="text-danger fw-bold">Invierte</span> hoy en el <span class="fw-bold">futuro</span> que sueñas
                             </h2>
 
-                            <ul class="nav nav-tabs mb-4">
-                                <li class="nav-item">
-                                    <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#projects-grid">
-                                        <i class="fa fa-th-large me-1"/>
- Vista Grid
-                                    </button>
-                                </li>
-                                <li class="nav-item">
-                                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#projects-map">
-                                        <i class="fa fa-map-marker me-1"/>
- Vista Mapa
-                                    </button>
-                                </li>
-                            </ul>
-
-                            <div class="tab-content">
-                                <div class="tab-pane fade show active" id="projects-grid">
-                                    <div class="row g-4" id="projects-properties-grid"/>
-                                </div>
-                                <div class="tab-pane fade" id="projects-map">
-                                    <div id="projects-properties-map" style="height: 500px; width: 100%;"/>
+                            <!-- SNIPPET DINÁMICO: Proyectos Nuevos (con proyecto) - Usando plantilla BANNER para destacar -->
+                            <div class="s_dynamic_snippet_properties"
+                                 data-type-service="projects"
+                                 data-template-key="theme_bohio_real_estate.dynamic_filter_template_property_banner"
+                                 data-limit="3">
+                                <!-- Loading spinner mientras carga -->
+                                <div class="text-center py-5">
+                                    <div class="spinner-border text-danger" role="status">
+                                        <span class="visually-hidden">Cargando proyectos...</span>
+                                    </div>
+                                    <p class="mt-3 text-muted">Cargando proyectos nuevos...</p>
                                 </div>
                             </div>
 
                             <div class="text-center mt-4">
-                                <a href="/properties?type_service=sale&amp;is_project=true" class="btn btn-danger px-4">Explora la categoría</a>
+                                <a href="/proyectos" class="btn btn-danger btn-lg px-5">
+                                    <i class="fa fa-building me-2"></i>Ver todos los proyectos
+                                </a>
                             </div>
                         </div>
                     </section>

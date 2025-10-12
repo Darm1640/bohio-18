@@ -50,6 +50,8 @@
 
         # Snippets
         'views/snippets/property_carousels_snippet.xml',
+        'views/snippets/property_snippet_templates.xml',
+        'views/snippets/s_dynamic_snippet_properties.xml',
 
         # Menus
         'views/menus/website_menu.xml',
