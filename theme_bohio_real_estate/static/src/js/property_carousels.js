@@ -1,13 +1,44 @@
-/** @odoo-module **/
-
-import { rpc } from "@web/core/network/rpc";
-
 /**
  * BOHIO Property Carousels - Sistema de Carruseles Dinámicos
  * Carga propiedades desde la base de datos para Venta, Renta y Proyectos
+ *
+ * IMPORTANTE: Este archivo NO usa @odoo-module porque necesita ejecutarse
+ * directamente al cargar la página (DOMContentLoaded)
  */
 
-class PropertyCarousel {
+(function() {
+    'use strict';
+
+    /**
+     * Helper para hacer llamadas RPC a Odoo
+     */
+    async function rpcCall(endpoint, params) {
+        try {
+            const response = await fetch(endpoint, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    jsonrpc: '2.0',
+                    method: 'call',
+                    params: params || {},
+                    id: Math.random().toString(36).substr(2, 9)
+                })
+            });
+
+            const data = await response.json();
+            if (data.error) {
+                throw new Error(data.error.message || 'RPC Error');
+            }
+            return data.result;
+        } catch (error) {
+            console.error('[RPC] Error:', error);
+            throw error;
+        }
+    }
+
+    class PropertyCarousel {
     constructor(containerId, carouselType) {
         this.containerId = containerId;
         this.carouselType = carouselType;
@@ -55,7 +86,7 @@ class PropertyCarousel {
                 return;
             }
 
-            const result = await rpc(endpoint, {
+            const result = await rpcCall(endpoint, {
                 limit: 12
             });
 
@@ -227,24 +258,26 @@ class PropertyCarousel {
     }
 }
 
-/**
- * Inicializar todos los carruseles al cargar la página
- */
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('=== Inicializando carruseles de propiedades ===');
+    /**
+     * Inicializar todos los carruseles al cargar la página
+     */
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('=== Inicializando carruseles de propiedades ===');
 
-    // Carrusel de propiedades en arriendo
-    const rentCarousel = new PropertyCarousel('carousel-rent', 'rent');
-    rentCarousel.init();
+        // Carrusel de propiedades en arriendo
+        const rentCarousel = new PropertyCarousel('carousel-rent', 'rent');
+        rentCarousel.init();
 
-    // Carrusel de propiedades usadas en venta
-    const saleCarousel = new PropertyCarousel('carousel-sale', 'sale');
-    saleCarousel.init();
+        // Carrusel de propiedades usadas en venta
+        const saleCarousel = new PropertyCarousel('carousel-sale', 'sale');
+        saleCarousel.init();
 
-    // Carrusel de proyectos/propiedades nuevas
-    const projectsCarousel = new PropertyCarousel('carousel-projects', 'projects');
-    projectsCarousel.init();
-});
+        // Carrusel de proyectos/propiedades nuevas
+        const projectsCarousel = new PropertyCarousel('carousel-projects', 'projects');
+        projectsCarousel.init();
+    });
 
-// Exportar para uso global
-window.PropertyCarousel = PropertyCarousel;
+    // Exportar para uso global
+    window.PropertyCarousel = PropertyCarousel;
+
+})(); // Fin del IIFE
