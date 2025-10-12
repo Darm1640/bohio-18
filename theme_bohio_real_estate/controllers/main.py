@@ -41,6 +41,71 @@ class BohioRealEstateController(http.Controller):
         # Para cualquier otro tipo, retornar 0
         return 0
 
+    def _serialize_properties_fast(self, properties_data, context_type='public'):
+        """
+        Serializa propiedades desde search_read para respuestas JSON rápidas.
+        Usa datos ya cargados por search_read (evita N+1 queries).
+
+        Args:
+            properties_data: Lista de dicts desde search_read
+            context_type: 'public', 'admin', o 'portal'
+
+        Returns:
+            Lista de dicts serializados para frontend
+        """
+        base_url = request.httprequest.url_root.rstrip('/')
+        serialized = []
+
+        for prop in properties_data:
+            # Determinar precio según tipo de servicio
+            price = 0
+            type_service = prop.get('type_service', '')
+            if 'rent' in type_service or 'Arriendo' in type_service:
+                price = prop.get('net_rental_price', 0)
+            else:
+                price = prop.get('net_price', 0)
+
+            # Obtener nombres de relaciones (Many2one viene como [id, name])
+            city_id = prop.get('city_id')
+            city_name = city_id[1] if city_id and isinstance(city_id, (list, tuple)) else prop.get('city', '')
+
+            state_id = prop.get('state_id')
+            state_name = state_id[1] if state_id and isinstance(state_id, (list, tuple)) else ''
+
+            project_id = prop.get('project_worksite_id')
+            project_name = project_id[1] if project_id and isinstance(project_id, (list, tuple)) else ''
+            project_id_int = project_id[0] if project_id and isinstance(project_id, (list, tuple)) else None
+
+            # Imagen - search_read devuelve el campo directamente
+            image_data = prop.get('image_512')
+            if image_data:
+                image_url = f"{base_url}/web/image/product.template/{prop['id']}/image_512"
+            else:
+                image_url = f"{base_url}/theme_bohio_real_estate/static/src/img/placeholder.jpg"
+
+            serialized.append({
+                'id': prop['id'],
+                'name': prop.get('name', 'Sin nombre'),
+                'code': prop.get('default_code', ''),
+                'property_type': prop.get('property_type', ''),
+                'type_service': type_service,
+                'price': price,
+                'area': prop.get('property_area', 0),
+                'bedrooms': prop.get('num_bedrooms', 0),
+                'bathrooms': prop.get('num_bathrooms', 0),
+                'city': city_name,
+                'state': state_name,
+                'neighborhood': prop.get('neighborhood', ''),
+                'latitude': prop.get('latitude', 0.0),
+                'longitude': prop.get('longitude', 0.0),
+                'project_id': project_id_int,
+                'project_name': project_name,
+                'image_url': image_url,
+                'url': f"/propiedad/{prop['id']}/{prop.get('name', '').replace(' ', '-').lower()}",
+            })
+
+        return serialized
+
     @http.route('/sobre-nosotros', type='http', auth='public', website=True)
     def sobre_nosotros(self, **kwargs):
         """Página Sobre Nosotros BOHIO"""
@@ -838,7 +903,7 @@ class BohioRealEstateController(http.Controller):
 
         return {
             'success': True,
-            'properties': self._serialize_properties_fast(properties_data, self.SEARCH_CONTEXTS['public']),
+            'properties': self._serialize_properties_fast(properties_data, 'public'),
             'total': total
         }
 
@@ -885,7 +950,7 @@ class BohioRealEstateController(http.Controller):
 
         return {
             'success': True,
-            'properties': self._serialize_properties_fast(properties_data, self.SEARCH_CONTEXTS['public']),
+            'properties': self._serialize_properties_fast(properties_data, 'public'),
             'total': total
         }
 
@@ -932,7 +997,7 @@ class BohioRealEstateController(http.Controller):
 
         return {
             'success': True,
-            'properties': self._serialize_properties_fast(properties_data, self.SEARCH_CONTEXTS['public']),
+            'properties': self._serialize_properties_fast(properties_data, 'public'),
             'total': total
         }
 
