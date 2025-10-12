@@ -20,6 +20,9 @@ const DynamicSnippetProperties = DynamicSnippetCarousel.extend({
      */
     _getTypeServiceSearchDomain() {
         const searchDomain = [];
+        if (!this.$el || !this.$el.length) {
+            return searchDomain;
+        }
         const typeService = this.$el.get(0).dataset.typeService;
 
         if (typeService && typeService !== 'all') {
@@ -47,6 +50,9 @@ const DynamicSnippetProperties = DynamicSnippetCarousel.extend({
      */
     _getPropertyTypeSearchDomain() {
         const searchDomain = [];
+        if (!this.$el || !this.$el.length) {
+            return searchDomain;
+        }
         const propertyType = this.$el.get(0).dataset.propertyType;
 
         if (propertyType && propertyType !== 'all') {
@@ -62,6 +68,9 @@ const DynamicSnippetProperties = DynamicSnippetCarousel.extend({
      */
     _getCitySearchDomain() {
         const searchDomain = [];
+        if (!this.$el || !this.$el.length) {
+            return searchDomain;
+        }
         const cityId = this.$el.get(0).dataset.cityId;
 
         if (cityId && cityId !== 'all') {
@@ -77,6 +86,9 @@ const DynamicSnippetProperties = DynamicSnippetCarousel.extend({
      */
     _getRegionSearchDomain() {
         const searchDomain = [];
+        if (!this.$el || !this.$el.length) {
+            return searchDomain;
+        }
         const regionId = this.$el.get(0).dataset.regionId;
 
         if (regionId && regionId !== 'all') {
@@ -92,6 +104,9 @@ const DynamicSnippetProperties = DynamicSnippetCarousel.extend({
      */
     _getPriceRangeSearchDomain() {
         const searchDomain = [];
+        if (!this.$el || !this.$el.length) {
+            return searchDomain;
+        }
         const priceMin = this.$el.get(0).dataset.priceMin;
         const priceMax = this.$el.get(0).dataset.priceMax;
 
@@ -112,6 +127,9 @@ const DynamicSnippetProperties = DynamicSnippetCarousel.extend({
      */
     _getFeaturesSearchDomain() {
         const searchDomain = [];
+        if (!this.$el || !this.$el.length) {
+            return searchDomain;
+        }
         const minBedrooms = this.$el.get(0).dataset.minBedrooms;
         const minBathrooms = this.$el.get(0).dataset.minBathrooms;
         const minArea = this.$el.get(0).dataset.minArea;
