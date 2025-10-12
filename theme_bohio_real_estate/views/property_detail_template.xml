@@ -421,7 +421,7 @@
                                     <i class="fa fa-link me-1"></i>Link de la Propiedad
                                 </label>
                                 <div class="input-group">
-                                    <input type="text" class="form-control" id="propertyShareLink" readonly="readonly" t-att-value="request.httprequest.url_root.rstrip('/') + '/property/' + str(property.id)"/>
+                                    <input type="text" class="form-control" id="propertyShareLink" readonly="readonly" t-attf-value="#{request.httprequest.url_root.rstrip('/')}/property/#{property.id}"/>
                                     <button class="btn btn-outline-danger" type="button" onclick="copyToClipboard()">
                                         <i class="fa fa-copy me-1"></i>Copiar
                                     </button>
@@ -497,7 +497,7 @@
                                 <input type="hidden" name="property_id" t-att-value="property.id"/>
                                 <input type="hidden" name="property_name" t-att-value="property.name"/>
                                 <input type="hidden" name="property_code" t-att-value="property.default_code or ''"/>
-                                <input type="hidden" name="property_url" t-att-value="request.httprequest.url_root.rstrip('/') + '/property/' + str(property.id)"/>
+                                <input type="hidden" name="property_url" t-attf-value="#{request.httprequest.url_root.rstrip('/')}/property/#{property.id}"/>
 
                                 <!-- Tipo de Problema -->
                                 <div class="mb-3">
