@@ -479,55 +479,133 @@ Iniciar Sesión
                         </script>
                     </section>
 
-                    <section class="bohio-services py-5">
+                    <section class="bohio-services py-5 bg-light">
                         <div class="container">
                             <div class="mb-4">
                                 <h2 class="d-inline-block bg-danger text-white px-4 py-3 mb-0 rounded-end-pill" style="font-size: 1.75rem; font-weight: 500;">
                                     Nuestros servicios
                                 </h2>
                             </div>
+                            <p class="lead text-muted mb-5">Soluciones integrales para todas tus necesidades inmobiliarias</p>
 
                             <div class="row g-4">
-
-
-                                <div class="col-md-2 col-6">
-                                    <div class="service-card text-center p-3 h-100 bg-white rounded-3 shadow-sm">
-                                        <div class="service-icon mb-2">
-                                            <img src="/theme_bohio_real_estate/static/src/img/icono-proyectos.png" alt="Proyectos" style="width: 60px; height: 60px; object-fit: contain;" loading="lazy"/>
+                                <!-- Arriendo -->
+                                <div class="col-lg-4 col-md-6">
+                                    <a href="/servicios#arriendo" class="text-decoration-none">
+                                        <div class="service-card p-4 h-100 bg-white rounded-3 shadow-sm hover-lift" style="transition: transform 0.3s;">
+                                            <div class="d-flex align-items-center mb-3">
+                                                <div class="service-icon me-3 d-flex align-items-center justify-content-center bg-danger bg-opacity-10 rounded-circle" style="width: 60px; height: 60px;">
+                                                    <i class="fa fa-key text-danger fa-2x"></i>
+                                                </div>
+                                                <h5 class="mb-0 text-danger fw-bold">Arriendo</h5>
+                                            </div>
+                                            <p class="text-muted mb-0 small">
+                                                Encuentra el inmueble perfecto para arrendar con asesoría personalizada y contratos seguros.
+                                            </p>
                                         </div>
-                                        <h6 class="mb-0">Proyectos</h6>
-                                    </div>
+                                    </a>
                                 </div>
 
-                                <div class="col-md-2 col-6">
-                                    <div class="service-card text-center p-3 h-100 bg-white rounded-3 shadow-sm">
-                                        <div class="service-icon mb-2">
-                                            <img src="/theme_bohio_real_estate/static/src/img/icono-negocios-corporativos.png" alt="Negocios Corporativos" style="width: 60px; height: 60px; object-fit: contain;" loading="lazy"/>
+                                <!-- Venta -->
+                                <div class="col-lg-4 col-md-6">
+                                    <a href="/servicios#venta" class="text-decoration-none">
+                                        <div class="service-card p-4 h-100 bg-white rounded-3 shadow-sm hover-lift" style="transition: transform 0.3s;">
+                                            <div class="d-flex align-items-center mb-3">
+                                                <div class="service-icon me-3 d-flex align-items-center justify-content-center bg-danger bg-opacity-10 rounded-circle" style="width: 60px; height: 60px;">
+                                                    <i class="fa fa-home text-danger fa-2x"></i>
+                                                </div>
+                                                <h5 class="mb-0 text-danger fw-bold">Venta</h5>
+                                            </div>
+                                            <p class="text-muted mb-0 small">
+                                                Compra o vende tu inmueble con total confianza. Te acompañamos en todo el proceso.
+                                            </p>
                                         </div>
-                                        <h6 class="mb-0">Negocios corporativos</h6>
-                                    </div>
+                                    </a>
                                 </div>
 
-                                <div class="col-md-2 col-6">
-                                    <div class="service-card text-center p-3 h-100 bg-white rounded-3 shadow-sm">
-                                        <div class="service-icon mb-2">
-                                            <img src="/theme_bohio_real_estate/static/src/img/icono-firma.png" alt="Firma Digital" style="width: 60px; height: 60px; object-fit: contain;" loading="lazy"/>
+                                <!-- Marketing Inmobiliario -->
+                                <div class="col-lg-4 col-md-6">
+                                    <a href="/servicios#marketing" class="text-decoration-none">
+                                        <div class="service-card p-4 h-100 bg-white rounded-3 shadow-sm hover-lift" style="transition: transform 0.3s;">
+                                            <div class="d-flex align-items-center mb-3">
+                                                <div class="service-icon me-3 d-flex align-items-center justify-content-center bg-danger bg-opacity-10 rounded-circle" style="width: 60px; height: 60px;">
+                                                    <i class="fa fa-bullhorn text-danger fa-2x"></i>
+                                                </div>
+                                                <h5 class="mb-0 text-danger fw-bold">Marketing</h5>
+                                            </div>
+                                            <p class="text-muted mb-0 small">
+                                                Potenciamos tu propiedad con fotografía profesional, tours 360° y publicidad digital.
+                                            </p>
                                         </div>
-                                        <h6 class="mb-0">Firma digital</h6>
-                                    </div>
+                                    </a>
                                 </div>
 
-                                <div class="col-md-2 col-6">
-                                    <div class="service-card text-center p-3 h-100 bg-white rounded-3 shadow-sm">
-                                        <div class="service-icon mb-2">
-                                            <img src="/theme_bohio_real_estate/static/src/img/icono-marketing.png" alt="Marketing Digital" style="width: 60px; height: 60px; object-fit: contain;" loading="lazy"/>
+                                <!-- Servicios Jurídicos -->
+                                <div class="col-lg-4 col-md-6">
+                                    <a href="/servicios#juridicos" class="text-decoration-none">
+                                        <div class="service-card p-4 h-100 bg-white rounded-3 shadow-sm hover-lift" style="transition: transform 0.3s;">
+                                            <div class="d-flex align-items-center mb-3">
+                                                <div class="service-icon me-3 d-flex align-items-center justify-content-center bg-danger bg-opacity-10 rounded-circle" style="width: 60px; height: 60px;">
+                                                    <i class="fa fa-balance-scale text-danger fa-2x"></i>
+                                                </div>
+                                                <h5 class="mb-0 text-danger fw-bold">Servicios Jurídicos</h5>
+                                            </div>
+                                            <p class="text-muted mb-0 small">
+                                                Asesoría legal especializada para garantizar la seguridad jurídica de tus transacciones.
+                                            </p>
                                         </div>
-                                        <h6 class="mb-0">Marketing digital</h6>
-                                    </div>
+                                    </a>
                                 </div>
+
+                                <!-- Negocios Corporativos -->
+                                <div class="col-lg-4 col-md-6">
+                                    <a href="/servicios#corporativos" class="text-decoration-none">
+                                        <div class="service-card p-4 h-100 bg-white rounded-3 shadow-sm hover-lift" style="transition: transform 0.3s;">
+                                            <div class="d-flex align-items-center mb-3">
+                                                <div class="service-icon me-3 d-flex align-items-center justify-content-center bg-danger bg-opacity-10 rounded-circle" style="width: 60px; height: 60px;">
+                                                    <i class="fa fa-briefcase text-danger fa-2x"></i>
+                                                </div>
+                                                <h5 class="mb-0 text-danger fw-bold">Corporativos</h5>
+                                            </div>
+                                            <p class="text-muted mb-0 small">
+                                                Soluciones inmobiliarias para empresas: oficinas, locales y bodegas industriales.
+                                            </p>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <!-- Firma Digital -->
+                                <div class="col-lg-4 col-md-6">
+                                    <a href="/servicios#firma" class="text-decoration-none">
+                                        <div class="service-card p-4 h-100 bg-white rounded-3 shadow-sm hover-lift" style="transition: transform 0.3s;">
+                                            <div class="d-flex align-items-center mb-3">
+                                                <div class="service-icon me-3 d-flex align-items-center justify-content-center bg-danger bg-opacity-10 rounded-circle" style="width: 60px; height: 60px;">
+                                                    <i class="fa fa-pencil-square text-danger fa-2x"></i>
+                                                </div>
+                                                <h5 class="mb-0 text-danger fw-bold">Firma Digital</h5>
+                                            </div>
+                                            <p class="text-muted mb-0 small">
+                                                Firma contratos desde cualquier lugar con certificación digital 100% legal y segura.
+                                            </p>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="text-center mt-5">
+                                <a href="/servicios" class="btn btn-danger btn-lg px-5">
+                                    <i class="fa fa-th me-2"></i>Ver todos los servicios
+                                </a>
                             </div>
                         </div>
                     </section>
+
+                    <style>
+                        .service-card:hover {
+                            transform: translateY(-5px) !important;
+                            box-shadow: 0 10px 25px rgba(0,0,0,0.15) !important;
+                        }
+                    </style>
 
 
                     <!-- SECCIÓN ARRIENDO - CON SNIPPET DINÁMICO -->

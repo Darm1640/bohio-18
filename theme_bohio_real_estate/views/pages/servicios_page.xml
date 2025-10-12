@@ -21,7 +21,7 @@
                         <div class="row g-4">
 
                             <!-- Arriendo -->
-                            <div class="col-lg-4 col-md-6">
+                            <div class="col-lg-4 col-md-6" id="arriendo">
                                 <div class="servicio-card h-100 shadow-sm border-0 rounded-3 overflow-hidden hover-lift">
                                     <div class="servicio-image position-relative">
                                         <img src="/theme_bohio_real_estate/static/src/img/servicio_arriendo.jpg"
@@ -55,7 +55,7 @@
                             </div>
 
                             <!-- Venta -->
-                            <div class="col-lg-4 col-md-6">
+                            <div class="col-lg-4 col-md-6" id="venta">
                                 <div class="servicio-card h-100 shadow-sm border-0 rounded-3 overflow-hidden hover-lift">
                                     <div class="servicio-image position-relative">
                                         <img src="/theme_bohio_real_estate/static/src/img/servicio_venta.jpg"
@@ -89,7 +89,7 @@
                             </div>
 
                             <!-- Marketing Inmobiliario -->
-                            <div class="col-lg-4 col-md-6">
+                            <div class="col-lg-4 col-md-6" id="marketing">
                                 <div class="servicio-card h-100 shadow-sm border-0 rounded-3 overflow-hidden hover-lift">
                                     <div class="servicio-image position-relative">
                                         <img src="/theme_bohio_real_estate/static/src/img/servicio_marketing.jpg"
@@ -123,7 +123,7 @@
                             </div>
 
                             <!-- Servicios Jurídicos -->
-                            <div class="col-lg-4 col-md-6">
+                            <div class="col-lg-4 col-md-6" id="juridicos">
                                 <div class="servicio-card h-100 shadow-sm border-0 rounded-3 overflow-hidden hover-lift">
                                     <div class="servicio-image position-relative">
                                         <img src="/theme_bohio_real_estate/static/src/img/banner2.jpg"
@@ -157,7 +157,7 @@
                             </div>
 
                             <!-- Negocios Corporativos -->
-                            <div class="col-lg-4 col-md-6">
+                            <div class="col-lg-4 col-md-6" id="corporativos">
                                 <div class="servicio-card h-100 shadow-sm border-0 rounded-3 overflow-hidden hover-lift">
                                     <div class="servicio-image position-relative">
                                         <img src="/theme_bohio_real_estate/static/src/img/negocios_corporativos.jpg"
@@ -191,7 +191,7 @@
                             </div>
 
                             <!-- Firma Digital -->
-                            <div class="col-lg-4 col-md-6">
+                            <div class="col-lg-4 col-md-6" id="firma">
                                 <div class="servicio-card h-100 shadow-sm border-0 rounded-3 overflow-hidden hover-lift">
                                     <div class="servicio-image position-relative">
                                         <img src="/theme_bohio_real_estate/static/src/img/banner1.jpg"
