@@ -56,6 +56,7 @@
         # Snippets
         'views/snippets/property_carousels_snippet.xml',
         'views/snippets/property_snippet_templates.xml',
+        'views/snippets/property_snippet_templates_simple.xml',
         'views/snippets/s_dynamic_snippet_properties.xml',
 
         # Menus

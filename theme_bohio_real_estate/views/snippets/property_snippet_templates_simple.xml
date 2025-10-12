@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- TEMPLATE SIMPLIFICADO PARA TESTING -->
+    <template id="dynamic_filter_template_product_template_property_card" name="Property Card Simple">
+        <t t-foreach="records" t-as="record">
+            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                <div class="card h-100">
+                    <img t-att-src="record.get('image_1920', '/web/static/img/placeholder.png')"
+                         class="card-img-top"
+                         style="height: 200px; object-fit: cover;"/>
+                    <div class="card-body">
+                        <h5 class="card-title" t-esc="record.get('name', 'Sin nombre')"/>
+                        <p class="text-muted mb-2">
+                            <i class="fa fa-map-marker"/>
+                            <span t-if="record.get('city_id')" t-esc="record['city_id'][1] if isinstance(record.get('city_id'), (list, tuple)) else record.get('city_id')"/>
+                        </p>
+                        <div class="mb-2">
+                            <span t-if="record.get('bedrooms')" class="me-2">
+                                <i class="fa fa-bed"/> <t t-esc="int(record.get('bedrooms', 0))"/>
+                            </span>
+                            <span t-if="record.get('bathrooms')" class="me-2">
+                                <i class="fa fa-bath"/> <t t-esc="int(record.get('bathrooms', 0))"/>
+                            </span>
+                            <span t-if="record.get('area')">
+                                <i class="fa fa-arrows-alt"/> <t t-esc="'%.0f' % record.get('area', 0)"/> m²
+                            </span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <strong class="text-primary" t-esc="record.get('list_price', 0)" t-options="{'widget': 'monetary', 'display_currency': record.get('currency_id')}"/>
+                            <a t-att-href="record.get('website_url', '#')" class="btn btn-sm btn-danger">Ver</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>
