@@ -87,7 +87,11 @@
     ],
     'assets': {
         'web.assets_frontend': [
-            # Solo CSS de portal (el resto está en theme)
+            # Font Awesome (necesario para iconos del portal)
+            ('include', 'web._assets_helpers'),
+            'web/static/lib/fontawesome/css/fontawesome.css',
+            'web/static/lib/fontawesome/css/solid.css',
+            # CSS personalizado de portal
             'bohio_real_estate/static/src/css/mybohio_portal.css',
         ],
         'web.assets_backend': [

@@ -3,19 +3,15 @@
     <!-- Footer Template BOHIO -->
     <template id="bohio_footer" inherit_id="website.layout" name="Bohio Real Estate Footer">
         <xpath expr="//div[@id='footer']" position="replace">
+            <div class="bohio-red-gradient-top" style="height: 5px; background: linear-gradient(90deg, #dc2626 0%, #ef4444 25%, #f87171 50%, #ef4444 75%, #dc2626 100%); animation: bohio-shimmer 3s ease-in-out infinite;"/>
+            
             <div id="footer" class="bohio-footer bg-black text-white py-5">
                 <div class="container">
                     <div class="row">
                         <!-- Columna 1: Logo y Descripción -->
                         <div class="col-lg-4 mb-4">
                             <div class="d-flex align-items-center mb-3">
-                                <img src="/theme_bohio_real_estate/static/src/img/logo-blanco.png"
-                                     alt="BOHIO Logo"
-                                     style="max-width: 60px; height: auto; margin-right: 15px;"/>
-                                <div>
-                                    <h4 class="mb-0" style="font-weight: 700; letter-spacing: 2px;">CONSULTORES</h4>
-                                    <p class="mb-0" style="font-size: 14px; font-weight: 500;">Soluciones Inmobiliarias</p>
-                                </div>
+                                <img src="/theme_bohio_real_estate/static/src/img/logo-blanco.png" alt="BOHIO Logo" style="max-width: 220px; height: auto; margin-right: 15px;"/>
                             </div>
                             <p class="text-white-50" style="font-size: 14px; line-height: 1.6;">
                                 En Bohío, trabajamos con transparencia, compromiso y experiencia para que
@@ -23,24 +19,18 @@
                             </p>
 
                             <!-- Redes Sociales -->
-                            <div class="d-flex gap-3 mt-3">
-                                <a href="https://www.instagram.com/bohioinmobiliaria/?hl=es"
-                                   target="_blank"
-                                   class="text-white d-flex align-items-center justify-content-center"
-                                   style="width: 40px; height: 40px; border: 1px solid rgba(255,255,255,0.2); border-radius: 50%; transition: all 0.3s;">
-                                    <i class="fa fa-instagram fa-lg"></i>
+                            <div class="d-flex gap-3 mt-3 flex-wrap">
+                                <a href="https://www.instagram.com/bohioinmobiliaria/?hl=es" target="_blank" rel="noopener noreferrer" class="bohio-social-icon text-white d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; background: linear-gradient(135deg, #dc2626, #ef4444); border-radius: 50%; transition: all 0.3s;" title="Instagram">
+                                    <i class="fa fa-instagram fa-lg"/>
                                 </a>
-                                <a href="https://www.facebook.com/bohio"
-                                   target="_blank"
-                                   class="text-white d-flex align-items-center justify-content-center"
-                                   style="width: 40px; height: 40px; border: 1px solid rgba(255,255,255,0.2); border-radius: 50%; transition: all 0.3s;">
-                                    <i class="fa fa-facebook fa-lg"></i>
+                                <a href="https://www.facebook.com/bohioconsultores/?locale=es_LA" target="_blank" rel="noopener noreferrer" class="bohio-social-icon text-white d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; background: linear-gradient(135deg, #dc2626, #ef4444); border-radius: 50%; transition: all 0.3s;" title="Facebook">
+                                    <i class="fa fa-facebook fa-lg"/>
                                 </a>
-                                <a href="https://www.youtube.com/@bohio"
-                                   target="_blank"
-                                   class="text-white d-flex align-items-center justify-content-center"
-                                   style="width: 40px; height: 40px; border: 1px solid rgba(255,255,255,0.2); border-radius: 50%; transition: all 0.3s;">
-                                    <i class="fa fa-youtube fa-lg"></i>
+                                <a href="https://www.youtube.com/@bohioinmobiliaria" target="_blank" rel="noopener noreferrer" class="bohio-social-icon text-white d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; background: linear-gradient(135deg, #dc2626, #ef4444); border-radius: 50%; transition: all 0.3s;" title="YouTube">
+                                    <i class="fa fa-youtube fa-lg"/>
+                                </a>
+                                <a href="https://co.linkedin.com/company/bohioinmobiliaria" target="_blank" rel="noopener noreferrer" class="bohio-social-icon text-white d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; background: linear-gradient(135deg, #dc2626, #ef4444); border-radius: 50%; transition: all 0.3s;" title="LinkedIn">
+                                    <i class="fa fa-linkedin fa-lg"/>
                                 </a>
                             </div>
                         </div>
@@ -49,30 +39,22 @@
                         <div class="col-lg-2 col-md-4 mb-4">
                             <ul class="list-unstyled">
                                 <li class="mb-3">
-                                    <a href="/properties?type_service=rent"
-                                       class="text-white text-decoration-none d-block"
-                                       style="font-size: 15px; transition: all 0.3s;">
+                                    <a href="/properties?type_service=rent" class="text-white text-decoration-none d-block" style="font-size: 15px; transition: all 0.3s;">
                                         Arriendo
                                     </a>
                                 </li>
                                 <li class="mb-3">
-                                    <a href="/properties?type_service=sale"
-                                       class="text-white text-decoration-none d-block"
-                                       style="font-size: 15px; transition: all 0.3s;">
+                                    <a href="/properties?type_service=sale" class="text-white text-decoration-none d-block" style="font-size: 15px; transition: all 0.3s;">
                                         Ventas
                                     </a>
                                 </li>
                                 <li class="mb-3">
-                                    <a href="/servicios#captacion"
-                                       class="text-white text-decoration-none d-block"
-                                       style="font-size: 15px; transition: all 0.3s;">
+                                    <a href="/servicios#captacion" class="text-white text-decoration-none d-block" style="font-size: 15px; transition: all 0.3s;">
                                         Captación
                                     </a>
                                 </li>
                                 <li class="mb-3">
-                                    <a href="/servicios#avaluos"
-                                       class="text-white text-decoration-none d-block"
-                                       style="font-size: 15px; transition: all 0.3s;">
+                                    <a href="/servicios#avaluos" class="text-white text-decoration-none d-block" style="font-size: 15px; transition: all 0.3s;">
                                         Avalúos
                                     </a>
                                 </li>
@@ -83,30 +65,22 @@
                         <div class="col-lg-2 col-md-4 mb-4">
                             <ul class="list-unstyled">
                                 <li class="mb-3">
-                                    <a href="/faq"
-                                       class="text-white text-decoration-none d-block"
-                                       style="font-size: 15px; transition: all 0.3s;">
+                                    <a href="/faq" class="text-white" style="font-size: 15px; transition: all 0.3s;">
                                         Preguntas Frecuentes
                                     </a>
                                 </li>
                                 <li class="mb-3">
-                                    <a href="/about"
-                                       class="text-white text-decoration-none d-block"
-                                       style="font-size: 15px; transition: all 0.3s;">
+                                    <a href="/about" class="text-white text-decoration-none d-block" style="font-size: 15px; transition: all 0.3s;">
                                         Sobre Nosotros
                                     </a>
                                 </li>
                                 <li class="mb-3">
-                                    <a href="/blog"
-                                       class="text-white text-decoration-none d-block"
-                                       style="font-size: 15px; transition: all 0.3s;">
+                                    <a href="/blog" class="text-white text-decoration-none d-block" style="font-size: 15px; transition: all 0.3s;">
                                         Novedades
                                     </a>
                                 </li>
                                 <li class="mb-3">
-                                    <a href="/privacy"
-                                       class="text-white text-decoration-none d-block"
-                                       style="font-size: 15px; transition: all 0.3s;">
+                                    <a href="/privacy" class="text-white text-decoration-none d-block" style="font-size: 15px; transition: all 0.3s;">
                                         Políticas de Privacidad
                                     </a>
                                 </li>
@@ -117,56 +91,78 @@
                         <div class="col-lg-2 col-md-4 mb-4">
                             <ul class="list-unstyled">
                                 <li class="mb-3">
-                                    <a href="mailto:info@bohio.com"
-                                       class="text-white text-decoration-none d-block"
-                                       style="font-size: 15px; transition: all 0.3s;">
+                                    <a href="mailto:info@bohio.com" class="text-white text-decoration-none d-block" style="font-size: 15px; transition: all 0.3s;">
                                         Email
                                     </a>
                                 </li>
                                 <li class="mb-3">
-                                    <a href="/contacto"
-                                       class="text-white text-decoration-none d-block"
-                                       style="font-size: 15px; transition: all 0.3s;">
+                                    <a href="/contacto" class="text-white text-decoration-none d-block" style="font-size: 15px; transition: all 0.3s;">
                                         Contáctanos
                                     </a>
                                 </li>
                                 <li class="mb-3">
-                                    <a href="/pqrs"
-                                       class="text-white text-decoration-none d-block"
-                                       style="font-size: 15px; transition: all 0.3s;">
+                                    <a href="/pqrs" class="text-white text-decoration-none d-block" style="font-size: 15px; transition: all 0.3s;">
                                         PQRS
                                     </a>
                                 </li>
                                 <li class="mb-3">
-                                    <a href="/terms"
-                                       class="text-white text-decoration-none d-block"
-                                       style="font-size: 15px; transition: all 0.3s;">
+                                    <a href="/terms" class="text-white text-decoration-none d-block" style="font-size: 15px; transition: all 0.3s;">
                                         Términos de Servicios
                                     </a>
                                 </li>
                             </ul>
                         </div>
 
-                        <!-- Columna 5: Horarios de Atención -->
+                        <!-- Columna 5: Información de Contacto y Horarios -->
                         <div class="col-lg-2 col-md-12">
-                            <h6 class="text-white fw-bold mb-3" style="font-size: 16px;">Horarios de atención</h6>
-
-                            <div class="mb-3">
-                                <p class="text-white mb-1 fw-semibold" style="font-size: 14px;">Lunes a Viernes</p>
-                                <p class="text-white-50 mb-0" style="font-size: 13px;">7:30 a 12:00</p>
-                                <p class="text-white-50 mb-0" style="font-size: 13px;">2:00 a 6:00</p>
+                            <!-- INFORMACIÓN DE CONTACTO -->
+                            <h6 class="fw-bold mb-3" style="font-size: 16px; color: #dc2626;">Contacto</h6>
+                            
+                            <!-- Dirección -->
+                            <div class="d-flex align-items-start mb-3">
+                                <i class="fa fa-map-marker-alt me-2" style="color: #dc2626; margin-top: 3px; font-size: 14px;"/>
+                                <div>
+                                    <p class="text-white-50 mb-0" style="font-size: 13px; line-height: 1.5;">
+                                        Cl. 29 #2, Esquina, Centro<br/>
+                                        Montería, Colombia
+                                    </p>
+                                </div>
                             </div>
 
+                            <!-- Teléfono -->
+                            <div class="d-flex align-items-center mb-3">
+                                <i class="fa fa-phone-alt me-2" style="color: #dc2626; font-size: 14px;"/>
+                                <a href="tel:+573217403356" class="text-white-50 text-decoration-none" style="font-size: 13px;">
+                                    +57 321 7403356
+                                </a>
+                            </div>
+
+                
+                            <!-- HORARIOS DE ATENCIÓN -->
+                            <h6 class="text-white fw-bold mb-3" style="font-size: 16px;">Horarios de atención</h6>
+
+                            <!-- Lunes a Viernes -->
+                            <div class="mb-3">
+                                <p class="text-white mb-1 fw-semibold" style="font-size: 14px;">
+                                    <span style="color: #dc2626; font-weight: 700;">L</span>unes a <span style="color: #dc2626; font-weight: 700;">V</span>iernes
+                                </p>
+                                <p class="mb-0" style="font-size: 13px; color: #dc2626; font-weight: 600;">7:30 a 12:00</p>
+                                <p class="mb-0" style="font-size: 13px; color: #dc2626; font-weight: 600;">2:00 a 6:00</p>
+                            </div>
+
+                            <!-- Sábados -->
                             <div>
-                                <p class="text-white mb-1 fw-semibold" style="font-size: 14px;">Sábados</p>
-                                <p class="text-white-50 mb-0" style="font-size: 13px;">8:00 a 12:00</p>
-                                <p class="text-white-50 mb-0" style="font-size: 13px;">2:00 a 6:00</p>
+                                <p class="text-white mb-1 fw-semibold" style="font-size: 14px;">
+                                    <span style="color: #dc2626; font-weight: 700;">S</span>ábados
+                                </p>
+                                <p class="mb-0" style="font-size: 13px; color: #dc2626; font-weight: 600;">8:00 a 12:00</p>
+                                <p class="mb-0" style="font-size: 13px; color: #dc2626; font-weight: 600;">2:00 a 6:00</p>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Copyright -->
-                    <div class="row mt-5 pt-4" style="border-top: 1px solid rgba(255,255,255,0.1);">
+                    <!-- Copyright (SIN BORDE SUPERIOR) -->
+                    <div class="row mt-5 pt-4">
                         <div class="col-12 text-center">
                             <p class="text-white-50 mb-0" style="font-size: 13px;">
                                 Copyright <t t-out="datetime.datetime.now().year"/>, Bohío Inmobiliaria S.A.S. Todos los derechos reservados
@@ -176,17 +172,35 @@
                 </div>
             </div>
 
-            <!-- Estilos adicionales para hover -->
+            <!-- Estilos adicionales -->
             <style>
+                /* Animación del degradado */
+                @keyframes bohio-shimmer {
+                    0%, 100% {
+                        opacity: 1;
+                    }
+                    50% {
+                        opacity: 0.75;
+                    }
+                }
+
+                /* Hover en links del footer */
                 .bohio-footer a:hover {
                     color: #E31E24 !important;
                     transform: translateX(5px);
                 }
 
-                .bohio-footer .d-flex a:hover {
-                    background: #E31E24;
-                    border-color: #E31E24 !important;
-                    transform: translateY(-3px);
+                /* Hover en iconos sociales */
+                .bohio-footer .bohio-social-icon:hover {
+                    transform: translateY(-3px) scale(1.1);
+                    box-shadow: 0 5px 15px rgba(220, 38, 38, 0.4);
+                }
+
+                /* Hover en links de contacto */
+                .bohio-footer a[href^="tel:"]:hover,
+                .bohio-footer a[href^="mailto:"]:hover {
+                    color: #dc2626 !important;
+                    transform: none;
                 }
             </style>
         </xpath>
