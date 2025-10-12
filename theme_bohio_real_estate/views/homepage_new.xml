@@ -494,8 +494,8 @@ Iniciar Sesión
                                     <a href="/servicios#arriendo" class="text-decoration-none">
                                         <div class="service-card p-4 h-100 bg-white rounded-3 shadow-sm hover-lift" style="transition: transform 0.3s;">
                                             <div class="d-flex align-items-center mb-3">
-                                                <div class="service-icon me-3 d-flex align-items-center justify-content-center bg-danger bg-opacity-10 rounded-circle" style="width: 60px; height: 60px;">
-                                                    <i class="fa fa-key text-danger fa-2x"></i>
+                                                <div class="service-icon me-3 d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                                                    <img src="/theme_bohio_real_estate/static/src/img/icono-arriendo.png" alt="Arriendo" style="width: 60px; height: 60px; object-fit: contain;" loading="lazy"/>
                                                 </div>
                                                 <h5 class="mb-0 text-danger fw-bold">Arriendo</h5>
                                             </div>
@@ -511,8 +511,8 @@ Iniciar Sesión
                                     <a href="/servicios#venta" class="text-decoration-none">
                                         <div class="service-card p-4 h-100 bg-white rounded-3 shadow-sm hover-lift" style="transition: transform 0.3s;">
                                             <div class="d-flex align-items-center mb-3">
-                                                <div class="service-icon me-3 d-flex align-items-center justify-content-center bg-danger bg-opacity-10 rounded-circle" style="width: 60px; height: 60px;">
-                                                    <i class="fa fa-home text-danger fa-2x"></i>
+                                                <div class="service-icon me-3 d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                                                    <img src="/theme_bohio_real_estate/static/src/img/icono-venta.png" alt="Venta" style="width: 60px; height: 60px; object-fit: contain;" loading="lazy"/>
                                                 </div>
                                                 <h5 class="mb-0 text-danger fw-bold">Venta</h5>
                                             </div>
