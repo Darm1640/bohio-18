@@ -115,7 +115,7 @@ Iniciar Sesión
                                                                         <input type="text" name="search_query" class="form-control property-search-input" placeholder="Buscar por ciudad, barrio, dirección o código..." autocomplete="off" style="border: none; padding: 13px 16px; font-size: 0.95rem; background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); color: #fff; font-weight: 500;"/>
                                                                     </div>
                                                                     <!-- Contenedor de autocompletado -->
-                                                                    <div class="autocomplete-container shadow-lg" style="display: none;"/>
+                                                                    <div class="autocomplete-container shadow-lg" style="display: none;"></div>
                                                                 </div>
                                                             </div>
 
