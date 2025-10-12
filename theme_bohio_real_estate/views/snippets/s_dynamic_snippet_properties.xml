@@ -199,7 +199,7 @@
     <!-- JavaScript: Opciones del snippet -->
     <record id="s_dynamic_snippet_properties_options_js" model="ir.asset">
         <field name="name">Dynamic Snippet Properties Options JS</field>
-        <field name="bundle">web._assets_primary_variables</field>
+        <field name="bundle">web.assets_backend</field>
         <field name="path">theme_bohio_real_estate/static/src/snippets/s_dynamic_snippet_properties/options.js</field>
     </record>
 
