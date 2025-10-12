@@ -7,16 +7,15 @@
     <!-- PLANTILLA 1: Property Card con Imagen y Detalles -->
     <template id="dynamic_filter_template_property_card" name="Property Card">
         <t t-foreach="records" t-as="data" data-thumb="/theme_bohio_real_estate/static/src/img/snippets/property_card.svg">
-            <t t-set="record" t-value="data['_record']"/>
             <div class="o_carousel_property_card card h-100 w-100">
                 <div t-if="is_sample" class="h5 o_ribbon_right bg-danger text-uppercase">Destacada</div>
 
                 <!-- Imagen de la propiedad -->
-                <a class="o_carousel_property_img_link o_dynamic_property_hovered overflow-hidden" t-att-href="'/properties/' + str(record.id)">
+                <a class="o_carousel_property_img_link o_dynamic_property_hovered overflow-hidden" t-att-href="data.get('website_url', '/properties/' + str(data.get('id', 0)))">
                     <img class="card-img-top o_img_property_cover h-auto"
                          loading="lazy"
-                         t-att-src="data.get('image_512', '/web/static/img/placeholder.png')"
-                         t-att-alt="record.display_name"
+                         t-att-src="data.get('image_1920', '/web/static/img/placeholder.png')"
+                         t-att-alt="data.get('name', 'Propiedad')"
                          style="height: 250px; object-fit: cover;"/>
 
                     <!-- Badge de tipo de servicio -->
@@ -35,20 +34,25 @@
                 <!-- Cuerpo de la tarjeta -->
                 <div class="o_carousel_property_card_body card-body d-flex flex-column">
                     <!-- Título -->
-                    <a t-att-href="'/properties/' + str(record.id)" class="text-decoration-none">
-                        <h5 class="card-title mb-2 text-dark" t-field="record.name"/>
+                    <a t-att-href="data.get('website_url', '/properties/' + str(data.get('id', 0)))" class="text-decoration-none">
+                        <h5 class="card-title mb-2 text-dark" t-esc="data.get('name', 'Propiedad')"/>
                     </a>
 
                     <!-- Ubicación -->
                     <div class="text-muted mb-2 small">
                         <i class="fa fa-map-marker me-1"></i>
-                        <span t-if="data.get('region_name')" t-esc="data.get('region_name')"/><t t-if="data.get('region_name') and data.get('city_name')">, </t>
-                        <span t-if="data.get('city_name')" t-esc="data.get('city_name')"/>
+                        <t t-if="data.get('region_id')">
+                            <span t-esc="data.get('region_id')[1] if isinstance(data.get('region_id'), (list, tuple)) else data.get('region_id')"/>
+                        </t>
+                        <t t-if="data.get('region_id') and data.get('city_id')">, </t>
+                        <t t-if="data.get('city_id')">
+                            <span t-esc="data.get('city_id')[1] if isinstance(data.get('city_id'), (list, tuple)) else data.get('city_id')"/>
+                        </t>
                     </div>
 
                     <!-- Tipo de propiedad -->
                     <div class="mb-3">
-                        <span class="badge bg-secondary" t-esc="data.get('property_type_label', 'Propiedad')"/>
+                        <span class="badge bg-secondary" t-esc="dict(data.get('property_type', [('', 'Propiedad')]))[1] if data.get('property_type') else 'Propiedad'"/>
                     </div>
 
                     <!-- Características -->
@@ -73,11 +77,8 @@
 
                     <!-- Precio -->
                     <div class="d-flex justify-content-between align-items-center mt-auto pt-3 border-top">
-                        <div class="h5 mb-0 text-primary">
-                            <span t-esc="data.get('list_price_formatted', 0)"
-                                  t-options="{'widget': 'monetary', 'display_currency': record.currency_id}"/>
-                        </div>
-                        <a t-att-href="'/properties/' + str(record.id)"
+                        <div class="h5 mb-0 text-primary" t-esc="data.get('list_price', 0)" t-options="{'widget': 'monetary', 'display_currency': data.get('currency_id')}"/>
+                        <a t-att-href="data.get('website_url', '/properties/' + str(data.get('id', 0)))"
                            class="btn btn-sm btn-outline-danger">
                             Ver Más
                         </a>
