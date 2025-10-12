@@ -27,6 +27,7 @@
     'data': [
         # Layout
         'views/layout/loader_template.xml',
+        'views/layout/pwa_fix.xml',
 
         # Data - Torre Rialto (orden: proyecto, propiedades, planos)
         'data/torre_rialto_proyecto.xml',
