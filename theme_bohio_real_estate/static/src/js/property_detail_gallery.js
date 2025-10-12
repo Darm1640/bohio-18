@@ -36,10 +36,7 @@ document.addEventListener('DOMContentLoaded', function() {
             } else if (e.key === 'ArrowRight') {
                 navigateZoom(1);
             } else if (e.key === 'Escape') {
-                const modalInstance = bootstrap.Modal.getInstance(zoomModal);
-                if (modalInstance) {
-                    modalInstance.hide();
-                }
+                $('#imageZoomModal').modal('hide');
             }
         }
     });
@@ -58,15 +55,14 @@ window.openImageZoom = function(index) {
         return;
     }
 
-    const modal = new bootstrap.Modal(modalElement);
-
     // Actualizar imagen principal
     updateZoomImage();
 
     // Cargar miniaturas
     loadZoomThumbnails();
 
-    modal.show();
+    // Usar jQuery para abrir el modal (Bootstrap 5 en Odoo 18)
+    $('#imageZoomModal').modal('show');
 };
 
 // Actualizar imagen en el zoom
@@ -173,8 +169,6 @@ window.openGalleryModal = function() {
         return;
     }
 
-    const modal = new bootstrap.Modal(modalElement);
-
     // Obtener todas las imágenes del carrusel
     const images = document.querySelectorAll('#propertyImageCarousel .carousel-item img');
     let html = '';
@@ -193,7 +187,9 @@ window.openGalleryModal = function() {
     });
 
     grid.innerHTML = html;
-    modal.show();
+
+    // Usar jQuery para abrir el modal (Bootstrap 5 en Odoo 18)
+    $('#galleryModal').modal('show');
 };
 
 // Ir a una diapositiva específica
@@ -201,18 +197,11 @@ window.goToSlide = function(index) {
     const carouselElement = document.getElementById('propertyImageCarousel');
     if (!carouselElement) return;
 
-    const carousel = bootstrap.Carousel.getInstance(carouselElement);
-    if (carousel) {
-        carousel.to(index);
-    }
+    // Usar jQuery/Bootstrap para navegar al slide (Bootstrap 5 en Odoo 18)
+    $('#propertyImageCarousel').carousel(index);
 
-    const galleryModal = document.getElementById('galleryModal');
-    if (galleryModal) {
-        const modalInstance = bootstrap.Modal.getInstance(galleryModal);
-        if (modalInstance) {
-            modalInstance.hide();
-        }
-    }
+    // Cerrar el modal de galería
+    $('#galleryModal').modal('hide');
 };
 
 // Alternar entre imagen y mapa
@@ -283,8 +272,8 @@ window.openShareModal = function() {
         console.error('❌ Modal de compartir no encontrado');
         return;
     }
-    const modal = new bootstrap.Modal(modalElement);
-    modal.show();
+    // Usar jQuery para abrir el modal (Bootstrap 5 en Odoo 18)
+    $('#shareModal').modal('show');
 };
 
 // Copiar link al portapapeles
@@ -372,8 +361,8 @@ window.openReportModal = function() {
         console.error('❌ Modal de reporte no encontrado');
         return;
     }
-    const modal = new bootstrap.Modal(modalElement);
-    modal.show();
+    // Usar jQuery para abrir el modal (Bootstrap 5 en Odoo 18)
+    $('#reportModal').modal('show');
 };
 
 // Enviar reporte (validaciones y proceso)
@@ -447,12 +436,8 @@ window.submitReport = function() {
     setTimeout(function() {
         alert('¡Gracias por tu reporte!\n\nTu correo electrónico se está preparando.\n\nRecibirás una respuesta en las próximas 24-48 horas.');
 
-        // Cerrar modal
-        const modalElement = document.getElementById('reportModal');
-        const modalInstance = bootstrap.Modal.getInstance(modalElement);
-        if (modalInstance) {
-            modalInstance.hide();
-        }
+        // Cerrar modal usando jQuery
+        $('#reportModal').modal('hide');
 
         // Limpiar formulario
         form.reset();
