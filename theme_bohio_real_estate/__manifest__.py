@@ -88,27 +88,30 @@
             'theme_bohio_real_estate/static/src/scss/footer.scss',
             'theme_bohio_real_estate/static/src/scss/property_shop.scss',
 
-            # JavaScript
+            # JavaScript - Core
             'theme_bohio_real_estate/static/src/js/page_loader.js',
             'theme_bohio_real_estate/static/src/js/property_compare.js',
             'theme_bohio_real_estate/static/src/js/homepage_autocomplete.js',
             'theme_bohio_real_estate/static/src/js/homepage_properties.js',
-            'theme_bohio_real_estate/static/src/js/property_carousels.js',
             'theme_bohio_real_estate/static/src/js/property_filters.js',
-            'theme_bohio_real_estate/static/src/js/homepage_new.js',
+            # 'theme_bohio_real_estate/static/src/js/property_carousels.js',  # DEPRECATED: Reemplazado por OWL Component
+            # 'theme_bohio_real_estate/static/src/js/homepage_new.js',  # DEPRECATED: Reemplazado por OWL Component
             'theme_bohio_real_estate/static/src/js/property_shop.js',
             'theme_bohio_real_estate/static/src/js/proyectos.js',
             'theme_bohio_real_estate/static/src/js/proyecto_detalle.js',
+
+            # JavaScript - OWL Components (NEW)
+            'theme_bohio_real_estate/static/src/services/property_data_service.js',
+            'theme_bohio_real_estate/static/src/components/property_carousel/property_carousel.js',
+            'theme_bohio_real_estate/static/src/js/init_carousels.js',
 
             # CSS Additional
             'theme_bohio_real_estate/static/src/css/property_carousels.css',
             'theme_bohio_real_estate/static/src/css/property_snippets.css',
 
-            # JavaScript - Property Dynamic Snippets
-            'theme_bohio_real_estate/static/src/snippets/s_dynamic_snippet_properties/000.js',
-
             # XML Templates OWL
             'theme_bohio_real_estate/static/src/xml/property_filters_template.xml',
+            'theme_bohio_real_estate/static/src/components/property_carousel/property_carousel.xml',
         ],
         'web.assets_backend': [
             # JavaScript - Property Snippet Options (Website Builder)

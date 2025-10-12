@@ -159,8 +159,10 @@ class PropertyCarousel {
                 minimumFractionDigits: 0
             }).format(property.price) : 'Consultar';
 
-        // Label de precio según tipo
-        const priceLabel = property.type_service === 'Arriendo' ? 'Arriendo/mes' : 'Venta';
+        // Label de precio según tipo (type_service viene como label traducido desde API)
+        // Valores posibles: "Venta", "Arriendo", "Venta y Arriendo", "Arriendo Vacacional"
+        const isRental = property.type_service && property.type_service.includes('Arriendo');
+        const priceLabel = isRental ? 'Arriendo/mes' : 'Venta';
 
         // Badge de proyecto si existe
         const projectBadge = property.project_id ? `
