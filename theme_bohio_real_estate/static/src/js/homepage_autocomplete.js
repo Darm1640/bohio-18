@@ -255,6 +255,12 @@ class HomepageAutocomplete {
             params.set('type_service', serviceTypeSelect.value);
         }
 
+        // Agregar el término de búsqueda actual
+        const searchTerm = this.searchInput.value.trim();
+        if (searchTerm) {
+            params.set('search', searchTerm);
+        }
+
         // Agregar filtro de ubicación según el tipo
         if (data.type === 'city' && data.cityId) {
             params.set('city_id', data.cityId);

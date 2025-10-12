@@ -418,8 +418,20 @@
                         zoomTotalSpan.textContent = zoomImages.length;
 
                         // Mostrar/ocultar botones de navegación
-                        document.getElementById('zoomPrevBtn').style.display = currentZoomIndex > 0 ? 'block' : 'none';
-                        document.getElementById('zoomNextBtn').style.display = currentZoomIndex < zoomImages.length - 1 ? 'block' : 'none';
+                        var prevBtn = document.getElementById('zoomPrevBtn');
+                        var nextBtn = document.getElementById('zoomNextBtn');
+
+                        if (currentZoomIndex > 0) {
+                            prevBtn.style.display = 'block';
+                        } else {
+                            prevBtn.style.display = 'none';
+                        }
+
+                        if (currentZoomIndex &lt; zoomImages.length - 1) {
+                            nextBtn.style.display = 'block';
+                        } else {
+                            nextBtn.style.display = 'none';
+                        }
 
                         // Actualizar miniaturas activas
                         updateActiveThumbnail();
@@ -431,8 +443,12 @@
                     currentZoomIndex += direction;
 
                     // Limitar índices
-                    if (currentZoomIndex < 0) currentZoomIndex = 0;
-                    if (currentZoomIndex >= zoomImages.length) currentZoomIndex = zoomImages.length - 1;
+                    if (currentZoomIndex &lt; 0) {
+                        currentZoomIndex = 0;
+                    }
+                    if (currentZoomIndex >= zoomImages.length) {
+                        currentZoomIndex = zoomImages.length - 1;
+                    }
 
                     updateZoomImage();
                 }
