@@ -754,6 +754,96 @@
                     const body = encodeURIComponent(`Hola,\n\nQuiero compartirte esta propiedad que encontré en BOHIO:\n\n${title}\n\nPuedes ver más detalles aquí:\n${link}\n\nSaludos`);
                     window.location.href = `mailto:?subject=${subject}&amp;body=${body}`;
                 }
+
+                // ============= FUNCIONES DE REPORTE/PQRS =============
+
+                // Abrir modal de reporte
+                function openReportModal() {
+                    const modal = new bootstrap.Modal(document.getElementById('reportModal'));
+                    modal.show();
+                }
+
+                // Enviar reporte (validaciones y proceso)
+                function submitReport() {
+                    const form = document.getElementById('reportForm');
+
+                    // Validar campos
+                    const problemType = form.querySelector('[name="problem_type"]').value;
+                    const reporterName = form.querySelector('[name="reporter_name"]').value.trim();
+                    const reporterEmail = form.querySelector('[name="reporter_email"]').value.trim();
+                    const description = form.querySelector('[name="description"]').value.trim();
+
+                    // Validaciones
+                    if (!problemType) {
+                        alert('Por favor selecciona el tipo de problema');
+                        return false;
+                    }
+
+                    if (!reporterName || reporterName.length &lt; 3) {
+                        alert('Por favor ingresa tu nombre completo');
+                        return false;
+                    }
+
+                    if (!reporterEmail || !reporterEmail.includes('@')) {
+                        alert('Por favor ingresa un email válido');
+                        return false;
+                    }
+
+                    if (description.length &lt; 20) {
+                        alert('Por favor proporciona una descripción más detallada (mínimo 20 caracteres)');
+                        return false;
+                    }
+
+                    // Confirmar envío
+                    if (!confirm('¿Estás seguro de que deseas enviar este reporte?')) {
+                        return false;
+                    }
+
+                    // Obtener datos
+                    const propertyId = form.querySelector('[name="property_id"]').value;
+                    const propertyName = form.querySelector('[name="property_name"]').value;
+                    const propertyCode = form.querySelector('[name="property_code"]').value;
+                    const propertyUrl = form.querySelector('[name="property_url"]').value;
+
+                    // Crear el cuerpo del email
+                    const emailSubject = encodeURIComponent('[REPORTE PQRS] ' + (propertyCode || 'Sin código') + ' - ' + propertyName);
+                    const emailBody = encodeURIComponent(
+                        'REPORTE DE PROBLEMA CON PROPIEDAD\n' +
+                        '=====================================\n\n' +
+                        'DATOS DE LA PROPIEDAD:\n' +
+                        '- Nombre: ' + propertyName + '\n' +
+                        '- Código: ' + (propertyCode || 'N/A') + '\n' +
+                        '- URL: ' + propertyUrl + '\n' +
+                        '- ID: ' + propertyId + '\n\n' +
+                        'TIPO DE PROBLEMA:\n' + problemType + '\n\n' +
+                        'REPORTADO POR:\n' +
+                        '- Nombre: ' + reporterName + '\n' +
+                        '- Email: ' + reporterEmail + '\n\n' +
+                        'DESCRIPCIÓN DEL PROBLEMA:\n' + description + '\n\n' +
+                        '=====================================\n' +
+                        'Este reporte fue generado automáticamente desde el sitio web BOHIO.\n' +
+                        'Fecha: ' + new Date().toLocaleString()
+                    );
+
+                    // Enviar por email (abre cliente de correo)
+                    window.location.href = 'mailto:reportes@bohio.com?subject=' + emailSubject + '&amp;body=' + emailBody;
+
+                    // Mostrar mensaje de éxito
+                    setTimeout(function() {
+                        alert('¡Gracias por tu reporte!\n\nTu correo electrónico se está preparando.\n\nRecibirás una respuesta en las próximas 24-48 horas.');
+
+                        // Cerrar modal
+                        const modalInstance = bootstrap.Modal.getInstance(document.getElementById('reportModal'));
+                        if (modalInstance) {
+                            modalInstance.hide();
+                        }
+
+                        // Limpiar formulario
+                        form.reset();
+                    }, 500);
+
+                    return false;
+                }
             </script>
 
             <!-- Estilos adicionales -->
