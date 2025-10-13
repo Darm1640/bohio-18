@@ -122,10 +122,13 @@ function loadZoomThumbnails() {
 
     zoomImages.forEach((src, index) => {
         const isActive = index === currentZoomIndex;
+        const opacity = isActive ? 1 : 0.6;
+        const border = isActive ? "2px solid white" : "2px solid transparent";
+
         html += `
-            <div class="zoom-thumbnail ${isActive ? 'active' : ''}"
+            <div class="zoom-thumbnail ${isActive ? "active" : ""}"
                  onclick="jumpToZoomImage(${index})"
-                 style="cursor: pointer; opacity: ${isActive ? '1' : '0.6'}; border: ${isActive ? '2px solid white' : '2px solid transparent'}; border-radius: 4px; transition: all 0.3s;">
+                 style="cursor: pointer; opacity: ${opacity}; border: ${border}; border-radius: 4px; transition: all 0.3s;">
                 <img src="${src}" style="width: 80px; height: 60px; object-fit: cover; border-radius: 4px;" alt="Miniatura ${index + 1}"/>
             </div>
         `;
