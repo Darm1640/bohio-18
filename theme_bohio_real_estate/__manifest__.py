@@ -72,6 +72,9 @@
             'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css',
             'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js',
 
+            # Bootstrap Icons
+            'theme_bohio_real_estate/static/src/lib/bootstrap-icons/bootstrap-icons.min.css',
+
             # CSS
             'theme_bohio_real_estate/static/src/css/style.css',
             'theme_bohio_real_estate/static/src/css/homepage_autocomplete.css',
