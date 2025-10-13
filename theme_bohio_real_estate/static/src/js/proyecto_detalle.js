@@ -94,11 +94,11 @@ function inicializarMapaProyecto() {
             <div style="min-width: 200px; max-width: 250px;">
                 <h6 class="fw-bold mb-2" style="color: #E31E24;">${projectName}</h6>
                 <p class="small text-muted mb-2">
-                    <i class="fa fa-map-marker-alt me-1"></i>
+                    <i class="bi bi-geo-alt-fill me-1"></i>
                     Ubicación del proyecto
                 </p>
                 <a href="#propiedades" class="btn btn-sm w-100" style="background: #E31E24; color: white; border: none;">
-                    <i class="fa fa-building me-1"></i>Ver Propiedades
+                    <i class="bi bi-building me-1"></i>Ver Propiedades
                 </a>
             </div>
         `;
@@ -116,7 +116,7 @@ function inicializarMapaProyecto() {
         mapElement.innerHTML = `
             <div class="d-flex align-items-center justify-content-center h-100 bg-light">
                 <div class="text-center p-4">
-                    <i class="fa fa-exclamation-triangle fa-3x text-warning mb-3"></i>
+                    <i class="bi bi-exclamation-triangle fa-3x text-warning mb-3"></i>
                     <p class="text-muted mb-0">Error al cargar el mapa</p>
                     <small class="text-muted">${error.message}</small>
                 </div>

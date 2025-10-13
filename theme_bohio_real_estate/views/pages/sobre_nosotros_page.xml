@@ -62,7 +62,7 @@
                                 </p>
 
                                 <a href="#diferencias" class="btn btn-danger btn-lg">
-                                    LEER MÁS <i class="fa fa-arrow-right ms-2"></i>
+                                    LEER MÁS <i class="bi bi-arrow-right ms-2"></i>
                                 </a>
                             </div>
                         </div>
@@ -101,7 +101,7 @@
                                         <div class="text-center mb-4">
                                             <div class="bg-danger bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center"
                                                  style="width: 80px; height: 80px;">
-                                                <i class="fa fa-eye text-danger" style="font-size: 40px;"></i>
+                                                <i class="bi bi-eye text-danger" style="font-size: 40px;"></i>
                                             </div>
                                         </div>
                                         <h3 class="h4 fw-bold text-center mb-4">Nuestra Visión</h3>
@@ -121,7 +121,7 @@
                                         <div class="text-center mb-4">
                                             <div class="bg-danger bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center"
                                                  style="width: 80px; height: 80px;">
-                                                <i class="fa fa-heart text-danger" style="font-size: 40px;"></i>
+                                                <i class="bi bi-heart text-danger" style="font-size: 40px;"></i>
                                             </div>
                                         </div>
                                         <h3 class="h4 fw-bold text-center mb-4">Nuestros Valores</h3>
@@ -160,7 +160,7 @@
                                     <div class="flex-shrink-0">
                                         <div class="bg-danger rounded-circle d-flex align-items-center justify-content-center"
                                              style="width: 60px; height: 60px;">
-                                            <i class="fa fa-check text-white fa-2x"></i>
+                                            <i class="bi bi-check text-white fa-2x"></i>
                                         </div>
                                     </div>
                                     <div class="flex-grow-1 ms-4">

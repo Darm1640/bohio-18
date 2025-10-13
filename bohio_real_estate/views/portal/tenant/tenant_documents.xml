@@ -40,7 +40,7 @@
                             <div class="col-md-4">
                                 <label class="form-label">&#160;</label>
                                 <button type="submit" class="btn btn-primary w-100">
-                                    <i class="fa fa-filter"></i> Filtrar
+                                    <i class="bi bi-funnel"></i> Filtrar
                                 </button>
                             </div>
                         </form>
@@ -58,7 +58,7 @@
                                 <div class="row align-items-center">
                                     <div class="col-md-8">
                                         <h5 class="mb-0">
-                                            <i class="fa fa-file-contract text-primary me-2"></i>
+                                            <i class="bi bi-file-earmark-contract text-primary me-2"></i>
                                             <t t-esc="contract.property_id.name"/>
                                         </h5>
                                         <small class="text-muted">
@@ -90,7 +90,7 @@
                                             <t t-foreach="docs" t-as="doc">
                                                 <tr>
                                                     <td>
-                                                        <i t-attf-class="fa fa-file-#{doc.mimetype.split('/')[1] if '/' in doc.mimetype else 'alt'} me-2"
+                                                        <i t-attf-class="bi bi-file-earmark-#{doc.mimetype.split('/')[1] if '/' in doc.mimetype else 'alt'} me-2"
                                                            t-att-class="'text-danger' if 'pdf' in doc.mimetype else 'text-primary'"></i>
                                                         <strong t-esc="doc.name"/>
                                                     </td>
@@ -123,11 +123,11 @@
                                                             <a t-attf-href="/web/content/#{doc.id}"
                                                                class="btn btn-outline-primary"
                                                                target="_blank">
-                                                                <i class="fa fa-eye"></i> Ver
+                                                                <i class="bi bi-eye"></i> Ver
                                                             </a>
                                                             <a t-attf-href="/web/content/#{doc.id}?download=true"
                                                                class="btn btn-outline-secondary">
-                                                                <i class="fa fa-download"></i> Descargar
+                                                                <i class="bi bi-download"></i> Descargar
                                                             </a>
                                                         </div>
                                                     </td>
@@ -144,7 +144,7 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="alert alert-info text-center mb-0">
-                                <i class="fa fa-info-circle"></i> No hay documentos disponibles
+                                <i class="bi bi-info-circle"></i> No hay documentos disponibles
                             </div>
                         </div>
                     </div>
@@ -153,7 +153,7 @@
                 <!-- Resumen de Documentos -->
                 <div class="card border-info mt-4">
                     <div class="card-header bg-info text-white">
-                        <i class="fa fa-info-circle"></i> Información
+                        <i class="bi bi-info-circle"></i> Información
                     </div>
                     <div class="card-body">
                         <p class="mb-2">

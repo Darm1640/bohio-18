@@ -40,7 +40,7 @@
                                             <i class="fa fa-calculator"/> Pago Masivo <field name="name" readonly="1" style="background: transparent; border: none;"/>
                                         </h1>
                                         <p class="lead text-muted">
-                                            <i class="fa fa-users"/> Simulador inteligente de pagos para múltiples propietarios
+                                            <i class="bi bi-people"/> Simulador inteligente de pagos para múltiples propietarios
                                         </p>
                                     </div>
                                 </div>
@@ -96,7 +96,7 @@
                         <div class="o_survey_question_wrapper" invisible="state != 'draft'">
                             <!-- Información de Proceso -->
                             <div class="o_survey_question mb-4">
-                                <h3 class="o_survey_question_title"><i class="fa fa-info-circle"/> Información de Proceso</h3>
+                                <h3 class="o_survey_question_title"><i class="bi bi-info-circle"/> Información de Proceso</h3>
                                 <div class="row">
                                     <div class="col-md-4">
                                         <div class="form-group">
@@ -123,7 +123,7 @@
 
                             <!-- Filtros Geográficos -->
                             <div class="o_survey_question mb-4">
-                                <h3 class="o_survey_question_title"><i class="fa fa-map-marker"/> ¿En qué regiones desea procesar pagos?</h3>
+                                <h3 class="o_survey_question_title"><i class="bi bi-geo-alt-fill"/> ¿En qué regiones desea procesar pagos?</h3>
                                 <p class="text-muted">Seleccione las ubicaciones geográficas</p>
                                 <div class="row">
                                     <div class="col-md-4">
@@ -149,7 +149,7 @@
 
                             <!-- Filtros de Terceros -->
                             <div class="o_survey_question mb-4">
-                                <h3 class="o_survey_question_title"><i class="fa fa-users"/> ¿Qué tipo de terceros incluir?</h3>
+                                <h3 class="o_survey_question_title"><i class="bi bi-people"/> ¿Qué tipo de terceros incluir?</h3>
                                 <div class="row">
                                     <div class="col-md-6">
                                         <field name="partner_type_filter" widget="radio"
@@ -166,7 +166,7 @@
 
                             <!-- Conceptos a Incluir -->
                             <div class="o_survey_question mb-4">
-                                <h3 class="o_survey_question_title"><i class="fa fa-cogs"/> ¿Qué conceptos incluir en la simulación?</h3>
+                                <h3 class="o_survey_question_title"><i class="bi bi-gear-fill"/> ¿Qué conceptos incluir en la simulación?</h3>
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-check mb-3">
@@ -200,7 +200,7 @@
 
                             <!-- Configuración de Proceso -->
                             <div class="o_survey_question mb-4">
-                                <h3 class="o_survey_question_title"><i class="fa fa-cog"/> ¿Cómo desea procesar los pagos?</h3>
+                                <h3 class="o_survey_question_title"><i class="bi bi-gear"/> ¿Cómo desea procesar los pagos?</h3>
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-check mt-4">
@@ -292,7 +292,7 @@
 
                             <!-- Detalle por Propietario -->
                             <div class="o_survey_question">
-                                <h3 class="o_survey_question_title"><i class="fa fa-list"/> Detalle por Propietario</h3>
+                                <h3 class="o_survey_question_title"><i class="bi bi-list-ul"/> Detalle por Propietario</h3>
                                 <p class="text-muted">Revise y seleccione las líneas a procesar</p>
 
                                 <field name="simulation_line_ids" readonly="state == 'processed'">
@@ -351,7 +351,7 @@
 
                             <!-- Notas Débito -->
                             <div class="o_survey_question mt-4" invisible="not debit_note_ids">
-                                <h3 class="o_survey_question_title"><i class="fa fa-file-text-o"/> Notas Débito Creadas</h3>
+                                <h3 class="o_survey_question_title"><i class="bi bi-file-text"/> Notas Débito Creadas</h3>
                                 <field name="debit_note_ids" readonly="state == 'processed'">
                                     <list string="Notas Débito">
                                         <field name="name"/>
@@ -370,7 +370,7 @@
 
                             <!-- Pagos Creados -->
                             <div class="o_survey_question mt-4" invisible="not payment_ids">
-                                <h3 class="o_survey_question_title"><i class="fa fa-credit-card"/> Pagos Procesados</h3>
+                                <h3 class="o_survey_question_title"><i class="bi bi-credit-card"/> Pagos Procesados</h3>
                                 <field name="payment_ids" readonly="1">
                                     <list string="Pagos">
                                         <field name="name"/>

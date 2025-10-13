@@ -40,7 +40,7 @@
 
                     <!-- Ubicación -->
                     <div class="text-muted mb-2 small">
-                        <i class="fa fa-map-marker me-1"></i>
+                        <i class="bi bi-geo-alt-fill me-1"></i>
                         <t t-if="data.get('region_id')">
                             <span t-esc="data.get('region_id')[1] if isinstance(data.get('region_id'), (list, tuple)) else data.get('region_id')"/>
                         </t>
@@ -58,19 +58,19 @@
                     <!-- Características -->
                     <div class="d-flex justify-content-between mb-3 text-muted small">
                         <span t-if="data.get('bedrooms', 0) > 0">
-                            <i class="fa fa-bed me-1"></i>
+                            <i class="bi bi-bed me-1"></i>
                             <t t-esc="int(data.get('bedrooms', 0))"/> Hab.
                         </span>
                         <span t-if="data.get('bathrooms', 0) > 0">
-                            <i class="fa fa-bath me-1"></i>
+                            <i class="bi bi-droplet me-1"></i>
                             <t t-esc="int(data.get('bathrooms', 0))"/> Baños
                         </span>
                         <span t-if="data.get('garages', 0) > 0">
-                            <i class="fa fa-car me-1"></i>
+                            <i class="bi bi-car-front me-1"></i>
                             <t t-esc="int(data.get('garages', 0))"/> Garage
                         </span>
                         <span t-if="data.get('area', 0) > 0">
-                            <i class="fa fa-arrows-alt me-1"></i>
+                            <i class="bi bi-arrows-fullscreen me-1"></i>
                             <t t-esc="'%.0f' % data.get('area', 0)"/> m²
                         </span>
                     </div>
@@ -124,7 +124,7 @@
 
                             <!-- Ubicación -->
                             <div class="text-muted mb-3">
-                                <i class="fa fa-map-marker me-2"></i>
+                                <i class="bi bi-geo-alt-fill me-2"></i>
                                 <span t-if="data.get('region_name')" t-esc="data.get('region_name')"/><t t-if="data.get('region_name') and data.get('city_name')">, </t>
                                 <span t-if="data.get('city_name')" t-esc="data.get('city_name')"/>
                             </div>
@@ -137,19 +137,19 @@
                             <!-- Características -->
                             <div class="row mb-4">
                                 <div class="col-3 text-center" t-if="data.get('bedrooms', 0) > 0">
-                                    <i class="fa fa-bed fa-2x text-danger mb-2"></i>
+                                    <i class="bi bi-bed fa-2x text-danger mb-2"></i>
                                     <div><t t-esc="int(data.get('bedrooms', 0))"/> Habitaciones</div>
                                 </div>
                                 <div class="col-3 text-center" t-if="data.get('bathrooms', 0) > 0">
-                                    <i class="fa fa-bath fa-2x text-danger mb-2"></i>
+                                    <i class="bi bi-droplet fa-2x text-danger mb-2"></i>
                                     <div><t t-esc="int(data.get('bathrooms', 0))"/> Baños</div>
                                 </div>
                                 <div class="col-3 text-center" t-if="data.get('garages', 0) > 0">
-                                    <i class="fa fa-car fa-2x text-danger mb-2"></i>
+                                    <i class="bi bi-car-front fa-2x text-danger mb-2"></i>
                                     <div><t t-esc="int(data.get('garages', 0))"/> Garajes</div>
                                 </div>
                                 <div class="col-3 text-center" t-if="data.get('area', 0) > 0">
-                                    <i class="fa fa-arrows-alt fa-2x text-danger mb-2"></i>
+                                    <i class="bi bi-arrows-fullscreen fa-2x text-danger mb-2"></i>
                                     <div><t t-esc="'%.0f' % data.get('area', 0)"/> m²</div>
                                 </div>
                             </div>
@@ -255,7 +255,7 @@
 
                             <!-- Ubicación -->
                             <div class="text-muted small mb-2">
-                                <i class="fa fa-map-marker me-1"></i>
+                                <i class="bi bi-geo-alt-fill me-1"></i>
                                 <span t-if="data.get('region_name')" t-esc="data.get('region_name')"/><t t-if="data.get('region_name') and data.get('city_name')">, </t>
                                 <span t-if="data.get('city_name')" t-esc="data.get('city_name')"/>
                             </div>
@@ -266,13 +266,13 @@
                             <!-- Características -->
                             <div class="small text-muted">
                                 <span t-if="data.get('bedrooms', 0) > 0" class="me-2">
-                                    <i class="fa fa-bed"></i> <t t-esc="int(data.get('bedrooms', 0))"/>
+                                    <i class="bi bi-bed"></i> <t t-esc="int(data.get('bedrooms', 0))"/>
                                 </span>
                                 <span t-if="data.get('bathrooms', 0) > 0" class="me-2">
-                                    <i class="fa fa-bath"></i> <t t-esc="int(data.get('bathrooms', 0))"/>
+                                    <i class="bi bi-droplet"></i> <t t-esc="int(data.get('bathrooms', 0))"/>
                                 </span>
                                 <span t-if="data.get('area', 0) > 0">
-                                    <i class="fa fa-arrows-alt"></i> <t t-esc="'%.0f' % data.get('area', 0)"/> m²
+                                    <i class="bi bi-arrows-fullscreen"></i> <t t-esc="'%.0f' % data.get('area', 0)"/> m²
                                 </span>
                             </div>
 

@@ -116,10 +116,10 @@
                                 </div>
                                 <div class="o_kanban_header_pills d-flex flex-column align-items-end">
                                     <span class="badge bg-primary mb-1" title="Suma del Ingreso Esperado">
-                                        <i class="fa fa-money"/> $<t t-esc="group.aggregates.expected_revenue or 0"/>
+                                        <i class="bi bi-cash"/> $<t t-esc="group.aggregates.expected_revenue or 0"/>
                                     </span>
                                     <span class="badge bg-secondary" title="Promedio de días en el pipeline">
-                                        <i class="fa fa-clock-o"/> <t t-esc="group.aggregates.avg_days_in_pipeline or '0'"/>d
+                                        <i class="bi bi-clock"/> <t t-esc="group.aggregates.avg_days_in_pipeline or '0'"/>d
                                     </span>
                                 </div>
                             </div>

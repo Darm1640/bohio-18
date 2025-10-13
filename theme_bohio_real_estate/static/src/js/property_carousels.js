@@ -79,7 +79,7 @@ class PropertyCarousel {
         if (this.properties.length === 0) {
             this.container.innerHTML = `
                 <div class="text-center py-5">
-                    <i class="fa fa-home fa-3x text-muted mb-3"></i>
+                    <i class="bi bi-house-fill fa-3x text-muted mb-3"></i>
                     <p class="text-muted">No hay propiedades disponibles en este momento</p>
                 </div>
             `;
@@ -170,7 +170,7 @@ class PropertyCarousel {
                 <a href="/proyecto/${property.project_id}"
                    class="badge bg-danger text-white text-decoration-none"
                    style="font-size: 0.7rem; padding: 0.4rem 0.6rem;">
-                    <i class="fa fa-building me-1"></i>${property.project_name}
+                    <i class="bi bi-building me-1"></i>${property.project_name}
                 </a>
             </div>
         ` : '';
@@ -190,12 +190,12 @@ class PropertyCarousel {
                             ${property.name}
                         </h5>
                         <p class="text-muted small mb-2">
-                            <i class="fa fa-map-marker-alt me-1"></i>${location}
+                            <i class="bi bi-geo-alt-fill me-1"></i>${location}
                         </p>
                         <div class="d-flex justify-content-between mb-2 text-muted small">
-                            ${property.area > 0 ? `<span><i class="fa fa-ruler-combined me-1"></i>${property.area} m²</span>` : ''}
-                            ${property.bedrooms > 0 ? `<span><i class="fa fa-bed me-1"></i>${property.bedrooms}</span>` : ''}
-                            ${property.bathrooms > 0 ? `<span><i class="fa fa-bath me-1"></i>${property.bathrooms}</span>` : ''}
+                            ${property.area > 0 ? `<span><i class="bi bi-rulers me-1"></i>${property.area} m²</span>` : ''}
+                            ${property.bedrooms > 0 ? `<span><i class="bi bi-bed me-1"></i>${property.bedrooms}</span>` : ''}
+                            ${property.bathrooms > 0 ? `<span><i class="bi bi-droplet me-1"></i>${property.bathrooms}</span>` : ''}
                         </div>
                         <div class="mb-2">
                             <small class="text-muted">${priceLabel}</small>
@@ -203,7 +203,7 @@ class PropertyCarousel {
                         </div>
                         <a href="${property.url}"
                            class="btn btn-outline-danger w-100 mt-auto">
-                            <i class="fa fa-eye me-1"></i>Ver detalles
+                            <i class="bi bi-eye me-1"></i>Ver detalles
                         </a>
                     </div>
                 </div>

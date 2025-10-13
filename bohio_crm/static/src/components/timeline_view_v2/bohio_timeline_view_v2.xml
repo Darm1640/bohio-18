@@ -12,7 +12,7 @@
                 <!-- Header con búsqueda y filtros -->
                 <div class="sticky-top bg-light p-2 border-bottom">
                     <button class="btn btn-success btn-sm w-100 mb-2" t-on-click="createNewOpportunity">
-                        <i class="fa fa-plus"/> Nueva Oportunidad
+                        <i class="bi bi-plus"/> Nueva Oportunidad
                     </button>
 
                     <input
@@ -76,13 +76,13 @@
                     <div class="d-flex flex-wrap gap-2">
                         <!-- Botones de edición -->
                         <button class="btn btn-primary btn-sm" t-if="!state.isEditMode" t-on-click="enableEditMode">
-                            <i class="fa fa-edit"/> Editar
+                            <i class="bi bi-pencil"/> Editar
                         </button>
                         <button class="btn btn-success btn-sm" t-if="state.isEditMode" t-on-click="saveAllChanges" t-att-disabled="state.isSaving">
-                            <i class="fa fa-save"/> Guardar
+                            <i class="bi bi-save"/> Guardar
                         </button>
                         <button class="btn btn-secondary btn-sm" t-if="state.isEditMode" t-on-click="cancelEditMode">
-                            <i class="fa fa-times"/> Cancelar
+                            <i class="bi bi-x"/> Cancelar
                         </button>
 
                         <div class="vr" t-if="!state.isEditMode"/>
@@ -90,10 +90,10 @@
                         <!-- Acciones (solo cuando no está editando) -->
                         <t t-if="!state.isEditMode">
                             <button class="btn btn-secondary btn-sm" t-on-click="openFullForm">
-                                <i class="fa fa-external-link-alt"/> Formulario Completo
+                                <i class="bi bi-box-arrow-up-right"/> Formulario Completo
                             </button>
                             <button class="btn btn-primary btn-sm" t-on-click="createActivity">
-                                <i class="fa fa-plus"/> Actividad
+                                <i class="bi bi-plus"/> Actividad
                             </button>
                             <button class="btn btn-info btn-sm" t-on-click="generateQuote">
                                 <i class="fa fa-file-invoice"/> Cotizar
@@ -109,7 +109,7 @@
                     <!-- Indicador de modo edición -->
                     <div t-if="state.isEditMode">
                         <span class="badge bg-warning text-dark">
-                            <i class="fa fa-edit"/> MODO EDICIÓN
+                            <i class="bi bi-pencil"/> MODO EDICIÓN
                         </span>
                     </div>
                 </div>
@@ -132,18 +132,18 @@
                                             </h4>
                                             <div class="d-flex gap-3 flex-wrap">
                                                 <div>
-                                                    <i class="fa fa-user"/> <strong>Cliente:</strong>
+                                                    <i class="bi bi-person"/> <strong>Cliente:</strong>
                                                     <t t-esc="state.record.partner_name || 'Sin asignar'"/>
                                                 </div>
                                                 <div>
-                                                    <i class="fa fa-tag"/> <strong>Tipo:</strong>
+                                                    <i class="bi bi-tag"/> <strong>Tipo:</strong>
                                                     <t t-esc="state.record.customer_type || 'No definido'"/>
                                                 </div>
                                                 <div>
-                                                    <i class="fa fa-phone"/> <t t-esc="state.record.phone || 'Sin teléfono'"/>
+                                                    <i class="bi bi-telephone"/> <t t-esc="state.record.phone || 'Sin teléfono'"/>
                                                 </div>
                                                 <div>
-                                                    <i class="fa fa-envelope"/> <t t-esc="state.record.email || 'Sin email'"/>
+                                                    <i class="bi bi-envelope"/> <t t-esc="state.record.email || 'Sin email'"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -154,7 +154,7 @@
                                                 </span>
                                             </div>
                                             <div class="h5 mb-0">
-                                                <i class="fa fa-dollar-sign"/>
+                                                <i class="bi bi-currency-dollar"/>
                                                 <t t-esc="state.record.expected_revenue_formatted || '$0'"/>
                                             </div>
                                             <small>Ingreso Esperado</small>
@@ -187,7 +187,7 @@
                                                  t-att-title="'Cambiar a: ' + stage.name">
                                                 <div class="o_stage_circle rounded-circle mx-auto mb-2 d-flex align-items-center justify-content-center"
                                                      style="width: 40px; height: 40px;">
-                                                    <i t-if="stage.is_completed" class="fa fa-check"/>
+                                                    <i t-if="stage.is_completed" class="bi bi-check"/>
                                                     <i t-elif="stage.is_current" class="fa fa-dot-circle"/>
                                                     <i t-else="" t-att-class="'fa fa-' + stage.icon"/>
                                                 </div>
@@ -253,9 +253,9 @@
                                 <div class="card-header bg-light cursor-pointer" t-on-click="() => this.toggleSection('client')">
                                     <div class="d-flex justify-content-between align-items-center">
                                         <h6 class="mb-0">
-                                            <i class="fa fa-user"/> Información del Cliente
+                                            <i class="bi bi-person"/> Información del Cliente
                                         </h6>
-                                        <i t-att-class="state.sections.client ? 'fa fa-chevron-up' : 'fa fa-chevron-down'"/>
+                                        <i t-att-class="state.sections.client ? 'bi bi-chevron-up' : 'bi bi-chevron-down'"/>
                                     </div>
                                 </div>
                                 <div class="card-body" t-if="state.sections.client">
@@ -402,9 +402,9 @@
                                 <div class="card-header bg-light cursor-pointer" t-on-click="() => this.toggleSection('preferences')">
                                     <div class="d-flex justify-content-between align-items-center">
                                         <h6 class="mb-0">
-                                            <i class="fa fa-home"/> Preferencias de Propiedad
+                                            <i class="bi bi-house-fill"/> Preferencias de Propiedad
                                         </h6>
-                                        <i t-att-class="state.sections.preferences ? 'fa fa-chevron-up' : 'fa fa-chevron-down'"/>
+                                        <i t-att-class="state.sections.preferences ? 'bi bi-chevron-up' : 'bi bi-chevron-down'"/>
                                     </div>
                                 </div>
                                 <div class="card-body" t-if="state.sections.preferences">
@@ -569,9 +569,9 @@
                                 <div class="card-header bg-light cursor-pointer" t-on-click="() => this.toggleSection('additionalInfo')">
                                     <div class="d-flex justify-content-between align-items-center">
                                         <h6 class="mb-0">
-                                            <i class="fa fa-info-circle"/> Información Adicional
+                                            <i class="bi bi-info-circle"/> Información Adicional
                                         </h6>
-                                        <i t-att-class="state.sections.additionalInfo ? 'fa fa-chevron-up' : 'fa fa-chevron-down'"/>
+                                        <i t-att-class="state.sections.additionalInfo ? 'bi bi-chevron-up' : 'bi bi-chevron-down'"/>
                                     </div>
                                 </div>
                                 <div class="card-body" t-if="state.sections.additionalInfo">
@@ -681,9 +681,9 @@
                                 <div class="card-header bg-light cursor-pointer" t-on-click="() => this.toggleSection('amenities')">
                                     <div class="d-flex justify-content-between align-items-center">
                                         <h6 class="mb-0">
-                                            <i class="fa fa-star"/> Amenidades Requeridas
+                                            <i class="bi bi-star"/> Amenidades Requeridas
                                         </h6>
-                                        <i t-att-class="state.sections.amenities ? 'fa fa-chevron-up' : 'fa fa-chevron-down'"/>
+                                        <i t-att-class="state.sections.amenities ? 'bi bi-chevron-up' : 'bi bi-chevron-down'"/>
                                     </div>
                                 </div>
                                 <div class="card-body" t-if="state.sections.amenities">
@@ -796,7 +796,7 @@
                                         <h6 class="mb-0">
                                             <i class="fa fa-file-contract"/> Información Contractual
                                         </h6>
-                                        <i t-att-class="state.sections.contract ? 'fa fa-chevron-up' : 'fa fa-chevron-down'"/>
+                                        <i t-att-class="state.sections.contract ? 'bi bi-chevron-up' : 'bi bi-chevron-down'"/>
                                     </div>
                                 </div>
                                 <div class="card-body" t-if="state.sections.contract">
@@ -854,7 +854,7 @@
                                             <i class="fa fa-magic"/> Propiedades Recomendadas por IA
                                         </h6>
                                         <button class="btn btn-sm btn-outline-primary" t-on-click="refreshRecommendations">
-                                            <i class="fa fa-sync"/> Actualizar
+                                            <i class="bi bi-arrow-repeat"/> Actualizar
                                         </button>
                                     </div>
                                 </div>
@@ -866,21 +866,21 @@
                                                     <div class="card-body">
                                                         <h6 class="card-title"><t t-esc="prop.name"/></h6>
                                                         <p class="mb-1 small">
-                                                            <i class="fa fa-map-marker-alt"/> <t t-esc="prop.city || '-'"/>
+                                                            <i class="bi bi-geo-alt-fill"/> <t t-esc="prop.city || '-'"/>
                                                         </p>
                                                         <p class="mb-1">
                                                             <strong class="text-primary"><t t-esc="prop.price_formatted"/></strong>
                                                             <span class="text-muted small"> / <t t-esc="prop.price_label"/></span>
                                                         </p>
                                                         <p class="mb-2 small">
-                                                            <i class="fa fa-bed"/> <t t-esc="prop.bedrooms || 0"/> hab.
-                                                            | <i class="fa fa-bath"/> <t t-esc="prop.bathrooms || 0"/> baños
+                                                            <i class="bi bi-bed"/> <t t-esc="prop.bedrooms || 0"/> hab.
+                                                            | <i class="bi bi-droplet"/> <t t-esc="prop.bathrooms || 0"/> baños
                                                             | <t t-esc="prop.area || 0"/> m²
                                                         </p>
                                                         <div class="d-flex gap-2">
                                                             <button class="btn btn-sm btn-outline-primary flex-fill"
                                                                     t-on-click="() => this.addToComparison(prop.id)">
-                                                                <i class="fa fa-plus"/> Comparar
+                                                                <i class="bi bi-plus"/> Comparar
                                                             </button>
                                                         </div>
                                                     </div>
@@ -910,7 +910,7 @@
                             <div class="card mb-3" t-if="state.comparedProperties.length > 0">
                                 <div class="card-header bg-primary text-white">
                                     <h6 class="mb-0">
-                                        <i class="fa fa-balance-scale"/> Propiedades en Comparación
+                                        <i class="bi bi-balance-scale"/> Propiedades en Comparación
                                     </h6>
                                 </div>
                                 <div class="card-body p-0">
@@ -921,7 +921,7 @@
                                                 <button class="btn btn-sm btn-outline-danger"
                                                         t-on-click="() => this.removeFromComparison(prop.id)"
                                                         title="Quitar de comparación">
-                                                    <i class="fa fa-times"/>
+                                                    <i class="bi bi-x"/>
                                                 </button>
                                             </div>
 
@@ -930,7 +930,7 @@
                                             </div>
 
                                             <p class="mb-1 small">
-                                                <i class="fa fa-map-marker-alt text-danger"/>
+                                                <i class="bi bi-geo-alt-fill text-danger"/>
                                                 <t t-esc="prop.city || '-'"/>, <t t-esc="prop.neighborhood || '-'"/>
                                             </p>
 
@@ -943,11 +943,11 @@
                                             <div class="row g-2 mb-2">
                                                 <div class="col-4 text-center">
                                                     <div class="small text-muted">Habitaciones</div>
-                                                    <div class="fw-bold"><i class="fa fa-bed"/> <t t-esc="prop.bedrooms || 0"/></div>
+                                                    <div class="fw-bold"><i class="bi bi-bed"/> <t t-esc="prop.bedrooms || 0"/></div>
                                                 </div>
                                                 <div class="col-4 text-center">
                                                     <div class="small text-muted">Baños</div>
-                                                    <div class="fw-bold"><i class="fa fa-bath"/> <t t-esc="prop.bathrooms || 0"/></div>
+                                                    <div class="fw-bold"><i class="bi bi-droplet"/> <t t-esc="prop.bathrooms || 0"/></div>
                                                 </div>
                                                 <div class="col-4 text-center">
                                                     <div class="small text-muted">Área</div>
@@ -961,7 +961,7 @@
                                                 <div class="d-flex flex-wrap gap-1">
                                                     <t t-foreach="prop.features" t-as="feature" t-key="feature">
                                                         <span class="badge bg-light text-dark">
-                                                            <i class="fa fa-check text-success"/> <t t-esc="feature"/>
+                                                            <i class="bi bi-check text-success"/> <t t-esc="feature"/>
                                                         </span>
                                                     </t>
                                                 </div>
@@ -971,7 +971,7 @@
                                             <div class="mt-2">
                                                 <button class="btn btn-sm btn-outline-primary w-100"
                                                         t-on-click="() => this.viewPropertyDetails(prop.id)">
-                                                    <i class="fa fa-eye"/> Ver Detalles
+                                                    <i class="bi bi-eye"/> Ver Detalles
                                                 </button>
                                             </div>
                                         </div>
@@ -982,7 +982,7 @@
                             <!-- Mensaje cuando no hay propiedades comparadas -->
                             <div class="alert alert-light" t-if="state.comparedProperties.length === 0">
                                 <h6 class="alert-heading">
-                                    <i class="fa fa-info-circle"/> Sin Propiedades para Comparar
+                                    <i class="bi bi-info-circle"/> Sin Propiedades para Comparar
                                 </h6>
                                 <p class="mb-2 small">Agrega propiedades desde las recomendaciones de IA para compararlas aquí.</p>
                                 <small class="text-muted">Máximo 4 propiedades</small>
@@ -992,13 +992,13 @@
                             <div class="card mb-3">
                                 <div class="card-header bg-light">
                                     <h6 class="mb-0">
-                                        <i class="fa fa-comments"/> Actividades y Mensajes
+                                        <i class="bi bi-chat-dots"/> Actividades y Mensajes
                                     </h6>
                                 </div>
                                 <div class="card-body">
                                     <p class="mb-2 small text-muted">El componente Chatter nativo se integrará en la siguiente versión.</p>
                                     <button class="btn btn-sm btn-primary w-100" t-on-click="openFullForm">
-                                        <i class="fa fa-external-link-alt"/> Ver Formulario Completo
+                                        <i class="bi bi-box-arrow-up-right"/> Ver Formulario Completo
                                     </button>
                                 </div>
                             </div>

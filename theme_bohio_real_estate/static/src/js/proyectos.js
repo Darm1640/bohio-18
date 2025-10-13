@@ -85,7 +85,7 @@ function renderizarProyectos(proyectos) {
     if (proyectos.length === 0) {
         container.innerHTML = `
             <div class="col-12 text-center py-5">
-                <i class="fa fa-building fa-3x text-muted mb-3"></i>
+                <i class="bi bi-building fa-3x text-muted mb-3"></i>
                 <p class="text-muted">No se encontraron proyectos</p>
             </div>
         `;
@@ -107,13 +107,13 @@ function renderizarProyectos(proyectos) {
                 ` : `
                     <div class="bg-light d-flex align-items-center justify-content-center"
                          style="height: 200px;">
-                        <i class="fa fa-building fa-3x text-muted"></i>
+                        <i class="bi bi-building fa-3x text-muted"></i>
                     </div>
                 `}
                 <div class="card-body p-4 d-flex flex-column h-100">
                     <h3 class="h5 fw-bold text-danger mb-2">${proyecto.name}</h3>
                     <p class="text-muted small mb-3">
-                        <i class="fa fa-map-marker text-danger me-1"></i>
+                        <i class="bi bi-geo-alt-fill text-danger me-1"></i>
                         ${proyecto.ubicacion || 'Sin ubicación'}
                     </p>
                     <p class="text-muted small mb-3">${proyecto.descripcion || 'Proyecto inmobiliario de alta calidad'}</p>
@@ -121,11 +121,11 @@ function renderizarProyectos(proyectos) {
                     <div class="proyecto-stats mb-3">
                         <div class="row g-2 small">
                             <div class="col-6">
-                                <i class="fa fa-building text-muted me-1"></i>
+                                <i class="bi bi-building text-muted me-1"></i>
                                 <span class="text-muted">${proyecto.unidades || 0} Unidades</span>
                             </div>
                             <div class="col-6">
-                                <i class="fa fa-home text-muted me-1"></i>
+                                <i class="bi bi-house-fill text-muted me-1"></i>
                                 <span class="text-muted">${proyecto.disponibles || 0} Disponibles</span>
                             </div>
                         </div>
@@ -134,10 +134,10 @@ function renderizarProyectos(proyectos) {
                     <div class="mt-auto">
                         <div class="d-flex gap-2">
                             <a href="/properties?project_id=${proyecto.id}" class="btn btn-outline-danger btn-sm flex-fill">
-                                <i class="fa fa-th me-1"></i>Ver Unidades
+                                <i class="bi bi-grid me-1"></i>Ver Unidades
                             </a>
                             <a href="/contacto?proyecto=${proyecto.id}" class="btn btn-danger btn-sm flex-fill">
-                                <i class="fa fa-envelope me-1"></i>Contactar
+                                <i class="bi bi-envelope me-1"></i>Contactar
                             </a>
                         </div>
                     </div>
@@ -173,7 +173,7 @@ async function cargarProyectos() {
         if (container) {
             container.innerHTML = `
                 <div class="col-12 text-center py-5">
-                    <i class="fa fa-exclamation-triangle fa-3x text-danger mb-3"></i>
+                    <i class="bi bi-exclamation-triangle fa-3x text-danger mb-3"></i>
                     <p class="text-muted">Error al cargar proyectos</p>
                 </div>
             `;

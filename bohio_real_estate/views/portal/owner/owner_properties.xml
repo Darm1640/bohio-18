@@ -23,7 +23,7 @@
                                     </div>
 
                                     <p class="text-muted mb-2">
-                                        <i class="fa fa-map-marker"></i>
+                                        <i class="bi bi-geo-alt-fill"></i>
                                         <t t-esc="prop.address or prop.street"/>
                                     </p>
 
@@ -31,7 +31,7 @@
                                     <t t-if="prop.managed_by_bohio">
                                         <div class="alert alert-info py-2 px-3 mb-3">
                                             <small>
-                                                <i class="fa fa-shield-alt"></i>
+                                                <i class="bi bi-shield-fill"></i>
                                                 <strong>Administrado por BOHIO</strong>
                                             </small>
                                         </div>
@@ -41,17 +41,17 @@
                                     <div class="property-features mb-3">
                                         <t t-if="prop.num_bedrooms and prop.num_bedrooms > 0">
                                             <span class="badge bg-light text-dark me-1">
-                                                <i class="fa fa-bed"></i> <t t-esc="int(prop.num_bedrooms)"/>
+                                                <i class="bi bi-bed"></i> <t t-esc="int(prop.num_bedrooms)"/>
                                             </span>
                                         </t>
                                         <t t-if="prop.num_bathrooms and prop.num_bathrooms > 0">
                                             <span class="badge bg-light text-dark me-1">
-                                                <i class="fa fa-bath"></i> <t t-esc="int(prop.num_bathrooms)"/>
+                                                <i class="bi bi-droplet"></i> <t t-esc="int(prop.num_bathrooms)"/>
                                             </span>
                                         </t>
                                         <t t-if="prop.property_area and prop.property_area > 0">
                                             <span class="badge bg-light text-dark">
-                                                <i class="fa fa-ruler-combined"></i>
+                                                <i class="bi bi-rulers"></i>
                                                 <t t-esc="'{:,.0f}'.format(prop.property_area)"/> m²
                                             </span>
                                         </t>
@@ -74,7 +74,7 @@
                                     </div>
 
                                     <a t-att-href="'/mybohio/owner/property/%s' % prop.id" class="btn btn-primary btn-sm w-100">
-                                        <i class="fa fa-eye"></i> Ver Detalle
+                                        <i class="bi bi-eye"></i> Ver Detalle
                                     </a>
                                 </div>
                             </div>
@@ -84,7 +84,7 @@
 
                 <t t-if="not properties">
                     <div class="alert alert-info text-center">
-                        <i class="fa fa-info-circle fa-3x mb-3"></i>
+                        <i class="bi bi-info-circle fa-3x mb-3"></i>
                         <p>No tiene propiedades registradas</p>
                     </div>
                 </t>
@@ -118,7 +118,7 @@
                                     <div>
                                         <h2 t-esc="property.name"/>
                                         <p class="text-muted mb-0">
-                                            <i class="fa fa-map-marker"></i>
+                                            <i class="bi bi-geo-alt-fill"></i>
                                             <t t-esc="property.address or property.street"/>
                                         </p>
                                     </div>
@@ -127,7 +127,7 @@
 
                                 <t t-if="property.managed_by_bohio">
                                     <div class="alert alert-info">
-                                        <i class="fa fa-shield-alt"></i>
+                                        <i class="bi bi-shield-fill"></i>
                                         <strong>Propiedad Administrada por BOHIO</strong>
                                         <p class="mb-0 mt-2">Esta propiedad no puede ser editada desde el portal.</p>
                                     </div>
@@ -138,13 +138,13 @@
                                         <h5>Características</h5>
                                         <ul class="list-unstyled">
                                             <li t-if="property.num_bedrooms and property.num_bedrooms > 0">
-                                                <i class="fa fa-bed"></i> <strong>Habitaciones:</strong> <t t-esc="int(property.num_bedrooms)"/>
+                                                <i class="bi bi-bed"></i> <strong>Habitaciones:</strong> <t t-esc="int(property.num_bedrooms)"/>
                                             </li>
                                             <li t-if="property.num_bathrooms and property.num_bathrooms > 0">
-                                                <i class="fa fa-bath"></i> <strong>Baños:</strong> <t t-esc="int(property.num_bathrooms)"/>
+                                                <i class="bi bi-droplet"></i> <strong>Baños:</strong> <t t-esc="int(property.num_bathrooms)"/>
                                             </li>
                                             <li t-if="property.property_area and property.property_area > 0">
-                                                <i class="fa fa-ruler-combined"></i> <strong>Área:</strong> <t t-esc="'{:,.2f}'.format(property.property_area)"/> m²
+                                                <i class="bi bi-rulers"></i> <strong>Área:</strong> <t t-esc="'{:,.2f}'.format(property.property_area)"/> m²
                                             </li>
                                             <li t-if="property.stratum">
                                                 <i class="fa fa-layer-group"></i> <strong>Estrato:</strong>
@@ -168,7 +168,7 @@
                                 <!-- Botón Editar (solo si no es administrado por BOHIO) -->
                                 <t t-if="can_edit">
                                     <button class="btn btn-warning mt-3" data-bs-toggle="modal" data-bs-target="#editPropertyModal">
-                                        <i class="fa fa-edit"></i> Actualizar Características
+                                        <i class="bi bi-pencil"></i> Actualizar Características
                                     </button>
                                 </t>
                             </div>
@@ -215,7 +215,7 @@
                         <t t-if="contract">
                             <div class="card mb-3">
                                 <div class="card-header bg-success text-white">
-                                    <h6 class="mb-0"><i class="fa fa-check-circle"></i> Contrato Activo</h6>
+                                    <h6 class="mb-0"><i class="bi bi-check-circle"></i> Contrato Activo</h6>
                                 </div>
                                 <div class="card-body">
                                     <p><strong>Arrendatario:</strong><br/><t t-esc="contract.partner_id.name"/></p>
@@ -234,7 +234,7 @@
                         <t t-else="">
                             <div class="card mb-3">
                                 <div class="card-body text-center text-muted">
-                                    <i class="fa fa-home fa-3x mb-3"></i>
+                                    <i class="bi bi-house-fill fa-3x mb-3"></i>
                                     <p>Propiedad Vacante</p>
                                 </div>
                             </div>

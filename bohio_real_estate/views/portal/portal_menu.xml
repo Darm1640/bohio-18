@@ -11,7 +11,7 @@
             <div class="row mb-4">
                 <div class="col-12">
                     <h2 class="mb-4" style="color: #E31E24; border-bottom: 3px solid #E31E24; padding-bottom: 10px;">
-                        <i class="fa fa-home me-2"></i>
+                        <i class="bi bi-house-fill me-2"></i>
                         Mi Portal BOHIO
                     </h2>
                 </div>
@@ -20,14 +20,14 @@
             <!-- PROPIETARIO -->
             <t t-if="request.env.user.partner_id.property_owner">
                 <div class="alert mb-4" style="background: #FEE2E2; border: 2px solid #E31E24; color: #212529;">
-                    <i class="fa fa-user-circle me-2" style="color: #E31E24;"></i>
+                    <i class="bi bi-person-circle me-2" style="color: #E31E24;"></i>
                     <strong>Perfil:</strong> Propietario
                 </div>
 
                 <div class="row mb-4">
                     <div class="col-12 mb-3">
                         <h4 class="text-muted">
-                            <i class="fa fa-building me-2" style="color: #E31E24;"></i>
+                            <i class="bi bi-building me-2" style="color: #E31E24;"></i>
                             Gestión de Propietario
                         </h4>
                     </div>
@@ -36,7 +36,7 @@
                         <a href="/my/properties/owner" class="text-decoration-none">
                             <div class="card h-100 border-0 shadow-sm bohio-portal-card">
                                 <div class="card-body text-center p-4">
-                                    <i class="fa fa-building fa-3x mb-3" style="color: #E31E24;"></i>
+                                    <i class="bi bi-building fa-3x mb-3" style="color: #E31E24;"></i>
                                     <h5 class="card-title fw-bold" style="color: #E31E24;">Mis Propiedades</h5>
                                     <p class="card-text text-muted small">Gestione sus inmuebles</p>
                                 </div>
@@ -48,7 +48,7 @@
                         <a href="/my/contracts/owner" class="text-decoration-none">
                             <div class="card h-100 border-0 shadow-sm bohio-portal-card">
                                 <div class="card-body text-center p-4">
-                                    <i class="fa fa-file-text fa-3x mb-3" style="color: #E31E24;"></i>
+                                    <i class="bi bi-file-text fa-3x mb-3" style="color: #E31E24;"></i>
                                     <h5 class="card-title fw-bold" style="color: #E31E24;">Mis Contratos</h5>
                                     <p class="card-text text-muted small">Contratos activos</p>
                                 </div>
@@ -60,7 +60,7 @@
                         <a href="/my/payments/owner" class="text-decoration-none">
                             <div class="card h-100 border-0 shadow-sm bohio-portal-card">
                                 <div class="card-body text-center p-4">
-                                    <i class="fa fa-dollar fa-3x mb-3" style="color: #E31E24;"></i>
+                                    <i class="bi bi-currency-dollar fa-3x mb-3" style="color: #E31E24;"></i>
                                     <h5 class="card-title fw-bold" style="color: #E31E24;">Pagos</h5>
                                     <p class="card-text text-muted small">Historial de pagos</p>
                                 </div>
@@ -72,7 +72,7 @@
                         <a href="/properties" class="text-decoration-none">
                             <div class="card h-100 border-0 shadow-sm bohio-portal-card">
                                 <div class="card-body text-center p-4">
-                                    <i class="fa fa-plus-circle fa-3x mb-3" style="color: #E31E24;"></i>
+                                    <i class="bi bi-plus-circle fa-3x mb-3" style="color: #E31E24;"></i>
                                     <h5 class="card-title fw-bold" style="color: #E31E24;">Agregar</h5>
                                     <p class="card-text text-muted small">Nueva propiedad</p>
                                 </div>
@@ -85,14 +85,14 @@
             <!-- ARRENDATARIO -->
             <t t-if="request.env.user.partner_id.property_tenant">
                 <div class="alert mb-4" style="background: #FEE2E2; border: 2px solid #E31E24; color: #212529;">
-                    <i class="fa fa-user-circle me-2" style="color: #E31E24;"></i>
+                    <i class="bi bi-person-circle me-2" style="color: #E31E24;"></i>
                     <strong>Perfil:</strong> Arrendatario
                 </div>
 
                 <div class="row mb-4">
                     <div class="col-12 mb-3">
                         <h4 class="text-muted">
-                            <i class="fa fa-key me-2" style="color: #E31E24;"></i>
+                            <i class="bi bi-key me-2" style="color: #E31E24;"></i>
                             Gestión de Arrendatario
                         </h4>
                     </div>
@@ -101,7 +101,7 @@
                         <a href="/my/properties/tenant" class="text-decoration-none">
                             <div class="card h-100 border-0 shadow-sm bohio-portal-card">
                                 <div class="card-body text-center p-4">
-                                    <i class="fa fa-home fa-3x mb-3" style="color: #E31E24;"></i>
+                                    <i class="bi bi-house-fill fa-3x mb-3" style="color: #E31E24;"></i>
                                     <h5 class="card-title fw-bold" style="color: #E31E24;">Mi Propiedad</h5>
                                     <p class="card-text text-muted small">Inmueble arrendado</p>
                                 </div>
@@ -113,7 +113,7 @@
                         <a href="/my/contracts/tenant" class="text-decoration-none">
                             <div class="card h-100 border-0 shadow-sm bohio-portal-card">
                                 <div class="card-body text-center p-4">
-                                    <i class="fa fa-file-text fa-3x mb-3" style="color: #E31E24;"></i>
+                                    <i class="bi bi-file-text fa-3x mb-3" style="color: #E31E24;"></i>
                                     <h5 class="card-title fw-bold" style="color: #E31E24;">Mi Contrato</h5>
                                     <p class="card-text text-muted small">Contrato de arriendo</p>
                                 </div>
@@ -125,7 +125,7 @@
                         <a href="/my/payments/tenant" class="text-decoration-none">
                             <div class="card h-100 border-0 shadow-sm bohio-portal-card">
                                 <div class="card-body text-center p-4">
-                                    <i class="fa fa-credit-card fa-3x mb-3" style="color: #E31E24;"></i>
+                                    <i class="bi bi-credit-card fa-3x mb-3" style="color: #E31E24;"></i>
                                     <h5 class="card-title fw-bold" style="color: #E31E24;">Mis Pagos</h5>
                                     <p class="card-text text-muted small">Próximos pagos</p>
                                 </div>
@@ -137,7 +137,7 @@
                         <a href="/my/maintenance/tenant" class="text-decoration-none">
                             <div class="card h-100 border-0 shadow-sm bohio-portal-card">
                                 <div class="card-body text-center p-4">
-                                    <i class="fa fa-wrench fa-3x mb-3" style="color: #E31E24;"></i>
+                                    <i class="bi bi-wrench fa-3x mb-3" style="color: #E31E24;"></i>
                                     <h5 class="card-title fw-bold" style="color: #E31E24;">Mantenimiento</h5>
                                     <p class="card-text text-muted small">Reportar problemas</p>
                                 </div>
@@ -178,7 +178,7 @@
                         <a href="/my/clients/employee" class="text-decoration-none">
                             <div class="card h-100 border-0 shadow-sm bohio-portal-card">
                                 <div class="card-body text-center p-4">
-                                    <i class="fa fa-users fa-3x mb-3" style="color: #E31E24;"></i>
+                                    <i class="bi bi-people fa-3x mb-3" style="color: #E31E24;"></i>
                                     <h5 class="card-title fw-bold" style="color: #E31E24;">Mis Clientes</h5>
                                     <p class="card-text text-muted small">Clientes asignados</p>
                                 </div>
@@ -190,7 +190,7 @@
                         <a href="/my/appointments/employee" class="text-decoration-none">
                             <div class="card h-100 border-0 shadow-sm bohio-portal-card">
                                 <div class="card-body text-center p-4">
-                                    <i class="fa fa-calendar fa-3x mb-3" style="color: #E31E24;"></i>
+                                    <i class="bi bi-calendar fa-3x mb-3" style="color: #E31E24;"></i>
                                     <h5 class="card-title fw-bold" style="color: #E31E24;">Mis Citas</h5>
                                     <p class="card-text text-muted small">Visitas programadas</p>
                                 </div>
@@ -202,7 +202,7 @@
                         <a href="/my/performance/employee" class="text-decoration-none">
                             <div class="card h-100 border-0 shadow-sm bohio-portal-card">
                                 <div class="card-body text-center p-4">
-                                    <i class="fa fa-chart-line fa-3x mb-3" style="color: #E31E24;"></i>
+                                    <i class="bi bi-graph-up fa-3x mb-3" style="color: #E31E24;"></i>
                                     <h5 class="card-title fw-bold" style="color: #E31E24;">Desempeño</h5>
                                     <p class="card-text text-muted small">Mis estadísticas</p>
                                 </div>
@@ -216,7 +216,7 @@
             <div class="row mb-4">
                 <div class="col-12 mb-3">
                     <h4 class="text-muted">
-                        <i class="fa fa-search me-2" style="color: #E31E24;"></i>
+                        <i class="bi bi-search me-2" style="color: #E31E24;"></i>
                         Explorar Propiedades
                     </h4>
                 </div>
@@ -225,7 +225,7 @@
                     <a href="/properties" class="text-decoration-none">
                         <div class="card h-100 border-0 shadow-sm bohio-portal-card">
                             <div class="card-body text-center p-4">
-                                <i class="fa fa-search fa-3x mb-3" style="color: #E31E24;"></i>
+                                <i class="bi bi-search fa-3x mb-3" style="color: #E31E24;"></i>
                                 <h5 class="card-title fw-bold" style="color: #E31E24;">Buscar</h5>
                                 <p class="card-text text-muted small">Catálogo completo</p>
                             </div>
@@ -237,7 +237,7 @@
                     <a href="/properties?show_comparison=1" class="text-decoration-none">
                         <div class="card h-100 border-0 shadow-sm bohio-portal-card">
                             <div class="card-body text-center p-4">
-                                <i class="fa fa-balance-scale fa-3x mb-3" style="color: #E31E24;"></i>
+                                <i class="bi bi-balance-scale fa-3x mb-3" style="color: #E31E24;"></i>
                                 <h5 class="card-title fw-bold" style="color: #E31E24;">Comparar</h5>
                                 <p class="card-text text-muted small">Hasta 4 propiedades</p>
                             </div>
@@ -249,7 +249,7 @@
                     <a href="/proyectos" class="text-decoration-none">
                         <div class="card h-100 border-0 shadow-sm bohio-portal-card">
                             <div class="card-body text-center p-4">
-                                <i class="fa fa-building fa-3x mb-3" style="color: #E31E24;"></i>
+                                <i class="bi bi-building fa-3x mb-3" style="color: #E31E24;"></i>
                                 <h5 class="card-title fw-bold" style="color: #E31E24;">Proyectos</h5>
                                 <p class="card-text text-muted small">Desarrollos nuevos</p>
                             </div>

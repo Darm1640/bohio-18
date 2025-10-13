@@ -272,7 +272,7 @@ const HomepageAutocomplete = publicWidget.Widget.extend({
 
         this.autocompleteContainer.innerHTML = `
             <div class="p-3 text-center text-danger">
-                <i class="fa fa-exclamation-triangle me-2"></i>${message}
+                <i class="bi bi-exclamation-triangle me-2"></i>${message}
             </div>
         `;
         this.autocompleteContainer.style.display = 'block';

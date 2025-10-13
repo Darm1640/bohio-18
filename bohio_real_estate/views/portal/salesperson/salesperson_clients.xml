@@ -11,7 +11,7 @@
                     <div class="col-12">
                         <div class="p-4 bg-light rounded-3">
                             <h1 class="text-danger mb-2">
-                                <i class="fa fa-users"></i> Mis Clientes
+                                <i class="bi bi-people"></i> Mis Clientes
                             </h1>
                             <p class="text-muted mb-0">Gestiona la información de tus clientes</p>
                         </div>
@@ -25,7 +25,7 @@
                             <div class="card-body">
                                 <div class="input-group">
                                     <span class="input-group-text bg-white border-end-0">
-                                        <i class="fa fa-search text-muted"></i>
+                                        <i class="bi bi-search text-muted"></i>
                                     </span>
                                     <input type="text" class="form-control border-start-0 ps-0"
                                            name="search" t-att-value="search"
@@ -86,10 +86,10 @@
                                                         <td>
                                                             <div>
                                                                 <small class="d-block" t-if="client.email">
-                                                                    <i class="fa fa-envelope text-muted fa-xs"></i> <span t-esc="client.email"/>
+                                                                    <i class="bi bi-envelope text-muted fa-xs"></i> <span t-esc="client.email"/>
                                                                 </small>
                                                                 <small class="d-block" t-if="client.phone">
-                                                                    <i class="fa fa-phone text-muted fa-xs"></i> <span t-esc="client.phone"/>
+                                                                    <i class="bi bi-telephone text-muted fa-xs"></i> <span t-esc="client.phone"/>
                                                                 </small>
                                                             </div>
                                                         </td>
@@ -97,7 +97,7 @@
                                                             <div class="d-flex flex-column align-items-center">
                                                                 <span class="badge bg-warning text-dark px-3 py-2 mb-1" t-esc="stats.get('total_opportunities', 0)"/>
                                                                 <small class="text-muted" t-if="stats.get('won_opportunities', 0) > 0">
-                                                                    <i class="fa fa-check text-success"></i> <span t-esc="stats.get('won_opportunities', 0)"/> ganadas
+                                                                    <i class="bi bi-check text-success"></i> <span t-esc="stats.get('won_opportunities', 0)"/> ganadas
                                                                 </small>
                                                             </div>
                                                         </td>
@@ -113,7 +113,7 @@
                                                         <td class="text-end px-4">
                                                             <a t-attf-href="/mybohio/salesperson/client/{{client.id}}"
                                                                class="btn btn-sm btn-danger">
-                                                                <i class="fa fa-eye"></i> Ver Detalle
+                                                                <i class="bi bi-eye"></i> Ver Detalle
                                                             </a>
                                                         </td>
                                                     </tr>
@@ -133,12 +133,12 @@
                             <div class="card border-0 shadow-sm">
                                 <div class="card-body text-center py-5">
                                     <div class="mb-4">
-                                        <i class="fa fa-users text-muted" style="font-size: 5rem; opacity: 0.3;"></i>
+                                        <i class="bi bi-people text-muted" style="font-size: 5rem; opacity: 0.3;"></i>
                                     </div>
                                     <h3 class="text-muted">No se encontraron clientes</h3>
                                     <p class="text-muted mb-4">Los clientes de tus oportunidades aparecerán aquí</p>
                                     <a href="/mybohio/salesperson" class="btn btn-danger">
-                                        <i class="fa fa-arrow-left"></i> Volver al Dashboard
+                                        <i class="bi bi-arrow-left"></i> Volver al Dashboard
                                     </a>
                                 </div>
                             </div>
@@ -162,11 +162,11 @@
                             <div class="card-body p-4">
                                 <div class="d-flex align-items-center mb-3">
                                     <a href="/mybohio/salesperson/clients" class="btn btn-sm btn-outline-secondary me-3">
-                                        <i class="fa fa-arrow-left"></i> Volver
+                                        <i class="bi bi-arrow-left"></i> Volver
                                     </a>
                                     <div class="flex-grow-1">
                                         <h1 class="text-danger mb-1">
-                                            <i class="fa fa-user"></i> <span t-esc="client.name"/>
+                                            <i class="bi bi-person"></i> <span t-esc="client.name"/>
                                         </h1>
                                         <p class="text-muted mb-0">Información detallada del cliente</p>
                                     </div>
@@ -207,7 +207,7 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" data-bs-toggle="tab" href="#properties_tab">
-                                    <i class="fa fa-home"></i> Propiedades (<t t-esc="len(properties)"/>)
+                                    <i class="bi bi-house-fill"></i> Propiedades (<t t-esc="len(properties)"/>)
                                 </a>
                             </li>
                             <li class="nav-item">
@@ -235,14 +235,14 @@
                                                         <p class="text-muted mb-2" t-esc="opp.description or 'Sin descripción'"/>
                                                         <div class="d-flex gap-2">
                                                             <span t-if="opp.stage_id" class="badge bg-info"><span t-esc="opp.stage_id.name"/></span>
-                                                            <span class="badge bg-warning text-dark"><i class="fa fa-percentage"></i> <span t-esc="opp.probability"/>%</span>
+                                                            <span class="badge bg-warning text-dark"><i class="bi bi-percent"></i> <span t-esc="opp.probability"/>%</span>
                                                         </div>
                                                     </div>
                                                     <div class="text-end">
                                                         <strong class="text-danger fs-5" t-esc="'${:,.0f}'.format(opp.expected_revenue)"/>
                                                         <br/>
                                                         <small class="text-muted" t-if="opp.date_deadline">
-                                                            <i class="fa fa-calendar"></i> <span t-esc="opp.date_deadline.strftime('%d/%m/%Y')"/>
+                                                            <i class="bi bi-calendar"></i> <span t-esc="opp.date_deadline.strftime('%d/%m/%Y')"/>
                                                         </small>
                                                     </div>
                                                 </div>
@@ -252,7 +252,7 @@
                                 </t>
                                 <t t-else="">
                                     <div class="alert alert-info">
-                                        <i class="fa fa-info-circle"></i> No hay oportunidades para este cliente
+                                        <i class="bi bi-info-circle"></i> No hay oportunidades para este cliente
                                     </div>
                                 </t>
                             </div>
@@ -265,9 +265,9 @@
                                             <div class="col-md-6 mb-3">
                                                 <div class="card h-100 border-0 shadow-sm">
                                                     <div class="card-body">
-                                                        <h5><i class="fa fa-home text-danger"></i> <span t-esc="prop.name"/></h5>
+                                                        <h5><i class="bi bi-house-fill text-danger"></i> <span t-esc="prop.name"/></h5>
                                                         <p class="text-muted mb-2" t-if="prop.property_address">
-                                                            <i class="fa fa-map-marker"></i> <span t-esc="prop.property_address"/>
+                                                            <i class="bi bi-geo-alt-fill"></i> <span t-esc="prop.property_address"/>
                                                         </p>
                                                         <div class="row mt-3">
                                                             <div class="col-6">
@@ -289,7 +289,7 @@
                                 </t>
                                 <t t-else="">
                                     <div class="alert alert-info">
-                                        <i class="fa fa-info-circle"></i> Este cliente no tiene propiedades registradas
+                                        <i class="bi bi-info-circle"></i> Este cliente no tiene propiedades registradas
                                     </div>
                                 </t>
                             </div>
@@ -351,7 +351,7 @@
                                 </t>
                                 <t t-else="">
                                     <div class="alert alert-info">
-                                        <i class="fa fa-info-circle"></i> No hay contratos activos para este cliente
+                                        <i class="bi bi-info-circle"></i> No hay contratos activos para este cliente
                                     </div>
                                 </t>
                             </div>
@@ -381,7 +381,7 @@
                                 </t>
                                 <t t-else="">
                                     <div class="alert alert-info">
-                                        <i class="fa fa-info-circle"></i> No hay tickets registrados para este cliente
+                                        <i class="bi bi-info-circle"></i> No hay tickets registrados para este cliente
                                     </div>
                                 </t>
                             </div>

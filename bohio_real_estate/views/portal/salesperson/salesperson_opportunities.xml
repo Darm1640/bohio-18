@@ -47,22 +47,22 @@
                                                             <div>
                                                                 <strong class="d-block" t-esc="opp.partner_id.name if opp.partner_id else 'Sin cliente'"/>
                                                                 <small class="text-muted" t-if="opp.phone">
-                                                                    <i class="fa fa-phone fa-xs"></i> <span t-esc="opp.phone"/>
+                                                                    <i class="bi bi-telephone fa-xs"></i> <span t-esc="opp.phone"/>
                                                                 </small>
                                                             </div>
                                                         </td>
                                                         <td>
                                                             <span t-if="opp.stage_id.is_won" class="badge bg-success px-3 py-2">
-                                                                <i class="fa fa-check-circle"></i> Ganada
+                                                                <i class="bi bi-check-circle"></i> Ganada
                                                             </span>
                                                             <span t-elif="not opp.active" class="badge bg-danger px-3 py-2">
-                                                                <i class="fa fa-times-circle"></i> Perdida
+                                                                <i class="bi bi-x-circle"></i> Perdida
                                                             </span>
                                                             <span t-else="" class="badge bg-info px-3 py-2" t-esc="opp.stage_id.name if opp.stage_id else 'Sin etapa'"/>
                                                         </td>
                                                         <td>
                                                             <t t-if="opp.property_ids">
-                                                                <i class="fa fa-home text-muted"></i>
+                                                                <i class="bi bi-house-fill text-muted"></i>
                                                                 <span t-esc="', '.join(opp.property_ids.mapped('name')[:2])"/>
                                                                 <t t-if="len(opp.property_ids) > 2">
                                                                     <span class="badge bg-secondary ms-1">+<t t-esc="len(opp.property_ids) - 2"/></span>
@@ -90,7 +90,7 @@
                                                         </td>
                                                         <td>
                                                             <span t-if="opp.date_deadline">
-                                                                <i class="fa fa-calendar text-muted"></i>
+                                                                <i class="bi bi-calendar text-muted"></i>
                                                                 <span t-esc="opp.date_deadline.strftime('%d/%m/%Y')"/>
                                                             </span>
                                                             <span t-else="" class="text-muted">Sin fecha</span>
@@ -98,7 +98,7 @@
                                                         <td class="text-end px-4">
                                                             <a t-attf-href="/mybohio/salesperson/opportunity/{{opp.id}}"
                                                                class="btn btn-sm btn-danger">
-                                                                <i class="fa fa-eye"></i> Ver Detalle
+                                                                <i class="bi bi-eye"></i> Ver Detalle
                                                             </a>
                                                         </td>
                                                     </tr>
@@ -135,7 +135,7 @@
                                     <h3 class="text-muted">No tienes oportunidades asignadas</h3>
                                     <p class="text-muted mb-4">Las oportunidades que te sean asignadas aparecerán aquí</p>
                                     <a href="/mybohio/salesperson" class="btn btn-danger">
-                                        <i class="fa fa-arrow-left"></i> Volver al Dashboard
+                                        <i class="bi bi-arrow-left"></i> Volver al Dashboard
                                     </a>
                                 </div>
                             </div>

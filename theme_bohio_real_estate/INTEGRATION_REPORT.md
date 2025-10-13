@@ -148,7 +148,7 @@ Para que las nuevas funcionalidades funcionen, añade estos botones a las tarjet
 <button class="btn btn-sm btn-favorite"
         data-property-id="{{ property.id }}"
         aria-label="Agregar a favoritos">
-    <i class="fa fa-heart-o"></i>
+    <i class="bi bi-heart"></i>
 </button>
 ```
 

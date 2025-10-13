@@ -103,21 +103,21 @@ function updateMapMarkers(map, properties) {
                          onerror="this.src='/theme_bohio_real_estate/static/src/img/placeholder.jpg'"/>
                     <h6 class="fw-bold mb-2" style="font-size: 14px;">${prop.name}</h6>
                     <p class="small mb-2 text-muted">
-                        <i class="fa fa-map-marker-alt text-danger me-1"></i>${location}
+                        <i class="bi bi-geo-alt-fill text-danger me-1"></i>${location}
                     </p>
                     <div class="mb-2">
                         <small class="text-muted d-block">${priceLabel}</small>
                         <p class="mb-2 text-danger fw-bold" style="font-size: 16px;">${price}</p>
                     </div>
                     <div class="d-flex gap-3 mb-3" style="font-size: 13px; color: #666;">
-                        ${area > 0 ? `<span><i class="fa fa-ruler-combined me-1"></i>${area} m²</span>` : ''}
-                        ${bedrooms > 0 ? `<span><i class="fa fa-bed me-1"></i>${bedrooms} hab</span>` : ''}
-                        ${bathrooms > 0 ? `<span><i class="fa fa-bath me-1"></i>${bathrooms} baños</span>` : ''}
+                        ${area > 0 ? `<span><i class="bi bi-rulers me-1"></i>${area} m²</span>` : ''}
+                        ${bedrooms > 0 ? `<span><i class="bi bi-bed me-1"></i>${bedrooms} hab</span>` : ''}
+                        ${bathrooms > 0 ? `<span><i class="bi bi-droplet me-1"></i>${bathrooms} baños</span>` : ''}
                     </div>
                     <a href="/property/${prop.id}"
                        class="btn btn-sm btn-danger w-100"
                        style="background: #E31E24; border: none;">
-                       <i class="fa fa-eye me-1"></i>Ver detalles
+                       <i class="bi bi-eye me-1"></i>Ver detalles
                     </a>
                 </div>
             `;
@@ -169,7 +169,7 @@ function createPropertyCard(property) {
             <a href="/proyecto/${property.project_id}"
                class="badge bg-danger text-white text-decoration-none"
                style="font-size: 0.7rem; padding: 0.4rem 0.6rem;">
-                <i class="fa fa-building me-1"></i>${property.project_name}
+                <i class="bi bi-building me-1"></i>${property.project_name}
             </a>
         </div>
     ` : '';
@@ -186,13 +186,13 @@ function createPropertyCard(property) {
                 <div class="card-body d-flex flex-column">
                     <h5 class="card-title text-truncate">${property.name}</h5>
                     <p class="text-muted small mb-2">
-                        <i class="fa fa-map-marker-alt me-1"></i>${location}
+                        <i class="bi bi-geo-alt-fill me-1"></i>${location}
                     </p>
                     ${description ? `<p class="text-muted small mb-2">${description}</p>` : ''}
                     <div class="d-flex justify-content-between mb-2">
-                        <span class="small"><i class="fa fa-bed me-1"></i>${bedrooms}</span>
-                        <span class="small"><i class="fa fa-bath me-1"></i>${bathrooms}</span>
-                        <span class="small"><i class="fa fa-ruler-combined me-1"></i>${area} m²</span>
+                        <span class="small"><i class="bi bi-bed me-1"></i>${bedrooms}</span>
+                        <span class="small"><i class="bi bi-droplet me-1"></i>${bathrooms}</span>
+                        <span class="small"><i class="bi bi-rulers me-1"></i>${area} m²</span>
                     </div>
                     <div class="mb-2">
                         <small class="text-muted">${priceLabel}</small>
@@ -251,7 +251,7 @@ async function loadHomePropertiesWithMaps() {
         } else {
             arriendoContainer.innerHTML = `
                 <div class="col-12 text-center py-5">
-                    <i class="fa fa-home fa-3x text-muted mb-3"></i>
+                    <i class="bi bi-house-fill fa-3x text-muted mb-3"></i>
                     <p class="text-muted">No hay propiedades de arriendo disponibles en este momento</p>
                 </div>
             `;
@@ -275,7 +275,7 @@ async function loadHomePropertiesWithMaps() {
         } else {
             usedSaleContainer.innerHTML = `
                 <div class="col-12 text-center py-5">
-                    <i class="fa fa-building fa-3x text-muted mb-3"></i>
+                    <i class="bi bi-building fa-3x text-muted mb-3"></i>
                     <p class="text-muted">No hay propiedades usadas en venta disponibles en este momento</p>
                 </div>
             `;
@@ -299,7 +299,7 @@ async function loadHomePropertiesWithMaps() {
         } else {
             projectsContainer.innerHTML = `
                 <div class="col-12 text-center py-5">
-                    <i class="fa fa-map-marker-alt fa-3x text-muted mb-3"></i>
+                    <i class="bi bi-geo-alt-fill fa-3x text-muted mb-3"></i>
                     <p class="text-muted">No hay proyectos en venta disponibles en este momento</p>
                 </div>
             `;

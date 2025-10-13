@@ -90,7 +90,7 @@
                                 <div class="col-lg-6">
                                     <div >
                                         <div >
-                                            <h3><i class="fa fa-user-circle text-primary"/> INQUILINO</h3>
+                                            <h3><i class="bi bi-person-circle text-primary"/> INQUILINO</h3>
                                         </div>
                                         <div >
                                             <div class="o_field_large">
@@ -114,7 +114,7 @@
                                 <div class="col-lg-6">
                                     <div >
                                         <div >
-                                            <h3><i class="fa fa-building text-success"/> PROPIEDAD(ES)</h3>
+                                            <h3><i class="bi bi-building text-success"/> PROPIEDAD(ES)</h3>
                                             <field name="is_multi_property" readonly="state != 'draft'"
                                                    widget="boolean_toggle" string="Multi-Propiedad"/>
                                         </div>
@@ -514,10 +514,10 @@
                                     <strong class="o_kanban_record_title"><field name="name"/></strong>
                                 </div>
                                 <div class="o_kanban_record_body">
-                                    <div><i class="fa fa-user"/> <field name="partner_id"/></div>
-                                    <div><i class="fa fa-building"/> <field name="property_id"/></div>
-                                    <div><i class="fa fa-calendar"/> <field name="date_from"/> - <field name="date_to"/></div>
-                                    <div><i class="fa fa-money"/> <field name="rental_fee" widget="monetary"/></div>
+                                    <div><i class="bi bi-person"/> <field name="partner_id"/></div>
+                                    <div><i class="bi bi-building"/> <field name="property_id"/></div>
+                                    <div><i class="bi bi-calendar"/> <field name="date_from"/> - <field name="date_to"/></div>
+                                    <div><i class="bi bi-cash"/> <field name="rental_fee" widget="monetary"/></div>
                                 </div>
                             </div>
                         </t>

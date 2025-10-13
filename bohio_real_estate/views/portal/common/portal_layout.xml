@@ -34,20 +34,20 @@
                                     <li class="nav-item">
                                         <a t-att-class="'nav-link ' + ('active' if page_name == 'mybohio_owner' else '')"
                                            href="/mybohio/owner">
-                                            <i class="fa fa-chart-line me-1"></i> Dashboard
+                                            <i class="bi bi-graph-up me-1"></i> Dashboard
                                         </a>
                                     </li>
                                     <li class="nav-item">
                                         <a t-att-class="'nav-link ' + ('active' if 'properties' in page_name else '')"
                                            href="/mybohio/owner/properties">
-                                            <i class="fa fa-building me-1"></i> Mis Propiedades
+                                            <i class="bi bi-building me-1"></i> Mis Propiedades
                                             <span class="badge bg-light text-dark ms-1" t-esc="role_info.get('properties_count', 0)"/>
                                         </a>
                                     </li>
                                     <li class="nav-item">
                                         <a t-att-class="'nav-link ' + ('active' if page_name == 'mybohio_owner_payments' else '')"
                                            href="/mybohio/owner/payments">
-                                            <i class="fa fa-dollar-sign me-1"></i> Pagos
+                                            <i class="bi bi-currency-dollar me-1"></i> Pagos
                                         </a>
                                     </li>
                                     <li class="nav-item">
@@ -59,13 +59,13 @@
                                     <li class="nav-item">
                                         <a t-att-class="'nav-link ' + ('active' if 'opportunities' in page_name else '')"
                                            href="/mybohio/owner/opportunities">
-                                            <i class="fa fa-star me-1"></i> Oportunidades
+                                            <i class="bi bi-star me-1"></i> Oportunidades
                                         </a>
                                     </li>
                                     <li class="nav-item">
                                         <a t-att-class="'nav-link ' + ('active' if page_name == 'mybohio_owner_documents' else '')"
                                            href="/mybohio/owner/documents">
-                                            <i class="fa fa-folder me-1"></i> Documentos
+                                            <i class="bi bi-folder me-1"></i> Documentos
                                         </a>
                                     </li>
                                     <li class="nav-item">
@@ -83,7 +83,7 @@
                                     <li class="nav-item">
                                         <a t-att-class="'nav-link ' + ('active' if page_name == 'mybohio_tenant' else '')"
                                            href="/mybohio/tenant">
-                                            <i class="fa fa-chart-line me-1"></i> Dashboard
+                                            <i class="bi bi-graph-up me-1"></i> Dashboard
                                         </a>
                                     </li>
                                     <li class="nav-item">
@@ -96,7 +96,7 @@
                                     <li class="nav-item">
                                         <a t-att-class="'nav-link ' + ('active' if page_name == 'mybohio_tenant_payments' else '')"
                                            href="/mybohio/tenant/payments">
-                                            <i class="fa fa-credit-card me-1"></i> Mis Pagos
+                                            <i class="bi bi-credit-card me-1"></i> Mis Pagos
                                         </a>
                                     </li>
                                     <li class="nav-item">
@@ -108,7 +108,7 @@
                                     <li class="nav-item">
                                         <a t-att-class="'nav-link ' + ('active' if page_name == 'mybohio_tenant_documents' else '')"
                                            href="/mybohio/tenant/documents">
-                                            <i class="fa fa-folder me-1"></i> Documentos
+                                            <i class="bi bi-folder me-1"></i> Documentos
                                         </a>
                                     </li>
                                     <li class="nav-item">
@@ -126,7 +126,7 @@
                                     <li class="nav-item">
                                         <a t-att-class="'nav-link ' + ('active' if page_name == 'mybohio_salesperson' else '')"
                                            href="/mybohio/salesperson">
-                                            <i class="fa fa-chart-line me-1"></i> Dashboard
+                                            <i class="bi bi-graph-up me-1"></i> Dashboard
                                         </a>
                                     </li>
                                     <li class="nav-item">
@@ -139,13 +139,13 @@
                                     <li class="nav-item">
                                         <a t-att-class="'nav-link ' + ('active' if page_name == 'mybohio_salesperson_clients' else '')"
                                            href="/mybohio/salesperson/clients">
-                                            <i class="fa fa-users me-1"></i> Clientes
+                                            <i class="bi bi-people me-1"></i> Clientes
                                         </a>
                                     </li>
                                     <li class="nav-item">
                                         <a t-att-class="'nav-link ' + ('active' if page_name == 'mybohio_salesperson_properties' else '')"
                                            href="/mybohio/salesperson/properties">
-                                            <i class="fa fa-building me-1"></i> Propiedades
+                                            <i class="bi bi-building me-1"></i> Propiedades
                                         </a>
                                     </li>
                                 </ul>
@@ -155,13 +155,13 @@
                             <ul class="navbar-nav ms-auto">
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                                        <i class="fa fa-user-circle me-1"></i>
+                                        <i class="bi bi-person-circle me-1"></i>
                                         <t t-esc="request.env.user.name"/>
                                     </a>
                                     <ul class="dropdown-menu dropdown-menu-end">
                                         <li>
                                             <a class="dropdown-item" href="/my/account">
-                                                <i class="fa fa-cog me-2"></i> Configuración
+                                                <i class="bi bi-gear me-2"></i> Configuración
                                             </a>
                                         </li>
                                         <li><hr class="dropdown-divider"/></li>
@@ -195,10 +195,10 @@
                             </div>
                             <div class="col-md-6 text-center text-md-end">
                                 <a href="/properties" class="btn btn-sm btn-outline-secondary me-2">
-                                    <i class="fa fa-search me-1"></i> Buscar Propiedades
+                                    <i class="bi bi-search me-1"></i> Buscar Propiedades
                                 </a>
                                 <a href="/contactus" class="btn btn-sm btn-outline-secondary">
-                                    <i class="fa fa-envelope me-1"></i> Contacto
+                                    <i class="bi bi-envelope me-1"></i> Contacto
                                 </a>
                             </div>
                         </div>

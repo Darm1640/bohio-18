@@ -51,15 +51,15 @@
                             <div class="social-icons d-none d-lg-flex ms-3">
                                 <a href="https://www.instagram.com/bohioinmobiliaria/" target="_blank"
                                    class="social-icon-link me-2" title="Instagram">
-                                    <i class="fa fa-instagram"></i>
+                                    <i class="bi bi-instagram"></i>
                                 </a>
                                 <a href="https://www.facebook.com/bohio" target="_blank"
                                    class="social-icon-link me-2" title="Facebook">
-                                    <i class="fa fa-facebook"></i>
+                                    <i class="bi bi-facebook"></i>
                                 </a>
                                 <a href="https://wa.me/573001234567" target="_blank"
                                    class="social-icon-link" title="WhatsApp">
-                                    <i class="fa fa-whatsapp"></i>
+                                    <i class="bi bi-whatsapp"></i>
                                 </a>
                             </div>
                         </div>

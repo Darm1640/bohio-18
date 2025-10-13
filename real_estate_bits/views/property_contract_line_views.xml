@@ -14,7 +14,7 @@
                             <div class="row">
                                 <div class="col-lg-12 text-center">
                                     <h1 class="o_survey_main_title pt-4">
-                                        <i class="fa fa-plus-circle"/> Agregar Propiedad al Contrato
+                                        <i class="bi bi-plus-circle"/> Agregar Propiedad al Contrato
                                     </h1>
                                     <p class="lead text-muted">
                                         Configure la nueva propiedad para el contrato multi-propiedad
@@ -26,7 +26,7 @@
 
                     <!-- Información de la Propiedad -->
                     <div class="o_survey_question mb-4">
-                        <h3 class="o_survey_question_title"><i class="fa fa-building"/> ¿Qué propiedad desea agregar?</h3>
+                        <h3 class="o_survey_question_title"><i class="bi bi-building"/> ¿Qué propiedad desea agregar?</h3>
                         <div class="row">
                             <div class="col-md-6">
                                 <label for="property_id" class="fw-bold o_form_label">Propiedad</label>
@@ -46,7 +46,7 @@
 
                     <!-- Configuración de Fechas -->
                     <div class="o_survey_question mb-4">
-                        <h3 class="o_survey_question_title"><i class="fa fa-calendar"/> ¿Cuándo estará activa esta propiedad?</h3>
+                        <h3 class="o_survey_question_title"><i class="bi bi-calendar"/> ¿Cuándo estará activa esta propiedad?</h3>
                         <div class="row">
                             <div class="col-md-6">
                                 <label for="date_from" class="fw-bold o_form_label">Fecha de Inicio</label>
@@ -84,7 +84,7 @@
 
                     <!-- Vista Previa -->
                     <div class="alert alert-info" role="alert">
-                        <h5><i class="fa fa-info-circle"/> Vista Previa</h5>
+                        <h5><i class="bi bi-info-circle"/> Vista Previa</h5>
                         <p><strong>Propiedad:</strong> <field name="property_id" readonly="1" style="background: transparent; border: none;"/></p>
                         <p><strong>Período:</strong> <field name="date_from" readonly="1" style="background: transparent; border: none;"/> - <field name="date_to" readonly="1" style="background: transparent; border: none;"/></p>
                         <p><strong>Canon Final:</strong> <field name="final_rental_fee" widget="monetary" readonly="1" style="background: transparent; border: none; font-weight: bold;"/></p>
@@ -112,7 +112,7 @@
                             <div class="row">
                                 <div class="col-lg-12 text-center">
                                     <h1 class="o_survey_main_title pt-4">
-                                        <i class="fa fa-times-circle"/> Terminar Propiedad del Contrato
+                                        <i class="bi bi-x-circle"/> Terminar Propiedad del Contrato
                                     </h1>
                                     <p class="lead text-muted">
                                         Configure la terminación de una propiedad específica
@@ -124,7 +124,7 @@
 
                     <!-- Selección de Línea -->
                     <div class="o_survey_question mb-4">
-                        <h3 class="o_survey_question_title"><i class="fa fa-list"/> ¿Qué propiedad desea terminar?</h3>
+                        <h3 class="o_survey_question_title"><i class="bi bi-list-ul"/> ¿Qué propiedad desea terminar?</h3>
                         <div class="row">
                             <div class="col-md-8">
                                 <label for="contract_line_id" class="fw-bold o_form_label">Línea de Contrato</label>
@@ -139,7 +139,7 @@
 
                     <!-- Configuración de Terminación -->
                     <div class="o_survey_question mb-4">
-                        <h3 class="o_survey_question_title"><i class="fa fa-calendar"/> ¿Cuándo y por qué termina?</h3>
+                        <h3 class="o_survey_question_title"><i class="bi bi-calendar"/> ¿Cuándo y por qué termina?</h3>
                         <div class="row">
                             <div class="col-md-4">
                                 <label for="termination_date" class="fw-bold o_form_label">Fecha de Terminación</label>
@@ -202,7 +202,7 @@
                     </div>
 
                     <div class="alert alert-warning" role="alert">
-                        <strong><i class="fa fa-exclamation-triangle"/> Atención:</strong>
+                        <strong><i class="bi bi-exclamation-triangle"/> Atención:</strong>
                         Al terminar esta línea, se recalcularán automáticamente todas las cuotas futuras
                         del contrato con el nuevo canon total.
                     </div>
@@ -256,7 +256,7 @@
             <form string="Extender Línea de Contrato" class="o_form_nosheet">
                 <div class="o_form_sheet">
                     <div class="text-center mb-4">
-                        <h2><i class="fa fa-calendar-plus-o"/> Extender Línea de Contrato</h2>
+                        <h2><i class="bi bi-calendar-plus-o"/> Extender Línea de Contrato</h2>
                     </div>
 
                     <group>

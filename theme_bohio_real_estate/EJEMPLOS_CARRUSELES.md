@@ -145,7 +145,7 @@ createPropertyCard(property) {
     ` : '';
 
     const garageIcon = property.has_garage ? `
-        <i class="fa fa-car text-success" title="Garaje"></i>
+        <i class="bi bi-car-front text-success" title="Garaje"></i>
     ` : '';
 
     return `
@@ -288,7 +288,7 @@ createPropertyCard(property) {
                         </a>
                         <button class="btn btn-danger btn-sm"
                                 onclick="openContactModal(${property.id})">
-                            <i class="fa fa-envelope me-1"></i>Contactar
+                            <i class="bi bi-envelope me-1"></i>Contactar
                         </button>
                     </div>
                 </div>

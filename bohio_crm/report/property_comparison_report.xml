@@ -314,11 +314,11 @@
                                         </div>
                                     </div>
                                     <div style="margin-top: 12px;">
-                                        <p style="margin: 4px 0;"><i class="fa fa-map-marker"/> <t t-esc="prop.neighborhood or 'N/A'"/>, <t t-esc="prop.municipality or 'N/A'"/></p>
-                                        <p style="margin: 4px 0;"><i class="fa fa-arrows-alt"/> <t t-esc="prop.property_area or 0"/> m²</p>
-                                        <p style="margin: 4px 0;"><i class="fa fa-bed"/> <t t-esc="prop.num_bedrooms or 0"/> habitaciones</p>
-                                        <p style="margin: 4px 0;"><i class="fa fa-bath"/> <t t-esc="prop.num_bathrooms or 0"/> baños</p>
-                                        <p style="margin: 4px 0;"><i class="fa fa-car"/> <t t-esc="prop.n_garage or 0"/> parqueaderos</p>
+                                        <p style="margin: 4px 0;"><i class="bi bi-geo-alt-fill"/> <t t-esc="prop.neighborhood or 'N/A'"/>, <t t-esc="prop.municipality or 'N/A'"/></p>
+                                        <p style="margin: 4px 0;"><i class="bi bi-arrows-fullscreen"/> <t t-esc="prop.property_area or 0"/> m²</p>
+                                        <p style="margin: 4px 0;"><i class="bi bi-bed"/> <t t-esc="prop.num_bedrooms or 0"/> habitaciones</p>
+                                        <p style="margin: 4px 0;"><i class="bi bi-droplet"/> <t t-esc="prop.num_bathrooms or 0"/> baños</p>
+                                        <p style="margin: 4px 0;"><i class="bi bi-car-front"/> <t t-esc="prop.n_garage or 0"/> parqueaderos</p>
                                     </div>
                                 </div>
                             </div>
@@ -330,15 +330,15 @@
                 <div class="row mt-4" style="background: #fff8f8; border-left: 4px solid #ff1d25; padding: 20px; border-radius: 8px;">
                     <div class="col-12">
                         <h5 style="color: #ff1d25; margin-bottom: 12px;">
-                            <i class="fa fa-user-circle"/> Su Asesor Inmobiliario
+                            <i class="bi bi-person-circle"/> Su Asesor Inmobiliario
                         </h5>
                         <p style="margin: 0 0 12px 0; font-size: 14px; line-height: 1.6;">
                             <strong><t t-esc="o.user_id.name if o.user_id else 'Equipo BOHÍO'"/></strong><br/>
                             <t t-if="o.user_id and o.user_id.phone">
-                                <i class="fa fa-phone"/> <t t-esc="o.user_id.phone"/><br/>
+                                <i class="bi bi-telephone"/> <t t-esc="o.user_id.phone"/><br/>
                             </t>
                             <t t-if="o.user_id and o.user_id.email">
-                                <i class="fa fa-envelope"/> <t t-esc="o.user_id.email"/>
+                                <i class="bi bi-envelope"/> <t t-esc="o.user_id.email"/>
                             </t>
                         </p>
                         <p style="margin: 0; font-size: 13px; font-style: italic; color: #666;">

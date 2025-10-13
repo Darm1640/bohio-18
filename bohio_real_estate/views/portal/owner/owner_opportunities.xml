@@ -34,7 +34,7 @@
                                     </t>
 
                                     <a t-att-href="'/mybohio/owner/opportunity/%s' % opp.id" class="btn btn-outline-primary btn-sm">
-                                        <i class="fa fa-eye"></i> Ver Detalle
+                                        <i class="bi bi-eye"></i> Ver Detalle
                                     </a>
                                 </div>
                             </div>
@@ -48,7 +48,7 @@
 
                 <t t-if="not opportunities">
                     <div class="alert alert-info text-center">
-                        <i class="fa fa-info-circle"></i> No hay oportunidades activas
+                        <i class="bi bi-info-circle"></i> No hay oportunidades activas
                     </div>
                 </t>
             </div>

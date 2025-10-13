@@ -21,16 +21,16 @@
                             <!-- Redes Sociales -->
                             <div class="d-flex gap-3 mt-3 flex-wrap">
                                 <a href="https://www.instagram.com/bohioinmobiliaria/?hl=es" target="_blank" rel="noopener noreferrer" class="bohio-social-icon text-white d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; background: linear-gradient(135deg, #dc2626, #ef4444); border-radius: 50%; transition: all 0.3s;" title="Instagram">
-                                    <i class="fa fa-instagram fa-lg"/>
+                                    <i class="bi bi-instagram fa-lg"/>
                                 </a>
                                 <a href="https://www.facebook.com/bohioconsultores/?locale=es_LA" target="_blank" rel="noopener noreferrer" class="bohio-social-icon text-white d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; background: linear-gradient(135deg, #dc2626, #ef4444); border-radius: 50%; transition: all 0.3s;" title="Facebook">
-                                    <i class="fa fa-facebook fa-lg"/>
+                                    <i class="bi bi-facebook fa-lg"/>
                                 </a>
                                 <a href="https://www.youtube.com/@bohioinmobiliaria" target="_blank" rel="noopener noreferrer" class="bohio-social-icon text-white d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; background: linear-gradient(135deg, #dc2626, #ef4444); border-radius: 50%; transition: all 0.3s;" title="YouTube">
-                                    <i class="fa fa-youtube fa-lg"/>
+                                    <i class="bi bi-youtube fa-lg"/>
                                 </a>
                                 <a href="https://co.linkedin.com/company/bohioinmobiliaria" target="_blank" rel="noopener noreferrer" class="bohio-social-icon text-white d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; background: linear-gradient(135deg, #dc2626, #ef4444); border-radius: 50%; transition: all 0.3s;" title="LinkedIn">
-                                    <i class="fa fa-linkedin fa-lg"/>
+                                    <i class="bi bi-linkedin fa-lg"/>
                                 </a>
                             </div>
                         </div>
@@ -120,7 +120,7 @@
                             
                             <!-- Dirección -->
                             <div class="d-flex align-items-start mb-3">
-                                <i class="fa fa-map-marker-alt me-2" style="color: #dc2626; margin-top: 3px; font-size: 14px;"/>
+                                <i class="bi bi-geo-alt-fill me-2" style="color: #dc2626; margin-top: 3px; font-size: 14px;"/>
                                 <div>
                                     <p class="text-white-50 mb-0" style="font-size: 13px; line-height: 1.5;">
                                         Cl. 29 #2, Esquina, Centro<br/>
@@ -131,7 +131,7 @@
 
                             <!-- Teléfono -->
                             <div class="d-flex align-items-center mb-3">
-                                <i class="fa fa-phone-alt me-2" style="color: #dc2626; font-size: 14px;"/>
+                                <i class="bi bi-telephone-fill me-2" style="color: #dc2626; font-size: 14px;"/>
                                 <a href="tel:+573217403356" class="text-white-50 text-decoration-none" style="font-size: 13px;">
                                     +57 321 7403356
                                 </a>

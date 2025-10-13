@@ -9,12 +9,12 @@
             <!-- ============ HEADER ============ -->
             <div class="o_bohio_sidebar_header">
                 <h5 t-if="!state.isCollapsed">
-                    <i class="fa fa-list-ul me-2"/>
+                    <i class="bi bi-list-ul me-2"/>
                     Oportunidades
                 </h5>
                 <button class="o_bohio_sidebar_toggle"
                         t-att-title="state.isCollapsed ? 'Expandir' : 'Comprimir'">
-                    <i t-att-class="state.isCollapsed ? 'fa fa-chevron-left' : 'fa fa-chevron-right'"/>
+                    <i t-att-class="state.isCollapsed ? 'bi bi-chevron-left' : 'bi bi-chevron-right'"/>
                 </button>
             </div>
 
@@ -24,7 +24,7 @@
                 <!-- Filtro por Tipo de Servicio -->
                 <div class="o_bohio_type_filter">
                     <label class="form-label small text-muted fw-bold mb-2">
-                        <i class="fa fa-filter me-1"/>
+                        <i class="bi bi-funnel me-1"/>
                         Filtrar por tipo
                     </label>
                     <select class="form-select form-select-sm"
@@ -73,13 +73,13 @@
                                 <div class="o_bohio_card_mini_body">
                                     <!-- Contacto -->
                                     <div>
-                                        <i class="fa fa-user"/>
+                                        <i class="bi bi-person"/>
                                         <span t-esc="getContactDisplay(opp)"/>
                                     </div>
 
                                     <!-- Teléfono (si existe) -->
                                     <div t-if="opp.mobile or opp.phone">
-                                        <i class="fa fa-phone"/>
+                                        <i class="bi bi-telephone"/>
                                         <span t-esc="opp.mobile or opp.phone"/>
                                     </div>
 
@@ -94,13 +94,13 @@
                                 <div class="o_bohio_card_mini_footer">
                                     <!-- Ingreso Esperado -->
                                     <div class="o_bohio_card_mini_revenue">
-                                        <i class="fa fa-dollar-sign me-1"/>
+                                        <i class="bi bi-currency-dollar me-1"/>
                                         <span t-esc="formatCurrency(opp.expected_revenue, opp.company_currency)"/>
                                     </div>
 
                                     <!-- Usuario Responsable -->
                                     <div class="o_bohio_card_mini_user" t-if="opp.user_id">
-                                        <i class="fa fa-user-circle me-1"/>
+                                        <i class="bi bi-person-circle me-1"/>
                                         <span class="text-truncate" style="max-width: 80px;" t-esc="opp.user_id[1]"/>
                                     </div>
                                 </div>
@@ -121,12 +121,12 @@
                             <button class="o_bohio_pagination_btn"
                                     t-att-disabled="!hasPrevPage"
                                     t-on-click="onPrevPage">
-                                <i class="fa fa-chevron-left"/>
+                                <i class="bi bi-chevron-left"/>
                             </button>
                             <button class="o_bohio_pagination_btn"
                                     t-att-disabled="!hasNextPage"
                                     t-on-click="onNextPage">
-                                <i class="fa fa-chevron-right"/>
+                                <i class="bi bi-chevron-right"/>
                             </button>
                         </div>
                     </div>

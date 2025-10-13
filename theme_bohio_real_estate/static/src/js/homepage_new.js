@@ -125,7 +125,7 @@ function renderProperties(properties, containerId) {
     }
 
     if (!properties || properties.length === 0) {
-        container.innerHTML = '<div class="col-12 text-center py-5"><i class="fa fa-home fa-3x text-muted mb-3"></i><p class="text-muted">No hay propiedades disponibles</p></div>';
+        container.innerHTML = '<div class="col-12 text-center py-5"><i class="bi bi-house-fill fa-3x text-muted mb-3"></i><p class="text-muted">No hay propiedades disponibles</p></div>';
         return;
     }
 
@@ -152,12 +152,12 @@ function renderPropertyCard(property) {
                 <div class="card-body d-flex flex-column">
                     <h5 class="card-title text-truncate">${property.name}</h5>
                     <p class="text-muted small mb-2">
-                        <i class="fa fa-map-marker-alt me-1"></i>${city}${region ? ', ' + region : ''}
+                        <i class="bi bi-geo-alt-fill me-1"></i>${city}${region ? ', ' + region : ''}
                     </p>
                     <div class="d-flex justify-content-between mb-2">
-                        <span class="small"><i class="fa fa-bed me-1"></i>${bedrooms}</span>
-                        <span class="small"><i class="fa fa-bath me-1"></i>${bathrooms}</span>
-                        <span class="small"><i class="fa fa-ruler-combined me-1"></i>${area} m²</span>
+                        <span class="small"><i class="bi bi-bed me-1"></i>${bedrooms}</span>
+                        <span class="small"><i class="bi bi-droplet me-1"></i>${bathrooms}</span>
+                        <span class="small"><i class="bi bi-rulers me-1"></i>${area} m²</span>
                     </div>
                     <div class="mb-2">
                         <small class="text-muted">${property.type_service === 'rent' ? 'Arriendo/mes' : 'Venta'}</small>
@@ -172,7 +172,7 @@ function renderPropertyCard(property) {
 
 function renderPropertyFeatures(property) {
     if (!['apartment', 'house'].includes(property.property_type)) {
-        return `<div class="property-features d-flex justify-content-between mb-3 pb-3 border-bottom"><span class="feature-item text-muted small"><i class="fa fa-ruler-combined"></i> <strong>${property.area_total || 0}</strong> m²</span></div>`;
+        return `<div class="property-features d-flex justify-content-between mb-3 pb-3 border-bottom"><span class="feature-item text-muted small"><i class="bi bi-rulers"></i> <strong>${property.area_total || 0}</strong> m²</span></div>`;
     }
 
     return `
@@ -257,14 +257,14 @@ function updateMapMarkers(map, properties) {
                     <img src="${imageUrl}" alt="${prop.name}" style="width: 100%; height: 150px; object-fit: cover; border-radius: 8px; margin-bottom: 10px;"/>
                     <h6 class="fw-bold mb-2" style="font-size: 14px;">${prop.name}</h6>
                     <p class="small mb-1 text-muted">
-                        <i class="fa fa-map-marker-alt text-danger"></i> ${location}
+                        <i class="bi bi-geo-alt-fill text-danger"></i> ${location}
                     </p>
                     <div class="mb-2">
                         <small class="text-muted d-block">${priceLabel}</small>
                         <p class="mb-1 text-danger fw-bold" style="font-size: 16px;">$${price}</p>
                     </div>
                     <a href="/property/${prop.id}" class="btn btn-sm btn-danger w-100">
-                       <i class="fa fa-eye me-1"></i>Ver detalles
+                       <i class="bi bi-eye me-1"></i>Ver detalles
                     </a>
                 </div>
             `;

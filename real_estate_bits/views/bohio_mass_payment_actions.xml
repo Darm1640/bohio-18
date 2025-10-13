@@ -68,7 +68,7 @@
                                             </span>
                                         </div>
                                         <div class="col-12 text-muted">
-                                            <i class="fa fa-calendar"/> <field name="simulation_month"/>
+                                            <i class="bi bi-calendar"/> <field name="simulation_month"/>
                                         </div>
                                         <div class="col-12 mt-2">
                                             <span class="text-success fw-bold">

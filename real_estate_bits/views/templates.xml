@@ -78,7 +78,7 @@
                                         </div>
                                         <div class="text-center mt-3">
                                             <button type="submit" class="btn btn-primary w-50">
-                                                <i class="fa fa-search"/> Search
+                                                <i class="bi bi-search"/> Search
                                             </button>
                                         </div>
                                     </div>
@@ -203,16 +203,16 @@
                                                 </p>
                                                 <div class="row g-3 mb-3">
                                                     <div class="col-auto" title="Floor">
-                                                        <i class="fa fa-building"></i> <t t-esc="property.floor_number"/> Floor
+                                                        <i class="bi bi-building"></i> <t t-esc="property.floor_number"/> Floor
                                                     </div>
                                                     <div class="col-auto" title="Bedrooms">
-                                                        <i class="fa fa-bed"></i> <t t-esc="property.num_bedrooms"/> Bedrooms
+                                                        <i class="bi bi-bed"></i> <t t-esc="property.num_bedrooms"/> Bedrooms
                                                     </div>
                                                     <div class="col-auto" title="Bathrooms">
-                                                        <i class="fa fa-bath"></i> <t t-esc="property.num_bathrooms"/> Bathrooms
+                                                        <i class="bi bi-droplet"></i> <t t-esc="property.num_bathrooms"/> Bathrooms
                                                     </div>
                                                     <div class="col-auto" title="Living Area">
-                                                        <i class="fa fa-expand"></i> <t t-esc="property.property_area"/> m²
+                                                        <i class="bi bi-arrows-angle-expand"></i> <t t-esc="property.property_area"/> m²
                                                     </div>
                                                 </div>
                                                 <div class="row g-3">
@@ -242,7 +242,7 @@
                                     <strong>No properties found for the provided criteria</strong>
                                     <br/>
                                     <a href="/search-property" class="btn btn-link">
-                                        <i class="fa fa-search"></i> Search Again
+                                        <i class="bi bi-search"></i> Search Again
                                     </a>
                                 </div>
                             </div>
@@ -570,7 +570,7 @@
                                     <button type="button" class="border-0 btn btn-primary  " data-toggle="modal"
 
                                             data-target="#download_file_form">
-                                        <i class="fa fa-download"/>
+                                        <i class="bi bi-download"/>
                                         Download
                                     </button>
                                     property brochure as PDF from here
@@ -778,13 +778,13 @@
 
                                     <div class="font-weight-bold h4 m-0" t-field="property_id.responsible_person_id"/>
                                     <a t-attf-href="tel:{{property_id.responsible_person_id.phone}}">
-                                        <div class="fa fa-phone d-block pt-2">
+                                        <div class="bi bi-telephone d-block pt-2">
 
                                             <span t-field="property_id.responsible_person_id.phone"/>
                                         </div>
                                     </a>
                                     <a t-attf-href="mailto:{{ property_id.responsible_person_id.email }}">
-                                        <div class="fa fa-envelope d-block pt-2">
+                                        <div class="bi bi-envelope d-block pt-2">
                                             <span t-field="property_id.responsible_person_id.email"/>
                                         </div>
                                     </a>
@@ -1044,7 +1044,7 @@
                 <ol class="breadcrumb" style="width: fit-content;">
                     <li class="breadcrumb-item">
                         <a href="/search-property">
-                            <i class="fa fa-home"/>
+                            <i class="bi bi-house-fill"/>
                         </a>
                     </li>
                     <li class="breadcrumb-item active">

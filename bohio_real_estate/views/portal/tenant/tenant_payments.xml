@@ -15,7 +15,7 @@
                     <div class="col-md-4">
                         <div class="metric-card">
                             <div class="metric-icon bg-success">
-                                <i class="fa fa-check-circle"></i>
+                                <i class="bi bi-check-circle"></i>
                             </div>
                             <div class="metric-details">
                                 <div class="metric-value">${{'{:,.0f}'.format(total_paid)}}</div>
@@ -26,7 +26,7 @@
                     <div class="col-md-4">
                         <div class="metric-card">
                             <div class="metric-icon bg-warning">
-                                <i class="fa fa-clock"></i>
+                                <i class="bi bi-clock"></i>
                             </div>
                             <div class="metric-details">
                                 <div class="metric-value">${{'{:,.0f}'.format(pending_amount)}}</div>
@@ -37,7 +37,7 @@
                     <div class="col-md-4">
                         <div class="metric-card">
                             <div class="metric-icon bg-info">
-                                <i class="fa fa-calendar-alt"></i>
+                                <i class="bi bi-calendar-event"></i>
                             </div>
                             <div class="metric-details">
                                 <div class="metric-value"><t t-esc="payments_count"/></div>
@@ -74,7 +74,7 @@
                             <div class="col-md-2">
                                 <label class="form-label">&#160;</label>
                                 <button type="submit" class="btn btn-primary w-100">
-                                    <i class="fa fa-filter"></i> Filtrar
+                                    <i class="bi bi-funnel"></i> Filtrar
                                 </button>
                             </div>
                         </form>
@@ -135,12 +135,12 @@
                                                 <td>
                                                     <t t-if="payment.state == 'posted'">
                                                         <span class="badge bg-success">
-                                                            <i class="fa fa-check"></i> Confirmado
+                                                            <i class="bi bi-check"></i> Confirmado
                                                         </span>
                                                     </t>
                                                     <t t-elif="payment.state == 'draft'">
                                                         <span class="badge bg-warning">
-                                                            <i class="fa fa-clock"></i> Borrador
+                                                            <i class="bi bi-clock"></i> Borrador
                                                         </span>
                                                     </t>
                                                     <t t-else="">
@@ -152,7 +152,7 @@
                                                         <a t-attf-href="/my/invoices/#{payment.id}?access_token=#{payment.access_token}"
                                                            class="btn btn-sm btn-outline-primary"
                                                            target="_blank">
-                                                            <i class="fa fa-file-pdf"></i> Ver
+                                                            <i class="bi bi-file-pdf"></i> Ver
                                                         </a>
                                                     </t>
                                                 </td>
@@ -169,7 +169,7 @@
                         </t>
                         <t t-else="">
                             <div class="alert alert-info text-center">
-                                <i class="fa fa-info-circle"></i> No hay pagos registrados
+                                <i class="bi bi-info-circle"></i> No hay pagos registrados
                             </div>
                         </t>
                     </div>
@@ -179,7 +179,7 @@
                 <t t-if="next_payment">
                     <div class="card border-warning mt-4">
                         <div class="card-header bg-warning text-white">
-                            <i class="fa fa-exclamation-triangle"></i> Próximo Pago
+                            <i class="bi bi-exclamation-triangle"></i> Próximo Pago
                         </div>
                         <div class="card-body">
                             <div class="row">

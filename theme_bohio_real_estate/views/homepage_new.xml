@@ -11,11 +11,11 @@
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="d-flex gap-4">
                                     <a href="/mybohio/owner" class="text-white text-decoration-none small fw-semibold" style="transition: opacity 0.3s; opacity: 1;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">
-                                        <i class="fa fa-user-circle me-1"/>
+                                        <i class="bi bi-person-circle me-1"/>
 Portal Propietarios
                                     </a>
                                     <a href="/mybohio" class="text-white text-decoration-none small fw-semibold" style="transition: opacity 0.3s; opacity: 1;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">
-                                        <i class="fa fa-home me-1"/>
+                                        <i class="bi bi-house-fill me-1"/>
 Portal Arrendatarios
                                     </a>
                                     <a href="/web/login" class="text-white text-decoration-none small fw-semibold" style="transition: opacity 0.3s;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">
@@ -85,15 +85,15 @@ Iniciar Sesión
                                                     <!-- Botones de tipo de servicio -->
                                                     <div class="service-type-selector mb-3" style="display: flex; justify-content: center; gap: 12px;">
                                                         <button type="button" class="btn service-type-btn" data-service="sale_rent" style="min-width: 140px; padding: 12px 24px; font-size: 1rem; font-weight: 600; border-radius: 50px; border: 1px solid rgba(255, 255, 255, 0.25); background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); color: white; transition: all 0.3s ease; box-shadow: 0 3px 12px rgba(0, 0, 0, 0.15);">
-                                                            <i class="fa fa-th me-2"/>
+                                                            <i class="bi bi-grid me-2"/>
                                         Todo
                                                         </button>
                                                         <button type="button" class="btn service-type-btn active" data-service="rent" style="min-width: 140px; padding: 12px 24px; font-size: 1rem; font-weight: 600; border-radius: 50px; border: 1px solid rgba(227, 30, 36, 0.8); background: linear-gradient(135deg, rgba(227, 30, 36, 0.85) 0%, rgba(201, 25, 32, 0.85) 100%); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); color: white; transition: all 0.3s ease; box-shadow: 0 6px 20px rgba(227, 30, 36, 0.4);">
-                                                            <i class="fa fa-key me-2"/>
+                                                            <i class="bi bi-key me-2"/>
                                         Arrendar
                                                         </button>
                                                         <button type="button" class="btn service-type-btn" data-service="sale" style="min-width: 140px; padding: 12px 24px; font-size: 1rem; font-weight: 600; border-radius: 50px; border: 1px solid rgba(255, 255, 255, 0.25); background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); color: white; transition: all 0.3s ease; box-shadow: 0 3px 12px rgba(0, 0, 0, 0.15);">
-                                                            <i class="fa fa-home me-2"/>
+                                                            <i class="bi bi-house-fill me-2"/>
                                         Comprar
                                                         </button>
                                                     </div>
@@ -110,7 +110,7 @@ Iniciar Sesión
                                                                 <div class="search-bar-container position-relative">
                                                                     <div class="input-group input-group-lg" style="border-radius: 10px; overflow: hidden; box-shadow: 0 3px 15px rgba(0, 0, 0, 0.15); border: 1px solid rgba(255, 255, 255, 0.15); background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);">
                                                                         <span class="input-group-text search-icon-red" style="background: linear-gradient(135deg, rgba(227, 30, 36, 0.85) 0%, rgba(201, 25, 32, 0.85) 100%); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border: none; padding: 0 16px; color: white; font-size: 1rem;">
-                                                                            <i class="fa fa-search"/>
+                                                                            <i class="bi bi-search"/>
                                                                         </span>
                                                                         <input type="text" name="search_query" class="form-control property-search-input" placeholder="Buscar por ciudad, barrio, dirección o código..." autocomplete="off" style="border: none; padding: 13px 16px; font-size: 0.95rem; background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); color: #fff; font-weight: 500;"/>
                                                                     </div>
@@ -123,7 +123,7 @@ Iniciar Sesión
                                                             <div class="col-lg-4 col-md-12">
                                                                 <div class="input-group input-group-lg" style="border-radius: 10px; overflow: hidden; box-shadow: 0 3px 15px rgba(0, 0, 0, 0.15); border: 1px solid rgba(255, 255, 255, 0.15); background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);">
                                                                     <span class="input-group-text search-icon-red" style="background: linear-gradient(135deg, rgba(227, 30, 36, 0.85) 0%, rgba(201, 25, 32, 0.85) 100%); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border: none; padding: 0 16px; color: white; font-size: 1rem;">
-                                                                        <i class="fa fa-building"/>
+                                                                        <i class="bi bi-building"/>
                                                                     </span>
                                                                     <select name="property_type" class="form-select property-type-select" style="border: none; padding: 13px 16px; font-size: 0.95rem; background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); color: #fff; font-weight: 500;">
                                                                         <option value="">Tipo de inmueble</option>
@@ -144,7 +144,7 @@ Iniciar Sesión
                                                         <div class="row">
                                                             <div class="col-12">
                                                                 <button type="submit" class="btn btn-search btn-lg w-100" style="background: linear-gradient(135deg, #E31E24 0%, #c91920 100%); color: white; border: none; border-radius: 10px; padding: 13px 30px; font-weight: 700; font-size: 1rem; letter-spacing: 0.5px; box-shadow: 0 5px 18px rgba(227, 30, 36, 0.35); transition: all 0.3s ease; text-transform: uppercase;">
-                                                                    <i class="fa fa-search me-2"/>
+                                                                    <i class="bi bi-search me-2"/>
                                                 Buscar Propiedad
                                                                 </button>
                                                             </div>
@@ -594,7 +594,7 @@ Iniciar Sesión
 
                             <div class="text-center mt-5">
                                 <a href="/servicios" class="btn btn-danger btn-lg px-5">
-                                    <i class="fa fa-th me-2"></i>Ver todos los servicios
+                                    <i class="bi bi-grid me-2"></i>Ver todos los servicios
                                 </a>
                             </div>
                         </div>
@@ -629,7 +629,7 @@ Iniciar Sesión
 
                             <div class="text-center mt-4">
                                 <a href="/properties?type_service=rent" class="btn btn-danger btn-lg px-5">
-                                    <i class="fa fa-search me-2"></i>Explorar todas las propiedades en arriendo
+                                    <i class="bi bi-search me-2"></i>Explorar todas las propiedades en arriendo
                                 </a>
                             </div>
                         </div>
@@ -657,7 +657,7 @@ Iniciar Sesión
 
                             <div class="text-center mt-4">
                                 <a href="/properties?type_service=sale" class="btn btn-danger btn-lg px-5">
-                                    <i class="fa fa-search me-2"></i>Explorar todas las propiedades en venta
+                                    <i class="bi bi-search me-2"></i>Explorar todas las propiedades en venta
                                 </a>
                             </div>
                         </div>
@@ -685,7 +685,7 @@ Iniciar Sesión
 
                             <div class="text-center mt-4">
                                 <a href="/proyectos" class="btn btn-danger btn-lg px-5">
-                                    <i class="fa fa-building me-2"></i>Ver todos los proyectos
+                                    <i class="bi bi-building me-2"></i>Ver todos los proyectos
                                 </a>
                             </div>
                         </div>
@@ -711,11 +711,11 @@ Iniciar Sesión
                                             <div>
                                                 <h6 class="mb-0">Paola Morja</h6>
                                                 <div class="stars text-warning small">
-                                                    <i class="fa fa-star"/>
-                                                    <i class="fa fa-star"/>
-                                                    <i class="fa fa-star"/>
-                                                    <i class="fa fa-star"/>
-                                                    <i class="fa fa-star"/>
+                                                    <i class="bi bi-star"/>
+                                                    <i class="bi bi-star"/>
+                                                    <i class="bi bi-star"/>
+                                                    <i class="bi bi-star"/>
+                                                    <i class="bi bi-star"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -729,11 +729,11 @@ Iniciar Sesión
                                             <div>
                                                 <h6 class="mb-0">José Raul</h6>
                                                 <div class="stars text-warning small">
-                                                    <i class="fa fa-star"/>
-                                                    <i class="fa fa-star"/>
-                                                    <i class="fa fa-star"/>
-                                                    <i class="fa fa-star"/>
-                                                    <i class="fa fa-star"/>
+                                                    <i class="bi bi-star"/>
+                                                    <i class="bi bi-star"/>
+                                                    <i class="bi bi-star"/>
+                                                    <i class="bi bi-star"/>
+                                                    <i class="bi bi-star"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -747,11 +747,11 @@ Iniciar Sesión
                                             <div>
                                                 <h6 class="mb-0">Fer Vélez</h6>
                                                 <div class="stars text-warning small">
-                                                    <i class="fa fa-star"/>
-                                                    <i class="fa fa-star"/>
-                                                    <i class="fa fa-star"/>
-                                                    <i class="fa fa-star"/>
-                                                    <i class="fa fa-star"/>
+                                                    <i class="bi bi-star"/>
+                                                    <i class="bi bi-star"/>
+                                                    <i class="bi bi-star"/>
+                                                    <i class="bi bi-star"/>
+                                                    <i class="bi bi-star"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -765,11 +765,11 @@ Iniciar Sesión
                                             <div>
                                                 <h6 class="mb-0">Carlos Gutiérrez</h6>
                                                 <div class="stars text-warning small">
-                                                    <i class="fa fa-star"/>
-                                                    <i class="fa fa-star"/>
-                                                    <i class="fa fa-star"/>
-                                                    <i class="fa fa-star"/>
-                                                    <i class="fa fa-star"/>
+                                                    <i class="bi bi-star"/>
+                                                    <i class="bi bi-star"/>
+                                                    <i class="bi bi-star"/>
+                                                    <i class="bi bi-star"/>
+                                                    <i class="bi bi-star"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -836,7 +836,7 @@ Iniciar Sesión
                                         </div>
                                         <div class="col-md-4">
                                             <button type="button" class="btn btn-light btn-lg w-100 shadow-sm fw-bold" data-bs-toggle="modal" data-bs-target="#codeSearchModal" style="border: 2px solid #E31E24; color: #E31E24; padding: 12px 25px;">
-                                                <i class="fa fa-search me-2"/>
+                                                <i class="bi bi-search me-2"/>
 Código
                                             </button>
                                         </div>
@@ -858,7 +858,7 @@ Código
                         <div class="container">
                             <h5 class="mb-3">Síguenos en Instagram</h5>
                             <a href="https://www.instagram.com/bohioinmobiliaria/?hl=es" target="_blank" class="btn btn-outline-light btn-lg">
-                                <i class="fa fa-instagram me-2"/>
+                                <i class="bi bi-instagram me-2"/>
  @bohioinmobiliaria
                             </a>
                         </div>
@@ -867,13 +867,13 @@ Código
 
                     <div id="compareFloatingBtn" class="compare-floating-button" style="display: none;">
                         <button class="btn btn-danger rounded-circle shadow-lg position-relative" onclick="openCompareModal()" title="Comparar Propiedades">
-                            <i class="fa fa-balance-scale fa-lg"/>
+                            <i class="bi bi-balance-scale fa-lg"/>
                             <span id="compareCounter" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning text-dark" style="display: none;">
                             0
                             </span>
                         </button>
                         <button class="btn btn-sm btn-light mt-2 shadow-sm" onclick="clearCompare()" title="Limpiar comparación">
-                            <i class="fa fa-trash"/>
+                            <i class="bi bi-trash"/>
                         </button>
                     </div>
 
@@ -883,20 +883,20 @@ Código
                             <div class="modal-content">
                                 <div class="modal-header" style="background: linear-gradient(135deg, #E31E24 0%, #B81820 100%); color: white;">
                                     <h5 class="modal-title fw-bold" id="codeSearchModalLabel">
-                                        <i class="fa fa-search me-2"/>
+                                        <i class="bi bi-search me-2"/>
 Búsqueda por Código
                                     </h5>
                                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"/>
                                 </div>
                                 <div class="modal-body p-4">
                                     <p class="text-muted mb-3">
-                                        <i class="fa fa-info-circle text-danger me-2"/>
+                                        <i class="bi bi-info-circle text-danger me-2"/>
                                         Ingresa el código de la propiedad que te compartimos
                                     </p>
                                     <div class="input-group input-group-lg mb-3">
                                         <input type="text" id="modalPropertyCode" class="form-control" placeholder="Ej: BOH-001, APT-2023-045" autocomplete="off" style="font-size: 1.1rem; padding: 15px;"/>
                                         <button class="btn btn-danger px-4" type="button" onclick="window.bohioHomepage &amp;&amp; window.bohioHomepage.searchPropertyByCode()" style="background: #E31E24; border: none;">
-                                            <i class="fa fa-search fa-lg"/>
+                                            <i class="bi bi-search fa-lg"/>
                                         </button>
                                     </div>
                                     <small class="text-muted">

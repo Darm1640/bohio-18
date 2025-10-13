@@ -37,7 +37,7 @@
                         <div class="o_bohio_metrics_grid">
                             <div class="o_metric_box o_metric_revenue">
                                 <div class="o_metric_icon">
-                                    <i class="fa fa-dollar-sign fa-2x"/>
+                                    <i class="bi bi-currency-dollar fa-2x"/>
                                 </div>
                                 <div class="o_metric_info">
                                     <span class="o_metric_label">Ingreso Esperado</span>
@@ -53,7 +53,7 @@
 
                             <div class="o_metric_box o_metric_commission">
                                 <div class="o_metric_icon">
-                                    <i class="fa fa-percentage fa-2x"/>
+                                    <i class="bi bi-percent fa-2x"/>
                                 </div>
                                 <div class="o_metric_info">
                                     <span class="o_metric_label">Comisión Estimada</span>
@@ -69,7 +69,7 @@
 
                             <div class="o_metric_box o_metric_deadline">
                                 <div class="o_metric_icon">
-                                    <i class="fa fa-calendar-check fa-2x"/>
+                                    <i class="bi bi-calendar-check fa-2x"/>
                                 </div>
                                 <div class="o_metric_info">
                                     <span class="o_metric_label">Fecha de Cierre</span>
@@ -82,7 +82,7 @@
 
                             <div class="o_metric_box o_metric_days">
                                 <div class="o_metric_icon">
-                                    <i class="fa fa-clock fa-2x"/>
+                                    <i class="bi bi-clock fa-2x"/>
                                 </div>
                                 <div class="o_metric_info">
                                     <span class="o_metric_label">Tiempo Activo</span>
@@ -124,7 +124,7 @@
                     <!-- ========== SECCIÓN 3: CLIENTE Y CONTACTO ========== -->
                     <div class="o_bohio_section o_section_client">
                         <div class="o_section_header_bar">
-                            <i class="fa fa-user fa-lg me-2"/>
+                            <i class="bi bi-person fa-lg me-2"/>
                             <h2 class="o_section_title">Información del Cliente</h2>
                         </div>
                         <div class="o_section_content">
@@ -170,7 +170,7 @@
                     <!-- ========== SECCIÓN 4: PROPIEDADES DE INTERÉS ========== -->
                     <div class="o_bohio_section o_section_properties">
                         <div class="o_section_header_bar">
-                            <i class="fa fa-home fa-lg me-2"/>
+                            <i class="bi bi-house-fill fa-lg me-2"/>
                             <h2 class="o_section_title">Propiedades de Interés</h2>
                         </div>
                         <div class="o_section_content">
@@ -323,7 +323,7 @@
                     <div class="o_bohio_section o_section_comparison"
                          invisible="not compared_properties_ids">
                         <div class="o_section_header_bar">
-                            <i class="fa fa-balance-scale fa-lg me-2"/>
+                            <i class="bi bi-balance-scale fa-lg me-2"/>
                             <h2 class="o_section_title">Propiedades en Comparación</h2>
                         </div>
                         <div class="o_section_content">

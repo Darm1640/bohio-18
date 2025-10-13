@@ -15,7 +15,7 @@
                                 </p>
                             </div>
                             <a href="/mybohio/salesperson/opportunities" class="btn btn-outline-danger">
-                                <i class="fa fa-arrow-left"></i> Volver
+                                <i class="bi bi-arrow-left"></i> Volver
                             </a>
                         </div>
                     </div>
@@ -49,10 +49,10 @@
                                         <label class="text-muted small">Etapa</label>
                                         <p class="mb-0">
                                             <span t-if="opportunity.stage_id.is_won" class="badge bg-success">
-                                                <i class="fa fa-check-circle"></i> Ganada
+                                                <i class="bi bi-check-circle"></i> Ganada
                                             </span>
                                             <span t-elif="not opportunity.active" class="badge bg-danger">
-                                                <i class="fa fa-times-circle"></i> Perdida
+                                                <i class="bi bi-x-circle"></i> Perdida
                                             </span>
                                             <span t-else="" class="badge bg-info" t-esc="opportunity.stage_id.name if opportunity.stage_id else 'Sin etapa'"/>
                                         </p>
@@ -102,17 +102,17 @@
                                             </h4>
                                             <div class="mb-3">
                                                 <t t-if="property.num_bedrooms and property.num_bedrooms > 0">
-                                                    <i class="fa fa-bed"></i> <span t-esc="int(property.num_bedrooms)"/> hab.
+                                                    <i class="bi bi-bed"></i> <span t-esc="int(property.num_bedrooms)"/> hab.
                                                 </t>
                                                 <t t-if="property.num_bathrooms and property.num_bathrooms > 0">
-                                                    | <i class="fa fa-bath"></i> <span t-esc="int(property.num_bathrooms)"/> baños
+                                                    | <i class="bi bi-droplet"></i> <span t-esc="int(property.num_bathrooms)"/> baños
                                                 </t>
                                                 <t t-if="property.property_area and property.property_area > 0">
-                                                    | <i class="fa fa-arrows-alt"></i> <span t-esc="'{:,.0f}'.format(property.property_area)"/> m²
+                                                    | <i class="bi bi-arrows-fullscreen"></i> <span t-esc="'{:,.0f}'.format(property.property_area)"/> m²
                                                 </t>
                                             </div>
                                             <a t-attf-href="/property/{{property.id}}" class="btn btn-sm btn-outline-danger" target="_blank">
-                                                <i class="fa fa-external-link-alt"></i> Ver Propiedad
+                                                <i class="bi bi-box-arrow-up-right"></i> Ver Propiedad
                                             </a>
                                         </div>
                                     </div>
@@ -164,18 +164,18 @@
                                 <a t-if="opportunity.partner_id and opportunity.partner_id.phone"
                                    t-attf-href="tel:{{opportunity.partner_id.phone}}"
                                    class="btn btn-outline-success w-100 mb-2">
-                                    <i class="fa fa-phone"></i> Llamar Cliente
+                                    <i class="bi bi-telephone"></i> Llamar Cliente
                                 </a>
                                 <a t-if="opportunity.partner_id and opportunity.partner_id.email"
                                    t-attf-href="mailto:{{opportunity.partner_id.email}}"
                                    class="btn btn-outline-primary w-100 mb-2">
-                                    <i class="fa fa-envelope"></i> Enviar Email
+                                    <i class="bi bi-envelope"></i> Enviar Email
                                 </a>
                                 <a t-if="opportunity.partner_id and opportunity.partner_id.mobile"
                                    t-attf-href="https://wa.me/{{opportunity.partner_id.mobile.replace('+', '').replace(' ', '')}}"
                                    target="_blank"
                                    class="btn btn-outline-success w-100">
-                                    <i class="fa fa-whatsapp"></i> WhatsApp
+                                    <i class="bi bi-whatsapp"></i> WhatsApp
                                 </a>
                             </div>
                         </div>

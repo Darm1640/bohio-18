@@ -9,7 +9,7 @@
                 <!-- Header con contador de filtros activos -->
                 <div class="filters-header">
                     <h3 class="filters-title">
-                        <i class="fa fa-filter me-2"></i>Filtros
+                        <i class="bi bi-funnel me-2"></i>Filtros
                         <t t-if="activeFiltersCount > 0">
                             <span class="badge bg-danger rounded-pill ms-2">
                                 <t t-esc="activeFiltersCount"/>
@@ -19,7 +19,7 @@
                     <button t-if="activeFiltersCount > 0"
                             class="btn btn-sm btn-outline-danger"
                             t-on-click="() => this.clearFilters()">
-                        <i class="fa fa-times me-1"></i>Limpiar
+                        <i class="bi bi-x me-1"></i>Limpiar
                     </button>
                 </div>
 
@@ -28,7 +28,7 @@
                     <div class="filter-section-header"
                          t-on-click="() => this.toggleSection('type')">
                         <h4 class="filter-section-title">
-                            <i class="fa fa-tag me-2"></i>Tipo de Servicio
+                            <i class="bi bi-tag me-2"></i>Tipo de Servicio
                         </h4>
                         <i t-attf-class="fa fa-chevron-{{state.expandedSections.type ? 'up' : 'down'}}"></i>
                     </div>
@@ -51,7 +51,7 @@
                     <div class="filter-section-header"
                          t-on-click="() => this.toggleSection('type')">
                         <h4 class="filter-section-title">
-                            <i class="fa fa-home me-2"></i>Tipo de Inmueble
+                            <i class="bi bi-house-fill me-2"></i>Tipo de Inmueble
                         </h4>
                         <i t-attf-class="fa fa-chevron-{{state.expandedSections.type ? 'up' : 'down'}}"></i>
                     </div>
@@ -80,7 +80,7 @@
                     <div class="filter-section-header"
                          t-on-click="() => this.toggleSection('location')">
                         <h4 class="filter-section-title">
-                            <i class="fa fa-map-marker-alt me-2"></i>Ubicación
+                            <i class="bi bi-geo-alt-fill me-2"></i>Ubicación
                         </h4>
                         <i t-attf-class="fa fa-chevron-{{state.expandedSections.location ? 'up' : 'down'}}"></i>
                     </div>
@@ -153,7 +153,7 @@
                     <div class="filter-section-header"
                          t-on-click="() => this.toggleSection('price')">
                         <h4 class="filter-section-title">
-                            <i class="fa fa-dollar-sign me-2"></i>Rango de Precio
+                            <i class="bi bi-currency-dollar me-2"></i>Rango de Precio
                         </h4>
                         <i t-attf-class="fa fa-chevron-{{state.expandedSections.price ? 'up' : 'down'}}"></i>
                     </div>
@@ -179,7 +179,7 @@
                     <div class="filter-section-header"
                          t-on-click="() => this.toggleSection('features')">
                         <h4 class="filter-section-title">
-                            <i class="fa fa-ruler-combined me-2"></i>Características
+                            <i class="bi bi-rulers me-2"></i>Características
                         </h4>
                         <i t-attf-class="fa fa-chevron-{{state.expandedSections.features ? 'up' : 'down'}}"></i>
                     </div>
@@ -245,7 +245,7 @@
                     <div class="filter-section-header"
                          t-on-click="() => this.toggleSection('amenities')">
                         <h4 class="filter-section-title">
-                            <i class="fa fa-star me-2"></i>Amenidades
+                            <i class="bi bi-star me-2"></i>Amenidades
                         </h4>
                         <i t-attf-class="fa fa-chevron-{{state.expandedSections.amenities ? 'up' : 'down'}}"></i>
                     </div>
@@ -258,7 +258,7 @@
                                    t-model="state.filters.garage"
                                    t-on-change="() => this.onFilterChange('garage', !state.filters.garage)"/>
                             <label class="form-check-label" for="filter_garage">
-                                <i class="fa fa-car me-2"></i>Garaje
+                                <i class="bi bi-car-front me-2"></i>Garaje
                             </label>
                         </div>
                         <div class="form-check">
@@ -268,7 +268,7 @@
                                    t-model="state.filters.garden"
                                    t-on-change="() => this.onFilterChange('garden', !state.filters.garden)"/>
                             <label class="form-check-label" for="filter_garden">
-                                <i class="fa fa-tree me-2"></i>Jardín
+                                <i class="bi bi-flower2 me-2"></i>Jardín
                             </label>
                         </div>
                         <div class="form-check">
@@ -278,7 +278,7 @@
                                    t-model="state.filters.pool"
                                    t-on-change="() => this.onFilterChange('pool', !state.filters.pool)"/>
                             <label class="form-check-label" for="filter_pool">
-                                <i class="fa fa-swimming-pool me-2"></i>Piscina
+                                <i class="bi bi-water me-2"></i>Piscina
                             </label>
                         </div>
                         <div class="form-check">
@@ -288,7 +288,7 @@
                                    t-model="state.filters.elevator"
                                    t-on-change="() => this.onFilterChange('elevator', !state.filters.elevator)"/>
                             <label class="form-check-label" for="filter_elevator">
-                                <i class="fa fa-building me-2"></i>Ascensor
+                                <i class="bi bi-building me-2"></i>Ascensor
                             </label>
                         </div>
                     </div>

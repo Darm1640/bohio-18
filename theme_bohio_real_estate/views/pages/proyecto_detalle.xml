@@ -174,7 +174,7 @@
                                                     <t t-else="">
                                                         <!-- Placeholder -->
                                                         <div class="w-100 h-100 d-flex align-items-center justify-content-center" style="background: #2a2a2a;">
-                                                            <i class="fa fa-building" style="font-size: 80px; color: #444;"></i>
+                                                            <i class="bi bi-building" style="font-size: 80px; color: #444;"></i>
                                                         </div>
                                                     </t>
                                                 </t>
@@ -186,7 +186,7 @@
                                                 </t>
                                                 <t t-else="">
                                                     <div class="w-100 h-100 d-flex align-items-center justify-content-center" style="background: #2a2a2a;">
-                                                        <i class="fa fa-building" style="font-size: 80px; color: #444;"></i>
+                                                        <i class="bi bi-building" style="font-size: 80px; color: #444;"></i>
                                                     </div>
                                                 </t>
                                             </t>
@@ -229,19 +229,19 @@
                                             <div class="d-flex gap-4 mb-3 text-white-50 small flex-wrap">
                                                 <t t-if="sample_prop.num_bedrooms">
                                                     <div>
-                                                        <i class="fa fa-bed me-1" style="color: #E31E24;"></i>
+                                                        <i class="bi bi-bed me-1" style="color: #E31E24;"></i>
                                                         <t t-esc="sample_prop.num_bedrooms"/> Hab
                                                     </div>
                                                 </t>
                                                 <t t-if="sample_prop.num_bathrooms">
                                                     <div>
-                                                        <i class="fa fa-bath me-1" style="color: #E31E24;"></i>
+                                                        <i class="bi bi-droplet me-1" style="color: #E31E24;"></i>
                                                         <t t-esc="sample_prop.num_bathrooms"/> Baños
                                                     </div>
                                                 </t>
                                                 <t t-if="sample_prop.covered_parking">
                                                     <div>
-                                                        <i class="fa fa-car me-1" style="color: #E31E24;"></i>
+                                                        <i class="bi bi-car-front me-1" style="color: #E31E24;"></i>
                                                         <t t-esc="sample_prop.covered_parking"/> Parq
                                                     </div>
                                                 </t>
@@ -296,10 +296,10 @@
                         </p>
                         <div class="d-flex gap-3 justify-content-center flex-wrap">
                             <a href="https://wa.me/573104563839" target="_blank" class="btn btn-light btn-lg px-5 py-3" style="border-radius: 50px; font-weight: 600;">
-                                <i class="fa fa-whatsapp me-2"></i>WhatsApp
+                                <i class="bi bi-whatsapp me-2"></i>WhatsApp
                             </a>
                             <a href="/contacto" class="btn btn-outline-light btn-lg px-5 py-3" style="border-radius: 50px; font-weight: 600; border-width: 2px;">
-                                <i class="fa fa-envelope me-2"></i>Contactar
+                                <i class="bi bi-envelope me-2"></i>Contactar
                             </a>
                         </div>
                     </div>

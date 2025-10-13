@@ -126,10 +126,10 @@
                                     <t t-foreach="comparison_data" t-as="data">
                                         <td class="text-center">
                                             <t t-if="data['amenities'].get('pool')">
-                                                <i class="fa fa-check text-success"></i>
+                                                <i class="bi bi-check text-success"></i>
                                             </t>
                                             <t t-else="">
-                                                <i class="fa fa-times text-danger"></i>
+                                                <i class="bi bi-x text-danger"></i>
                                             </t>
                                         </td>
                                     </t>
@@ -139,10 +139,10 @@
                                     <t t-foreach="comparison_data" t-as="data">
                                         <td class="text-center">
                                             <t t-if="data['amenities'].get('gym')">
-                                                <i class="fa fa-check text-success"></i>
+                                                <i class="bi bi-check text-success"></i>
                                             </t>
                                             <t t-else="">
-                                                <i class="fa fa-times text-danger"></i>
+                                                <i class="bi bi-x text-danger"></i>
                                             </t>
                                         </td>
                                     </t>
@@ -152,10 +152,10 @@
                                     <t t-foreach="comparison_data" t-as="data">
                                         <td class="text-center">
                                             <t t-if="data['amenities'].get('garden')">
-                                                <i class="fa fa-check text-success"></i>
+                                                <i class="bi bi-check text-success"></i>
                                             </t>
                                             <t t-else="">
-                                                <i class="fa fa-times text-danger"></i>
+                                                <i class="bi bi-x text-danger"></i>
                                             </t>
                                         </td>
                                     </t>
@@ -165,10 +165,10 @@
                                     <t t-foreach="comparison_data" t-as="data">
                                         <td class="text-center">
                                             <t t-if="data['amenities'].get('air_conditioning')">
-                                                <i class="fa fa-check text-success"></i>
+                                                <i class="bi bi-check text-success"></i>
                                             </t>
                                             <t t-else="">
-                                                <i class="fa fa-times text-danger"></i>
+                                                <i class="bi bi-x text-danger"></i>
                                             </t>
                                         </td>
                                     </t>
@@ -183,10 +183,10 @@
                                     <t t-foreach="comparison_data" t-as="data">
                                         <td class="text-center">
                                             <t t-if="data['services'].get('gas')">
-                                                <i class="fa fa-check text-success"></i>
+                                                <i class="bi bi-check text-success"></i>
                                             </t>
                                             <t t-else="">
-                                                <i class="fa fa-times text-danger"></i>
+                                                <i class="bi bi-x text-danger"></i>
                                             </t>
                                         </td>
                                     </t>
@@ -196,10 +196,10 @@
                                     <t t-foreach="comparison_data" t-as="data">
                                         <td class="text-center">
                                             <t t-if="data['services'].get('hot_water')">
-                                                <i class="fa fa-check text-success"></i>
+                                                <i class="bi bi-check text-success"></i>
                                             </t>
                                             <t t-else="">
-                                                <i class="fa fa-times text-danger"></i>
+                                                <i class="bi bi-x text-danger"></i>
                                             </t>
                                         </td>
                                     </t>

@@ -24,7 +24,7 @@
                                 <img class="card-img-top" src="/theme_bohio_real_estate/static/src/img/property_placeholder.jpg" alt="Propiedad"/>
                                 <div class="card-body">
                                     <h6 class="card-title">Apartamento en El Poblado</h6>
-                                    <p class="text-muted small"><i class="fa fa-map-marker"></i> El Poblado, Medellín</p>
+                                    <p class="text-muted small"><i class="bi bi-geo-alt-fill"></i> El Poblado, Medellín</p>
                                     <div class="d-flex justify-content-between">
                                         <span class="text-primary fw-bold">$450,000,000</span>
                                     </div>
@@ -37,7 +37,7 @@
                                 <img class="card-img-top" src="/theme_bohio_real_estate/static/src/img/property_placeholder.jpg" alt="Propiedad"/>
                                 <div class="card-body">
                                     <h6 class="card-title">Casa en Laureles</h6>
-                                    <p class="text-muted small"><i class="fa fa-map-marker"></i> Laureles, Medellín</p>
+                                    <p class="text-muted small"><i class="bi bi-geo-alt-fill"></i> Laureles, Medellín</p>
                                     <div class="d-flex justify-content-between">
                                         <span class="text-primary fw-bold">$650,000,000</span>
                                     </div>
@@ -50,7 +50,7 @@
                                 <img class="card-img-top" src="/theme_bohio_real_estate/static/src/img/property_placeholder.jpg" alt="Propiedad"/>
                                 <div class="card-body">
                                     <h6 class="card-title">Oficina en Centro</h6>
-                                    <p class="text-muted small"><i class="fa fa-map-marker"></i> Centro, Medellín</p>
+                                    <p class="text-muted small"><i class="bi bi-geo-alt-fill"></i> Centro, Medellín</p>
                                     <div class="d-flex justify-content-between">
                                         <span class="text-primary fw-bold">$280,000,000</span>
                                     </div>
@@ -63,7 +63,7 @@
                                 <img class="card-img-top" src="/theme_bohio_real_estate/static/src/img/property_placeholder.jpg" alt="Propiedad"/>
                                 <div class="card-body">
                                     <h6 class="card-title">Local Comercial</h6>
-                                    <p class="text-muted small"><i class="fa fa-map-marker"></i> Envigado</p>
+                                    <p class="text-muted small"><i class="bi bi-geo-alt-fill"></i> Envigado</p>
                                     <div class="d-flex justify-content-between">
                                         <span class="text-primary fw-bold">$380,000,000</span>
                                     </div>

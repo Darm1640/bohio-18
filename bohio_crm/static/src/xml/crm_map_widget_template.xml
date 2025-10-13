@@ -30,13 +30,13 @@
                                 class="btn btn-outline-primary"
                                 t-on-click="() => this.centerOnOffice()"
                                 title="Centrar en oficina">
-                            <i class="fa fa-home"/>
+                            <i class="bi bi-house-fill"/>
                         </button>
                         <button type="button"
                                 class="btn btn-outline-primary"
                                 t-on-click="() => this.loadProperties()"
                                 title="Recargar propiedades">
-                            <i class="fa fa-sync-alt"/>
+                            <i class="bi bi-arrow-repeat"/>
                         </button>
                     </div>
                 </div>

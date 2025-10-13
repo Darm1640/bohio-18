@@ -345,7 +345,7 @@ export class BohioCrmFormExpandable extends FormController {
                 </span>
             </div>
             <div class="small text-muted mb-1">
-                <i class="fa fa-user me-1"></i>
+                <i class="bi bi-person me-1"></i>
                 ${opp.partner_id ? opp.partner_id[1] : 'Sin cliente'}
             </div>
             <div class="small text-muted mb-1">
@@ -354,7 +354,7 @@ export class BohioCrmFormExpandable extends FormController {
             </div>
             <div class="d-flex justify-content-between align-items-center mt-2 pt-2 border-top">
                 <span class="small fw-bold text-success">
-                    <i class="fa fa-dollar-sign me-1"></i>
+                    <i class="bi bi-currency-dollar me-1"></i>
                     ${this.formatCurrency(opp.expected_revenue)}
                 </span>
                 <span class="small text-muted">

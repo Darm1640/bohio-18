@@ -84,11 +84,11 @@ function updateCompareButton(propertyId) {
         const isInCompare = isPropertyInCompare(propertyId);
 
         if (isInCompare) {
-            icon.className = 'fa fa-check-circle text-success me-1';
+            icon.className = 'bi bi-check-circle text-success me-1';
             text.textContent = 'En comparación';
             btn.classList.add('active');
         } else {
-            icon.className = 'fa fa-plus-circle text-danger me-1';
+            icon.className = 'bi bi-plus-circle text-danger me-1';
             text.textContent = 'Comparar';
             btn.classList.remove('active');
         }
@@ -142,7 +142,7 @@ window.clearCompare = function() {
         document.querySelectorAll('.compare-btn').forEach(btn => {
             const icon = btn.querySelector('i');
             const text = btn.querySelector('.compare-text');
-            icon.className = 'fa fa-plus-circle text-danger me-1';
+            icon.className = 'bi bi-plus-circle text-danger me-1';
             text.textContent = 'Comparar';
             btn.classList.remove('active');
         });

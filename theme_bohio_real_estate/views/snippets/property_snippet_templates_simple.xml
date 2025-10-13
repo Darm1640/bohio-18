@@ -11,18 +11,18 @@
                     <div class="card-body">
                         <h5 class="card-title" t-esc="record.get('name', 'Sin nombre')"/>
                         <p class="text-muted mb-2">
-                            <i class="fa fa-map-marker"/>
+                            <i class="bi bi-geo-alt-fill"/>
                             <span t-if="record.get('city_id')" t-esc="record['city_id'][1] if isinstance(record.get('city_id'), (list, tuple)) else record.get('city_id')"/>
                         </p>
                         <div class="mb-2">
                             <span t-if="record.get('bedrooms')" class="me-2">
-                                <i class="fa fa-bed"/> <t t-esc="int(record.get('bedrooms', 0))"/>
+                                <i class="bi bi-bed"/> <t t-esc="int(record.get('bedrooms', 0))"/>
                             </span>
                             <span t-if="record.get('bathrooms')" class="me-2">
-                                <i class="fa fa-bath"/> <t t-esc="int(record.get('bathrooms', 0))"/>
+                                <i class="bi bi-droplet"/> <t t-esc="int(record.get('bathrooms', 0))"/>
                             </span>
                             <span t-if="record.get('area')">
-                                <i class="fa fa-arrows-alt"/> <t t-esc="'%.0f' % record.get('area', 0)"/> m²
+                                <i class="bi bi-arrows-fullscreen"/> <t t-esc="'%.0f' % record.get('area', 0)"/> m²
                             </span>
                         </div>
                         <div class="d-flex justify-content-between align-items-center">

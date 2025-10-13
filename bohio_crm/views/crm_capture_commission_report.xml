@@ -161,7 +161,7 @@
                         <main>
                             <field name="name" class="fw-bold"/>
                             <div class="text-muted">
-                                <i class="fa fa-user"/> <field name="partner_id"/>
+                                <i class="bi bi-person"/> <field name="partner_id"/>
                             </div>
                             <div class="mt-2">
                                 <span class="badge bg-primary">

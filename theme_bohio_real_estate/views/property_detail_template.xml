@@ -12,17 +12,17 @@
                                     <!-- Badges superiores -->
                                     <div class="position-absolute top-0 start-0 p-3" style="z-index: 10;">
                                         <span class="badge px-3 py-2" style="background: #E31E24; font-size: 0.9rem;">
-                                            <i class="fa fa-star me-1"></i>DESTACADO
+                                            <i class="bi bi-star me-1"></i>DESTACADO
                                         </span>
                                     </div>
 
                                     <!-- Botones de acción (Favorito, Compartir, Reportar) -->
                                     <div class="position-absolute top-0 end-0 p-3 d-flex gap-2" style="z-index: 10;">
                                         <button class="btn btn-light rounded-circle shadow" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;" title="Favorito">
-                                            <i class="fa fa-heart text-danger"></i>
+                                            <i class="bi bi-heart text-danger"></i>
                                         </button>
                                         <button class="btn btn-light rounded-circle shadow" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;" title="Compartir" onclick="openShareModal()">
-                                            <i class="fa fa-share-alt text-primary"></i>
+                                            <i class="bi bi-share-fill text-primary"></i>
                                         </button>
                                         <button class="btn btn-light rounded-circle shadow" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;" title="Reportar" onclick="openReportModal()">
                                             <i class="fa fa-flag text-warning"></i>
@@ -71,7 +71,7 @@
                                                              alt="Propiedad BOHIO"/>
                                                         <div class="position-absolute top-50 start-50 translate-middle text-white text-center"
                                                              style="background: rgba(227, 30, 36, 0.95); padding: 20px 40px; border-radius: 10px;">
-                                                            <i class="fa fa-image fa-3x mb-2"></i>
+                                                            <i class="bi bi-image fa-3x mb-2"></i>
                                                             <p class="mb-0 fw-bold fs-5">Imagen no disponible</p>
                                                         </div>
                                                     </div>
@@ -83,13 +83,13 @@
                                         <t t-if="len(images_list) > 1">
                                             <button class="carousel-control-prev" type="button" data-bs-target="#propertyImageCarousel" data-bs-slide="prev" style="width: 50px;">
                                                 <div class="bg-white rounded-circle d-flex align-items-center justify-content-center shadow" style="width: 40px; height: 40px;">
-                                                    <i class="fa fa-chevron-left text-dark"></i>
+                                                    <i class="bi bi-chevron-left text-dark"></i>
                                                 </div>
                                                 <span class="visually-hidden">Anterior</span>
                                             </button>
                                             <button class="carousel-control-next" type="button" data-bs-target="#propertyImageCarousel" data-bs-slide="next" style="width: 50px;">
                                                 <div class="bg-white rounded-circle d-flex align-items-center justify-content-center shadow" style="width: 40px; height: 40px;">
-                                                    <i class="fa fa-chevron-right text-dark"></i>
+                                                    <i class="bi bi-chevron-right text-dark"></i>
                                                 </div>
                                                 <span class="visually-hidden">Siguiente</span>
                                             </button>
@@ -101,17 +101,17 @@
                                         <!-- Contador de Imágenes -->
                                         <t t-set="total_images" t-value="len(property.product_template_image_ids) if property.product_template_image_ids else (1 if property.image_1920 else 1)"/>
                                         <div class="text-white fw-bold px-3 py-2 rounded" style="background: rgba(0,0,0,0.6); backdrop-filter: blur(5px);">
-                                            <i class="fa fa-camera me-2"></i>
+                                            <i class="bi bi-camera me-2"></i>
                                             <span id="currentImageIndex">1</span> / <span id="totalImages" t-esc="total_images"/>
                                         </div>
 
                                         <!-- Botones Galería y Mapa -->
                                         <div class="d-flex gap-2">
                                             <button class="btn btn-light px-3 py-2 fw-bold" onclick="openGalleryModal()" t-if="total_images > 1">
-                                                <i class="fa fa-th me-2"></i>Galería
+                                                <i class="bi bi-grid me-2"></i>Galería
                                             </button>
                                             <button class="btn btn-light px-3 py-2 fw-bold" onclick="toggleMapView()" t-if="property.latitude and property.longitude">
-                                                <i class="fa fa-map me-2"></i>Mapa
+                                                <i class="bi bi-map-fill me-2"></i>Mapa
                                             </button>
                                         </div>
                                     </div>
@@ -122,7 +122,7 @@
                                         <div>
                                             <h1 class="h2 mb-2" t-esc="property.name"/>
                                             <p class="text-muted mb-0">
-                                                <i class="fa fa-tag"/> Código: <strong t-esc="property.default_code or 'N/A'"/>
+                                                <i class="bi bi-tag"/> Código: <strong t-esc="property.default_code or 'N/A'"/>
                                             </p>
                                         </div>
                                         <div class="text-end">
@@ -161,7 +161,7 @@
                                     <!-- OBSERVACIONES DESTACADAS -->
                                     <t t-if="property.observations">
                                         <div class="alert alert-light border-start border-danger border-4 mb-4">
-                                            <h5 class="text-danger mb-3"><i class="fa fa-comment-o"/> Descripción de la Propiedad</h5>
+                                            <h5 class="text-danger mb-3"><i class="bi bi-chat"/> Descripción de la Propiedad</h5>
                                             <div t-field="property.observations" class="text-muted" style="white-space: pre-wrap;"/>
                                         </div>
                                     </t>
@@ -173,30 +173,30 @@
                                         <div class="col-12">
                                             <div class="card bg-light border-0">
                                                 <div class="card-body">
-                                                    <h5 class="text-danger mb-3"><i class="fa fa-map-marker"/> Ubicación Completa</h5>
+                                                    <h5 class="text-danger mb-3"><i class="bi bi-map-fill-marker"/> Ubicación Completa</h5>
                                                     <div class="row">
                                                         <div class="col-md-6 mb-2" t-if="property.address">
-                                                            <i class="fa fa-home text-danger me-2"/>
+                                                            <i class="bi bi-house-fill text-danger me-2"/>
                                                             <strong>Dirección:</strong> <span t-esc="property.address"/>
                                                         </div>
                                                         <div class="col-md-6 mb-2" t-if="property.region_id">
-                                                            <i class="fa fa-map text-danger me-2"/>
+                                                            <i class="bi bi-map-fill text-danger me-2"/>
                                                             <strong>Barrio:</strong> <span t-esc="property.region_id.name"/>
                                                         </div>
                                                         <div class="col-md-6 mb-2" t-if="property.neighborhood">
-                                                            <i class="fa fa-building text-danger me-2"/>
+                                                            <i class="bi bi-building text-danger me-2"/>
                                                             <strong>Sector:</strong> <span t-esc="property.neighborhood"/>
                                                         </div>
                                                         <div class="col-md-6 mb-2" t-if="property.city">
-                                                            <i class="fa fa-map-marker text-danger me-2"/>
+                                                            <i class="bi bi-map-fill-marker text-danger me-2"/>
                                                             <strong>Ciudad:</strong> <span t-esc="property.city"/>
                                                         </div>
                                                         <div class="col-md-6 mb-2" t-if="property.state_id">
-                                                            <i class="fa fa-globe text-danger me-2"/>
+                                                            <i class="bi bi-globe text-danger me-2"/>
                                                             <strong>Departamento:</strong> <span t-esc="property.state_id.name"/>
                                                         </div>
                                                         <div class="col-md-6 mb-2" t-if="property.stratum">
-                                                            <i class="fa fa-star text-warning me-2"/>
+                                                            <i class="bi bi-star text-warning me-2"/>
                                                             <strong>Estrato:</strong> <span t-esc="property.stratum"/>
                                                         </div>
                                                     </div>
@@ -208,32 +208,32 @@
                                     <!-- CARACTERÍSTICAS PRINCIPALES -->
                                     <div class="row mb-4">
                                         <div class="col-12">
-                                            <h5 class="text-danger mb-3"><i class="fa fa-list-ul"/> Características Principales</h5>
+                                            <h5 class="text-danger mb-3"><i class="bi bi-list-ul"/> Características Principales</h5>
                                         </div>
                                         <div class="col-md-3 col-6 mb-3" t-if="property.property_area">
                                             <div class="text-center p-3 bg-light rounded">
-                                                <i class="fa fa-arrows-alt fa-2x text-danger mb-2"/>
+                                                <i class="bi bi-arrows-fullscreen fa-2x text-danger mb-2"/>
                                                 <h4 class="mb-0 text-danger" t-esc="'%.0f' % property.property_area"/>
                                                 <small class="text-muted">m² Área Total</small>
                                             </div>
                                         </div>
                                         <div class="col-md-3 col-6 mb-3" t-if="property.num_bedrooms">
                                             <div class="text-center p-3 bg-light rounded">
-                                                <i class="fa fa-bed fa-2x text-danger mb-2"/>
+                                                <i class="bi bi-bed fa-2x text-danger mb-2"/>
                                                 <h4 class="mb-0 text-danger" t-esc="property.num_bedrooms"/>
                                                 <small class="text-muted">Habitaciones</small>
                                             </div>
                                         </div>
                                         <div class="col-md-3 col-6 mb-3" t-if="property.num_bathrooms">
                                             <div class="text-center p-3 bg-light rounded">
-                                                <i class="fa fa-bath fa-2x text-danger mb-2"/>
+                                                <i class="bi bi-droplet fa-2x text-danger mb-2"/>
                                                 <h4 class="mb-0 text-danger" t-esc="property.num_bathrooms"/>
                                                 <small class="text-muted">Baños</small>
                                             </div>
                                         </div>
                                         <div class="col-md-3 col-6 mb-3" t-if="property.covered_parking or property.uncovered_parking">
                                             <div class="text-center p-3 bg-light rounded">
-                                                <i class="fa fa-car fa-2x text-danger mb-2"/>
+                                                <i class="bi bi-car-front fa-2x text-danger mb-2"/>
                                                 <h4 class="mb-0 text-danger" t-esc="(property.covered_parking or 0) + (property.uncovered_parking or 0)"/>
                                                 <small class="text-muted">Parqueaderos</small>
                                             </div>
@@ -243,7 +243,7 @@
                                     <!-- Mapa (inicialmente oculto) -->
                                     <div id="mapViewSection" class="mb-4" style="display: none;">
                                         <hr/>
-                                        <h5><i class="fa fa-map text-primary"/> Ubicación en el Mapa</h5>
+                                        <h5><i class="bi bi-map-fill text-primary"/> Ubicación en el Mapa</h5>
                                         <div id="property_map" style="height: 400px; width: 100%;" class="mb-4"
                                              t-att-data-lat="property.latitude"
                                              t-att-data-lng="property.longitude"
@@ -261,7 +261,7 @@
                             <!-- FORMULARIO DE CONTACTO -->
                             <div class="card shadow-sm sticky-top mb-4" style="top: 20px; border: 2px solid #E31E24;">
                                 <div class="card-header text-white" style="background: #E31E24;">
-                                    <h5 class="mb-0"><i class="fa fa-envelope"/> Contactar</h5>
+                                    <h5 class="mb-0"><i class="bi bi-envelope"/> Contactar</h5>
                                 </div>
                                 <div class="card-body">
                                     <form action="/contact/property" t-att-data-property-id="property.id" method="post" class="property-contact-form">
@@ -304,7 +304,7 @@
                 <div class="modal-dialog modal-xl modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title"><i class="fa fa-th me-2"></i>Galería de Imágenes</h5>
+                            <h5 class="modal-title"><i class="bi bi-grid me-2"></i>Galería de Imágenes</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                         </div>
                         <div class="modal-body">
@@ -323,11 +323,11 @@
                         <!-- Header con botón cerrar y contador -->
                         <div class="position-absolute top-0 start-0 end-0 p-3 d-flex justify-content-between align-items-center" style="z-index: 1055; background: linear-gradient(to bottom, rgba(0,0,0,0.7), transparent);">
                             <div class="text-white fw-bold">
-                                <i class="fa fa-camera me-2"></i>
+                                <i class="bi bi-camera me-2"></i>
                                 <span id="zoomImageIndex">1</span> / <span id="zoomTotalImages">1</span>
                             </div>
                             <button type="button" class="btn btn-light btn-sm rounded-circle" data-bs-dismiss="modal" style="width: 40px; height: 40px;">
-                                <i class="fa fa-times"></i>
+                                <i class="bi bi-x"></i>
                             </button>
                         </div>
 
@@ -337,10 +337,10 @@
 
                             <!-- Controles de navegación -->
                             <button id="zoomPrevBtn" class="btn btn-light rounded-circle position-absolute start-0 ms-3" style="width: 50px; height: 50px; top: 50%; transform: translateY(-50%);" onclick="navigateZoom(-1)">
-                                <i class="fa fa-chevron-left fa-lg"></i>
+                                <i class="bi bi-chevron-left fa-lg"></i>
                             </button>
                             <button id="zoomNextBtn" class="btn btn-light rounded-circle position-absolute end-0 me-3" style="width: 50px; height: 50px; top: 50%; transform: translateY(-50%);" onclick="navigateZoom(1)">
-                                <i class="fa fa-chevron-right fa-lg"></i>
+                                <i class="bi bi-chevron-right fa-lg"></i>
                             </button>
                         </div>
 
@@ -360,7 +360,7 @@
                     <div class="modal-content">
                         <div class="modal-header" style="background: linear-gradient(135deg, #E31E24 0%, #c91920 100%); color: white;">
                             <h5 class="modal-title">
-                                <i class="fa fa-share-alt me-2"></i>Compartir Propiedad
+                                <i class="bi bi-share-fill me-2"></i>Compartir Propiedad
                             </h5>
                             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                         </div>
@@ -369,20 +369,20 @@
                             <div class="card mb-3 border-0 bg-light">
                                 <div class="card-body">
                                     <h6 class="text-danger mb-2">
-                                        <i class="fa fa-home me-2"></i><span t-esc="property.name"/>
+                                        <i class="bi bi-house-fill me-2"></i><span t-esc="property.name"/>
                                     </h6>
                                     <div class="row g-2 small text-muted">
                                         <div class="col-6" t-if="property.default_code">
-                                            <i class="fa fa-tag me-1"></i><strong>Código:</strong> <span t-esc="property.default_code"/>
+                                            <i class="bi bi-tag me-1"></i><strong>Código:</strong> <span t-esc="property.default_code"/>
                                         </div>
                                         <div class="col-6" t-if="property.property_type">
-                                            <i class="fa fa-building me-1"></i><strong>Tipo:</strong> <span t-esc="property.property_type"/>
+                                            <i class="bi bi-building me-1"></i><strong>Tipo:</strong> <span t-esc="property.property_type"/>
                                         </div>
                                         <div class="col-6" t-if="property.city">
-                                            <i class="fa fa-map-marker me-1"></i><strong>Ciudad:</strong> <span t-esc="property.city"/>
+                                            <i class="bi bi-map-fill-marker me-1"></i><strong>Ciudad:</strong> <span t-esc="property.city"/>
                                         </div>
                                         <div class="col-6" t-if="property.property_area">
-                                            <i class="fa fa-arrows-alt me-1"></i><strong>Área:</strong> <span t-esc="'%.0f m²' % property.property_area"/>
+                                            <i class="bi bi-arrows-fullscreen me-1"></i><strong>Área:</strong> <span t-esc="'%.0f m²' % property.property_area"/>
                                         </div>
                                     </div>
 
@@ -407,7 +407,7 @@
                                     <t t-if="property.observations">
                                         <div class="mt-2 pt-2 border-top">
                                             <small class="text-muted">
-                                                <i class="fa fa-comment-o me-1"></i>
+                                                <i class="bi bi-chat me-1"></i>
                                                 <span t-esc="property.observations[:150] + ('...' if len(property.observations) > 150 else '')"/>
                                             </small>
                                         </div>
@@ -418,16 +418,16 @@
                             <!-- Link para Copiar -->
                             <div class="mb-3">
                                 <label class="form-label fw-bold">
-                                    <i class="fa fa-link me-1"></i>Link de la Propiedad
+                                    <i class="bi bi-link me-1"></i>Link de la Propiedad
                                 </label>
                                 <div class="input-group">
                                     <input type="text" class="form-control" id="propertyShareLink" readonly="readonly" t-attf-value="#{request.httprequest.url_root.rstrip('/')}/property/#{property.id}"/>
                                     <button class="btn btn-outline-danger" type="button" onclick="copyToClipboard()">
-                                        <i class="fa fa-copy me-1"></i>Copiar
+                                        <i class="bi bi-clipboard me-1"></i>Copiar
                                     </button>
                                 </div>
                                 <small class="text-success" id="copySuccess" style="display: none;">
-                                    <i class="fa fa-check-circle me-1"></i>Link copiado al portapapeles
+                                    <i class="bi bi-check-circle me-1"></i>Link copiado al portapapeles
                                 </small>
                             </div>
 
@@ -436,12 +436,12 @@
                             <!-- Compartir en Redes Sociales -->
                             <div>
                                 <label class="form-label fw-bold mb-3">
-                                    <i class="fa fa-share-nodes me-1"></i>Compartir en Redes Sociales
+                                    <i class="bi bi-share-fill me-1"></i>Compartir en Redes Sociales
                                 </label>
                                 <div class="d-grid gap-2">
                                     <!-- WhatsApp -->
                                     <button class="btn text-start text-white d-flex align-items-center" style="background: #25D366;" onclick="shareOnWhatsApp()">
-                                        <i class="fab fa-whatsapp fa-2x me-3"></i>
+                                        <i class="bi bi-whatsapp fa-2x me-3"></i>
                                         <div class="flex-grow-1">
                                             <strong class="d-block">WhatsApp</strong>
                                             <small class="opacity-75">Enviar por mensaje</small>
@@ -450,7 +450,7 @@
 
                                     <!-- Facebook -->
                                     <button class="btn text-start text-white d-flex align-items-center" style="background: #1877F2;" onclick="shareOnFacebook()">
-                                        <i class="fab fa-facebook-f fa-2x me-3"></i>
+                                        <i class="bi bi-facebook fa-2x me-3"></i>
                                         <div class="flex-grow-1">
                                             <strong class="d-block">Facebook</strong>
                                             <small class="opacity-75">Publicar en tu muro</small>
@@ -459,7 +459,7 @@
 
                                     <!-- X (Twitter) -->
                                     <button class="btn text-start text-white d-flex align-items-center" style="background: #000000;" onclick="shareOnTwitter()">
-                                        <i class="fab fa-x-twitter fa-2x me-3"></i>
+                                        <i class="bi bi-twitter-x fa-2x me-3"></i>
                                         <div class="flex-grow-1">
                                             <strong class="d-block">X (Twitter)</strong>
                                             <small class="opacity-75">Compartir en X</small>
@@ -468,7 +468,7 @@
 
                                     <!-- Email -->
                                     <button class="btn text-start text-white d-flex align-items-center" style="background: #6c757d;" onclick="shareViaEmail()">
-                                        <i class="fa fa-envelope fa-2x me-3"></i>
+                                        <i class="bi bi-envelope fa-2x me-3"></i>
                                         <div class="flex-grow-1">
                                             <strong class="d-block">Correo Electrónico</strong>
                                             <small class="opacity-75">Enviar por email</small>
@@ -496,7 +496,7 @@
                         </div>
                         <div class="modal-body">
                             <div class="alert alert-info border-0 mb-4">
-                                <i class="fa fa-info-circle me-2"></i>
+                                <i class="bi bi-info-circle me-2"></i>
                                 <strong>¿Encontraste un error?</strong> Ayúdanos a mejorar reportando información incorrecta, imágenes equivocadas o precios desactualizados.
                             </div>
 
@@ -510,7 +510,7 @@
                                 <!-- Tipo de Problema -->
                                 <div class="mb-3">
                                     <label class="form-label fw-bold">
-                                        <i class="fa fa-exclamation-triangle text-warning me-1"></i>Tipo de Problema *
+                                        <i class="bi bi-exclamation-triangle text-warning me-1"></i>Tipo de Problema *
                                     </label>
                                     <select class="form-select" name="problem_type" required="required">
                                         <option value="">Selecciona el tipo de problema...</option>
@@ -528,7 +528,7 @@
                                 <div class="row mb-3">
                                     <div class="col-md-6">
                                         <label class="form-label fw-bold">
-                                            <i class="fa fa-user text-primary me-1"></i>Tu Nombre Completo *
+                                            <i class="bi bi-person text-primary me-1"></i>Tu Nombre Completo *
                                         </label>
                                         <input type="text" class="form-control" name="reporter_name" required="required" placeholder="Ej: Juan Pérez"/>
                                     </div>
@@ -536,7 +536,7 @@
                                     <!-- Email del Reportante -->
                                     <div class="col-md-6">
                                         <label class="form-label fw-bold">
-                                            <i class="fa fa-envelope text-primary me-1"></i>Tu Email *
+                                            <i class="bi bi-envelope text-primary me-1"></i>Tu Email *
                                         </label>
                                         <input type="email" class="form-control" name="reporter_email" required="required" placeholder="tu@email.com"/>
                                     </div>
@@ -545,7 +545,7 @@
                                 <!-- Descripción Detallada -->
                                 <div class="mb-3">
                                     <label class="form-label fw-bold">
-                                        <i class="fa fa-comment text-primary me-1"></i>Descripción del Problema *
+                                        <i class="bi bi-chat text-primary me-1"></i>Descripción del Problema *
                                     </label>
                                     <textarea class="form-control" name="description" rows="4" required="required" placeholder="Por favor describe el problema en detalle. Mínimo 20 caracteres."></textarea>
                                     <small class="text-muted">Mínimo 20 caracteres. Sé lo más específico posible para ayudarnos a resolver el problema.</small>
@@ -555,7 +555,7 @@
                                 <div class="card bg-light border-0 mb-3">
                                     <div class="card-body">
                                         <h6 class="text-danger mb-2">
-                                            <i class="fa fa-home me-2"></i>Propiedad a Reportar
+                                            <i class="bi bi-house-fill me-2"></i>Propiedad a Reportar
                                         </h6>
                                         <div class="row g-2 small">
                                             <div class="col-6">
@@ -577,7 +577,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                                <i class="fa fa-times me-1"></i>Cancelar
+                                <i class="bi bi-x me-1"></i>Cancelar
                             </button>
                             <button type="button" class="btn btn-warning text-white" onclick="submitReport()">
                                 <i class="fa fa-paper-plane me-1"></i>Enviar Reporte

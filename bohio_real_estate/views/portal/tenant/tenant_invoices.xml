@@ -26,7 +26,7 @@
                     <div class="col-md-3">
                         <div class="metric-card">
                             <div class="metric-icon bg-success">
-                                <i class="fa fa-check-circle"></i>
+                                <i class="bi bi-check-circle"></i>
                             </div>
                             <div class="metric-details">
                                 <div class="metric-value"><t t-esc="paid_invoices"/></div>
@@ -37,7 +37,7 @@
                     <div class="col-md-3">
                         <div class="metric-card">
                             <div class="metric-icon bg-warning">
-                                <i class="fa fa-clock"></i>
+                                <i class="bi bi-clock"></i>
                             </div>
                             <div class="metric-details">
                                 <div class="metric-value"><t t-esc="pending_invoices"/></div>
@@ -48,7 +48,7 @@
                     <div class="col-md-3">
                         <div class="metric-card">
                             <div class="metric-icon bg-danger">
-                                <i class="fa fa-exclamation-circle"></i>
+                                <i class="bi bi-exclamation-circle"></i>
                             </div>
                             <div class="metric-details">
                                 <div class="metric-value"><t t-esc="overdue_invoices"/></div>
@@ -94,7 +94,7 @@
                             <div class="col-md-2">
                                 <label class="form-label">&#160;</label>
                                 <button type="submit" class="btn btn-primary w-100">
-                                    <i class="fa fa-filter"></i> Filtrar
+                                    <i class="bi bi-funnel"></i> Filtrar
                                 </button>
                             </div>
                         </form>
@@ -164,17 +164,17 @@
                                                 <td>
                                                     <t t-if="invoice.payment_state == 'paid'">
                                                         <span class="badge bg-success">
-                                                            <i class="fa fa-check"></i> Pagada
+                                                            <i class="bi bi-check"></i> Pagada
                                                         </span>
                                                     </t>
                                                     <t t-elif="invoice.payment_state == 'partial'">
                                                         <span class="badge bg-warning">
-                                                            <i class="fa fa-exclamation"></i> Parcial
+                                                            <i class="bi bi-exclamation"></i> Parcial
                                                         </span>
                                                     </t>
                                                     <t t-elif="invoice.payment_state == 'not_paid'">
                                                         <span class="badge bg-danger">
-                                                            <i class="fa fa-times"></i> Sin Pagar
+                                                            <i class="bi bi-x"></i> Sin Pagar
                                                         </span>
                                                     </t>
                                                     <t t-else="">
@@ -186,12 +186,12 @@
                                                         <a t-attf-href="/my/invoices/#{invoice.id}?access_token=#{invoice.access_token}"
                                                            class="btn btn-outline-primary"
                                                            target="_blank">
-                                                            <i class="fa fa-eye"></i> Ver
+                                                            <i class="bi bi-eye"></i> Ver
                                                         </a>
                                                         <a t-attf-href="/my/invoices/#{invoice.id}/pdf?access_token=#{invoice.access_token}"
                                                            class="btn btn-outline-secondary"
                                                            target="_blank">
-                                                            <i class="fa fa-file-pdf"></i> PDF
+                                                            <i class="bi bi-file-pdf"></i> PDF
                                                         </a>
                                                     </div>
                                                 </td>
@@ -220,7 +220,7 @@
                         </t>
                         <t t-else="">
                             <div class="alert alert-info text-center">
-                                <i class="fa fa-info-circle"></i> No hay facturas registradas
+                                <i class="bi bi-info-circle"></i> No hay facturas registradas
                             </div>
                         </t>
                     </div>

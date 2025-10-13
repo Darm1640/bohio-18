@@ -13,7 +13,7 @@
                                     <div class="mb-4">
                                         <div class="rounded-circle d-inline-flex align-items-center justify-content-center"
                                              style="width: 100px; height: 100px; background: #28a745;">
-                                            <i class="fa fa-check text-white" style="font-size: 50px;"></i>
+                                            <i class="bi bi-check text-white" style="font-size: 50px;"></i>
                                         </div>
                                     </div>
 
@@ -26,7 +26,7 @@
                                     <!-- Información de seguimiento -->
                                     <div class="alert alert-light border mb-4">
                                         <p class="mb-2">
-                                            <i class="fa fa-info-circle text-primary me-2"/>
+                                            <i class="bi bi-info-circle text-primary me-2"/>
                                             Hemos creado una oportunidad en nuestro sistema.
                                         </p>
                                         <p class="mb-0 small text-muted">
@@ -39,19 +39,19 @@
                                         <h5 class="mb-3">¿Qué sigue?</h5>
                                         <ul class="list-unstyled text-start mb-0">
                                             <li class="mb-2">
-                                                <i class="fa fa-check-circle text-success me-2"/>
+                                                <i class="bi bi-check-circle text-success me-2"/>
                                                 Nuestro equipo recibirá tu consulta inmediatamente
                                             </li>
                                             <li class="mb-2">
-                                                <i class="fa fa-check-circle text-success me-2"/>
+                                                <i class="bi bi-check-circle text-success me-2"/>
                                                 Un asesor se pondrá en contacto contigo en las próximas 24 horas
                                             </li>
                                             <li class="mb-2" t-if="lead.ideal_visit_date">
-                                                <i class="fa fa-calendar-check text-success me-2"/>
+                                                <i class="bi bi-calendar-check text-success me-2"/>
                                                 Confirmaremos tu visita programada para <strong t-esc="lead.ideal_visit_date.strftime('%d/%m/%Y %H:%M')"/>
                                             </li>
                                             <li class="mb-0">
-                                                <i class="fa fa-check-circle text-success me-2"/>
+                                                <i class="bi bi-check-circle text-success me-2"/>
                                                 Te enviaremos un correo de confirmación
                                             </li>
                                         </ul>
@@ -60,10 +60,10 @@
                                     <!-- Botones de acción -->
                                     <div class="d-grid gap-2 d-md-flex justify-content-md-center">
                                         <a t-attf-href="/properties/#{property.id}" class="btn btn-outline-primary">
-                                            <i class="fa fa-arrow-left me-2"/>Ver Propiedad
+                                            <i class="bi bi-arrow-left me-2"/>Ver Propiedad
                                         </a>
                                         <a href="/properties" class="btn text-white" style="background: #E31E24; border: none;">
-                                            <i class="fa fa-search me-2"/>Explorar Más Propiedades
+                                            <i class="bi bi-search me-2"/>Explorar Más Propiedades
                                         </a>
                                     </div>
 
@@ -97,7 +97,7 @@
                                     <div class="mb-4">
                                         <div class="rounded-circle d-inline-flex align-items-center justify-content-center"
                                              style="width: 100px; height: 100px; background: #dc3545;">
-                                            <i class="fa fa-exclamation-triangle text-white" style="font-size: 50px;"></i>
+                                            <i class="bi bi-exclamation-triangle text-white" style="font-size: 50px;"></i>
                                         </div>
                                     </div>
 
@@ -109,7 +109,7 @@
 
                                     <!-- Mensaje de error específico -->
                                     <div class="alert alert-danger mb-4" t-if="error">
-                                        <i class="fa fa-info-circle me-2"/>
+                                        <i class="bi bi-info-circle me-2"/>
                                         <span t-esc="error"/>
                                     </div>
 
@@ -118,15 +118,15 @@
                                         <h5 class="mb-3">Te sugerimos:</h5>
                                         <ul class="list-unstyled text-start mb-0">
                                             <li class="mb-2">
-                                                <i class="fa fa-check text-primary me-2"/>
+                                                <i class="bi bi-check text-primary me-2"/>
                                                 Verificar que completaste todos los campos obligatorios
                                             </li>
                                             <li class="mb-2">
-                                                <i class="fa fa-check text-primary me-2"/>
+                                                <i class="bi bi-check text-primary me-2"/>
                                                 Revisar que el correo electrónico sea válido
                                             </li>
                                             <li class="mb-0">
-                                                <i class="fa fa-check text-primary me-2"/>
+                                                <i class="bi bi-check text-primary me-2"/>
                                                 Intentar nuevamente en unos momentos
                                             </li>
                                         </ul>
@@ -135,10 +135,10 @@
                                     <!-- Botones de acción -->
                                     <div class="d-grid gap-2 d-md-flex justify-content-md-center">
                                         <a href="javascript:history.back()" class="btn btn-outline-primary">
-                                            <i class="fa fa-arrow-left me-2"/>Volver e Intentar de Nuevo
+                                            <i class="bi bi-arrow-left me-2"/>Volver e Intentar de Nuevo
                                         </a>
                                         <a href="/properties" class="btn text-white" style="background: #E31E24; border: none;">
-                                            <i class="fa fa-home me-2"/>Ir a Propiedades
+                                            <i class="bi bi-house-fill me-2"/>Ir a Propiedades
                                         </a>
                                     </div>
 
@@ -153,7 +153,7 @@
                                             <a href="tel:+573001234567" class="text-decoration-none fw-bold">+57 300 123 4567</a>
                                             o por WhatsApp al
                                             <a href="https://wa.me/573001234567" target="_blank" class="text-decoration-none fw-bold">
-                                                <i class="fa fa-whatsapp"/> +57 300 123 4567
+                                                <i class="bi bi-whatsapp"/> +57 300 123 4567
                                             </a>
                                         </small>
                                     </p>

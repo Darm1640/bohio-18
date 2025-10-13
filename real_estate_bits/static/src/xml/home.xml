@@ -28,7 +28,7 @@
                  ">
                 
                 <h5 class="text-center mb-3 text-primary">
-                    <i class="fa fa-filter"></i> Filtros Inmobiliarios
+                    <i class="bi bi-funnel"></i> Filtros Inmobiliarios
                 </h5>
 
                 <div class="text-center mb-2">
@@ -55,7 +55,7 @@
     <template id="location_search" name="Location Search">
         <div class="mb-4">
             <label class="form-label small fw-bold">
-                <i class="fa fa-map-marker"></i> Ubicación
+                <i class="bi bi-geo-alt-fill"></i> Ubicación
             </label>
             <input type="text" 
                    name="location"
@@ -73,7 +73,7 @@
         
         <div class="mb-4">
             <label class="form-label small fw-bold">
-                <i class="fa fa-tag"></i> Tipo de Servicio
+                <i class="bi bi-tag"></i> Tipo de Servicio
             </label>
             <select name="type_service" class="form-select form-select-sm">
                 <option value="">Todos los servicios</option>
@@ -99,7 +99,7 @@
         <!-- CORREGIDO: Tipo de Propiedad usando filter_options del controlador -->
         <div class="mb-4">
             <label class="form-label small fw-bold">
-                <i class="fa fa-home"></i> Tipo de Propiedad
+                <i class="bi bi-house-fill"></i> Tipo de Propiedad
             </label>
             <select name="property_type_id" class="form-select form-select-sm">
                 <option value="">Todos los tipos</option>
@@ -130,7 +130,7 @@
     <template id="price_range_slider" name="Price Range Slider">
         <div class="mb-4">
             <label class="form-label small fw-bold">
-                <i class="fa fa-money"></i> Rango de Precio
+                <i class="bi bi-cash"></i> Rango de Precio
             </label>
             <div class="price-range-container">
                 <div class="range-slider" data-type="price">
@@ -168,7 +168,7 @@
     <template id="area_range_slider" name="Area Range Slider">
         <div class="mb-4">
             <label class="form-label small fw-bold">
-                <i class="fa fa-expand"></i> Área (m²)
+                <i class="bi bi-arrows-angle-expand"></i> Área (m²)
             </label>
             <div class="range-slider" data-type="area">
                 <input type="range" 
@@ -204,7 +204,7 @@
     <template id="bedrooms_range_slider" name="Bedrooms Range Slider">
         <div class="mb-4">
             <label class="form-label small fw-bold">
-                <i class="fa fa-bed"></i> Habitaciones
+                <i class="bi bi-bed"></i> Habitaciones
             </label>
             <div class="range-slider" data-type="number">
                 <input type="range" 
@@ -240,7 +240,7 @@
     <template id="bathrooms_range_slider" name="Bathrooms Range Slider">
         <div class="mb-4">
             <label class="form-label small fw-bold">
-                <i class="fa fa-bath"></i> Baños
+                <i class="bi bi-droplet"></i> Baños
             </label>
             <div class="range-slider" data-type="number">
                 <input type="range" 
@@ -276,7 +276,7 @@
     <template id="floor_range_slider" name="Floor Range Slider">
         <div class="mb-4">
             <label class="form-label small fw-bold">
-                <i class="fa fa-building"></i> Piso
+                <i class="bi bi-building"></i> Piso
             </label>
             <div class="range-slider" data-type="floor">
                 <input type="range" 
@@ -312,7 +312,7 @@
     <template id="property_features" name="Property Features">
         <div class="mb-4">
             <label class="form-label small fw-bold">
-                <i class="fa fa-star"></i> Características
+                <i class="bi bi-star"></i> Características
             </label>
             <div class="row g-2">
                 <!-- Primera columna -->
@@ -376,7 +376,7 @@
                         <input class="form-check-input" type="checkbox" name="social_room" value="1" id="flt_social_room"
                                t-att-checked="'checked' if (current_filters and current_filters.get('social_room')) else None"/>
                         <label class="form-check-label small" for="flt_social_room">
-                            <i class="fa fa-users"></i> Salón Social
+                            <i class="bi bi-people"></i> Salón Social
                         </label>
                     </div>
                 </div>
@@ -421,7 +421,7 @@
                         <input class="form-check-input" type="checkbox" name="green_areas" value="1" id="flt_green_areas"
                                t-att-checked="'checked' if (current_filters and current_filters.get('green_areas')) else None"/>
                         <label class="form-check-label small" for="flt_green_areas">
-                            <i class="fa fa-tree"></i> Zonas Verdes
+                            <i class="bi bi-flower2"></i> Zonas Verdes
                         </label>
                     </div>
                 </div>
@@ -463,18 +463,18 @@
         <hr class="my-3"/>
         <div class="d-grid gap-2">
             <button type="submit" class="btn btn-primary btn-sm fw-bold">
-                <i class="fa fa-search"></i> Buscar Propiedades
+                <i class="bi bi-search"></i> Buscar Propiedades
                 <span class="active-count-badge" style="display:none;"></span>
             </button>
             <a href="/shop" class="btn btn-outline-secondary btn-sm">
-                <i class="fa fa-trash"></i> Limpiar Filtros
+                <i class="bi bi-trash"></i> Limpiar Filtros
             </a>
         </div>
         
         <!-- Mostrar contador de filtros activos -->
         <div class="text-center mt-2" t-if="active_filters_count and active_filters_count > 0">
             <small class="text-muted">
-                <i class="fa fa-filter"></i> 
+                <i class="bi bi-funnel"></i> 
                 <t t-esc="active_filters_count"/> filtro<t t-if="active_filters_count > 1">s</t> activo<t t-if="active_filters_count > 1">s</t>
             </small>
         </div>

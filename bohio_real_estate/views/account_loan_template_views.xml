@@ -175,14 +175,14 @@
                             <div class="o_kanban_record_bottom mt-2">
                                 <div class="oe_kanban_bottom_left">
                                     <span class="badge text-bg-secondary">
-                                        <i class="fa fa-file-text"/> <field name="loan_count"/> préstamos
+                                        <i class="bi bi-file-text"/> <field name="loan_count"/> préstamos
                                     </span>
                                 </div>
                                 <div class="oe_kanban_bottom_right">
                                     <button name="action_create_loan_from_template"
                                             type="object"
                                             class="btn btn-primary btn-sm">
-                                        <i class="fa fa-plus"/> Crear
+                                        <i class="bi bi-plus"/> Crear
                                     </button>
                                 </div>
                             </div>

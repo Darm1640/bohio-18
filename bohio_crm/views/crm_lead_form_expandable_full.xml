@@ -39,7 +39,7 @@
                         <!-- Header con Botón de Expansión -->
                         <div class="o_bohio_metrics_header d-flex justify-content-between align-items-center p-3 bg-light border rounded">
                             <h5 class="mb-0">
-                                <i class="fa fa-chart-line me-2 text-primary"/>
+                                <i class="bi bi-graph-up me-2 text-primary"/>
                                 <strong>Métricas de la Oportunidad</strong>
                             </h5>
                             <button name="toggle_metrics"
@@ -47,7 +47,7 @@
                                     class="btn btn-sm btn-outline-primary o_bohio_toggle_metrics"
                                     data-bs-toggle="collapse"
                                     data-bs-target="#bohio_metrics_content">
-                                <i class="fa fa-chevron-down me-1"/>
+                                <i class="bi bi-chevron-down me-1"/>
                                 <span class="o_toggle_text_expand">Expandir</span>
                                 <span class="o_toggle_text_collapse d-none">Comprimir</span>
                             </button>
@@ -60,7 +60,7 @@
                                 <div class="col-md-3">
                                     <div class="card border-primary h-100">
                                         <div class="card-body text-center">
-                                            <i class="fa fa-percent fa-2x text-primary mb-2"/>
+                                            <i class="bi bi-percent fa-2x text-primary mb-2"/>
                                             <h6 class="text-muted">Probabilidad</h6>
                                             <h3 class="text-primary mb-0">
                                                 <field name="probability" widget="progressbar" nolabel="1"/>
@@ -73,7 +73,7 @@
                                 <div class="col-md-3">
                                     <div class="card border-success h-100">
                                         <div class="card-body text-center">
-                                            <i class="fa fa-dollar-sign fa-2x text-success mb-2"/>
+                                            <i class="bi bi-currency-dollar fa-2x text-success mb-2"/>
                                             <h6 class="text-muted">Ingreso Esperado</h6>
                                             <h3 class="text-success mb-0">
                                                 <field name="expected_revenue" widget="monetary" nolabel="1"/>
@@ -99,7 +99,7 @@
                                 <div class="col-md-3">
                                     <div class="card border-info h-100">
                                         <div class="card-body text-center">
-                                            <i class="fa fa-calendar-alt fa-2x text-info mb-2"/>
+                                            <i class="bi bi-calendar-event fa-2x text-info mb-2"/>
                                             <h6 class="text-muted">Días en Etapa</h6>
                                             <h3 class="text-info mb-0">
                                                 <field name="day_open" nolabel="1"/>
@@ -129,7 +129,7 @@
                                     <div class="card border-secondary">
                                         <div class="card-body">
                                             <h6 class="card-title">
-                                                <i class="fa fa-home me-2 text-secondary"/>
+                                                <i class="bi bi-house-fill me-2 text-secondary"/>
                                                 Propiedades de Interés
                                             </h6>
                                             <field name="property_ids"
@@ -195,7 +195,7 @@
                                 <div class="d-flex align-items-center mb-3">
                                     <field name="show_map_location" widget="boolean_toggle" nolabel="1" class="me-2"/>
                                     <span class="o_form_label">
-                                        <i class="fa fa-map-marker-alt me-1"/>
+                                        <i class="bi bi-geo-alt-fill me-1"/>
                                         Mostrar ubicaciones en mapa
                                     </span>
                                 </div>
@@ -250,13 +250,13 @@
                             <div class="o_bohio_sidebar_header bg-primary text-white p-3 rounded-top">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <h6 class="mb-0">
-                                        <i class="fa fa-list-ul me-2"/>
+                                        <i class="bi bi-list-ul me-2"/>
                                         Oportunidades Relacionadas
                                     </h6>
                                     <button name="toggle_sidebar"
                                             type="button"
                                             class="btn btn-sm btn-light o_bohio_toggle_sidebar">
-                                        <i class="fa fa-chevron-right"/>
+                                        <i class="bi bi-chevron-right"/>
                                     </button>
                                 </div>
                             </div>
@@ -266,7 +266,7 @@
                                 <!-- Filtros -->
                                 <div class="mb-3">
                                     <div class="o_form_label small text-muted fw-bold mb-2">
-                                        <i class="fa fa-filter me-1"/>
+                                        <i class="bi bi-funnel me-1"/>
                                         Filtrar por:
                                     </div>
                                     <select class="form-select form-select-sm o_bohio_filter_type">
@@ -293,12 +293,12 @@
                                         <button name="prev_page"
                                                 type="button"
                                                 class="btn btn-outline-secondary">
-                                            <i class="fa fa-chevron-left"/>
+                                            <i class="bi bi-chevron-left"/>
                                         </button>
                                         <button name="next_page"
                                                 type="button"
                                                 class="btn btn-outline-secondary">
-                                            <i class="fa fa-chevron-right"/>
+                                            <i class="bi bi-chevron-right"/>
                                         </button>
                                     </div>
                                 </div>

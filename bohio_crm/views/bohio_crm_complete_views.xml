@@ -41,13 +41,13 @@
                                     <a role="menuitem" type="delete" class="dropdown-item">Eliminar</a>
                                     <div class="dropdown-divider"/>
                                     <a role="menuitem" type="object" name="action_schedule_meeting" class="dropdown-item">
-                                        <i class="fa fa-calendar me-1"/> Agendar Reunión
+                                        <i class="bi bi-calendar me-1"/> Agendar Reunión
                                     </a>
                                     <a role="menuitem" class="dropdown-item" type="object" name="action_make_call">
-                                        <i class="fa fa-phone me-1"/> Llamar
+                                        <i class="bi bi-telephone me-1"/> Llamar
                                     </a>
                                     <a role="menuitem" class="dropdown-item" type="object" name="action_send_email">
-                                        <i class="fa fa-envelope me-1"/> Enviar Email
+                                        <i class="bi bi-envelope me-1"/> Enviar Email
                                     </a>
                                     <div class="dropdown-divider"/>
                                     <ul class="oe_kanban_colorpicker" data-field="color"/>
@@ -63,7 +63,7 @@
 
                             <!-- Cliente -->
                             <div class="mb-2">
-                                <i class="fa fa-user text-primary me-1" title="Cliente"/>
+                                <i class="bi bi-person text-primary me-1" title="Cliente"/>
                                 <field name="partner_id"/>
                             </div>
 
@@ -84,13 +84,13 @@
                             <!-- Contacto -->
                             <t t-if="record.email_from.raw_value">
                                 <div class="text-muted small mb-1">
-                                    <i class="fa fa-envelope me-1"/>
+                                    <i class="bi bi-envelope me-1"/>
                                     <t t-esc="record.email_from.value"/>
                                 </div>
                             </t>
                             <t t-if="record.phone.raw_value">
                                 <div class="text-muted small mb-2">
-                                    <i class="fa fa-phone me-1"/>
+                                    <i class="bi bi-telephone me-1"/>
                                     <t t-esc="record.phone.value"/>
                                 </div>
                             </t>
@@ -99,7 +99,7 @@
                             <t t-if="record.project_id.raw_value">
                                 <div class="mb-1">
                                     <span class="badge bg-secondary">
-                                        <i class="fa fa-building-o me-1" title="Proyecto"/>
+                                        <i class="bi bi-building me-1" title="Proyecto"/>
                                         <field name="project_id"/>
                                     </span>
                                 </div>

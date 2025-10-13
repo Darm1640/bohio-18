@@ -20,7 +20,7 @@
                             <div class="row">
                                 <div class="col-lg-12 text-center">
                                     <h1 class="o_survey_main_title pt-4">
-                                        <i class="fa fa-file-text-o"/> Crear Notas Débito
+                                        <i class="bi bi-file-text"/> Crear Notas Débito
                                     </h1>
                                     <p class="lead text-muted">
                                         Configure y genere notas débito automáticamente
@@ -33,7 +33,7 @@
 
                     <!-- Paso 1: Selección de Contratos -->
                     <div class="o_survey_question mb-4">
-                        <h3 class="o_survey_question_title"><i class="fa fa-filter"/> Paso 1: Seleccionar Contratos</h3>
+                        <h3 class="o_survey_question_title"><i class="bi bi-funnel"/> Paso 1: Seleccionar Contratos</h3>
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-6">
@@ -59,7 +59,7 @@
                     <!-- Paso 2: Configuración de la Nota -->
                     <div class="card mb-4">
                         <div class="card-header bg-warning text-dark">
-                            <h4><i class="fa fa-cog"/> Paso 2: Configurar Nota Débito</h4>
+                            <h4><i class="bi bi-gear"/> Paso 2: Configurar Nota Débito</h4>
                         </div>
                         <div class="card-body">
                             <div class="row">
@@ -99,7 +99,7 @@
                                 <!-- Monto Fijo -->
                                 <div class="col-md-4" invisible="calculation_method != 'fixed_amount'">
                                     <div class="text-center p-3 border rounded bg-light">
-                                        <h5><i class="fa fa-dollar text-success"/> Monto Fijo</h5>
+                                        <h5><i class="bi bi-currency-dollar text-success"/> Monto Fijo</h5>
                                         <field name="fixed_amount" widget="monetary" class="form-control-lg text-center"/>
                                         <small class="text-muted">Se aplicará este monto a todos los seleccionados</small>
                                     </div>
@@ -108,7 +108,7 @@
                                 <!-- Porcentaje -->
                                 <div class="col-md-4" invisible="calculation_method != 'percentage'">
                                     <div class="text-center p-3 border rounded bg-light">
-                                        <h5><i class="fa fa-percent text-warning"/> Porcentaje del Canon</h5>
+                                        <h5><i class="bi bi-percent text-warning"/> Porcentaje del Canon</h5>
                                         <field name="percentage" widget="percentage" class="form-control-lg text-center"/>
                                         <small class="text-muted">Porcentaje sobre el canon del mes</small>
                                     </div>
@@ -155,7 +155,7 @@
                     <!-- Vista Previa -->
                     <div class="card">
                         <div class="card-header bg-success text-white">
-                            <h4><i class="fa fa-eye"/> Vista Previa del Resultado</h4>
+                            <h4><i class="bi bi-eye"/> Vista Previa del Resultado</h4>
                         </div>
                         <div class="card-body">
                             <div class="alert alert-info" role="alert">
@@ -199,7 +199,7 @@
                 <div class="o_form_sheet">
                     <!-- Encabezado de Nota Débito -->
                     <div class="text-center mb-4" style="background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%); color: white; padding: 15px; border-radius: 8px;">
-                        <h2><i class="fa fa-file-text"/> <field name="name" readonly="1" style="background: transparent; border: none; color: white; font-weight: bold;"/></h2>
+                        <h2><i class="bi bi-file-text"/> <field name="name" readonly="1" style="background: transparent; border: none; color: white; font-weight: bold;"/></h2>
                         <h4><field name="concept" readonly="state != 'draft'" style="background: transparent; border: none; color: white;"/></h4>
                     </div>
 
@@ -207,7 +207,7 @@
                         <div class="col-md-6">
                             <div class="card">
                                 <div class="card-header bg-primary text-white">
-                                    <h5><i class="fa fa-info"/> Información General</h5>
+                                    <h5><i class="bi bi-info"/> Información General</h5>
                                 </div>
                                 <div class="card-body">
                                     <field name="date" readonly="state != 'draft'"/>
@@ -275,7 +275,7 @@
                     <!-- Factura Generada -->
                     <div class="card mt-3" invisible="not invoice_id">
                         <div class="card-header bg-success text-white">
-                            <h5><i class="fa fa-check-circle"/> Factura Generada</h5>
+                            <h5><i class="bi bi-check-circle"/> Factura Generada</h5>
                         </div>
                         <div class="card-body">
                             <field name="invoice_id" readonly="1"/>
@@ -332,7 +332,7 @@
                 <div class="o_form_sheet">
                     <!-- Encabezado del Balance -->
                     <div class="text-center mb-4" style="background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%); color: white; padding: 20px; border-radius: 10px;">
-                        <h1><i class="fa fa-balance-scale"/> Balance Fiscal</h1>
+                        <h1><i class="bi bi-balance-scale"/> Balance Fiscal</h1>
                         <h4>Control de Impuestos e Ingresos - Pagos Parciales</h4>
                         <p class="mb-0">Período: <field name="period_month" readonly="1" style="background: transparent; border: none; color: white; font-weight: bold;"/></p>
                     </div>
@@ -340,7 +340,7 @@
                     <!-- Filtros de Vista -->
                     <div class="card mb-4">
                         <div class="card-header bg-secondary text-white">
-                            <h5><i class="fa fa-filter"/> Filtros de Vista</h5>
+                            <h5><i class="bi bi-funnel"/> Filtros de Vista</h5>
                         </div>
                         <div class="card-body">
                             <div class="row">
@@ -403,7 +403,7 @@
                     <!-- Detalle por Línea -->
                     <div class="card">
                         <div class="card-header bg-dark text-white">
-                            <h5><i class="fa fa-list"/> Detalle por Propietario</h5>
+                            <h5><i class="bi bi-list-ul"/> Detalle por Propietario</h5>
                         </div>
                         <div class="card-body p-0">
                             <field name="balance_line_ids">
@@ -452,14 +452,14 @@
                 <div class="o_form_sheet">
                     <!-- Encabezado -->
                     <div class="text-center mb-4" style="background: linear-gradient(135deg, #fdcb6e 0%, #e17055 100%); color: white; padding: 15px; border-radius: 8px;">
-                        <h2><i class="fa fa-balance-scale"/> Conciliación de Impuestos</h2>
+                        <h2><i class="bi bi-balance-scale"/> Conciliación de Impuestos</h2>
                         <h4>Monto: <field name="tax_amount" widget="monetary" readonly="1" style="background: transparent; border: none; color: white; font-weight: bold;"/></h4>
                     </div>
 
                     <!-- Opciones de Conciliación -->
                     <div class="card">
                         <div class="card-header bg-info text-white">
-                            <h5><i class="fa fa-cog"/> Seleccione una Opción</h5>
+                            <h5><i class="bi bi-gear"/> Seleccione una Opción</h5>
                         </div>
                         <div class="card-body">
                             <field name="reconcile_option" widget="radio" class="mb-3"/>

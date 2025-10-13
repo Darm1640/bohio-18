@@ -79,7 +79,7 @@
                                 <strong><field name="name"/></strong>
                                 <div>
                                     <span t-if="record.is_cover.raw_value" class="badge bg-success">
-                                        <i class="fa fa-star"/> Portada
+                                        <i class="bi bi-star"/> Portada
                                     </span>
                                     <field name="image_type" widget="badge"/>
                                 </div>

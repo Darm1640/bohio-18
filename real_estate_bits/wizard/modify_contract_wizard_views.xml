@@ -21,7 +21,7 @@
                         <field name="company_id" invisible="1"/>
 
                         <div class="o_wizard_header">
-                            <h2><i class="fa fa-edit"></i> Modificar Contrato</h2>
+                            <h2><i class="bi bi-pencil"></i> Modificar Contrato</h2>
                             <h4 class="text-muted">
                                 <field name="contract_id" readonly="1" options="{'no_open': True}"/>
                             </h4>
@@ -29,7 +29,7 @@
 
                         <!-- Información actual del contrato -->
                         <div class="alert alert-info">
-                            <h5><i class="fa fa-info-circle"></i> Información Actual</h5>
+                            <h5><i class="bi bi-info-circle"></i> Información Actual</h5>
                             <div class="row">
                                 <div class="col-md-3">
                                     <strong>Fecha Fin:</strong><br/>

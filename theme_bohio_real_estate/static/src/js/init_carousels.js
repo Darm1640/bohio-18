@@ -128,7 +128,7 @@ class PropertyCarousel {
                                      loading="lazy"/>
                                 ${prop.project_id ? `
                                     <span class="badge bg-danger position-absolute top-0 start-0 m-3">
-                                        <i class="fa fa-building me-1"></i>${prop.project_name}
+                                        <i class="bi bi-building me-1"></i>${prop.project_name}
                                     </span>
                                 ` : ''}
                             </div>
@@ -139,13 +139,13 @@ class PropertyCarousel {
 
                                 ${prop.neighborhood ? `
                                     <p class="text-muted small mb-1">
-                                        <i class="fa fa-home text-danger me-1"></i>
+                                        <i class="bi bi-house-fill text-danger me-1"></i>
                                         <strong>${prop.neighborhood}</strong>
                                     </p>
                                 ` : ''}
 
                                 <p class="text-muted small mb-3">
-                                    <i class="fa fa-map-marker-alt text-danger me-1"></i>
+                                    <i class="bi bi-geo-alt-fill text-danger me-1"></i>
                                     ${prop.city}${prop.state ? ', ' + prop.state : ''}
                                 </p>
 
@@ -153,19 +153,19 @@ class PropertyCarousel {
                                     <div class="row g-2 small">
                                         ${prop.area > 0 ? `
                                             <div class="col-6">
-                                                <i class="fa fa-ruler-combined text-danger me-1"></i>
+                                                <i class="bi bi-rulers text-danger me-1"></i>
                                                 <span class="text-muted">${prop.area} m²</span>
                                             </div>
                                         ` : ''}
                                         ${prop.bedrooms > 0 ? `
                                             <div class="col-6">
-                                                <i class="fa fa-bed text-danger me-1"></i>
+                                                <i class="bi bi-bed text-danger me-1"></i>
                                                 <span class="text-muted">${prop.bedrooms} Hab</span>
                                             </div>
                                         ` : ''}
                                         ${prop.bathrooms > 0 ? `
                                             <div class="col-6">
-                                                <i class="fa fa-bath text-danger me-1"></i>
+                                                <i class="bi bi-droplet text-danger me-1"></i>
                                                 <span class="text-muted">${prop.bathrooms} Baños</span>
                                             </div>
                                         ` : ''}
@@ -185,7 +185,7 @@ class PropertyCarousel {
 
                                 <div class="mt-auto">
                                     <a href="${prop.url}" class="btn btn-danger btn-sm w-100">
-                                        <i class="fa fa-eye me-1"></i>Ver Detalles
+                                        <i class="bi bi-eye me-1"></i>Ver Detalles
                                     </a>
                                 </div>
                             </div>
@@ -220,14 +220,14 @@ class PropertyCarousel {
                         <div class="d-flex justify-content-between align-items-center mb-4">
                             <div class="text-center">
                                 <div class="d-flex align-items-center">
-                                    <i class="fa fa-building text-muted me-2" style="font-size: 1.2rem;"></i>
+                                    <i class="bi bi-building text-muted me-2" style="font-size: 1.2rem;"></i>
                                     <span class="h5 mb-0">${project.total_units || 0}</span>
                                 </div>
                                 <small class="text-muted">Unidades</small>
                             </div>
                             <div class="text-center">
                                 <div class="d-flex align-items-center">
-                                    <i class="fa fa-home text-danger me-2" style="font-size: 1.2rem;"></i>
+                                    <i class="bi bi-house-fill text-danger me-2" style="font-size: 1.2rem;"></i>
                                     <span class="h5 mb-0 text-danger">${project.available_units}</span>
                                 </div>
                                 <small class="text-muted">Disponibles</small>
@@ -236,17 +236,17 @@ class PropertyCarousel {
 
                         <div class="d-flex flex-column gap-2">
                             <a href="${project.url}" class="btn btn-danger w-100">
-                                <i class="fa fa-building me-1"></i>Ver Proyecto Completo
+                                <i class="bi bi-building me-1"></i>Ver Proyecto Completo
                             </a>
                             <div class="row g-2">
                                 <div class="col-6">
                                     <a href="/properties?project_id=${project.id}" class="btn btn-outline-danger btn-sm w-100">
-                                        <i class="fa fa-th me-1"></i>Ver Unidades
+                                        <i class="bi bi-grid me-1"></i>Ver Unidades
                                     </a>
                                 </div>
                                 <div class="col-6">
                                     <a href="/contacto?proyecto=${project.id}" class="btn btn-outline-danger btn-sm w-100">
-                                        <i class="fa fa-envelope me-1"></i>Contactar
+                                        <i class="bi bi-envelope me-1"></i>Contactar
                                     </a>
                                 </div>
                             </div>
@@ -281,7 +281,7 @@ class PropertyCarousel {
     showEmpty() {
         this.container.innerHTML = `
             <div class="text-center py-5">
-                <i class="fa fa-home fa-3x text-muted mb-3"></i>
+                <i class="bi bi-house-fill fa-3x text-muted mb-3"></i>
                 <p class="text-muted">No hay propiedades disponibles</p>
             </div>
         `;
@@ -290,7 +290,7 @@ class PropertyCarousel {
     showError(message) {
         this.container.innerHTML = `
             <div class="alert alert-warning" role="alert">
-                <i class="fa fa-exclamation-triangle me-2"></i>
+                <i class="bi bi-exclamation-triangle me-2"></i>
                 Error cargando propiedades: ${message}
             </div>
         `;

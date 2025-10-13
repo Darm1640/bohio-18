@@ -9,7 +9,7 @@
                  style="">
             <div class="container">
                 <h3 class="no-property-text text-center text-muted">
-                    <i class="fa fa-home fa-3x mb-3 d-block"></i>
+                    <i class="bi bi-house-fill fa-3x mb-3 d-block"></i>
                     No Property Selected - Click '+' to select a property
                 </h3>
             </div>
@@ -117,13 +117,13 @@
                             <div class="d-flex property_labels align-items-center mb-3">
                                 <t t-if="property.property_type">
                                     <span class="badge bg-primary me-2">
-                                        <i class="fa fa-home me-1"/>
+                                        <i class="bi bi-house-fill me-1"/>
                                         <t t-out="dict(property._fields['property_type'].selection).get(property.property_type, property.property_type)"/>
                                     </span>
                                 </t>
                                 <t t-if="property.type_service">
                                     <span class="badge bg-success">
-                                        <i class="fa fa-tag me-1"/>
+                                        <i class="bi bi-tag me-1"/>
                                         <t t-if="property.type_service == 'rent'">For Rent</t>
                                         <t t-elif="property.type_service == 'sale'">For Sale</t>
                                         <t t-else="">Rent/Sale</t>
@@ -165,17 +165,17 @@
                             <div class="property-features mb-3">
                                 <div class="row g-3">
                                     <div class="col-4 text-center" t-if="property.rooms">
-                                        <i class="fa fa-bed fa-2x text-primary mb-2 d-block"/>
+                                        <i class="bi bi-bed fa-2x text-primary mb-2 d-block"/>
                                         <strong t-out="int(property.rooms)">0</strong>
                                         <small class="d-block text-muted">Rooms</small>
                                     </div>
                                     <div class="col-4 text-center" t-if="property.bathrooms">
-                                        <i class="fa fa-bath fa-2x text-primary mb-2 d-block"/>
+                                        <i class="bi bi-droplet fa-2x text-primary mb-2 d-block"/>
                                         <strong t-out="int(property.bathrooms)">0</strong>
                                         <small class="d-block text-muted">Baths</small>
                                     </div>
                                     <div class="col-4 text-center" t-if="property.area">
-                                        <i class="fa fa-arrows-alt fa-2x text-primary mb-2 d-block"/>
+                                        <i class="bi bi-arrows-fullscreen fa-2x text-primary mb-2 d-block"/>
                                         <strong t-out="int(property.area)">0</strong>
                                         <small class="d-block text-muted">m²</small>
                                     </div>
@@ -185,7 +185,7 @@
                             <!-- Ubicación -->
                             <div class="property-location mb-3" t-if="property.city_id or property.region_id">
                                 <p class="mb-0">
-                                    <i class="fa fa-map-marker text-danger me-2"/>
+                                    <i class="bi bi-geo-alt-fill text-danger me-2"/>
                                     <span t-if="property.region_id" t-out="property.region_id.name">Region</span>
                                     <span t-if="property.city_id">
                                         <t t-if="property.region_id">, </t>
@@ -198,12 +198,12 @@
                             <div class="property-actions d-flex gap-2 mt-4">
                                 <a t-att-href="'/properties/%s' % property.id"
                                    class="btn btn-primary flex-fill show-view-btn">
-                                    <i class="fa fa-eye me-2"/>
+                                    <i class="bi bi-eye me-2"/>
                                     View Full Details
                                 </a>
                                 <a t-att-href="'/contactus?property=%s' % property.id"
                                    class="btn btn-success flex-fill show-contact-btn">
-                                    <i class="fa fa-phone me-2"/>
+                                    <i class="bi bi-telephone me-2"/>
                                     Contact Us
                                 </a>
                             </div>
@@ -224,7 +224,7 @@
                                             data-bs-target="#image-content"
                                             type="button"
                                             role="tab">
-                                        <i class="fa fa-image me-2"/>Images
+                                        <i class="bi bi-image me-2"/>Images
                                     </button>
                                 </li>
                                 <li class="nav-item" role="presentation">
@@ -234,7 +234,7 @@
                                             data-bs-target="#map-content"
                                             type="button"
                                             role="tab">
-                                        <i class="fa fa-map-marker me-2"/>Location
+                                        <i class="bi bi-geo-alt-fill me-2"/>Location
                                     </button>
                                 </li>
                             </ul>
@@ -287,7 +287,7 @@
                                         <t t-else="">
                                             <div class="d-flex align-items-center justify-content-center h-100 bg-light">
                                                 <div class="text-center text-muted p-5">
-                                                    <i class="fa fa-map-marker fa-3x mb-3"/>
+                                                    <i class="bi bi-geo-alt-fill fa-3x mb-3"/>
                                                     <p>Map location not available for this property</p>
                                                 </div>
                                             </div>

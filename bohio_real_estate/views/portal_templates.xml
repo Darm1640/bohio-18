@@ -61,7 +61,7 @@
                             <div class="alert alert-info text-center">
                                 <p class="lead">No tienes oportunidades activas en este momento.</p>
                                 <a href="/properties" class="btn btn-bohio-primary mt-3">
-                                    <i class="fa fa-search"/> Buscar Propiedades
+                                    <i class="bi bi-search"/> Buscar Propiedades
                                 </a>
                             </div>
                         </t>
@@ -87,7 +87,7 @@
                                 <span t-field="opportunity.name"/>
                             </h2>
                             <a href="/my/opportunities" class="btn btn-bohio-outline">
-                                <i class="fa fa-arrow-left"/> Volver
+                                <i class="bi bi-arrow-left"/> Volver
                             </a>
                         </div>
 
@@ -148,10 +148,10 @@
                                                     <span t-field="prop.list_price"
                                                           t-options="{'widget': 'monetary', 'display_currency': prop.currency_id}"/><br/>
                                                     <t t-if="prop.num_bedrooms">
-                                                        <i class="fa fa-bed"/> <span t-field="prop.num_bedrooms"/> hab.
+                                                        <i class="bi bi-bed"/> <span t-field="prop.num_bedrooms"/> hab.
                                                     </t>
                                                     <t t-if="prop.num_bathrooms">
-                                                        <i class="fa fa-bath"/> <span t-field="prop.num_bathrooms"/> baños
+                                                        <i class="bi bi-droplet"/> <span t-field="prop.num_bathrooms"/> baños
                                                     </t>
                                                 </p>
                                                 <a t-attf-href="/property/{{prop.id}}" class="btn btn-bohio-primary btn-sm w-100">
@@ -219,14 +219,14 @@
                                                 </div>
                                                 <p class="card-text">
                                                     <t t-if="prop.num_bedrooms">
-                                                        <i class="fa fa-bed"/> <span t-field="prop.num_bedrooms"/> habitaciones
+                                                        <i class="bi bi-bed"/> <span t-field="prop.num_bedrooms"/> habitaciones
                                                     </t>
                                                     <t t-if="prop.num_bathrooms">
-                                                        | <i class="fa fa-bath"/> <span t-field="prop.num_bathrooms"/> baños
+                                                        | <i class="bi bi-droplet"/> <span t-field="prop.num_bathrooms"/> baños
                                                     </t>
                                                     <br/>
                                                     <t t-if="prop.property_area">
-                                                        <i class="fa fa-arrows-alt"/> <span t-field="prop.property_area"/> m²
+                                                        <i class="bi bi-arrows-fullscreen"/> <span t-field="prop.property_area"/> m²
                                                     </t>
                                                 </p>
                                                 <a t-attf-href="/property/{{prop.id}}" class="btn btn-bohio-primary btn-sm w-100">
@@ -242,7 +242,7 @@
                             <div class="alert alert-info text-center">
                                 <p class="lead">No tienes propiedades asociadas en este momento.</p>
                                 <a href="/properties" class="btn btn-bohio-primary mt-3">
-                                    <i class="fa fa-search"/> Buscar Propiedades
+                                    <i class="bi bi-search"/> Buscar Propiedades
                                 </a>
                             </div>
                         </t>
@@ -257,7 +257,7 @@
             <div id="wrap" class="oe_structure">
                 <section class="py-5 bg-light text-center">
                     <div class="container">
-                        <i class="fa fa-check-circle text-bohio-red" style="font-size: 80px;"/>
+                        <i class="bi bi-check-circle text-bohio-red" style="font-size: 80px;"/>
                         <h1 class="mt-4 mb-3">¡Gracias por tu Interés!</h1>
                         <p class="lead">Hemos recibido tu consulta sobre:</p>
                         <h3 class="text-bohio-red my-4">
@@ -266,10 +266,10 @@
                         <p class="mb-4">Uno de nuestros asesores se pondrá en contacto contigo muy pronto.</p>
                         <div class="mt-5">
                             <a t-attf-href="/property/{{property.id}}" class="btn btn-bohio-outline me-2">
-                                <i class="fa fa-arrow-left"/> Volver a la Propiedad
+                                <i class="bi bi-arrow-left"/> Volver a la Propiedad
                             </a>
                             <a href="/properties" class="btn btn-bohio-primary">
-                                <i class="fa fa-search"/> Ver Más Propiedades
+                                <i class="bi bi-search"/> Ver Más Propiedades
                             </a>
                         </div>
                     </div>
@@ -359,15 +359,15 @@
             <div id="wrap" class="oe_structure">
                 <section class="py-5 bg-light text-center">
                     <div class="container">
-                        <i class="fa fa-check-circle text-bohio-red" style="font-size: 80px;"/>
+                        <i class="bi bi-check-circle text-bohio-red" style="font-size: 80px;"/>
                         <h1 class="mt-4 mb-3">¡PQRS Recibido!</h1>
                         <p class="lead mb-4">Hemos recibido tu solicitud. Le daremos respuesta dentro de los términos legales establecidos.</p>
                         <div class="mt-5">
                             <a href="/contacto" class="btn btn-bohio-outline me-2">
-                                <i class="fa fa-arrow-left"/> Volver al Contacto
+                                <i class="bi bi-arrow-left"/> Volver al Contacto
                             </a>
                             <a href="/" class="btn btn-bohio-primary">
-                                <i class="fa fa-home"/> Ir al Inicio
+                                <i class="bi bi-house-fill"/> Ir al Inicio
                             </a>
                         </div>
                     </div>
@@ -448,7 +448,7 @@
                             <div class="alert alert-info text-center">
                                 <p class="lead">No tienes contratos activos en este momento.</p>
                                 <a href="/properties" class="btn btn-bohio-primary mt-3">
-                                    <i class="fa fa-search"/> Buscar Propiedades
+                                    <i class="bi bi-search"/> Buscar Propiedades
                                 </a>
                             </div>
                         </t>
@@ -474,7 +474,7 @@
                                 Contrato <span t-field="contract.name"/>
                             </h2>
                             <a href="/my/contracts" class="btn btn-bohio-outline">
-                                <i class="fa fa-arrow-left"/> Volver
+                                <i class="bi bi-arrow-left"/> Volver
                             </a>
                         </div>
 
@@ -561,7 +561,7 @@
                                             </div>
                                             <div class="col-12 text-center">
                                                 <a t-attf-href="/property/{{contract.property_id.id}}" class="btn btn-bohio-primary">
-                                                    <i class="fa fa-home"/> Ver Propiedad Completa
+                                                    <i class="bi bi-house-fill"/> Ver Propiedad Completa
                                                 </a>
                                             </div>
                                         </div>

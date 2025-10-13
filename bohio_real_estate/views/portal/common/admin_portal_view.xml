@@ -14,17 +14,17 @@
                 <ul class="nav nav-tabs mb-4" role="tablist">
                     <li class="nav-item">
                         <a class="nav-link active" data-bs-toggle="tab" href="#propietarios" role="tab">
-                            <i class="fa fa-home"></i> Propietarios
+                            <i class="bi bi-house-fill"></i> Propietarios
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" data-bs-toggle="tab" href="#arrendatarios" role="tab">
-                            <i class="fa fa-user"></i> Arrendatarios
+                            <i class="bi bi-person"></i> Arrendatarios
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" data-bs-toggle="tab" href="#pagos" role="tab">
-                            <i class="fa fa-money-bill"></i> Pagos
+                            <i class="bi bi-cash-stack"></i> Pagos
                         </a>
                     </li>
                     <li class="nav-item">
@@ -115,7 +115,7 @@
                                                     <td>
                                                         <a t-att-href="'/web#id=%s&amp;model=res.partner&amp;view_type=form' % owner.id"
                                                            class="btn btn-sm btn-outline-primary" target="_blank">
-                                                            <i class="fa fa-external-link"></i> Ver
+                                                            <i class="bi bi-box-arrow-up-right"></i> Ver
                                                         </a>
                                                     </td>
                                                 </tr>
@@ -197,7 +197,7 @@
                                                     <td>
                                                         <a t-att-href="'/web#id=%s&amp;model=res.partner&amp;view_type=form' % tenant.id"
                                                            class="btn btn-sm btn-outline-primary" target="_blank">
-                                                            <i class="fa fa-external-link"></i> Ver
+                                                            <i class="bi bi-box-arrow-up-right"></i> Ver
                                                         </a>
                                                     </td>
                                                 </tr>

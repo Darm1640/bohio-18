@@ -98,11 +98,11 @@
                             <!-- CLIENTE -->
                             <div class="o_canvas_client">
                                 <div t-if="record.partner_id.raw_value" class="o_client_info">
-                                    <i class="fa fa-user me-1"/>
+                                    <i class="bi bi-person me-1"/>
                                     <field name="partner_id"/>
                                 </div>
                                 <div t-if="record.mobile.raw_value" class="o_client_contact">
-                                    <i class="fa fa-phone me-1"/>
+                                    <i class="bi bi-telephone me-1"/>
                                     <a t-attf-href="tel:{{record.mobile.raw_value}}"
                                        class="text-decoration-none">
                                         <field name="mobile"/>
@@ -113,13 +113,13 @@
                             <!-- MÉTRICAS PRINCIPALES -->
                             <div class="o_canvas_metrics">
                                 <div t-if="record.expected_revenue.raw_value" class="o_metric_item">
-                                    <i class="fa fa-dollar-sign text-success me-1"/>
+                                    <i class="bi bi-currency-dollar text-success me-1"/>
                                     <strong>
                                         <field name="expected_revenue" widget="monetary"/>
                                     </strong>
                                 </div>
                                 <div t-if="record.estimated_commission.raw_value" class="o_metric_item">
-                                    <i class="fa fa-percentage text-primary me-1"/>
+                                    <i class="bi bi-percent text-primary me-1"/>
                                     <span>
                                         <field name="estimated_commission" widget="monetary"/>
                                     </span>
@@ -129,7 +129,7 @@
                             <!-- PROPIEDADES -->
                             <div t-if="record.property_ids.raw_value.length > 0" class="o_canvas_properties">
                                 <div class="o_properties_count">
-                                    <i class="fa fa-home me-1"/>
+                                    <i class="bi bi-house-fill me-1"/>
                                     <strong><t t-esc="record.property_ids.raw_value.length"/> Propiedades</strong>
                                 </div>
                             </div>
@@ -138,19 +138,19 @@
                             <div class="o_canvas_prefs">
                                 <t t-if="record.desired_city.raw_value">
                                     <span class="o_pref_badge">
-                                        <i class="fa fa-map-marker-alt me-1"/>
+                                        <i class="bi bi-geo-alt-fill me-1"/>
                                         <field name="desired_city"/>
                                     </span>
                                 </t>
                                 <t t-if="record.budget_min.raw_value">
                                     <span class="o_pref_badge">
-                                        <i class="fa fa-dollar-sign me-1"/>
+                                        <i class="bi bi-currency-dollar me-1"/>
                                         <field name="budget_min" widget="monetary"/>
                                     </span>
                                 </t>
                                 <t t-if="record.num_bedrooms_min.raw_value">
                                     <span class="o_pref_badge">
-                                        <i class="fa fa-bed me-1"/>
+                                        <i class="bi bi-bed me-1"/>
                                         <field name="num_bedrooms_min"/> HAB
                                     </span>
                                 </t>
@@ -162,7 +162,7 @@
                                    class="o_map_toggle collapsed"
                                    data-bs-toggle="collapse"
                                    t-attf-data-bs-target="#map_{{record.id.raw_value}}">
-                                    <i class="fa fa-map me-1"/>
+                                    <i class="bi bi-map-fill me-1"/>
                                     <span class="when-collapsed">Ver Mapa</span>
                                     <span class="when-expanded">Ocultar Mapa</span>
                                 </a>
@@ -175,14 +175,14 @@
                                          t-attf-data-lng="{{record.partner_longitude.raw_value}}">
                                         <!-- Mapa se renderiza via JS -->
                                         <div class="o_map_placeholder">
-                                            <i class="fa fa-map-marked-alt fa-2x text-muted"/>
+                                            <i class="bi bi-map-fill-marked-alt fa-2x text-muted"/>
                                             <p class="text-muted small mt-2">
                                                 Ubicación basada en propiedades de interés
                                             </p>
                                         </div>
                                     </div>
                                     <div t-else="" class="o_map_empty">
-                                        <i class="fa fa-map-marked-alt text-muted me-1"/>
+                                        <i class="bi bi-map-fill-marked-alt text-muted me-1"/>
                                         <span class="text-muted">Sin ubicación disponible</span>
                                     </div>
                                 </div>
@@ -194,7 +194,7 @@
                                    class="o_details_toggle collapsed"
                                    data-bs-toggle="collapse"
                                    t-attf-data-bs-target="#details_{{record.id.raw_value}}">
-                                    <i class="fa fa-info-circle me-1"/>
+                                    <i class="bi bi-info-circle me-1"/>
                                     <span class="when-collapsed">Ver Más Detalles</span>
                                     <span class="when-expanded">Ocultar Detalles</span>
                                 </a>
@@ -205,14 +205,14 @@
                                     <!-- Email y Teléfono -->
                                     <div class="o_detail_group">
                                         <div t-if="record.email_from.raw_value" class="o_detail_item">
-                                            <i class="fa fa-envelope text-primary me-1"/>
+                                            <i class="bi bi-envelope text-primary me-1"/>
                                             <a t-attf-href="mailto:{{record.email_from.raw_value}}"
                                                class="small">
                                                 <field name="email_from"/>
                                             </a>
                                         </div>
                                         <div t-if="record.phone.raw_value" class="o_detail_item">
-                                            <i class="fa fa-phone text-info me-1"/>
+                                            <i class="bi bi-telephone text-info me-1"/>
                                             <a t-attf-href="tel:{{record.phone.raw_value}}"
                                                class="small">
                                                 <field name="phone"/>
@@ -223,7 +223,7 @@
                                     <!-- Tipo de Cliente -->
                                     <div t-if="record.client_type.raw_value" class="o_detail_group">
                                         <div class="o_detail_item">
-                                            <i class="fa fa-user-tag text-secondary me-1"/>
+                                            <i class="bi bi-person-tag text-secondary me-1"/>
                                             <strong class="small">Tipo:</strong>
                                             <span class="badge bg-secondary small">
                                                 <field name="client_type"/>
@@ -256,7 +256,7 @@
                                     <!-- Fecha de Cierre -->
                                     <div t-if="record.date_deadline.raw_value" class="o_detail_group">
                                         <div class="o_detail_item">
-                                            <i class="fa fa-calendar-check text-danger me-1"/>
+                                            <i class="bi bi-calendar-check text-danger me-1"/>
                                             <strong class="small">Cierre:</strong>
                                             <span class="small">
                                                 <field name="date_deadline"/>
@@ -281,7 +281,7 @@
                                         <span t-if="record.reservation_id.raw_value"
                                               class="badge bg-success small"
                                               title="Tiene Reserva">
-                                            <i class="fa fa-bookmark me-1"/>
+                                            <i class="bi bi-bookmark me-1"/>
                                             Reservado
                                         </span>
                                     </div>

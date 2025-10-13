@@ -7,7 +7,7 @@
                     <div class="col-md-8 text-center">
                         <div class="card shadow-sm">
                             <div class="card-body p-5">
-                                <i class="fa fa-exclamation-triangle fa-5x text-warning mb-4"></i>
+                                <i class="bi bi-exclamation-triangle fa-5x text-warning mb-4"></i>
                                 <h2 class="mb-3">Sin Rol Asignado</h2>
                                 <p class="lead text-muted mb-4">
                                     Su cuenta no tiene un rol asignado en el sistema BOHIO.
@@ -19,7 +19,7 @@
                                     <div class="col-md-6">
                                         <div class="card border-primary">
                                             <div class="card-body">
-                                                <i class="fa fa-home fa-2x text-primary mb-2"></i>
+                                                <i class="bi bi-house-fill fa-2x text-primary mb-2"></i>
                                                 <h5>Propietario</h5>
                                                 <small class="text-muted">Gestione sus propiedades y vea sus pagos</small>
                                             </div>
@@ -28,7 +28,7 @@
                                     <div class="col-md-6">
                                         <div class="card border-info">
                                             <div class="card-body">
-                                                <i class="fa fa-user fa-2x text-info mb-2"></i>
+                                                <i class="bi bi-person fa-2x text-info mb-2"></i>
                                                 <h5>Arrendatario</h5>
                                                 <small class="text-muted">Vea sus contratos y realice pagos</small>
                                             </div>
@@ -44,10 +44,10 @@
                                 </p>
                                 <div class="d-grid gap-2 d-md-flex justify-content-md-center">
                                     <a href="/contactus" class="btn btn-primary btn-lg">
-                                        <i class="fa fa-envelope"></i> Contactar Soporte
+                                        <i class="bi bi-envelope"></i> Contactar Soporte
                                     </a>
                                     <a href="/pqrs" class="btn btn-outline-secondary btn-lg">
-                                        <i class="fa fa-question-circle"></i> Crear PQRS
+                                        <i class="bi bi-question-circle"></i> Crear PQRS
                                     </a>
                                 </div>
                             </div>

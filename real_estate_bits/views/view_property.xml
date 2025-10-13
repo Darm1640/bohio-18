@@ -760,17 +760,17 @@
 
                         <!-- IMAGEN CON INFO SUPERIOR -->
                         <div style="height: 120px; background: #f8f9fa; position: relative;">
-                            <img t-attf-src="/web/image/product.template/#{record.id.raw_value}/image_128" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.style.background='#f8f9fa'; this.parentElement.innerHTML='&lt;div style=&quot;display: flex; align-items: center; justify-content: center; height: 100%; color: #999; font-size: 12px;&quot;&gt;&lt;i class=&quot;fa fa-image&quot; style=&quot;font-size: 24px;&quot;&gt;&lt;/i&gt;&lt;/div&gt;';"/>
+                            <img t-attf-src="/web/image/product.template/#{record.id.raw_value}/image_128" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.style.background='#f8f9fa'; this.parentElement.innerHTML='&lt;div style=&quot;display: flex; align-items: center; justify-content: center; height: 100%; color: #999; font-size: 12px;&quot;&gt;&lt;i class=&quot;bi bi-image&quot; style=&quot;font-size: 24px;&quot;&gt;&lt;/i&gt;&lt;/div&gt;';"/>
 
                             <!-- INFO SUPERIOR DERECHA -->
                             <div style="position: absolute; top: 4px; right: 4px; display: flex; flex-direction: column; gap: 2px;">
                                 <!-- ESTADO -->
                                 <span t-if="record.state.raw_value == 'free'" style="background: rgba(76, 175, 80, 0.5); color: white; padding: 1px 4px; border-radius: 6px; font-size: 8px; font-weight: 600;">
-                                    <i class="fa fa-check-circle" style="margin-right: 2px;"/>
+                                    <i class="bi bi-check-circle" style="margin-right: 2px;"/>
 DISPONIBLE
                                 </span>
                                 <span t-elif="record.state.raw_value == 'reserved'" style="background: rgba(255, 152, 0, 0.5); color: white; padding: 1px 4px; border-radius: 6px; font-size: 8px; font-weight: 600;">
-                                    <i class="fa fa-clock-o" style="margin-right: 2px;"/>
+                                    <i class="bi bi-clock" style="margin-right: 2px;"/>
 RESERVADO
                                 </span>
                                 <span t-elif="record.state.raw_value == 'on_lease'" style="background: rgba(3, 169, 244, 0.5); color: white; padding: 1px 4px; border-radius: 6px; font-size: 8px; font-weight: 600;">
@@ -778,7 +778,7 @@ RESERVADO
 ARRENDADO
                                 </span>
                                 <span t-elif="record.state.raw_value == 'sold'" style="background: rgba(96, 125, 139, 0.5); color: white; padding: 1px 4px; border-radius: 6px; font-size: 8px; font-weight: 600;">
-                                    <i class="fa fa-check" style="margin-right: 2px;"/>
+                                    <i class="bi bi-check" style="margin-right: 2px;"/>
 VENDIDO
                                 </span>
                                 <span t-elif="record.state.raw_value == 'blocked'" style="background: rgba(244, 67, 54, 0.5); color: white; padding: 1px 4px; border-radius: 6px; font-size: 8px; font-weight: 600;">
@@ -791,30 +791,30 @@ BLOQUEADO
                                     <!-- Iconos específicos por tipo de propiedad -->
                                     <i t-if="record.property_type.raw_value == 'bodega'" class="fa fa-industry" style="margin-right: 2px;" title="Bodega"/>
                                     <i t-elif="record.property_type.raw_value == 'local'" class="fa fa-shopping-cart" style="margin-right: 2px;" title="Local"/>
-                                    <i t-elif="record.property_type.raw_value == 'apartment'" class="fa fa-building" style="margin-right: 2px;" title="Apartamento"/>
-                                    <i t-elif="record.property_type.raw_value == 'house'" class="fa fa-home" style="margin-right: 2px;" title="Casa"/>
-                                    <i t-elif="record.property_type.raw_value == 'studio'" class="fa fa-bed" style="margin-right: 2px;" title="Estudio"/>
+                                    <i t-elif="record.property_type.raw_value == 'apartment'" class="bi bi-building" style="margin-right: 2px;" title="Apartamento"/>
+                                    <i t-elif="record.property_type.raw_value == 'house'" class="bi bi-house-fill" style="margin-right: 2px;" title="Casa"/>
+                                    <i t-elif="record.property_type.raw_value == 'studio'" class="bi bi-bed" style="margin-right: 2px;" title="Estudio"/>
                                     <i t-elif="record.property_type.raw_value == 'office'" class="fa fa-briefcase" style="margin-right: 2px;" title="Oficina"/>
                                     <i t-elif="record.property_type.raw_value == 'finca'" class="fa fa-leaf" style="margin-right: 2px;" title="Finca"/>
-                                    <i t-elif="record.property_type.raw_value == 'lot'" class="fa fa-map" style="margin-right: 2px;" title="Lote"/>
+                                    <i t-elif="record.property_type.raw_value == 'lot'" class="bi bi-map-fill" style="margin-right: 2px;" title="Lote"/>
                                     <i t-elif="record.property_type.raw_value == 'hotel'" class="fa fa-hotel" style="margin-right: 2px;" title="Hotel"/>
-                                    <i t-elif="record.property_type.raw_value == 'cabin'" class="fa fa-home" style="margin-right: 2px;" title="Cabaña"/>
-                                    <i t-elif="record.property_type.raw_value == 'building'" class="fa fa-building-o" style="margin-right: 2px;" title="Edificio"/>
+                                    <i t-elif="record.property_type.raw_value == 'cabin'" class="bi bi-house-fill" style="margin-right: 2px;" title="Cabaña"/>
+                                    <i t-elif="record.property_type.raw_value == 'building'" class="bi bi-building-o" style="margin-right: 2px;" title="Edificio"/>
                                     <i t-elif="record.property_type.raw_value == 'country_lot'" class="fa fa-envira" style="margin-right: 2px;" title="Lote Campestre"/>
-                                    <i t-elif="record.property_type.raw_value == 'blueprint'" class="fa fa-file-text-o" style="margin-right: 2px;" title="Plano"/>
-                                    <i t-elif="record.property_type.raw_value == 'plot'" class="fa fa-map-o" style="margin-right: 2px;" title="Parcela"/>
+                                    <i t-elif="record.property_type.raw_value == 'blueprint'" class="bi bi-file-text" style="margin-right: 2px;" title="Plano"/>
+                                    <i t-elif="record.property_type.raw_value == 'plot'" class="bi bi-map-fill-o" style="margin-right: 2px;" title="Parcela"/>
                                     <!-- Icono por defecto si no hay tipo o no coincide -->
-                                    <i t-else="" class="fa fa-home" style="margin-right: 2px;" title="Propiedad"/>
+                                    <i t-else="" class="bi bi-house-fill" style="margin-right: 2px;" title="Propiedad"/>
                                     <field name="property_type_id"/>
                                 </span>
 
                                 <!-- TIPO DE SERVICIO -->
                                 <span t-if="record.type_service.raw_value == 'sale'" style="background: rgba(46, 125, 50, 0.6); color: white; padding: 1px 4px; border-radius: 6px; font-size: 8px; font-weight: 600;">
-                                    <i class="fa fa-dollar" style="margin-right: 2px;"/>
+                                    <i class="bi bi-currency-dollar" style="margin-right: 2px;"/>
 VENTA
                                 </span>
                                 <span t-elif="record.type_service.raw_value == 'rent'" style="background: rgba(25, 118, 210, 0.6); color: white; padding: 1px 4px; border-radius: 6px; font-size: 8px; font-weight: 600;">
-                                    <i class="fa fa-key" style="margin-right: 2px;"/>
+                                    <i class="bi bi-key" style="margin-right: 2px;"/>
 ARRIENDO
                                 </span>
                                 <span t-elif="record.type_service.raw_value == 'sale_rent'" style="background: rgba(156, 39, 176, 0.6); color: white; padding: 1px 4px; border-radius: 6px; font-size: 8px; font-weight: 600;">
@@ -827,7 +827,7 @@ VACACIONAL
                                 </span>
                                 <div style="background: rgba(126, 208, 252, 0.6); color: white; padding: 1px 4px; border-radius: 6px; font-size: 8px; font-weight: 600;" t-if="record.property_area.raw_value">
                                     <div style="font-size: 14px; color: black;">
-                                        <i class="fa fa-expand"/>
+                                        <i class="bi bi-arrows-angle-expand"/>
                                         <t t-esc="Math.round(record.property_area.raw_value)"/>
                                         <span t-if="record.unit_of_measure.raw_value == 'm'">m²</span>
                                         <span t-elif="record.unit_of_measure.raw_value == 'yard'">yd²</span>
@@ -871,7 +871,7 @@ VACACIONAL
 
                     <!-- DIRECCIÓN -->
                     <div style="margin-bottom: 6px; font-size: 11px; color: #34495e; background: white; padding: 4px; border-radius: 4px; border-left: 2px solid #3498db;">
-                        <i class="fa fa-map-marker" style="color: #e74c3c; margin-right: 2px;"/>
+                        <i class="bi bi-map-fill-marker" style="color: #e74c3c; margin-right: 2px;"/>
                         <span t-if="record.city.raw_value" style="font-weight: 600;">
                             <field name="city"/>
                         </span>
@@ -890,7 +890,7 @@ VACACIONAL
                         <div style="font-size: 10px; color: #7f8c8d; font-weight: 600; margin-bottom: 2px;">ACABADOS</div>
                         <div style="display: flex; flex-wrap: wrap; gap: 2px;">
                             <span t-if="record.floor_type.raw_value" style="background: #e8f5e8; color: #4caf50; padding: 2px 5px; border-radius: 3px; font-size: 9px;">
-                                <i class="fa fa-th-large"/>
+                                <i class="bi bi-grid-3x3"/>
  Tipo piso:
                                 <span t-if="record.floor_type.raw_value == 'tile'">Baldosa</span>
                                 <span t-elif="record.floor_type.raw_value == 'wood'">Madera</span>
@@ -920,37 +920,37 @@ Material de la puerta:
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2px; font-size: 9px;">
                             <t t-if="record.stratum.raw_value == '1'">
                                 <span style="background: #f44336; color: white; padding: 1px 3px; border-radius: 2px; font-weight: 600;">
-                                    <i class="fa fa-star"/>
+                                    <i class="bi bi-star"/>
  Estrato 1
                                 </span>
                             </t>
                             <t t-if="record.stratum.raw_value == '2'">
                                 <span style="background: #f44336; color: white; padding: 1px 3px; border-radius: 2px; font-weight: 600;">
-                                    <i class="fa fa-star"/>
+                                    <i class="bi bi-star"/>
  Estrato 2
                                 </span>
                             </t>
                             <t t-if="record.stratum.raw_value == '3'">
                                 <span style="background: #ff9800; color: white; padding: 1px 3px; border-radius: 2px; font-weight: 600;">
-                                    <i class="fa fa-star"/>
+                                    <i class="bi bi-star"/>
  Estrato 3
                                 </span>
                             </t>
                             <t t-if="record.stratum.raw_value == '4'">
                                 <span style="background: #ff9800; color: white; padding: 1px 3px; border-radius: 2px; font-weight: 600;">
-                                    <i class="fa fa-star"/>
+                                    <i class="bi bi-star"/>
  Estrato 4
                                 </span>
                             </t>
                             <t t-if="record.stratum.raw_value == '5'">
                                 <span style="background: #4caf50; color: white; padding: 1px 3px; border-radius: 2px; font-weight: 600;">
-                                    <i class="fa fa-star"/>
+                                    <i class="bi bi-star"/>
  Estrato 5
                                 </span>
                             </t>
                             <t t-if="record.stratum.raw_value == '6'">
                                 <span style="background: #4caf50; color: white; padding: 1px 3px; border-radius: 2px; font-weight: 600;">
-                                    <i class="fa fa-star"/>
+                                    <i class="bi bi-star"/>
  Estrato 6
                                 </span>
                             </t>
@@ -962,28 +962,28 @@ Material de la puerta:
                             </t>
                             <t t-if="record.stratum.raw_value == 'no_stratified'">
                                 <span style="background: #607d8b; color: white; padding: 1px 3px; border-radius: 2px; font-weight: 600;">
-                                    <i class="fa fa-minus"/>
+                                    <i class="bi bi-dash"/>
  No Estratificada
                                 </span>
                             </t>
                             <!-- CASAS, FINCAS, CABAÑAS -->
                             <t t-if="record.property_type.raw_value == 'house' or record.property_type.raw_value == 'finca' or record.property_type.raw_value == 'cabin'">
                                 <span t-if="record.num_bedrooms.raw_value" style="background: #e3f2fd; color: #1976d2; padding: 1px 3px; border-radius: 2px;">
-                                    <i class="fa fa-bed"/>
+                                    <i class="bi bi-bed"/>
                                     <t t-esc="record.num_bedrooms.raw_value"/>
  Habitaciones
                                 </span>
                                 <span t-if="record.num_bathrooms.raw_value" style="background: #f3e5f5; color: #7b1fa2; padding: 1px 3px; border-radius: 2px;">
-                                    <i class="fa fa-bath"/>
+                                    <i class="bi bi-droplet"/>
                                     <t t-esc="record.num_bathrooms.raw_value"/>
  Baños
                                 </span>
                                 <span t-if="record.garage.raw_value or record.covered_parking.raw_value" style="background: #fce4ec; color: #c2185b; padding: 1px 3px; border-radius: 2px;">
-                                    <i class="fa fa-car"/>
+                                    <i class="bi bi-car-front"/>
  Tiene Garaje
                                 </span>
                                 <span t-if="record.furnished.raw_value" style="background: #e8f5e8; color: #4caf50; padding: 1px 3px; border-radius: 2px;">
-                                    <i class="fa fa-home"/>
+                                    <i class="bi bi-house-fill"/>
  Amoblado
                                 </span>
                                 <span t-if="record.living_room.raw_value" style="background: #f9fbe7; color: #689f38; padding: 1px 3px; border-radius: 2px;">
@@ -995,7 +995,7 @@ Material de la puerta:
  Cocina Integral
                                 </span>
                                 <span t-if="record.service_room.raw_value" style="background: #ffeaa7; color: #d63031; padding: 1px 3px; border-radius: 2px;">
-                                    <i class="fa fa-bed"/>
+                                    <i class="bi bi-bed"/>
  Cuarto Servicio
                                 </span>
                                 <span t-if="record.garden.raw_value" style="background: #f1f8e9; color: #388e3c; padding: 1px 3px; border-radius: 2px;">
@@ -1015,7 +1015,7 @@ Material de la puerta:
  Tiene Patio
                                 </span>
                                 <span t-if="record.terrace.raw_value" style="background: #f3e5f5; color: #7b1fa2; padding: 1px 3px; border-radius: 2px;">
-                                    <i class="fa fa-home"/>
+                                    <i class="bi bi-house-fill"/>
  Tiene Terraza
                                 </span>
 
@@ -1024,17 +1024,17 @@ Material de la puerta:
                             <!-- APARTAMENTOS Y ESTUDIOS -->
                             <t t-if="record.property_type.raw_value == 'apartment' or record.property_type.raw_value == 'studio'">
                                 <span t-if="record.num_bedrooms.raw_value" style="background: #e3f2fd; color: #1976d2; padding: 1px 3px; border-radius: 2px;">
-                                    <i class="fa fa-bed"/>
+                                    <i class="bi bi-bed"/>
                                     <t t-esc="record.num_bedrooms.raw_value"/>
  Habitaciones
                                 </span>
                                 <span t-if="record.num_bathrooms.raw_value" style="background: #f3e5f5; color: #7b1fa2; padding: 1px 3px; border-radius: 2px;">
-                                    <i class="fa fa-bath"/>
+                                    <i class="bi bi-droplet"/>
                                     <t t-esc="record.num_bathrooms.raw_value"/>
  Baños
                                 </span>
                                 <span t-if="record.floor_number.raw_value" style="background: #f1f8e9; color: #388e3c; padding: 1px 3px; border-radius: 2px;">
-                                    <i class="fa fa-building"/>
+                                    <i class="bi bi-building"/>
  P<t t-esc="record.floor_number.raw_value"/>
                                 </span>
 
@@ -1042,12 +1042,12 @@ Material de la puerta:
 
 
                                 <span t-if="record.covered_parking.raw_value" style="background: #fce4ec; color: #c2185b; padding: 1px 3px; border-radius: 2px;">
-                                    <i class="fa fa-car"/>
+                                    <i class="bi bi-car-front"/>
                                     <t t-esc="record.covered_parking.raw_value"/>
  Parqueadero Cubierto
                                 </span>
                                 <span t-if="record.balcony.raw_value" style="background: #e8f4fd; color: #0984e3; padding: 1px 3px; border-radius: 2px;">
-                                    <i class="fa fa-home"/>
+                                    <i class="bi bi-house-fill"/>
  Tiene Balcón
                                 </span>
                                 <span t-if="record.air_conditioning.raw_value" style="background: #e1f5fe; color: #0288d1; padding: 1px 3px; border-radius: 2px;">
@@ -1059,30 +1059,30 @@ Material de la puerta:
  Tiene Ascensor
                                 </span>
                                 <span t-if="record.furnished.raw_value" style="background: #e8f5e8; color: #4caf50; padding: 1px 3px; border-radius: 2px;">
-                                    <i class="fa fa-home"/>
+                                    <i class="bi bi-house-fill"/>
  Amoblado
                                 </span>
                                 <span t-if="record.social_room.raw_value" style="background: #e8eaf6; color: #3f51b5; padding: 1px 3px; border-radius: 2px;">
-                                    <i class="fa fa-users"/>
+                                    <i class="bi bi-people"/>
  Salón Social
                                 </span>
 
                                 <!-- TIPO DE APARTAMENTO -->
                                 <t t-if="record.apartment_type.raw_value == 'duplex'">
                                     <span style="background: #9c27b0; color: white; padding: 1px 3px; border-radius: 2px;">
-                                        <i class="fa fa-home"/>
+                                        <i class="bi bi-house-fill"/>
  Dúplex
                                     </span>
                                 </t>
                                 <t t-elif="record.apartment_type.raw_value == 'loft'">
                                     <span style="background: #795548; color: white; padding: 1px 3px; border-radius: 2px;">
-                                        <i class="fa fa-building"/>
+                                        <i class="bi bi-building"/>
  Loft
                                     </span>
                                 </t>
                                 <t t-elif="record.apartment_type.raw_value == 'penthouse'">
                                     <span style="background: #ff5722; color: white; padding: 1px 3px; border-radius: 2px;">
-                                        <i class="fa fa-star"/>
+                                        <i class="bi bi-star"/>
  Penthouse
                                     </span>
                                 </t>
@@ -1091,11 +1091,11 @@ Material de la puerta:
                             <!-- OFICINAS -->
                             <t t-if="record.property_type.raw_value == 'office'">
                                 <span t-if="record.floor_number.raw_value" style="background: #f1f8e9; color: #388e3c; padding: 1px 3px; border-radius: 2px;">
-                                    <i class="fa fa-building"/>
+                                    <i class="bi bi-building"/>
  N° Piso: <t t-esc="record.floor_number.raw_value"/>
                                 </span>
                                 <span t-if="record.covered_parking.raw_value" style="background: #fce4ec; color: #c2185b; padding: 1px 3px; border-radius: 2px;">
-                                    <i class="fa fa-car"/>
+                                    <i class="bi bi-car-front"/>
                                     <t t-esc="record.covered_parking.raw_value"/>
  Parqueadero Cubierto
                                 </span>
@@ -1108,42 +1108,42 @@ Material de la puerta:
  Tiene Ascensor
                                 </span>
                                 <span t-if="record.security_door.raw_value" style="background: #ffebee; color: #d32f2f; padding: 1px 3px; border-radius: 2px;">
-                                    <i class="fa fa-shield"/>
+                                    <i class="bi bi-shield"/>
  Puerta Seguridad
                                 </span>
 
                                 <!-- TIPO DE PORTERÍA -->
                                 <t t-if="record.doorman.raw_value == '24_hours'">
                                     <span style="background: #4caf50; color: white; padding: 1px 3px; border-radius: 2px;">
-                                        <i class="fa fa-user"/>
+                                        <i class="bi bi-person"/>
  Portería 24 Horas
                                     </span>
                                 </t>
                                 <t t-elif="record.doorman.raw_value == 'daytime'">
                                     <span style="background: #ff9800; color: white; padding: 1px 3px; border-radius: 2px;">
-                                        <i class="fa fa-user"/>
+                                        <i class="bi bi-person"/>
  Portería Diurna
                                     </span>
                                 </t>
                                 <t t-elif="record.doorman.raw_value == 'virtual'">
                                     <span style="background: #2196f3; color: white; padding: 1px 3px; border-radius: 2px;">
-                                        <i class="fa fa-video-camera"/>
+                                        <i class="bi bi-camera-video-fill"/>
  Video Citófonía
                                     </span>
                                 </t>
                                 <t t-elif="record.doorman.raw_value == 'none'">
                                     <span style="background: #607d8b; color: white; padding: 1px 3px; border-radius: 2px;">
-                                        <i class="fa fa-times"/>
+                                        <i class="bi bi-x"/>
  Sin Portería
                                     </span>
                                 </t>
 
                                 <span t-if="record.visitors_parking.raw_value" style="background: #fff3e0; color: #f57c00; padding: 1px 3px; border-radius: 2px;">
-                                    <i class="fa fa-car"/>
+                                    <i class="bi bi-car-front"/>
  Parqueadero Visitantes
                                 </span>
                                 <span t-if="record.phone_lines.raw_value" style="background: #e0f2f1; color: #00796b; padding: 1px 3px; border-radius: 2px;">
-                                    <i class="fa fa-phone"/>
+                                    <i class="bi bi-telephone"/>
                                     <t t-esc="record.phone_lines.raw_value"/>
  Líneas Telefónicas
                                 </span>
@@ -1170,17 +1170,17 @@ Material de la puerta:
  Capacidad Eléctrica
                                 </span>
                                 <span t-if="record.covered_parking.raw_value" style="background: #fce4ec; color: #c2185b; padding: 1px 3px; border-radius: 2px;">
-                                    <i class="fa fa-car"/>
+                                    <i class="bi bi-car-front"/>
                                     <t t-esc="record.covered_parking.raw_value"/>
  Parqueadero Cubierto
                                 </span>
                                 <span t-if="record.uncovered_parking.raw_value" style="background: #f3e5f5; color: #7b1fa2; padding: 1px 3px; border-radius: 2px;">
-                                    <i class="fa fa-car"/>
+                                    <i class="bi bi-car-front"/>
                                     <t t-esc="record.uncovered_parking.raw_value"/>
  Parqueadero Descubierto
                                 </span>
                                 <span t-if="record.security_door.raw_value" style="background: #ffebee; color: #d32f2f; padding: 1px 3px; border-radius: 2px;">
-                                    <i class="fa fa-shield"/>
+                                    <i class="bi bi-shield"/>
  Puerta Seguridad
                                 </span>
                                 <span t-if="record.warehouse.raw_value" style="background: #f1f8e9; color: #388e3c; padding: 1px 3px; border-radius: 2px;">
@@ -1192,7 +1192,7 @@ Material de la puerta:
  Planta Eléctrica
                                 </span>
                                 <span t-if="record.phone_lines.raw_value" style="background: #e0f2f1; color: #00796b; padding: 1px 3px; border-radius: 2px;">
-                                    <i class="fa fa-phone"/>
+                                    <i class="bi bi-telephone"/>
                                     <t t-esc="record.phone_lines.raw_value"/>
  Líneas Telefónicas
                                 </span>
@@ -1201,7 +1201,7 @@ Material de la puerta:
  Cuarto Útil
                                 </span>
                                 <span t-if="record.garage.raw_value" style="background: #ffeaa7; color: #d63031; padding: 1px 3px; border-radius: 2px;">
-                                    <i class="fa fa-arrows-alt"/>
+                                    <i class="bi bi-arrows-fullscreen"/>
  Tiene Garaje
                                 </span>
                             </t>
@@ -1235,17 +1235,17 @@ m Fondo
                             <!-- HOTELES -->
                             <t t-if="record.property_type.raw_value == 'hotel'">
                                 <span t-if="record.num_bedrooms.raw_value" style="background: #e3f2fd; color: #1976d2; padding: 1px 3px; border-radius: 2px;">
-                                    <i class="fa fa-bed"/>
+                                    <i class="bi bi-bed"/>
                                     <t t-esc="record.num_bedrooms.raw_value"/>
  Habitaciones
                                 </span>
                                 <span t-if="record.num_bathrooms.raw_value" style="background: #f3e5f5; color: #7b1fa2; padding: 1px 3px; border-radius: 2px;">
-                                    <i class="fa fa-bath"/>
+                                    <i class="bi bi-droplet"/>
                                     <t t-esc="record.num_bathrooms.raw_value"/>
  Baños
                                 </span>
                                 <span t-if="record.entrance_hall.raw_value" style="background: #f9fbe7; color: #689f38; padding: 1px 3px; border-radius: 2px;">
-                                    <i class="fa fa-home"/>
+                                    <i class="bi bi-house-fill"/>
  Tiene Hall
                                 </span>
                                 <span t-if="record.pools.raw_value" style="background: #e0f2f1; color: #00796b; padding: 1px 3px; border-radius: 2px;">
@@ -1261,7 +1261,7 @@ m Fondo
  Tiene Sauna
                                 </span>
                                 <span t-if="record.covered_parking.raw_value" style="background: #fce4ec; color: #c2185b; padding: 1px 3px; border-radius: 2px;">
-                                    <i class="fa fa-car"/>
+                                    <i class="bi bi-car-front"/>
                                     <t t-esc="record.covered_parking.raw_value"/>
  N° Parqueadero Cubierto
                                 </span>
@@ -1274,7 +1274,7 @@ m Fondo
  Zonas Verdes
                                 </span>
                                 <span t-if="record.social_room.raw_value" style="background: #e8eaf6; color: #3f51b5; padding: 1px 3px; border-radius: 2px;">
-                                    <i class="fa fa-users"/>
+                                    <i class="bi bi-people"/>
  Salón Social
                                 </span>
                             </t>
@@ -1283,7 +1283,7 @@ m Fondo
 
 
                             <span t-if="record.property_age.raw_value" style="background: #f3e5f5; color: #7b1fa2; padding: 1px 3px; border-radius: 2px;">
-                                <i class="fa fa-clock-o"/>
+                                <i class="bi bi-clock"/>
                                 <t t-esc="record.property_age.raw_value"/>
  Año de Construcion
                             </span>
@@ -1293,7 +1293,7 @@ m Fondo
 
                     <!-- PROPIETARIO -->
                     <div style="margin-bottom: 6px; font-size: 10px; color: #546e7a; background: white; padding: 4px; border-radius: 4px;">
-                        <i class="fa fa-user" style="color: #2196f3;"/>
+                        <i class="bi bi-person" style="color: #2196f3;"/>
                         <field name="partner_id"/>
                     </div>
                 </div>
@@ -1812,7 +1812,7 @@ m Fondo
                 <!-- Información del creador -->
                 <div class="col-4 text-start">
                     <div>
-                        <i class="fa fa-user me-1"/>
+                        <i class="bi bi-person me-1"/>
                         <span>Documento creado por: </span>
                         <span t-field="doc.create_uid.name" style="color: #444;"/>
                     </div>
@@ -1827,7 +1827,7 @@ m Fondo
                 <!-- Numeración de páginas -->
                 <div class="col-4 text-end" t-if="report_type == 'pdf'">
                     <div>
-                        <i class="fa fa-file-o me-1"/>
+                        <i class="bi bi-file-earmark me-1"/>
                         <span>Página </span>
                         <span class="page" style="color: #444;"/>
                         <span> de </span>
@@ -2318,7 +2318,7 @@ m Fondo
                 <!-- Información del creador -->
                 <div class="col-4 text-start">
                     <div>
-                        <i class="fa fa-user me-1"/>
+                        <i class="bi bi-person me-1"/>
                         <span>Documento creado por: </span>
                         <span t-field="o.create_uid.name" style="color: #444;"/>
                     </div>
@@ -2333,7 +2333,7 @@ m Fondo
                 <!-- Numeración de páginas -->
                 <div class="col-4 text-end" t-if="report_type == 'pdf'">
                     <div>
-                        <i class="fa fa-file-o me-1"/>
+                        <i class="bi bi-file-earmark me-1"/>
                         <span>Página </span>
                         <span class="page" style="color: #444;"/>
                         <span> de </span>

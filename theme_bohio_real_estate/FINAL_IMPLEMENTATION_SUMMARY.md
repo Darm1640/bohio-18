@@ -227,7 +227,7 @@ theme_bohio_real_estate/
     <button class="btn btn-sm btn-light rounded-circle btn-favorite"
             data-property-id="123"
             aria-label="Agregar a favoritos">
-        <i class="fa fa-heart-o"></i>
+        <i class="bi bi-heart"></i>
     </button>
 
     <!-- Comparar -->
@@ -240,8 +240,8 @@ theme_bohio_real_estate/
 ```
 
 ### Estados Visuales
-**Favorito Activo**: `<i class="fa fa-heart">` (relleno)
-**Favorito Inactivo**: `<i class="fa fa-heart-o">` (outline)
+**Favorito Activo**: `<i class="bi bi-heart">` (relleno)
+**Favorito Inactivo**: `<i class="bi bi-heart">` (outline)
 **Comparar Activo**: `<i class="fa fa-check-square-o">`
 **Comparar Inactivo**: `<i class="fa fa-square-o">`
 

@@ -572,7 +572,7 @@ class PropertyShop {
                 errorMessage = 'El servidor no está disponible (Error 503)';
                 errorDetails = `
                     <div class="alert alert-warning mt-3">
-                        <h6><i class="fa fa-info-circle"></i> Posibles causas:</h6>
+                        <h6><i class="bi bi-info-circle"></i> Posibles causas:</h6>
                         <ul class="text-start mb-0">
                             <li>El servidor Odoo no está ejecutándose</li>
                             <li>Error en el código del servidor</li>
@@ -588,12 +588,12 @@ class PropertyShop {
 
             gridContainer.innerHTML = `
                 <div class="col-12 text-center py-5">
-                    <i class="fa fa-exclamation-triangle fa-3x text-danger mb-3"></i>
+                    <i class="bi bi-exclamation-triangle fa-3x text-danger mb-3"></i>
                     <h5 class="text-danger mb-3">Error al cargar propiedades</h5>
                     <p class="text-muted">${errorMessage}</p>
                     ${errorDetails}
                     <button class="btn btn-danger mt-3" onclick="location.reload()">
-                        <i class="fa fa-refresh"></i> Reintentar
+                        <i class="bi bi-arrow-clockwise"></i> Reintentar
                     </button>
                 </div>
             `;
@@ -607,7 +607,7 @@ class PropertyShop {
         if (properties.length === 0) {
             gridContainer.innerHTML = `
                 <div class="col-12 text-center py-5">
-                    <i class="fa fa-home fa-3x text-muted mb-3"></i>
+                    <i class="bi bi-house-fill fa-3x text-muted mb-3"></i>
                     <p class="text-muted">No se encontraron propiedades</p>
                     <button class="btn btn-outline-danger clear-filters">Limpiar Filtros</button>
                 </div>
@@ -680,12 +680,12 @@ class PropertyShop {
                             <button class="btn btn-sm ${isInComparison ? 'btn-warning' : 'btn-outline-light'} add-to-comparison"
                                     data-property-id="${property.id}"
                                     title="Comparar">
-                                <i class="fa fa-balance-scale"></i>
+                                <i class="bi bi-balance-scale"></i>
                             </button>
                             <button class="btn btn-sm btn-outline-light add-to-crm"
                                     data-property-id="${property.id}"
                                     title="Agregar al CRM">
-                                <i class="fa fa-heart"></i>
+                                <i class="bi bi-heart"></i>
                             </button>
                         </div>
                     </div>
@@ -703,14 +703,14 @@ class PropertyShop {
 
                         <!-- Ubicación Precisa -->
                         <p class="text-muted small mb-2">
-                            <i class="fa fa-map-marker text-danger me-1"></i>
+                            <i class="bi bi-geo-alt-fill text-danger me-1"></i>
                             ${location || 'Ubicación no disponible'}
                         </p>
 
                         <!-- Tipo de Propiedad -->
                         ${property.property_type_name ? `
                             <p class="text-muted small mb-2">
-                                <i class="fa fa-building text-danger me-1"></i>
+                                <i class="bi bi-building text-danger me-1"></i>
                                 ${property.property_type_name}
                             </p>
                         ` : ''}
@@ -719,7 +719,7 @@ class PropertyShop {
                         ${property.description ? `
                             <div class="alert alert-light mb-3 p-2" style="border-left: 3px solid #E31E24;">
                                 <small class="fw-bold text-danger d-block mb-1">
-                                    <i class="fa fa-comment"></i> Observaciones:
+                                    <i class="bi bi-chat"></i> Observaciones:
                                 </small>
                                 <small class="text-muted">
                                     ${property.description.substring(0, 100)}${property.description.length > 100 ? '...' : ''}
@@ -790,10 +790,10 @@ class PropertyShop {
         if (property.stratum > 0 || property.parking > 0) {
             html += `<div class="d-flex justify-content-between mt-2">`;
             if (property.stratum > 0) {
-                html += `<span class="text-muted small"><i class="fa fa-star text-warning"></i> Estrato ${property.stratum}</span>`;
+                html += `<span class="text-muted small"><i class="bi bi-star text-warning"></i> Estrato ${property.stratum}</span>`;
             }
             if (property.parking > 0) {
-                html += `<span class="text-muted small"><i class="fa fa-car text-primary"></i> ${property.parking} Parqueo(s)</span>`;
+                html += `<span class="text-muted small"><i class="bi bi-car-front text-primary"></i> ${property.parking} Parqueo(s)</span>`;
             }
             html += `</div>`;
         }
@@ -848,7 +848,7 @@ class PropertyShop {
         }
 
         // Agrupar en filas de máximo 3 características
-        let html = '<div class="mb-3"><small class="fw-bold text-danger d-block mb-2"><i class="fa fa-check-circle"></i> Características:</small>';
+        let html = '<div class="mb-3"><small class="fw-bold text-danger d-block mb-2"><i class="bi bi-check-circle"></i> Características:</small>';
         html += '<div class="row g-1">';
 
         features.slice(0, 6).forEach(feature => {
@@ -1082,18 +1082,18 @@ class PropertyShop {
                                     ${prop.name}
                                 </a>
                             </h6>
-                            ${propertyType ? `<p class="small text-muted mb-1"><i class="fa fa-building me-1"></i>${propertyType}</p>` : ''}
-                            ${location ? `<p class="small text-muted mb-2"><i class="fa fa-map-marker-alt me-1"></i>${location}</p>` : ''}
+                            ${propertyType ? `<p class="small text-muted mb-1"><i class="bi bi-building me-1"></i>${propertyType}</p>` : ''}
+                            ${location ? `<p class="small text-muted mb-2"><i class="bi bi-geo-alt-fill-alt me-1"></i>${location}</p>` : ''}
                             <p class="mb-2" style="font-size: 18px; color: #e31e24; font-weight: 700;">
                                 $${this.formatPrice(prop.list_price)}
                             </p>
                             <div class="d-flex gap-3 mb-3" style="font-size: 13px; color: #666;">
-                                ${area > 0 ? `<span><i class="fa fa-ruler-combined me-1"></i>${area} m²</span>` : ''}
-                                ${bedrooms > 0 ? `<span><i class="fa fa-bed me-1"></i>${bedrooms} hab</span>` : ''}
-                                ${bathrooms > 0 ? `<span><i class="fa fa-bath me-1"></i>${bathrooms} baños</span>` : ''}
+                                ${area > 0 ? `<span><i class="bi bi-rulers me-1"></i>${area} m²</span>` : ''}
+                                ${bedrooms > 0 ? `<span><i class="bi bi-bed me-1"></i>${bedrooms} hab</span>` : ''}
+                                ${bathrooms > 0 ? `<span><i class="bi bi-droplet me-1"></i>${bathrooms} baños</span>` : ''}
                             </div>
                             <a href="/property/${prop.id}" class="btn btn-sm w-100" style="background: #E31E24; color: white; border: none;">
-                                Ver Detalles <i class="fa fa-arrow-right ms-1"></i>
+                                Ver Detalles <i class="bi bi-arrow-right ms-1"></i>
                             </a>
                         </div>
                     </div>
@@ -1143,7 +1143,7 @@ class PropertyShop {
                         border: 3px solid white;
                         animation: pulse-office 2s infinite;
                     ">
-                        <i class="fa fa-building me-2"></i>OFICINA BOHIO
+                        <i class="bi bi-building me-2"></i>OFICINA BOHIO
                     </div>
                     <div style="
                         position: absolute;
@@ -1175,28 +1175,28 @@ class PropertyShop {
             <div class="bohio-office-popup" style="min-width: 300px;">
                 <div style="background: linear-gradient(135deg, #e31e24 0%, #c01d20 100%); color: white; padding: 15px; margin: -12px -12px 15px -12px; border-radius: 8px 8px 0 0;">
                     <h5 class="mb-1" style="font-size: 16px; font-weight: bold;">
-                        <i class="fa fa-building me-2"></i>${BOHIO_OFFICE.name}
+                        <i class="bi bi-building me-2"></i>${BOHIO_OFFICE.name}
                     </h5>
                 </div>
                 <div style="padding: 0 5px;">
                     <p class="mb-2" style="font-size: 14px;">
-                        <i class="fa fa-map-marker-alt me-2" style="color: #e31e24;"></i>
+                        <i class="bi bi-geo-alt-fill-alt me-2" style="color: #e31e24;"></i>
                         <strong>${BOHIO_OFFICE.address}</strong>
                     </p>
                     <p class="mb-2" style="font-size: 13px;">
-                        <i class="fa fa-phone me-2" style="color: #e31e24;"></i>
+                        <i class="bi bi-telephone me-2" style="color: #e31e24;"></i>
                         <a href="tel:${BOHIO_OFFICE.phone}" class="text-dark">${BOHIO_OFFICE.phone}</a>
                     </p>
                     <p class="mb-2" style="font-size: 13px;">
-                        <i class="fa fa-envelope me-2" style="color: #e31e24;"></i>
+                        <i class="bi bi-envelope me-2" style="color: #e31e24;"></i>
                         <a href="mailto:${BOHIO_OFFICE.email}" class="text-dark">${BOHIO_OFFICE.email}</a>
                     </p>
                     <p class="mb-2" style="font-size: 12px; color: #666;">
-                        <i class="fa fa-clock me-2" style="color: #e31e24;"></i>
+                        <i class="bi bi-clock me-2" style="color: #e31e24;"></i>
                         ${BOHIO_OFFICE.hours}
                     </p>
                     <p class="mb-3" style="font-size: 13px;">
-                        <i class="fa fa-globe me-2" style="color: #e31e24;"></i>
+                        <i class="bi bi-globe me-2" style="color: #e31e24;"></i>
                         <a href="https://${BOHIO_OFFICE.website}" target="_blank" class="text-dark">
                             ${BOHIO_OFFICE.website}
                         </a>
@@ -1210,7 +1210,7 @@ class PropertyShop {
                     <a href="tel:${BOHIO_OFFICE.phone}"
                        class="btn btn-outline-danger w-100"
                        style="border-color: #e31e24; color: #e31e24;">
-                        <i class="fa fa-phone me-2"></i>Llamar ahora
+                        <i class="bi bi-telephone me-2"></i>Llamar ahora
                     </a>
                 </div>
             </div>
@@ -1501,7 +1501,7 @@ class PropertyShop {
         if (!Array.isArray(properties) || properties.length === 0) {
             content.innerHTML = `
                 <div class="alert alert-warning">
-                    <i class="fa fa-exclamation-triangle"></i> No hay propiedades para comparar o error al cargar los datos.
+                    <i class="bi bi-exclamation-triangle"></i> No hay propiedades para comparar o error al cargar los datos.
                 </div>
             `;
             // Mostrar modal con fallback

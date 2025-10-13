@@ -96,7 +96,7 @@ export class CrmMapWidget extends Component {
             const div = window.L.DomUtil.create('div', 'leaflet-bar leaflet-control');
             div.innerHTML = `
                 <a href="#" class="leaflet-control-center" title="Centrar en oficina BOHIO">
-                    <i class="fa fa-home"></i>
+                    <i class="bi bi-house-fill"></i>
                 </a>
             `;
 
@@ -242,7 +242,7 @@ export class CrmMapWidget extends Component {
                     align-items: center;
                     justify-content: center;
                 ">
-                    <i class="fa fa-home" style="
+                    <i class="bi bi-house-fill" style="
                         color: white;
                         font-size: 14px;
                         transform: rotate(45deg);
@@ -279,27 +279,27 @@ export class CrmMapWidget extends Component {
 
                 <div class="popup-body">
                     <div style="margin-bottom: 4px;">
-                        <i class="fa fa-tag" style="color: #6c757d; margin-right: 6px;"></i>
+                        <i class="bi bi-tag" style="color: #6c757d; margin-right: 6px;"></i>
                         <strong>${priceFormatted}</strong>
                     </div>
 
                     ${property.city_id ? `
                         <div style="margin-bottom: 4px;">
-                            <i class="fa fa-map-marker-alt" style="color: #6c757d; margin-right: 6px;"></i>
+                            <i class="bi bi-geo-alt-fill" style="color: #6c757d; margin-right: 6px;"></i>
                             ${property.city_id[1]}
                         </div>
                     ` : ''}
 
                     ${property.region_id ? `
                         <div style="margin-bottom: 4px;">
-                            <i class="fa fa-building" style="color: #6c757d; margin-right: 6px;"></i>
+                            <i class="bi bi-building" style="color: #6c757d; margin-right: 6px;"></i>
                             ${property.region_id[1]}
                         </div>
                     ` : ''}
 
                     ${property.property_type_id ? `
                         <div style="margin-bottom: 4px;">
-                            <i class="fa fa-home" style="color: #6c757d; margin-right: 6px;"></i>
+                            <i class="bi bi-house-fill" style="color: #6c757d; margin-right: 6px;"></i>
                             ${property.property_type_id[1]}
                         </div>
                     ` : ''}

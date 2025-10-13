@@ -294,7 +294,7 @@ def _compute_conflicting_visit(self):
 
 ```xml
 <div class="alert alert-warning" invisible="not has_conflicting_visit">
-    <i class="fa fa-exclamation-triangle"/>
+    <i class="bi bi-exclamation-triangle"/>
     <field name="conflicting_visit_info"/>
 </div>
 ```

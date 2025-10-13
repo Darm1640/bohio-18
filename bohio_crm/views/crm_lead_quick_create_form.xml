@@ -37,13 +37,13 @@
                             <!-- CAPTACIÓN: service = consign -->
                             <span class="badge text-bg-warning me-2"
                                   invisible="service_interested != 'consign'">
-                                <i class="fa fa-building me-1"/>Captación
+                                <i class="bi bi-building me-1"/>Captación
                             </span>
 
                             <!-- NUEVO: Sin etapa asignada aún -->
                             <span class="badge text-bg-info me-2"
                                   invisible="stage_id">
-                                <i class="fa fa-star me-1"/>Nueva
+                                <i class="bi bi-star me-1"/>Nueva
                             </span>
 
                             <!-- Badge genérico con nombre de etapa -->
@@ -95,17 +95,17 @@
                     <div class="o_bohio_consign_separator alert alert-warning text-center mb-3"
                          invisible="service_interested != 'consign'"
                          name="consign_action_section">
-                        <i class="fa fa-building fa-2x mb-2 text-danger"/>
+                        <i class="bi bi-building fa-2x mb-2 text-danger"/>
                         <p class="mb-2 fw-bold fs-5">¿El cliente quiere consignar un inmueble?</p>
                         <button name="action_create_property_from_lead"
                                 type="object"
                                 string="Crear Ficha de Inmueble"
                                 class="btn btn-danger btn-lg"
                                 icon="fa-plus-circle">
-                            <i class="fa fa-plus-circle me-2"/>Crear Ficha de Inmueble
+                            <i class="bi bi-plus-circle me-2"/>Crear Ficha de Inmueble
                         </button>
                         <p class="small text-muted mt-2 mb-0">
-                            <i class="fa fa-info-circle me-1"/>
+                            <i class="bi bi-info-circle me-1"/>
                             Esto creará una nueva propiedad vinculada automáticamente
                         </p>
                     </div>
@@ -518,7 +518,7 @@
                         <!-- Alerta si necesita documentos -->
                         <div class="alert alert-info text-center"
                              invisible="not requires_financing or loan_approval_status != 'not_applied'">
-                            <i class="fa fa-info-circle me-2"/>
+                            <i class="bi bi-info-circle me-2"/>
                             <strong>Documentos necesarios para estudio de crédito</strong>
                             <p class="mb-0 mt-2">El cliente debe entregar: cédula, certificado laboral, extractos bancarios</p>
                         </div>
@@ -538,7 +538,7 @@
                             <field name="has_conflicting_visit" invisible="1"/>
                             <div class="alert alert-warning"
                                  invisible="not has_conflicting_visit">
-                                <i class="fa fa-exclamation-triangle me-2"/>
+                                <i class="bi bi-exclamation-triangle me-2"/>
                                 <field name="conflicting_visit_info" nolabel="1" readonly="1" class="fw-bold"/>
                             </div>
 
