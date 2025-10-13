@@ -48,7 +48,7 @@ const ServiceTypeSelectorWidget = publicWidget.Widget.extend({
             return;
         }
 
-        // Remove active class from all buttons and apply inactive styles
+        // Remove active class from all buttons
         this.serviceButtons.forEach(btn => {
             btn.classList.remove('active');
         });
@@ -60,6 +60,18 @@ const ServiceTypeSelectorWidget = publicWidget.Widget.extend({
         if (this.selectedServiceInput) {
             this.selectedServiceInput.value = serviceType;
             console.log('[ServiceTypeSelector] Service type selected:', serviceType);
+
+            // Disparar evento personalizado para notificar el cambio
+            const changeEvent = new CustomEvent('serviceTypeChanged', {
+                detail: { serviceType: serviceType },
+                bubbles: true,
+                cancelable: true
+            });
+            this.el.dispatchEvent(changeEvent);
+
+            // También disparar evento change en el input oculto
+            const inputChangeEvent = new Event('change', { bubbles: true });
+            this.selectedServiceInput.dispatchEvent(inputChangeEvent);
         }
     },
 
