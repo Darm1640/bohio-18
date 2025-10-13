@@ -100,6 +100,8 @@
             'theme_bohio_real_estate/static/src/scss/property_shop.scss',
 
             # JavaScript - Utils (Orden: utils primero, luego DOM, luego widgets)
+            'theme_bohio_real_estate/static/src/js/utils/constants.js',
+            'theme_bohio_real_estate/static/src/js/utils/formatters.js',
             'theme_bohio_real_estate/static/src/js/utils/geolocation.js',
             'theme_bohio_real_estate/static/src/js/utils/url_params.js',
             'theme_bohio_real_estate/static/src/js/utils/dom_helpers.js',
@@ -111,6 +113,7 @@
             # JavaScript - Widgets (PublicWidget - usa utils y dom)
             'theme_bohio_real_estate/static/src/js/widgets/map_widget.js',
             'theme_bohio_real_estate/static/src/js/widgets/homepage_properties_widget.js',
+            'theme_bohio_real_estate/static/src/js/widgets/service_type_selector_widget.js',
 
             # JavaScript - Core (Legacy - pendientes de refactorización)
             'theme_bohio_real_estate/static/src/js/page_loader.js',

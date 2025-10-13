@@ -741,3 +741,478 @@
         }
     }
 }
+
+// =============================================================================
+// EXTRACTED FROM HOMEPAGE_NEW.XML - HERO SECTION STYLES
+// =============================================================================
+
+// -----------------------------------------------------------------------------
+// PORTAL MENU
+// -----------------------------------------------------------------------------
+.portal-menu {
+    background: rgba(227, 30, 36, 0.95);
+
+    a {
+        transition: opacity 0.3s;
+        opacity: 1;
+
+        &:hover {
+            opacity: 0.7;
+        }
+    }
+}
+
+// -----------------------------------------------------------------------------
+// HERO BANNER & CAROUSEL
+// -----------------------------------------------------------------------------
+.hero-banner {
+    max-height: 60vh;
+    overflow: hidden;
+}
+
+#heroCarousel {
+    height: 60vh;
+
+    .carousel-inner {
+        height: 100%;
+    }
+
+    .carousel-item {
+        height: 100%;
+
+        img {
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+}
+
+// Carousel indicators
+.carousel-indicators {
+    bottom: 15px;
+
+    button {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        border: 2px solid rgba(255, 255, 255, 0.8);
+        background-color: transparent;
+        transition: all 0.3s ease;
+
+        &.active {
+            background-color: $bohio-red-primary;
+            border-color: $bohio-red-primary;
+            width: 32px;
+            border-radius: 5px;
+        }
+    }
+}
+
+// Carousel controls
+.carousel-control-prev,
+.carousel-control-next {
+    width: 50px;
+    height: 50px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(227, 30, 36, 0.75);
+    border-radius: 50%;
+    opacity: 0.85;
+    transition: all 0.3s ease;
+
+    &:hover {
+        opacity: 1;
+        background: rgba(227, 30, 36, 0.95);
+        transform: translateY(-50%) scale(1.1);
+    }
+}
+
+.carousel-control-prev {
+    left: 15px;
+}
+
+.carousel-control-next {
+    right: 15px;
+}
+
+// -----------------------------------------------------------------------------
+// HERO OVERLAY & CONTENT
+// -----------------------------------------------------------------------------
+.hero-overlay {
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.15) 0%, rgba(0, 0, 0, 0.25) 50%, rgba(0, 0, 0, 0.35) 100%);
+    z-index: 1;
+}
+
+.hero-title {
+    font-size: 2.8rem;
+    font-weight: 700;
+    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.9), 0 0 25px rgba(0, 0, 0, 0.6);
+}
+
+.hero-subtitle {
+    font-size: 1.15rem;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+// -----------------------------------------------------------------------------
+// RIALTO SEARCH BAR (Glass morphism)
+// -----------------------------------------------------------------------------
+.rialto-search-bar {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(15px) saturate(180%);
+    -webkit-backdrop-filter: blur(15px) saturate(180%);
+    border-radius: 18px;
+    padding: 25px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    max-width: 950px;
+    margin: 0 auto;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+// -----------------------------------------------------------------------------
+// SERVICE TYPE BUTTONS
+// -----------------------------------------------------------------------------
+.service-type-selector {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+}
+
+.service-type-btn {
+    min-width: 140px;
+    padding: 12px 24px;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 50px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    color: white;
+    transition: all 0.3s ease;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.15);
+
+    &:hover {
+        transform: translateY(-2px) !important;
+        box-shadow: 0 6px 18px rgba(227, 30, 36, 0.3) !important;
+        border-color: rgba(227, 30, 36, 0.6) !important;
+        background: rgba(255, 255, 255, 0.15) !important;
+    }
+
+    &.active {
+        border: 1px solid rgba(227, 30, 36, 0.8);
+        background: linear-gradient(135deg, rgba(227, 30, 36, 0.85) 0%, rgba(201, 25, 32, 0.85) 100%);
+        box-shadow: 0 6px 20px rgba(227, 30, 36, 0.4);
+        transform: scale(1.02);
+
+        &:hover {
+            background: linear-gradient(135deg, #c91920 0%, #b01519 100%) !important;
+            box-shadow: 0 8px 25px rgba(227, 30, 36, 0.5) !important;
+            transform: translateY(-2px) scale(1.02) !important;
+        }
+    }
+}
+
+// -----------------------------------------------------------------------------
+// SEARCH INPUT GROUPS
+// -----------------------------------------------------------------------------
+.search-bar-container {
+    .input-group {
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 3px 15px rgba(0, 0, 0, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        background: rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+
+        &:focus-within {
+            box-shadow: 0 4px 18px rgba(227, 30, 36, 0.3) !important;
+            transform: translateY(-1px);
+            border-color: rgba(227, 30, 36, 0.4) !important;
+        }
+    }
+
+    .search-icon-red {
+        background: linear-gradient(135deg, rgba(227, 30, 36, 0.85) 0%, rgba(201, 25, 32, 0.85) 100%);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        border: none;
+        padding: 0 16px;
+        color: white;
+        font-size: 1rem;
+    }
+
+    .property-search-input {
+        border: none;
+        padding: 13px 16px;
+        font-size: 0.95rem;
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        color: #fff;
+        font-weight: 500;
+
+        &::placeholder {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        &:focus {
+            box-shadow: none !important;
+            outline: none !important;
+            background: rgba(255, 255, 255, 0.25) !important;
+        }
+    }
+
+    .property-type-select {
+        border: none;
+        padding: 13px 16px;
+        font-size: 0.95rem;
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        color: #fff;
+        font-weight: 500;
+
+        option {
+            background: #333;
+            color: #fff;
+        }
+
+        &:focus {
+            box-shadow: none !important;
+            outline: none !important;
+            background: rgba(255, 255, 255, 0.25) !important;
+        }
+    }
+}
+
+// Autocomplete container
+.autocomplete-container {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 2000;
+    margin-top: 5px;
+    background: white;
+    border-radius: 8px;
+    max-height: 400px;
+    overflow-y: auto;
+    border: 2px solid $bohio-red-primary;
+}
+
+// -----------------------------------------------------------------------------
+// SEARCH BUTTON
+// -----------------------------------------------------------------------------
+.btn-search {
+    background: linear-gradient(135deg, $bohio-red-primary 0%, #c91920 100%);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 13px 30px;
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: 0.5px;
+    box-shadow: 0 5px 18px rgba(227, 30, 36, 0.35);
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+
+    &:hover {
+        transform: translateY(-2px) !important;
+        box-shadow: 0 8px 25px rgba(227, 30, 36, 0.45) !important;
+        background: linear-gradient(135deg, #c91920 0%, #b01519 100%) !important;
+    }
+
+    &:active {
+        transform: translateY(0px) !important;
+    }
+}
+
+// -----------------------------------------------------------------------------
+// LOGO RIALTO CORNER
+// -----------------------------------------------------------------------------
+.logo-corner-container {
+    position: absolute;
+}
+
+.logo-rialto-corner {
+    max-width: 200px;
+    height: auto;
+    filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.4));
+    cursor: pointer;
+    transition: all 0.4s ease;
+
+    &:hover {
+        transform: scale(1.08);
+        filter: drop-shadow(0 6px 18px rgba(227, 30, 36, 0.5)) !important;
+    }
+}
+
+.logo-underline {
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, transparent 0%, $bohio-red-primary 50%, transparent 100%);
+    margin-top: 8px;
+    border-radius: 2px;
+    box-shadow: 0 2px 8px rgba(227, 30, 36, 0.4);
+}
+
+// -----------------------------------------------------------------------------
+// ANIMATIONS
+// -----------------------------------------------------------------------------
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fade-in {
+    animation: fadeIn 1s ease-out forwards;
+    opacity: 0;
+}
+
+.animate-slide-up {
+    animation: slideUp 0.8s ease-out forwards;
+    opacity: 0;
+}
+
+// -----------------------------------------------------------------------------
+// SERVICE CARDS HOVER
+// -----------------------------------------------------------------------------
+.service-card:hover {
+    transform: translateY(-5px) !important;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15) !important;
+}
+
+// -----------------------------------------------------------------------------
+// CLIENT LOGOS HOVER
+// -----------------------------------------------------------------------------
+.client-logo {
+    height: 150px;
+    transition: transform 0.3s ease;
+
+    &:hover {
+        transform: translateY(-5px);
+    }
+}
+
+// -----------------------------------------------------------------------------
+// RESPONSIVE STYLES - HERO SECTION
+// -----------------------------------------------------------------------------
+@media (max-width: 992px) {
+    .hero-banner,
+    #heroCarousel {
+        max-height: 70vh !important;
+        height: 70vh !important;
+    }
+
+    .logo-rialto-corner {
+        max-width: 130px !important;
+    }
+
+    .logo-corner-container {
+        top: 20px !important;
+        right: 25px !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero-banner,
+    #heroCarousel {
+        max-height: 75vh !important;
+        height: 75vh !important;
+    }
+
+    .rialto-search-bar {
+        padding: 20px !important;
+    }
+
+    .service-type-selector {
+        gap: 10px !important;
+    }
+
+    .service-type-btn {
+        min-width: 120px !important;
+        padding: 10px 20px !important;
+        font-size: 0.95rem !important;
+    }
+
+    .hero-title {
+        font-size: 2.2rem !important;
+    }
+
+    .hero-subtitle {
+        font-size: 1rem !important;
+    }
+
+    .logo-rialto-corner {
+        max-width: 110px !important;
+    }
+
+    .logo-corner-container {
+        top: 15px !important;
+        right: 20px !important;
+    }
+}
+
+@media (max-width: 576px) {
+    .hero-banner,
+    #heroCarousel {
+        max-height: 80vh !important;
+        height: 80vh !important;
+    }
+
+    .rialto-search-bar {
+        padding: 16px !important;
+    }
+
+    .service-type-selector {
+        flex-direction: column;
+        gap: 8px !important;
+    }
+
+    .service-type-btn {
+        min-width: 100% !important;
+        padding: 10px 20px !important;
+        font-size: 0.95rem !important;
+    }
+
+    .logo-rialto-corner {
+        max-width: 90px !important;
+    }
+
+    .logo-corner-container {
+        top: 12px !important;
+        right: 15px !important;
+    }
+
+    .hero-title {
+        font-size: 1.8rem !important;
+    }
+
+    .hero-subtitle {
+        font-size: 0.9rem !important;
+    }
+
+    .carousel-control-prev,
+    .carousel-control-next {
+        width: 40px !important;
+        height: 40px !important;
+    }
+}
