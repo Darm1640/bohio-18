@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- ============================================================================= -->
+    <!-- HOMEPAGE AUTOCOMPLETE TEMPLATES -->
+    <!-- ============================================================================= -->
+
+    <!-- Template: Loading Spinner -->
+    <template id="autocomplete_loading_template" name="Autocomplete Loading">
+        <div class="p-3 text-center">
+            <div class="spinner-border spinner-border-sm text-danger me-2" role="status">
+                <span class="visually-hidden">Cargando...</span>
+            </div>
+            <span class="text-muted">Buscando...</span>
+        </div>
+    </template>
+
+    <!-- Template: No Results -->
+    <template id="autocomplete_no_results_template" name="Autocomplete No Results">
+        <div class="p-3 text-center text-muted">
+            <i class="fa fa-search-minus me-2"></i>
+            No se encontraron resultados
+        </div>
+    </template>
+
+    <!-- Template: Error Message -->
+    <template id="autocomplete_error_template" name="Autocomplete Error">
+        <div class="p-3 text-center text-danger">
+            <i class="fa fa-exclamation-triangle me-2"></i>
+            <span t-esc="message"/>
+        </div>
+    </template>
+
+    <!-- Template: Single Autocomplete Result -->
+    <template id="homepage_autocomplete_item_template" name="Homepage Autocomplete Item">
+        <li class="autocomplete-item"
+            t-att-data-type="result.type"
+            t-att-data-id="result.id"
+            t-att-data-city-id="result.city_id or ''"
+            t-att-data-region-id="result.region_id or ''"
+            t-att-data-project-id="result.project_id or ''"
+            t-att-data-property-id="result.property_id or ''"
+            style="cursor: pointer; padding: 12px 16px; border-bottom: 1px solid #eee; display: flex; align-items: center; transition: background 0.2s;"
+            onmouseover="this.style.background='#f8f9fa'"
+            onmouseout="this.style.background='white'">
+
+            <!-- Icon Circle -->
+            <div style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background: rgba(227, 30, 36, 0.1); border-radius: 50%; margin-right: 12px;">
+                <i t-attf-class="fa #{result.iconClass}" style="color: #E31E24; font-size: 16px;"></i>
+            </div>
+
+            <!-- Content -->
+            <div style="flex: 1;">
+                <div style="font-weight: 600; color: #333; margin-bottom: 2px;">
+                    <t t-esc="result.name"/>
+                </div>
+                <div t-if="result.full_name and result.full_name != result.name"
+                     style="font-size: 12px; color: #666;">
+                    <t t-esc="result.full_name"/>
+                </div>
+            </div>
+
+            <!-- Badge -->
+            <span t-if="result.property_count > 0"
+                  t-attf-class="badge bg-#{result.badgeColor}"
+                  style="margin-left: 8px;">
+                <t t-esc="result.property_count"/>
+            </span>
+        </li>
+    </template>
+
+    <!-- Template: List of Autocomplete Results -->
+    <template id="homepage_autocomplete_results_template" name="Homepage Autocomplete Results">
+        <ul class="list-unstyled mb-0">
+            <t t-foreach="results" t-as="result">
+                <t t-call="theme_bohio_real_estate.homepage_autocomplete_item_template"/>
+            </t>
+        </ul>
+    </template>
+
+</odoo>
