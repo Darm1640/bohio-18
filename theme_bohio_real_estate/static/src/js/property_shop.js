@@ -664,8 +664,8 @@ class PropertyShop {
         }
 
         return `
-            <div class="col-lg-3 col-md-6 mb-4 d-flex justify-content-center">
-                <div class="card property-card shadow-sm border-0" style="width: 100%; max-width: 380px;">
+            <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 mb-4">
+                <div class="card property-card shadow-sm border-0 h-100" style="width: 100%;">
                     <div class="position-relative" style="width: 100%; padding-top: 100%; overflow: hidden;">
                         <img src="${imageUrl}" class="position-absolute top-0 start-0 w-100 h-100" alt="${property.name}" style="object-fit: cover; object-position: center;"/>
                         <div class="position-absolute top-0 end-0 m-3">
