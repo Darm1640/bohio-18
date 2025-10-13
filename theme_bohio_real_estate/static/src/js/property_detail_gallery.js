@@ -95,6 +95,105 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
     });
+
+    // Definir función de inicialización del mapa GLOBALMENTE
+    window.initPropertyMap = function() {
+        const mapElement = document.getElementById('property_map');
+        if (!mapElement) {
+            console.log('  - Elemento property_map NO encontrado');
+            return;
+        }
+
+        if (window.propertyMap) {
+            console.log('  - Mapa ya existe, solo invalidando tamaño');
+            setTimeout(() => {
+                window.propertyMap.invalidateSize();
+            }, 100);
+            return;
+        }
+
+        if (typeof L === 'undefined') {
+            console.error('❌ Leaflet no está cargado');
+            return;
+        }
+
+        const lat = parseFloat(mapElement.dataset.lat);
+        const lng = parseFloat(mapElement.dataset.lng);
+        const name = mapElement.dataset.name || 'Propiedad';
+
+        console.log('  - Datos del mapa:', { lat, lng, name });
+
+        if (!lat || !lng || isNaN(lat) || isNaN(lng)) {
+            console.warn('❌ Coordenadas inválidas:', { lat, lng });
+            return;
+        }
+
+        console.log('  - Creando mapa Leaflet con lat:', lat, 'lng:', lng);
+
+        try {
+            // Crear mapa
+            window.propertyMap = L.map('property_map', {
+                center: [lat, lng],
+                zoom: 15,
+                scrollWheelZoom: true
+            });
+
+            // Agregar tiles
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors',
+                maxZoom: 19
+            }).addTo(window.propertyMap);
+
+            // Crear marcador personalizado con Bootstrap Icons
+            const markerHtml = `
+                <div class="property-detail-marker">
+                    <div class="marker-icon-circle">
+                        <i class="bi bi-house-fill"></i>
+                    </div>
+                    <div class="marker-label">${name}</div>
+                </div>
+            `;
+
+            const icon = L.divIcon({
+                className: 'property-detail-marker-container',
+                html: markerHtml,
+                iconSize: [null, null],
+                iconAnchor: [60, 70]
+            });
+
+            // Agregar marcador con icono personalizado
+            const marker = L.marker([lat, lng], { icon: icon }).addTo(window.propertyMap);
+
+            // Popup con información detallada
+            const popupContent = `
+                <div class="property-marker-popup">
+                    <h6><i class="bi bi-house-fill text-danger me-2"></i>${name}</h6>
+                    <p class="small mb-1">
+                        <i class="bi bi-geo-alt-fill text-danger me-1"></i>
+                        <strong>Coordenadas:</strong>
+                    </p>
+                    <p class="small mb-0 text-muted">
+                        Lat: ${lat.toFixed(6)}, Lng: ${lng.toFixed(6)}
+                    </p>
+                </div>
+            `;
+
+            marker.bindPopup(popupContent).openPopup();
+
+            console.log('✅ Mapa creado exitosamente');
+
+            // Forzar recálculo de tamaño después de un momento
+            setTimeout(() => {
+                if (window.propertyMap) {
+                    window.propertyMap.invalidateSize();
+                    console.log('  - Tamaño del mapa recalculado');
+                }
+            }, 200);
+
+        } catch (error) {
+            console.error('❌ Error al crear mapa:', error);
+        }
+    };
 });
 
 // ============= FUNCIONES DE GALERÍA =============
@@ -444,108 +543,10 @@ window.toggleMapView = function() {
     console.log('🗺️ Toggle mapa - END');
 };
 
-// Inicializar mapa de Leaflet
+// Inicializar mapa de Leaflet (placeholder - la función real está en window.initPropertyMap)
 function initializeMap() {
-    const mapElement = document.getElementById('property_map');
-    if (!mapElement) {
-        console.log('  - Elemento property_map NO encontrado');
-        return;
-    }
-
-    const lat = parseFloat(mapElement.dataset.lat);
-    const lng = parseFloat(mapElement.dataset.lng);
-    const name = mapElement.dataset.name || 'Propiedad';
-
-    console.log('  - Datos del mapa:', { lat, lng, name });
-
-    if (!lat || !lng || isNaN(lat) || isNaN(lng)) {
-        console.warn('❌ Coordenadas inválidas:', { lat, lng });
-        return;
-    }
-
-    // Definir función de inicialización del mapa
-    window.initPropertyMap = function() {
-        if (window.propertyMap) {
-            console.log('  - Mapa ya existe, solo invalidando tamaño');
-            setTimeout(() => {
-                window.propertyMap.invalidateSize();
-            }, 100);
-            return;
-        }
-
-        if (typeof L === 'undefined') {
-            console.error('❌ Leaflet no está cargado');
-            return;
-        }
-
-        console.log('  - Creando mapa Leaflet con lat:', lat, 'lng:', lng);
-
-        try {
-            // Crear mapa
-            window.propertyMap = L.map('property_map', {
-                center: [lat, lng],
-                zoom: 15,
-                scrollWheelZoom: true
-            });
-
-            // Agregar tiles
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '© OpenStreetMap contributors',
-                maxZoom: 19
-            }).addTo(window.propertyMap);
-
-            // Crear marcador personalizado con Bootstrap Icons
-            const markerHtml = `
-                <div class="property-detail-marker">
-                    <div class="marker-icon-circle">
-                        <i class="bi bi-house-fill"></i>
-                    </div>
-                    <div class="marker-label">${name}</div>
-                </div>
-            `;
-
-            const icon = L.divIcon({
-                className: 'property-detail-marker-container',
-                html: markerHtml,
-                iconSize: [null, null],
-                iconAnchor: [60, 70]
-            });
-
-            // Agregar marcador con icono personalizado
-            const marker = L.marker([lat, lng], { icon: icon }).addTo(window.propertyMap);
-
-            // Popup con información detallada
-            const popupContent = `
-                <div class="property-marker-popup">
-                    <h6><i class="bi bi-house-fill text-danger me-2"></i>${name}</h6>
-                    <p class="small mb-1">
-                        <i class="bi bi-geo-alt-fill text-danger me-1"></i>
-                        <strong>Coordenadas:</strong>
-                    </p>
-                    <p class="small mb-0 text-muted">
-                        Lat: ${lat.toFixed(6)}, Lng: ${lng.toFixed(6)}
-                    </p>
-                </div>
-            `;
-
-            marker.bindPopup(popupContent).openPopup();
-
-            console.log('✅ Mapa creado exitosamente');
-
-            // Forzar recálculo de tamaño después de un momento
-            setTimeout(() => {
-                if (window.propertyMap) {
-                    window.propertyMap.invalidateSize();
-                    console.log('  - Tamaño del mapa recalculado');
-                }
-            }, 200);
-
-        } catch (error) {
-            console.error('❌ Error al crear mapa:', error);
-        }
-    };
-
-    console.log('✅ Función initPropertyMap definida');
+    // La función initPropertyMap ya está definida globalmente en el DOMContentLoaded
+    console.log('✅ initializeMap llamada - initPropertyMap ya está disponible');
 }
 
 // ============= FUNCIONES DE COMPARTIR =============
