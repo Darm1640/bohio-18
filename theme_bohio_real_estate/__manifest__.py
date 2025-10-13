@@ -72,8 +72,8 @@
             'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css',
             'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js',
 
-            # Bootstrap Icons
-            'theme_bohio_real_estate/static/src/lib/bootstrap-icons/bootstrap-icons.min.css',
+            # Bootstrap Icons - Heredado de real_estate_bits (módulo base)
+            # No es necesario incluirlo aquí, se carga automáticamente
 
             # CSS
             'theme_bohio_real_estate/static/src/css/style.css',
