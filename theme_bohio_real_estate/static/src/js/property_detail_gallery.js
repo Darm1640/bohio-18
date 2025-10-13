@@ -92,8 +92,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Abrir modal de zoom con la imagen seleccionada
 window.openImageZoom = function(index) {
-    console.log('🔍 Abriendo zoom, índice:', index);
-    currentZoomIndex = index;
+    console.log('🔍 Abriendo zoom, índice:', index, 'Total imágenes:', validImages.length);
+
+    if (validImages.length === 0) {
+        console.warn('⚠️ No hay imágenes válidas para mostrar en zoom');
+        return;
+    }
+
+    currentZoomIndex = parseInt(index) || 0;
+
+    // Validar índice
+    if (currentZoomIndex < 0) currentZoomIndex = 0;
+    if (currentZoomIndex >= validImages.length) currentZoomIndex = validImages.length - 1;
+
     const modalElement = document.getElementById('imageZoomModal');
 
     if (!modalElement) {
@@ -107,8 +118,23 @@ window.openImageZoom = function(index) {
     // Cargar miniaturas
     loadZoomThumbnails();
 
-    // Usar jQuery para abrir el modal (Bootstrap 5 en Odoo 18)
-    $('#imageZoomModal').modal('show');
+    // Usar Bootstrap 5 nativo para abrir el modal
+    try {
+        // Verificar si Bootstrap está disponible
+        if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
+            const modal = new bootstrap.Modal(modalElement);
+            modal.show();
+            console.log('✅ Modal abierto con Bootstrap 5');
+        } else if (typeof $ !== 'undefined' && $.fn.modal) {
+            // Fallback a jQuery Bootstrap
+            $('#imageZoomModal').modal('show');
+            console.log('✅ Modal abierto con jQuery Bootstrap');
+        } else {
+            console.error('❌ Bootstrap no está disponible');
+        }
+    } catch (error) {
+        console.error('❌ Error abriendo modal:', error);
+    }
 };
 
 // Actualizar imagen en el zoom
@@ -305,27 +331,46 @@ window.openGalleryModal = function() {
         return;
     }
 
-    // Obtener todas las imágenes del carrusel
-    const images = document.querySelectorAll('#propertyImageCarousel .carousel-item img');
-    let html = '';
+    // Limpiar grid
+    grid.innerHTML = '';
 
-    images.forEach((img, index) => {
-        html += `
-            <div class="col-md-4 col-sm-6">
-                <div class="position-relative" style="cursor: pointer;" onclick="goToSlide(${index})">
-                    <img src="${img.src}" class="img-fluid rounded shadow-sm" style="width: 100%; height: 200px; object-fit: cover;" alt="Imagen ${index + 1}"/>
-                    <div class="position-absolute top-0 start-0 m-2 bg-dark text-white px-2 py-1 rounded">
-                        ${index + 1}
-                    </div>
-                </div>
-            </div>
-        `;
+    // Obtener todas las imágenes válidas
+    validImages.forEach((imgData, index) => {
+        const col = document.createElement('div');
+        col.className = 'col-md-4 col-sm-6 mb-3';
+
+        const wrapper = document.createElement('div');
+        wrapper.className = 'position-relative';
+        wrapper.style.cursor = 'pointer';
+        wrapper.onclick = () => window.goToSlide(index);
+
+        const img = document.createElement('img');
+        img.src = imgData.src;
+        img.alt = imgData.alt;
+        img.className = 'img-fluid rounded shadow-sm';
+        img.style.cssText = 'width: 100%; height: 200px; object-fit: cover;';
+
+        const badge = document.createElement('div');
+        badge.className = 'position-absolute top-0 start-0 m-2 bg-dark text-white px-2 py-1 rounded';
+        badge.textContent = index + 1;
+
+        wrapper.appendChild(img);
+        wrapper.appendChild(badge);
+        col.appendChild(wrapper);
+        grid.appendChild(col);
     });
 
-    grid.innerHTML = html;
-
-    // Usar jQuery para abrir el modal (Bootstrap 5 en Odoo 18)
-    $('#galleryModal').modal('show');
+    // Usar Bootstrap 5 para abrir el modal
+    try {
+        if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
+            const modal = new bootstrap.Modal(modalElement);
+            modal.show();
+        } else if (typeof $ !== 'undefined' && $.fn.modal) {
+            $('#galleryModal').modal('show');
+        }
+    } catch (error) {
+        console.error('❌ Error abriendo modal galería:', error);
+    }
 };
 
 // Ir a una diapositiva específica
@@ -504,8 +549,18 @@ window.openShareModal = function() {
         console.error('❌ Modal de compartir no encontrado');
         return;
     }
-    // Usar jQuery para abrir el modal (Bootstrap 5 en Odoo 18)
-    $('#shareModal').modal('show');
+
+    // Usar Bootstrap 5 para abrir el modal
+    try {
+        if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
+            const modal = new bootstrap.Modal(modalElement);
+            modal.show();
+        } else if (typeof $ !== 'undefined' && $.fn.modal) {
+            $('#shareModal').modal('show');
+        }
+    } catch (error) {
+        console.error('❌ Error abriendo modal compartir:', error);
+    }
 };
 
 // Copiar link al portapapeles
@@ -641,8 +696,18 @@ window.openReportModal = function() {
         console.error('❌ Modal de reporte no encontrado');
         return;
     }
-    // Usar jQuery para abrir el modal (Bootstrap 5 en Odoo 18)
-    $('#reportModal').modal('show');
+
+    // Usar Bootstrap 5 para abrir el modal
+    try {
+        if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
+            const modal = new bootstrap.Modal(modalElement);
+            modal.show();
+        } else if (typeof $ !== 'undefined' && $.fn.modal) {
+            $('#reportModal').modal('show');
+        }
+    } catch (error) {
+        console.error('❌ Error abriendo modal reporte:', error);
+    }
 };
 
 // Enviar reporte (validaciones y proceso)

@@ -76,11 +76,23 @@
     ],
     'assets': {
         'web.assets_frontend': [
+            # ========================================================================
+            # BOOTSTRAP 5.3.3 (Última versión estable - Enero 2024)
+            # ========================================================================
+            # Se carga ANTES que el CSS de Odoo para permitir sobrescribir estilos
+            'theme_bohio_real_estate/static/lib/bootstrap-5.3.3/css/bootstrap.min.css',
+            'theme_bohio_real_estate/static/lib/bootstrap-5.3.3/js/bootstrap.bundle.min.js',
+
+            # ========================================================================
+            # LIBRERÍAS HEREDADAS
+            # ========================================================================
             # Bootstrap Icons - Heredado de real_estate_bits (módulo base)
             # Leaflet - Heredado de real_estate_bits (módulo base)
-            # No es necesario incluir estas librerías aquí, se cargan automáticamente
+            # jQuery - Heredado de Odoo core
 
-            # CSS
+            # ========================================================================
+            # CSS CUSTOM
+            # ========================================================================
             'theme_bohio_real_estate/static/src/css/style.css',
             'theme_bohio_real_estate/static/src/css/homepage_autocomplete.css',
             'theme_bohio_real_estate/static/src/css/homepage_maps.css',
