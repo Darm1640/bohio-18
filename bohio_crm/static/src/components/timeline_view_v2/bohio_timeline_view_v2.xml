@@ -188,7 +188,7 @@
                                                 <div class="o_stage_circle rounded-circle mx-auto mb-2 d-flex align-items-center justify-content-center"
                                                      style="width: 40px; height: 40px;">
                                                     <i t-if="stage.is_completed" class="bi bi-check"/>
-                                                    <i t-elif="stage.is_current" class="fa fa-dot-circle"/>
+                                                    <i t-elif="stage.is_current" class="bi bi-circle-fill"/>
                                                     <i t-else="" t-att-class="'fa fa-' + stage.icon"/>
                                                 </div>
                                                 <div class="small fw-bold" t-esc="stage.name"/>

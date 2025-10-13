@@ -166,7 +166,7 @@
                         <a href="/my/tasks/employee" class="text-decoration-none">
                             <div class="card h-100 border-0 shadow-sm bohio-portal-card">
                                 <div class="card-body text-center p-4">
-                                    <i class="fa fa-tasks fa-3x mb-3" style="color: #E31E24;"></i>
+                                    <i class="bi bi-list-check fa-3x mb-3" style="color: #E31E24;"></i>
                                     <h5 class="card-title fw-bold" style="color: #E31E24;">Mis Tareas</h5>
                                     <p class="card-text text-muted small">Tareas pendientes</p>
                                 </div>

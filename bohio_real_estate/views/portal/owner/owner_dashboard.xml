@@ -32,7 +32,7 @@
                                         <t t-esc="metrics['occupied_properties']"/> Ocupadas
                                     </small>
                                     <small class="text-muted ms-2">
-                                        <i class="fa fa-circle"></i>
+                                        <i class="bi bi-circle-fill"></i>
                                         <t t-esc="metrics['vacant_properties']"/> Vacantes
                                     </small>
                                 </div>

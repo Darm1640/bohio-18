@@ -253,6 +253,21 @@ ICON_MAPPING = {
     'fa-invoice': 'bi-receipt',
     'fa-receipt': 'bi-receipt',
     'fa-file-invoice-dollar': 'bi-receipt',
+
+    # Iconos adicionales del portal y vistas
+    'fa-circle': 'bi-circle-fill',
+    'fa-circle-o': 'bi-circle',
+    'fa-dot-circle': 'bi-circle-fill',
+    'fa-tasks': 'bi-list-check',
+    'fa-list-check': 'bi-list-check',
+    'fa-id-card': 'bi-person-vcard',
+    'fa-trophy': 'bi-trophy',
+    'fa-award': 'bi-award',
+    'fa-inbox': 'bi-inbox',
+    'fa-align-left': 'bi-text-left',
+    'fa-text-left': 'bi-text-left',
+    'fa-history': 'bi-clock-history',
+    'fa-clock-rotate-left': 'bi-clock-history',
 }
 
 def convert_icon_classes(content, file_path):

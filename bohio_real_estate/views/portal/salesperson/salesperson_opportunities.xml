@@ -130,7 +130,7 @@
                             <div class="card border-0 shadow-sm">
                                 <div class="card-body text-center py-5">
                                     <div class="mb-4">
-                                        <i class="fa fa-inbox text-muted" style="font-size: 5rem; opacity: 0.3;"></i>
+                                        <i class="bi bi-inbox text-muted" style="font-size: 5rem; opacity: 0.3;"></i>
                                     </div>
                                     <h3 class="text-muted">No tienes oportunidades asignadas</h3>
                                     <p class="text-muted mb-4">Las oportunidades que te sean asignadas aparecerán aquí</p>

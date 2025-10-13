@@ -78,7 +78,7 @@
                                                                 <div>
                                                                     <strong class="d-block" t-esc="client.name"/>
                                                                     <small class="text-muted" t-if="client.vat">
-                                                                        <i class="fa fa-id-card fa-xs"></i> <span t-esc="client.vat"/>
+                                                                        <i class="bi bi-person-vcard fa-xs"></i> <span t-esc="client.vat"/>
                                                                     </small>
                                                                 </div>
                                                             </div>

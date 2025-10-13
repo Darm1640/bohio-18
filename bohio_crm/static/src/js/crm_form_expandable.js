@@ -308,7 +308,7 @@ export class BohioCrmFormExpandable extends FormController {
         if (this.state.relatedOpportunities.length === 0) {
             listContainer.innerHTML = `
                 <div class="text-center text-muted py-5">
-                    <i class="fa fa-inbox fa-2x mb-2"></i>
+                    <i class="bi bi-inbox fa-2x mb-2"></i>
                     <p class="small">No hay oportunidades relacionadas</p>
                 </div>
             `;

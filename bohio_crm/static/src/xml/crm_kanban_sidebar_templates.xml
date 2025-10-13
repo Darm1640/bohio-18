@@ -110,7 +110,7 @@
 
                     <!-- Estado Vacío -->
                     <div t-else="" class="o_bohio_empty_state">
-                        <i class="fa fa-inbox"/>
+                        <i class="bi bi-inbox"/>
                         <p>No hay oportunidades<br/>que coincidan con los filtros</p>
                     </div>
 

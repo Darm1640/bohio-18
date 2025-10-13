@@ -116,7 +116,7 @@
                                     <div class="card border-danger">
                                         <div class="card-body">
                                             <h6 class="card-title">
-                                                <i class="fa fa-tasks me-2 text-danger"/>
+                                                <i class="bi bi-list-check me-2 text-danger"/>
                                                 Actividades
                                             </h6>
                                             <field name="activity_ids" widget="kanban_activity" nolabel="1"/>

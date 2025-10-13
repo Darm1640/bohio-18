@@ -145,7 +145,7 @@
                                             <h5 class="card-title mb-1">Ganadas</h5>
                                             <h2 class="mb-0"><t t-esc="state.dashboardData.won_opportunities || 0"/></h2>
                                         </div>
-                                        <i class="fa fa-trophy fa-3x opacity-50"/>
+                                        <i class="bi bi-trophy fa-3x opacity-50"/>
                                     </div>
                                     <small class="mt-2 d-block"><i class="bi bi-arrow-right"/> Ver ganadas</small>
                                 </div>
