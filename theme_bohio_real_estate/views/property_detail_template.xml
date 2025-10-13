@@ -436,35 +436,43 @@
                             <!-- Compartir en Redes Sociales -->
                             <div>
                                 <label class="form-label fw-bold mb-3">
-                                    <i class="fa fa-share-alt me-1"></i>Compartir en Redes Sociales
+                                    <i class="fa fa-share-nodes me-1"></i>Compartir en Redes Sociales
                                 </label>
                                 <div class="d-grid gap-2">
                                     <!-- WhatsApp -->
-                                    <button class="btn btn-success text-start" onclick="shareOnWhatsApp()">
-                                        <i class="fab fa-whatsapp fa-lg me-2"></i>
-                                        <strong>WhatsApp</strong>
-                                        <small class="d-block text-white-50">Enviar por mensaje</small>
+                                    <button class="btn text-start text-white d-flex align-items-center" style="background: #25D366;" onclick="shareOnWhatsApp()">
+                                        <i class="fab fa-whatsapp fa-2x me-3"></i>
+                                        <div class="flex-grow-1">
+                                            <strong class="d-block">WhatsApp</strong>
+                                            <small class="opacity-75">Enviar por mensaje</small>
+                                        </div>
                                     </button>
 
                                     <!-- Facebook -->
-                                    <button class="btn text-start text-white" style="background: #1877F2;" onclick="shareOnFacebook()">
-                                        <i class="fab fa-facebook fa-lg me-2"></i>
-                                        <strong>Facebook</strong>
-                                        <small class="d-block opacity-75">Publicar en tu muro</small>
+                                    <button class="btn text-start text-white d-flex align-items-center" style="background: #1877F2;" onclick="shareOnFacebook()">
+                                        <i class="fab fa-facebook-f fa-2x me-3"></i>
+                                        <div class="flex-grow-1">
+                                            <strong class="d-block">Facebook</strong>
+                                            <small class="opacity-75">Publicar en tu muro</small>
+                                        </div>
                                     </button>
 
-                                    <!-- Twitter/X -->
-                                    <button class="btn btn-dark text-start" onclick="shareOnTwitter()">
-                                        <i class="fab fa-twitter fa-lg me-2"></i>
-                                        <strong>Twitter / X</strong>
-                                        <small class="d-block text-white-50">Compartir en tweet</small>
+                                    <!-- X (Twitter) -->
+                                    <button class="btn text-start text-white d-flex align-items-center" style="background: #000000;" onclick="shareOnTwitter()">
+                                        <i class="fab fa-x-twitter fa-2x me-3"></i>
+                                        <div class="flex-grow-1">
+                                            <strong class="d-block">X (Twitter)</strong>
+                                            <small class="opacity-75">Compartir en X</small>
+                                        </div>
                                     </button>
 
                                     <!-- Email -->
-                                    <button class="btn btn-secondary text-start" onclick="shareViaEmail()">
-                                        <i class="fa fa-envelope fa-lg me-2"></i>
-                                        <strong>Correo Electrónico</strong>
-                                        <small class="d-block text-white-50">Enviar por email</small>
+                                    <button class="btn text-start text-white d-flex align-items-center" style="background: #6c757d;" onclick="shareViaEmail()">
+                                        <i class="fa fa-envelope fa-2x me-3"></i>
+                                        <div class="flex-grow-1">
+                                            <strong class="d-block">Correo Electrónico</strong>
+                                            <small class="opacity-75">Enviar por email</small>
+                                        </div>
                                     </button>
                                 </div>
                             </div>
