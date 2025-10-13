@@ -70,7 +70,13 @@ class AdvancedImageZoom {
         const items = carousel.querySelectorAll('.carousel-item');
         this.images = [];
 
+        // ✅ LIMITAR A 10 IMÁGENES MÁXIMO para evitar ERR_INSUFFICIENT_RESOURCES
+        const MAX_IMAGES = 10;
+
         items.forEach((item, index) => {
+            // Detener si ya tenemos suficientes imágenes
+            if (this.images.length >= MAX_IMAGES) return;
+
             const img = item.querySelector('img');
             if (img && img.src && !img.src.includes('banner1.jpg')) {
                 this.images.push({
@@ -80,6 +86,8 @@ class AdvancedImageZoom {
                 });
             }
         });
+
+        console.log(`✅ Colectadas ${this.images.length} imágenes (máximo: ${MAX_IMAGES})`);
     }
 
     /**
