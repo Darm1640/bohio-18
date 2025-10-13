@@ -84,16 +84,10 @@
             'theme_bohio_real_estate/static/lib/bootstrap-5.3.3/js/bootstrap.bundle.min.js',
 
             # ========================================================================
-            # LEAFLET 1.9.4 - Sistema de Mapas
-            # ========================================================================
-            # Cargado explícitamente para asegurar disponibilidad en property detail
-            ('https://unpkg.com/leaflet@1.9.4/dist/leaflet.css', {'type': 'text/css'}),
-            ('https://unpkg.com/leaflet@1.9.4/dist/leaflet.js', {'type': 'text/javascript'}),
-
-            # ========================================================================
             # LIBRERÍAS HEREDADAS
             # ========================================================================
             # Bootstrap Icons - Heredado de real_estate_bits (módulo base)
+            # Leaflet - Heredado de real_estate_bits (módulo base)
             # jQuery - Heredado de Odoo core
 
             # ========================================================================

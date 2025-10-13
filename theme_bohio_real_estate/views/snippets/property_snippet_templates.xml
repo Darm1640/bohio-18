@@ -288,11 +288,4 @@
         </t>
     </template>
 
-    <!-- Assets: CSS para property snippets -->
-    <record id="property_snippets_css" model="ir.asset">
-        <field name="name">Property Snippets CSS</field>
-        <field name="bundle">web.assets_frontend</field>
-        <field name="path">theme_bohio_real_estate/static/src/css/property_snippets.css</field>
-    </record>
-
 </odoo>
