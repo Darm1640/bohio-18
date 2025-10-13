@@ -105,6 +105,7 @@
             # JavaScript - Utils (Orden: utils primero, luego DOM, luego widgets)
             'theme_bohio_real_estate/static/src/js/utils/constants.js',
             'theme_bohio_real_estate/static/src/js/utils/formatters.js',
+            'theme_bohio_real_estate/static/src/js/utils/template_renderer.js',
             'theme_bohio_real_estate/static/src/js/utils/geolocation.js',
             'theme_bohio_real_estate/static/src/js/utils/url_params.js',
             'theme_bohio_real_estate/static/src/js/utils/dom_helpers.js',
@@ -120,7 +121,7 @@
 
             # JavaScript - Core (Legacy - pendientes de refactorización)
             'theme_bohio_real_estate/static/src/js/page_loader.js',
-            'theme_bohio_real_estate/static/src/js/property_compare.js',
+            # 'theme_bohio_real_estate/static/src/js/property_compare.js',  # DEPRECATED - Funcionalidad en property_shop.js
             'theme_bohio_real_estate/static/src/js/homepage_autocomplete.js',
             # 'theme_bohio_real_estate/static/src/js/homepage_properties.js',  # DEPRECATED - Usar homepage_properties_widget.js
             # 'theme_bohio_real_estate/static/src/js/mapa_propiedades.js',  # DEPRECATED - Usar map_widget.js
