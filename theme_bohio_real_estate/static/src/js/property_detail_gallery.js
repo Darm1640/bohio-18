@@ -331,35 +331,64 @@ window.copyToClipboard = function() {
 window.shareOnWhatsApp = function() {
     const linkInput = document.getElementById('propertyShareLink');
     const titleElement = document.querySelector('#shareModal h6');
+    const priceElement = document.querySelector('.property-price');
+    const locationElement = document.querySelector('.property-location');
 
     if (!linkInput || !titleElement) return;
 
     const link = linkInput.value;
     const title = titleElement.textContent.trim();
-    const text = encodeURIComponent(`¡Mira esta propiedad en BOHIO!\n\n${title}\n\n${link}`);
+    const price = priceElement ? priceElement.textContent.trim() : '';
+    const location = locationElement ? locationElement.textContent.trim() : '';
+
+    let message = `🏠 *¡Mira esta propiedad en BOHIO!*\n\n`;
+    message += `📌 ${title}\n\n`;
+    if (price) message += `💰 ${price}\n`;
+    if (location) message += `📍 ${location}\n`;
+    message += `\n🔗 Ver detalles: ${link}\n\n`;
+    message += `_Encuentra tu hogar ideal con BOHIO Inmobiliaria_`;
+
+    const text = encodeURIComponent(message);
     window.open(`https://api.whatsapp.com/send?text=${text}`, '_blank');
 };
 
 // Compartir en Facebook
 window.shareOnFacebook = function() {
     const linkInput = document.getElementById('propertyShareLink');
+    const titleElement = document.querySelector('#shareModal h6');
+
     if (!linkInput) return;
 
     const link = linkInput.value;
-    window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(link)}`, '_blank', 'width=600,height=400');
+    const title = titleElement ? titleElement.textContent.trim() : '';
+
+    // Facebook sharer con quote (descripción)
+    const quote = encodeURIComponent(`🏠 ${title} - Encuentra tu hogar ideal con BOHIO Inmobiliaria`);
+    const url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(link)}&quote=${quote}`;
+
+    window.open(url, '_blank', 'width=600,height=400');
 };
 
 // Compartir en Twitter/X
 window.shareOnTwitter = function() {
     const linkInput = document.getElementById('propertyShareLink');
     const titleElement = document.querySelector('#shareModal h6');
+    const priceElement = document.querySelector('.property-price');
 
     if (!linkInput || !titleElement) return;
 
     const link = linkInput.value;
     const title = titleElement.textContent.trim();
-    const text = encodeURIComponent('¡Mira esta propiedad en BOHIO! ' + title);
-    const url = 'https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent(link);
+    const price = priceElement ? priceElement.textContent.trim() : '';
+
+    // Crear tweet con emojis y hashtags
+    let tweetText = `🏠 ${title}\n`;
+    if (price) tweetText += `💰 ${price}\n`;
+    tweetText += `\n📍 #BohioInmobiliaria #PropiedadesEnVenta #BienesRaices`;
+
+    const text = encodeURIComponent(tweetText);
+    const url = `https://twitter.com/intent/tweet?text=${text}&url=${encodeURIComponent(link)}`;
+
     window.open(url, '_blank', 'width=600,height=400');
 };
 
@@ -367,14 +396,33 @@ window.shareOnTwitter = function() {
 window.shareViaEmail = function() {
     const linkInput = document.getElementById('propertyShareLink');
     const titleElement = document.querySelector('#shareModal h6');
+    const priceElement = document.querySelector('.property-price');
+    const locationElement = document.querySelector('.property-location');
 
     if (!linkInput || !titleElement) return;
 
     const link = linkInput.value;
     const title = titleElement.textContent.trim();
-    const subject = encodeURIComponent('Te comparto esta propiedad de BOHIO: ' + title);
-    const body = encodeURIComponent('Hola,\n\nQuiero compartirte esta propiedad que encontré en BOHIO:\n\n' + title + '\n\nPuedes ver más detalles aquí:\n' + link + '\n\nSaludos');
-    const mailto = 'mailto:?subject=' + subject + '&body=' + body;
+    const price = priceElement ? priceElement.textContent.trim() : '';
+    const location = locationElement ? locationElement.textContent.trim() : '';
+
+    const subject = encodeURIComponent(`🏠 Te comparto esta propiedad de BOHIO: ${title}`);
+
+    let emailBody = 'Hola,\n\n';
+    emailBody += 'Quiero compartirte esta propiedad que encontré en BOHIO Inmobiliaria:\n\n';
+    emailBody += '====================================\n';
+    emailBody += `📌 PROPIEDAD: ${title}\n`;
+    if (price) emailBody += `💰 PRECIO: ${price}\n`;
+    if (location) emailBody += `📍 UBICACIÓN: ${location}\n`;
+    emailBody += '====================================\n\n';
+    emailBody += `🔗 Ver detalles completos:\n${link}\n\n`;
+    emailBody += '---\n';
+    emailBody += 'BOHIO Inmobiliaria\n';
+    emailBody += 'Tu hogar ideal te está esperando\n';
+    emailBody += 'www.bohio.com';
+
+    const body = encodeURIComponent(emailBody);
+    const mailto = `mailto:?subject=${subject}&body=${body}`;
     window.location.href = mailto;
 };
 
