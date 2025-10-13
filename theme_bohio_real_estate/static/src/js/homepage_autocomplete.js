@@ -76,19 +76,35 @@ const HomepageAutocomplete = publicWidget.Widget.extend({
     },
 
     /**
-     * Mostrar indicador de carga
+     * Mostrar indicador de carga (usando createElement)
      */
     _showLoading: function () {
         if (!this.autocompleteContainer) return;
 
-        this.autocompleteContainer.innerHTML = `
-            <div class="p-3 text-center">
-                <div class="spinner-border spinner-border-sm text-danger me-2" role="status">
-                    <span class="visually-hidden">Cargando...</span>
-                </div>
-                <span class="text-muted">Buscando...</span>
-            </div>
-        `;
+        // Limpiar contenido anterior
+        this.autocompleteContainer.innerHTML = '';
+
+        // Crear estructura con createElement
+        const wrapper = document.createElement('div');
+        wrapper.className = 'p-3 text-center';
+
+        const spinner = document.createElement('div');
+        spinner.className = 'spinner-border spinner-border-sm text-danger me-2';
+        spinner.setAttribute('role', 'status');
+
+        const spinnerText = document.createElement('span');
+        spinnerText.className = 'visually-hidden';
+        spinnerText.textContent = 'Cargando...';
+        spinner.appendChild(spinnerText);
+
+        const text = document.createElement('span');
+        text.className = 'text-muted';
+        text.textContent = 'Buscando...';
+
+        wrapper.appendChild(spinner);
+        wrapper.appendChild(text);
+
+        this.autocompleteContainer.appendChild(wrapper);
         this.autocompleteContainer.style.display = 'block';
     },
 
