@@ -14,7 +14,7 @@ const HomepageAutocomplete = publicWidget.Widget.extend({
 
     events: {
         'input .property-search-input': '_onSearchInput',
-        'click .autocomplete-item': '_onItemClick',
+        'click .autocomplete-container .autocomplete-item': '_onItemClick',
     },
 
     /**
