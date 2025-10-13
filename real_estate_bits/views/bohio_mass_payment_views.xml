@@ -37,7 +37,7 @@
                                 <div class="row">
                                     <div class="col-lg-12 text-center">
                                         <h1 class="o_survey_main_title pt-4">
-                                            <i class="fa fa-calculator"/> Pago Masivo <field name="name" readonly="1" style="background: transparent; border: none;"/>
+                                            <i class="bi bi-calculator"/> Pago Masivo <field name="name" readonly="1" style="background: transparent; border: none;"/>
                                         </h1>
                                         <p class="lead text-muted">
                                             <i class="bi bi-people"/> Simulador inteligente de pagos para múltiples propietarios

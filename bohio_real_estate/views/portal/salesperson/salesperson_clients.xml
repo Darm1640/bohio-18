@@ -202,7 +202,7 @@
                         <ul class="nav nav-tabs mb-4" role="tablist">
                             <li class="nav-item">
                                 <a class="nav-link active" data-bs-toggle="tab" href="#opportunities_tab">
-                                    <i class="fa fa-handshake"></i> Oportunidades (<t t-esc="len(opportunities)"/>)
+                                    <i class="bi bi-hand-thumbs-up"></i> Oportunidades (<t t-esc="len(opportunities)"/>)
                                 </a>
                             </li>
                             <li class="nav-item">
@@ -212,12 +212,12 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" data-bs-toggle="tab" href="#contracts_tab">
-                                    <i class="fa fa-file-contract"></i> Contratos (<t t-esc="len(owner_contracts) + len(tenant_contracts)"/>)
+                                    <i class="bi bi-file-earmark-text"></i> Contratos (<t t-esc="len(owner_contracts) + len(tenant_contracts)"/>)
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" data-bs-toggle="tab" href="#tickets_tab">
-                                    <i class="fa fa-ticket"></i> PQRS (<t t-esc="len(tickets)"/>)
+                                    <i class="bi bi-ticket-perforated"></i> PQRS (<t t-esc="len(tickets)"/>)
                                 </a>
                             </li>
                         </ul>

@@ -218,6 +218,41 @@ ICON_MAPPING = {
     'fa-wrench': 'bi-wrench',
     'fa-tools': 'bi-tools',
     'fa-balance-scale': 'bi-balance-scale',
+
+    # Iconos adicionales faltantes
+    'fa-flag': 'bi-flag',
+    'fa-flag-fill': 'bi-flag-fill',
+    'fa-calculator': 'bi-calculator',
+    'fa-ticket': 'bi-ticket-perforated',
+    'fa-ticket-alt': 'bi-ticket-perforated',
+    'fa-bullhorn': 'bi-megaphone',
+    'fa-megaphone': 'bi-megaphone',
+    'fa-spinner': 'bi-arrow-clockwise',  # spinner como icono giratorio
+    'fa-couch': 'bi-house-door',  # No hay couch exacto
+    'fa-sofa': 'bi-house-door',
+    'fa-door-open': 'bi-door-open',
+    'fa-door-closed': 'bi-door-closed',
+    'fa-layer-group': 'bi-layers',
+    'fa-layers': 'bi-layers',
+    'fa-paper-plane': 'bi-send',
+    'fa-send': 'bi-send',
+    'fa-handshake': 'bi-hand-thumbs-up',  # No hay handshake exacto
+    'fa-handshake-o': 'bi-hand-thumbs-up',
+    'fa-file-contract': 'bi-file-earmark-text',
+    'fa-contract': 'bi-file-earmark-text',
+    'fa-briefcase': 'bi-briefcase',
+    'fa-suitcase': 'bi-briefcase',
+    'fa-id-badge': 'bi-person-badge',
+    'fa-badge': 'bi-person-badge',
+    'fa-sign-out-alt': 'bi-box-arrow-right',
+    'fa-sign-out': 'bi-box-arrow-right',
+    'fa-logout': 'bi-box-arrow-right',
+    'fa-life-ring': 'bi-life-preserver',
+    'fa-lifesaver': 'bi-life-preserver',
+    'fa-file-invoice': 'bi-receipt',
+    'fa-invoice': 'bi-receipt',
+    'fa-receipt': 'bi-receipt',
+    'fa-file-invoice-dollar': 'bi-receipt',
 }
 
 def convert_icon_classes(content, file_path):

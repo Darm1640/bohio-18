@@ -774,7 +774,7 @@ DISPONIBLE
 RESERVADO
                                 </span>
                                 <span t-elif="record.state.raw_value == 'on_lease'" style="background: rgba(3, 169, 244, 0.5); color: white; padding: 1px 4px; border-radius: 6px; font-size: 8px; font-weight: 600;">
-                                    <i class="fa fa-handshake-o" style="margin-right: 2px;"/>
+                                    <i class="bi bi-hand-thumbs-up" style="margin-right: 2px;"/>
 ARRENDADO
                                 </span>
                                 <span t-elif="record.state.raw_value == 'sold'" style="background: rgba(96, 125, 139, 0.5); color: white; padding: 1px 4px; border-radius: 6px; font-size: 8px; font-weight: 600;">
@@ -794,7 +794,7 @@ BLOQUEADO
                                     <i t-elif="record.property_type.raw_value == 'apartment'" class="bi bi-building" style="margin-right: 2px;" title="Apartamento"/>
                                     <i t-elif="record.property_type.raw_value == 'house'" class="bi bi-house-fill" style="margin-right: 2px;" title="Casa"/>
                                     <i t-elif="record.property_type.raw_value == 'studio'" class="bi bi-bed" style="margin-right: 2px;" title="Estudio"/>
-                                    <i t-elif="record.property_type.raw_value == 'office'" class="fa fa-briefcase" style="margin-right: 2px;" title="Oficina"/>
+                                    <i t-elif="record.property_type.raw_value == 'office'" class="bi bi-briefcase" style="margin-right: 2px;" title="Oficina"/>
                                     <i t-elif="record.property_type.raw_value == 'finca'" class="fa fa-leaf" style="margin-right: 2px;" title="Finca"/>
                                     <i t-elif="record.property_type.raw_value == 'lot'" class="bi bi-map-fill" style="margin-right: 2px;" title="Lote"/>
                                     <i t-elif="record.property_type.raw_value == 'hotel'" class="fa fa-hotel" style="margin-right: 2px;" title="Hotel"/>
@@ -956,7 +956,7 @@ Material de la puerta:
                             </t>
                             <t t-if="record.stratum.raw_value == 'commercial'">
                                 <span style="background: #2196f3; color: white; padding: 1px 3px; border-radius: 2px; font-weight: 600;">
-                                    <i class="fa fa-briefcase"/>
+                                    <i class="bi bi-briefcase"/>
  Comercial
                                 </span>
                             </t>
@@ -1197,7 +1197,7 @@ Material de la puerta:
  Líneas Telefónicas
                                 </span>
                                 <span t-if="record.utility_room.raw_value" style="background: #fff3e0; color: #f57c00; padding: 1px 3px; border-radius: 2px;">
-                                    <i class="fa fa-briefcase"/>
+                                    <i class="bi bi-briefcase"/>
  Cuarto Útil
                                 </span>
                                 <span t-if="record.garage.raw_value" style="background: #ffeaa7; color: #d63031; padding: 1px 3px; border-radius: 2px;">

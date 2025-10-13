@@ -150,14 +150,14 @@
             <!-- EMPLEADO / ASESOR -->
             <t t-if="request.env.user.has_group('bohio_real_estate.group_bohio_employee')">
                 <div class="alert mb-4" style="background: #FEE2E2; border: 2px solid #E31E24; color: #212529;">
-                    <i class="fa fa-id-badge me-2" style="color: #E31E24;"></i>
+                    <i class="bi bi-person-badge me-2" style="color: #E31E24;"></i>
                     <strong>Perfil:</strong> Empleado BOHIO
                 </div>
 
                 <div class="row mb-4">
                     <div class="col-12 mb-3">
                         <h4 class="text-muted">
-                            <i class="fa fa-briefcase me-2" style="color: #E31E24;"></i>
+                            <i class="bi bi-briefcase me-2" style="color: #E31E24;"></i>
                             Panel de Empleado
                         </h4>
                     </div>
@@ -261,7 +261,7 @@
                     <a href="/servicios" class="text-decoration-none">
                         <div class="card h-100 border-0 shadow-sm bohio-portal-card">
                             <div class="card-body text-center p-4">
-                                <i class="fa fa-briefcase fa-3x mb-3" style="color: #E31E24;"></i>
+                                <i class="bi bi-briefcase fa-3x mb-3" style="color: #E31E24;"></i>
                                 <h5 class="card-title fw-bold" style="color: #E31E24;">Servicios</h5>
                                 <p class="card-text text-muted small">Avalúos y más</p>
                             </div>

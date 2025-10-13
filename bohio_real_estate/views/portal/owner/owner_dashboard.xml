@@ -181,7 +181,7 @@
                     <div class="col-md-4">
                         <div class="card h-100">
                             <div class="card-header">
-                                <h5 class="mb-0"><i class="fa fa-calculator"></i> Promedio de Pagos</h5>
+                                <h5 class="mb-0"><i class="bi bi-calculator"></i> Promedio de Pagos</h5>
                             </div>
                             <div class="card-body text-center">
                                 <h2 class="text-primary mb-3">

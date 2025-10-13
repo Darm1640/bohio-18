@@ -102,7 +102,7 @@
                     <div class="o_bohio_section o_section_contract"
                          invisible="not contract_template_id">
                         <div class="o_section_header_bar">
-                            <i class="fa fa-file-contract fa-lg me-2"/>
+                            <i class="bi bi-file-earmark-text fa-lg me-2"/>
                             <h2 class="o_section_title">Información del Contrato</h2>
                         </div>
                         <div class="o_section_content">
@@ -270,7 +270,7 @@
                     <div class="o_bohio_section o_section_marketing"
                          invisible="not campaign_id and not marketing_campaign_type">
                         <div class="o_section_header_bar">
-                            <i class="fa fa-bullhorn fa-lg me-2"/>
+                            <i class="bi bi-megaphone fa-lg me-2"/>
                             <h2 class="o_section_title">Campaña de Marketing</h2>
                         </div>
                         <div class="o_section_content">
@@ -301,7 +301,7 @@
                     <div class="o_bohio_section o_section_capture"
                          invisible="service_interested != 'consign' or not captured_by_id">
                         <div class="o_section_header_bar">
-                            <i class="fa fa-handshake fa-lg me-2"/>
+                            <i class="bi bi-hand-thumbs-up fa-lg me-2"/>
                             <h2 class="o_section_title">Información de Captación</h2>
                         </div>
                         <div class="o_section_content">

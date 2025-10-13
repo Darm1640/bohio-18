@@ -1,0 +1,29 @@
+{
+  "Codigo": 8856,
+  "Titulo": "APARTAMENTO EN ARRIENDO EN CARTAGENA",
+  "Tipo": "Apartamento",
+  "Servicio": "Venta y Arriendo",
+  "Precio": 650000000,
+  "Coordenadas": "10.4142522:-75.5263291",
+  "Caracteristicas": "39:2,40:2,2:1,6:1,11:1,25:1,14:1,49:porcelanato,45:1,67:5,30:1,33:24horas,34:1,35:1,38:1,84:no",
+  "Area": 85,
+  "type": "building",
+  "Caracteristicas_values": {
+    "sala_comedor": "1",
+    "cocina_integral": "1",
+    "red_de_gas": "1",
+    "balcon": "1",
+    "zona_de_ropas": "1",
+    "ascensor": "1",
+    "porteria": "24horas",
+    "piscina": "1",
+    "salon_social": "1",
+    "gimnasio": "1",
+    "alcobas": "2",
+    "banos": "2",
+    "parqueadero_cubierto": "1",
+    "tipo_de_piso": "porcelanato",
+    "piso_numero": "5",
+    "afiche": "no"
+  }
+}

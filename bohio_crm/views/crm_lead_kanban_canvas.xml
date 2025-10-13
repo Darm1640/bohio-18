@@ -245,7 +245,7 @@
                                     <!-- Contrato -->
                                     <div t-if="record.contract_template_id.raw_value" class="o_detail_group">
                                         <div class="o_detail_item">
-                                            <i class="fa fa-file-contract text-success me-1"/>
+                                            <i class="bi bi-file-earmark-text text-success me-1"/>
                                             <strong class="small">Contrato:</strong>
                                             <span class="small">
                                                 <field name="contract_template_id"/>
@@ -269,7 +269,7 @@
                                         <span t-if="record.campaign_id.raw_value"
                                               class="badge bg-danger small"
                                               title="Campaña de Marketing">
-                                            <i class="fa fa-bullhorn me-1"/>
+                                            <i class="bi bi-megaphone me-1"/>
                                             Marketing
                                         </span>
                                         <span t-if="record.requires_financing.raw_value"

@@ -342,7 +342,7 @@
                                         </div>
 
                                         <button type="submit" class="btn btn-bohio-primary w-100 py-3">
-                                            <i class="fa fa-send"/> Enviar PQRS
+                                            <i class="bi bi-send"/> Enviar PQRS
                                         </button>
                                     </form>
                                 </div>

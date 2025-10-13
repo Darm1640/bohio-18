@@ -1,0 +1,1745 @@
+====================================================================================================
+COMPARACIÓN DETALLADA DE CAMPOS: CLOUDPEPPER vs ODOO.COM
+====================================================================================================
+
+Total CloudPepper (Odoo 17): 449 campos
+Total Odoo.com (Odoo 18): 442 campos
+Comunes: 415 campos
+Solo CloudPepper: 34 campos
+Solo Odoo.com: 27 campos
+
+====================================================================================================
+CAMPOS COMUNES (415)
+====================================================================================================
+
+ac_connections                          
+   CloudPepper: boolean         | ¿Tiene Acometidas Aire Acondicionado?
+   Odoo.com:    boolean         | ¿Tiene Acometidas Aire Acondicionado?
+
+accessory_product_ids                   
+   CloudPepper: many2many       | Accessory Products
+   Odoo.com:    many2many       | Accessory Products
+
+account_tag_ids                         
+   CloudPepper: many2many       | Account Tags
+   Odoo.com:    many2many       | Account Tags
+
+active                                  
+   CloudPepper: boolean         | Active
+   Odoo.com:    boolean         | Active
+
+activity_calendar_event_id              
+   CloudPepper: many2one        | Next Activity Calendar Event
+   Odoo.com:    many2one        | Next Activity Calendar Event
+
+activity_date_deadline                  
+   CloudPepper: date            | Next Activity Deadline
+   Odoo.com:    date            | Next Activity Deadline
+
+activity_exception_decoration           
+   CloudPepper: selection       | Activity Exception Decoration
+   Odoo.com:    selection       | Activity Exception Decoration
+
+activity_exception_icon                 
+   CloudPepper: char            | Icon
+   Odoo.com:    char            | Icon
+
+activity_ids                            
+   CloudPepper: one2many        | Activities
+   Odoo.com:    one2many        | Activities
+
+activity_state                          
+   CloudPepper: selection       | Activity State
+   Odoo.com:    selection       | Activity State
+
+activity_summary                        
+   CloudPepper: char            | Next Activity Summary
+   Odoo.com:    char            | Next Activity Summary
+
+activity_type_icon                      
+   CloudPepper: char            | Activity Type Icon
+   Odoo.com:    char            | Activity Type Icon
+
+activity_type_id                        
+   CloudPepper: many2one        | Next Activity Type
+   Odoo.com:    many2one        | Next Activity Type
+
+activity_user_id                        
+   CloudPepper: many2one        | Responsible User
+   Odoo.com:    many2one        | Responsible User
+
+address                                 
+   CloudPepper: char            | Dirección
+   Odoo.com:    char            | Dirección
+
+admin_value                             
+   CloudPepper: float           | Valor administración
+   Odoo.com:    float           | Valor administración
+
+air_conditioning                        
+   CloudPepper: boolean         | ¿Tiene Aire Acondicionado?
+   Odoo.com:    boolean         | ¿Tiene Aire Acondicionado?
+
+alarm                                   
+   CloudPepper: boolean         | ¿Tiene Alarma?
+   Odoo.com:    boolean         | ¿Tiene Alarma?
+
+allow_out_of_stock_order                
+   CloudPepper: boolean         | Continue selling when out-of-stock
+   Odoo.com:    boolean         | Continue selling when out-of-stock
+
+alternative_product_ids                 
+   CloudPepper: many2many       | Alternative Products
+   Odoo.com:    many2many       | Alternative Products
+
+american_kitchen                        
+   CloudPepper: boolean         | ¿Tiene Cocina tipo Americano?
+   Odoo.com:    boolean         | ¿Tiene Cocina tipo Americano?
+
+apartment_type                          
+   CloudPepper: selection       | Tipo de apartamento
+   Odoo.com:    selection       | Tipo de apartamento
+
+aqueduct_access                         
+   CloudPepper: boolean         | ¿Tiene Acceso al Acueducto?
+   Odoo.com:    boolean         | ¿Tiene Acceso al Acueducto?
+
+area_in_m2                              
+   CloudPepper: float           | Área en M² (Interno)
+   Odoo.com:    float           | Área en M² (Interno)
+
+attribute_line_ids                      
+   CloudPepper: one2many        | Product Attributes
+   Odoo.com:    one2many        | Product Attributes
+
+auxiliary_bathroom                      
+   CloudPepper: boolean         | ¿Tiene Baño Auxiliar?
+   Odoo.com:    boolean         | ¿Tiene Baño Auxiliar?
+
+auxiliary_dining_room                   
+   CloudPepper: boolean         | ¿Tiene Comedor Auxiliar?
+   Odoo.com:    boolean         | ¿Tiene Comedor Auxiliar?
+
+available_threshold                     
+   CloudPepper: float           | Show Threshold
+   Odoo.com:    float           | Show Threshold
+
+balcony                                 
+   CloudPepper: boolean         | ¿Tiene Balcón?
+   Odoo.com:    boolean         | ¿Tiene Balcón?
+
+bar                                     
+   CloudPepper: boolean         | ¿Tiene Bar?
+   Odoo.com:    boolean         | ¿Tiene Bar?
+
+barcode                                 
+   CloudPepper: char            | Barcode
+   Odoo.com:    char            | Barcode
+
+base_unit_count                         
+   CloudPepper: float           | Base Unit Count
+   Odoo.com:    float           | Base Unit Count
+
+base_unit_id                            
+   CloudPepper: many2one        | Custom Unit of Measure
+   Odoo.com:    many2one        | Custom Unit of Measure
+
+base_unit_name                          
+   CloudPepper: char            | Base Unit Name
+   Odoo.com:    char            | Base Unit Name
+
+base_unit_price                         
+   CloudPepper: monetary        | Price Per Unit
+   Odoo.com:    monetary        | Price Per Unit
+
+billing_address_id                      
+   CloudPepper: many2one        | Dirección de la propiedad
+   Odoo.com:    many2one        | Dirección de la propiedad
+
+biometric_persons                       
+   CloudPepper: integer         | Personas para Biometría
+   Odoo.com:    integer         | Personas para Biometría
+
+biometric_value                         
+   CloudPepper: monetary        | Valor Autenticación Biométrica
+   Odoo.com:    monetary        | Valor Autenticación Biométrica
+
+blinds                                  
+   CloudPepper: boolean         | ¿Tiene Persiana?
+   Odoo.com:    boolean         | ¿Tiene Persiana?
+
+brand_id                                
+   CloudPepper: many2one        | Marca
+   Odoo.com:    many2one        | Brand ⚠️ LABEL CAMBIÓ
+
+building_unit                           
+   CloudPepper: selection       | Tipo de unidad
+   Odoo.com:    selection       | Tipo de unidad
+
+buyer_cost                              
+   CloudPepper: monetary        | Costo Comprador
+   Odoo.com:    monetary        | Costo Comprador
+
+buyer_percentage                        
+   CloudPepper: float           | Porcentaje Comprador (%)
+   Odoo.com:    float           | Porcentaje Comprador (%)
+
+cadastral_reference                     
+   CloudPepper: char            | Referencia Catastral
+   Odoo.com:    char            | Referencia Catastral
+
+cadastral_valuation                     
+   CloudPepper: float           | Avalúo catastral
+   Odoo.com:    float           | Avalúo catastral
+
+can_image_1024_be_zoomed                
+   CloudPepper: boolean         | Can Image 1024 be zoomed
+   Odoo.com:    boolean         | Can Image 1024 be zoomed
+
+can_publish                             
+   CloudPepper: boolean         | Can Publish
+   Odoo.com:    boolean         | Can Publish
+
+categ_id                                
+   CloudPepper: many2one        | Product Category
+   Odoo.com:    many2one        | Product Category
+
+city                                    
+   CloudPepper: char            | Ciudad
+   Odoo.com:    char            | Ciudad
+
+city_id                                 
+   CloudPepper: many2one        | Ciudad
+   Odoo.com:    many2one        | Ciudad
+
+closet                                  
+   CloudPepper: boolean         | ¿Tiene Clóset?
+   Odoo.com:    boolean         | ¿Tiene Clóset?
+
+color                                   
+   CloudPepper: integer         | Color Index
+   Odoo.com:    integer         | Color Index
+
+common_parking                          
+   CloudPepper: boolean         | ¿Tiene Parqueadero Común?
+   Odoo.com:    boolean         | ¿Tiene Parqueadero Común?
+
+company_id                              
+   CloudPepper: many2one        | Compañía
+   Odoo.com:    many2one        | Compañía
+
+compare_list_price                      
+   CloudPepper: monetary        | Compare to Price
+   Odoo.com:    monetary        | Compare to Price
+
+consignment_date                        
+   CloudPepper: date            | Fecha de Consignación
+   Odoo.com:    date            | Fecha de Consignación
+
+construction_company                    
+   CloudPepper: char            | Constructora
+   Odoo.com:    char            | Constructora
+
+contact_ids                             
+   CloudPepper: many2many       | Contactos
+   Odoo.com:    many2many       | Contactos
+
+contact_name                            
+   CloudPepper: char            | Nombre del contacto
+   Odoo.com:    char            | Nombre del contacto
+
+copies_cost                             
+   CloudPepper: monetary        | Costo Copias
+   Odoo.com:    monetary        | Costo Copias
+
+cost_currency_id                        
+   CloudPepper: many2one        | Cost Currency
+   Odoo.com:    many2one        | Cost Currency
+
+cost_distribution                       
+   CloudPepper: selection       | Distribución de Costos
+   Odoo.com:    selection       | Distribución de Costos
+
+cost_method                             
+   CloudPepper: selection       | Costing Method
+   Odoo.com:    selection       | Costing Method
+
+country_code                            
+   CloudPepper: char            | Código País
+   Odoo.com:    char            | Código País
+
+country_enforce_cities                  
+   CloudPepper: boolean         | Enforce Cities
+   Odoo.com:    boolean         | Enforce Cities
+
+country_id                              
+   CloudPepper: many2one        | País
+   Odoo.com:    many2one        | País
+
+country_of_origin                       
+   CloudPepper: many2one        | Origin of Goods
+   Odoo.com:    many2one        | Origin of Goods
+
+court                                   
+   CloudPepper: boolean         | ¿Tiene Cancha?
+   Odoo.com:    boolean         | ¿Tiene Cancha?
+
+covered_parking                         
+   CloudPepper: integer         | N° Parqueadero Cubierto
+   Odoo.com:    integer         | N° Parqueadero Cubierto
+
+create_date                             
+   CloudPepper: datetime        | Created on
+   Odoo.com:    datetime        | Created on
+
+create_repair                           
+   CloudPepper: boolean         | Create Repair
+   Odoo.com:    boolean         | Create Repair
+
+create_uid                              
+   CloudPepper: many2one        | Created by
+   Odoo.com:    many2one        | Created by
+
+cuantia_source                          
+   CloudPepper: selection       | Fuente de Cuantía
+   Odoo.com:    selection       | Fuente de Cuantía
+
+currency_id                             
+   CloudPepper: many2one        | Currency
+   Odoo.com:    many2one        | Currency
+
+date_added                              
+   CloudPepper: date            | Fecha Agregada a Notarización
+   Odoo.com:    date            | Fecha Agregada a Notarización
+
+default_code                            
+   CloudPepper: char            | Código Interno
+   Odoo.com:    char            | Código Interno
+
+department                              
+   CloudPepper: char            | Departamento
+   Odoo.com:    char            | Departamento
+
+depth_meters                            
+   CloudPepper: float           | Fondo (metros)
+   Odoo.com:    float           | Fondo (metros)
+
+description                             
+   CloudPepper: text            | Descripción
+   Odoo.com:    text            | Descripción
+
+description_ecommerce                   
+   CloudPepper: html            | eCommerce Description
+   Odoo.com:    html            | eCommerce Description
+
+description_picking                     
+   CloudPepper: text            | Description on Picking
+   Odoo.com:    text            | Description on Picking
+
+description_pickingin                   
+   CloudPepper: text            | Description on Receptions
+   Odoo.com:    text            | Description on Receptions
+
+description_pickingout                  
+   CloudPepper: text            | Description on Delivery Orders
+   Odoo.com:    text            | Description on Delivery Orders
+
+description_purchase                    
+   CloudPepper: text            | Purchase Description
+   Odoo.com:    text            | Purchase Description
+
+description_sale                        
+   CloudPepper: text            | Sales Description
+   Odoo.com:    text            | Sales Description
+
+discount                                
+   CloudPepper: float           | Descuento Venta
+   Odoo.com:    float           | Descuento Venta
+
+discount_type                           
+   CloudPepper: selection       | Tipo Descuento Venta
+   Odoo.com:    selection       | Tipo Descuento Venta
+
+display_name                            
+   CloudPepper: char            | Display Name
+   Odoo.com:    char            | Display Name
+
+doc_charges                             
+   CloudPepper: float           | Cargos de Documentos
+   Odoo.com:    float           | Cargos de Documentos
+
+door_type                               
+   CloudPepper: selection       | Tipo de Puerta
+   Odoo.com:    selection       | Tipo de Puerta
+
+doorman                                 
+   CloudPepper: selection       | Tipo de Portería
+   Odoo.com:    selection       | Tipo de Portería
+
+doorman_hours                           
+   CloudPepper: char            | Horas Portería
+   Odoo.com:    char            | Horas Portería
+
+doorman_phone                           
+   CloudPepper: char            | Teléfono de la Portería
+   Odoo.com:    char            | Teléfono de la Portería
+
+dressing_room                           
+   CloudPepper: boolean         | ¿Tiene Vestidor?
+   Odoo.com:    boolean         | ¿Tiene Vestidor?
+
+electric_heating                        
+   CloudPepper: boolean         | ¿Tiene Calentador Eléctrico?
+   Odoo.com:    boolean         | ¿Tiene Calentador Eléctrico?
+
+electric_plant                          
+   CloudPepper: boolean         | ¿Tiene Planta Eléctrica?
+   Odoo.com:    boolean         | ¿Tiene Planta Eléctrica?
+
+electrical_capacity                     
+   CloudPepper: char            | Capacidad Eléctrica
+   Odoo.com:    char            | Capacidad Eléctrica
+
+elevator                                
+   CloudPepper: boolean         | ¿Tiene Ascensor?
+   Odoo.com:    boolean         | ¿Tiene Ascensor?
+
+email_domain_criterion                  
+   CloudPepper: char            | Criterio de Dominio de Email
+   Odoo.com:    char            | Criterio de Dominio de Email
+
+email_from                              
+   CloudPepper: char            | Email
+   Odoo.com:    char            | Email
+
+email_normalized                        
+   CloudPepper: char            | Email Normalized
+   Odoo.com:    char            | Email Normalized
+
+email_state                             
+   CloudPepper: selection       | Calidad del Email
+   Odoo.com:    selection       | Calidad del Email
+
+entrance_hall                           
+   CloudPepper: boolean         | ¿Tiene Hall?
+   Odoo.com:    boolean         | ¿Tiene Hall?
+
+expense_policy                          
+   CloudPepper: selection       | Re-Invoice Expenses
+   Odoo.com:    selection       | Re-Invoice Costs ⚠️ LABEL CAMBIÓ
+
+fireplace                               
+   CloudPepper: boolean         | ¿Tiene Chimenea?
+   Odoo.com:    boolean         | ¿Tiene Chimenea?
+
+fiscal_country_codes                    
+   CloudPepper: char            | Fiscal Country Codes
+   Odoo.com:    char            | Fiscal Country Codes
+
+floor                                   
+   CloudPepper: integer         | Piso
+   Odoo.com:    integer         | Piso
+
+floor_number                            
+   CloudPepper: integer         | N° De Piso
+   Odoo.com:    integer         | N° De Piso
+
+floor_type                              
+   CloudPepper: selection       | Tipo de piso
+   Odoo.com:    selection       | Tipo de piso
+
+fondo_recaudo_value                     
+   CloudPepper: monetary        | Recaudo Fondo
+   Odoo.com:    monetary        | Recaudo Fondo
+
+front_meters                            
+   CloudPepper: float           | Frente (metros)
+   Odoo.com:    float           | Frente (metros)
+
+furnished                               
+   CloudPepper: boolean         | ¿Está Amoblado?
+   Odoo.com:    boolean         | ¿Está Amoblado?
+
+garage                                  
+   CloudPepper: boolean         | ¿Tiene Garaje?
+   Odoo.com:    boolean         | ¿Tiene Garaje?
+
+garbage_chute                           
+   CloudPepper: boolean         | ¿Tiene Contenedor de Basuras?
+   Odoo.com:    boolean         | ¿Tiene Contenedor de Basuras?
+
+garden                                  
+   CloudPepper: boolean         | ¿Tiene Jardín?
+   Odoo.com:    boolean         | ¿Tiene Jardín?
+
+gas_heating                             
+   CloudPepper: boolean         | ¿Tiene Calentador a Gas?
+   Odoo.com:    boolean         | ¿Tiene Calentador a Gas?
+
+gas_installation                        
+   CloudPepper: boolean         | ¿Tiene Red de Gas?
+   Odoo.com:    boolean         | ¿Tiene Red de Gas?
+
+green_areas                             
+   CloudPepper: boolean         | ¿Tiene Zonas Verdes?
+   Odoo.com:    boolean         | ¿Tiene Zonas Verdes?
+
+gym                                     
+   CloudPepper: boolean         | ¿Tiene Gimnasio?
+   Odoo.com:    boolean         | ¿Tiene Gimnasio?
+
+has_available_route_ids                 
+   CloudPepper: boolean         | Routes can be selected on this product
+   Odoo.com:    boolean         | Routes can be selected on this product
+
+has_configurable_attributes             
+   CloudPepper: boolean         | Is a configurable product
+   Odoo.com:    boolean         | Is a configurable product
+
+has_message                             
+   CloudPepper: boolean         | Has Message
+   Odoo.com:    boolean         | Has Message
+
+has_playground                          
+   CloudPepper: boolean         | ¿Tiene Zona de Juegos?
+   Odoo.com:    boolean         | ¿Tiene Zona de Juegos?
+
+has_security                            
+   CloudPepper: boolean         | ¿Tiene Seguridad?
+   Odoo.com:    boolean         | ¿Tiene Seguridad?
+
+has_subsidy                             
+   CloudPepper: boolean         | Tiene Subsidio
+   Odoo.com:    boolean         | Tiene Subsidio
+
+has_water                               
+   CloudPepper: boolean         | ¿Tiene Agua?
+   Odoo.com:    boolean         | ¿Tiene Agua?
+
+hot_water                               
+   CloudPepper: boolean         | ¿Tiene Agua Caliente?
+   Odoo.com:    boolean         | ¿Tiene Agua Caliente?
+
+hs_code                                 
+   CloudPepper: char            | HS Code
+   Odoo.com:    char            | HS Code
+
+id                                      
+   CloudPepper: integer         | ID
+   Odoo.com:    integer         | ID
+
+ideal_visit_schedule                    
+   CloudPepper: char            | Horario ideal visitas
+   Odoo.com:    char            | Horario ideal visitas
+
+image_1024                              
+   CloudPepper: binary          | Image 1024
+   Odoo.com:    binary          | Image 1024
+
+image_128                               
+   CloudPepper: binary          | Image 128
+   Odoo.com:    binary          | Image 128
+
+image_1920                              
+   CloudPepper: binary          | Image
+   Odoo.com:    binary          | Image
+
+image_256                               
+   CloudPepper: binary          | Image 256
+   Odoo.com:    binary          | Image 256
+
+image_512                               
+   CloudPepper: binary          | Image 512
+   Odoo.com:    binary          | Image 512
+
+incoming_qty                            
+   CloudPepper: float           | Incoming
+   Odoo.com:    float           | Incoming
+
+insurance_fee                           
+   CloudPepper: float           | Tarifa de seguro
+   Odoo.com:    float           | Tarifa de seguro
+
+integral_kitchen                        
+   CloudPepper: boolean         | ¿Tiene Cocina Integral?
+   Odoo.com:    boolean         | ¿Tiene Cocina Integral?
+
+intercom                                
+   CloudPepper: boolean         | ¿Tiene Citófono?
+   Odoo.com:    boolean         | ¿Tiene Citófono?
+
+invoice_policy                          
+   CloudPepper: selection       | Invoicing Policy
+   Odoo.com:    selection       | Invoicing Policy
+
+is_multi_owner                          
+   CloudPepper: boolean         | ¿Múltiples Propietarios?
+   Odoo.com:    boolean         | ¿Múltiples Propietarios?
+
+is_nonprofit_buyer                      
+   CloudPepper: boolean         | Comprador Sin Ánimo de Lucro
+   Odoo.com:    boolean         | Comprador Sin Ánimo de Lucro
+
+is_product_variant                      
+   CloudPepper: boolean         | Is a product variant
+   Odoo.com:    boolean         | Is a product variant
+
+is_property                             
+   CloudPepper: boolean         | ¿Es Propiedad?
+   Odoo.com:    boolean         | ¿Es Propiedad?
+
+is_published                            
+   CloudPepper: boolean         | Is Published
+   Odoo.com:    boolean         | Is Published
+
+is_seo_optimized                        
+   CloudPepper: boolean         | SEO optimized
+   Odoo.com:    boolean         | SEO optimized
+
+is_shop                                 
+   CloudPepper: boolean         | ¿Es Tienda?
+   Odoo.com:    boolean         | ¿Es Tienda?
+
+is_vip                                  
+   CloudPepper: boolean         | Es VIP
+   Odoo.com:    boolean         | Es VIP
+
+is_vis                                  
+   CloudPepper: boolean         | Es VIS
+   Odoo.com:    boolean         | Es VIS
+
+iva_value                               
+   CloudPepper: monetary        | IVA (19%)
+   Odoo.com:    monetary        | IVA (19%)
+
+jacuzzi                                 
+   CloudPepper: boolean         | ¿Tiene Jacuzzi?
+   Odoo.com:    boolean         | ¿Tiene Jacuzzi?
+
+key_note                                
+   CloudPepper: char            | Notas Sobre las llaves
+   Odoo.com:    char            | Notas Sobre las llaves
+
+keys_location                           
+   CloudPepper: selection       | Llaves en
+   Odoo.com:    selection       | Llaves en
+
+l10n_latam_identification_type_id       
+   CloudPepper: many2one        | Tipo documento
+   Odoo.com:    many2one        | Tipo documento
+
+lamps_included                          
+   CloudPepper: boolean         | ¿Tiene Lámparas Incluidas?
+   Odoo.com:    boolean         | ¿Tiene Lámparas Incluidas?
+
+lang_active_count                       
+   CloudPepper: integer         | Lang Active Count
+   Odoo.com:    integer         | Lang Active Count
+
+lang_code                               
+   CloudPepper: char            | Locale Code
+   Odoo.com:    char            | Locale Code
+
+lang_id                                 
+   CloudPepper: many2one        | Idioma
+   Odoo.com:    many2one        | Idioma
+
+latitude                                
+   CloudPepper: float           | Latitud
+   Odoo.com:    float           | Latitud
+
+laundry_area                            
+   CloudPepper: boolean         | ¿Tiene Zona de lavandería?
+   Odoo.com:    boolean         | ¿Tiene Zona de lavandería?
+
+license_code                            
+   CloudPepper: char            | Código de Licencia
+   Odoo.com:    char            | Código de Licencia
+
+license_date                            
+   CloudPepper: date            | Fecha de Licencia
+   Odoo.com:    date            | Fecha de Licencia
+
+license_location                        
+   CloudPepper: char            | Notarización de Licencia
+   Odoo.com:    char            | Notarización de Licencia
+
+liens                                   
+   CloudPepper: boolean         | ¿Tiene Gravámenes?
+   Odoo.com:    boolean         | ¿Tiene Gravámenes?
+
+linear_double_parking                   
+   CloudPepper: boolean         | ¿Tiene Parqueadero doble Lineal?
+   Odoo.com:    boolean         | ¿Tiene Parqueadero doble Lineal?
+
+list_price                              
+   CloudPepper: float           | Sales Price
+   Odoo.com:    float           | Sales Price
+
+living_dining_room                      
+   CloudPepper: boolean         | ¿Tiene Sala Comedor?
+   Odoo.com:    boolean         | ¿Tiene Sala Comedor?
+
+living_room                             
+   CloudPepper: boolean         | ¿Tiene Sala?
+   Odoo.com:    boolean         | ¿Tiene Sala?
+
+location_id                             
+   CloudPepper: many2one        | Location
+   Odoo.com:    many2one        | Location
+
+longitude                               
+   CloudPepper: float           | Longitud
+   Odoo.com:    float           | Longitud
+
+main_dining_room                        
+   CloudPepper: boolean         | ¿Tiene Comedor?
+   Odoo.com:    boolean         | ¿Tiene Comedor?
+
+maintenance_charges                     
+   CloudPepper: float           | Maintenance Charges
+   Odoo.com:    float           | Maintenance Charges
+
+maintenance_count                       
+   CloudPepper: integer         | Cantidad Mantenimientos
+   Odoo.com:    integer         | Cantidad Mantenimientos
+
+maintenance_type                        
+   CloudPepper: selection       | Maintenance Type
+   Odoo.com:    selection       | Maintenance Type
+
+marble_floor                            
+   CloudPepper: boolean         | ¿Tiene Piso en Baldosa/Mármol?
+   Odoo.com:    boolean         | ¿Tiene Piso en Baldosa/Mármol?
+
+matriz_copies                           
+   CloudPepper: integer         | Copias Matriz
+   Odoo.com:    integer         | Copias Matriz
+
+message_attachment_count                
+   CloudPepper: integer         | Attachment Count
+   Odoo.com:    integer         | Attachment Count
+
+message_follower_ids                    
+   CloudPepper: one2many        | Followers
+   Odoo.com:    one2many        | Followers
+
+message_has_error                       
+   CloudPepper: boolean         | Message Delivery error
+   Odoo.com:    boolean         | Message Delivery error
+
+message_has_error_counter               
+   CloudPepper: integer         | Number of errors
+   Odoo.com:    integer         | Number of errors
+
+message_has_sms_error                   
+   CloudPepper: boolean         | SMS Delivery error
+   Odoo.com:    boolean         | SMS Delivery error
+
+message_ids                             
+   CloudPepper: one2many        | Messages
+   Odoo.com:    one2many        | Messages
+
+message_is_follower                     
+   CloudPepper: boolean         | Is Follower
+   Odoo.com:    boolean         | Is Follower
+
+message_needaction                      
+   CloudPepper: boolean         | Action Needed
+   Odoo.com:    boolean         | Action Needed
+
+message_needaction_counter              
+   CloudPepper: integer         | Number of Actions
+   Odoo.com:    integer         | Number of Actions
+
+message_partner_ids                     
+   CloudPepper: many2many       | Followers (Partners)
+   Odoo.com:    many2many       | Followers (Partners)
+
+mezzanine                               
+   CloudPepper: boolean         | ¿Tiene Mezzanine?
+   Odoo.com:    boolean         | ¿Tiene Mezzanine?
+
+mixed_integral_kitchen                  
+   CloudPepper: boolean         | ¿Tiene Cocina Integral Mixta?
+   Odoo.com:    boolean         | ¿Tiene Cocina Integral Mixta?
+
+mobile                                  
+   CloudPepper: char            | Móvil
+   Odoo.com:    char            | Móvil
+
+municipality                            
+   CloudPepper: char            | Municipio
+   Odoo.com:    char            | Municipio
+
+my_activity_date_deadline               
+   CloudPepper: date            | My Activity Deadline
+   Odoo.com:    date            | My Activity Deadline
+
+n_ac_connections                        
+   CloudPepper: integer         | N° Acometidas Aire Acondicionado
+   Odoo.com:    integer         | N° Acometidas Aire Acondicionado
+
+n_air_conditioning                      
+   CloudPepper: integer         | N° Aire Acondicionado
+   Odoo.com:    integer         | N° Aire Acondicionado
+
+n_closet                                
+   CloudPepper: integer         | N° De Clóset
+   Odoo.com:    integer         | N° De Clóset
+
+n_dressing_room                         
+   CloudPepper: integer         | Vestidores
+   Odoo.com:    integer         | Vestidores
+
+n_garage                                
+   CloudPepper: integer         | N° Garaje
+   Odoo.com:    integer         | N° Garaje
+
+n_pools                                 
+   CloudPepper: integer         | N° Piscinas
+   Odoo.com:    integer         | N° Piscinas
+
+name                                    
+   CloudPepper: char            | Name
+   Odoo.com:    char            | Name
+
+nbr_moves_in                            
+   CloudPepper: integer         | Nbr Moves In
+   Odoo.com:    integer         | Nbr Moves In
+
+nbr_moves_out                           
+   CloudPepper: integer         | Nbr Moves Out
+   Odoo.com:    integer         | Nbr Moves Out
+
+nbr_reordering_rules                    
+   CloudPepper: integer         | Reordering Rules
+   Odoo.com:    integer         | Reordering Rules
+
+nearly_other                            
+   CloudPepper: char            | Cerca de
+   Odoo.com:    char            | Cerca de
+
+neighborhood                            
+   CloudPepper: char            | Barrio
+   Odoo.com:    char            | Barrio
+
+net_price                               
+   CloudPepper: float           | Precio Final de Venta
+   Odoo.com:    float           | Precio Final de Venta
+
+net_rental_price                        
+   CloudPepper: float           | Precio Final de Arriendo
+   Odoo.com:    float           | Precio Final de Arriendo
+
+no_gas                                  
+   CloudPepper: boolean         | ¿Sin Gas?
+   Odoo.com:    boolean         | ¿Sin Gas?
+
+notarial_act_type                       
+   CloudPepper: selection       | Tipo de Acto Notarial
+   Odoo.com:    selection       | Tipo de Acto Notarial
+
+notarial_amount                         
+   CloudPepper: monetary        | Valor para Liquidación Notarial
+   Odoo.com:    monetary        | Valor para Liquidación Notarial
+
+notarial_rights_value                   
+   CloudPepper: monetary        | Derechos Notariales
+   Odoo.com:    monetary        | Derechos Notariales
+
+note                                    
+   CloudPepper: html            | Notas
+   Odoo.com:    html            | Notas
+
+num_bathrooms                           
+   CloudPepper: integer         | N° De Baños
+   Odoo.com:    integer         | N° De Baños
+
+num_bedrooms                            
+   CloudPepper: integer         | N° De Habitaciones
+   Odoo.com:    integer         | N° De Habitaciones
+
+num_living_room                         
+   CloudPepper: integer         | N° De Sala
+   Odoo.com:    integer         | N° De Sala
+
+number_of_levels                        
+   CloudPepper: integer         | Número de Niveles
+   Odoo.com:    integer         | Número de Niveles
+
+observations                            
+   CloudPepper: text            | Observaciones
+   Odoo.com:    text            | Observaciones
+
+optional_product_ids                    
+   CloudPepper: many2many       | Optional Products
+   Odoo.com:    many2many       | Optional Products
+
+out_of_stock_message                    
+   CloudPepper: html            | Out-of-Stock Message
+   Odoo.com:    html            | Out-of-Stock Message
+
+outgoing_qty                            
+   CloudPepper: float           | Outgoing
+   Odoo.com:    float           | Outgoing
+
+owners_lines                            
+   CloudPepper: one2many        | Propietarios
+   Odoo.com:    one2many        | Propietarios
+
+packaging_ids                           
+   CloudPepper: one2many        | Product Packages
+   Odoo.com:    one2many        | Product Packages
+
+parallel_double_parking                 
+   CloudPepper: boolean         | ¿Tiene Parqueadero doble Paralelo?
+   Odoo.com:    boolean         | ¿Tiene Parqueadero doble Paralelo?
+
+partner_from                            
+   CloudPepper: date            | Fecha de Compra
+   Odoo.com:    date            | Fecha de Compra
+
+partner_id                              
+   CloudPepper: many2one        | Propietario Principal
+   Odoo.com:    many2one        | Propietario Principal
+
+partner_is_blacklisted                  
+   CloudPepper: boolean         | Socio en lista negra
+   Odoo.com:    boolean         | Socio en lista negra
+
+partner_to                              
+   CloudPepper: date            | Fecha de Venta
+   Odoo.com:    date            | Fecha de Venta
+
+patio                                   
+   CloudPepper: boolean         | ¿Tiene Patio?
+   Odoo.com:    boolean         | ¿Tiene Patio?
+
+phone                                   
+   CloudPepper: char            | Teléfono
+   Odoo.com:    char            | Teléfono
+
+phone_lines                             
+   CloudPepper: integer         | N° Líneas Telefónicas
+   Odoo.com:    integer         | N° Líneas Telefónicas
+
+phone_sanitized                         
+   CloudPepper: char            | Phone Sanitized
+   Odoo.com:    char            | Phone Sanitized
+
+phone_state                             
+   CloudPepper: selection       | Calidad del Teléfono
+   Odoo.com:    selection       | Calidad del Teléfono
+
+playground_climbing                     
+   CloudPepper: boolean         | ¿Tiene Juegos de Escalar?
+   Odoo.com:    boolean         | ¿Tiene Juegos de Escalar?
+
+playground_sandbox                      
+   CloudPepper: boolean         | ¿Tiene Arenero?
+   Odoo.com:    boolean         | ¿Tiene Arenero?
+
+playground_seesaw                       
+   CloudPepper: boolean         | ¿Tiene Balancines?
+   Odoo.com:    boolean         | ¿Tiene Balancines?
+
+playground_slides                       
+   CloudPepper: boolean         | ¿Tiene Toboganes?
+   Odoo.com:    boolean         | ¿Tiene Toboganes?
+
+playground_swings                       
+   CloudPepper: boolean         | ¿Tiene Columpios?
+   Odoo.com:    boolean         | ¿Tiene Columpios?
+
+pools                                   
+   CloudPepper: boolean         | ¿Tiene Piscina?
+   Odoo.com:    boolean         | ¿Tiene Piscina?
+
+poster_sign                             
+   CloudPepper: boolean         | ¿Tiene Afiche?
+   Odoo.com:    boolean         | ¿Tiene Afiche?
+
+price_before_discount                   
+   CloudPepper: float           | Precio Antes Descuento
+   Odoo.com:    float           | Precio Antes Descuento
+
+price_per_hectare_ref                   
+   CloudPepper: float           | Precio por Ha (Ref)
+   Odoo.com:    float           | Precio por Ha (Ref)
+
+price_per_m2_ref                        
+   CloudPepper: float           | Precio por m² (Ref)
+   Odoo.com:    float           | Precio por m² (Ref)
+
+price_per_unit                          
+   CloudPepper: float           | Precio por Unidad
+   Odoo.com:    float           | Precio por Unidad
+
+price_per_yard_ref                      
+   CloudPepper: float           | Precio por Yd² (Ref)
+   Odoo.com:    float           | Precio por Yd² (Ref)
+
+pricelist_item_count                    
+   CloudPepper: integer         | Number of price rules
+   Odoo.com:    integer         | Number of price rules
+
+private_elevator                        
+   CloudPepper: boolean         | ¿Tiene Ascensor Privado?
+   Odoo.com:    boolean         | ¿Tiene Ascensor Privado?
+
+product_document_count                  
+   CloudPepper: integer         | Documents Count
+   Odoo.com:    integer         | Documents Count
+
+product_document_ids                    
+   CloudPepper: one2many        | Documents
+   Odoo.com:    one2many        | Documents
+
+product_properties                      
+   CloudPepper: properties      | Properties
+   Odoo.com:    properties      | Properties
+
+product_tag_ids                         
+   CloudPepper: many2many       | Product Template Tags
+   Odoo.com:    many2many       | Tags ⚠️ LABEL CAMBIÓ
+
+product_template_image_ids              
+   CloudPepper: one2many        | Extra Product Media
+   Odoo.com:    one2many        | Extra Product Media
+
+product_tooltip                         
+   CloudPepper: char            | Product Tooltip
+   Odoo.com:    char            | Product Tooltip
+
+product_variant_count                   
+   CloudPepper: integer         | # Product Variants
+   Odoo.com:    integer         | # Product Variants
+
+product_variant_id                      
+   CloudPepper: many2one        | Product
+   Odoo.com:    many2one        | Product
+
+product_variant_ids                     
+   CloudPepper: one2many        | Products
+   Odoo.com:    one2many        | Products
+
+project_area                            
+   CloudPepper: float           | Área del Proyecto
+   Odoo.com:    float           | Área del Proyecto
+
+project_type                            
+   CloudPepper: selection       | Project Type
+   Odoo.com:    selection       | Project Type
+
+project_worksite_id                     
+   CloudPepper: many2one        | Proyecto
+   Odoo.com:    many2one        | Proyecto
+
+project_worksite_ids                    
+   CloudPepper: many2many       | Propiedades
+   Odoo.com:    many2many       | Propiedades
+
+property_account_creditor_price_difference
+   CloudPepper: many2one        | Price Difference Account
+   Odoo.com:    many2one        | Price Difference Account
+
+property_account_expense_id             
+   CloudPepper: many2one        | Expense Account
+   Odoo.com:    many2one        | Expense Account
+
+property_account_income_id              
+   CloudPepper: many2one        | Income Account
+   Odoo.com:    many2one        | Income Account
+
+property_age                            
+   CloudPepper: integer         | Antigüedad del Inmueble
+   Odoo.com:    integer         | Antigüedad del Inmueble
+
+property_area                           
+   CloudPepper: float           | Área de la Propiedad
+   Odoo.com:    float           | Área de la Propiedad
+
+property_consignee                      
+   CloudPepper: selection       | Quién Consignó el Inmueble
+   Odoo.com:    selection       | Quién Consignó el Inmueble
+
+property_date                           
+   CloudPepper: date            | Fecha
+   Odoo.com:    date            | Fecha
+
+property_description                    
+   CloudPepper: text            | Descripción Propiedad
+   Odoo.com:    text            | Descripción Propiedad
+
+property_filters_config                 
+   CloudPepper: json            | Configuración de Filtros
+   Odoo.com:    json            | Configuración de Filtros
+
+property_last_viewed                    
+   CloudPepper: datetime        | Última Visualización
+   Odoo.com:    datetime        | Última Visualización
+
+property_popularity_score               
+   CloudPepper: float           | Score de Popularidad
+   Odoo.com:    float           | Score de Popularidad
+
+property_price_type                     
+   CloudPepper: selection       | Tipo Precio Venta
+   Odoo.com:    selection       | Tipo Precio Venta
+
+property_search_vector                  
+   CloudPepper: text            | Vector de Búsqueda
+   Odoo.com:    text            | Vector de Búsqueda
+
+property_status                         
+   CloudPepper: selection       | Estado del Inmueble
+   Odoo.com:    selection       | Estado del Inmueble
+
+property_stock_inventory                
+   CloudPepper: many2one        | Inventory Location
+   Odoo.com:    many2one        | Inventory Location
+
+property_stock_production               
+   CloudPepper: many2one        | Production Location
+   Odoo.com:    many2one        | Production Location
+
+property_tax                            
+   CloudPepper: float           | Impuesto predial
+   Odoo.com:    float           | Impuesto predial
+
+property_type                           
+   CloudPepper: selection       | Tipo de Inmueble
+   Odoo.com:    selection       | Tipo de Inmueble
+
+property_type_id                        
+   CloudPepper: many2one        | Tipo de Propiedad
+   Odoo.com:    many2one        | Tipo de Propiedad
+
+protocolo_copies                        
+   CloudPepper: integer         | Copias Protocolo
+   Odoo.com:    integer         | Copias Protocolo
+
+public_categ_ids                        
+   CloudPepper: many2many       | Website Product Category
+   Odoo.com:    many2many       | Website Product Category
+
+purchase_line_warn                      
+   CloudPepper: selection       | Purchase Order Line Warning
+   Odoo.com:    selection       | Purchase Order Line Warning
+
+purchase_line_warn_msg                  
+   CloudPepper: text            | Message for Purchase Order Line
+   Odoo.com:    text            | Message for Purchase Order Line
+
+purchase_method                         
+   CloudPepper: selection       | Control Policy
+   Odoo.com:    selection       | Control Policy
+
+purchase_ok                             
+   CloudPepper: boolean         | Can be Purchased
+   Odoo.com:    boolean         | Purchase ⚠️ LABEL CAMBIÓ
+
+purchased_product_qty                   
+   CloudPepper: float           | Purchased
+   Odoo.com:    float           | Purchased
+
+qty_available                           
+   CloudPepper: float           | Quantity On Hand
+   Odoo.com:    float           | Quantity On Hand
+
+rating_avg                              
+   CloudPepper: float           | Average Rating
+   Odoo.com:    float           | Average Rating
+
+rating_avg_text                         
+   CloudPepper: selection       | Rating Avg Text
+   Odoo.com:    selection       | Rating Avg Text
+
+rating_count                            
+   CloudPepper: integer         | Rating count
+   Odoo.com:    integer         | Rating count
+
+rating_ids                              
+   CloudPepper: one2many        | Ratings
+   Odoo.com:    one2many        | Ratings
+
+rating_last_feedback                    
+   CloudPepper: text            | Rating Last Feedback
+   Odoo.com:    text            | Rating Last Feedback
+
+rating_last_image                       
+   CloudPepper: binary          | Rating Last Image
+   Odoo.com:    binary          | Rating Last Image
+
+rating_last_text                        
+   CloudPepper: selection       | Rating Text
+   Odoo.com:    selection       | Rating Text
+
+rating_last_value                       
+   CloudPepper: float           | Rating Last Value
+   Odoo.com:    float           | Rating Last Value
+
+rating_percentage_satisfaction          
+   CloudPepper: float           | Rating Satisfaction
+   Odoo.com:    float           | Rating Satisfaction
+
+real_estate_platform                    
+   CloudPepper: boolean         | ¿Está en Biinmo?
+   Odoo.com:    boolean         | ¿Está en Biinmo?
+
+real_estate_sign                        
+   CloudPepper: char            | Finca Raíz
+   Odoo.com:    char            | Finca Raíz
+
+recent_view_ids                         
+   CloudPepper: many2many       | Visitantes Recientes
+   Odoo.com:    many2many       | Visitantes Recientes
+
+referrer                                
+   CloudPepper: char            | Quien Refiere
+   Odoo.com:    char            | Quien Refiere
+
+region_id                               
+   CloudPepper: many2one        | Barrio
+   Odoo.com:    many2one        | Barrio
+
+registration_number                     
+   CloudPepper: char            | Folio Matrícula
+   Odoo.com:    char            | Folio Matrícula
+
+rent_value_from                         
+   CloudPepper: float           | Valor arriendo desde
+   Odoo.com:    float           | Valor arriendo desde
+
+rent_value_to                           
+   CloudPepper: float           | Valor arriendo hasta
+   Odoo.com:    float           | Valor arriendo hasta
+
+rental_discount                         
+   CloudPepper: float           | Descuento Arriendo
+   Odoo.com:    float           | Descuento Arriendo
+
+rental_discount_type                    
+   CloudPepper: selection       | Tipo Descuento Arriendo
+   Odoo.com:    selection       | Tipo Descuento Arriendo
+
+rental_fee                              
+   CloudPepper: float           | Tarifa de alquiler
+   Odoo.com:    float           | Tarifa de alquiler
+
+rental_price_before_discount            
+   CloudPepper: float           | Precio Arriendo Antes Descuento
+   Odoo.com:    float           | Precio Arriendo Antes Descuento
+
+rental_price_per_unit                   
+   CloudPepper: float           | Precio Arriendo por Unidad
+   Odoo.com:    float           | Precio Arriendo por Unidad
+
+rental_price_type                       
+   CloudPepper: selection       | Tipo Precio Arriendo
+   Odoo.com:    selection       | Tipo Precio Arriendo
+
+reordering_max_qty                      
+   CloudPepper: float           | Reordering Max Qty
+   Odoo.com:    float           | Reordering Max Qty
+
+reordering_min_qty                      
+   CloudPepper: float           | Reordering Min Qty
+   Odoo.com:    float           | Reordering Min Qty
+
+reservation_count                       
+   CloudPepper: integer         | Cantidad Reservas
+   Odoo.com:    integer         | Cantidad Reservas
+
+responsible_id                          
+   CloudPepper: many2one        | Responsible
+   Odoo.com:    many2one        | Responsible
+
+retention_value                         
+   CloudPepper: monetary        | Retención en la Fuente
+   Odoo.com:    monetary        | Retención en la Fuente
+
+route_from_categ_ids                    
+   CloudPepper: many2many       | Category Routes
+   Odoo.com:    many2many       | Category Routes
+
+route_ids                               
+   CloudPepper: many2many       | Routes
+   Odoo.com:    many2many       | Routes
+
+sale_delay                              
+   CloudPepper: integer         | Customer Lead Time
+   Odoo.com:    integer         | Customer Lead Time
+
+sale_line_warn                          
+   CloudPepper: selection       | Sales Order Line
+   Odoo.com:    selection       | Sales Order Line
+
+sale_line_warn_msg                      
+   CloudPepper: text            | Message for Sales Order Line
+   Odoo.com:    text            | Message for Sales Order Line
+
+sale_ok                                 
+   CloudPepper: boolean         | Can be Sold
+   Odoo.com:    boolean         | Sales ⚠️ LABEL CAMBIÓ
+
+sale_value_from                         
+   CloudPepper: float           | Valor venta desde
+   Odoo.com:    float           | Valor venta desde
+
+sale_value_to                           
+   CloudPepper: float           | Valor venta hasta
+   Odoo.com:    float           | Valor venta hasta
+
+sale_with_natural_person                
+   CloudPepper: boolean         | Venta con Persona Natural
+   Odoo.com:    boolean         | Venta con Persona Natural
+
+sales_count                             
+   CloudPepper: float           | Sold
+   Odoo.com:    float           | Sold
+
+sauna                                   
+   CloudPepper: boolean         | ¿Tiene Sauna?
+   Odoo.com:    boolean         | ¿Tiene Sauna?
+
+search_text                             
+   CloudPepper: text            | Texto de Búsqueda
+   Odoo.com:    text            | Texto de Búsqueda
+
+security_cameras                        
+   CloudPepper: boolean         | ¿Tiene Cámaras de Vigilancia?
+   Odoo.com:    boolean         | ¿Tiene Cámaras de Vigilancia?
+
+security_door                           
+   CloudPepper: boolean         | ¿Tiene Puerta de Seguridad?
+   Odoo.com:    boolean         | ¿Tiene Puerta de Seguridad?
+
+seller_cost                             
+   CloudPepper: monetary        | Costo Vendedor
+   Odoo.com:    monetary        | Costo Vendedor
+
+seller_ids                              
+   CloudPepper: one2many        | Vendors
+   Odoo.com:    one2many        | Vendors
+
+seller_percentage                       
+   CloudPepper: float           | Porcentaje Vendedor (%)
+   Odoo.com:    float           | Porcentaje Vendedor (%)
+
+seo_name                                
+   CloudPepper: char            | Seo name
+   Odoo.com:    char            | Seo name
+
+sequence                                
+   CloudPepper: integer         | Secuencia
+   Odoo.com:    integer         | Secuencia
+
+service_bathroom                        
+   CloudPepper: boolean         | ¿Tiene Baño de Servicio?
+   Odoo.com:    boolean         | ¿Tiene Baño de Servicio?
+
+service_room                            
+   CloudPepper: boolean         | ¿Tiene Alcoba de Servicio?
+   Odoo.com:    boolean         | ¿Tiene Alcoba de Servicio?
+
+service_to_purchase                     
+   CloudPepper: boolean         | Subcontract Service
+   Odoo.com:    boolean         | Subcontract Service
+
+service_type                            
+   CloudPepper: selection       | Track Service
+   Odoo.com:    selection       | Track Service
+
+show_availability                       
+   CloudPepper: boolean         | Show availability Qty
+   Odoo.com:    boolean         | Show availability Qty
+
+show_forecasted_qty_status_button       
+   CloudPepper: boolean         | Show Forecasted Qty Status Button
+   Odoo.com:    boolean         | Show Forecasted Qty Status Button
+
+show_on_hand_qty_status_button          
+   CloudPepper: boolean         | Show On Hand Qty Status Button
+   Odoo.com:    boolean         | Show On Hand Qty Status Button
+
+simple_kitchen                          
+   CloudPepper: boolean         | ¿Tiene Cocina Sencilla?
+   Odoo.com:    boolean         | ¿Tiene Cocina Sencilla?
+
+snr_recaudo_value                       
+   CloudPepper: monetary        | Recaudo SNR
+   Odoo.com:    monetary        | Recaudo SNR
+
+social_fee_payer                        
+   CloudPepper: selection       | Quién Paga Cuota Sostenimiento
+   Odoo.com:    selection       | Quién Paga Cuota Sostenimiento
+
+social_room                             
+   CloudPepper: boolean         | ¿Tiene Salón Social?
+   Odoo.com:    boolean         | ¿Tiene Salón Social?
+
+solar_area                              
+   CloudPepper: boolean         | ¿Tiene Solar?
+   Odoo.com:    boolean         | ¿Tiene Solar?
+
+solarium                                
+   CloudPepper: boolean         | ¿Tiene Solarium?
+   Odoo.com:    boolean         | ¿Tiene Solarium?
+
+sports_area                             
+   CloudPepper: boolean         | ¿Tiene Placa Polideportiva?
+   Odoo.com:    boolean         | ¿Tiene Placa Polideportiva?
+
+stamp_tax_value                         
+   CloudPepper: monetary        | Impuesto de Timbre
+   Odoo.com:    monetary        | Impuesto de Timbre
+
+standard_price                          
+   CloudPepper: float           | Cost
+   Odoo.com:    float           | Cost
+
+state                                   
+   CloudPepper: selection       | Estado
+   Odoo.com:    selection       | Estado
+
+state_id                                
+   CloudPepper: many2one        | Departamento
+   Odoo.com:    many2one        | Departamento
+
+stratum                                 
+   CloudPepper: selection       | Estrato
+   Odoo.com:    selection       | Estrato
+
+street                                  
+   CloudPepper: char            | Dirección Principal
+   Odoo.com:    char            | Dirección Principal
+
+street2                                 
+   CloudPepper: char            | Dirección Secundaria
+   Odoo.com:    char            | Dirección Secundaria
+
+study                                   
+   CloudPepper: boolean         | ¿Tiene Estudio?
+   Odoo.com:    boolean         | ¿Tiene Estudio?
+
+supplier_taxes_id                       
+   CloudPepper: many2many       | Vendor Taxes
+   Odoo.com:    many2many       | Purchase Taxes ⚠️ LABEL CAMBIÓ
+
+tax_base_amount                         
+   CloudPepper: float           | Monto Base del Impuesto
+   Odoo.com:    float           | Monto Base del Impuesto
+
+tax_string                              
+   CloudPepper: char            | Tax String
+   Odoo.com:    char            | Tax String
+
+taxes_id                                
+   CloudPepper: many2many       | Customer Taxes
+   Odoo.com:    many2many       | Sales Taxes ⚠️ LABEL CAMBIÓ
+
+template_id                             
+   CloudPepper: many2one        | Plantilla de Pago
+   Odoo.com:    many2one        | Plantilla de Pago
+
+terrace                                 
+   CloudPepper: boolean         | ¿Tiene Terraza?
+   Odoo.com:    boolean         | ¿Tiene Terraza?
+
+total_cost                              
+   CloudPepper: float           | Total Cost
+   Odoo.com:    float           | Total Cost
+
+total_maintenance                       
+   CloudPepper: float           | Total Maintenance
+   Odoo.com:    float           | Total Maintenance
+
+total_notarial_cost                     
+   CloudPepper: monetary        | Costo Total Notarial
+   Odoo.com:    monetary        | Costo Total Notarial
+
+total_utilities                         
+   CloudPepper: float           | Total Utilities
+   Odoo.com:    float           | Total Utilities
+
+tracking                                
+   CloudPepper: selection       | Tracking
+   Odoo.com:    selection       | Tracking
+
+truck_door                              
+   CloudPepper: boolean         | ¿Tiene Puerta Camión?
+   Odoo.com:    boolean         | ¿Tiene Puerta Camión?
+
+turkish_bath                            
+   CloudPepper: boolean         | ¿Tiene Turco?
+   Odoo.com:    boolean         | ¿Tiene Turco?
+
+type                                    
+   CloudPepper: selection       | Type
+   Odoo.com:    selection       | Product Type ⚠️ LABEL CAMBIÓ
+
+type_service                            
+   CloudPepper: selection       | Tipo De Servicios
+   Odoo.com:    selection       | Tipo De Servicios
+
+uncovered_parking                       
+   CloudPepper: integer         | N° Parqueadero Descubierto
+   Odoo.com:    integer         | N° Parqueadero Descubierto
+
+unit_display_name                       
+   CloudPepper: char            | Nombre Unidad
+   Odoo.com:    char            | Nombre Unidad
+
+unit_iso_code                           
+   CloudPepper: char            | Código ISO
+   Odoo.com:    char            | Código ISO
+
+unit_label                              
+   CloudPepper: char            | Etiqueta Unidad
+   Odoo.com:    char            | Etiqueta Unidad
+
+unit_of_measure                         
+   CloudPepper: selection       | Unidad de Medida
+   Odoo.com:    selection       | Unidad de Medida
+
+unspsc_code_id                          
+   CloudPepper: many2one        | UNSPSC Category
+   Odoo.com:    many2one        | UNSPSC Category
+
+uom_id                                  
+   CloudPepper: many2one        | Unit of Measure
+   Odoo.com:    many2one        | Unit of Measure
+
+uom_name                                
+   CloudPepper: char            | Unit of Measure Name
+   Odoo.com:    char            | Unit of Measure Name
+
+uom_po_id                               
+   CloudPepper: many2one        | Purchase UoM
+   Odoo.com:    many2one        | Purchase Unit ⚠️ LABEL CAMBIÓ
+
+urban_space                             
+   CloudPepper: boolean         | ¿Tiene Espacio Urbano?
+   Odoo.com:    boolean         | ¿Tiene Espacio Urbano?
+
+urban_space_note                        
+   CloudPepper: char            | Nota de Espacio Urbano?
+   Odoo.com:    char            | Nota de Espacio Urbano?
+
+urbanization_description                
+   CloudPepper: text            | Descripción Urbanización
+   Odoo.com:    text            | Descripción Urbanización
+
+user_consing_id                         
+   CloudPepper: many2one        | Consignatario
+   Odoo.com:    many2one        | Consignatario
+
+utility_ids                             
+   CloudPepper: one2many        | Utility
+   Odoo.com:    one2many        | Utility
+
+utility_room                            
+   CloudPepper: boolean         | ¿Tiene Cuarto Útil?
+   Odoo.com:    boolean         | ¿Tiene Cuarto Útil?
+
+valid_product_template_attribute_line_ids
+   CloudPepper: many2many       | Valid Product Attribute Lines
+   Odoo.com:    many2many       | Valid Product Attribute Lines
+
+valuation                               
+   CloudPepper: selection       | Inventory Valuation
+   Odoo.com:    selection       | Inventory Valuation
+
+variant_seller_ids                      
+   CloudPepper: one2many        | Variant Seller
+   Odoo.com:    one2many        | Variant Seller
+
+vat                                     
+   CloudPepper: char            | NIT/CC
+   Odoo.com:    char            | NIT/CC
+
+virtual_available                       
+   CloudPepper: float           | Forecasted Quantity
+   Odoo.com:    float           | Forecasted Quantity
+
+visible_expense_policy                  
+   CloudPepper: boolean         | Re-Invoice Policy visible
+   Odoo.com:    boolean         | Re-Invoice Policy visible
+
+visitors_parking                        
+   CloudPepper: boolean         | ¿Tiene Parqueadero de Visitantes?
+   Odoo.com:    boolean         | ¿Tiene Parqueadero de Visitantes?
+
+volume                                  
+   CloudPepper: float           | Volume
+   Odoo.com:    float           | Volume
+
+volume_uom_name                         
+   CloudPepper: char            | Volume unit of measure label
+   Odoo.com:    char            | Volume unit of measure label
+
+walk_in_closet                          
+   CloudPepper: boolean         | ¿Tiene Walk-in Closet?
+   Odoo.com:    boolean         | ¿Tiene Walk-in Closet?
+
+warehouse                               
+   CloudPepper: boolean         | ¿Tiene Depósito/Bodega?
+   Odoo.com:    boolean         | ¿Tiene Depósito/Bodega?
+
+warehouse_id                            
+   CloudPepper: many2one        | Warehouse
+   Odoo.com:    many2one        | Warehouse
+
+water_nearby                            
+   CloudPepper: boolean         | ¿Tiene Agua Cerca?
+   Odoo.com:    boolean         | ¿Tiene Agua Cerca?
+
+website                                 
+   CloudPepper: char            | Sitio Web
+   Odoo.com:    char            | Sitio Web
+
+website_description                     
+   CloudPepper: html            | Description for the website
+   Odoo.com:    html            | Description for the website
+
+website_id                              
+   CloudPepper: many2one        | Website
+   Odoo.com:    many2one        | Website
+
+website_message_ids                     
+   CloudPepper: one2many        | Website Messages
+   Odoo.com:    one2many        | Website Messages
+
+website_meta_description                
+   CloudPepper: text            | Website meta description
+   Odoo.com:    text            | Website meta description
+
+website_meta_keywords                   
+   CloudPepper: char            | Website meta keywords
+   Odoo.com:    char            | Website meta keywords
+
+website_meta_og_img                     
+   CloudPepper: char            | Website opengraph image
+   Odoo.com:    char            | Website opengraph image
+
+website_meta_title                      
+   CloudPepper: char            | Website meta title
+   Odoo.com:    char            | Website meta title
+
+website_published                       
+   CloudPepper: boolean         | Visible on current website
+   Odoo.com:    boolean         | Visible on current website
+
+website_ribbon_id                       
+   CloudPepper: many2one        | Ribbon
+   Odoo.com:    many2one        | Ribbon
+
+website_sequence                        
+   CloudPepper: integer         | Website Sequence
+   Odoo.com:    integer         | Website Sequence
+
+website_size_x                          
+   CloudPepper: integer         | Size X
+   Odoo.com:    integer         | Size X
+
+website_size_y                          
+   CloudPepper: integer         | Size Y
+   Odoo.com:    integer         | Size Y
+
+website_url                             
+   CloudPepper: char            | Website URL
+   Odoo.com:    char            | Website URL
+
+weight                                  
+   CloudPepper: float           | Weight
+   Odoo.com:    float           | Weight
+
+weight_uom_name                         
+   CloudPepper: char            | Weight unit of measure label
+   Odoo.com:    char            | Weight unit of measure label
+
+write_date                              
+   CloudPepper: datetime        | Last Updated on
+   Odoo.com:    datetime        | Last Updated on
+
+write_uid                               
+   CloudPepper: many2one        | Last Updated by
+   Odoo.com:    many2one        | Last Updated by
+
+zip                                     
+   CloudPepper: char            | Código Postal
+   Odoo.com:    char            | Código Postal
+
+
+====================================================================================================
+CAMPOS SOLO EN CLOUDPEPPER (34)
+====================================================================================================
+
+attachment_line_ids                      (one2many       ) - Documentos
+class_name                               (char           ) - Class Segmento UNSPSC
+commission_range_ids                     (one2many       ) - Rangos de Comisión de Ventas
+commission_type                          (selection      ) - Tipo de Comisión
+detailed_type                            (selection      ) - Product Type
+dr_brand_attribute_ids                   (many2many      ) - Dr Brand Attribute
+dr_brand_id                              (many2one       ) - Dr Brand
+dr_brand_value_id                        (many2one       ) - Brand
+dr_document_ids                          (many2many      ) - Documents
+dr_free_qty                              (float          ) - Free To Use Quantity
+dr_has_discount                          (boolean        ) - Dr Has Discount
+dr_is_rfq                                (boolean        ) - field_name
+dr_label_id                              (many2one       ) - Label
+dr_offer_ids                             (one2many       ) - Dr Offer
+dr_product_offer_ids                     (many2many      ) - Offers
+dr_product_tab_ids                       (many2many      ) - Tabs
+dr_ptav_ids                              (one2many       ) - Dr Ptav
+dr_show_out_of_stock                     (char           ) - Dr Show Out Of Stock
+dr_tab_ids                               (one2many       ) - Dr Tab
+dr_tag_ids                               (many2many      ) - Tags
+enable_charges                           (boolean        ) - Cargo de Factura Electrónica
+family_name                              (char           ) - Familia UNSPSC
+height                                   (float          ) - Height
+is_apply                                 (boolean        ) - ¿Aplicar?
+is_commission_product                    (boolean        ) - ¿Es Producto de Comisión?
+length                                   (float          ) - Length
+line_price_reference                     (float          ) - Precio de referencia
+model_id                                 (many2one       ) - Modelo
+priority                                 (selection      ) - Favorite
+product_UNSPSC_id                        (many2one       ) - Producto UNSPSC
+property_account_refund_id               (many2one       ) - Refund Account
+segment_name                             (char           ) - Segmento UNSPSC
+use_commission_ranges                    (boolean        ) - ¿Usar Rangos de Comisión?
+width                                    (float          ) - Width
+
+====================================================================================================
+CAMPOS SOLO EN ODOO.COM (27)
+====================================================================================================
+
+biz_is_discounted_product                (boolean        ) - Biz Is Discounted Product
+biz_total_sale_count                     (integer        ) - Total Sale Count
+can_be_expensed                          (boolean        ) - Expenses
+can_edit_portal                          (boolean        ) - Puede Editar en Portal
+combo_ids                                (many2many      ) - Combo Choices
+dian_brand                               (char           ) - Marca
+dian_customs_code                        (char           ) - Partida Arancel
+dian_model                               (char           ) - Modelo
+document_count                           (integer        ) - Documentos
+exclusive_salesperson_ids                (many2many      ) - Vendedores Exclusivos
+expense_policy_tooltip                   (char           ) - Expense Policy Tooltip
+full_computed_address                    (char           ) - Dirección Completa para Geocodificación
+geocoding_status                         (selection      ) - Estado Geocodificación
+highlights_ids                           (many2many      ) - Website Highlights
+hover_image                              (binary         ) - Product Hover Image
+image_count                              (integer        ) - Imágenes
+is_favorite                              (boolean        ) - Favorite
+is_storable                              (boolean        ) - Track Inventory
+lot_valuated                             (boolean        ) - Valuation by Lot/Serial number
+managed_by_bohio                         (boolean        ) - Administrado por BOHIO
+product_label_id                         (many2one       ) - Product Label
+property_attachment_ids                  (one2many       ) - Documentos de Propiedad
+property_image_ids                       (one2many       ) - Galería de Imágenes
+service_ids                              (many2many      ) - Website Services
+service_tracking                         (selection      ) - Create on Order
+tab_ids                                  (many2many      ) - Tab
+uom_category_id                          (many2one       ) - UoM Category

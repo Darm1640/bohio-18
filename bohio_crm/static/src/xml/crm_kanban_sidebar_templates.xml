@@ -39,7 +39,7 @@
 
                 <!-- Loading Spinner -->
                 <div t-if="state.loading" class="text-center py-5">
-                    <i class="fa fa-spinner fa-spin fa-2x text-muted"/>
+                    <i class="bi bi-arrow-clockwise fa-spin fa-2x text-muted"/>
                     <p class="small text-muted mt-2">Cargando...</p>
                 </div>
 
@@ -48,7 +48,7 @@
                     <!-- Header de Sección -->
                     <div class="o_bohio_section_header">
                         <div class="o_bohio_section_title">
-                            <i class="fa fa-handshake"/>
+                            <i class="bi bi-hand-thumbs-up"/>
                             <span>Oportunidades</span>
                         </div>
                         <span class="o_bohio_section_count" t-esc="state.totalCount"/>
@@ -85,7 +85,7 @@
 
                                     <!-- Etapa -->
                                     <div t-if="opp.stage_id">
-                                        <i class="fa fa-flag"/>
+                                        <i class="bi bi-flag"/>
                                         <span t-esc="opp.stage_id[1]"/>
                                     </div>
                                 </div>

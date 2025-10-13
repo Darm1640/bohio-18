@@ -133,7 +133,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const submitBtn = form.querySelector('button[type="submit"]');
         if (submitBtn) {
             submitBtn.disabled = true;
-            submitBtn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Buscando...';
+            submitBtn.innerHTML = '<i class="bi bi-arrow-clockwise fa-spin"></i> Buscando...';
         }
     }
     

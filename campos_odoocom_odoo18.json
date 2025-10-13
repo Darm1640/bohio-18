@@ -1,0 +1,2730 @@
+{
+  "website_id": {
+    "readonly": false,
+    "relation": "website",
+    "required": false,
+    "string": "Website",
+    "type": "many2one"
+  },
+  "website_published": {
+    "readonly": false,
+    "required": false,
+    "string": "Visible on current website",
+    "type": "boolean"
+  },
+  "is_published": {
+    "readonly": false,
+    "required": false,
+    "string": "Is Published",
+    "type": "boolean"
+  },
+  "can_publish": {
+    "readonly": true,
+    "required": false,
+    "string": "Can Publish",
+    "type": "boolean"
+  },
+  "website_url": {
+    "readonly": true,
+    "required": false,
+    "string": "Website URL",
+    "type": "char"
+  },
+  "is_seo_optimized": {
+    "readonly": true,
+    "required": false,
+    "string": "SEO optimized",
+    "type": "boolean"
+  },
+  "website_meta_title": {
+    "readonly": false,
+    "required": false,
+    "string": "Website meta title",
+    "type": "char"
+  },
+  "website_meta_description": {
+    "readonly": false,
+    "required": false,
+    "string": "Website meta description",
+    "type": "text"
+  },
+  "website_meta_keywords": {
+    "readonly": false,
+    "required": false,
+    "string": "Website meta keywords",
+    "type": "char"
+  },
+  "website_meta_og_img": {
+    "readonly": false,
+    "required": false,
+    "string": "Website opengraph image",
+    "type": "char"
+  },
+  "seo_name": {
+    "readonly": false,
+    "required": false,
+    "string": "Seo name",
+    "type": "char"
+  },
+  "image_1920": {
+    "readonly": false,
+    "required": false,
+    "string": "Image",
+    "type": "binary"
+  },
+  "image_1024": {
+    "readonly": true,
+    "required": false,
+    "string": "Image 1024",
+    "type": "binary"
+  },
+  "image_512": {
+    "readonly": true,
+    "required": false,
+    "string": "Image 512",
+    "type": "binary"
+  },
+  "image_256": {
+    "readonly": true,
+    "required": false,
+    "string": "Image 256",
+    "type": "binary"
+  },
+  "image_128": {
+    "readonly": true,
+    "required": false,
+    "string": "Image 128",
+    "type": "binary"
+  },
+  "activity_ids": {
+    "readonly": false,
+    "relation": "mail.activity",
+    "required": false,
+    "string": "Activities",
+    "type": "one2many"
+  },
+  "activity_state": {
+    "readonly": true,
+    "required": false,
+    "string": "Activity State",
+    "type": "selection"
+  },
+  "activity_user_id": {
+    "readonly": true,
+    "relation": "res.users",
+    "required": false,
+    "string": "Responsible User",
+    "type": "many2one"
+  },
+  "activity_type_id": {
+    "readonly": false,
+    "relation": "mail.activity.type",
+    "required": false,
+    "string": "Next Activity Type",
+    "type": "many2one"
+  },
+  "activity_type_icon": {
+    "readonly": true,
+    "required": false,
+    "string": "Activity Type Icon",
+    "type": "char"
+  },
+  "activity_date_deadline": {
+    "readonly": true,
+    "required": false,
+    "string": "Next Activity Deadline",
+    "type": "date"
+  },
+  "my_activity_date_deadline": {
+    "readonly": true,
+    "required": false,
+    "string": "My Activity Deadline",
+    "type": "date"
+  },
+  "activity_summary": {
+    "readonly": false,
+    "required": false,
+    "string": "Next Activity Summary",
+    "type": "char"
+  },
+  "activity_exception_decoration": {
+    "readonly": true,
+    "required": false,
+    "string": "Activity Exception Decoration",
+    "type": "selection"
+  },
+  "activity_exception_icon": {
+    "readonly": true,
+    "required": false,
+    "string": "Icon",
+    "type": "char"
+  },
+  "activity_calendar_event_id": {
+    "readonly": true,
+    "relation": "calendar.event",
+    "required": false,
+    "string": "Next Activity Calendar Event",
+    "type": "many2one"
+  },
+  "message_is_follower": {
+    "readonly": true,
+    "required": false,
+    "string": "Is Follower",
+    "type": "boolean"
+  },
+  "message_follower_ids": {
+    "readonly": false,
+    "relation": "mail.followers",
+    "required": false,
+    "string": "Followers",
+    "type": "one2many"
+  },
+  "message_partner_ids": {
+    "readonly": false,
+    "relation": "res.partner",
+    "required": false,
+    "string": "Followers (Partners)",
+    "type": "many2many"
+  },
+  "message_ids": {
+    "readonly": false,
+    "relation": "mail.message",
+    "required": false,
+    "string": "Messages",
+    "type": "one2many"
+  },
+  "has_message": {
+    "readonly": true,
+    "required": false,
+    "string": "Has Message",
+    "type": "boolean"
+  },
+  "message_needaction": {
+    "readonly": true,
+    "required": false,
+    "string": "Action Needed",
+    "type": "boolean"
+  },
+  "message_needaction_counter": {
+    "readonly": true,
+    "required": false,
+    "string": "Number of Actions",
+    "type": "integer"
+  },
+  "message_has_error": {
+    "readonly": true,
+    "required": false,
+    "string": "Message Delivery error",
+    "type": "boolean"
+  },
+  "message_has_error_counter": {
+    "readonly": true,
+    "required": false,
+    "string": "Number of errors",
+    "type": "integer"
+  },
+  "message_attachment_count": {
+    "readonly": true,
+    "required": false,
+    "string": "Attachment Count",
+    "type": "integer"
+  },
+  "rating_ids": {
+    "readonly": false,
+    "relation": "rating.rating",
+    "required": false,
+    "string": "Ratings",
+    "type": "one2many"
+  },
+  "website_message_ids": {
+    "readonly": false,
+    "relation": "mail.message",
+    "required": false,
+    "string": "Website Messages",
+    "type": "one2many"
+  },
+  "message_has_sms_error": {
+    "readonly": true,
+    "required": false,
+    "string": "SMS Delivery error",
+    "type": "boolean"
+  },
+  "name": {
+    "readonly": false,
+    "required": true,
+    "string": "Name",
+    "type": "char"
+  },
+  "sequence": {
+    "readonly": false,
+    "required": false,
+    "string": "Secuencia",
+    "type": "integer"
+  },
+  "description": {
+    "readonly": false,
+    "required": false,
+    "string": "Descripción",
+    "type": "text"
+  },
+  "description_purchase": {
+    "readonly": false,
+    "required": false,
+    "string": "Purchase Description",
+    "type": "text"
+  },
+  "description_sale": {
+    "readonly": false,
+    "required": false,
+    "string": "Sales Description",
+    "type": "text"
+  },
+  "type": {
+    "readonly": false,
+    "required": true,
+    "string": "Product Type",
+    "type": "selection"
+  },
+  "combo_ids": {
+    "readonly": false,
+    "relation": "product.combo",
+    "required": false,
+    "string": "Combo Choices",
+    "type": "many2many"
+  },
+  "service_tracking": {
+    "readonly": false,
+    "required": true,
+    "string": "Create on Order",
+    "type": "selection"
+  },
+  "categ_id": {
+    "readonly": false,
+    "relation": "product.category",
+    "required": true,
+    "string": "Product Category",
+    "type": "many2one"
+  },
+  "currency_id": {
+    "readonly": true,
+    "relation": "res.currency",
+    "required": false,
+    "string": "Currency",
+    "type": "many2one"
+  },
+  "cost_currency_id": {
+    "readonly": true,
+    "relation": "res.currency",
+    "required": false,
+    "string": "Cost Currency",
+    "type": "many2one"
+  },
+  "list_price": {
+    "readonly": false,
+    "required": false,
+    "string": "Sales Price",
+    "type": "float"
+  },
+  "standard_price": {
+    "readonly": false,
+    "required": false,
+    "string": "Cost",
+    "type": "float"
+  },
+  "volume": {
+    "readonly": false,
+    "required": false,
+    "string": "Volume",
+    "type": "float"
+  },
+  "volume_uom_name": {
+    "readonly": true,
+    "required": false,
+    "string": "Volume unit of measure label",
+    "type": "char"
+  },
+  "weight": {
+    "readonly": false,
+    "required": false,
+    "string": "Weight",
+    "type": "float"
+  },
+  "weight_uom_name": {
+    "readonly": true,
+    "required": false,
+    "string": "Weight unit of measure label",
+    "type": "char"
+  },
+  "sale_ok": {
+    "readonly": false,
+    "required": false,
+    "string": "Sales",
+    "type": "boolean"
+  },
+  "purchase_ok": {
+    "readonly": false,
+    "required": false,
+    "string": "Purchase",
+    "type": "boolean"
+  },
+  "uom_id": {
+    "readonly": false,
+    "relation": "uom.uom",
+    "required": true,
+    "string": "Unit of Measure",
+    "type": "many2one"
+  },
+  "uom_name": {
+    "readonly": true,
+    "required": false,
+    "string": "Unit of Measure Name",
+    "type": "char"
+  },
+  "uom_category_id": {
+    "readonly": true,
+    "relation": "uom.category",
+    "required": false,
+    "string": "UoM Category",
+    "type": "many2one"
+  },
+  "uom_po_id": {
+    "readonly": false,
+    "relation": "uom.uom",
+    "required": true,
+    "string": "Purchase Unit",
+    "type": "many2one"
+  },
+  "company_id": {
+    "readonly": false,
+    "relation": "res.company",
+    "required": false,
+    "string": "Compañía",
+    "type": "many2one"
+  },
+  "packaging_ids": {
+    "readonly": false,
+    "relation": "product.packaging",
+    "required": false,
+    "string": "Product Packages",
+    "type": "one2many"
+  },
+  "seller_ids": {
+    "readonly": false,
+    "relation": "product.supplierinfo",
+    "required": false,
+    "string": "Vendors",
+    "type": "one2many"
+  },
+  "variant_seller_ids": {
+    "readonly": false,
+    "relation": "product.supplierinfo",
+    "required": false,
+    "string": "Variant Seller",
+    "type": "one2many"
+  },
+  "active": {
+    "readonly": false,
+    "required": false,
+    "string": "Active",
+    "type": "boolean"
+  },
+  "color": {
+    "readonly": false,
+    "required": false,
+    "string": "Color Index",
+    "type": "integer"
+  },
+  "is_product_variant": {
+    "readonly": true,
+    "required": false,
+    "string": "Is a product variant",
+    "type": "boolean"
+  },
+  "attribute_line_ids": {
+    "readonly": false,
+    "relation": "product.template.attribute.line",
+    "required": false,
+    "string": "Product Attributes",
+    "type": "one2many"
+  },
+  "valid_product_template_attribute_line_ids": {
+    "readonly": true,
+    "relation": "product.template.attribute.line",
+    "required": false,
+    "string": "Valid Product Attribute Lines",
+    "type": "many2many"
+  },
+  "product_variant_ids": {
+    "readonly": false,
+    "relation": "product.product",
+    "required": true,
+    "string": "Products",
+    "type": "one2many"
+  },
+  "product_variant_id": {
+    "readonly": true,
+    "relation": "product.product",
+    "required": false,
+    "string": "Product",
+    "type": "many2one"
+  },
+  "product_variant_count": {
+    "readonly": true,
+    "required": false,
+    "string": "# Product Variants",
+    "type": "integer"
+  },
+  "barcode": {
+    "readonly": false,
+    "required": false,
+    "string": "Barcode",
+    "type": "char"
+  },
+  "default_code": {
+    "readonly": false,
+    "required": false,
+    "string": "Código Interno",
+    "type": "char"
+  },
+  "pricelist_item_count": {
+    "readonly": true,
+    "required": false,
+    "string": "Number of price rules",
+    "type": "integer"
+  },
+  "product_document_ids": {
+    "readonly": false,
+    "relation": "product.document",
+    "required": false,
+    "string": "Documents",
+    "type": "one2many"
+  },
+  "product_document_count": {
+    "readonly": true,
+    "required": false,
+    "string": "Documents Count",
+    "type": "integer"
+  },
+  "can_image_1024_be_zoomed": {
+    "readonly": true,
+    "required": false,
+    "string": "Can Image 1024 be zoomed",
+    "type": "boolean"
+  },
+  "has_configurable_attributes": {
+    "readonly": true,
+    "required": false,
+    "string": "Is a configurable product",
+    "type": "boolean"
+  },
+  "product_tooltip": {
+    "readonly": true,
+    "required": false,
+    "string": "Product Tooltip",
+    "type": "char"
+  },
+  "is_favorite": {
+    "readonly": false,
+    "required": false,
+    "string": "Favorite",
+    "type": "boolean"
+  },
+  "product_tag_ids": {
+    "readonly": false,
+    "relation": "product.tag",
+    "required": false,
+    "string": "Tags",
+    "type": "many2many"
+  },
+  "product_properties": {
+    "readonly": false,
+    "required": false,
+    "string": "Properties",
+    "type": "properties"
+  },
+  "id": {
+    "readonly": true,
+    "required": false,
+    "string": "ID",
+    "type": "integer"
+  },
+  "display_name": {
+    "readonly": true,
+    "required": false,
+    "string": "Display Name",
+    "type": "char"
+  },
+  "create_uid": {
+    "readonly": true,
+    "relation": "res.users",
+    "required": false,
+    "string": "Created by",
+    "type": "many2one"
+  },
+  "create_date": {
+    "readonly": true,
+    "required": false,
+    "string": "Created on",
+    "type": "datetime"
+  },
+  "write_uid": {
+    "readonly": true,
+    "relation": "res.users",
+    "required": false,
+    "string": "Last Updated by",
+    "type": "many2one"
+  },
+  "write_date": {
+    "readonly": true,
+    "required": false,
+    "string": "Last Updated on",
+    "type": "datetime"
+  },
+  "taxes_id": {
+    "readonly": false,
+    "relation": "account.tax",
+    "required": false,
+    "string": "Sales Taxes",
+    "type": "many2many"
+  },
+  "tax_string": {
+    "readonly": true,
+    "required": false,
+    "string": "Tax String",
+    "type": "char"
+  },
+  "supplier_taxes_id": {
+    "readonly": false,
+    "relation": "account.tax",
+    "required": false,
+    "string": "Purchase Taxes",
+    "type": "many2many"
+  },
+  "property_account_income_id": {
+    "readonly": false,
+    "relation": "account.account",
+    "required": false,
+    "string": "Income Account",
+    "type": "many2one"
+  },
+  "property_account_expense_id": {
+    "readonly": false,
+    "relation": "account.account",
+    "required": false,
+    "string": "Expense Account",
+    "type": "many2one"
+  },
+  "account_tag_ids": {
+    "readonly": false,
+    "relation": "account.account.tag",
+    "required": false,
+    "string": "Account Tags",
+    "type": "many2many"
+  },
+  "fiscal_country_codes": {
+    "readonly": true,
+    "required": false,
+    "string": "Fiscal Country Codes",
+    "type": "char"
+  },
+  "is_storable": {
+    "readonly": false,
+    "required": false,
+    "string": "Track Inventory",
+    "type": "boolean"
+  },
+  "responsible_id": {
+    "readonly": false,
+    "relation": "res.users",
+    "required": false,
+    "string": "Responsible",
+    "type": "many2one"
+  },
+  "property_stock_production": {
+    "readonly": false,
+    "relation": "stock.location",
+    "required": false,
+    "string": "Production Location",
+    "type": "many2one"
+  },
+  "property_stock_inventory": {
+    "readonly": false,
+    "relation": "stock.location",
+    "required": false,
+    "string": "Inventory Location",
+    "type": "many2one"
+  },
+  "sale_delay": {
+    "readonly": false,
+    "required": false,
+    "string": "Customer Lead Time",
+    "type": "integer"
+  },
+  "tracking": {
+    "readonly": false,
+    "required": true,
+    "string": "Tracking",
+    "type": "selection"
+  },
+  "description_picking": {
+    "readonly": false,
+    "required": false,
+    "string": "Description on Picking",
+    "type": "text"
+  },
+  "description_pickingout": {
+    "readonly": false,
+    "required": false,
+    "string": "Description on Delivery Orders",
+    "type": "text"
+  },
+  "description_pickingin": {
+    "readonly": false,
+    "required": false,
+    "string": "Description on Receptions",
+    "type": "text"
+  },
+  "qty_available": {
+    "readonly": true,
+    "required": false,
+    "string": "Quantity On Hand",
+    "type": "float"
+  },
+  "virtual_available": {
+    "readonly": true,
+    "required": false,
+    "string": "Forecasted Quantity",
+    "type": "float"
+  },
+  "incoming_qty": {
+    "readonly": true,
+    "required": false,
+    "string": "Incoming",
+    "type": "float"
+  },
+  "outgoing_qty": {
+    "readonly": true,
+    "required": false,
+    "string": "Outgoing",
+    "type": "float"
+  },
+  "location_id": {
+    "readonly": false,
+    "relation": "stock.location",
+    "required": false,
+    "string": "Location",
+    "type": "many2one"
+  },
+  "warehouse_id": {
+    "readonly": false,
+    "relation": "stock.warehouse",
+    "required": false,
+    "string": "Warehouse",
+    "type": "many2one"
+  },
+  "has_available_route_ids": {
+    "readonly": true,
+    "required": false,
+    "string": "Routes can be selected on this product",
+    "type": "boolean"
+  },
+  "route_ids": {
+    "readonly": false,
+    "relation": "stock.route",
+    "required": false,
+    "string": "Routes",
+    "type": "many2many"
+  },
+  "nbr_moves_in": {
+    "readonly": true,
+    "required": false,
+    "string": "Nbr Moves In",
+    "type": "integer"
+  },
+  "nbr_moves_out": {
+    "readonly": true,
+    "required": false,
+    "string": "Nbr Moves Out",
+    "type": "integer"
+  },
+  "nbr_reordering_rules": {
+    "readonly": true,
+    "required": false,
+    "string": "Reordering Rules",
+    "type": "integer"
+  },
+  "reordering_min_qty": {
+    "readonly": true,
+    "required": false,
+    "string": "Reordering Min Qty",
+    "type": "float"
+  },
+  "reordering_max_qty": {
+    "readonly": true,
+    "required": false,
+    "string": "Reordering Max Qty",
+    "type": "float"
+  },
+  "route_from_categ_ids": {
+    "readonly": true,
+    "relation": "stock.route",
+    "required": false,
+    "string": "Category Routes",
+    "type": "many2many"
+  },
+  "show_on_hand_qty_status_button": {
+    "readonly": true,
+    "required": false,
+    "string": "Show On Hand Qty Status Button",
+    "type": "boolean"
+  },
+  "show_forecasted_qty_status_button": {
+    "readonly": true,
+    "required": false,
+    "string": "Show Forecasted Qty Status Button",
+    "type": "boolean"
+  },
+  "can_be_expensed": {
+    "readonly": false,
+    "required": false,
+    "string": "Expenses",
+    "type": "boolean"
+  },
+  "unspsc_code_id": {
+    "readonly": false,
+    "relation": "product.unspsc.code",
+    "required": false,
+    "string": "UNSPSC Category",
+    "type": "many2one"
+  },
+  "purchased_product_qty": {
+    "readonly": true,
+    "required": false,
+    "string": "Purchased",
+    "type": "float"
+  },
+  "purchase_method": {
+    "readonly": false,
+    "required": false,
+    "string": "Control Policy",
+    "type": "selection"
+  },
+  "purchase_line_warn": {
+    "readonly": false,
+    "required": true,
+    "string": "Purchase Order Line Warning",
+    "type": "selection"
+  },
+  "purchase_line_warn_msg": {
+    "readonly": false,
+    "required": false,
+    "string": "Message for Purchase Order Line",
+    "type": "text"
+  },
+  "cost_method": {
+    "readonly": true,
+    "required": false,
+    "string": "Costing Method",
+    "type": "selection"
+  },
+  "valuation": {
+    "readonly": true,
+    "required": false,
+    "string": "Inventory Valuation",
+    "type": "selection"
+  },
+  "lot_valuated": {
+    "readonly": false,
+    "required": false,
+    "string": "Valuation by Lot/Serial number",
+    "type": "boolean"
+  },
+  "property_account_creditor_price_difference": {
+    "readonly": false,
+    "relation": "account.account",
+    "required": false,
+    "string": "Price Difference Account",
+    "type": "many2one"
+  },
+  "service_type": {
+    "readonly": false,
+    "required": false,
+    "string": "Track Service",
+    "type": "selection"
+  },
+  "sale_line_warn": {
+    "readonly": false,
+    "required": true,
+    "string": "Sales Order Line",
+    "type": "selection"
+  },
+  "sale_line_warn_msg": {
+    "readonly": false,
+    "required": false,
+    "string": "Message for Sales Order Line",
+    "type": "text"
+  },
+  "expense_policy": {
+    "readonly": false,
+    "required": false,
+    "string": "Re-Invoice Costs",
+    "type": "selection"
+  },
+  "visible_expense_policy": {
+    "readonly": true,
+    "required": false,
+    "string": "Re-Invoice Policy visible",
+    "type": "boolean"
+  },
+  "sales_count": {
+    "readonly": true,
+    "required": false,
+    "string": "Sold",
+    "type": "float"
+  },
+  "invoice_policy": {
+    "readonly": false,
+    "required": false,
+    "string": "Invoicing Policy",
+    "type": "selection"
+  },
+  "optional_product_ids": {
+    "readonly": false,
+    "relation": "product.template",
+    "required": false,
+    "string": "Optional Products",
+    "type": "many2many"
+  },
+  "service_to_purchase": {
+    "readonly": false,
+    "required": false,
+    "string": "Subcontract Service",
+    "type": "boolean"
+  },
+  "dian_brand": {
+    "readonly": false,
+    "required": false,
+    "string": "Marca",
+    "type": "char"
+  },
+  "dian_model": {
+    "readonly": false,
+    "required": false,
+    "string": "Modelo",
+    "type": "char"
+  },
+  "dian_customs_code": {
+    "readonly": false,
+    "required": false,
+    "string": "Partida Arancel",
+    "type": "char"
+  },
+  "create_repair": {
+    "readonly": false,
+    "required": false,
+    "string": "Create Repair",
+    "type": "boolean"
+  },
+  "expense_policy_tooltip": {
+    "readonly": true,
+    "required": false,
+    "string": "Expense Policy Tooltip",
+    "type": "char"
+  },
+  "hs_code": {
+    "readonly": false,
+    "required": false,
+    "string": "HS Code",
+    "type": "char"
+  },
+  "country_of_origin": {
+    "readonly": false,
+    "relation": "res.country",
+    "required": false,
+    "string": "Origin of Goods",
+    "type": "many2one"
+  },
+  "rating_last_value": {
+    "readonly": true,
+    "required": false,
+    "string": "Rating Last Value",
+    "type": "float"
+  },
+  "rating_last_feedback": {
+    "readonly": true,
+    "required": false,
+    "string": "Rating Last Feedback",
+    "type": "text"
+  },
+  "rating_last_image": {
+    "readonly": true,
+    "required": false,
+    "string": "Rating Last Image",
+    "type": "binary"
+  },
+  "rating_count": {
+    "readonly": true,
+    "required": false,
+    "string": "Rating count",
+    "type": "integer"
+  },
+  "rating_avg": {
+    "readonly": true,
+    "required": false,
+    "string": "Average Rating",
+    "type": "float"
+  },
+  "rating_avg_text": {
+    "readonly": true,
+    "required": false,
+    "string": "Rating Avg Text",
+    "type": "selection"
+  },
+  "rating_percentage_satisfaction": {
+    "readonly": true,
+    "required": false,
+    "string": "Rating Satisfaction",
+    "type": "float"
+  },
+  "rating_last_text": {
+    "readonly": true,
+    "required": false,
+    "string": "Rating Text",
+    "type": "selection"
+  },
+  "website_description": {
+    "readonly": false,
+    "required": false,
+    "string": "Description for the website",
+    "type": "html"
+  },
+  "description_ecommerce": {
+    "readonly": false,
+    "required": false,
+    "string": "eCommerce Description",
+    "type": "html"
+  },
+  "alternative_product_ids": {
+    "readonly": false,
+    "relation": "product.template",
+    "required": false,
+    "string": "Alternative Products",
+    "type": "many2many"
+  },
+  "accessory_product_ids": {
+    "readonly": false,
+    "relation": "product.product",
+    "required": false,
+    "string": "Accessory Products",
+    "type": "many2many"
+  },
+  "website_size_x": {
+    "readonly": false,
+    "required": false,
+    "string": "Size X",
+    "type": "integer"
+  },
+  "website_size_y": {
+    "readonly": false,
+    "required": false,
+    "string": "Size Y",
+    "type": "integer"
+  },
+  "website_ribbon_id": {
+    "readonly": false,
+    "relation": "product.ribbon",
+    "required": false,
+    "string": "Ribbon",
+    "type": "many2one"
+  },
+  "website_sequence": {
+    "readonly": false,
+    "required": false,
+    "string": "Website Sequence",
+    "type": "integer"
+  },
+  "public_categ_ids": {
+    "readonly": false,
+    "relation": "product.public.category",
+    "required": false,
+    "string": "Website Product Category",
+    "type": "many2many"
+  },
+  "product_template_image_ids": {
+    "readonly": false,
+    "relation": "product.image",
+    "required": false,
+    "string": "Extra Product Media",
+    "type": "one2many"
+  },
+  "base_unit_count": {
+    "readonly": false,
+    "required": true,
+    "string": "Base Unit Count",
+    "type": "float"
+  },
+  "base_unit_id": {
+    "readonly": false,
+    "relation": "website.base.unit",
+    "required": false,
+    "string": "Custom Unit of Measure",
+    "type": "many2one"
+  },
+  "base_unit_price": {
+    "readonly": true,
+    "required": false,
+    "string": "Price Per Unit",
+    "type": "monetary"
+  },
+  "base_unit_name": {
+    "readonly": true,
+    "required": false,
+    "string": "Base Unit Name",
+    "type": "char"
+  },
+  "compare_list_price": {
+    "readonly": false,
+    "required": false,
+    "string": "Compare to Price",
+    "type": "monetary"
+  },
+  "state": {
+    "readonly": false,
+    "required": false,
+    "string": "Estado",
+    "type": "selection"
+  },
+  "partner_id": {
+    "readonly": false,
+    "relation": "res.partner",
+    "required": false,
+    "string": "Propietario Principal",
+    "type": "many2one"
+  },
+  "region_id": {
+    "readonly": false,
+    "relation": "region.region",
+    "required": false,
+    "string": "Barrio",
+    "type": "many2one"
+  },
+  "property_date": {
+    "readonly": false,
+    "required": false,
+    "string": "Fecha",
+    "type": "date"
+  },
+  "country_code": {
+    "readonly": true,
+    "required": false,
+    "string": "Código País",
+    "type": "char"
+  },
+  "note": {
+    "readonly": false,
+    "required": false,
+    "string": "Notas",
+    "type": "html"
+  },
+  "property_type_id": {
+    "readonly": false,
+    "relation": "property.type",
+    "required": false,
+    "string": "Tipo de Propiedad",
+    "type": "many2one"
+  },
+  "property_type": {
+    "readonly": true,
+    "required": false,
+    "string": "Tipo de Inmueble",
+    "type": "selection"
+  },
+  "address": {
+    "readonly": false,
+    "required": false,
+    "string": "Dirección",
+    "type": "char"
+  },
+  "department": {
+    "readonly": false,
+    "required": false,
+    "string": "Departamento",
+    "type": "char"
+  },
+  "municipality": {
+    "readonly": false,
+    "required": false,
+    "string": "Municipio",
+    "type": "char"
+  },
+  "neighborhood": {
+    "readonly": false,
+    "required": false,
+    "string": "Barrio",
+    "type": "char"
+  },
+  "street": {
+    "readonly": false,
+    "required": false,
+    "string": "Dirección Principal",
+    "type": "char"
+  },
+  "street2": {
+    "readonly": false,
+    "required": false,
+    "string": "Dirección Secundaria",
+    "type": "char"
+  },
+  "zip": {
+    "readonly": false,
+    "required": false,
+    "string": "Código Postal",
+    "type": "char"
+  },
+  "city": {
+    "readonly": false,
+    "required": false,
+    "string": "Ciudad",
+    "type": "char"
+  },
+  "city_id": {
+    "readonly": false,
+    "relation": "res.city",
+    "required": false,
+    "string": "Ciudad",
+    "type": "many2one"
+  },
+  "state_id": {
+    "readonly": false,
+    "relation": "res.country.state",
+    "required": false,
+    "string": "Departamento",
+    "type": "many2one"
+  },
+  "country_id": {
+    "readonly": false,
+    "relation": "res.country",
+    "required": false,
+    "string": "País",
+    "type": "many2one"
+  },
+  "latitude": {
+    "readonly": false,
+    "required": false,
+    "string": "Latitud",
+    "type": "float"
+  },
+  "longitude": {
+    "readonly": false,
+    "required": false,
+    "string": "Longitud",
+    "type": "float"
+  },
+  "geocoding_status": {
+    "readonly": true,
+    "required": false,
+    "string": "Estado Geocodificación",
+    "type": "selection"
+  },
+  "full_computed_address": {
+    "readonly": true,
+    "required": false,
+    "string": "Dirección Completa para Geocodificación",
+    "type": "char"
+  },
+  "stratum": {
+    "readonly": false,
+    "required": false,
+    "string": "Estrato",
+    "type": "selection"
+  },
+  "type_service": {
+    "readonly": false,
+    "required": false,
+    "string": "Tipo De Servicios",
+    "type": "selection"
+  },
+  "property_status": {
+    "readonly": false,
+    "required": false,
+    "string": "Estado del Inmueble",
+    "type": "selection"
+  },
+  "property_area": {
+    "readonly": false,
+    "required": false,
+    "string": "Área de la Propiedad",
+    "type": "float"
+  },
+  "unit_of_measure": {
+    "readonly": false,
+    "required": false,
+    "string": "Unidad de Medida",
+    "type": "selection"
+  },
+  "unit_label": {
+    "readonly": true,
+    "required": false,
+    "string": "Etiqueta Unidad",
+    "type": "char"
+  },
+  "area_in_m2": {
+    "readonly": true,
+    "required": false,
+    "string": "Área en M² (Interno)",
+    "type": "float"
+  },
+  "unit_iso_code": {
+    "readonly": true,
+    "required": false,
+    "string": "Código ISO",
+    "type": "char"
+  },
+  "unit_display_name": {
+    "readonly": true,
+    "required": false,
+    "string": "Nombre Unidad",
+    "type": "char"
+  },
+  "front_meters": {
+    "readonly": false,
+    "required": false,
+    "string": "Frente (metros)",
+    "type": "float"
+  },
+  "depth_meters": {
+    "readonly": false,
+    "required": false,
+    "string": "Fondo (metros)",
+    "type": "float"
+  },
+  "num_bedrooms": {
+    "readonly": false,
+    "required": false,
+    "string": "N° De Habitaciones",
+    "type": "integer"
+  },
+  "num_bathrooms": {
+    "readonly": false,
+    "required": false,
+    "string": "N° De Baños",
+    "type": "integer"
+  },
+  "property_age": {
+    "readonly": false,
+    "required": false,
+    "string": "Antigüedad del Inmueble",
+    "type": "integer"
+  },
+  "num_living_room": {
+    "readonly": false,
+    "required": false,
+    "string": "N° De Sala",
+    "type": "integer"
+  },
+  "floor_number": {
+    "readonly": false,
+    "required": false,
+    "string": "N° De Piso",
+    "type": "integer"
+  },
+  "number_of_levels": {
+    "readonly": false,
+    "required": false,
+    "string": "Número de Niveles",
+    "type": "integer"
+  },
+  "living_room": {
+    "readonly": false,
+    "required": false,
+    "string": "¿Tiene Sala?",
+    "type": "boolean"
+  },
+  "living_dining_room": {
+    "readonly": false,
+    "required": false,
+    "string": "¿Tiene Sala Comedor?",
+    "type": "boolean"
+  },
+  "main_dining_room": {
+    "readonly": false,
+    "required": false,
+    "string": "¿Tiene Comedor?",
+    "type": "boolean"
+  },
+  "auxiliary_dining_room": {
+    "readonly": false,
+    "required": false,
+    "string": "¿Tiene Comedor Auxiliar?",
+    "type": "boolean"
+  },
+  "study": {
+    "readonly": false,
+    "required": false,
+    "string": "¿Tiene Estudio?",
+    "type": "boolean"
+  },
+  "entrance_hall": {
+    "readonly": false,
+    "required": false,
+    "string": "¿Tiene Hall?",
+    "type": "boolean"
+  },
+  "simple_kitchen": {
+    "readonly": false,
+    "required": false,
+    "string": "¿Tiene Cocina Sencilla?",
+    "type": "boolean"
+  },
+  "integral_kitchen": {
+    "readonly": false,
+    "required": false,
+    "string": "¿Tiene Cocina Integral?",
+    "type": "boolean"
+  },
+  "american_kitchen": {
+    "readonly": false,
+    "required": false,
+    "string": "¿Tiene Cocina tipo Americano?",
+    "type": "boolean"
+  },
+  "mixed_integral_kitchen": {
+    "readonly": false,
+    "required": false,
+    "string": "¿Tiene Cocina Integral Mixta?",
+    "type": "boolean"
+  },
+  "service_room": {
+    "readonly": false,
+    "required": false,
+    "string": "¿Tiene Alcoba de Servicio?",
+    "type": "boolean"
+  },
+  "service_bathroom": {
+    "readonly": false,
+    "required": false,
+    "string": "¿Tiene Baño de Servicio?",
+    "type": "boolean"
+  },
+  "auxiliary_bathroom": {
+    "readonly": false,
+    "required": false,
+    "string": "¿Tiene Baño Auxiliar?",
+    "type": "boolean"
+  },
+  "utility_room": {
+    "readonly": false,
+    "required": false,
+    "string": "¿Tiene Cuarto Útil?",
+    "type": "boolean"
+  },
+  "closet": {
+    "readonly": false,
+    "required": false,
+    "string": "¿Tiene Clóset?",
+    "type": "boolean"
+  },
+  "n_closet": {
+    "readonly": false,
+    "required": false,
+    "string": "N° De Clóset",
+    "type": "integer"
+  },
+  "walk_in_closet": {
+    "readonly": false,
+    "required": false,
+    "string": "¿Tiene Walk-in Closet?",
+    "type": "boolean"
+  },
+  "dressing_room": {
+    "readonly": false,
+    "required": false,
+    "string": "¿Tiene Vestidor?",
+    "type": "boolean"
+  },
+  "n_dressing_room": {
+    "readonly": false,
+    "required": false,
+    "string": "Vestidores",
+    "type": "integer"
+  },
+  "warehouse": {
+    "readonly": false,
+    "required": false,
+    "string": "¿Tiene Depósito/Bodega?",
+    "type": "boolean"
+  },
+  "patio": {
+    "readonly": false,
+    "required": false,
+    "string": "¿Tiene Patio?",
+    "type": "boolean"
+  },
+  "garden": {
+    "readonly": false,
+    "required": false,
+    "string": "¿Tiene Jardín?",
+    "type": "boolean"
+  },
+  "balcony": {
+    "readonly": false,
+    "required": false,
+    "string": "¿Tiene Balcón?",
+    "type": "boolean"
+  },
+  "terrace": {
+    "readonly": false,
+    "required": false,
+    "string": "¿Tiene Terraza?",
+    "type": "boolean"
+  },
+  "solar_area": {
+    "readonly": false,
+    "required": false,
+    "string": "¿Tiene Solar?",
+    "type": "boolean"
+  },
+  "solarium": {
+    "readonly": false,
+    "required": false,
+    "string": "¿Tiene Solarium?",
+    "type": "boolean"
+  },
+  "laundry_area": {
+    "readonly": false,
+    "required": false,
+    "string": "¿Tiene Zona de lavandería?",
+    "type": "boolean"
+  },
+  "floor_type": {
+    "readonly": false,
+    "required": false,
+    "string": "Tipo de piso",
+    "type": "selection"
+  },
+  "marble_floor": {
+    "readonly": false,
+    "required": false,
+    "string": "¿Tiene Piso en Baldosa/Mármol?",
+    "type": "boolean"
+  },
+  "door_type": {
+    "readonly": false,
+    "required": false,
+    "string": "Tipo de Puerta",
+    "type": "selection"
+  },
+  "security_door": {
+    "readonly": false,
+    "required": false,
+    "string": "¿Tiene Puerta de Seguridad?",
+    "type": "boolean"
+  },
+  "truck_door": {
+    "readonly": false,
+    "required": false,
+    "string": "¿Tiene Puerta Camión?",
+    "type": "boolean"
+  },
+  "blinds": {
+    "readonly": false,
+    "required": false,
+    "string": "¿Tiene Persiana?",
+    "type": "boolean"
+  },
+  "garage": {
+    "readonly": false,
+    "required": false,
+    "string": "¿Tiene Garaje?",
+    "type": "boolean"
+  },
+  "n_garage": {
+    "readonly": false,
+    "required": false,
+    "string": "N° Garaje",
+    "type": "integer"
+  },
+  "covered_parking": {
+    "readonly": false,
+    "required": false,
+    "string": "N° Parqueadero Cubierto",
+    "type": "integer"
+  },
+  "uncovered_parking": {
+    "readonly": false,
+    "required": false,
+    "string": "N° Parqueadero Descubierto",
+    "type": "integer"
+  },
+  "linear_double_parking": {
+    "readonly": false,
+    "required": false,
+    "string": "¿Tiene Parqueadero doble Lineal?",
+    "type": "boolean"
+  },
+  "parallel_double_parking": {
+    "readonly": false,
+    "required": false,
+    "string": "¿Tiene Parqueadero doble Paralelo?",
+    "type": "boolean"
+  },
+  "visitors_parking": {
+    "readonly": false,
+    "required": false,
+    "string": "¿Tiene Parqueadero de Visitantes?",
+    "type": "boolean"
+  },
+  "common_parking": {
+    "readonly": false,
+    "required": false,
+    "string": "¿Tiene Parqueadero Común?",
+    "type": "boolean"
+  },
+  "gas_installation": {
+    "readonly": false,
+    "required": false,
+    "string": "¿Tiene Red de Gas?",
+    "type": "boolean"
+  },
+  "gas_heating": {
+    "readonly": false,
+    "required": false,
+    "string": "¿Tiene Calentador a Gas?",
+    "type": "boolean"
+  },
+  "no_gas": {
+    "readonly": false,
+    "required": false,
+    "string": "¿Sin Gas?",
+    "type": "boolean"
+  },
+  "electric_heating": {
+    "readonly": false,
+    "required": false,
+    "string": "¿Tiene Calentador Eléctrico?",
+    "type": "boolean"
+  },
+  "electric_plant": {
+    "readonly": false,
+    "required": false,
+    "string": "¿Tiene Planta Eléctrica?",
+    "type": "boolean"
+  },
+  "electrical_capacity": {
+    "readonly": false,
+    "required": false,
+    "string": "Capacidad Eléctrica",
+    "type": "char"
+  },
+  "lamps_included": {
+    "readonly": false,
+    "required": false,
+    "string": "¿Tiene Lámparas Incluidas?",
+    "type": "boolean"
+  },
+  "has_water": {
+    "readonly": false,
+    "required": false,
+    "string": "¿Tiene Agua?",
+    "type": "boolean"
+  },
+  "hot_water": {
+    "readonly": false,
+    "required": false,
+    "string": "¿Tiene Agua Caliente?",
+    "type": "boolean"
+  },
+  "water_nearby": {
+    "readonly": false,
+    "required": false,
+    "string": "¿Tiene Agua Cerca?",
+    "type": "boolean"
+  },
+  "aqueduct_access": {
+    "readonly": false,
+    "required": false,
+    "string": "¿Tiene Acceso al Acueducto?",
+    "type": "boolean"
+  },
+  "air_conditioning": {
+    "readonly": false,
+    "required": false,
+    "string": "¿Tiene Aire Acondicionado?",
+    "type": "boolean"
+  },
+  "n_air_conditioning": {
+    "readonly": false,
+    "required": false,
+    "string": "N° Aire Acondicionado",
+    "type": "integer"
+  },
+  "ac_connections": {
+    "readonly": false,
+    "required": false,
+    "string": "¿Tiene Acometidas Aire Acondicionado?",
+    "type": "boolean"
+  },
+  "n_ac_connections": {
+    "readonly": false,
+    "required": false,
+    "string": "N° Acometidas Aire Acondicionado",
+    "type": "integer"
+  },
+  "phone_lines": {
+    "readonly": false,
+    "required": false,
+    "string": "N° Líneas Telefónicas",
+    "type": "integer"
+  },
+  "intercom": {
+    "readonly": false,
+    "required": false,
+    "string": "¿Tiene Citófono?",
+    "type": "boolean"
+  },
+  "has_security": {
+    "readonly": false,
+    "required": false,
+    "string": "¿Tiene Seguridad?",
+    "type": "boolean"
+  },
+  "security_cameras": {
+    "readonly": false,
+    "required": false,
+    "string": "¿Tiene Cámaras de Vigilancia?",
+    "type": "boolean"
+  },
+  "alarm": {
+    "readonly": false,
+    "required": false,
+    "string": "¿Tiene Alarma?",
+    "type": "boolean"
+  },
+  "doorman": {
+    "readonly": false,
+    "required": false,
+    "string": "Tipo de Portería",
+    "type": "selection"
+  },
+  "doorman_hours": {
+    "readonly": false,
+    "required": false,
+    "string": "Horas Portería",
+    "type": "char"
+  },
+  "doorman_phone": {
+    "readonly": false,
+    "required": false,
+    "string": "Teléfono de la Portería",
+    "type": "char"
+  },
+  "elevator": {
+    "readonly": false,
+    "required": false,
+    "string": "¿Tiene Ascensor?",
+    "type": "boolean"
+  },
+  "private_elevator": {
+    "readonly": false,
+    "required": false,
+    "string": "¿Tiene Ascensor Privado?",
+    "type": "boolean"
+  },
+  "garbage_chute": {
+    "readonly": false,
+    "required": false,
+    "string": "¿Tiene Contenedor de Basuras?",
+    "type": "boolean"
+  },
+  "social_room": {
+    "readonly": false,
+    "required": false,
+    "string": "¿Tiene Salón Social?",
+    "type": "boolean"
+  },
+  "gym": {
+    "readonly": false,
+    "required": false,
+    "string": "¿Tiene Gimnasio?",
+    "type": "boolean"
+  },
+  "pools": {
+    "readonly": false,
+    "required": false,
+    "string": "¿Tiene Piscina?",
+    "type": "boolean"
+  },
+  "n_pools": {
+    "readonly": false,
+    "required": false,
+    "string": "N° Piscinas",
+    "type": "integer"
+  },
+  "sauna": {
+    "readonly": false,
+    "required": false,
+    "string": "¿Tiene Sauna?",
+    "type": "boolean"
+  },
+  "turkish_bath": {
+    "readonly": false,
+    "required": false,
+    "string": "¿Tiene Turco?",
+    "type": "boolean"
+  },
+  "jacuzzi": {
+    "readonly": false,
+    "required": false,
+    "string": "¿Tiene Jacuzzi?",
+    "type": "boolean"
+  },
+  "green_areas": {
+    "readonly": false,
+    "required": false,
+    "string": "¿Tiene Zonas Verdes?",
+    "type": "boolean"
+  },
+  "sports_area": {
+    "readonly": false,
+    "required": false,
+    "string": "¿Tiene Placa Polideportiva?",
+    "type": "boolean"
+  },
+  "court": {
+    "readonly": false,
+    "required": false,
+    "string": "¿Tiene Cancha?",
+    "type": "boolean"
+  },
+  "bar": {
+    "readonly": false,
+    "required": false,
+    "string": "¿Tiene Bar?",
+    "type": "boolean"
+  },
+  "has_playground": {
+    "readonly": false,
+    "required": false,
+    "string": "¿Tiene Zona de Juegos?",
+    "type": "boolean"
+  },
+  "playground_swings": {
+    "readonly": false,
+    "required": false,
+    "string": "¿Tiene Columpios?",
+    "type": "boolean"
+  },
+  "playground_slides": {
+    "readonly": false,
+    "required": false,
+    "string": "¿Tiene Toboganes?",
+    "type": "boolean"
+  },
+  "playground_seesaw": {
+    "readonly": false,
+    "required": false,
+    "string": "¿Tiene Balancines?",
+    "type": "boolean"
+  },
+  "playground_sandbox": {
+    "readonly": false,
+    "required": false,
+    "string": "¿Tiene Arenero?",
+    "type": "boolean"
+  },
+  "playground_climbing": {
+    "readonly": false,
+    "required": false,
+    "string": "¿Tiene Juegos de Escalar?",
+    "type": "boolean"
+  },
+  "furnished": {
+    "readonly": false,
+    "required": false,
+    "string": "¿Está Amoblado?",
+    "type": "boolean"
+  },
+  "fireplace": {
+    "readonly": false,
+    "required": false,
+    "string": "¿Tiene Chimenea?",
+    "type": "boolean"
+  },
+  "mezzanine": {
+    "readonly": false,
+    "required": false,
+    "string": "¿Tiene Mezzanine?",
+    "type": "boolean"
+  },
+  "apartment_type": {
+    "readonly": false,
+    "required": false,
+    "string": "Tipo de apartamento",
+    "type": "selection"
+  },
+  "real_estate_sign": {
+    "readonly": false,
+    "required": false,
+    "string": "Finca Raíz",
+    "type": "char"
+  },
+  "poster_sign": {
+    "readonly": false,
+    "required": false,
+    "string": "¿Tiene Afiche?",
+    "type": "boolean"
+  },
+  "real_estate_platform": {
+    "readonly": false,
+    "required": false,
+    "string": "¿Está en Biinmo?",
+    "type": "boolean"
+  },
+  "urban_space": {
+    "readonly": false,
+    "required": false,
+    "string": "¿Tiene Espacio Urbano?",
+    "type": "boolean"
+  },
+  "urban_space_note": {
+    "readonly": false,
+    "required": false,
+    "string": "Nota de Espacio Urbano?",
+    "type": "char"
+  },
+  "construction_company": {
+    "readonly": false,
+    "required": false,
+    "string": "Constructora",
+    "type": "char"
+  },
+  "referrer": {
+    "readonly": false,
+    "required": false,
+    "string": "Quien Refiere",
+    "type": "char"
+  },
+  "liens": {
+    "readonly": false,
+    "required": false,
+    "string": "¿Tiene Gravámenes?",
+    "type": "boolean"
+  },
+  "net_price": {
+    "readonly": false,
+    "required": false,
+    "string": "Precio Final de Venta",
+    "type": "float"
+  },
+  "price_before_discount": {
+    "readonly": false,
+    "required": false,
+    "string": "Precio Antes Descuento",
+    "type": "float"
+  },
+  "property_price_type": {
+    "readonly": false,
+    "required": false,
+    "string": "Tipo Precio Venta",
+    "type": "selection"
+  },
+  "price_per_unit": {
+    "readonly": false,
+    "required": false,
+    "string": "Precio por Unidad",
+    "type": "float"
+  },
+  "discount_type": {
+    "readonly": false,
+    "required": false,
+    "string": "Tipo Descuento Venta",
+    "type": "selection"
+  },
+  "discount": {
+    "readonly": false,
+    "required": false,
+    "string": "Descuento Venta",
+    "type": "float"
+  },
+  "rental_price_type": {
+    "readonly": false,
+    "required": false,
+    "string": "Tipo Precio Arriendo",
+    "type": "selection"
+  },
+  "rental_price_per_unit": {
+    "readonly": false,
+    "required": false,
+    "string": "Precio Arriendo por Unidad",
+    "type": "float"
+  },
+  "net_rental_price": {
+    "readonly": false,
+    "required": false,
+    "string": "Precio Final de Arriendo",
+    "type": "float"
+  },
+  "rental_price_before_discount": {
+    "readonly": false,
+    "required": false,
+    "string": "Precio Arriendo Antes Descuento",
+    "type": "float"
+  },
+  "rental_discount_type": {
+    "readonly": false,
+    "required": false,
+    "string": "Tipo Descuento Arriendo",
+    "type": "selection"
+  },
+  "rental_discount": {
+    "readonly": false,
+    "required": false,
+    "string": "Descuento Arriendo",
+    "type": "float"
+  },
+  "price_per_m2_ref": {
+    "readonly": true,
+    "required": false,
+    "string": "Precio por m² (Ref)",
+    "type": "float"
+  },
+  "price_per_hectare_ref": {
+    "readonly": true,
+    "required": false,
+    "string": "Precio por Ha (Ref)",
+    "type": "float"
+  },
+  "price_per_yard_ref": {
+    "readonly": true,
+    "required": false,
+    "string": "Precio por Yd² (Ref)",
+    "type": "float"
+  },
+  "rent_value_from": {
+    "readonly": false,
+    "required": false,
+    "string": "Valor arriendo desde",
+    "type": "float"
+  },
+  "rent_value_to": {
+    "readonly": false,
+    "required": false,
+    "string": "Valor arriendo hasta",
+    "type": "float"
+  },
+  "sale_value_from": {
+    "readonly": false,
+    "required": false,
+    "string": "Valor venta desde",
+    "type": "float"
+  },
+  "sale_value_to": {
+    "readonly": false,
+    "required": false,
+    "string": "Valor venta hasta",
+    "type": "float"
+  },
+  "admin_value": {
+    "readonly": false,
+    "required": false,
+    "string": "Valor administración",
+    "type": "float"
+  },
+  "cadastral_valuation": {
+    "readonly": false,
+    "required": false,
+    "string": "Avalúo catastral",
+    "type": "float"
+  },
+  "property_tax": {
+    "readonly": false,
+    "required": false,
+    "string": "Impuesto predial",
+    "type": "float"
+  },
+  "ideal_visit_schedule": {
+    "readonly": false,
+    "required": false,
+    "string": "Horario ideal visitas",
+    "type": "char"
+  },
+  "utility_ids": {
+    "readonly": false,
+    "relation": "property.utilities",
+    "required": false,
+    "string": "Utility",
+    "type": "one2many"
+  },
+  "maintenance_type": {
+    "readonly": false,
+    "required": false,
+    "string": "Maintenance Type",
+    "type": "selection"
+  },
+  "maintenance_charges": {
+    "readonly": false,
+    "required": false,
+    "string": "Maintenance Charges",
+    "type": "float"
+  },
+  "maintenance_count": {
+    "readonly": true,
+    "required": false,
+    "string": "Cantidad Mantenimientos",
+    "type": "integer"
+  },
+  "total_maintenance": {
+    "readonly": true,
+    "required": false,
+    "string": "Total Maintenance",
+    "type": "float"
+  },
+  "total_cost": {
+    "readonly": true,
+    "required": false,
+    "string": "Total Cost",
+    "type": "float"
+  },
+  "total_utilities": {
+    "readonly": true,
+    "required": false,
+    "string": "Total Utilities",
+    "type": "float"
+  },
+  "license_code": {
+    "readonly": false,
+    "required": false,
+    "string": "Código de Licencia",
+    "type": "char"
+  },
+  "license_date": {
+    "readonly": false,
+    "required": false,
+    "string": "Fecha de Licencia",
+    "type": "date"
+  },
+  "date_added": {
+    "readonly": false,
+    "required": false,
+    "string": "Fecha Agregada a Notarización",
+    "type": "date"
+  },
+  "license_location": {
+    "readonly": false,
+    "required": false,
+    "string": "Notarización de Licencia",
+    "type": "char"
+  },
+  "registration_number": {
+    "readonly": false,
+    "required": false,
+    "string": "Folio Matrícula",
+    "type": "char"
+  },
+  "cadastral_reference": {
+    "readonly": false,
+    "required": false,
+    "string": "Referencia Catastral",
+    "type": "char"
+  },
+  "nearly_other": {
+    "readonly": false,
+    "required": false,
+    "string": "Cerca de",
+    "type": "char"
+  },
+  "consignment_date": {
+    "readonly": false,
+    "required": false,
+    "string": "Fecha de Consignación",
+    "type": "date"
+  },
+  "property_consignee": {
+    "readonly": false,
+    "required": false,
+    "string": "Quién Consignó el Inmueble",
+    "type": "selection"
+  },
+  "social_fee_payer": {
+    "readonly": false,
+    "required": false,
+    "string": "Quién Paga Cuota Sostenimiento",
+    "type": "selection"
+  },
+  "keys_location": {
+    "readonly": false,
+    "required": false,
+    "string": "Llaves en",
+    "type": "selection"
+  },
+  "key_note": {
+    "readonly": false,
+    "required": false,
+    "string": "Notas Sobre las llaves",
+    "type": "char"
+  },
+  "user_consing_id": {
+    "readonly": false,
+    "relation": "res.partner",
+    "required": false,
+    "string": "Consignatario",
+    "type": "many2one"
+  },
+  "exclusive_salesperson_ids": {
+    "readonly": false,
+    "relation": "res.users",
+    "required": false,
+    "string": "Vendedores Exclusivos",
+    "type": "many2many"
+  },
+  "owners_lines": {
+    "readonly": false,
+    "relation": "contract.owner.partner",
+    "required": false,
+    "string": "Propietarios",
+    "type": "one2many"
+  },
+  "is_multi_owner": {
+    "readonly": false,
+    "required": false,
+    "string": "¿Múltiples Propietarios?",
+    "type": "boolean"
+  },
+  "urbanization_description": {
+    "readonly": false,
+    "required": false,
+    "string": "Descripción Urbanización",
+    "type": "text"
+  },
+  "property_description": {
+    "readonly": false,
+    "required": false,
+    "string": "Descripción Propiedad",
+    "type": "text"
+  },
+  "observations": {
+    "readonly": false,
+    "required": false,
+    "string": "Observaciones",
+    "type": "text"
+  },
+  "project_worksite_id": {
+    "readonly": false,
+    "relation": "project.worksite",
+    "required": false,
+    "string": "Proyecto",
+    "type": "many2one"
+  },
+  "project_worksite_ids": {
+    "readonly": false,
+    "relation": "project.worksite",
+    "required": false,
+    "string": "Propiedades",
+    "type": "many2many"
+  },
+  "contact_ids": {
+    "readonly": false,
+    "relation": "res.partner",
+    "required": false,
+    "string": "Contactos",
+    "type": "many2many"
+  },
+  "project_type": {
+    "readonly": false,
+    "required": false,
+    "string": "Project Type",
+    "type": "selection"
+  },
+  "floor": {
+    "readonly": false,
+    "required": false,
+    "string": "Piso",
+    "type": "integer"
+  },
+  "project_area": {
+    "readonly": false,
+    "required": false,
+    "string": "Área del Proyecto",
+    "type": "float"
+  },
+  "rental_fee": {
+    "readonly": false,
+    "required": false,
+    "string": "Tarifa de alquiler",
+    "type": "float"
+  },
+  "insurance_fee": {
+    "readonly": false,
+    "required": false,
+    "string": "Tarifa de seguro",
+    "type": "float"
+  },
+  "template_id": {
+    "readonly": false,
+    "relation": "installment.template",
+    "required": false,
+    "string": "Plantilla de Pago",
+    "type": "many2one"
+  },
+  "is_property": {
+    "readonly": false,
+    "required": false,
+    "string": "¿Es Propiedad?",
+    "type": "boolean"
+  },
+  "is_shop": {
+    "readonly": false,
+    "required": false,
+    "string": "¿Es Tienda?",
+    "type": "boolean"
+  },
+  "billing_address_id": {
+    "readonly": false,
+    "relation": "res.partner",
+    "required": false,
+    "string": "Dirección de la propiedad",
+    "type": "many2one"
+  },
+  "partner_is_blacklisted": {
+    "readonly": true,
+    "required": false,
+    "string": "Socio en lista negra",
+    "type": "boolean"
+  },
+  "contact_name": {
+    "readonly": false,
+    "required": false,
+    "string": "Nombre del contacto",
+    "type": "char"
+  },
+  "email_from": {
+    "readonly": false,
+    "required": false,
+    "string": "Email",
+    "type": "char"
+  },
+  "email_normalized": {
+    "readonly": false,
+    "required": false,
+    "string": "Email Normalized",
+    "type": "char"
+  },
+  "email_domain_criterion": {
+    "readonly": false,
+    "required": false,
+    "string": "Criterio de Dominio de Email",
+    "type": "char"
+  },
+  "phone": {
+    "readonly": false,
+    "required": false,
+    "string": "Teléfono",
+    "type": "char"
+  },
+  "mobile": {
+    "readonly": false,
+    "required": false,
+    "string": "Móvil",
+    "type": "char"
+  },
+  "phone_sanitized": {
+    "readonly": false,
+    "required": false,
+    "string": "Phone Sanitized",
+    "type": "char"
+  },
+  "phone_state": {
+    "readonly": true,
+    "required": false,
+    "string": "Calidad del Teléfono",
+    "type": "selection"
+  },
+  "email_state": {
+    "readonly": true,
+    "required": false,
+    "string": "Calidad del Email",
+    "type": "selection"
+  },
+  "website": {
+    "readonly": false,
+    "required": false,
+    "string": "Sitio Web",
+    "type": "char"
+  },
+  "lang_id": {
+    "readonly": false,
+    "relation": "res.lang",
+    "required": false,
+    "string": "Idioma",
+    "type": "many2one"
+  },
+  "lang_code": {
+    "readonly": true,
+    "required": false,
+    "string": "Locale Code",
+    "type": "char"
+  },
+  "lang_active_count": {
+    "readonly": true,
+    "required": false,
+    "string": "Lang Active Count",
+    "type": "integer"
+  },
+  "country_enforce_cities": {
+    "readonly": true,
+    "required": false,
+    "string": "Enforce Cities",
+    "type": "boolean"
+  },
+  "l10n_latam_identification_type_id": {
+    "readonly": false,
+    "relation": "l10n_latam.identification.type",
+    "required": false,
+    "string": "Tipo documento",
+    "type": "many2one"
+  },
+  "vat": {
+    "readonly": false,
+    "required": false,
+    "string": "NIT/CC",
+    "type": "char"
+  },
+  "reservation_count": {
+    "readonly": true,
+    "required": false,
+    "string": "Cantidad Reservas",
+    "type": "integer"
+  },
+  "building_unit": {
+    "readonly": false,
+    "required": false,
+    "string": "Tipo de unidad",
+    "type": "selection"
+  },
+  "is_vis": {
+    "readonly": false,
+    "required": false,
+    "string": "Es VIS",
+    "type": "boolean"
+  },
+  "is_vip": {
+    "readonly": false,
+    "required": false,
+    "string": "Es VIP",
+    "type": "boolean"
+  },
+  "has_subsidy": {
+    "readonly": false,
+    "required": false,
+    "string": "Tiene Subsidio",
+    "type": "boolean"
+  },
+  "doc_charges": {
+    "readonly": false,
+    "required": false,
+    "string": "Cargos de Documentos",
+    "type": "float"
+  },
+  "tax_base_amount": {
+    "readonly": false,
+    "required": false,
+    "string": "Monto Base del Impuesto",
+    "type": "float"
+  },
+  "partner_from": {
+    "readonly": false,
+    "required": false,
+    "string": "Fecha de Compra",
+    "type": "date"
+  },
+  "partner_to": {
+    "readonly": false,
+    "required": false,
+    "string": "Fecha de Venta",
+    "type": "date"
+  },
+  "notarial_act_type": {
+    "readonly": false,
+    "required": false,
+    "string": "Tipo de Acto Notarial",
+    "type": "selection"
+  },
+  "cuantia_source": {
+    "readonly": false,
+    "required": false,
+    "string": "Fuente de Cuantía",
+    "type": "selection"
+  },
+  "notarial_amount": {
+    "readonly": false,
+    "required": false,
+    "string": "Valor para Liquidación Notarial",
+    "type": "monetary"
+  },
+  "sale_with_natural_person": {
+    "readonly": false,
+    "required": false,
+    "string": "Venta con Persona Natural",
+    "type": "boolean"
+  },
+  "is_nonprofit_buyer": {
+    "readonly": false,
+    "required": false,
+    "string": "Comprador Sin Ánimo de Lucro",
+    "type": "boolean"
+  },
+  "matriz_copies": {
+    "readonly": false,
+    "required": false,
+    "string": "Copias Matriz",
+    "type": "integer"
+  },
+  "protocolo_copies": {
+    "readonly": false,
+    "required": false,
+    "string": "Copias Protocolo",
+    "type": "integer"
+  },
+  "biometric_persons": {
+    "readonly": false,
+    "required": false,
+    "string": "Personas para Biometría",
+    "type": "integer"
+  },
+  "cost_distribution": {
+    "readonly": false,
+    "required": false,
+    "string": "Distribución de Costos",
+    "type": "selection"
+  },
+  "buyer_percentage": {
+    "readonly": false,
+    "required": false,
+    "string": "Porcentaje Comprador (%)",
+    "type": "float"
+  },
+  "seller_percentage": {
+    "readonly": false,
+    "required": false,
+    "string": "Porcentaje Vendedor (%)",
+    "type": "float"
+  },
+  "notarial_rights_value": {
+    "readonly": true,
+    "required": false,
+    "string": "Derechos Notariales",
+    "type": "monetary"
+  },
+  "biometric_value": {
+    "readonly": true,
+    "required": false,
+    "string": "Valor Autenticación Biométrica",
+    "type": "monetary"
+  },
+  "copies_cost": {
+    "readonly": true,
+    "required": false,
+    "string": "Costo Copias",
+    "type": "monetary"
+  },
+  "iva_value": {
+    "readonly": true,
+    "required": false,
+    "string": "IVA (19%)",
+    "type": "monetary"
+  },
+  "snr_recaudo_value": {
+    "readonly": true,
+    "required": false,
+    "string": "Recaudo SNR",
+    "type": "monetary"
+  },
+  "fondo_recaudo_value": {
+    "readonly": true,
+    "required": false,
+    "string": "Recaudo Fondo",
+    "type": "monetary"
+  },
+  "stamp_tax_value": {
+    "readonly": true,
+    "required": false,
+    "string": "Impuesto de Timbre",
+    "type": "monetary"
+  },
+  "retention_value": {
+    "readonly": true,
+    "required": false,
+    "string": "Retención en la Fuente",
+    "type": "monetary"
+  },
+  "total_notarial_cost": {
+    "readonly": true,
+    "required": false,
+    "string": "Costo Total Notarial",
+    "type": "monetary"
+  },
+  "buyer_cost": {
+    "readonly": true,
+    "required": false,
+    "string": "Costo Comprador",
+    "type": "monetary"
+  },
+  "seller_cost": {
+    "readonly": true,
+    "required": false,
+    "string": "Costo Vendedor",
+    "type": "monetary"
+  },
+  "search_text": {
+    "readonly": true,
+    "required": false,
+    "string": "Texto de Búsqueda",
+    "type": "text"
+  },
+  "recent_view_ids": {
+    "readonly": false,
+    "relation": "website.visitor",
+    "required": false,
+    "string": "Visitantes Recientes",
+    "type": "many2many"
+  },
+  "property_filters_config": {
+    "readonly": false,
+    "required": false,
+    "string": "Configuración de Filtros",
+    "type": "json"
+  },
+  "property_search_vector": {
+    "readonly": true,
+    "required": false,
+    "string": "Vector de Búsqueda",
+    "type": "text"
+  },
+  "property_popularity_score": {
+    "readonly": false,
+    "required": false,
+    "string": "Score de Popularidad",
+    "type": "float"
+  },
+  "property_last_viewed": {
+    "readonly": false,
+    "required": false,
+    "string": "Última Visualización",
+    "type": "datetime"
+  },
+  "property_image_ids": {
+    "readonly": false,
+    "relation": "property.image",
+    "required": false,
+    "string": "Galería de Imágenes",
+    "type": "one2many"
+  },
+  "property_attachment_ids": {
+    "readonly": false,
+    "relation": "ir.attachment",
+    "required": false,
+    "string": "Documentos de Propiedad",
+    "type": "one2many"
+  },
+  "document_count": {
+    "readonly": true,
+    "required": false,
+    "string": "Documentos",
+    "type": "integer"
+  },
+  "image_count": {
+    "readonly": true,
+    "required": false,
+    "string": "Imágenes",
+    "type": "integer"
+  },
+  "allow_out_of_stock_order": {
+    "readonly": false,
+    "required": false,
+    "string": "Continue selling when out-of-stock",
+    "type": "boolean"
+  },
+  "available_threshold": {
+    "readonly": false,
+    "required": false,
+    "string": "Show Threshold",
+    "type": "float"
+  },
+  "show_availability": {
+    "readonly": false,
+    "required": false,
+    "string": "Show availability Qty",
+    "type": "boolean"
+  },
+  "out_of_stock_message": {
+    "readonly": false,
+    "required": false,
+    "string": "Out-of-Stock Message",
+    "type": "html"
+  },
+  "biz_is_discounted_product": {
+    "readonly": true,
+    "required": false,
+    "string": "Biz Is Discounted Product",
+    "type": "boolean"
+  },
+  "biz_total_sale_count": {
+    "readonly": false,
+    "required": false,
+    "string": "Total Sale Count",
+    "type": "integer"
+  },
+  "brand_id": {
+    "readonly": false,
+    "relation": "product.brand",
+    "required": false,
+    "string": "Brand",
+    "type": "many2one"
+  },
+  "tab_ids": {
+    "readonly": false,
+    "relation": "product.tab",
+    "required": false,
+    "string": "Tab",
+    "type": "many2many"
+  },
+  "product_label_id": {
+    "readonly": false,
+    "relation": "product.label.bizople",
+    "required": false,
+    "string": "Product Label",
+    "type": "many2one"
+  },
+  "service_ids": {
+    "readonly": false,
+    "relation": "product.service",
+    "required": false,
+    "string": "Website Services",
+    "type": "many2many"
+  },
+  "highlights_ids": {
+    "readonly": false,
+    "relation": "product.highlights",
+    "required": false,
+    "string": "Website Highlights",
+    "type": "many2many"
+  },
+  "hover_image": {
+    "readonly": false,
+    "required": false,
+    "string": "Product Hover Image",
+    "type": "binary"
+  },
+  "managed_by_bohio": {
+    "readonly": false,
+    "required": false,
+    "string": "Administrado por BOHIO",
+    "type": "boolean"
+  },
+  "can_edit_portal": {
+    "readonly": true,
+    "required": false,
+    "string": "Puede Editar en Portal",
+    "type": "boolean"
+  }
+}

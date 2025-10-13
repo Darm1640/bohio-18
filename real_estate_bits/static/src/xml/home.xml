@@ -348,7 +348,7 @@
                         <input class="form-check-input" type="checkbox" name="furnished" value="1" id="flt_furnished"
                                t-att-checked="'checked' if (current_filters and current_filters.get('furnished')) else None"/>
                         <label class="form-check-label small" for="flt_furnished">
-                            <i class="fa fa-couch"></i> Amueblado
+                            <i class="bi bi-house-door"></i> Amueblado
                         </label>
                     </div>
                 </div>

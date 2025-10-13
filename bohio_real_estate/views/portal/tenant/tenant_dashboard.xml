@@ -23,7 +23,7 @@
                                         <h3 class="mb-0" t-esc="metrics['active_contracts']"/>
                                     </div>
                                     <div class="metric-icon bg-primary">
-                                        <i class="fa fa-file-contract fa-2x text-white"></i>
+                                        <i class="bi bi-file-earmark-text fa-2x text-white"></i>
                                     </div>
                                 </div>
                             </div>

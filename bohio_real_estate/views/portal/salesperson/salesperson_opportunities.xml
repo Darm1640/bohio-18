@@ -10,7 +10,7 @@
                     <div class="col-12">
                         <div class="p-4 bg-light rounded-3">
                             <h1 class="text-danger mb-2">
-                                <i class="fa fa-handshake"></i> Mis Oportunidades
+                                <i class="bi bi-hand-thumbs-up"></i> Mis Oportunidades
                             </h1>
                             <p class="text-muted mb-0">Gestiona todas tus oportunidades de venta</p>
                         </div>

@@ -53,7 +53,7 @@
                                     <li class="nav-item">
                                         <a t-att-class="'nav-link ' + ('active' if page_name == 'mybohio_owner_invoices' else '')"
                                            href="/mybohio/owner/invoices">
-                                            <i class="fa fa-file-invoice me-1"></i> Facturas
+                                            <i class="bi bi-receipt me-1"></i> Facturas
                                         </a>
                                     </li>
                                     <li class="nav-item">
@@ -71,7 +71,7 @@
                                     <li class="nav-item">
                                         <a t-att-class="'nav-link ' + ('active' if page_name == 'mybohio_owner_tickets' else '')"
                                            href="/mybohio/owner/tickets">
-                                            <i class="fa fa-life-ring me-1"></i> PQRS
+                                            <i class="bi bi-life-preserver me-1"></i> PQRS
                                         </a>
                                     </li>
                                 </ul>
@@ -89,7 +89,7 @@
                                     <li class="nav-item">
                                         <a t-att-class="'nav-link ' + ('active' if 'tenant_contract' in page_name else '')"
                                            href="/mybohio/tenant/contracts">
-                                            <i class="fa fa-file-contract me-1"></i> Mis Contratos
+                                            <i class="bi bi-file-earmark-text me-1"></i> Mis Contratos
                                             <span class="badge bg-light text-dark ms-1" t-esc="role_info.get('tenant_contracts_count', 0)"/>
                                         </a>
                                     </li>
@@ -102,7 +102,7 @@
                                     <li class="nav-item">
                                         <a t-att-class="'nav-link ' + ('active' if page_name == 'mybohio_tenant_invoices' else '')"
                                            href="/mybohio/tenant/invoices">
-                                            <i class="fa fa-file-invoice me-1"></i> Facturas
+                                            <i class="bi bi-receipt me-1"></i> Facturas
                                         </a>
                                     </li>
                                     <li class="nav-item">
@@ -114,7 +114,7 @@
                                     <li class="nav-item">
                                         <a t-att-class="'nav-link ' + ('active' if page_name == 'mybohio_tenant_tickets' else '')"
                                            href="/mybohio/tenant/tickets">
-                                            <i class="fa fa-life-ring me-1"></i> PQRS
+                                            <i class="bi bi-life-preserver me-1"></i> PQRS
                                         </a>
                                     </li>
                                 </ul>
@@ -132,7 +132,7 @@
                                     <li class="nav-item">
                                         <a t-att-class="'nav-link ' + ('active' if 'salesperson_opportunities' in page_name else '')"
                                            href="/mybohio/salesperson/opportunities">
-                                            <i class="fa fa-handshake me-1"></i> Oportunidades
+                                            <i class="bi bi-hand-thumbs-up me-1"></i> Oportunidades
                                             <span class="badge bg-warning text-dark ms-1" t-esc="role_info.get('opportunities_count', 0)"/>
                                         </a>
                                     </li>
@@ -167,7 +167,7 @@
                                         <li><hr class="dropdown-divider"/></li>
                                         <li>
                                             <a class="dropdown-item text-danger" href="/web/session/logout">
-                                                <i class="fa fa-sign-out-alt me-2"></i> Cerrar Sesión
+                                                <i class="bi bi-box-arrow-right me-2"></i> Cerrar Sesión
                                             </a>
                                         </li>
                                     </ul>

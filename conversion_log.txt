@@ -1,0 +1,368 @@
+================================================================================
+CONVERSIÓN DE FONT AWESOME A BOOTSTRAP ICONS
+================================================================================
+
+
+================================================================================
+MÓDULO: theme_bohio_real_estate
+================================================================================
+
+[OK] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\theme_bohio_real_estate\views\properties_shop_template.xml
+
+[ERROR] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\theme_bohio_real_estate\views\properties_shop_template.xml: 'charmap' codec can't encode character '\u2192' in position 15: character maps to <undefined>
+
+[OK] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\theme_bohio_real_estate\views\property_banner_snippet.xml
+
+[ERROR] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\theme_bohio_real_estate\views\property_banner_snippet.xml: 'charmap' codec can't encode character '\u2192' in position 13: character maps to <undefined>
+
+[OK] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\theme_bohio_real_estate\views\property_detail_template.xml
+
+[ERROR] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\theme_bohio_real_estate\views\property_detail_template.xml: 'charmap' codec can't encode character '\u2192' in position 13: character maps to <undefined>
+
+[OK] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\theme_bohio_real_estate\static\src\xml\property_filters_template.xml
+
+[ERROR] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\theme_bohio_real_estate\static\src\xml\property_filters_template.xml: 'charmap' codec can't encode character '\u2192' in position 15: character maps to <undefined>
+
+[OK] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\theme_bohio_real_estate\static\src\components\property_carousel\property_carousel.xml
+
+[ERROR] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\theme_bohio_real_estate\static\src\components\property_carousel\property_carousel.xml: 'charmap' codec can't encode character '\u2192' in position 29: character maps to <undefined>
+
+[OK] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\theme_bohio_real_estate\views\footers\footer_template.xml
+
+[ERROR] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\theme_bohio_real_estate\views\footers\footer_template.xml: 'charmap' codec can't encode character '\u2192' in position 18: character maps to <undefined>
+
+[OK] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\theme_bohio_real_estate\views\headers\header_template.xml
+
+[ERROR] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\theme_bohio_real_estate\views\headers\header_template.xml: 'charmap' codec can't encode character '\u2192' in position 18: character maps to <undefined>
+
+[OK] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\theme_bohio_real_estate\views\pages\contacto_page.xml
+
+[ERROR] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\theme_bohio_real_estate\views\pages\contacto_page.xml: 'charmap' codec can't encode character '\u2192' in position 14: character maps to <undefined>
+
+[OK] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\theme_bohio_real_estate\views\pages\property_contact_response.xml
+
+[ERROR] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\theme_bohio_real_estate\views\pages\property_contact_response.xml: 'charmap' codec can't encode character '\u2192' in position 14: character maps to <undefined>
+
+[OK] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\theme_bohio_real_estate\views\pages\proyectos_page.xml
+
+[ERROR] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\theme_bohio_real_estate\views\pages\proyectos_page.xml: 'charmap' codec can't encode character '\u2192' in position 15: character maps to <undefined>
+
+[OK] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\theme_bohio_real_estate\views\pages\proyecto_detalle.xml
+
+[ERROR] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\theme_bohio_real_estate\views\pages\proyecto_detalle.xml: 'charmap' codec can't encode character '\u2192' in position 17: character maps to <undefined>
+
+[OK] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\theme_bohio_real_estate\views\pages\servicios_page.xml
+
+[ERROR] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\theme_bohio_real_estate\views\pages\servicios_page.xml: 'charmap' codec can't encode character '\u2192' in position 14: character maps to <undefined>
+
+[OK] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\theme_bohio_real_estate\views\pages\sobre_nosotros_page.xml
+
+[ERROR] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\theme_bohio_real_estate\views\pages\sobre_nosotros_page.xml: 'charmap' codec can't encode character '\u2192' in position 20: character maps to <undefined>
+
+[OK] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\theme_bohio_real_estate\views\snippets\property_carousels_dynamic_example.xml
+
+[ERROR] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\theme_bohio_real_estate\views\snippets\property_carousels_dynamic_example.xml: 'charmap' codec can't encode character '\u2192' in position 15: character maps to <undefined>
+
+[OK] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\theme_bohio_real_estate\views\snippets\property_carousels_snippet.xml
+
+[ERROR] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\theme_bohio_real_estate\views\snippets\property_carousels_snippet.xml: 'charmap' codec can't encode character '\u2192' in position 15: character maps to <undefined>
+
+[OK] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\theme_bohio_real_estate\views\snippets\property_snippet_templates.xml
+
+[ERROR] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\theme_bohio_real_estate\views\snippets\property_snippet_templates.xml: 'charmap' codec can't encode character '\u2192' in position 19: character maps to <undefined>
+
+[OK] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\theme_bohio_real_estate\views\snippets\property_snippet_templates_simple.xml
+
+[ERROR] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\theme_bohio_real_estate\views\snippets\property_snippet_templates_simple.xml: 'charmap' codec can't encode character '\u2192' in position 19: character maps to <undefined>
+
+[OK] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\theme_bohio_real_estate\views\snippets\s_dynamic_snippet_properties.xml
+
+[ERROR] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\theme_bohio_real_estate\views\snippets\s_dynamic_snippet_properties.xml: 'charmap' codec can't encode character '\u2192' in position 19: character maps to <undefined>
+
+[OK] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\theme_bohio_real_estate\controllers\main.py
+
+[ERROR] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\theme_bohio_real_estate\controllers\main.py: 'charmap' codec can't encode character '\u2192' in position 19: character maps to <undefined>
+
+[OK] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\theme_bohio_real_estate\controllers\property_search.py
+
+[ERROR] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\theme_bohio_real_estate\controllers\property_search.py: 'charmap' codec can't encode character '\u2192' in position 19: character maps to <undefined>
+
+[OK] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\theme_bohio_real_estate\static\src\js\homepage_autocomplete.js
+
+[ERROR] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\theme_bohio_real_estate\static\src\js\homepage_autocomplete.js: 'charmap' codec can't encode character '\u2192' in position 29: character maps to <undefined>
+
+[OK] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\theme_bohio_real_estate\static\src\js\homepage_new.js
+
+[ERROR] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\theme_bohio_real_estate\static\src\js\homepage_new.js: 'charmap' codec can't encode character '\u2192' in position 13: character maps to <undefined>
+
+[OK] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\theme_bohio_real_estate\static\src\js\homepage_properties.js
+
+[ERROR] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\theme_bohio_real_estate\static\src\js\homepage_properties.js: 'charmap' codec can't encode character '\u2192' in position 23: character maps to <undefined>
+
+[OK] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\theme_bohio_real_estate\static\src\js\init_carousels.js
+
+[ERROR] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\theme_bohio_real_estate\static\src\js\init_carousels.js: 'charmap' codec can't encode character '\u2192' in position 17: character maps to <undefined>
+
+[OK] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\theme_bohio_real_estate\static\src\js\property_carousels.js
+
+[ERROR] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\theme_bohio_real_estate\static\src\js\property_carousels.js: 'charmap' codec can't encode character '\u2192' in position 13: character maps to <undefined>
+
+[OK] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\theme_bohio_real_estate\static\src\js\property_compare.js
+
+[ERROR] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\theme_bohio_real_estate\static\src\js\property_compare.js: 'charmap' codec can't encode character '\u2192' in position 21: character maps to <undefined>
+
+[OK] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\theme_bohio_real_estate\static\src\js\property_shop.js
+
+[ERROR] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\theme_bohio_real_estate\static\src\js\property_shop.js: 'charmap' codec can't encode character '\u2192' in position 20: character maps to <undefined>
+
+[OK] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\theme_bohio_real_estate\static\src\js\proyectos.js
+
+[ERROR] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\theme_bohio_real_estate\static\src\js\proyectos.js: 'charmap' codec can't encode character '\u2192' in position 17: character maps to <undefined>
+
+[OK] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\theme_bohio_real_estate\static\src\js\proyecto_detalle.js
+
+[ERROR] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\theme_bohio_real_estate\static\src\js\proyecto_detalle.js: 'charmap' codec can't encode character '\u2192' in position 23: character maps to <undefined>
+
+[OK] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\theme_bohio_real_estate\AUTOCOMPLETADO.md
+
+[ERROR] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\theme_bohio_real_estate\AUTOCOMPLETADO.md: 'charmap' codec can't encode character '\u2192' in position 19: character maps to <undefined>
+
+[OK] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\theme_bohio_real_estate\EJEMPLOS_CARRUSELES.md
+
+[ERROR] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\theme_bohio_real_estate\EJEMPLOS_CARRUSELES.md: 'charmap' codec can't encode character '\u2192' in position 12: character maps to <undefined>
+
+[OK] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\theme_bohio_real_estate\FINAL_IMPLEMENTATION_SUMMARY.md
+
+[ERROR] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\theme_bohio_real_estate\FINAL_IMPLEMENTATION_SUMMARY.md: 'charmap' codec can't encode character '\u2192' in position 16: character maps to <undefined>
+
+[OK] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\theme_bohio_real_estate\INTEGRATION_REPORT.md
+
+[ERROR] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\theme_bohio_real_estate\INTEGRATION_REPORT.md: 'charmap' codec can't encode character '\u2192' in position 16: character maps to <undefined>
+
+
+================================================================================
+MÓDULO: bohio_real_estate
+================================================================================
+
+[OK] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\bohio_real_estate\views\account_loan_template_views.xml
+
+[ERROR] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\bohio_real_estate\views\account_loan_template_views.xml: 'charmap' codec can't encode character '\u2192' in position 18: character maps to <undefined>
+
+[OK] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\bohio_real_estate\views\portal_templates.xml
+
+[ERROR] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\bohio_real_estate\views\portal_templates.xml: 'charmap' codec can't encode character '\u2192' in position 15: character maps to <undefined>
+
+[OK] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\bohio_real_estate\views\portal\portal_menu.xml
+
+[ERROR] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\bohio_real_estate\views\portal\portal_menu.xml: 'charmap' codec can't encode character '\u2192' in position 13: character maps to <undefined>
+
+[OK] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\bohio_real_estate\views\portal\common\admin_portal_view.xml
+
+[ERROR] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\bohio_real_estate\views\portal\common\admin_portal_view.xml: 'charmap' codec can't encode character '\u2192' in position 13: character maps to <undefined>
+
+[OK] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\bohio_real_estate\views\portal\common\no_role.xml
+
+[ERROR] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\bohio_real_estate\views\portal\common\no_role.xml: 'charmap' codec can't encode character '\u2192' in position 29: character maps to <undefined>
+
+[OK] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\bohio_real_estate\views\portal\common\portal_layout.xml
+
+[ERROR] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\bohio_real_estate\views\portal\common\portal_layout.xml: 'charmap' codec can't encode character '\u2192' in position 19: character maps to <undefined>
+
+[OK] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\bohio_real_estate\views\portal\common\tickets.xml
+
+[ERROR] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\bohio_real_estate\views\portal\common\tickets.xml: 'charmap' codec can't encode character '\u2192' in position 13: character maps to <undefined>
+
+[OK] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\bohio_real_estate\views\portal\owner\owner_dashboard.xml
+
+[ERROR] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\bohio_real_estate\views\portal\owner\owner_dashboard.xml: 'charmap' codec can't encode character '\u2192' in position 17: character maps to <undefined>
+
+[OK] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\bohio_real_estate\views\portal\owner\owner_documents.xml
+
+[ERROR] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\bohio_real_estate\views\portal\owner\owner_documents.xml: 'charmap' codec can't encode character '\u2192' in position 15: character maps to <undefined>
+
+[OK] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\bohio_real_estate\views\portal\owner\owner_invoices.xml
+
+[ERROR] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\bohio_real_estate\views\portal\owner\owner_invoices.xml: 'charmap' codec can't encode character '\u2192' in position 14: character maps to <undefined>
+
+[OK] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\bohio_real_estate\views\portal\owner\owner_opportunities.xml
+
+[ERROR] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\bohio_real_estate\views\portal\owner\owner_opportunities.xml: 'charmap' codec can't encode character '\u2192' in position 12: character maps to <undefined>
+
+[OK] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\bohio_real_estate\views\portal\owner\owner_payments.xml
+
+[ERROR] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\bohio_real_estate\views\portal\owner\owner_payments.xml: 'charmap' codec can't encode character '\u2192' in position 13: character maps to <undefined>
+
+[OK] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\bohio_real_estate\views\portal\owner\owner_properties.xml
+
+[ERROR] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\bohio_real_estate\views\portal\owner\owner_properties.xml: 'charmap' codec can't encode character '\u2192' in position 19: character maps to <undefined>
+
+[OK] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\bohio_real_estate\views\portal\salesperson\salesperson_clients.xml
+
+[ERROR] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\bohio_real_estate\views\portal\salesperson\salesperson_clients.xml: 'charmap' codec can't encode character '\u2192' in position 14: character maps to <undefined>
+
+[OK] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\bohio_real_estate\views\portal\salesperson\salesperson_dashboard.xml
+
+[ERROR] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\bohio_real_estate\views\portal\salesperson\salesperson_dashboard.xml: 'charmap' codec can't encode character '\u2192' in position 20: character maps to <undefined>
+
+[OK] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\bohio_real_estate\views\portal\salesperson\salesperson_opportunities.xml
+
+[ERROR] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\bohio_real_estate\views\portal\salesperson\salesperson_opportunities.xml: 'charmap' codec can't encode character '\u2192' in position 14: character maps to <undefined>
+
+[OK] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\bohio_real_estate\views\portal\salesperson\salesperson_opportunity_detail.xml
+
+[ERROR] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\bohio_real_estate\views\portal\salesperson\salesperson_opportunity_detail.xml: 'charmap' codec can't encode character '\u2192' in position 19: character maps to <undefined>
+
+[OK] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\bohio_real_estate\views\portal\salesperson\salesperson_properties.xml
+
+[ERROR] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\bohio_real_estate\views\portal\salesperson\salesperson_properties.xml: 'charmap' codec can't encode character '\u2192' in position 17: character maps to <undefined>
+
+[OK] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\bohio_real_estate\views\portal\tenant\tenant_contracts.xml
+
+[ERROR] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\bohio_real_estate\views\portal\tenant\tenant_contracts.xml: 'charmap' codec can't encode character '\u2192' in position 19: character maps to <undefined>
+
+[OK] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\bohio_real_estate\views\portal\tenant\tenant_dashboard.xml
+
+[ERROR] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\bohio_real_estate\views\portal\tenant\tenant_dashboard.xml: 'charmap' codec can't encode character '\u2192' in position 13: character maps to <undefined>
+
+[OK] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\bohio_real_estate\views\portal\tenant\tenant_documents.xml
+
+[ERROR] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\bohio_real_estate\views\portal\tenant\tenant_documents.xml: 'charmap' codec can't encode character '\u2192' in position 15: character maps to <undefined>
+
+[OK] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\bohio_real_estate\views\portal\tenant\tenant_invoices.xml
+
+[ERROR] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\bohio_real_estate\views\portal\tenant\tenant_invoices.xml: 'charmap' codec can't encode character '\u2192' in position 21: character maps to <undefined>
+
+[OK] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\bohio_real_estate\views\portal\tenant\tenant_payments.xml
+
+[ERROR] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\bohio_real_estate\views\portal\tenant\tenant_payments.xml: 'charmap' codec can't encode character '\u2192' in position 21: character maps to <undefined>
+
+
+================================================================================
+MÓDULO: bohio_crm
+================================================================================
+
+[OK] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\bohio_crm\report\property_comparison_report.xml
+
+[ERROR] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\bohio_crm\report\property_comparison_report.xml: 'charmap' codec can't encode character '\u2192' in position 19: character maps to <undefined>
+
+[OK] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\bohio_crm\views\bohio_crm_actions.xml
+
+[ERROR] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\bohio_crm\views\bohio_crm_actions.xml: 'charmap' codec can't encode character '\u2192' in position 14: character maps to <undefined>
+
+[OK] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\bohio_crm\views\bohio_crm_complete_views.xml
+
+[ERROR] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\bohio_crm\views\bohio_crm_complete_views.xml: 'charmap' codec can't encode character '\u2192' in position 17: character maps to <undefined>
+
+[OK] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\bohio_crm\views\crm_capture_commission_report.xml
+
+[ERROR] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\bohio_crm\views\crm_capture_commission_report.xml: 'charmap' codec can't encode character '\u2192' in position 13: character maps to <undefined>
+
+[OK] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\bohio_crm\views\crm_lead_form_expandable_full.xml
+
+[ERROR] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\bohio_crm\views\crm_lead_form_expandable_full.xml: 'charmap' codec can't encode character '\u2192' in position 19: character maps to <undefined>
+
+[OK] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\bohio_crm\views\crm_lead_form_kanban_vertical.xml
+
+[ERROR] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\bohio_crm\views\crm_lead_form_kanban_vertical.xml: 'charmap' codec can't encode character '\u2192' in position 20: character maps to <undefined>
+
+[OK] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\bohio_crm\views\crm_lead_kanban_canvas.xml
+
+[ERROR] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\bohio_crm\views\crm_lead_kanban_canvas.xml: 'charmap' codec can't encode character '\u2192' in position 13: character maps to <undefined>
+
+[OK] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\bohio_crm\views\crm_lead_quick_create_form.xml
+
+[ERROR] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\bohio_crm\views\crm_lead_quick_create_form.xml: 'charmap' codec can't encode character '\u2192' in position 17: character maps to <undefined>
+
+[OK] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\bohio_crm\static\src\xml\crm_kanban_sidebar_templates.xml
+
+[ERROR] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\bohio_crm\static\src\xml\crm_kanban_sidebar_templates.xml: 'charmap' codec can't encode character '\u2192' in position 16: character maps to <undefined>
+
+[OK] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\bohio_crm\static\src\xml\crm_map_widget_template.xml
+
+[ERROR] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\bohio_crm\static\src\xml\crm_map_widget_template.xml: 'charmap' codec can't encode character '\u2192' in position 13: character maps to <undefined>
+
+[OK] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\bohio_crm\static\src\xml\crm_salesperson_dashboard.xml
+
+[ERROR] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\bohio_crm\static\src\xml\crm_salesperson_dashboard.xml: 'charmap' codec can't encode character '\u2192' in position 15: character maps to <undefined>
+
+[OK] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\bohio_crm\static\src\components\timeline_view_v2\bohio_timeline_view_v2.xml
+
+[ERROR] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\bohio_crm\static\src\components\timeline_view_v2\bohio_timeline_view_v2.xml: 'charmap' codec can't encode character '\u2192' in position 13: character maps to <undefined>
+
+[OK] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\bohio_crm\static\src\js\crm_form_expandable.js
+
+[ERROR] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\bohio_crm\static\src\js\crm_form_expandable.js: 'charmap' codec can't encode character '\u2192' in position 13: character maps to <undefined>
+
+[OK] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\bohio_crm\static\src\js\crm_map_widget.js
+
+[ERROR] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\bohio_crm\static\src\js\crm_map_widget.js: 'charmap' codec can't encode character '\u2192' in position 13: character maps to <undefined>
+
+[OK] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\bohio_crm\FLUJO_COMPLETO_CRM_MARKETING_VENTAS.md
+
+[ERROR] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\bohio_crm\FLUJO_COMPLETO_CRM_MARKETING_VENTAS.md: 'charmap' codec can't encode character '\u2192' in position 29: character maps to <undefined>
+
+
+================================================================================
+MÓDULO: real_estate_bits
+================================================================================
+
+[OK] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\real_estate_bits\views\bohio_debit_note_wizard_views.xml
+
+[ERROR] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\real_estate_bits\views\bohio_debit_note_wizard_views.xml: 'charmap' codec can't encode character '\u2192' in position 20: character maps to <undefined>
+
+[OK] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\real_estate_bits\views\bohio_mass_payment_actions.xml
+
+[ERROR] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\real_estate_bits\views\bohio_mass_payment_actions.xml: 'charmap' codec can't encode character '\u2192' in position 17: character maps to <undefined>
+
+[OK] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\real_estate_bits\views\bohio_mass_payment_views.xml
+
+[ERROR] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\real_estate_bits\views\bohio_mass_payment_views.xml: 'charmap' codec can't encode character '\u2192' in position 14: character maps to <undefined>
+
+[OK] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\real_estate_bits\views\property_contract_line_views.xml
+
+[ERROR] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\real_estate_bits\views\property_contract_line_views.xml: 'charmap' codec can't encode character '\u2192' in position 20: character maps to <undefined>
+
+[OK] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\real_estate_bits\views\property_image_views.xml
+
+[ERROR] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\real_estate_bits\views\property_image_views.xml: 'charmap' codec can't encode character '\u2192' in position 13: character maps to <undefined>
+
+[OK] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\real_estate_bits\views\templates.xml
+
+[ERROR] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\real_estate_bits\views\templates.xml: 'charmap' codec can't encode character '\u2192' in position 15: character maps to <undefined>
+
+[OK] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\real_estate_bits\views\view_property.xml
+
+[ERROR] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\real_estate_bits\views\view_property.xml: 'charmap' codec can't encode character '\u2192' in position 14: character maps to <undefined>
+
+[OK] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\real_estate_bits\views\view_property_contract.xml
+
+[ERROR] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\real_estate_bits\views\view_property_contract.xml: 'charmap' codec can't encode character '\u2192' in position 20: character maps to <undefined>
+
+[OK] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\real_estate_bits\wizard\modify_contract_wizard_views.xml
+
+[ERROR] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\real_estate_bits\wizard\modify_contract_wizard_views.xml: 'charmap' codec can't encode character '\u2192' in position 13: character maps to <undefined>
+
+[OK] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\real_estate_bits\static\src\xml\compartativa.xml
+
+[ERROR] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\real_estate_bits\static\src\xml\compartativa.xml: 'charmap' codec can't encode character '\u2192' in position 14: character maps to <undefined>
+
+[OK] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\real_estate_bits\static\src\xml\home.xml
+
+[ERROR] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\real_estate_bits\static\src\xml\home.xml: 'charmap' codec can't encode character '\u2192' in position 15: character maps to <undefined>
+
+[OK] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\real_estate_bits\static\src\xml\property_dashboard.xml
+
+[ERROR] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\real_estate_bits\static\src\xml\property_dashboard.xml: 'charmap' codec can't encode character '\u2192' in position 20: character maps to <undefined>
+
+[OK] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\real_estate_bits\static\description\index.html
+
+[ERROR] c:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\real_estate_bits\static\description\index.html: 'charmap' codec can't encode character '\u2192' in position 13: character maps to <undefined>
+
+
+================================================================================
+RESUMEN
+================================================================================
+Archivos modificados: 0
+Cambios totales: 0
+
+[OK] Conversion completada

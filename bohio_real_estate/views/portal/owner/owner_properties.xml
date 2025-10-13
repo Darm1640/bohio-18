@@ -147,7 +147,7 @@
                                                 <i class="bi bi-rulers"></i> <strong>Área:</strong> <t t-esc="'{:,.2f}'.format(property.property_area)"/> m²
                                             </li>
                                             <li t-if="property.stratum">
-                                                <i class="fa fa-layer-group"></i> <strong>Estrato:</strong>
+                                                <i class="bi bi-layers"></i> <strong>Estrato:</strong>
                                                 <t t-esc="dict(property._fields['stratum'].selection).get(property.stratum)"/>
                                             </li>
                                         </ul>

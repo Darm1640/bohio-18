@@ -29,12 +29,12 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" data-bs-toggle="tab" href="#contratos" role="tab">
-                            <i class="fa fa-file-contract"></i> Contratos
+                            <i class="bi bi-file-earmark-text"></i> Contratos
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" data-bs-toggle="tab" href="#tickets" role="tab">
-                            <i class="fa fa-ticket"></i> PQRS
+                            <i class="bi bi-ticket-perforated"></i> PQRS
                         </a>
                     </li>
                 </ul>

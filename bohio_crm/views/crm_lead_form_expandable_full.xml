@@ -281,7 +281,7 @@
                                 <div class="o_bohio_opportunities_list">
                                     <!-- Placeholder mientras carga -->
                                     <div class="text-center text-muted py-5">
-                                        <i class="fa fa-spinner fa-spin fa-2x mb-2"/>
+                                        <i class="bi bi-arrow-clockwise fa-spin fa-2x mb-2"/>
                                         <p class="small">Cargando oportunidades...</p>
                                     </div>
                                 </div>

@@ -1,0 +1,205 @@
+<!-- ============================================================ -->
+<!-- MODAL DE PQRS / REPORTAR PROBLEMA -->
+<!-- Insertar DESPUÉS de la línea 477 (después del modal de compartir) -->
+<!-- ============================================================ -->
+
+<!-- MODAL DE PQRS / REPORTAR PROBLEMA -->
+<div class="modal fade" id="reportModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background: linear-gradient(135deg, #FFA500 0%, #FF8C00 100%); color: white;">
+                <h5 class="modal-title">
+                    <i class="fa fa-flag me-2"></i>Reportar Problema con la Propiedad
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Información de la Propiedad -->
+                <div class="card mb-3 border-0 bg-light">
+                    <div class="card-body">
+                        <h6 class="text-warning mb-2">
+                            <i class="fa fa-home me-2"></i><span t-esc="property.name"/>
+                        </h6>
+                        <div class="row g-2 small text-muted">
+                            <div class="col-6" t-if="property.default_code">
+                                <i class="fa fa-tag me-1"></i><strong>Código:</strong> <span t-esc="property.default_code"/>
+                            </div>
+                            <div class="col-6" t-if="property.property_type">
+                                <i class="fa fa-building me-1"></i><strong>Tipo:</strong> <span t-esc="property.property_type"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Formulario de Reporte -->
+                <form id="reportForm" onsubmit="return false;">
+                    <!-- Tipo de Problema -->
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">
+                            <i class="fa fa-exclamation-triangle me-1 text-warning"></i>Tipo de Problema *
+                        </label>
+                        <select name="problem_type" class="form-select" required="required">
+                            <option value="">Seleccione el tipo de problema...</option>
+                            <option value="incorrect_info">Información Incorrecta</option>
+                            <option value="wrong_images">Imágenes Equivocadas</option>
+                            <option value="wrong_price">Precio Incorrecto</option>
+                            <option value="not_available">Propiedad No Disponible</option>
+                            <option value="duplicate">Propiedad Duplicada</option>
+                            <option value="fraud">Posible Fraude</option>
+                            <option value="inappropriate">Contenido Inapropiado</option>
+                            <option value="other">Otro Problema</option>
+                        </select>
+                    </div>
+
+                    <!-- Nombre del Reportante -->
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">
+                            <i class="fa fa-user me-1"></i>Tu Nombre *
+                        </label>
+                        <input type="text" name="reporter_name" class="form-control" required="required" placeholder="Nombre completo"/>
+                    </div>
+
+                    <!-- Email del Reportante -->
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">
+                            <i class="fa fa-envelope me-1"></i>Tu Email *
+                        </label>
+                        <input type="email" name="reporter_email" class="form-control" required="required" placeholder="tu@email.com"/>
+                    </div>
+
+                    <!-- Descripción del Problema -->
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">
+                            <i class="fa fa-comment me-1"></i>Descripción del Problema *
+                        </label>
+                        <textarea name="description" class="form-control" rows="4" required="required" placeholder="Por favor describe detalladamente el problema que encontraste..."></textarea>
+                        <small class="text-muted">Mínimo 20 caracteres</small>
+                    </div>
+
+                    <!-- Datos ocultos -->
+                    <input type="hidden" name="property_id" t-att-value="property.id"/>
+                    <input type="hidden" name="property_name" t-att-value="property.name"/>
+                    <input type="hidden" name="property_code" t-att-value="property.default_code or ''"/>
+                    <input type="hidden" name="property_url" t-att-value="request.httprequest.url"/>
+
+                    <div class="alert alert-info mb-3">
+                        <i class="fa fa-info-circle me-2"></i>
+                        <small>Tu reporte será revisado por nuestro equipo en un plazo de 24-48 horas. Recibirás una respuesta por email.</small>
+                    </div>
+
+                    <button type="button" class="btn btn-warning text-white w-100" onclick="submitReport()">
+                        <i class="fa fa-paper-plane me-2"></i>Enviar Reporte
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- ============================================================ -->
+<!-- FUNCIONES JAVASCRIPT PARA EL MODAL DE PQRS -->
+<!-- REEMPLAZAR la función temporal openReportModal() -->
+<!-- Encontrar línea 760-764 y REEMPLAZAR con este código: -->
+<!-- ============================================================ -->
+
+<!--
+// ============= FUNCIONES DE REPORTE/PQRS =============
+
+// Abrir modal de reporte
+function openReportModal() {
+    const modal = new bootstrap.Modal(document.getElementById('reportModal'));
+    modal.show();
+}
+
+// Enviar reporte (validaciones y proceso)
+function submitReport() {
+    const form = document.getElementById('reportForm');
+
+    // Validar campos
+    const problemType = form.querySelector('[name="problem_type"]').value;
+    const reporterName = form.querySelector('[name="reporter_name"]').value.trim();
+    const reporterEmail = form.querySelector('[name="reporter_email"]').value.trim();
+    const description = form.querySelector('[name="description"]').value.trim();
+
+    // Validaciones
+    if (!problemType) {
+        alert('Por favor selecciona el tipo de problema');
+        return false;
+    }
+
+    if (!reporterName || reporterName.length < 3) {
+        alert('Por favor ingresa tu nombre completo');
+        return false;
+    }
+
+    if (!reporterEmail || !reporterEmail.includes('@')) {
+        alert('Por favor ingresa un email válido');
+        return false;
+    }
+
+    if (description.length < 20) {
+        alert('Por favor proporciona una descripción más detallada (mínimo 20 caracteres)');
+        return false;
+    }
+
+    // Confirmar envío
+    if (!confirm('¿Estás seguro de que deseas enviar este reporte?')) {
+        return false;
+    }
+
+    // Obtener datos
+    const propertyId = form.querySelector('[name="property_id"]').value;
+    const propertyName = form.querySelector('[name="property_name"]').value;
+    const propertyCode = form.querySelector('[name="property_code"]').value;
+    const propertyUrl = form.querySelector('[name="property_url"]').value;
+
+    // Crear el cuerpo del email
+    const emailSubject = encodeURIComponent(`[REPORTE PQRS] ${propertyCode || 'Sin código'} - ${propertyName}`);
+    const emailBody = encodeURIComponent(`
+REPORTE DE PROBLEMA CON PROPIEDAD
+=====================================
+
+DATOS DE LA PROPIEDAD:
+- Nombre: ${propertyName}
+- Código: ${propertyCode || 'N/A'}
+- URL: ${propertyUrl}
+- ID: ${propertyId}
+
+TIPO DE PROBLEMA:
+${problemType}
+
+REPORTADO POR:
+- Nombre: ${reporterName}
+- Email: ${reporterEmail}
+
+DESCRIPCIÓN DEL PROBLEMA:
+${description}
+
+=====================================
+Este reporte fue generado automáticamente desde el sitio web BOHIO.
+Fecha: ${new Date().toLocaleString()}
+    `);
+
+    // Enviar por email (abre cliente de correo)
+    // NOTA: Para producción, considera implementar un endpoint RPC en Odoo
+    // que envíe el email directamente o cree un ticket en helpdesk
+    window.location.href = `mailto:reportes@bohio.com?subject=${emailSubject}&body=${emailBody}`;
+
+    // Mostrar mensaje de éxito
+    setTimeout(() => {
+        alert('¡Gracias por tu reporte!\n\nTu correo electrónico se está preparando.\n\nRecibirás una respuesta en las próximas 24-48 horas.');
+
+        // Cerrar modal
+        const modalInstance = bootstrap.Modal.getInstance(document.getElementById('reportModal'));
+        if (modalInstance) {
+            modalInstance.hide();
+        }
+
+        // Limpiar formulario
+        form.reset();
+    }, 500);
+
+    return false;
+}
+-->

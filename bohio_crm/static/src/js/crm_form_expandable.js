@@ -298,7 +298,7 @@ export class BohioCrmFormExpandable extends FormController {
         if (this.state.loading) {
             listContainer.innerHTML = `
                 <div class="text-center text-muted py-5">
-                    <i class="fa fa-spinner fa-spin fa-2x mb-2"></i>
+                    <i class="bi bi-arrow-clockwise fa-spin fa-2x mb-2"></i>
                     <p class="small">Cargando oportunidades...</p>
                 </div>
             `;
@@ -349,7 +349,7 @@ export class BohioCrmFormExpandable extends FormController {
                 ${opp.partner_id ? opp.partner_id[1] : 'Sin cliente'}
             </div>
             <div class="small text-muted mb-1">
-                <i class="fa fa-flag me-1"></i>
+                <i class="bi bi-flag me-1"></i>
                 ${opp.stage_id ? opp.stage_id[1] : 'Sin etapa'}
             </div>
             <div class="d-flex justify-content-between align-items-center mt-2 pt-2 border-top">

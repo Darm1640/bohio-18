@@ -37,7 +37,7 @@
                                                 <td>
                                                     <t t-if="payment.contract_id">
                                                         <span class="badge bg-primary">
-                                                            <i class="fa fa-file-contract"></i> Contrato
+                                                            <i class="bi bi-file-earmark-text"></i> Contrato
                                                         </span>
                                                         <br/>
                                                         <small class="text-muted" t-esc="payment.contract_id.partner_id.name"/>

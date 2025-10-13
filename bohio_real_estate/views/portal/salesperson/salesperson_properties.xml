@@ -275,7 +275,7 @@
                         <!-- Oportunidades relacionadas -->
                         <div class="card border-0 shadow-sm" t-if="opportunities">
                             <div class="card-header bg-white">
-                                <h5 class="mb-0"><i class="fa fa-handshake text-danger"></i> Oportunidades Relacionadas</h5>
+                                <h5 class="mb-0"><i class="bi bi-hand-thumbs-up text-danger"></i> Oportunidades Relacionadas</h5>
                             </div>
                             <div class="card-body">
                                 <t t-foreach="opportunities" t-as="opp">

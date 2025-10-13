@@ -166,7 +166,7 @@
                                                 <input type="file" class="form-control" name="attachment"/>
                                             </div>
                                             <button type="submit" class="btn btn-primary">
-                                                <i class="fa fa-paper-plane"></i> Enviar
+                                                <i class="bi bi-send"></i> Enviar
                                             </button>
                                         </form>
                                     </div>
