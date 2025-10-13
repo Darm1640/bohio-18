@@ -1,0 +1,349 @@
+// =============================================================================
+// BOHIO REAL ESTATE - MIXINS
+// =============================================================================
+// Mixins reutilizables para todo el tema
+// Basado en mejores prácticas de Odoo 18
+
+@import 'variables';
+
+// -----------------------------------------------------------------------------
+// RESPONSIVE BREAKPOINTS
+// -----------------------------------------------------------------------------
+
+@mixin respond-to($breakpoint) {
+    @if $breakpoint == xs {
+        @media (min-width: $breakpoint-xs) { @content; }
+    }
+    @else if $breakpoint == sm {
+        @media (min-width: $breakpoint-sm) { @content; }
+    }
+    @else if $breakpoint == md {
+        @media (min-width: $breakpoint-md) { @content; }
+    }
+    @else if $breakpoint == lg {
+        @media (min-width: $breakpoint-lg) { @content; }
+    }
+    @else if $breakpoint == xl {
+        @media (min-width: $breakpoint-xl) { @content; }
+    }
+    @else if $breakpoint == xxl {
+        @media (min-width: $breakpoint-xxl) { @content; }
+    }
+}
+
+// -----------------------------------------------------------------------------
+// GRADIENTES
+// -----------------------------------------------------------------------------
+
+// Gradiente principal BOHIO (horizontal)
+@mixin bohio-gradient-horizontal {
+    background: linear-gradient(90deg,
+        $bohio-red-primary 0%,
+        $bohio-red-secondary 25%,
+        $bohio-red-light 50%,
+        $bohio-red-secondary 75%,
+        $bohio-red-primary 100%
+    );
+}
+
+// Gradiente principal BOHIO (diagonal)
+@mixin bohio-gradient-diagonal {
+    background: linear-gradient(135deg,
+        $bohio-red-primary,
+        $bohio-red-secondary
+    );
+}
+
+// Gradiente con animación shimmer
+@mixin bohio-gradient-shimmer {
+    @include bohio-gradient-horizontal;
+    animation: bohio-shimmer 3s ease-in-out infinite;
+}
+
+// -----------------------------------------------------------------------------
+// BOTONES
+// -----------------------------------------------------------------------------
+
+@mixin btn-bohio-primary {
+    background: $bohio-red-primary;
+    border: none;
+    color: $text-white;
+    padding: 0.75rem 1.5rem;
+    border-radius: $border-radius;
+    font-weight: $font-weight-semibold;
+    transition: all $transition-base;
+
+    &:hover {
+        background: $bohio-red-dark;
+        transform: translateY(-2px);
+        box-shadow: $shadow-bohio;
+    }
+
+    &:active {
+        transform: translateY(0);
+    }
+}
+
+@mixin btn-bohio-outline {
+    background: transparent;
+    border: 2px solid $bohio-red-primary;
+    color: $bohio-red-primary;
+    padding: 0.75rem 1.5rem;
+    border-radius: $border-radius;
+    font-weight: $font-weight-semibold;
+    transition: all $transition-base;
+
+    &:hover {
+        background: $bohio-red-primary;
+        color: $text-white;
+        transform: translateY(-2px);
+        box-shadow: $shadow-bohio;
+    }
+}
+
+// -----------------------------------------------------------------------------
+// CARDS
+// -----------------------------------------------------------------------------
+
+@mixin card-bohio {
+    background: $bg-white;
+    border-radius: $card-border-radius;
+    box-shadow: $card-shadow;
+    overflow: hidden;
+    transition: all $transition-base;
+    border: none;
+
+    &:hover {
+        box-shadow: $card-shadow-hover;
+        transform: translateY(-4px);
+    }
+}
+
+@mixin card-image($height: 200px) {
+    width: 100%;
+    height: $height;
+    object-fit: cover;
+    transition: transform $transition-base;
+
+    &:hover {
+        transform: scale(1.05);
+    }
+}
+
+// -----------------------------------------------------------------------------
+// ICONOS SOCIALES
+// -----------------------------------------------------------------------------
+
+@mixin social-icon {
+    width: $social-icon-size;
+    height: $social-icon-size;
+    background: $social-icon-bg;
+    border-radius: $border-radius-full;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: $text-white;
+    transition: all $transition-base;
+    text-decoration: none;
+
+    &:hover {
+        transform: translateY(-3px) scale(1.1);
+        box-shadow: $shadow-bohio;
+        color: $text-white;
+    }
+}
+
+// -----------------------------------------------------------------------------
+// SECCIONES
+// -----------------------------------------------------------------------------
+
+@mixin section-padding {
+    padding: $spacer-3xl 0;
+
+    @include respond-to(md) {
+        padding: $spacer-4xl 0;
+    }
+}
+
+@mixin section-title {
+    font-size: $font-size-3xl;
+    font-weight: $font-weight-bold;
+    color: $text-primary;
+    margin-bottom: $spacer-xl;
+    text-align: center;
+
+    @include respond-to(md) {
+        font-size: $font-size-4xl;
+    }
+}
+
+@mixin section-subtitle {
+    font-size: $font-size-lg;
+    color: $text-secondary;
+    margin-bottom: $spacer-2xl;
+    text-align: center;
+    line-height: $line-height-relaxed;
+}
+
+// -----------------------------------------------------------------------------
+// OVERLAYS
+// -----------------------------------------------------------------------------
+
+@mixin overlay($opacity: 0.5) {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, $opacity);
+    z-index: 1;
+}
+
+@mixin overlay-gradient {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+        180deg,
+        transparent 0%,
+        rgba(0, 0, 0, 0.7) 100%
+    );
+    z-index: 1;
+}
+
+// -----------------------------------------------------------------------------
+// ANIMACIONES
+// -----------------------------------------------------------------------------
+
+@mixin fade-in($duration: 0.3s) {
+    animation: fadeIn $duration ease-in;
+}
+
+@mixin slide-up($duration: 0.5s) {
+    animation: slideUp $duration ease-out;
+}
+
+@mixin bounce-in($duration: 0.6s) {
+    animation: bounceIn $duration ease-out;
+}
+
+// -----------------------------------------------------------------------------
+// UTILIDADES
+// -----------------------------------------------------------------------------
+
+@mixin truncate-text($lines: 1) {
+    @if $lines == 1 {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    } @else {
+        display: -webkit-box;
+        -webkit-line-clamp: $lines;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+}
+
+@mixin center-absolute {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+@mixin reset-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+@mixin clearfix {
+    &::after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+}
+
+// -----------------------------------------------------------------------------
+// FORMULARIOS
+// -----------------------------------------------------------------------------
+
+@mixin input-bohio {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 2px solid #e5e7eb;
+    border-radius: $border-radius;
+    font-size: $font-size-base;
+    transition: all $transition-base;
+
+    &:focus {
+        outline: none;
+        border-color: $bohio-red-primary;
+        box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+    }
+
+    &::placeholder {
+        color: $text-muted;
+    }
+}
+
+@mixin label-bohio {
+    display: block;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+    color: $text-primary;
+    margin-bottom: $spacer-sm;
+}
+
+// -----------------------------------------------------------------------------
+// BADGES
+// -----------------------------------------------------------------------------
+
+@mixin badge-bohio {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.4rem 0.8rem;
+    background: $bohio-red-primary;
+    color: $text-white;
+    border-radius: $border-radius;
+    font-size: $font-size-xs;
+    font-weight: $font-weight-semibold;
+    text-decoration: none;
+    transition: all $transition-base;
+
+    &:hover {
+        background: $bohio-red-dark;
+        color: $text-white;
+        transform: translateY(-2px);
+    }
+}
+
+// -----------------------------------------------------------------------------
+// MODALES Y POPUPS
+// -----------------------------------------------------------------------------
+
+@mixin modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.75);
+    z-index: $z-index-modal-backdrop;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@mixin modal-content {
+    background: $bg-white;
+    border-radius: $border-radius-xl;
+    padding: $spacer-2xl;
+    max-width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: $shadow-2xl;
+}

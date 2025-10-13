@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ========================================================================= -->
+    <!-- TEMPLATE QWEB PARA PROPERTY CARD                                         -->
+    <!-- ========================================================================= -->
+    <!-- Usado por JavaScript property_carousels.js para evitar HTML en JS       -->
+    <!-- Siguiendo mejores prácticas Odoo 18                                      -->
+
+    <template id="property_card_template" name="Property Card Template">
+        <div class="col-md-3">
+            <div class="card h-100 shadow-sm border-0 bohio-property-card position-relative">
+
+                <!-- Badge de proyecto -->
+                <t t-if="property.project_id">
+                    <div class="position-absolute top-0 end-0 m-2">
+                        <a t-attf-href="/proyecto/{{property.project_id}}"
+                           class="badge bg-danger text-white text-decoration-none property-project-badge">
+                            <i class="bi bi-building me-1"></i>
+                            <t t-esc="property.project_name"/>
+                        </a>
+                    </div>
+                </t>
+
+                <!-- Imagen de la propiedad -->
+                <img t-attf-src="{{property.image_url or '/theme_bohio_real_estate/static/src/img/placeholder.jpg'}}"
+                     class="card-img-top property-card-image"
+                     t-att-alt="property.name"
+                     loading="lazy"
+                     onerror="this.src='/theme_bohio_real_estate/static/src/img/placeholder.jpg'"/>
+
+                <!-- Cuerpo de la tarjeta -->
+                <div class="card-body d-flex flex-column">
+                    <!-- Título -->
+                    <h5 class="card-title text-truncate" t-att-title="property.name">
+                        <t t-esc="property.name"/>
+                    </h5>
+
+                    <!-- Ubicación -->
+                    <p class="text-muted small mb-2">
+                        <i class="bi bi-geo-alt-fill me-1"></i>
+                        <t t-esc="property.location"/>
+                    </p>
+
+                    <!-- Características (área, habitaciones, baños) -->
+                    <div class="d-flex justify-content-between mb-2 text-muted small property-features">
+                        <span t-if="property.area and property.area > 0">
+                            <i class="bi bi-rulers me-1"></i>
+                            <t t-esc="property.area"/> m²
+                        </span>
+                        <span t-if="property.bedrooms and property.bedrooms > 0">
+                            <i class="bi bi-bed me-1"></i>
+                            <t t-esc="property.bedrooms"/>
+                        </span>
+                        <span t-if="property.bathrooms and property.bathrooms > 0">
+                            <i class="bi bi-droplet me-1"></i>
+                            <t t-esc="property.bathrooms"/>
+                        </span>
+                    </div>
+
+                    <!-- Precio -->
+                    <div class="mb-2">
+                        <small class="text-muted">
+                            <t t-esc="property.price_label"/>
+                        </small>
+                        <h4 class="text-danger mb-0">
+                            <t t-esc="property.price_formatted"/>
+                        </h4>
+                    </div>
+
+                    <!-- Botón ver detalles -->
+                    <a t-attf-href="{{property.url}}"
+                       class="btn btn-outline-danger w-100 mt-auto">
+                        <i class="bi bi-eye me-1"></i>Ver detalles
+                    </a>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- ========================================================================= -->
+    <!-- TEMPLATE PARA MENSAJE DE PROPIEDADES VACÍAS                              -->
+    <!-- ========================================================================= -->
+
+    <template id="property_empty_state" name="Property Empty State">
+        <div class="text-center py-5">
+            <i class="bi bi-house-fill fa-3x text-muted mb-3"></i>
+            <p class="text-muted">No hay propiedades disponibles en este momento</p>
+        </div>
+    </template>
+
+    <!-- ========================================================================= -->
+    <!-- TEMPLATE PARA CARRUSEL DE PROPIEDADES                                    -->
+    <!-- ========================================================================= -->
+
+    <template id="property_carousel_template" name="Property Carousel Template">
+        <div t-attf-id="{{carousel_id}}" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <!-- Los items del carrusel se insertan dinámicamente -->
+            </div>
+
+            <!-- Controles del carrusel -->
+            <button class="carousel-control-prev" type="button"
+                    t-attf-data-bs-target="#{{carousel_id}}"
+                    data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Anterior</span>
+            </button>
+            <button class="carousel-control-next" type="button"
+                    t-attf-data-bs-target="#{{carousel_id}}"
+                    data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Siguiente</span>
+            </button>
+
+            <!-- Indicadores -->
+            <div class="carousel-indicators">
+                <!-- Los indicadores se insertan dinámicamente -->
+            </div>
+        </div>
+    </template>
+
+</odoo>

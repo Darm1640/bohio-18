@@ -1,91 +1,20 @@
-// Bohio Real Estate - Homepage Styles - NEW VERSION
+// =============================================================================
+// BOHIO REAL ESTATE - HOMEPAGE STYLES
+// =============================================================================
+// Estilos de la página principal con variables y mixins centralizados
+// Refactorizado para usar variables desde _variables.scss
 
-// BOHIO Variables - Custom Theme Variables
-// Spacers
-$bohio-spacer-xs: 0.25rem;
-$bohio-spacer-sm: 0.5rem;
-$bohio-spacer-md: 1rem;
-$bohio-spacer-lg: 1.5rem;
-$bohio-spacer-xl: 3rem;
+@import 'variables';
+@import 'mixins';
 
-// Breakpoints
-$bohio-breakpoint-sm: 576px;
-$bohio-breakpoint-md: 768px;
-$bohio-breakpoint-lg: 992px;
-$bohio-breakpoint-xl: 1200px;
+// -----------------------------------------------------------------------------
+// HOMEPAGE PRINCIPAL
+// -----------------------------------------------------------------------------
 
-// Font Sizes
-$bohio-font-size-sm: 0.875rem;
-$bohio-font-size-base: 1rem;
-$bohio-font-size-lg: 1.125rem;
-$bohio-h1-font-size: 2.5rem;
-$bohio-h2-font-size: 2rem;
-$bohio-h4-font-size: 1.5rem;
-$bohio-h5-font-size: 1.25rem;
-
-// BOHIO/Moncormiga Brand Colors - Corporate Identity
-$bohio-red: #E31E24;              // Principal - Rojo corporativo Moncormiga
-$bohio-red-dark: #B81820;         // Hover/Active states
-$bohio-red-light: #FEE2E2;        // Backgrounds
-
-// Alias for consistency
-$bohio-color-primary: $bohio-red;
-$bohio-color-secondary: $bohio-red-dark;
-$bohio-color-text-dark: #212529;
-$bohio-color-text-light: #6C757D;
-$bohio-color-success: #10B981;
-$bohio-color-bg-white: #FFFFFF;
-$bohio-color-bg-light: #F9FAFB;
-$bohio-color-border: #E5E7EB;
-
-// Border Radius
-$bohio-border-radius: 0.375rem;
-$bohio-border-radius-lg: 0.5rem;
-
-// Shadows
-$bohio-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
-$bohio-shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
-$bohio-shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.15);
-
-// Transitions
-$bohio-transition-base: all 0.3s ease;
-$bohio-transition-slow: all 0.5s ease;
-
-// Legacy Compatibility (for old code sections)
-$spacer-xl: $bohio-spacer-xl;
-$spacer-lg: $bohio-spacer-lg;
-$spacer-md: $bohio-spacer-md;
-$spacer-sm: $bohio-spacer-sm;
-$spacer-xs: $bohio-spacer-xs;
-$breakpoint-md: $bohio-breakpoint-md;
-$o-color-primary: $bohio-color-primary;
-$o-color-secondary: $bohio-color-secondary;
-$o-color-text-dark: $bohio-color-text-dark;
-$o-color-text-light: $bohio-color-text-light;
-$o-success: $bohio-color-success;
-$o-bg-white: $bohio-color-bg-white;
-$o-bg-light: $bohio-color-bg-light;
-$border-color: $bohio-color-border;
-$border-radius: $bohio-border-radius;
-$border-radius-lg: $bohio-border-radius-lg;
-$shadow-sm: $bohio-shadow-sm;
-$shadow-md: $bohio-shadow-md;
-$shadow-lg: $bohio-shadow-lg;
-$transition-base: $bohio-transition-base;
-$transition-slow: $bohio-transition-slow;
-$h1-font-size: $bohio-h1-font-size;
-$h2-font-size: $bohio-h2-font-size;
-$h4-font-size: $bohio-h4-font-size;
-$h5-font-size: $bohio-h5-font-size;
-$font-size-sm: $bohio-font-size-sm;
-$font-size-base: $bohio-font-size-base;
-$font-size-lg: $bohio-font-size-lg;
-
-/* BOHIO Homepage Styles */
 .bohio-homepage {
-    background-color: #FFFFFF;
+    background-color: $bg-white;
 
-    /* Hero Section */
+    // Hero Section
     .bohio-hero-section {
         position: relative;
 
@@ -103,101 +32,101 @@ $font-size-lg: $bohio-font-size-lg;
             animation: slideUp 0.5s ease;
 
             .form-label {
-                font-weight: 600;
-                color: #374151;
-                margin-bottom: 0.5rem;
+                font-weight: $font-weight-semibold;
+                color: $text-primary;
+                margin-bottom: $spacer-sm;
 
                 i {
-                    font-size: 14px;
+                    font-size: $font-size-sm;
                 }
             }
 
             .form-select,
             .form-control {
-                border: 2px solid #E5E7EB;
-                border-radius: 0.5rem;
+                border: 2px solid $bg-light;
+                border-radius: $border-radius-lg;
                 padding: 0.625rem 0.875rem;
-                transition: all 0.3s ease;
-                font-size: 14px;
+                transition: all $transition-base;
+                font-size: $font-size-sm;
 
                 &:focus {
-                    border-color: #E31E24;
-                    box-shadow: 0 0 0 3px rgba(227, 30, 36, 0.1);
+                    border-color: $bohio-red-primary;
+                    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
                     outline: none;
                 }
 
                 &::placeholder {
-                    color: #9CA3AF;
+                    color: $text-muted;
                 }
             }
 
             .btn-danger {
-                background-color: #E31E24;
+                background-color: $bohio-red-primary;
                 border: none;
-                font-weight: 700;
+                font-weight: $font-weight-bold;
                 letter-spacing: 0.5px;
-                transition: all 0.3s ease;
+                transition: all $transition-base;
 
                 &:hover {
                     background-color: $bohio-red-dark;
                     transform: translateY(-2px);
-                    box-shadow: 0 6px 16px rgba(227, 30, 36, 0.4);
+                    box-shadow: $shadow-bohio;
                 }
             }
 
             .btn-outline-danger {
-                color: #E31E24;
-                border-color: #E31E24;
-                transition: all 0.3s ease;
+                color: $bohio-red-primary;
+                border-color: $bohio-red-primary;
+                transition: all $transition-base;
 
                 &:hover {
-                    background-color: #E31E24;
-                    color: white;
+                    background-color: $bohio-red-primary;
+                    color: $text-white;
                     transform: scale(1.05);
                 }
             }
 
-            /* Filtros Avanzados Colapsables */
+            // Filtros Avanzados Colapsables
             .advanced-filters-collapse {
                 animation: expandDown 0.4s ease;
 
                 hr {
-                    border-color: #E5E7EB;
+                    border-color: $bg-light;
                     opacity: 1;
                 }
 
                 .form-check-input {
-                    border-color: #E31E24;
+                    border-color: $bohio-red-primary;
                     cursor: pointer;
 
                     &:checked {
-                        background-color: #E31E24;
-                        border-color: #E31E24;
+                        background-color: $bohio-red-primary;
+                        border-color: $bohio-red-primary;
                     }
 
                     &:focus {
-                        box-shadow: 0 0 0 3px rgba(227, 30, 36, 0.1);
+                        box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
                     }
                 }
 
                 .form-check-label {
                     cursor: pointer;
-                    color: #374151;
-                    font-weight: 500;
+                    color: $text-primary;
+                    font-weight: $font-weight-medium;
                     user-select: none;
 
                     &:hover {
-                        color: #E31E24;
+                        color: $bohio-red-primary;
                     }
                 }
             }
 
-            /* Botón Toggle Filtros */
+            // Botón Toggle Filtros
             .btn-link {
-                font-size: 14px;
+                font-size: $font-size-sm;
 
                 i {
-                    transition: transform 0.3s ease;
+                    transition: transform $transition-base;
                 }
 
                 &:hover {
@@ -211,21 +140,21 @@ $font-size-lg: $bohio-font-size-lg;
             }
         }
 
-        /* Autocomplete */
+        // Autocomplete
         .autocomplete-suggestions {
             position: absolute;
             top: 100%;
             left: 0;
             right: 0;
-            background: white;
-            border: 2px solid #E31E24;
+            background: $bg-white;
+            border: 2px solid $bohio-red-primary;
             border-top: none;
-            border-radius: 0 0 0.5rem 0.5rem;
+            border-radius: 0 0 $border-radius-lg $border-radius-lg;
             max-height: 300px;
             overflow-y: auto;
-            z-index: 1000;
+            z-index: $z-index-dropdown;
             display: none;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            box-shadow: $shadow-lg;
 
             &.active {
                 display: block;
@@ -234,12 +163,12 @@ $font-size-lg: $bohio-font-size-lg;
             .suggestion-item {
                 padding: 0.75rem 1rem;
                 cursor: pointer;
-                transition: background-color 0.2s ease;
-                border-bottom: 1px solid #F3F4F6;
+                transition: background-color $transition-fast;
+                border-bottom: 1px solid $bg-light;
 
                 &:hover,
                 &.active {
-                    background-color: #FEF2F2;
+                    background-color: rgba(220, 38, 38, 0.05);
                 }
 
                 &:last-child {

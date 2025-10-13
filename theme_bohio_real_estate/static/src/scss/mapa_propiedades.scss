@@ -1,0 +1,493 @@
+// ==========================================
+// VARIABLES - COLORES BOHÍO
+// ==========================================
+$bohio-red: #E31E24;
+$bohio-black: #000000;
+$bohio-white: #FFFFFF;
+$bohio-gray-light: #F8F9FA;
+$bohio-gray: #6C757D;
+$bohio-blue: #4285F4;
+
+// ==========================================
+// CONTENEDOR DEL MAPA
+// ==========================================
+.map-container {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+}
+
+#bohio-map {
+    width: 100%;
+    height: 80vh;
+    z-index: 1;
+}
+
+// ==========================================
+// MARCADORES PERSONALIZADOS - BOHÍO
+// ==========================================
+.bohio-marker {
+    background: transparent !important;
+    border: none !important;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &:hover {
+        z-index: 1000 !important;
+        transform: scale(1.1);
+
+        .bohio-marker-card {
+            box-shadow: 0 5px 20px rgba($bohio-black, 0.35);
+            border-color: $bohio-black;
+            transform: translateY(-2px);
+        }
+    }
+}
+
+.bohio-marker-card {
+    background: rgba($bohio-white, 0.98);
+    border-radius: 12px;
+    padding: 12px 16px;
+    box-shadow: 0 4px 12px rgba($bohio-black, 0.25);
+    border: 2px solid $bohio-red;
+    min-width: 100px;
+    text-align: center;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.bohio-marker-icon {
+    width: 42px;
+    height: 42px;
+    background: $bohio-red;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba($bohio-red, 0.4);
+    transition: all 0.3s ease;
+
+    i {
+        color: $bohio-white;
+        font-size: 22px;
+    }
+}
+
+.bohio-marker:hover .bohio-marker-icon {
+    background: $bohio-black;
+    box-shadow: 0 4px 12px rgba($bohio-black, 0.5);
+}
+
+.bohio-marker-price {
+    background: $bohio-red;
+    color: $bohio-white;
+    font-weight: 700;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+}
+
+.bohio-marker-name {
+    background: $bohio-black;
+    color: $bohio-white;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 11px;
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+// ==========================================
+// MARCADOR DE USUARIO
+// ==========================================
+.user-location-marker {
+    background: transparent !important;
+    border: none !important;
+}
+
+.user-location-pulse {
+    width: 20px;
+    height: 20px;
+    background: $bohio-blue;
+    border-radius: 50%;
+    border: 3px solid $bohio-white;
+    box-shadow: 0 0 0 0 rgba($bohio-blue, 1);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba($bohio-blue, 0.7);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba($bohio-blue, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba($bohio-blue, 0);
+    }
+}
+
+// ==========================================
+// POPUP DE PROPIEDADES
+// ==========================================
+.leaflet-popup-content-wrapper {
+    border-radius: 8px;
+    box-shadow: 0 3px 14px rgba($bohio-black, 0.2);
+}
+
+.property-popup {
+    min-width: 220px;
+    padding: 8px;
+
+    h5 {
+        font-size: 16px;
+        font-weight: 700;
+        color: #333;
+        margin-bottom: 8px;
+    }
+
+    strong {
+        color: $bohio-red;
+        font-size: 18px;
+    }
+
+    .small {
+        font-size: 13px;
+        color: #666;
+
+        i {
+            color: $bohio-red;
+            margin-right: 4px;
+        }
+    }
+
+    .btn-danger {
+        background: $bohio-red;
+        border-color: $bohio-red;
+        transition: all 0.3s ease;
+
+        &:hover {
+            background: $bohio-black;
+            border-color: $bohio-black;
+            transform: translateY(-1px);
+        }
+    }
+}
+
+// ==========================================
+// OVERLAYS (LOADING Y NO DATA)
+// ==========================================
+.map-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba($bohio-white, 0.95);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    flex-direction: column;
+}
+
+#map-loading {
+    display: flex;
+
+    .spinner-border {
+        width: 3rem;
+        height: 3rem;
+        border-width: 0.3rem;
+    }
+
+    p {
+        font-size: 16px;
+        color: $bohio-gray;
+    }
+}
+
+.no-data-card {
+    background: $bohio-white;
+    border-radius: 16px;
+    padding: 48px 40px;
+    box-shadow: 0 10px 40px rgba($bohio-black, 0.15);
+    text-align: center;
+    max-width: 450px;
+    border: 2px solid $bohio-red;
+
+    h3 {
+        color: #333;
+        margin-bottom: 28px;
+        font-size: 20px;
+        font-weight: 700;
+    }
+}
+
+.no-data-icon {
+    font-size: 72px;
+    margin-bottom: 24px;
+    animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.no-data-actions {
+    margin-top: 28px;
+
+    .btn {
+        margin: 0 8px;
+        font-weight: 600;
+        padding: 12px 24px;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+
+        &:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba($bohio-black, 0.2);
+        }
+    }
+
+    .btn-danger {
+        background: $bohio-red;
+        border-color: $bohio-red;
+
+        &:hover {
+            background: darken($bohio-red, 10%);
+        }
+    }
+}
+
+// ==========================================
+// CONTROLES DE LEAFLET - ESTILO BOHÍO
+// ==========================================
+.leaflet-control-zoom {
+    border: 2px solid $bohio-red !important;
+    border-radius: 8px !important;
+    box-shadow: 0 2px 8px rgba($bohio-black, 0.2) !important;
+    overflow: hidden;
+
+    a {
+        background: $bohio-red !important;
+        color: $bohio-white !important;
+        font-weight: bold;
+        border: none !important;
+        transition: all 0.3s ease;
+
+        &:hover {
+            background: $bohio-black !important;
+        }
+
+        &.leaflet-disabled {
+            background: lighten($bohio-red, 20%) !important;
+            opacity: 0.6;
+        }
+    }
+}
+
+.leaflet-bar {
+    border: none !important;
+    box-shadow: none !important;
+}
+
+// ==========================================
+// BOTONES DEL HEADER
+// ==========================================
+.map-header-actions {
+    .btn-geolocate {
+        background: $bohio-red;
+        border-color: $bohio-red;
+        color: $bohio-white;
+        font-weight: 600;
+        padding: 8px 16px;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+
+        i {
+            margin-right: 6px;
+        }
+
+        &:hover {
+            background: $bohio-black;
+            border-color: $bohio-black;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba($bohio-black, 0.2);
+        }
+
+        &:active {
+            transform: translateY(0);
+        }
+    }
+
+    .btn-list {
+        border: 2px solid $bohio-gray;
+        color: $bohio-gray;
+        font-weight: 600;
+        padding: 8px 16px;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+
+        i {
+            margin-right: 6px;
+        }
+
+        &:hover {
+            border-color: $bohio-black;
+            color: $bohio-black;
+            background: $bohio-gray-light;
+        }
+    }
+}
+
+// ==========================================
+// HEADER DEL MAPA
+// ==========================================
+.map-header {
+    background: $bohio-gray-light;
+    border-bottom: 2px solid darken($bohio-gray-light, 5%);
+
+    h1 {
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: $bohio-black;
+
+        i {
+            color: $bohio-red;
+            margin-right: 8px;
+        }
+    }
+
+    .property-count-text {
+        color: $bohio-gray;
+        font-size: 14px;
+        margin-top: 4px;
+
+        #property-count {
+            font-weight: 700;
+            color: $bohio-red;
+        }
+    }
+}
+
+// ==========================================
+// ALERT INFO
+// ==========================================
+.map-info-alert {
+    border-left: 4px solid $bohio-red;
+    background: lighten($bohio-red, 45%);
+    border-radius: 8px;
+
+    i {
+        color: $bohio-red;
+    }
+
+    strong {
+        color: $bohio-black;
+    }
+}
+
+// ==========================================
+// RESPONSIVE
+// ==========================================
+@media (max-width: 768px) {
+    #bohio-map {
+        height: 60vh !important;
+    }
+
+    .bohio-marker-card {
+        padding: 6px 10px;
+        min-width: 75px;
+    }
+
+    .bohio-marker-price,
+    .bohio-marker-name {
+        font-size: 11px;
+        padding: 4px 8px;
+    }
+
+    .no-data-card {
+        padding: 32px 24px;
+        max-width: 90%;
+    }
+
+    .no-data-icon {
+        font-size: 56px;
+    }
+
+    .property-popup {
+        min-width: 180px;
+    }
+
+    .map-header {
+        h1 {
+            font-size: 1.25rem;
+        }
+    }
+
+    .map-header-actions {
+        .btn-geolocate,
+        .btn-list {
+            padding: 6px 12px;
+            font-size: 14px;
+
+            i {
+                margin-right: 4px;
+            }
+        }
+    }
+
+    .no-data-actions {
+        .btn {
+            padding: 10px 20px;
+            font-size: 14px;
+        }
+    }
+}
+
+@media (max-width: 576px) {
+    .map-header-actions {
+        margin-top: 12px;
+
+        .btn-geolocate,
+        .btn-list {
+            width: 100%;
+            margin-bottom: 8px;
+        }
+    }
+
+    #bohio-map {
+        height: 50vh !important;
+    }
+}
+
+// ==========================================
+// DARK MODE SUPPORT (OPCIONAL)
+// ==========================================
+@media (prefers-color-scheme: dark) {
+    .leaflet-layer,
+    .leaflet-control-zoom-in,
+    .leaflet-control-zoom-out,
+    .leaflet-control-attribution {
+        filter: invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%);
+    }
+
+    .bohio-marker,
+    .user-location-marker,
+    .leaflet-popup-content-wrapper {
+        filter: invert(0%) hue-rotate(0deg) brightness(100%) contrast(100%);
+    }
+}

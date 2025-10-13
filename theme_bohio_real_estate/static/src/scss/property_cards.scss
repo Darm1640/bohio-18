@@ -1,0 +1,188 @@
+// =============================================================================
+// BOHIO REAL ESTATE - PROPERTY CARDS STYLES
+// =============================================================================
+// Estilos para tarjetas de propiedades (carruseles y listados)
+// Todos los estilos inline extraídos del JavaScript
+
+@import 'variables';
+@import 'mixins';
+
+// -----------------------------------------------------------------------------
+// PROPERTY CARD BASE
+// -----------------------------------------------------------------------------
+
+.bohio-property-card {
+    transition: transform $transition-base, box-shadow $transition-base;
+    border-radius: $border-radius-lg;
+    overflow: hidden;
+
+    &:hover {
+        transform: translateY(-5px);
+        box-shadow: $shadow-lg;
+    }
+
+    // Imagen de la propiedad
+    .property-card-image {
+        height: 200px;
+        object-fit: cover;
+        width: 100%;
+    }
+
+    // Badge de proyecto
+    .property-project-badge {
+        font-size: 0.7rem;
+        padding: 0.4rem 0.6rem;
+        border-radius: $border-radius;
+        font-weight: $font-weight-semibold;
+        box-shadow: $shadow-sm;
+    }
+
+    // Características (iconos de área, habitaciones, baños)
+    .property-features {
+        span {
+            display: inline-flex;
+            align-items: center;
+            gap: $spacer-xs;
+
+            i {
+                color: $bohio-red-primary;
+                font-size: $font-size-sm;
+            }
+        }
+    }
+
+    // Título de la tarjeta
+    .card-title {
+        font-size: $font-size-lg;
+        font-weight: $font-weight-semibold;
+        color: $text-primary;
+        margin-bottom: $spacer-sm;
+        min-height: 2.5rem; // Para mantener altura consistente
+    }
+
+    // Precio
+    h4 {
+        font-weight: $font-weight-bold;
+        font-size: $font-size-xl;
+    }
+
+    // Botón de detalles
+    .btn-outline-danger {
+        font-weight: $font-weight-semibold;
+        transition: all $transition-base;
+
+        &:hover {
+            background: $bohio-red-primary;
+            color: $text-white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(227, 30, 36, 0.3);
+        }
+    }
+}
+
+// -----------------------------------------------------------------------------
+// CAROUSEL ESPECÍFICO
+// -----------------------------------------------------------------------------
+
+.property-carousel-container {
+    .carousel {
+        padding: $spacer-lg 0;
+
+        .carousel-control-prev,
+        .carousel-control-next {
+            width: 50px;
+            height: 50px;
+            background: $bohio-red-primary;
+            border-radius: $border-radius-full;
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: 0.8;
+            transition: opacity $transition-base;
+
+            &:hover {
+                opacity: 1;
+            }
+        }
+
+        .carousel-control-prev {
+            left: -25px;
+        }
+
+        .carousel-control-next {
+            right: -25px;
+        }
+
+        .carousel-indicators {
+            bottom: -$spacer-xl;
+
+            button {
+                width: 12px;
+                height: 12px;
+                border-radius: $border-radius-full;
+                background: $text-muted;
+                border: none;
+                margin: 0 $spacer-xs;
+                transition: all $transition-base;
+
+                &.active {
+                    background: $bohio-red-primary;
+                    width: 30px;
+                }
+            }
+        }
+    }
+
+    // Estado de carga
+    .property-carousel-loading {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 400px;
+
+        .spinner-border {
+            width: 3rem;
+            height: 3rem;
+            color: $bohio-red-primary;
+        }
+    }
+}
+
+// -----------------------------------------------------------------------------
+// RESPONSIVE
+// -----------------------------------------------------------------------------
+
+@media (max-width: $breakpoint-lg) {
+    .bohio-property-card {
+        margin-bottom: $spacer-lg;
+
+        .property-card-image {
+            height: 180px;
+        }
+    }
+
+    .property-carousel-container {
+        .carousel {
+            .carousel-control-prev,
+            .carousel-control-next {
+                display: none; // Ocultar en móviles
+            }
+        }
+    }
+}
+
+@media (max-width: $breakpoint-md) {
+    .bohio-property-card {
+        .property-card-image {
+            height: 160px;
+        }
+
+        .card-title {
+            font-size: $font-size-base;
+            min-height: 2rem;
+        }
+
+        h4 {
+            font-size: $font-size-lg;
+        }
+    }
+}

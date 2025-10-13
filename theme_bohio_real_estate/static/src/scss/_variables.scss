@@ -1,0 +1,169 @@
+// =============================================================================
+// BOHIO REAL ESTATE - VARIABLES
+// =============================================================================
+// Archivo centralizado de variables para todo el tema
+// Basado en mejores prácticas de Odoo 18
+
+// -----------------------------------------------------------------------------
+// COLORES PRINCIPALES
+// -----------------------------------------------------------------------------
+
+// Colores de marca BOHIO
+$bohio-red-primary: #dc2626;
+$bohio-red-secondary: #ef4444;
+$bohio-red-light: #f87171;
+$bohio-red-dark: #b91c1c;
+
+// Colores de texto
+$text-primary: #1f2937;
+$text-secondary: #6b7280;
+$text-muted: #9ca3af;
+$text-white: #ffffff;
+$text-white-50: rgba(255, 255, 255, 0.5);
+
+// Colores de fondo
+$bg-black: #000000;
+$bg-dark: #1f2937;
+$bg-light: #f9fafb;
+$bg-white: #ffffff;
+
+// Colores de estado
+$color-success: #10b981;
+$color-warning: #f59e0b;
+$color-danger: #ef4444;
+$color-info: #3b82f6;
+
+// -----------------------------------------------------------------------------
+// TIPOGRAFÍA
+// -----------------------------------------------------------------------------
+
+// Tamaños de fuente
+$font-size-xs: 0.75rem;    // 12px
+$font-size-sm: 0.875rem;   // 14px
+$font-size-base: 1rem;     // 16px
+$font-size-lg: 1.125rem;   // 18px
+$font-size-xl: 1.25rem;    // 20px
+$font-size-2xl: 1.5rem;    // 24px
+$font-size-3xl: 1.875rem;  // 30px
+$font-size-4xl: 2.25rem;   // 36px
+
+// Pesos de fuente
+$font-weight-light: 300;
+$font-weight-normal: 400;
+$font-weight-medium: 500;
+$font-weight-semibold: 600;
+$font-weight-bold: 700;
+
+// Altura de línea
+$line-height-tight: 1.25;
+$line-height-normal: 1.5;
+$line-height-relaxed: 1.75;
+
+// -----------------------------------------------------------------------------
+// ESPACIADO
+// -----------------------------------------------------------------------------
+
+$spacer: 1rem;
+$spacer-xs: 0.25rem;
+$spacer-sm: 0.5rem;
+$spacer-md: 1rem;
+$spacer-lg: 1.5rem;
+$spacer-xl: 2rem;
+$spacer-2xl: 3rem;
+$spacer-3xl: 4rem;
+$spacer-4xl: 6rem;
+
+// -----------------------------------------------------------------------------
+// BORDES Y SOMBRAS
+// -----------------------------------------------------------------------------
+
+// Border radius
+$border-radius-sm: 0.25rem;
+$border-radius: 0.5rem;
+$border-radius-lg: 0.75rem;
+$border-radius-xl: 1rem;
+$border-radius-2xl: 1.5rem;
+$border-radius-full: 50%;
+
+// Sombras
+$shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+$shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+$shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+$shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+$shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+$shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+
+// Sombras de color BOHIO
+$shadow-bohio: 0 5px 15px rgba(220, 38, 38, 0.3);
+$shadow-bohio-lg: 0 10px 30px rgba(220, 38, 38, 0.4);
+
+// -----------------------------------------------------------------------------
+// TRANSICIONES
+// -----------------------------------------------------------------------------
+
+$transition-fast: 0.15s ease-in-out;
+$transition-base: 0.3s ease-in-out;
+$transition-slow: 0.5s ease-in-out;
+
+// -----------------------------------------------------------------------------
+// BREAKPOINTS (Bootstrap 5)
+// -----------------------------------------------------------------------------
+
+$breakpoint-xs: 0;
+$breakpoint-sm: 576px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 992px;
+$breakpoint-xl: 1200px;
+$breakpoint-xxl: 1400px;
+
+// -----------------------------------------------------------------------------
+// Z-INDEX
+// -----------------------------------------------------------------------------
+
+$z-index-dropdown: 1000;
+$z-index-sticky: 1020;
+$z-index-fixed: 1030;
+$z-index-modal-backdrop: 1040;
+$z-index-modal: 1050;
+$z-index-popover: 1060;
+$z-index-tooltip: 1070;
+$z-index-loader: 9999;
+
+// -----------------------------------------------------------------------------
+// COMPONENTES ESPECÍFICOS
+// -----------------------------------------------------------------------------
+
+// Footer
+$footer-bg: $bg-black;
+$footer-text: $text-white;
+$footer-text-muted: $text-white-50;
+$footer-link-hover: $bohio-red-light;
+
+// Header
+$header-bg: $bg-white;
+$header-shadow: $shadow-md;
+$header-height: 80px;
+
+// Botones
+$btn-primary-bg: $bohio-red-primary;
+$btn-primary-hover: $bohio-red-dark;
+$btn-outline-border: $bohio-red-primary;
+
+// Cards
+$card-border-radius: $border-radius-lg;
+$card-shadow: $shadow-sm;
+$card-shadow-hover: $shadow-lg;
+
+// Social Icons
+$social-icon-size: 40px;
+$social-icon-bg: linear-gradient(135deg, $bohio-red-primary, $bohio-red-secondary);
+
+// Property Cards
+$property-card-image-height: 200px;
+$property-card-border-radius: $border-radius-lg;
+$property-card-shadow: $shadow-sm;
+$property-card-shadow-hover: $shadow-lg;
+
+// Loader
+$loader-bg: rgba(0, 0, 0, 0.9);
+$loader-spinner-size: 60px;

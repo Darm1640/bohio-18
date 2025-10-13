@@ -50,6 +50,10 @@
             # Bootstrap Icons - Disponible para todos los módulos (Backend)
             "real_estate_bits/static/src/lib/bootstrap-icons/bootstrap-icons.min.css",
 
+            # Leaflet - Disponible para todos los módulos (Backend)
+            "real_estate_bits/static/src/lib/leaflet/leaflet.css",
+            "real_estate_bits/static/src/lib/leaflet/leaflet.js",
+
             "web/static/lib/luxon/luxon.js",
             "web/static/lib/Chart/Chart.js",
             "web/static/lib/chartjs-adapter-luxon/chartjs-adapter-luxon.js",
@@ -64,8 +68,12 @@
             "real_estate_bits/static/src/css/property_contract_kanban.css",
         ],
         'web.assets_frontend': [
-            # Bootstrap Icons - Disponible para todos los módulos
+            # Bootstrap Icons - Disponible para todos los módulos (Frontend)
             "real_estate_bits/static/src/lib/bootstrap-icons/bootstrap-icons.min.css",
+
+            # Leaflet - Disponible para todos los módulos (Frontend)
+            "real_estate_bits/static/src/lib/leaflet/leaflet.css",
+            "real_estate_bits/static/src/lib/leaflet/leaflet.js",
 
             "real_estate_bits/static/src/css/filters.css",
             "real_estate_bits/static/src/js/property_filters.js",

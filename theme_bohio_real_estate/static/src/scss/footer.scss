@@ -1,175 +1,268 @@
-// Bohio Real Estate - Footer Styles
+// =============================================================================
+// BOHIO REAL ESTATE - FOOTER STYLES
+// =============================================================================
+// Estilos del footer con variables y mixins centralizados
+// Todos los estilos inline extraídos y organizados aquí
 
-// BOHIO Variables - Custom Theme Variables
-// Spacers
-$bohio-spacer-xs: 0.25rem;
-$bohio-spacer-sm: 0.5rem;
-$bohio-spacer-md: 1rem;
-$bohio-spacer-lg: 1.5rem;
-$bohio-spacer-xl: 3rem;
+@import 'variables';
+@import 'mixins';
 
-// Breakpoints
-$bohio-breakpoint-sm: 576px;
-$bohio-breakpoint-md: 768px;
-$bohio-breakpoint-lg: 992px;
-$bohio-breakpoint-xl: 1200px;
+// -----------------------------------------------------------------------------
+// GRADIENTE TOP
+// -----------------------------------------------------------------------------
 
-// Font Sizes
-$bohio-h5-font-size: 1.25rem;
-$bohio-font-size-sm: 0.875rem;
+.bohio-red-gradient-top {
+    height: 5px;
+    @include bohio-gradient-shimmer;
+}
 
-// Colors
-$bohio-color-body: #212529;
-$bohio-color-danger: #E31E24;
-
-// Transitions
-$bohio-transition-base: all 0.3s ease;
+// -----------------------------------------------------------------------------
+// FOOTER PRINCIPAL
+// -----------------------------------------------------------------------------
 
 .bohio-footer {
-    background: $bohio-color-body;
-    color: white;
+    background: $footer-bg;
+    color: $footer-text;
+    padding: $spacer-4xl 0 0;
 
-    .footer-main {
-        padding: 4rem 0;
+    // Contenedor principal
+    .container {
+        max-width: 1200px;
+    }
 
-        .footer-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: $bohio-spacer-xl;
+    // -----------------------------------------------------------------------------
+    // COLUMNA 1: LOGO Y DESCRIPCIÓN
+    // -----------------------------------------------------------------------------
 
-            @media (max-width: $bohio-breakpoint-md) {
-                grid-template-columns: 1fr;
-                gap: $bohio-spacer-lg;
+    .footer-logo-section {
+        margin-bottom: $spacer-2xl;
+
+        .footer-logo-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: $spacer-lg;
+
+            img {
+                max-width: 220px;
+                height: auto;
+                margin-right: 15px;
             }
         }
 
-        .footer-column {
-            .footer-title {
-                font-size: $bohio-h5-font-size;
-                font-weight: 700;
-                margin-bottom: $bohio-spacer-md;
-                color: white;
-            }
+        .footer-description {
+            color: $footer-text-muted;
+            font-size: $font-size-sm;
+            line-height: 1.6;
+            margin-bottom: $spacer-lg;
+        }
+    }
 
-            .footer-description {
-                color: rgba(255, 255, 255, 0.8);
-                line-height: 1.6;
-                margin-bottom: $bohio-spacer-md;
-            }
+    // -----------------------------------------------------------------------------
+    // REDES SOCIALES
+    // -----------------------------------------------------------------------------
 
-            .footer-social {
-                display: flex;
-                gap: $bohio-spacer-md;
+    .footer-social-icons {
+        display: flex;
+        gap: $spacer-md;
+        flex-wrap: wrap;
+        margin-top: $spacer-lg;
+    }
 
-                .social-link {
-                    width: 40px;
-                    height: 40px;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    background: rgba(255, 255, 255, 0.1);
-                    border-radius: 50%;
-                    color: white;
-                    transition: $bohio-transition-base;
+    .bohio-social-icon {
+        @include social-icon;
+
+        // Tamaño específico
+        font-size: 1.25rem;
+
+        i {
+            font-size: inherit;
+        }
+    }
+
+    // -----------------------------------------------------------------------------
+    // COLUMNAS DE ENLACES
+    // -----------------------------------------------------------------------------
+
+    .footer-links-column {
+        margin-bottom: $spacer-2xl;
+
+        .footer-column-title {
+            font-size: $font-size-lg;
+            font-weight: $font-weight-bold;
+            color: $footer-text;
+            margin-bottom: $spacer-lg;
+        }
+
+        ul {
+            @include reset-list;
+
+            li {
+                margin-bottom: $spacer-md;
+
+                a {
+                    color: $footer-text;
                     text-decoration: none;
+                    font-size: $font-size-base;
+                    transition: all $transition-base;
+                    display: block;
 
                     &:hover {
-                        background: $bohio-color-danger;
-                        transform: translateY(-4px);
-                    }
-
-                    i {
-                        font-size: 1.25rem;
-                    }
-                }
-            }
-
-            .footer-links {
-                list-style: none;
-                padding: 0;
-                margin: 0;
-
-                li {
-                    margin-bottom: $bohio-spacer-sm;
-
-                    a {
-                        color: rgba(255, 255, 255, 0.8);
-                        text-decoration: none;
-                        transition: $bohio-transition-base;
-                        display: inline-block;
-
-                        &:hover {
-                            color: white;
-                            padding-left: $bohio-spacer-xs;
-                        }
-                    }
-                }
-            }
-
-            .footer-contact {
-                list-style: none;
-                padding: 0;
-                margin: 0;
-
-                li {
-                    display: flex;
-                    align-items: start;
-                    gap: $bohio-spacer-sm;
-                    margin-bottom: $bohio-spacer-md;
-                    color: rgba(255, 255, 255, 0.8);
-
-                    i {
-                        font-size: 1.25rem;
-                        color: $bohio-color-danger;
-                        flex-shrink: 0;
-                        margin-top: 2px;
-                    }
-
-                    span {
-                        flex: 1;
+                        color: $footer-link-hover;
+                        padding-left: $spacer-xs;
                     }
                 }
             }
         }
     }
 
+    // -----------------------------------------------------------------------------
+    // COLUMNA DE CONTACTO
+    // -----------------------------------------------------------------------------
+
+    .footer-contact-column {
+        margin-bottom: $spacer-2xl;
+
+        .footer-column-title {
+            font-size: $font-size-lg;
+            font-weight: $font-weight-bold;
+            color: $footer-text;
+            margin-bottom: $spacer-lg;
+        }
+
+        .footer-contact-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: $spacer-lg;
+            gap: $spacer-sm;
+
+            i {
+                color: $bohio-red-primary;
+                margin-top: 3px;
+                font-size: $font-size-sm;
+                flex-shrink: 0;
+            }
+
+            .contact-content {
+                flex: 1;
+
+                strong {
+                    display: block;
+                    color: $footer-text;
+                    font-size: $font-size-base;
+                    margin-bottom: $spacer-xs;
+                }
+
+                p, a {
+                    color: $footer-text-muted;
+                    font-size: $font-size-sm;
+                    line-height: 1.6;
+                    margin: 0;
+                    text-decoration: none;
+
+                    &:hover {
+                        color: $footer-text;
+                    }
+                }
+            }
+        }
+    }
+
+    // -----------------------------------------------------------------------------
+    // FOOTER BOTTOM
+    // -----------------------------------------------------------------------------
+
     .footer-bottom {
         border-top: 1px solid rgba(255, 255, 255, 0.1);
-        padding: $bohio-spacer-lg 0;
+        padding: $spacer-xl 0;
+        margin-top: $spacer-3xl;
 
         .footer-bottom-content {
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: $bohio-spacer-md;
+            gap: $spacer-lg;
 
-            @media (max-width: $bohio-breakpoint-md) {
+            @include respond-to(md) {
+                flex-direction: row;
+                text-align: left;
+            }
+
+            @media (max-width: $breakpoint-md) {
                 flex-direction: column;
                 text-align: center;
             }
+        }
 
-            .copyright {
-                margin: 0;
-                color: rgba(255, 255, 255, 0.7);
-                font-size: $bohio-font-size-sm;
-            }
+        .copyright {
+            color: $footer-text-muted;
+            font-size: $font-size-sm;
+            margin: 0;
 
-            .footer-bottom-links {
-                display: flex;
-                gap: $bohio-spacer-lg;
+            a {
+                color: $bohio-red-primary;
+                text-decoration: none;
+                font-weight: $font-weight-semibold;
 
-                a {
-                    color: rgba(255, 255, 255, 0.7);
-                    text-decoration: none;
-                    font-size: $bohio-font-size-sm;
-                    transition: $bohio-transition-base;
-
-                    &:hover {
-                        color: white;
-                    }
+                &:hover {
+                    color: $bohio-red-light;
+                    text-decoration: underline;
                 }
             }
         }
+
+        .footer-bottom-links {
+            display: flex;
+            gap: $spacer-lg;
+            flex-wrap: wrap;
+
+            a {
+                color: $footer-text-muted;
+                text-decoration: none;
+                font-size: $font-size-sm;
+                transition: color $transition-base;
+
+                &:hover {
+                    color: $footer-text;
+                }
+            }
+        }
+    }
+
+    // -----------------------------------------------------------------------------
+    // RESPONSIVE
+    // -----------------------------------------------------------------------------
+
+    @media (max-width: $breakpoint-md) {
+        padding: $spacer-3xl 0 0;
+
+        .footer-logo-section,
+        .footer-links-column,
+        .footer-contact-column {
+            text-align: center;
+            margin-bottom: $spacer-xl;
+        }
+
+        .footer-social-icons {
+            justify-content: center;
+        }
+
+        .footer-contact-item {
+            justify-content: center;
+            text-align: left;
+        }
+    }
+}
+
+// -----------------------------------------------------------------------------
+// ANIMACIÓN SHIMMER
+// -----------------------------------------------------------------------------
+
+@keyframes bohio-shimmer {
+    0%, 100% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
     }
 }
