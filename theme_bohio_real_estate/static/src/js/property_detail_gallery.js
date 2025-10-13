@@ -27,12 +27,21 @@ document.addEventListener('DOMContentLoaded', function() {
         validImages = [];
 
         carouselItems.forEach((item, index) => {
+            // Buscar img tanto directo como dentro de divs
             const img = item.querySelector('img');
+            console.log(`🔍 Procesando item ${index}:`, {
+                hasImg: !!img,
+                src: img ? img.src : 'N/A',
+                alt: img ? img.alt : 'N/A',
+                dataIndex: img ? img.dataset.index : 'N/A'
+            });
+
             if (img && img.src) {
                 // Solo agregar si NO es el placeholder genérico
-                const isPlaceholder = img.src.includes('banner1.jpg') &&
-                                     img.alt &&
-                                     img.alt.includes('Propiedad BOHIO');
+                const isPlaceholder = (img.src.includes('banner1.jpg') || img.src.includes('placeholder.png')) &&
+                                     (!img.dataset.index || img.alt.includes('Propiedad BOHIO'));
+
+                console.log(`  ➡️ Es placeholder: ${isPlaceholder}`);
 
                 if (!isPlaceholder) {
                     validImages.push({
