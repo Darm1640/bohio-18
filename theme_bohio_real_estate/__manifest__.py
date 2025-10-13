@@ -143,6 +143,7 @@
             'theme_bohio_real_estate/static/src/js/proyectos.js',
             'theme_bohio_real_estate/static/src/js/proyecto_detalle.js',
             'theme_bohio_real_estate/static/src/js/property_detail_gallery.js',
+            'theme_bohio_real_estate/static/src/js/property_wishlist.js',
 
             # CSS Additional
             'theme_bohio_real_estate/static/src/css/property_carousels.css',

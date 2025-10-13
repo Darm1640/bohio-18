@@ -18,13 +18,29 @@
 
                                     <!-- Botones de acción (Favorito, Compartir, Reportar) -->
                                     <div class="position-absolute top-0 end-0 p-3 d-flex gap-2" style="z-index: 10;">
-                                        <button class="btn btn-light rounded-circle shadow" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;" title="Favorito">
-                                            <i class="bi bi-heart text-danger"></i>
+                                        <!-- Botón de Favorito con funcionalidad wishlist -->
+                                        <button id="wishlistBtn"
+                                                class="btn btn-light rounded-circle shadow wishlist-btn"
+                                                style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease;"
+                                                t-att-data-property-id="property.id"
+                                                title="Agregar a favoritos"
+                                                onclick="togglePropertyWishlist(this)">
+                                            <i class="bi bi-heart wishlist-icon" style="transition: all 0.3s ease;"></i>
                                         </button>
-                                        <button class="btn btn-light rounded-circle shadow" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;" title="Compartir" onclick="openShareModal()">
+
+                                        <!-- Botón de Compartir -->
+                                        <button class="btn btn-light rounded-circle shadow"
+                                                style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;"
+                                                title="Compartir"
+                                                onclick="openShareModal()">
                                             <i class="bi bi-share-fill text-primary"></i>
                                         </button>
-                                        <button class="btn btn-light rounded-circle shadow" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;" title="Reportar" onclick="openReportModal()">
+
+                                        <!-- Botón de Reportar -->
+                                        <button class="btn btn-light rounded-circle shadow"
+                                                style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;"
+                                                title="Reportar"
+                                                onclick="openReportModal()">
                                             <i class="bi bi-flag text-warning"></i>
                                         </button>
                                     </div>
