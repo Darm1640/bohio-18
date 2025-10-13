@@ -137,90 +137,121 @@ const HomepageAutocomplete = publicWidget.Widget.extend({
     },
 
     /**
-     * Renderizar resultados
+     * Renderizar resultados (usando createElement)
      */
     _renderResults: function (results, term) {
         if (!this.autocompleteContainer) return;
 
         console.log('[HOMEPAGE-AUTOCOMPLETE] Renderizando', results.length, 'resultados');
 
+        // Limpiar contenido anterior
+        this.autocompleteContainer.innerHTML = '';
+
         if (results.length === 0) {
-            this.autocompleteContainer.innerHTML = `
-                <div class="p-3 text-center text-muted">
-                    <i class="fa fa-search-minus me-2"></i>
-                    No se encontraron resultados
-                </div>
-            `;
+            const noResults = document.createElement('div');
+            noResults.className = 'p-3 text-center text-muted';
+
+            const icon = document.createElement('i');
+            icon.className = 'fa fa-search-minus me-2';
+
+            noResults.appendChild(icon);
+            noResults.appendChild(document.createTextNode('No se encontraron resultados'));
+
+            this.autocompleteContainer.appendChild(noResults);
             this.autocompleteContainer.style.display = 'block';
             return;
         }
 
-        let html = '<ul class="list-unstyled mb-0">';
+        // Crear lista
+        const ul = document.createElement('ul');
+        ul.className = 'list-unstyled mb-0';
 
         results.forEach(result => {
-            // Extraer IDs numéricos
-            let numericId = result.city_id || result.region_id || result.project_id || result.property_id || '';
-
-            // Determinar ícono y color
-            let iconClass = 'fa-map-marker-alt';
-            let badgeColor = 'primary';
-
-            if (result.type === 'city') {
-                iconClass = 'fa-map-marker-alt';
-                badgeColor = 'primary';
-            } else if (result.type === 'region') {
-                iconClass = 'fa-home';
-                badgeColor = 'success';
-            } else if (result.type === 'project') {
-                iconClass = 'fa-building';
-                badgeColor = 'warning';
-            } else if (result.type === 'property') {
-                iconClass = 'fa-key';
-                badgeColor = 'info';
-            }
-
-            html += `
-                <li class="autocomplete-item"
-                    data-type="${result.type}"
-                    data-id="${numericId}"
-                    data-city-id="${result.city_id || ''}"
-                    data-region-id="${result.region_id || ''}"
-                    data-project-id="${result.project_id || ''}"
-                    data-property-id="${result.property_id || ''}"
-                    style="cursor: pointer; padding: 12px 16px; border-bottom: 1px solid #eee; display: flex; align-items: center; transition: background 0.2s;"
-                    onmouseover="this.style.background='#f8f9fa'"
-                    onmouseout="this.style.background='white'">
-
-                    <div style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background: rgba(227, 30, 36, 0.1); border-radius: 50%; margin-right: 12px;">
-                        <i class="fa ${iconClass}" style="color: #E31E24; font-size: 16px;"></i>
-                    </div>
-
-                    <div style="flex: 1;">
-                        <div style="font-weight: 600; color: #333; margin-bottom: 2px;">
-                            ${this._highlightTerm(result.name, term)}
-                        </div>
-                        ${result.full_name && result.full_name !== result.name ? `
-                            <div style="font-size: 12px; color: #666;">
-                                ${result.full_name}
-                            </div>
-                        ` : ''}
-                    </div>
-
-                    ${result.property_count > 0 ? `
-                        <span class="badge bg-${badgeColor}" style="margin-left: 8px;">
-                            ${result.property_count}
-                        </span>
-                    ` : ''}
-                </li>
-            `;
+            const item = this._createAutocompleteItem(result, term);
+            ul.appendChild(item);
         });
 
-        html += '</ul>';
-
-        this.autocompleteContainer.innerHTML = html;
+        this.autocompleteContainer.appendChild(ul);
         this.autocompleteContainer.style.display = 'block';
 
         console.log('[HOMEPAGE-AUTOCOMPLETE] Resultados renderizados');
+    },
+
+    /**
+     * Crear item de autocomplete (usando createElement)
+     * @private
+     */
+    _createAutocompleteItem: function (result, term) {
+        // Extraer IDs numéricos
+        const numericId = result.city_id || result.region_id || result.project_id || result.property_id || '';
+
+        // Determinar ícono y color
+        const iconMap = {
+            city: { class: 'fa-map-marker-alt', badge: 'primary' },
+            region: { class: 'fa-home', badge: 'success' },
+            project: { class: 'fa-building', badge: 'warning' },
+            property: { class: 'fa-key', badge: 'info' }
+        };
+        const iconInfo = iconMap[result.type] || iconMap.city;
+
+        // Crear item <li>
+        const li = document.createElement('li');
+        li.className = 'autocomplete-item';
+        li.style.cssText = 'cursor: pointer; padding: 12px 16px; border-bottom: 1px solid #eee; display: flex; align-items: center; transition: background 0.2s;';
+
+        // Data attributes
+        li.dataset.type = result.type;
+        li.dataset.id = numericId;
+        li.dataset.cityId = result.city_id || '';
+        li.dataset.regionId = result.region_id || '';
+        li.dataset.projectId = result.project_id || '';
+        li.dataset.propertyId = result.property_id || '';
+
+        // Hover effects
+        li.addEventListener('mouseenter', () => li.style.background = '#f8f9fa');
+        li.addEventListener('mouseleave', () => li.style.background = 'white');
+
+        // Icono
+        const iconWrapper = document.createElement('div');
+        iconWrapper.style.cssText = 'width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background: rgba(227, 30, 36, 0.1); border-radius: 50%; margin-right: 12px;';
+
+        const icon = document.createElement('i');
+        icon.className = `fa ${iconInfo.class}`;
+        icon.style.cssText = 'color: #E31E24; font-size: 16px;';
+
+        iconWrapper.appendChild(icon);
+        li.appendChild(iconWrapper);
+
+        // Contenido
+        const content = document.createElement('div');
+        content.style.flex = '1';
+
+        // Nombre (con highlight)
+        const title = document.createElement('div');
+        title.style.cssText = 'font-weight: 600; color: #333; margin-bottom: 2px;';
+        title.innerHTML = this._highlightTerm(result.name, term);
+        content.appendChild(title);
+
+        // Nombre completo (si existe)
+        if (result.full_name && result.full_name !== result.name) {
+            const subtitle = document.createElement('div');
+            subtitle.style.cssText = 'font-size: 12px; color: #666;';
+            subtitle.textContent = result.full_name;
+            content.appendChild(subtitle);
+        }
+
+        li.appendChild(content);
+
+        // Badge (si hay propiedades)
+        if (result.property_count > 0) {
+            const badge = document.createElement('span');
+            badge.className = `badge bg-${iconInfo.badge}`;
+            badge.style.marginLeft = '8px';
+            badge.textContent = result.property_count;
+            li.appendChild(badge);
+        }
+
+        return li;
     },
 
     /**
@@ -281,16 +312,24 @@ const HomepageAutocomplete = publicWidget.Widget.extend({
     },
 
     /**
-     * Mostrar mensaje de error
+     * Mostrar mensaje de error (usando createElement)
      */
     _showError: function (message) {
         if (!this.autocompleteContainer) return;
 
-        this.autocompleteContainer.innerHTML = `
-            <div class="p-3 text-center text-danger">
-                <i class="bi bi-exclamation-triangle me-2"></i>${message}
-            </div>
-        `;
+        // Limpiar contenido anterior
+        this.autocompleteContainer.innerHTML = '';
+
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'p-3 text-center text-danger';
+
+        const icon = document.createElement('i');
+        icon.className = 'bi bi-exclamation-triangle me-2';
+
+        errorDiv.appendChild(icon);
+        errorDiv.appendChild(document.createTextNode(message));
+
+        this.autocompleteContainer.appendChild(errorDiv);
         this.autocompleteContainer.style.display = 'block';
     },
 

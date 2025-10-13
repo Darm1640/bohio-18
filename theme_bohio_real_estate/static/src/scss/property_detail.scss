@@ -137,3 +137,206 @@ $bohio-red-darker: #8B1419;
         }
     }
 }
+
+// ==========================================
+// MAPA EN DETALLE DE PROPIEDAD
+// ==========================================
+
+#mapViewSection {
+    border-top: 2px solid #f0f0f0;
+    padding-top: 20px;
+    margin-top: 20px;
+}
+
+#property_map {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border: 2px solid $bohio-red;
+    transition: all 0.3s ease;
+
+    &:hover {
+        box-shadow: 0 6px 16px rgba(227, 30, 36, 0.2);
+    }
+}
+
+// Marcador personalizado para detalle de propiedad
+.property-detail-marker-container {
+    background: transparent !important;
+    border: none !important;
+}
+
+.property-detail-marker {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    cursor: default;
+    animation: bounceIn 0.6s ease-out;
+}
+
+@keyframes bounceIn {
+    0% {
+        transform: scale(0.3) translateY(-50px);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    70% {
+        transform: scale(0.9);
+    }
+    100% {
+        transform: scale(1) translateY(0);
+        opacity: 1;
+    }
+}
+
+.marker-icon-circle {
+    width: 50px;
+    height: 50px;
+    background: $bohio-red;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(227, 30, 36, 0.4);
+    border: 4px solid white;
+    transition: all 0.3s ease;
+    animation: pulse 2s infinite;
+
+    i {
+        color: white;
+        font-size: 24px;
+    }
+
+    &:hover {
+        background: $bohio-red-dark;
+        transform: scale(1.1);
+        box-shadow: 0 6px 16px rgba(227, 30, 36, 0.6);
+    }
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 4px 12px rgba(227, 30, 36, 0.4);
+    }
+    50% {
+        box-shadow: 0 4px 12px rgba(227, 30, 36, 0.4), 0 0 0 10px rgba(227, 30, 36, 0.1);
+    }
+    100% {
+        box-shadow: 0 4px 12px rgba(227, 30, 36, 0.4);
+    }
+}
+
+.marker-label {
+    background: white;
+    color: #333;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    border: 2px solid $bohio-red;
+    white-space: nowrap;
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: all 0.3s ease;
+
+    &:hover {
+        background: $bohio-red;
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+}
+
+// Popup de información
+.property-marker-popup {
+    min-width: 220px;
+    padding: 4px;
+
+    h6 {
+        color: $bohio-red;
+        font-weight: 700;
+        margin-bottom: 8px;
+        font-size: 15px;
+        display: flex;
+        align-items: center;
+    }
+
+    .small {
+        color: #666;
+        font-size: 12px;
+        line-height: 1.4;
+    }
+
+    .text-muted {
+        color: #999 !important;
+        font-family: 'Courier New', monospace;
+    }
+
+    strong {
+        color: #333;
+    }
+}
+
+// Estilos del popup de Leaflet
+.leaflet-popup-content-wrapper {
+    border-radius: 10px;
+    box-shadow: 0 3px 14px rgba(227, 30, 36, 0.2);
+    border: 1px solid rgba(227, 30, 36, 0.1);
+}
+
+.leaflet-popup-tip {
+    border-top-color: rgba(227, 30, 36, 0.1) !important;
+}
+
+// Responsive
+@media (max-width: 768px) {
+    #property_map {
+        height: 300px !important;
+        border-radius: 8px;
+    }
+
+    .marker-icon-circle {
+        width: 40px;
+        height: 40px;
+        border: 3px solid white;
+
+        i {
+            font-size: 20px;
+        }
+    }
+
+    .marker-label {
+        font-size: 12px;
+        padding: 6px 12px;
+        max-width: 150px;
+    }
+
+    .property-marker-popup {
+        min-width: 180px;
+
+        h6 {
+            font-size: 14px;
+        }
+
+        .small {
+            font-size: 11px;
+        }
+    }
+}
+
+@media (max-width: 576px) {
+    #property_map {
+        height: 250px !important;
+    }
+
+    .marker-label {
+        font-size: 11px;
+        padding: 5px 10px;
+        max-width: 120px;
+    }
+}

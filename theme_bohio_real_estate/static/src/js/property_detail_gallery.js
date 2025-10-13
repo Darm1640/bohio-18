@@ -2,7 +2,10 @@
 
 // Variables globales para el zoom
 let currentZoomIndex = 0;
-let zoomImages = [];
+let validImages = [];  // Array de objetos con info de cada imagen
+
+// Placeholder para imágenes que fallan
+const PLACEHOLDER_IMAGE = '/theme_bohio_real_estate/static/src/img/banner1.jpg';
 
 // Inicialización cuando el DOM está listo
 document.addEventListener('DOMContentLoaded', function() {
@@ -10,6 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const carousel = document.getElementById('propertyImageCarousel');
     if (carousel) {
+        // Actualizar contador cuando cambia el slide
         carousel.addEventListener('slid.bs.carousel', function(e) {
             const currentIndex = Array.from(e.target.querySelectorAll('.carousel-item')).indexOf(e.relatedTarget) + 1;
             const indexElement = document.getElementById('currentImageIndex');
@@ -18,10 +22,52 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
-        // Cargar todas las imágenes para el zoom
-        const images = carousel.querySelectorAll('.carousel-item img');
-        zoomImages = Array.from(images).map(img => img.src);
-        console.log('✅ Imágenes cargadas:', zoomImages.length);
+        // Recolectar TODAS las imágenes del carrusel (incluyendo las que están en el DOM)
+        const carouselItems = carousel.querySelectorAll('.carousel-item');
+        validImages = [];
+
+        carouselItems.forEach((item, index) => {
+            const img = item.querySelector('img');
+            if (img && img.src) {
+                // Solo agregar si NO es el placeholder genérico
+                const isPlaceholder = img.src.includes('banner1.jpg') &&
+                                     img.alt &&
+                                     img.alt.includes('Propiedad BOHIO');
+
+                if (!isPlaceholder) {
+                    validImages.push({
+                        src: img.src,
+                        alt: img.alt || `Imagen ${index + 1}`,
+                        index: index,
+                        element: img
+                    });
+
+                    // Agregar manejo de errores inline
+                    img.addEventListener('error', function() {
+                        console.warn(`⚠️ Error cargando imagen ${index + 1}: ${this.src}`);
+                        // Solo reemplazar si no es ya un placeholder
+                        if (!this.src.includes('banner1.jpg')) {
+                            this.src = PLACEHOLDER_IMAGE;
+                            this.style.opacity = '0.7';
+                            this.style.filter = 'grayscale(50%)';
+                        }
+                    });
+
+                    // Cuando se carga correctamente
+                    img.addEventListener('load', function() {
+                        if (!this.src.includes('banner1.jpg')) {
+                            this.style.opacity = '1';
+                            this.style.filter = 'none';
+                        }
+                    });
+                }
+            }
+        });
+
+        console.log(`✅ Total de imágenes válidas encontradas: ${validImages.length}`);
+        if (validImages.length === 0) {
+            console.warn('⚠️ No se encontraron imágenes válidas en el carrusel');
+        }
     }
 
     // Inicializar mapa (solo cuando se muestra)
@@ -76,26 +122,86 @@ function updateZoomImage() {
         return;
     }
 
-    if (zoomImages.length > 0) {
-        zoomImage.src = zoomImages[currentZoomIndex];
+    if (validImages.length > 0 && currentZoomIndex >= 0 && currentZoomIndex < validImages.length) {
+        // Mostrar loading mientras carga
+        zoomImage.style.opacity = '0.5';
+        zoomImage.style.filter = 'blur(5px)';
+
+        // Crear nueva imagen para precargar
+        const tempImg = new Image();
+
+        tempImg.onload = function() {
+            // Imagen cargada exitosamente
+            zoomImage.src = tempImg.src;
+            zoomImage.style.opacity = '1';
+            zoomImage.style.filter = 'none';
+            console.log(`✅ Imagen ${currentZoomIndex + 1} cargada correctamente`);
+        };
+
+        tempImg.onerror = function() {
+            // Error al cargar imagen
+            console.error(`❌ Error cargando imagen ${currentZoomIndex + 1}`);
+            zoomImage.src = PLACEHOLDER_IMAGE;
+            zoomImage.style.opacity = '0.7';
+            zoomImage.style.filter = 'grayscale(50%)';
+
+            // Mostrar alerta sutil
+            showImageErrorNotification();
+        };
+
+        // Iniciar carga
+        tempImg.src = validImages[currentZoomIndex].src;
+
+        // Actualizar contador
         zoomIndexSpan.textContent = currentZoomIndex + 1;
-        zoomTotalSpan.textContent = zoomImages.length;
+        zoomTotalSpan.textContent = validImages.length;
 
         // Mostrar/ocultar botones de navegación
         const prevBtn = document.getElementById('zoomPrevBtn');
         const nextBtn = document.getElementById('zoomNextBtn');
 
         if (prevBtn) {
-            prevBtn.style.display = currentZoomIndex > 0 ? 'block' : 'none';
+            prevBtn.style.display = currentZoomIndex > 0 ? 'flex' : 'none';
         }
 
         if (nextBtn) {
-            nextBtn.style.display = currentZoomIndex < zoomImages.length - 1 ? 'block' : 'none';
+            nextBtn.style.display = currentZoomIndex < validImages.length - 1 ? 'flex' : 'none';
         }
 
         // Actualizar miniaturas activas
         updateActiveThumbnail();
+    } else {
+        console.warn('⚠️ Índice de imagen inválido:', currentZoomIndex, 'Total:', validImages.length);
     }
+}
+
+// Mostrar notificación de error en imagen
+function showImageErrorNotification() {
+    const notification = document.createElement('div');
+    notification.style.cssText = `
+        position: fixed;
+        top: 80px;
+        right: 20px;
+        background: rgba(227, 30, 36, 0.95);
+        color: white;
+        padding: 12px 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        z-index: 9999;
+        font-weight: 600;
+        animation: slideInRight 0.3s ease-out;
+    `;
+    notification.innerHTML = '<i class="bi bi-exclamation-triangle me-2"></i>No se pudo cargar la imagen';
+
+    document.body.appendChild(notification);
+
+    // Remover después de 3 segundos
+    setTimeout(() => {
+        notification.style.animation = 'slideOutRight 0.3s ease-in';
+        setTimeout(() => {
+            document.body.removeChild(notification);
+        }, 300);
+    }, 3000);
 }
 
 // Navegar entre imágenes en el zoom
@@ -106,35 +212,62 @@ window.navigateZoom = function(direction) {
     if (currentZoomIndex < 0) {
         currentZoomIndex = 0;
     }
-    if (currentZoomIndex >= zoomImages.length) {
-        currentZoomIndex = zoomImages.length - 1;
+    if (currentZoomIndex >= validImages.length) {
+        currentZoomIndex = validImages.length - 1;
     }
 
     updateZoomImage();
 };
 
-// Cargar miniaturas en el zoom
+// Cargar miniaturas en el zoom con manejo de errores
 function loadZoomThumbnails() {
     const container = document.getElementById('zoomThumbnails');
     if (!container) return;
 
-    let html = '';
+    container.innerHTML = ''; // Limpiar primero
 
-    zoomImages.forEach((src, index) => {
+    validImages.forEach((imgData, index) => {
         const isActive = index === currentZoomIndex;
-        const opacity = isActive ? 1 : 0.6;
-        const border = isActive ? "2px solid white" : "2px solid transparent";
 
-        html += `
-            <div class="zoom-thumbnail ${isActive ? "active" : ""}"
-                 onclick="jumpToZoomImage(${index})"
-                 style="cursor: pointer; opacity: ${opacity}; border: ${border}; border-radius: 4px; transition: all 0.3s;">
-                <img src="${src}" style="width: 80px; height: 60px; object-fit: cover; border-radius: 4px;" alt="Miniatura ${index + 1}"/>
-            </div>
+        // Crear contenedor de miniatura
+        const thumbDiv = document.createElement('div');
+        thumbDiv.className = `zoom-thumbnail ${isActive ? "active" : ""}`;
+        thumbDiv.onclick = () => window.jumpToZoomImage(index);
+        thumbDiv.style.cssText = `
+            cursor: pointer;
+            opacity: ${isActive ? 1 : 0.6};
+            border: ${isActive ? "2px solid white" : "2px solid transparent"};
+            border-radius: 4px;
+            transition: all 0.3s;
+            position: relative;
+            width: 80px;
+            height: 60px;
+            background: #333;
         `;
-    });
 
-    container.innerHTML = html;
+        // Crear imagen de miniatura
+        const thumbImg = document.createElement('img');
+        thumbImg.src = imgData.src;
+        thumbImg.alt = imgData.alt;
+        thumbImg.style.cssText = 'width: 100%; height: 100%; object-fit: cover; border-radius: 4px;';
+
+        // Manejo de error en miniatura
+        thumbImg.onerror = function() {
+            console.warn(`⚠️ Error en miniatura ${index + 1}`);
+            // Mostrar placeholder en miniatura
+            thumbImg.src = PLACEHOLDER_IMAGE;
+            thumbImg.style.opacity = '0.5';
+            thumbImg.style.filter = 'grayscale(100%)';
+        };
+
+        // Loading en miniatura
+        thumbImg.onload = function() {
+            thumbImg.style.opacity = '1';
+        };
+
+        thumbDiv.appendChild(thumbImg);
+        container.appendChild(thumbDiv);
+    });
 }
 
 // Saltar a una imagen específica en el zoom
@@ -260,33 +393,105 @@ window.toggleMapView = function() {
 // Inicializar mapa de Leaflet
 function initializeMap() {
     const mapElement = document.getElementById('property_map');
-    if (!mapElement) return;
+    if (!mapElement) {
+        console.log('  - Elemento property_map NO encontrado');
+        return;
+    }
 
     const lat = parseFloat(mapElement.dataset.lat);
     const lng = parseFloat(mapElement.dataset.lng);
-    const name = mapElement.dataset.name;
+    const name = mapElement.dataset.name || 'Propiedad';
 
-    if (lat && lng) {
-        // Solo inicializar cuando se muestre
-        window.initPropertyMap = function() {
-            if (window.propertyMap) return; // Ya inicializado
+    console.log('  - Datos del mapa:', { lat, lng, name });
 
-            if (typeof L === 'undefined') {
-                console.error('❌ Leaflet no está cargado');
-                return;
-            }
+    if (!lat || !lng || isNaN(lat) || isNaN(lng)) {
+        console.warn('❌ Coordenadas inválidas:', { lat, lng });
+        return;
+    }
 
-            window.propertyMap = L.map('property_map').setView([lat, lng], 15);
+    // Definir función de inicialización del mapa
+    window.initPropertyMap = function() {
+        if (window.propertyMap) {
+            console.log('  - Mapa ya existe, solo invalidando tamaño');
+            setTimeout(() => {
+                window.propertyMap.invalidateSize();
+            }, 100);
+            return;
+        }
 
+        if (typeof L === 'undefined') {
+            console.error('❌ Leaflet no está cargado');
+            return;
+        }
+
+        console.log('  - Creando mapa Leaflet con lat:', lat, 'lng:', lng);
+
+        try {
+            // Crear mapa
+            window.propertyMap = L.map('property_map', {
+                center: [lat, lng],
+                zoom: 15,
+                scrollWheelZoom: true
+            });
+
+            // Agregar tiles
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '© OpenStreetMap contributors'
+                attribution: '© OpenStreetMap contributors',
+                maxZoom: 19
             }).addTo(window.propertyMap);
 
-            L.marker([lat, lng]).addTo(window.propertyMap)
-                .bindPopup('<b>' + name + '</b>')
-                .openPopup();
-        };
-    }
+            // Crear marcador personalizado con Bootstrap Icons
+            const markerHtml = `
+                <div class="property-detail-marker">
+                    <div class="marker-icon-circle">
+                        <i class="bi bi-house-fill"></i>
+                    </div>
+                    <div class="marker-label">${name}</div>
+                </div>
+            `;
+
+            const icon = L.divIcon({
+                className: 'property-detail-marker-container',
+                html: markerHtml,
+                iconSize: [null, null],
+                iconAnchor: [60, 70]
+            });
+
+            // Agregar marcador con icono personalizado
+            const marker = L.marker([lat, lng], { icon: icon }).addTo(window.propertyMap);
+
+            // Popup con información detallada
+            const popupContent = `
+                <div class="property-marker-popup">
+                    <h6><i class="bi bi-house-fill text-danger me-2"></i>${name}</h6>
+                    <p class="small mb-1">
+                        <i class="bi bi-geo-alt-fill text-danger me-1"></i>
+                        <strong>Coordenadas:</strong>
+                    </p>
+                    <p class="small mb-0 text-muted">
+                        Lat: ${lat.toFixed(6)}, Lng: ${lng.toFixed(6)}
+                    </p>
+                </div>
+            `;
+
+            marker.bindPopup(popupContent).openPopup();
+
+            console.log('✅ Mapa creado exitosamente');
+
+            // Forzar recálculo de tamaño después de un momento
+            setTimeout(() => {
+                if (window.propertyMap) {
+                    window.propertyMap.invalidateSize();
+                    console.log('  - Tamaño del mapa recalculado');
+                }
+            }, 200);
+
+        } catch (error) {
+            console.error('❌ Error al crear mapa:', error);
+        }
+    };
+
+    console.log('✅ Función initPropertyMap definida');
 }
 
 // ============= FUNCIONES DE COMPARTIR =============
