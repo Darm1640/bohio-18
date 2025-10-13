@@ -3,8 +3,7 @@
 // =============================================================================
 // Mixins reutilizables para todo el tema
 // Basado en mejores prácticas de Odoo 18
-
-@import 'variables';
+// NOTA: No usar @import en Odoo 18 - las variables se cargan en __manifest__.py ANTES de este archivo
 
 // -----------------------------------------------------------------------------
 // RESPONSIVE BREAKPOINTS

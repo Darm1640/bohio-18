@@ -167,3 +167,31 @@ $property-card-shadow-hover: $shadow-lg;
 // Loader
 $loader-bg: rgba(0, 0, 0, 0.9);
 $loader-spinner-size: 60px;
+
+// -----------------------------------------------------------------------------
+// VARIABLES DE ODOO (Compatibilidad)
+// -----------------------------------------------------------------------------
+// Estas variables son compatibles con el sistema de Odoo
+
+// Colores Odoo
+$o-color-primary: $bohio-red-primary;
+$o-color-secondary: $bohio-red-secondary;
+$o-color-text-dark: $text-primary;
+$o-color-text-light: $text-secondary;
+$o-bg-white: $bg-white;
+$o-bg-light: $bg-light;
+$o-success: $color-success;
+$o-warning: $color-warning;
+$o-danger: $color-danger;
+$o-info: $color-info;
+
+// Tamaños de fuente H tags
+$h1-font-size: $font-size-4xl;
+$h2-font-size: $font-size-3xl;
+$h3-font-size: $font-size-2xl;
+$h4-font-size: $font-size-xl;
+$h5-font-size: $font-size-lg;
+$h6-font-size: $font-size-base;
+
+// Bordes
+$border-color: #e5e7eb;

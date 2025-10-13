@@ -3,9 +3,7 @@
 // =============================================================================
 // Estilos del header con variables y mixins centralizados
 // Todos los estilos inline extraídos y organizados aquí
-
-@import 'variables';
-@import 'mixins';
+// NOTA: No usar @import en Odoo 18 - las variables y mixins se cargan en __manifest__.py
 
 // -----------------------------------------------------------------------------
 // HEADER PRINCIPAL

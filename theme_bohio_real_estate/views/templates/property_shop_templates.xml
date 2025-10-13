@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- ============================================================================= -->
+    <!-- PROPERTY SHOP TEMPLATES - QWeb Templates for property_shop.js -->
+    <!-- ============================================================================= -->
+
+    <!-- Template: Autocomplete Item -->
+    <template id="autocomplete_item_template" name="Autocomplete Item Template">
+        <li class="autocomplete-item"
+            t-att-data-type="result.type"
+            t-att-data-id="result.id">
+
+            <!-- Icon -->
+            <div t-attf-class="autocomplete-item-icon #{result.iconType}">
+                <i t-attf-class="fa #{result.iconClass}"></i>
+            </div>
+
+            <!-- Content -->
+            <div class="autocomplete-item-content">
+                <span class="autocomplete-item-title" t-esc="result.name"/>
+                <span class="autocomplete-item-subtitle" t-esc="result.full_name or ''"/>
+            </div>
+
+            <!-- Badge -->
+            <span class="autocomplete-item-badge" t-esc="result.property_count"/>
+        </li>
+    </template>
+
+    <!-- Template: Property Card -->
+    <template id="property_card_shop_template" name="Property Card Shop Template">
+        <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 mb-4">
+            <div class="card property-card shadow-sm border-0 h-100">
+                <!-- Image Section -->
+                <div class="position-relative">
+                    <img t-att-src="property.image_url"
+                         t-att-alt="property.name"
+                         class="card-img-top"
+                         style="height: 200px; object-fit: cover;"/>
+
+                    <!-- Price Badge -->
+                    <div class="position-absolute top-0 end-0 m-3">
+                        <span t-if="property.net_price or property.net_rental_price"
+                              class="badge bg-bohio-red text-white fs-6 px-3 py-2">
+                            <t t-esc="property.price_formatted"/>
+                        </span>
+                        <span t-else=""
+                              class="badge bg-secondary text-white fs-6 px-3 py-2">
+                            Consultar
+                        </span>
+                    </div>
+
+                    <!-- Service Type Badge -->
+                    <div class="position-absolute top-0 start-0 m-3">
+                        <span t-attf-class="badge #{property.service_badge_class}">
+                            <t t-esc="property.type_service"/>
+                        </span>
+                    </div>
+
+                    <!-- Property Type Badge -->
+                    <div class="position-absolute bottom-0 start-0 m-3">
+                        <span class="badge bg-dark text-white">
+                            <i t-attf-class="fa #{property.type_icon} me-1"></i>
+                            <t t-esc="property.type_name"/>
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Card Body -->
+                <div class="card-body d-flex flex-column">
+                    <!-- Title -->
+                    <h5 class="card-title mb-2">
+                        <a t-attf-href="/property/#{property.id}"
+                           class="text-dark text-decoration-none stretched-link">
+                            <t t-esc="property.name"/>
+                        </a>
+                    </h5>
+
+                    <!-- Location -->
+                    <p class="text-muted small mb-2">
+                        <i class="fa fa-map-marker-alt me-1"></i>
+                        <t t-esc="property.location"/>
+                    </p>
+
+                    <!-- Features -->
+                    <div class="mt-auto">
+                        <div class="d-flex justify-content-between text-muted small">
+                            <!-- Area -->
+                            <span t-if="property.area">
+                                <i class="fa fa-ruler-combined me-1"></i>
+                                <t t-esc="property.area_formatted"/>
+                            </span>
+
+                            <!-- Bedrooms -->
+                            <span t-if="property.bedrooms">
+                                <i class="fa fa-bed me-1"></i>
+                                <t t-esc="property.bedrooms"/>
+                            </span>
+
+                            <!-- Bathrooms -->
+                            <span t-if="property.bathrooms">
+                                <i class="fa fa-bath me-1"></i>
+                                <t t-esc="property.bathrooms"/>
+                            </span>
+
+                            <!-- Parking -->
+                            <span t-if="property.parking_spaces">
+                                <i class="fa fa-car me-1"></i>
+                                <t t-esc="property.parking_spaces"/>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- Template: Map Popup -->
+    <template id="property_map_popup_template" name="Property Map Popup Template">
+        <div class="property-popup-card" style="min-width: 300px; max-width: 320px;">
+            <!-- Popup Image -->
+            <div class="popup-image" style="position: relative; height: 180px; overflow: hidden;">
+                <img t-att-src="property.image_url"
+                     t-att-alt="property.name"
+                     style="width: 100%; height: 100%; object-fit: cover;"/>
+
+                <!-- Price Badge -->
+                <div style="position: absolute; top: 10px; right: 10px;">
+                    <span class="badge bg-bohio-red text-white px-2 py-1">
+                        <t t-esc="property.price_formatted"/>
+                    </span>
+                </div>
+            </div>
+
+            <!-- Popup Body -->
+            <div class="p-3">
+                <!-- Title -->
+                <h6 class="mb-2 fw-bold">
+                    <a t-attf-href="/property/#{property.id}"
+                       class="text-dark text-decoration-none">
+                        <t t-esc="property.name"/>
+                    </a>
+                </h6>
+
+                <!-- Service and Type -->
+                <div class="mb-2">
+                    <span t-attf-class="badge #{property.service_badge_class} me-1">
+                        <t t-esc="property.type_service"/>
+                    </span>
+                    <span class="badge bg-secondary">
+                        <t t-esc="property.type_name"/>
+                    </span>
+                </div>
+
+                <!-- Location -->
+                <p class="text-muted small mb-2">
+                    <i class="fa fa-map-marker-alt me-1"></i>
+                    <t t-esc="property.location"/>
+                </p>
+
+                <!-- Features -->
+                <div class="d-flex justify-content-between text-muted small mb-2">
+                    <span t-if="property.area">
+                        <i class="fa fa-ruler-combined me-1"></i>
+                        <t t-esc="property.area_formatted"/>
+                    </span>
+                    <span t-if="property.bedrooms">
+                        <i class="fa fa-bed me-1"></i>
+                        <t t-esc="property.bedrooms"/>
+                    </span>
+                    <span t-if="property.bathrooms">
+                        <i class="fa fa-bath me-1"></i>
+                        <t t-esc="property.bathrooms"/>
+                    </span>
+                </div>
+
+                <!-- View Button -->
+                <a t-attf-href="/property/#{property.id}"
+                   class="btn btn-sm btn-bohio-red w-100">
+                    Ver Detalles
+                </a>
+            </div>
+        </div>
+    </template>
+
+    <!-- Template: Property List (for results) -->
+    <template id="property_list_template" name="Property List Template">
+        <div class="row" id="propertyResults">
+            <t t-foreach="properties" t-as="property">
+                <t t-call="theme_bohio_real_estate.property_card_shop_template"/>
+            </t>
+        </div>
+    </template>
+
+    <!-- Template: Loading Spinner -->
+    <template id="loading_spinner_template" name="Loading Spinner Template">
+        <div class="text-center py-5">
+            <div class="spinner-border text-bohio-red" role="status">
+                <span class="visually-hidden">Cargando...</span>
+            </div>
+            <p class="mt-3 text-muted">Cargando propiedades...</p>
+        </div>
+    </template>
+
+    <!-- Template: No Results -->
+    <template id="no_results_template" name="No Results Template">
+        <div class="col-12">
+            <div class="alert alert-info text-center">
+                <i class="fa fa-info-circle fa-2x mb-3"></i>
+                <h5>No se encontraron propiedades</h5>
+                <p class="mb-0">Intenta ajustar los filtros de búsqueda</p>
+            </div>
+        </div>
+    </template>
+
+</odoo>

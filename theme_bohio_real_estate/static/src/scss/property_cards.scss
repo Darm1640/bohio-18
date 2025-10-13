@@ -3,9 +3,7 @@
 // =============================================================================
 // Estilos para tarjetas de propiedades (carruseles y listados)
 // Todos los estilos inline extraídos del JavaScript
-
-@import 'variables';
-@import 'mixins';
+// NOTA: No usar @import en Odoo 18 - las variables y mixins se cargan en __manifest__.py
 
 // -----------------------------------------------------------------------------
 // PROPERTY CARD BASE

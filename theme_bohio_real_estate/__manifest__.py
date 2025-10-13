@@ -60,6 +60,9 @@
         'views/snippets/property_snippet_templates_simple.xml',
         'views/snippets/s_dynamic_snippet_properties.xml',
 
+        # Templates - Property Shop (QWeb para JS)
+        'views/templates/property_shop_templates.xml',
+
         # Menus
         'views/menus/website_menu.xml',
 

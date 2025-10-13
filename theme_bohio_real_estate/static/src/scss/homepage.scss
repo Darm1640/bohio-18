@@ -3,9 +3,7 @@
 // =============================================================================
 // Estilos de la página principal con variables y mixins centralizados
 // Refactorizado para usar variables desde _variables.scss
-
-@import 'variables';
-@import 'mixins';
+// NOTA: No usar @import en Odoo 18 - las variables y mixins se cargan en __manifest__.py
 
 // -----------------------------------------------------------------------------
 // HOMEPAGE PRINCIPAL

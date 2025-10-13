@@ -2,10 +2,14 @@
 
 import { rpc } from "@web/core/network/rpc";
 
+// Importar utilidades centralizadas
+import { formatPrice, getPriceLabel, formatLocation, formatArea } from './utils/formatters';
+import { PLACEHOLDER_IMAGE, CAROUSEL_INTERVAL } from './utils/constants';
+
 /**
  * BOHIO Property Carousels - Sistema de Carruseles Dinámicos
  * Carga propiedades desde la base de datos para Venta, Renta y Proyectos
- * REFACTORIZADO: Sin HTML strings, usa createElement para evitar inline HTML
+ * REFACTORIZADO: Sin HTML strings, usa createElement + utilidades centralizadas
  */
 
 class PropertyCarousel {
@@ -193,21 +197,11 @@ class PropertyCarousel {
      * Crear elemento de tarjeta de propiedad usando createElement (sin HTML strings)
      */
     createPropertyCardElement(property) {
-        // Preparar datos
-        const imageUrl = property.image_url || '/theme_bohio_real_estate/static/src/img/placeholder.jpg';
-        const location = property.neighborhood ?
-            `${property.neighborhood}, ${property.city}` :
-            `${property.city}${property.state ? ', ' + property.state : ''}`;
-
-        const priceFormatted = property.price ?
-            new Intl.NumberFormat('es-CO', {
-                style: 'currency',
-                currency: 'COP',
-                minimumFractionDigits: 0
-            }).format(property.price) : 'Consultar';
-
-        const isRental = property.type_service && property.type_service.includes('Arriendo');
-        const priceLabel = isRental ? 'Arriendo/mes' : 'Venta';
+        // Preparar datos usando formatters centralizados
+        const imageUrl = property.image_url || PLACEHOLDER_IMAGE;
+        const location = formatLocation(property);
+        const priceFormatted = formatPrice(property.price);
+        const priceLabel = getPriceLabel(property);
 
         // Crear estructura
         const colDiv = document.createElement('div');
@@ -280,7 +274,7 @@ class PropertyCarousel {
         img.alt = name;
         img.loading = 'lazy';
         img.onerror = function() {
-            this.src = '/theme_bohio_real_estate/static/src/img/placeholder.jpg';
+            this.src = PLACEHOLDER_IMAGE;
         };
 
         return img;
@@ -322,7 +316,8 @@ class PropertyCarousel {
         div.className = 'd-flex justify-content-between mb-2 text-muted small property-features';
 
         if (property.area > 0) {
-            div.appendChild(this.createFeature('bi-rulers', `${property.area} m²`));
+            const areaFormatted = formatArea(property.area);
+            div.appendChild(this.createFeature('bi-rulers', areaFormatted));
         }
         if (property.bedrooms > 0) {
             div.appendChild(this.createFeature('bi-bed', property.bedrooms.toString()));
@@ -416,7 +411,7 @@ class PropertyCarousel {
 
         if (carouselEl && typeof bootstrap !== 'undefined') {
             this.carouselInstance = new bootstrap.Carousel(carouselEl, {
-                interval: 5000,  // 5 segundos entre slides
+                interval: CAROUSEL_INTERVAL,  // Desde constants.js
                 wrap: true,
                 keyboard: true,
                 pause: 'hover'
