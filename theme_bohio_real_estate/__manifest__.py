@@ -175,6 +175,7 @@
             # JavaScript - Sistemas Fijos (galería y mapas)
             'theme_bohio_real_estate/static/src/js/property_gallery_fixed.js',
             'theme_bohio_real_estate/static/src/js/property_map_fixed.js',
+            'theme_bohio_real_estate/static/src/js/property_detail_modals.js',
         ],
         'web.assets_backend': [
             # JavaScript - Property Snippet Options (Website Builder)
