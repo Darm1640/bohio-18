@@ -45,25 +45,65 @@ export function elementExists(selector, context = document) {
 // -----------------------------------------------------------------------------
 
 /**
- * Crea un elemento con clase y contenido
+ * Crea un elemento con opciones flexibles
  * @param {string} tag - Tag del elemento
- * @param {string|Array<string>} className - Clase o array de clases
- * @param {string} textContent - Contenido de texto (opcional)
+ * @param {string|Object} options - Clase string o objeto de opciones
+ * @param {string} options.className - Clase(s) del elemento
+ * @param {string} options.text - Contenido de texto
+ * @param {string} options.id - ID del elemento
+ * @param {Object} options.attributes - Atributos adicionales
+ * @param {Array} options.children - Elementos hijos
  * @returns {HTMLElement}
  */
-export function createElement(tag, className = '', textContent = '') {
+export function createElement(tag, options = '') {
     const element = document.createElement(tag);
 
-    if (className) {
-        if (Array.isArray(className)) {
-            element.classList.add(...className);
-        } else {
-            element.className = className;
+    // Si options es un string, es la clase
+    if (typeof options === 'string') {
+        if (options) {
+            element.className = options;
         }
+        return element;
     }
 
-    if (textContent) {
-        element.textContent = textContent;
+    // Si options es un objeto, procesar todas las opciones
+    if (typeof options === 'object' && options !== null) {
+        // Clase
+        if (options.className) {
+            if (Array.isArray(options.className)) {
+                element.classList.add(...options.className);
+            } else {
+                element.className = options.className;
+            }
+        }
+
+        // Texto
+        if (options.text) {
+            element.textContent = options.text;
+        }
+
+        // ID
+        if (options.id) {
+            element.id = options.id;
+        }
+
+        // Atributos
+        if (options.attributes) {
+            Object.entries(options.attributes).forEach(([key, value]) => {
+                if (value !== undefined && value !== null) {
+                    element.setAttribute(key, value);
+                }
+            });
+        }
+
+        // Hijos
+        if (options.children && Array.isArray(options.children)) {
+            options.children.forEach(child => {
+                if (child) {
+                    element.appendChild(child);
+                }
+            });
+        }
     }
 
     return element;
@@ -101,27 +141,56 @@ export function createButton(options) {
 }
 
 /**
- * Crea un link con icono Bootstrap
+ * Crea un link con opciones flexibles
  * @param {Object} options - Opciones del link
  * @param {string} options.href - URL del link
  * @param {string} options.text - Texto del link
  * @param {string} options.icon - Clase del icono (ej: 'bi-house')
  * @param {string} options.className - Clases adicionales
+ * @param {Array} options.children - Elementos hijos (alternativa a text/icon)
+ * @param {Object} options.attributes - Atributos adicionales
  * @returns {HTMLAnchorElement}
  */
 export function createLink(options) {
-    const link = createElement('a', options.className || '');
-    link.href = options.href;
+    const link = document.createElement('a');
 
-    if (options.icon) {
-        const icon = createElement('i', `bi ${options.icon}`);
-        link.appendChild(icon);
+    if (options.href) {
+        link.href = options.href;
+    }
 
-        if (options.text) {
-            link.appendChild(document.createTextNode(` ${options.text}`));
+    if (options.className) {
+        link.className = options.className;
+    }
+
+    // Si tiene children, usarlos directamente
+    if (options.children && Array.isArray(options.children)) {
+        options.children.forEach(child => {
+            if (child) {
+                link.appendChild(child);
+            }
+        });
+    }
+    // Si no, usar icon y text
+    else if (options.icon || options.text) {
+        if (options.icon) {
+            const icon = createElement('i', `bi ${options.icon}`);
+            link.appendChild(icon);
+
+            if (options.text) {
+                link.appendChild(document.createTextNode(` ${options.text}`));
+            }
+        } else if (options.text) {
+            link.textContent = options.text;
         }
-    } else if (options.text) {
-        link.textContent = options.text;
+    }
+
+    // Atributos adicionales
+    if (options.attributes) {
+        Object.entries(options.attributes).forEach(([key, value]) => {
+            if (value !== undefined && value !== null) {
+                link.setAttribute(key, value);
+            }
+        });
     }
 
     return link;
