@@ -4,9 +4,9 @@ import publicWidget from '@web/legacy/js/public/public_widget';
 import { rpc } from "@web/core/network/rpc";
 
 // Importar utilidades centralizadas
-import { formatPrice, getPriceLabel, formatLocation, formatArea } from './utils/formatters';
-import { PLACEHOLDER_IMAGE, CAROUSEL_INTERVAL } from './utils/constants';
-import { createElement, createLink } from './utils/dom_helpers';
+import { CAROUSEL_INTERVAL } from './utils/constants';
+import { createElement } from './utils/dom_helpers';
+import PropertyCardEnhanced from './components/property_card_enhanced';
 
 /**
  * BOHIO Property Carousels Widget
@@ -228,192 +228,27 @@ publicWidget.registry.PropertyCarouselWidget = publicWidget.Widget.extend({
     },
 
     /**
-     * Crear elemento de tarjeta de propiedad usando createElement helper
+     * Crear elemento de tarjeta de propiedad usando la clase mejorada
      * @private
      */
     _createPropertyCardElement(property) {
-        // Preparar datos usando formatters centralizados
-        const imageUrl = property.image_url || PLACEHOLDER_IMAGE;
-        const location = formatLocation(property);
-        const priceFormatted = formatPrice(property.price);
-        const priceLabel = getPriceLabel(property);
+        // Usar la nueva clase PropertyCardEnhanced para crear tarjetas mejoradas
+        const enhancedCard = new PropertyCardEnhanced(property, {
+            showActions: true,
+            showFloatingButtons: true,
+            enableCompare: true,
+            enableWishlist: true,
+            enableShare: true
+        });
 
-        // Crear estructura con createElement helper
+        // Crear el contenedor de columna para el carrusel
         const colDiv = createElement('div', 'col-md-3');
 
-        const card = createElement('div',
-            'card h-100 shadow-sm border-0 bohio-property-card position-relative'
-        );
-
-        // Badge de proyecto
-        if (property.project_id) {
-            card.appendChild(this._createProjectBadge(property));
-        }
-
-        // Imagen
-        card.appendChild(this._createPropertyImage(imageUrl, property.name));
-
-        // Card body
-        const cardBody = createElement('div', 'card-body d-flex flex-column');
-
-        // Título
-        cardBody.appendChild(this._createPropertyTitle(property.name));
-
-        // Ubicación
-        cardBody.appendChild(this._createPropertyLocation(location));
-
-        // Características
-        cardBody.appendChild(this._createPropertyFeatures(property));
-
-        // Precio
-        cardBody.appendChild(this._createPropertyPrice(priceLabel, priceFormatted));
-
-        // Botón
-        cardBody.appendChild(this._createDetailsButton(property.url));
-
-        card.appendChild(cardBody);
+        // Crear la tarjeta mejorada y agregarla al contenedor
+        const card = enhancedCard.create();
         colDiv.appendChild(card);
 
         return colDiv;
-    },
-
-    /**
-     * Crear badge de proyecto
-     * @private
-     */
-    _createProjectBadge(property) {
-        const div = createElement('div', 'position-absolute top-0 end-0 m-2');
-
-        const link = createLink({
-            href: `/proyecto/${property.project_id}`,
-            className: 'badge bg-danger text-white text-decoration-none property-project-badge',
-            children: [
-                createElement('i', 'bi bi-building me-1'),
-                document.createTextNode(property.project_name)
-            ]
-        });
-
-        div.appendChild(link);
-        return div;
-    },
-
-    /**
-     * Crear imagen de propiedad
-     * @private
-     */
-    _createPropertyImage(imageUrl, name) {
-        const img = createElement('img', {
-            className: 'card-img-top property-card-image',
-            attributes: {
-                src: imageUrl,
-                alt: name,
-                loading: 'lazy',
-                onerror: `this.src='${PLACEHOLDER_IMAGE}'`
-            }
-        });
-
-        return img;
-    },
-
-    /**
-     * Crear título de propiedad
-     * @private
-     */
-    _createPropertyTitle(name) {
-        return createElement('h5', {
-            className: 'card-title text-truncate',
-            text: name,
-            attributes: { title: name }
-        });
-    },
-
-    /**
-     * Crear ubicación de propiedad
-     * @private
-     */
-    _createPropertyLocation(location) {
-        const p = createElement('p', {
-            className: 'text-muted small mb-2',
-            children: [
-                createElement('i', 'bi bi-geo-alt-fill me-1'),
-                document.createTextNode(location)
-            ]
-        });
-
-        return p;
-    },
-
-    /**
-     * Crear características de propiedad (área, habitaciones, baños)
-     * @private
-     */
-    _createPropertyFeatures(property) {
-        const div = createElement('div',
-            'd-flex justify-content-between mb-2 text-muted small property-features'
-        );
-
-        if (property.area > 0) {
-            const areaFormatted = formatArea(property.area);
-            div.appendChild(this._createFeature('bi-rulers', areaFormatted));
-        }
-        if (property.bedrooms > 0) {
-            div.appendChild(this._createFeature('bi-bed', property.bedrooms.toString()));
-        }
-        if (property.bathrooms > 0) {
-            div.appendChild(this._createFeature('bi-droplet', property.bathrooms.toString()));
-        }
-
-        return div;
-    },
-
-    /**
-     * Crear característica individual
-     * @private
-     */
-    _createFeature(iconClass, text) {
-        return createElement('span', {
-            children: [
-                createElement('i', `bi ${iconClass} me-1`),
-                document.createTextNode(text)
-            ]
-        });
-    },
-
-    /**
-     * Crear sección de precio
-     * @private
-     */
-    _createPropertyPrice(label, formatted) {
-        const div = createElement('div', {
-            className: 'mb-2',
-            children: [
-                createElement('small', {
-                    className: 'text-muted',
-                    text: label
-                }),
-                createElement('h4', {
-                    className: 'text-danger mb-0',
-                    text: formatted
-                })
-            ]
-        });
-
-        return div;
-    },
-
-    /**
-     * Crear botón de detalles
-     * @private
-     */
-    _createDetailsButton(url) {
-        return createLink({
-            href: url,
-            className: 'btn btn-outline-danger w-100 mt-auto',
-            children: [
-                createElement('i', 'bi bi-eye me-1'),
-                document.createTextNode('Ver detalles')
-            ]
-        });
     },
 
     /**

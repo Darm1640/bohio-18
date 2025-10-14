@@ -1,0 +1,521 @@
+// =============================================================================
+// BOHIO ENHANCED PROPERTY CARD STYLES
+// =============================================================================
+// Estilos para tarjetas de propiedades mejoradas con efectos 3D y glassmorphism
+
+// Variables
+$card-border-radius: 20px;
+$glass-blur: 10px;
+$shadow-3d: 0 10px 30px rgba(0, 0, 0, 0.15);
+$shadow-3d-hover: 0 15px 40px rgba(0, 0, 0, 0.25);
+$transition-duration: 0.3s;
+
+// -----------------------------------------------------------------------------
+// TARJETA PRINCIPAL
+// -----------------------------------------------------------------------------
+
+.bohio-property-card-enhanced {
+    transition: transform $transition-duration ease;
+
+    &:hover {
+        transform: translateY(-5px);
+    }
+}
+
+.property-card-3d {
+    border-radius: $card-border-radius;
+    overflow: hidden;
+    transition: all $transition-duration cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: $shadow-3d;
+    background: white;
+
+    &:hover {
+        box-shadow: $shadow-3d-hover;
+        transform: scale(1.02);
+
+        .property-image {
+            transform: scale(1.05);
+        }
+
+        .quick-actions {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .property-image-overlay {
+            opacity: 1;
+        }
+
+        .floating-actions-container {
+            opacity: 1;
+        }
+    }
+}
+
+// -----------------------------------------------------------------------------
+// SECCIÓN DE IMAGEN
+// -----------------------------------------------------------------------------
+
+.property-image-wrapper {
+    position: relative;
+    overflow: hidden;
+    height: 220px;
+
+    .property-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform $transition-duration ease;
+    }
+}
+
+// Overlay de la imagen
+.property-image-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 1rem;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    opacity: 0;
+    transition: opacity $transition-duration ease;
+
+    .photo-counter,
+    .video-badge {
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur($glass-blur);
+        -webkit-backdrop-filter: blur($glass-blur);
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        display: flex;
+        align-items: center;
+    }
+}
+
+// -----------------------------------------------------------------------------
+// BOTONES GLASS 3D
+// -----------------------------------------------------------------------------
+
+.btn-glass-3d {
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur($glass-blur) saturate(180%);
+    -webkit-backdrop-filter: blur($glass-blur) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 12px;
+    padding: 0.5rem;
+    transition: all $transition-duration ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1),
+                0 2px 4px rgba(0, 0, 0, 0.06);
+
+    &:hover {
+        background: rgba(255, 255, 255, 0.35);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15),
+                    0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    &:active {
+        transform: translateY(0);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    &.active {
+        background: rgba(220, 53, 69, 0.9);
+        color: white;
+
+        i {
+            animation: pulse 1s infinite;
+        }
+    }
+}
+
+// Botones de acción rápida
+.quick-actions {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    opacity: 0;
+    transform: translateX(10px);
+    transition: all $transition-duration ease;
+
+    .btn-wishlist,
+    .btn-compare {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.1rem;
+        color: white;
+
+        &:hover {
+            color: #dc3545;
+            background: rgba(255, 255, 255, 0.9);
+        }
+    }
+}
+
+// -----------------------------------------------------------------------------
+// BOTONES FLOTANTES
+// -----------------------------------------------------------------------------
+
+.floating-actions-container {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    z-index: 10;
+    opacity: 0;
+    transition: opacity $transition-duration ease;
+
+    &.active {
+        .floating-actions {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+
+            button {
+                transform: scale(1) rotate(0);
+                opacity: 1;
+
+                @for $i from 1 through 5 {
+                    &:nth-child(#{$i}) {
+                        transition-delay: #{$i * 0.05}s;
+                    }
+                }
+            }
+        }
+
+        .btn-floating-main {
+            transform: rotate(45deg);
+            background: rgba(220, 53, 69, 0.9);
+        }
+    }
+}
+
+.btn-floating-main {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    color: white;
+    background: rgba(220, 53, 69, 0.8);
+    backdrop-filter: blur($glass-blur);
+    -webkit-backdrop-filter: blur($glass-blur);
+    border: none;
+    box-shadow: 0 4px 15px rgba(220, 53, 69, 0.4);
+    transition: all $transition-duration ease;
+    position: relative;
+    z-index: 2;
+
+    &:hover {
+        transform: scale(1.1);
+        box-shadow: 0 6px 20px rgba(220, 53, 69, 0.5);
+    }
+}
+
+.floating-actions {
+    position: absolute;
+    bottom: 60px;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px);
+    transition: all $transition-duration ease;
+
+    .btn-floating {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1rem;
+        color: white;
+        border: none;
+        transform: scale(0) rotate(-180deg);
+        opacity: 0;
+        transition: all $transition-duration ease;
+
+        &.btn-success {
+            background: rgba(37, 211, 102, 0.9);
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
+        }
+
+        &.btn-primary {
+            background: rgba(13, 110, 253, 0.9);
+            box-shadow: 0 4px 15px rgba(13, 110, 253, 0.4);
+        }
+
+        &.btn-info {
+            background: rgba(13, 202, 240, 0.9);
+            box-shadow: 0 4px 15px rgba(13, 202, 240, 0.4);
+        }
+
+        &.btn-warning {
+            background: rgba(255, 193, 7, 0.9);
+            box-shadow: 0 4px 15px rgba(255, 193, 7, 0.4);
+        }
+
+        &.btn-danger {
+            background: rgba(220, 53, 69, 0.9);
+            box-shadow: 0 4px 15px rgba(220, 53, 69, 0.4);
+        }
+
+        &:hover {
+            transform: scale(1.1) rotate(0);
+        }
+    }
+}
+
+// -----------------------------------------------------------------------------
+// BODY DE LA TARJETA
+// -----------------------------------------------------------------------------
+
+.card-body {
+    padding: 1.25rem;
+
+    .card-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 0.25rem;
+    }
+
+    .location-info {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1rem;
+
+        i {
+            font-size: 0.9rem;
+        }
+
+        span {
+            font-size: 0.9rem;
+            line-height: 1.2;
+        }
+    }
+}
+
+// Features con íconos
+.property-features {
+    padding: 0.75rem 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+
+    .feature-item {
+        flex: 1;
+
+        i {
+            font-size: 1.2rem;
+        }
+
+        small {
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+    }
+}
+
+// Amenidades badges
+.badge {
+    padding: 0.35rem 0.65rem;
+    font-weight: 500;
+    font-size: 0.75rem;
+
+    &.bg-light {
+        background: rgba(0, 0, 0, 0.05) !important;
+    }
+}
+
+// Sección de precio
+.price-section {
+    background: linear-gradient(135deg, #fef1f1 0%, #fff 100%);
+    padding: 0.75rem;
+    border-radius: 10px;
+    margin-top: auto;
+
+    h4 {
+        font-size: 1.5rem;
+        font-weight: 700;
+    }
+
+    small {
+        font-size: 0.8rem;
+    }
+}
+
+// -----------------------------------------------------------------------------
+// MODALES GLASS
+// -----------------------------------------------------------------------------
+
+.glass-modal {
+    .modal-content {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        border-radius: 20px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    }
+
+    .modal-header {
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .modal-body {
+        padding: 1.5rem;
+    }
+}
+
+// -----------------------------------------------------------------------------
+// ANIMACIONES
+// -----------------------------------------------------------------------------
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes slideInUp {
+    from {
+        transform: translateY(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+// -----------------------------------------------------------------------------
+// RESPONSIVE
+// -----------------------------------------------------------------------------
+
+@media (max-width: 768px) {
+    .property-card-3d {
+        border-radius: 15px;
+    }
+
+    .property-image-wrapper {
+        height: 180px;
+    }
+
+    .floating-actions-container {
+        opacity: 1; // Siempre visible en móvil
+        bottom: 10px;
+        right: 10px;
+
+        .btn-floating-main {
+            width: 45px;
+            height: 45px;
+        }
+
+        .floating-actions {
+            bottom: 50px;
+
+            .btn-floating {
+                width: 35px;
+                height: 35px;
+                font-size: 0.9rem;
+            }
+        }
+    }
+
+    .property-features {
+        .feature-item {
+            i {
+                font-size: 1rem;
+            }
+
+            small {
+                font-size: 0.7rem;
+            }
+        }
+    }
+}
+
+@media (max-width: 576px) {
+    .bohio-property-card-enhanced {
+        margin-bottom: 1rem;
+    }
+
+    .card-body {
+        padding: 1rem;
+    }
+
+    .price-section {
+        h4 {
+            font-size: 1.25rem;
+        }
+    }
+}
+
+// -----------------------------------------------------------------------------
+// DARK MODE SUPPORT
+// -----------------------------------------------------------------------------
+
+@media (prefers-color-scheme: dark) {
+    .property-card-3d {
+        background: #1a1a1a;
+        color: #f0f0f0;
+
+        .card-title {
+            color: #f0f0f0;
+        }
+
+        .text-muted {
+            color: #999 !important;
+        }
+
+        .badge.bg-light {
+            background: rgba(255, 255, 255, 0.1) !important;
+            color: #f0f0f0;
+        }
+
+        .price-section {
+            background: linear-gradient(135deg, rgba(220, 53, 69, 0.1) 0%, transparent 100%);
+        }
+
+        .property-features {
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+    }
+
+    .btn-glass-3d {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: rgba(255, 255, 255, 0.2);
+
+        &:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+    }
+}

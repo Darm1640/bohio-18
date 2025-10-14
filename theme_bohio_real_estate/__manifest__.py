@@ -114,6 +114,7 @@
             'theme_bohio_real_estate/static/src/scss/property_cards.scss',
             'theme_bohio_real_estate/static/src/scss/property_detail.scss',
             'theme_bohio_real_estate/static/src/scss/property_shop.scss',
+            'theme_bohio_real_estate/static/src/scss/components/_property_card_enhanced.scss',
 
             # JavaScript - Utils (Orden: utils primero, luego DOM, luego widgets)
             'theme_bohio_real_estate/static/src/js/utils/constants.js',
@@ -126,6 +127,9 @@
             # JavaScript - DOM Manipulation (usa utils)
             'theme_bohio_real_estate/static/src/js/dom/markers.js',
             'theme_bohio_real_estate/static/src/js/dom/property_cards.js',
+
+            # JavaScript - Components (componentes reutilizables)
+            'theme_bohio_real_estate/static/src/js/components/property_card_enhanced.js',
 
             # JavaScript - Widgets (PublicWidget - usa utils y dom)
             'theme_bohio_real_estate/static/src/js/widgets/map_widget.js',
