@@ -54,12 +54,22 @@ class BohioPropertyWishlist(WebsiteSaleWishlist):
 
             # Verificar si ya está en el wishlist
             wishlist = request.env['product.wishlist'].sudo()
-            existing = wishlist.search([
-                ('product_id', '=', property_rec.product_variant_id.id),
-                '|',
-                ('partner_id', '=', request.env.user.partner_id.id if request.env.user != request.env.ref('base.public_user') else False),
-                ('session_id', '=', request.session.sid if request.env.user == request.env.ref('base.public_user') else False)
-            ], limit=1)
+
+            # Construir dominio según usuario autenticado o público
+            if request.env.user != request.env.ref('base.public_user'):
+                # Usuario autenticado
+                domain = [
+                    ('product_id', '=', property_rec.product_variant_id.id),
+                    ('partner_id', '=', request.env.user.partner_id.id)
+                ]
+            else:
+                # Usuario público (usar sesión)
+                domain = [
+                    ('product_id', '=', property_rec.product_variant_id.id),
+                    ('session_id', '=', request.session.sid)
+                ]
+
+            existing = wishlist.search(domain, limit=1)
 
             if existing:
                 return {
@@ -125,12 +135,20 @@ class BohioPropertyWishlist(WebsiteSaleWishlist):
 
             # Buscar en el wishlist
             wishlist = request.env['product.wishlist'].sudo()
-            wish_item = wishlist.search([
-                ('product_id', '=', property_rec.product_variant_id.id),
-                '|',
-                ('partner_id', '=', request.env.user.partner_id.id if request.env.user != request.env.ref('base.public_user') else False),
-                ('session_id', '=', request.session.sid if request.env.user == request.env.ref('base.public_user') else False)
-            ], limit=1)
+
+            # Construir dominio según usuario autenticado o público
+            if request.env.user != request.env.ref('base.public_user'):
+                domain = [
+                    ('product_id', '=', property_rec.product_variant_id.id),
+                    ('partner_id', '=', request.env.user.partner_id.id)
+                ]
+            else:
+                domain = [
+                    ('product_id', '=', property_rec.product_variant_id.id),
+                    ('session_id', '=', request.session.sid)
+                ]
+
+            wish_item = wishlist.search(domain, limit=1)
 
             if wish_item:
                 wish_item.unlink()
@@ -193,12 +211,20 @@ class BohioPropertyWishlist(WebsiteSaleWishlist):
 
             # Verificar si ya está en wishlist
             wishlist = request.env['product.wishlist'].sudo()
-            wish_item = wishlist.search([
-                ('product_id', '=', property_rec.product_variant_id.id),
-                '|',
-                ('partner_id', '=', request.env.user.partner_id.id if request.env.user != request.env.ref('base.public_user') else False),
-                ('session_id', '=', request.session.sid if request.env.user == request.env.ref('base.public_user') else False)
-            ], limit=1)
+
+            # Construir dominio según usuario autenticado o público
+            if request.env.user != request.env.ref('base.public_user'):
+                domain = [
+                    ('product_id', '=', property_rec.product_variant_id.id),
+                    ('partner_id', '=', request.env.user.partner_id.id)
+                ]
+            else:
+                domain = [
+                    ('product_id', '=', property_rec.product_variant_id.id),
+                    ('session_id', '=', request.session.sid)
+                ]
+
+            wish_item = wishlist.search(domain, limit=1)
 
             if wish_item:
                 # Ya está en wishlist, remover
@@ -267,12 +293,20 @@ class BohioPropertyWishlist(WebsiteSaleWishlist):
                 }
 
             wishlist = request.env['product.wishlist'].sudo()
-            wish_item = wishlist.search([
-                ('product_id', '=', property_rec.product_variant_id.id),
-                '|',
-                ('partner_id', '=', request.env.user.partner_id.id if request.env.user != request.env.ref('base.public_user') else False),
-                ('session_id', '=', request.session.sid if request.env.user == request.env.ref('base.public_user') else False)
-            ], limit=1)
+
+            # Construir dominio según usuario autenticado o público
+            if request.env.user != request.env.ref('base.public_user'):
+                domain = [
+                    ('product_id', '=', property_rec.product_variant_id.id),
+                    ('partner_id', '=', request.env.user.partner_id.id)
+                ]
+            else:
+                domain = [
+                    ('product_id', '=', property_rec.product_variant_id.id),
+                    ('session_id', '=', request.session.sid)
+                ]
+
+            wish_item = wishlist.search(domain, limit=1)
 
             return {
                 'is_in_wishlist': bool(wish_item),
