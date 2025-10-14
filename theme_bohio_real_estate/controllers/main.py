@@ -895,8 +895,6 @@ class BohioRealEstateController(http.Controller):
             ('property_area', '!=', 0),
             ('num_bathrooms', '!=', 0),
             ('city_id', '!=', False), ('street2', '!=', False),
-            ('latitude', '!=', False),
-            ('longitude', '!=', False),
         ]
         if service == 'rent':
             base += [
