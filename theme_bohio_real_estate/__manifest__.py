@@ -158,6 +158,10 @@
 
             # JavaScript - Property Carousels (Refactorizado: createElement sin HTML strings)
             'theme_bohio_real_estate/static/src/js/property_carousels.js',
+
+            # JavaScript - Fixes (Correcciones para galería y paginación)
+            'theme_bohio_real_estate/static/src/js/fixes/gallery_fix.js',
+            'theme_bohio_real_estate/static/src/js/fixes/pagination_fix.js',
         ],
         'web.assets_backend': [
             # JavaScript - Property Snippet Options (Website Builder)
