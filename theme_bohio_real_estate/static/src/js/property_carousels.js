@@ -241,7 +241,8 @@ publicWidget.registry.PropertyCarouselWidget = publicWidget.Widget.extend({
         });
 
         // Crear el contenedor de columna para el carrusel
-        const colDiv = createElement('div', 'col-md-3');
+        // col-12 para móvil, col-md-6 para tablet, col-lg-3 para desktop
+        const colDiv = createElement('div', 'col-12 col-sm-6 col-md-6 col-lg-3 mb-4');
 
         // Crear la tarjeta limpia y agregarla al contenedor
         const card = cleanCard.create();

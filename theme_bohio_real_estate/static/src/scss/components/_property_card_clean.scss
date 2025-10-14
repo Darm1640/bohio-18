@@ -17,7 +17,7 @@ $transition-speed: 0.2s;
 // -----------------------------------------------------------------------------
 
 .property-card-clean {
-    margin-bottom: 1.5rem;
+    height: 100%;
 
     .property-card-elevated {
         border: none;
@@ -26,6 +26,9 @@ $transition-speed: 0.2s;
         box-shadow: $elevation-shadow;
         transition: all $transition-speed ease;
         background: #fff;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
 
         &:hover {
             // Elevación sutil, no 3D exagerado
@@ -159,6 +162,9 @@ $transition-speed: 0.2s;
 
 .card-body {
     padding: 1rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
 
     .card-title {
         font-size: 1rem;
@@ -212,6 +218,7 @@ $transition-speed: 0.2s;
     // Sección de precio
     .price-section {
         padding-top: 0.75rem;
+        margin-top: auto; // Empuja el precio hacia abajo
 
         .price-value {
             font-size: 1.5rem;
