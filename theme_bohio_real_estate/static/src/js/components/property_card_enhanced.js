@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { rpc } from "@web/core/network/rpc";
 import { createElement } from '../utils/dom_helpers';
 import { formatPrice, getPriceLabel, formatLocation, formatArea } from '../utils/formatters';
 import { PLACEHOLDER_IMAGE } from '../utils/constants';

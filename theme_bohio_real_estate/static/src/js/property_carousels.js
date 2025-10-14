@@ -6,7 +6,7 @@ import { rpc } from "@web/core/network/rpc";
 // Importar utilidades centralizadas
 import { CAROUSEL_INTERVAL } from './utils/constants';
 import { createElement } from './utils/dom_helpers';
-import PropertyCardEnhanced from './components/property_card_enhanced';
+import PropertyCardClean from './components/property_card_clean';
 
 /**
  * BOHIO Property Carousels Widget
@@ -228,24 +228,23 @@ publicWidget.registry.PropertyCarouselWidget = publicWidget.Widget.extend({
     },
 
     /**
-     * Crear elemento de tarjeta de propiedad usando la clase mejorada
+     * Crear elemento de tarjeta de propiedad usando la clase limpia
      * @private
      */
     _createPropertyCardElement(property) {
-        // Usar la nueva clase PropertyCardEnhanced para crear tarjetas mejoradas
-        const enhancedCard = new PropertyCardEnhanced(property, {
+        // Usar la nueva clase PropertyCardClean para crear tarjetas limpias
+        const cleanCard = new PropertyCardClean(property, {
+            imageQuality: 'medium',
             showActions: true,
-            showFloatingButtons: true,
             enableCompare: true,
-            enableWishlist: true,
-            enableShare: true
+            enableWishlist: true
         });
 
         // Crear el contenedor de columna para el carrusel
         const colDiv = createElement('div', 'col-md-3');
 
-        // Crear la tarjeta mejorada y agregarla al contenedor
-        const card = enhancedCard.create();
+        // Crear la tarjeta limpia y agregarla al contenedor
+        const card = cleanCard.create();
         colDiv.appendChild(card);
 
         return colDiv;
