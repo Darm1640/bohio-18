@@ -66,4 +66,4 @@
         <field name="parent_id" ref="website.main_menu"/>
         <field name="sequence">15</field>
     </record>
-</odoo>
+</odoo>		

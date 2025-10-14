@@ -29,7 +29,6 @@ class BohioMapController(http.Controller):
         # Dominio base
         domain = [
             ('is_property', '=', True),
-            ('active', '=', True),
             ('state', '=', 'free'),
             ('latitude', '!=', False),
             ('longitude', '!=', False)

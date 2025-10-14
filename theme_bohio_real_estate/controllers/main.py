@@ -865,101 +865,156 @@ class BohioRealEstateController(http.Controller):
         })
 
     # =================== ENDPOINTS ESPECÍFICOS POR SECCIÓN ===================
+    # -------------------------
+    # Helpers reutilizables
+    # -------------------------
+    def _homepage_fields(self):
+        """Campos mínimos para homepage (incluye write_date para ordering)."""
+        return [
+            'id', 'name', 'default_code',
+            'property_type', 'type_service',
+            'net_rental_price', 'net_price', 'currency_id',
+            'num_bedrooms', 'num_bathrooms', 'property_area',
+            'city_id', 'city', 'state_id', 'neighborhood',
+            'latitude', 'longitude',
+            'project_worksite_id',
+            'image_1920',
+            'state',
+            'write_date',
+        ]
 
+    def _completeness_domain(self, service):
+        """
+        Dominio que exige 'ficha completa' + filtro por imagen.
+        - service: 'rent' o 'sale'
+        """
+        base = [
+            ('is_property', '=', True),
+            ('active', '=', True),
+            ('state', '=', 'free'),
+            ('image_1920', '!=', False),      # mantener solo con imagen propia
+            ('property_area', '>', 0),
+            ('num_bathrooms', '>', 0),
+            # ciudad puede venir por city_id (m2o) o city (char)
+            '|', ('city_id', '!=', False), ('city', '!=', False),
+            ('state_id', '!=', False),
+            ('neighborhood', '!=', False),
+            ('latitude', '!=', False),
+            ('longitude', '!=', False),
+        ]
+        if service == 'rent':
+            base += [
+                ('type_service', 'in', ['rent', 'sale_rent']),
+                ('net_rental_price', '>', 0),
+            ]
+        else:  # 'sale'
+            base += [
+                ('type_service', 'in', ['sale', 'sale_rent']),
+                ('net_price', '>', 0),
+            ]
+        return base
+
+    def _search_read_unique_by_project(self, Model, domain, fields, limit, order):
+        """
+        Busca propiedades cumpliendo domain y devuelve como máximo 'limit'
+        elementos, dejando solo UNA unidad por cada project_worksite_id.
+        Prefiere las más recientes por write_date (ya vienen ordenadas).
+        """
+        unique = []
+        seen_projects = set()
+        # para no quedarnos cortos tras deduplicar, pedir un "colchón"
+        page = max(32, int(limit) * 4)
+        offset = 0
+
+        while len(unique) < int(limit):
+            batch = Model.search_read(domain, fields=fields, limit=page, offset=offset, order=order)
+            if not batch:
+                break
+            offset += len(batch)
+
+            for rec in batch:
+                proj = rec.get('project_worksite_id')
+                proj_id = proj[0] if isinstance(proj, (list, tuple)) and proj else False
+
+                # Si tiene proyecto: permitir solo la primera por proyecto
+                if proj_id:
+                    if proj_id in seen_projects:
+                        continue
+                    seen_projects.add(proj_id)
+
+                # Sin proyecto: aceptar (únicos por id de facto)
+                unique.append(rec)
+                if len(unique) >= int(limit):
+                    break
+
+        return unique
+
+    # -------------------------
+    # Arriendo (Homepage)
+    # -------------------------
     @http.route(['/api/properties/arriendo'], type='json', auth='public', website=True, csrf=False)
     def api_properties_arriendo(self, limit=16, **kwargs):
         """
         Endpoint específico para propiedades de arriendo en homepage
         OPTIMIZADO: Usa search_read para cargar todos los campos en 1 query SQL
         FILTRO: Solo propiedades con imagen
+        + FICHA COMPLETA: ubicación y datos clave llenos (precio arriendo > 0, área, baños, ciudad/región/barrio, lat/lon)
         """
-        _logger.info(f"[HOMEPAGE] Cargando {limit} propiedades de arriendo con imagen")
+        limit = int(limit)
+        _logger.info(f"[HOMEPAGE] Cargando {limit} propiedades de arriendo (ficha completa + imagen)")
 
         Property = request.env['product.template'].sudo()
+        domain = self._completeness_domain('rent')
 
-        domain = [
-            ('is_property', '=', True),
-            ('active', '=', True),
-            ('state', '=', 'free'),
-            ('type_service', 'in', ['rent', 'sale_rent']),
-            ('image_1920', '!=', False)  
-        ]
-
-        # OPTIMIZACIÓN: search_count para total
         total = Property.search_count(domain)
-
-        # OPTIMIZACIÓN: search_read carga todos los campos en 1 query
         properties_data = Property.search_read(
             domain,
-            fields=[
-                'id', 'name', 'default_code',
-                'property_type', 'type_service',
-                'net_rental_price', 'net_price', 'currency_id',
-                'num_bedrooms', 'num_bathrooms', 'property_area',
-                'city_id', 'city', 'state_id', 'neighborhood',
-                'latitude', 'longitude',
-                'project_worksite_id',
-                'image_1920',
-                'state'
-            ],
-            limit=int(limit),
+            fields=self._homepage_fields(),
+            limit=limit,
             order='write_date desc'
         )
 
-        _logger.info(f"[HOMEPAGE] Encontradas {len(properties_data)} de {total} propiedades de arriendo")
-
+        _logger.info(f"[HOMEPAGE] Arriendo: devueltas {len(properties_data)} / total {total} con ficha completa")
         return {
             'success': True,
             'properties': self._serialize_properties_fast(properties_data, 'public'),
-            'total': total
+            'total': total,
         }
 
+    # -------------------------
+    # Venta usada (Homepage)
+    # -------------------------
     @http.route(['/api/properties/venta-usada'], type='json', auth='public', website=True, csrf=False)
     def api_properties_venta_usada(self, limit=16, **kwargs):
         """
         Endpoint específico para propiedades de venta usadas
         OPTIMIZADO: Usa search_read para cargar todos los campos en 1 query SQL
-        MEJORA: Si propiedad no tiene imagen, usa imagen del proyecto (si tiene proyecto)
+        FICHA COMPLETA: ubicación y datos clave llenos (precio venta > 0, área, baños, ciudad/región/barrio, lat/lon)
+        DEDUPLICACIÓN: Solo una unidad por proyecto (project_worksite_id)
         """
-        _logger.info(f"[HOMEPAGE] Cargando {limit} propiedades de venta usada")
+        limit = int(limit)
+        _logger.info(f"[HOMEPAGE] Cargando {limit} propiedades de venta usada (ficha completa + 1 por proyecto)")
 
         Property = request.env['product.template'].sudo()
+        domain = self._completeness_domain('sale')
 
-        domain = [
-            ('is_property', '=', True),
-            ('active', '=', True),
-            ('state', '=', 'free'),
-            ('type_service', 'in', ['sale', 'sale_rent']),
-            ('image_1920', '!=', False)  # Solo con imagen
-        ]
-
-        # OPTIMIZACIÓN: search_count para total
+        # Total de propiedades que cumplen la ficha completa (sin deduplicar)
         total = Property.search_count(domain)
 
-        # OPTIMIZACIÓN: search_read carga todos los campos en 1 query
-        properties_data = Property.search_read(
-            domain,
-            fields=[
-                'id', 'name', 'default_code',
-                'property_type', 'type_service',
-                'net_rental_price', 'net_price', 'currency_id',
-                'num_bedrooms', 'num_bathrooms', 'property_area',
-                'city_id', 'city', 'state_id', 'neighborhood',
-                'latitude', 'longitude',
-                'project_worksite_id',
-                'image_1920',
-                'state'
-            ],
-            limit=int(limit),
+        # Dedupe por proyecto, manteniendo orden por reciente
+        unique_rows = self._search_read_unique_by_project(
+            Model=Property,
+            domain=domain,
+            fields=self._homepage_fields(),
+            limit=limit,
             order='write_date desc'
         )
 
-        _logger.info(f"[HOMEPAGE] Encontradas {len(properties_data)} de {total} propiedades de venta con imagen")
-
+        _logger.info(f"[HOMEPAGE] Venta usada: devueltas {len(unique_rows)} (únicas por proyecto) / total {total} con ficha completa")
         return {
             'success': True,
-            'properties': self._serialize_properties_fast(properties_data, 'public'),
-            'total': total
+            'properties': self._serialize_properties_fast(unique_rows, 'public'),
+            'total': total,   # total sin deduplicar; si prefieres total único por proyecto, dime y lo ajusto
         }
 
     @http.route(['/api/properties/proyectos'], type='json', auth='public', website=True, csrf=False)
@@ -1919,7 +1974,6 @@ class BohioRealEstateController(http.Controller):
                 _logger.info("Relajando criterios a nivel 2 (solo tipo servicio)...")
                 domain = [
                     ('id', '!=', property_id),
-                    ('active', '=', True),
                 ]
 
                 if current_property.type_service:
@@ -1934,7 +1988,6 @@ class BohioRealEstateController(http.Controller):
                 _logger.info("Relajando criterios a nivel 3 (cualquier activa)...")
                 domain = [
                     ('id', '!=', property_id),
-                    ('active', '=', True),
                 ]
 
                 _logger.info(f"Dominio búsqueda nivel 3: {domain}")
@@ -1987,7 +2040,6 @@ class BohioRealEstateController(http.Controller):
         try:
             domain = [
                 ('is_property', '=', True),  # Es una propiedad
-                ('active', '=', True),  # Está activa
                 ('state', '=', 'free'),  # Solo propiedades disponibles
                 ('latitude', '!=', False),  # Debe tener latitud
                 ('longitude', '!=', False),  # Debe tener longitud
@@ -2087,7 +2139,6 @@ class BohioRealEstateController(http.Controller):
         properties = request.env['product.template'].sudo().search([
             ('project_worksite_id', '=', project.id),
             ('is_property', '=', True),
-            ('active', '=', True)
         ], order='floor_number ASC, name ASC')
 
         # Agrupar apartamentos por tipo
@@ -2160,7 +2211,6 @@ class BohioRealEstateController(http.Controller):
             # Dominio base
             domain = [
                 ('is_property', '=', True),
-                ('active', '=', True),
                 ('state', '=', 'free'),
                 ('latitude', '!=', False),
                 ('longitude', '!=', False)
@@ -2168,10 +2218,8 @@ class BohioRealEstateController(http.Controller):
 
             # Filtrar según tipo de carrusel
             if carousel_type == 'rent':
-                # Propiedades en arriendo
                 domain.append(('type_service', 'in', ['rent', 'sale_rent']))
             elif carousel_type == 'sale':
-                # Propiedades usadas en venta (sin proyecto)
                 domain.append(('type_service', 'in', ['sale', 'sale_rent']))
                 domain.append(('project_worksite_id', '=', False))
             elif carousel_type == 'projects':
