@@ -890,27 +890,23 @@ class BohioRealEstateController(http.Controller):
         """
         base = [
             ('is_property', '=', True),
-            ('active', '=', True),
             ('state', '=', 'free'),
             ('image_1920', '!=', False),      # mantener solo con imagen propia
-            ('property_area', '>', 0),
-            ('num_bathrooms', '>', 0),
-            # ciudad puede venir por city_id (m2o) o city (char)
-            '|', ('city_id', '!=', False), ('city', '!=', False),
-            ('state_id', '!=', False),
-            ('neighborhood', '!=', False),
+            ('property_area', '!=', 0),
+            ('num_bathrooms', '!=', 0),
+            ('city_id', '!=', False), ('street2', '!=', False),
             ('latitude', '!=', False),
             ('longitude', '!=', False),
         ]
         if service == 'rent':
             base += [
                 ('type_service', 'in', ['rent', 'sale_rent']),
-                ('net_rental_price', '>', 0),
+                ('net_rental_price', '!=', 0),
             ]
         else:  # 'sale'
             base += [
                 ('type_service', 'in', ['sale', 'sale_rent']),
-                ('net_price', '>', 0),
+                ('net_price', '!=', 0),
             ]
         return base
 
