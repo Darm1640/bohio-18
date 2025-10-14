@@ -73,6 +73,11 @@
 
         # Mapa de Propiedades
         'views/mapa_propiedades.xml',
+
+        # Mejoras (Consolidadas desde "opcion a aplicar")
+        'views/property_map_fullpage.xml',
+        'views/property_map_no_coordinates.xml',
+        'views/mejoras_templates.xml',
     ],
     'assets': {
         'web.assets_frontend': [
@@ -162,6 +167,14 @@
             # JavaScript - Fixes (Correcciones para galería y paginación)
             'theme_bohio_real_estate/static/src/js/fixes/gallery_fix.js',
             'theme_bohio_real_estate/static/src/js/fixes/pagination_fix.js',
+
+            # JavaScript - Mejoras Consolidadas (contadores, búsqueda, proyectos)
+            'theme_bohio_real_estate/static/src/js/bohio_improvements.js',
+            'theme_bohio_real_estate/static/src/js/proyectos_improved.js',
+
+            # JavaScript - Sistemas Fijos (galería y mapas)
+            'theme_bohio_real_estate/static/src/js/property_gallery_fixed.js',
+            'theme_bohio_real_estate/static/src/js/property_map_fixed.js',
         ],
         'web.assets_backend': [
             # JavaScript - Property Snippet Options (Website Builder)

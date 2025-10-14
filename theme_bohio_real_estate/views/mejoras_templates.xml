@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ============================================= -->
+    <!-- MEJORA 1: BÚSQUEDA MEJORADA EN HOMEPAGE -->
+    <!-- ============================================= -->
+    
+    <!-- Reemplazar el formulario de búsqueda existente con este código mejorado -->
+    <template id="homepage_search_improved" name="Homepage Search Improved" inherit_id="theme_bohio_real_estate.bohio_homepage_new">
+        <xpath expr="//form[@id='searchForm']" position="replace">
+            <form action="/properties" method="get" id="searchForm" class="position-relative">
+                <!-- Campos hidden para filtros -->
+                <input type="hidden" name="type_service" id="selectedServiceType" value="rent"/>
+                <input type="hidden" name="property_type" id="selectedPropertyType" value=""/>
+                
+                <!-- Input de búsqueda principal -->
+                <div class="search-input-wrapper position-relative mb-3">
+                    <div class="input-group input-group-lg">
+                        <span class="input-group-text bg-white border-end-0" style="border-radius: 15px 0 0 15px;">
+                            <i class="bi bi-search text-danger"/>
+                        </span>
+                        <input type="text" 
+                               class="form-control border-start-0 border-end-0" 
+                               id="searchInput"
+                               name="search"
+                               placeholder="Ciudad, barrio, código de propiedad..."
+                               autocomplete="off"
+                               style="font-size: 1.1rem; padding: 15px;"/>
+                        
+                        <!-- Botón de búsqueda con contador -->
+                        <button class="btn btn-danger px-4" type="submit" style="border-radius: 0 15px 15px 0; font-size: 1.1rem; font-weight: 600;">
+                            <i class="bi bi-search me-2"/>
+                            Buscar
+                            <span id="search-result-preview" class="badge bg-white text-danger ms-2" style="display: none;">0</span>
+                        </button>
+                    </div>
+                    
+                    <!-- Contador de propiedades disponibles -->
+                    <div class="search-stats text-center mt-2" style="color: rgba(255,255,255,0.9); font-size: 0.95rem;">
+                        <i class="bi bi-info-circle me-1"/>
+                        <span id="total-properties">...</span> propiedades disponibles
+                    </div>
+                </div>
+                
+                <!-- Filtros rápidos -->
+                <div class="quick-filters d-flex gap-2 justify-content-center flex-wrap">
+                    <!-- Tipo de propiedad -->
+                    <select class="form-select form-select-sm" id="propertyTypeFilter" style="max-width: 200px; background: rgba(255,255,255,0.9); border: none; padding: 10px 15px; border-radius: 25px;">
+                        <option value="">Todos los tipos</option>
+                        <option value="apartment">Apartamentos</option>
+                        <option value="house">Casas</option>
+                        <option value="commercial">Comercial</option>
+                        <option value="lot">Lotes</option>
+                    </select>
+                    
+                    <!-- Precio -->
+                    <select class="form-select form-select-sm" style="max-width: 200px; background: rgba(255,255,255,0.9); border: none; padding: 10px 15px; border-radius: 25px;">
+                        <option value="">Cualquier precio</option>
+                        <option value="0-100000000">Hasta $100M</option>
+                        <option value="100000000-200000000">$100M - $200M</option>
+                        <option value="200000000-500000000">$200M - $500M</option>
+                        <option value="500000000-">Más de $500M</option>
+                    </select>
+                    
+                    <!-- Habitaciones -->
+                    <select class="form-select form-select-sm" style="max-width: 150px; background: rgba(255,255,255,0.9); border: none; padding: 10px 15px; border-radius: 25px;">
+                        <option value="">Habitaciones</option>
+                        <option value="1">1+</option>
+                        <option value="2">2+</option>
+                        <option value="3">3+</option>
+                        <option value="4">4+</option>
+                    </select>
+                </div>
+            </form>
+        </xpath>
+    </template>
+
+
+    <!-- ============================================= -->
+    <!-- MEJORA 2: VISTA DE PROYECTOS MEJORADA -->
+    <!-- ============================================= -->
+    
+    <template id="project_card_improved" name="Project Card Improved">
+        <!-- Card de proyecto mejorado para usar en proyectos_page.xml -->
+        <!-- Reemplazar la función renderProyectoCard() con esta estructura -->
+        
+        <div class="col-lg-6 col-xl-4">
+            <div class="card proyecto-card h-100 border-0 shadow-sm" style="transition: all 0.3s ease; cursor: pointer;" 
+                 onmouseover="this.style.transform='translateY(-10px)'; this.style.boxShadow='0 10px 30px rgba(0,0,0,0.15)'" 
+                 onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 10px rgba(0,0,0,0.1)'">
+                
+                <!-- Imagen del proyecto -->
+                <div class="proyecto-image-wrapper position-relative" style="height: 250px; overflow: hidden; border-radius: 12px 12px 0 0;">
+                    <img src="[IMAGE_URL]" 
+                         alt="[PROJECT_NAME]" 
+                         class="w-100 h-100" 
+                         style="object-fit: cover; transition: transform 0.5s ease;"
+                         onmouseover="this.style.transform='scale(1.1)'"
+                         onmouseout="this.style.transform='scale(1)'"/>
+                    
+                    <!-- Badge de estado -->
+                    <div class="position-absolute top-0 start-0 m-3">
+                        <span class="badge bg-success px-3 py-2" style="font-size: 0.85rem; border-radius: 20px;">
+                            <i class="bi bi-building me-1"/>
+                            En Construcción
+                        </span>
+                    </div>
+                    
+                    <!-- Badge de unidades disponibles -->
+                    <div class="position-absolute top-0 end-0 m-3">
+                        <span class="badge bg-danger px-3 py-2" style="font-size: 0.85rem; border-radius: 20px;">
+                            <i class="bi bi-house-fill me-1"/>
+                            [DISPONIBLES] disponibles
+                        </span>
+                    </div>
+                </div>
+                
+                <!-- Contenido del card -->
+                <div class="card-body p-4">
+                    <!-- Título y ubicación -->
+                    <div class="mb-3">
+                        <h5 class="card-title fw-bold text-danger mb-2" style="font-size: 1.25rem;">
+                            [PROJECT_NAME]
+                        </h5>
+                        <p class="text-muted mb-0 small">
+                            <i class="bi bi-geo-alt-fill text-danger me-1"/>
+                            [UBICACION]
+                        </p>
+                    </div>
+                    
+                    <!-- Descripción corta -->
+                    <p class="card-text text-muted small mb-3" style="min-height: 60px; line-height: 1.5;">
+                        [DESCRIPCION]
+                    </p>
+                    
+                    <!-- Estadísticas del proyecto -->
+                    <div class="proyecto-stats mb-3 pb-3 border-bottom">
+                        <div class="row g-2 text-center">
+                            <div class="col-6">
+                                <div class="stat-item">
+                                    <i class="bi bi-building text-danger d-block mb-1" style="font-size: 1.5rem;"/>
+                                    <span class="d-block fw-bold text-dark">[TOTAL_UNIDADES]</span>
+                                    <span class="small text-muted">Unidades</span>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="stat-item">
+                                    <i class="bi bi-house-check-fill text-success d-block mb-1" style="font-size: 1.5rem;"/>
+                                    <span class="d-block fw-bold text-dark">[DISPONIBLES]</span>
+                                    <span class="small text-muted">Disponibles</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Botones de acción -->
+                    <div class="d-flex flex-column gap-2">
+                        <a href="/proyecto/[PROJECT_ID]" class="btn btn-danger w-100" style="border-radius: 8px; padding: 12px;">
+                            <i class="bi bi-building me-2"/>
+                            Ver Proyecto Completo
+                        </a>
+                        <div class="row g-2">
+                            <div class="col-6">
+                                <a href="/properties?project_id=[PROJECT_ID]" class="btn btn-outline-danger w-100 btn-sm" style="border-radius: 8px;">
+                                    <i class="bi bi-grid me-1"/>
+                                    Unidades
+                                </a>
+                            </div>
+                            <div class="col-6">
+                                <a href="/contacto?proyecto=[PROJECT_ID]" class="btn btn-outline-danger w-100 btn-sm" style="border-radius: 8px;">
+                                    <i class="bi bi-envelope me-1"/>
+                                    Contactar
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+
+    <!-- ============================================= -->
+    <!-- MEJORA 3: FILTROS DINÁMICOS EN SHOP -->
+    <!-- ============================================= -->
+    
+    <template id="shop_filters_improved" name="Shop Filters Improved" inherit_id="theme_bohio_real_estate.properties_shop">
+        <!-- Mejorar el select de tipo de propiedad para que sea dinámico -->
+        <xpath expr="//select[@data-filter='property_type']" position="replace">
+            <select class="form-select form-select-sm property-filter" data-filter="property_type" id="propertyTypeFilterShop">
+                <option value="">Cargando tipos...</option>
+                <!-- Las opciones se cargarán dinámicamente vía JavaScript -->
+            </select>
+        </xpath>
+        
+        <!-- Mejorar el select de ciudades para que sea dinámico -->
+        <xpath expr="//select[@data-filter='city_id']" position="replace">
+            <select class="form-select form-select-sm property-filter" data-filter="city_id" id="cityFilterShop">
+                <option value="">Cargando ciudades...</option>
+                <!-- Las opciones se cargarán dinámicamente vía JavaScript -->
+            </select>
+        </xpath>
+        
+        <!-- Agregar indicador de filtros activos -->
+        <xpath expr="//div[@class='filters-panel-horizontal card shadow-sm']" position="before">
+            <div class="active-filters-display mb-3" id="activeFiltersDisplay" style="display: none;">
+                <div class="d-flex align-items-center gap-2 flex-wrap">
+                    <span class="text-muted small">Filtros activos:</span>
+                    <div id="activeFiltersBadges" class="d-flex gap-2 flex-wrap">
+                        <!-- Los badges de filtros activos se agregarán aquí -->
+                    </div>
+                    <button class="btn btn-sm btn-outline-danger" onclick="clearAllFilters()">
+                        <i class="bi bi-x-circle me-1"/>
+                        Limpiar filtros
+                    </button>
+                </div>
+            </div>
+        </xpath>
+    </template>
+
+
+    <!-- ============================================= -->
+    <!-- MEJORA 4: CONTADOR EN SHOP -->
+    <!-- ============================================= -->
+    
+    <template id="shop_counter_improved" name="Shop Counter Improved" inherit_id="theme_bohio_real_estate.properties_shop">
+        <!-- Mejorar el contador de propiedades -->
+        <xpath expr="//span[@id='property-count']" position="replace">
+            <span id="property-count" class="fw-bold text-danger" style="font-size: 1.5rem; animation: countPulse 0.5s ease;">0</span>
+        </xpath>
+        
+        <!-- Agregar estadísticas adicionales -->
+        <xpath expr="//p[@class='text-muted mb-0 mt-2']" position="after">
+            <div class="shop-stats mt-2 d-flex gap-4">
+                <small class="text-muted">
+                    <i class="bi bi-house-fill text-danger me-1"/>
+                    <span id="venta-count">0</span> en venta
+                </small>
+                <small class="text-muted">
+                    <i class="bi bi-key-fill text-success me-1"/>
+                    <span id="arriendo-count">0</span> en arriendo
+                </small>
+                <small class="text-muted">
+                    <i class="bi bi-building text-warning me-1"/>
+                    <span id="proyectos-count">0</span> proyectos
+                </small>
+            </div>
+        </xpath>
+    </template>
+
+
+    <!-- ============================================= -->
+    <!-- SCRIPTS ADICIONALES -->
+    <!-- ============================================= -->
+    
+    <template id="bohio_scripts_improved" name="BOHIO Scripts Improved" inherit_id="website.layout">
+        <xpath expr="//head" position="inside">
+            <script type="text/javascript">
+                // Función para actualizar filtros dinámicamente
+                function updateDynamicFilters() {
+                    // Esta función se implementa en el archivo JS
+                    if (window.loadDynamicFilters) {
+                        window.loadDynamicFilters();
+                    }
+                }
+                
+                // Función para limpiar todos los filtros
+                function clearAllFilters() {
+                    window.location.href = '/properties';
+                }
+                
+                // Mostrar/ocultar filtros activos
+                function updateActiveFiltersDisplay() {
+                    const params = new URLSearchParams(window.location.search);
+                    const badgesContainer = document.getElementById('activeFiltersBadges');
+                    const displayContainer = document.getElementById('activeFiltersDisplay');
+                    
+                    if (!badgesContainer || !displayContainer) return;
+                    
+                    badgesContainer.innerHTML = '';
+                    let hasFilters = false;
+                    
+                    // Mapear nombres de filtros a labels amigables
+                    const filterLabels = {
+                        'type_service': 'Servicio',
+                        'property_type': 'Tipo',
+                        'city_id': 'Ciudad',
+                        'region_id': 'Barrio',
+                        'bedrooms': 'Habitaciones',
+                        'bathrooms': 'Baños',
+                        'min_price': 'Precio mín',
+                        'max_price': 'Precio máx'
+                    };
+                    
+                    params.forEach((value, key) => {
+                        if (value && filterLabels[key]) {
+                            hasFilters = true;
+                            const badge = document.createElement('span');
+                            badge.className = 'badge bg-danger';
+                            badge.innerHTML = `${filterLabels[key]}: ${value} <i class="bi bi-x ms-1" style="cursor: pointer;" onclick="removeFilter('${key}')"></i>`;
+                            badgesContainer.appendChild(badge);
+                        }
+                    });
+                    
+                    displayContainer.style.display = hasFilters ? 'block' : 'none';
+                }
+                
+                // Remover un filtro específico
+                function removeFilter(filterKey) {
+                    const params = new URLSearchParams(window.location.search);
+                    params.delete(filterKey);
+                    window.location.search = params.toString();
+                }
+                
+                // Ejecutar al cargar la página
+                document.addEventListener('DOMContentLoaded', function() {
+                    updateActiveFiltersDisplay();
+                });
+            </script>
+        </xpath>
+    </template>
+
+</odoo>

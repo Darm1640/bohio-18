@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Página dedicada del mapa -->
+    <template id="property_map_fullpage" name="Property Map Full Page">
+        <t t-call="website.layout">
+            <style>
+                /* Mapa a pantalla completa */
+                #fullPageMap {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    z-index: 1;
+                }
+
+                /* Info card flotante */
+                .map-info-card {
+                    position: absolute;
+                    top: 20px;
+                    left: 20px;
+                    z-index: 1000;
+                    background: white;
+                    border-radius: 12px;
+                    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+                    max-width: 350px;
+                    animation: slideInLeft 0.5s ease;
+                }
+
+                @keyframes slideInLeft {
+                    from {
+                        transform: translateX(-100%);
+                        opacity: 0;
+                    }
+                    to {
+                        transform: translateX(0);
+                        opacity: 1;
+                    }
+                }
+
+                /* Botón de cerrar */
+                .close-map-btn {
+                    position: absolute;
+                    top: 20px;
+                    right: 20px;
+                    z-index: 1000;
+                }
+
+                /* Responsive */
+                @media (max-width: 768px) {
+                    .map-info-card {
+                        max-width: calc(100% - 40px);
+                        left: 20px;
+                        right: 20px;
+                    }
+                }
+            </style>
+
+            <div class="position-relative" style="height: 100vh; overflow: hidden;">
+                <!-- Mapa -->
+                <div id="fullPageMap" 
+                     t-att-data-lat="property.latitude" 
+                     t-att-data-lng="property.longitude" 
+                     t-att-data-name="property.name"/>
+
+                <!-- Card de información -->
+                <div class="map-info-card p-3">
+                    <!-- Header con gradiente -->
+                    <div class="p-3 text-white rounded-top" 
+                         style="background: linear-gradient(135deg, #E31E24 0%, #8B0000 100%); margin: -0.75rem -0.75rem 1rem -0.75rem;">
+                        <h5 class="mb-0 fw-bold">
+                            <i class="bi bi-house-fill me-2"/><span t-esc="property.name"/>
+                        </h5>
+                    </div>
+
+                    <!-- Detalles -->
+                    <div class="mb-3">
+                        <p class="mb-2" t-if="property.default_code">
+                            <i class="bi bi-tag text-danger me-2"/>
+                            <strong>Código:</strong> <span t-esc="property.default_code"/>
+                        </p>
+                        <p class="mb-2" t-if="property.address">
+                            <i class="bi bi-geo-alt-fill text-danger me-2"/>
+                            <strong>Dirección:</strong> <span t-esc="property.address"/>
+                        </p>
+                        <p class="mb-2" t-if="property.city">
+                            <i class="bi bi-pin-map-fill text-danger me-2"/>
+                            <strong>Ciudad:</strong> <span t-esc="property.city"/>
+                        </p>
+                        <p class="mb-0" t-if="property.state_id">
+                            <i class="bi bi-globe text-danger me-2"/>
+                            <strong>Departamento:</strong> <span t-esc="property.state_id.name"/>
+                        </p>
+                    </div>
+
+                    <!-- Coordenadas -->
+                    <div class="bg-light p-2 rounded mb-3">
+                        <small class="text-muted d-block">
+                            <i class="bi bi-crosshair me-1"/>
+                            <strong>Coordenadas GPS:</strong>
+                        </small>
+                        <small class="text-muted">
+                            <span t-esc="'%.6f' % property.latitude"/>, 
+                            <span t-esc="'%.6f' % property.longitude"/>
+                        </small>
+                    </div>
+
+                    <!-- Precio (si disponible) -->
+                    <t t-if="property.net_price or property.net_rental_price">
+                        <div class="p-3 text-white rounded mb-3" 
+                             style="background: linear-gradient(135deg, #E31E24 0%, #8B0000 100%);">
+                            <t t-if="property.net_price">
+                                <div class="mb-2">
+                                    <small class="d-block opacity-75">Precio de Venta</small>
+                                    <h4 class="mb-0">
+                                        <span t-field="property.net_price" 
+                                              t-options="{'widget': 'monetary', 'display_currency': property.currency_id}"/>
+                                    </h4>
+                                </div>
+                            </t>
+                            <t t-if="property.net_rental_price">
+                                <div>
+                                    <small class="d-block opacity-75">Precio de Arriendo</small>
+                                    <h4 class="mb-0">
+                                        <span t-field="property.net_rental_price" 
+                                              t-options="{'widget': 'monetary', 'display_currency': property.currency_id}"/>
+                                        <small class="fs-6">/ mes</small>
+                                    </h4>
+                                </div>
+                            </t>
+                        </div>
+                    </t>
+
+                    <!-- Acciones -->
+                    <div class="d-grid gap-2">
+                        <a t-attf-href="/property/#{property.id}" 
+                           class="btn btn-danger">
+                            <i class="bi bi-arrow-left me-2"/>Volver a Detalle
+                        </a>
+                        <a t-attf-href="https://www.google.com/maps/dir/?api=1&amp;destination=#{property.latitude},#{property.longitude}" 
+                           target="_blank" 
+                           class="btn btn-outline-danger">
+                            <i class="bi bi-navigation me-2"/>Cómo Llegar
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Botón flotante de cerrar -->
+                <button class="close-map-btn btn btn-light rounded-circle shadow" 
+                        style="width: 50px; height: 50px;"
+                        onclick="window.close()">
+                    <i class="bi bi-x-lg"/>
+                </button>
+            </div>
+
+            <!-- Script de inicialización del mapa -->
+            <script type="text/javascript">
+                document.addEventListener('DOMContentLoaded', function() {
+                    const mapDiv = document.getElementById('fullPageMap');
+                    if (!mapDiv || typeof L === 'undefined') {
+                        console.error('Error: Leaflet no cargado o elemento no encontrado');
+                        return;
+                    }
+
+                    const lat = parseFloat(mapDiv.dataset.lat);
+                    const lng = parseFloat(mapDiv.dataset.lng);
+                    const name = mapDiv.dataset.name;
+
+                    if (!lat || !lng || isNaN(lat) || isNaN(lng)) {
+                        console.error('Coordenadas inválidas');
+                        return;
+                    }
+
+                    // Crear mapa
+                    const map = L.map('fullPageMap', {
+                        center: [lat, lng],
+                        zoom: 17,
+                        zoomControl: true
+                    });
+
+                    // Tiles
+                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                        attribution: '© OpenStreetMap contributors',
+                        maxZoom: 19
+                    }).addTo(map);
+
+                    // Marcador personalizado
+                    const markerIcon = L.divIcon({
+                        className: 'custom-marker',
+                        html: `
+                            <div style="position: relative; width: 50px; height: 50px;">
+                                <div style="
+                                    width: 50px;
+                                    height: 50px;
+                                    background: linear-gradient(135deg, #E31E24 0%, #c91920 100%);
+                                    border-radius: 50% 50% 50% 0;
+                                    transform: rotate(-45deg);
+                                    border: 4px solid white;
+                                    box-shadow: 0 6px 15px rgba(0,0,0,0.4);
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: center;
+                                    animation: bounce 2s infinite;
+                                ">
+                                    <i class="bi bi-house-fill" style="
+                                        color: white;
+                                        font-size: 22px;
+                                        transform: rotate(45deg);
+                                    "></i>
+                                </div>
+                            </div>
+                            <style>
+                                @keyframes bounce {
+                                    0%, 100% { transform: translateY(0); }
+                                    50% { transform: translateY(-10px); }
+                                }
+                            </style>
+                        `,
+                        iconSize: [50, 50],
+                        iconAnchor: [25, 50],
+                        popupAnchor: [0, -50]
+                    });
+
+                    // Agregar marcador
+                    const marker = L.marker([lat, lng], { icon: markerIcon }).addTo(map);
+
+                    // Popup
+                    marker.bindPopup(`
+                        <div style="padding: 10px; text-align: center;">
+                            <h6 style="margin: 0 0 10px 0; color: #E31E24;">
+                                <i class="bi bi-house-fill me-2"></i>${name}
+                            </h6>
+                            <p style="margin: 0; font-size: 12px; color: #666;">
+                                ${lat.toFixed(6)}, ${lng.toFixed(6)}
+                            </p>
+                        </div>
+                    `).openPopup();
+
+                    // Círculo de área
+                    L.circle([lat, lng], {
+                        color: '#E31E24',
+                        fillColor: '#E31E24',
+                        fillOpacity: 0.1,
+                        radius: 100
+                    }).addTo(map);
+
+                    console.log('✅ Mapa de página completa inicializado');
+                });
+            </script>
+        </t>
+    </template>
+</odoo>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Template cuando no hay coordenadas -->
+    <template id="property_map_no_coordinates" name="Property Map No Coordinates">
+        <t t-call="website.layout">
+            <div class="container my-5">
+                <div class="row justify-content-center">
+                    <div class="col-lg-6 col-md-8">
+                        <div class="card border-0 shadow-lg text-center">
+                            <div class="card-body p-5">
+                                <!-- Ícono -->
+                                <div class="mb-4">
+                                    <i class="bi bi-geo-alt-fill text-muted" style="font-size: 72px;"/>
+                                </div>
+
+                                <!-- Título -->
+                                <h3 class="text-danger mb-3">
+                                    Ubicación No Disponible
+                                </h3>
+
+                                <!-- Mensaje -->
+                                <p class="text-muted mb-4">
+                                    Esta propiedad aún no tiene coordenadas GPS registradas.
+                                    Por favor contacta con nuestro equipo para obtener información
+                                    sobre la ubicación exacta.
+                                </p>
+
+                                <!-- Info de la propiedad -->
+                                <div class="bg-light p-3 rounded mb-4">
+                                    <h5 class="mb-2">
+                                        <i class="bi bi-house-fill text-danger me-2"/>
+                                        <span t-esc="property.name"/>
+                                    </h5>
+                                    <p class="mb-0 text-muted" t-if="property.default_code">
+                                        Código: <strong t-esc="property.default_code"/>
+                                    </p>
+                                </div>
+
+                                <!-- Ubicación textual si está disponible -->
+                                <t t-if="property.address or property.city">
+                                    <div class="text-start bg-light p-3 rounded mb-4">
+                                        <h6 class="text-danger mb-2">
+                                            <i class="bi bi-pin-map me-2"/>Ubicación Aproximada
+                                        </h6>
+                                        <p class="mb-1" t-if="property.address">
+                                            <strong>Dirección:</strong> <span t-esc="property.address"/>
+                                        </p>
+                                        <p class="mb-1" t-if="property.neighborhood">
+                                            <strong>Barrio:</strong> <span t-esc="property.neighborhood"/>
+                                        </p>
+                                        <p class="mb-1" t-if="property.city">
+                                            <strong>Ciudad:</strong> <span t-esc="property.city"/>
+                                        </p>
+                                        <p class="mb-0" t-if="property.state_id">
+                                            <strong>Departamento:</strong> <span t-esc="property.state_id.name"/>
+                                        </p>
+                                    </div>
+                                </t>
+
+                                <!-- Acciones -->
+                                <div class="d-grid gap-2">
+                                    <a t-attf-href="/property/#{property.id}" 
+                                       class="btn btn-danger">
+                                        <i class="bi bi-arrow-left me-2"/>Volver a Detalle
+                                    </a>
+                                    <a href="/contacto" class="btn btn-outline-danger">
+                                        <i class="bi bi-envelope me-2"/>Contactar
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>
