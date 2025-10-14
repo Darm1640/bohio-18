@@ -8,41 +8,41 @@ _logger = logging.getLogger(__name__)
 
 
 class MejorasController(http.Controller):
-    """Controller para mejoras consolidadas: contadores, b√∫squeda inteligente, filtros"""
+    """Controller para mejoras consolidadas: contadores, b˙squeda inteligente, filtros"""
 
 
-    # =================== 1. API PARA CONTADOR EN HOME ===================
+
 
     @http.route(['/api/properties/count'], type='json', auth='public', website=True, csrf=False)
     def api_properties_count(self, **kwargs):
         """Contador de propiedades para mostrar en homepage"""
         try:
             Property = request.env['product.template'].sudo()
-        
+
             total = Property.search_count([
                 ('is_property', '=', True),
                 ('state', '=', 'free'),
             ])
-        
+
             rent_count = Property.search_count([
                 ('is_property', '=', True),
                 ('state', '=', 'free'),
                 ('type_service', 'in', ['rent', 'sale_rent']),
             ])
-        
+
             sale_count = Property.search_count([
                 ('is_property', '=', True),
                 ('state', '=', 'free'),
                 ('type_service', 'in', ['sale', 'sale_rent']),
                 ('project_worksite_id', '=', False),
             ])
-        
+
             projects_count = Property.search_count([
                 ('is_property', '=', True),
                 ('state', '=', 'free'),
                 ('project_worksite_id', '!=', False),
             ])
-        
+
             return {
                 'success': True,
                 'total': total,
@@ -50,25 +50,24 @@ class MejorasController(http.Controller):
                 'sale': sale_count,
                 'projects': projects_count,
             }
-        
+
         except Exception as e:
             return {'success': False, 'error': str(e)}
 
 
-    # =================== 2. FILTROS DIN√ÅMICOS ===================
 
     @http.route(['/api/properties/filters'], type='json', auth='public', website=True, csrf=False)
     def api_properties_filters(self, **kwargs):
-        """Obtener filtros din√°micos con contadores"""
+        """Obtener filtros din·micos con contadores"""
         try:
             Property = request.env['product.template'].sudo()
             current_filters = kwargs.get('filters', {})
-        
+
             base_domain = [
                 ('is_property', '=', True),
                 ('state', '=', 'free'),
             ]
-        
+
             # Aplicar filtro de servicio si existe
             if current_filters.get('type_service'):
                 ts = current_filters['type_service']
@@ -76,17 +75,17 @@ class MejorasController(http.Controller):
                     base_domain.append(('type_service', 'in', ['sale', 'rent', 'sale_rent']))
                 else:
                     base_domain.append(('type_service', 'in', [ts, 'sale_rent']))
-        
+
             # Tipos de propiedad con contadores
             property_types_data = Property.read_group(
                 base_domain,
                 ['property_type'],
                 ['property_type']
             )
-        
+
             property_types = []
             type_labels = dict(Property._fields['property_type'].selection)
-        
+
             for item in property_types_data:
                 if item['property_type']:
                     property_types.append({
@@ -94,7 +93,7 @@ class MejorasController(http.Controller):
                         'label': type_labels.get(item['property_type'], item['property_type']),
                         'count': item['property_type_count']
                     })
-        
+
             # Ciudades con contadores
             cities_data = Property.read_group(base_domain, ['city_id'], ['city_id'])
             cities = [
@@ -105,63 +104,62 @@ class MejorasController(http.Controller):
                 }
                 for item in cities_data if item['city_id']
             ]
-        
+
             return {
                 'success': True,
                 'property_types': property_types,
                 'cities': cities,
             }
-        
+
         except Exception as e:
             return {'success': False, 'error': str(e)}
 
 
-    # =================== 3. B√öSQUEDA INTELIGENTE ===================
 
     @http.route(['/api/search/smart'], type='json', auth='public', website=True, csrf=False)
     def api_smart_search(self, **kwargs):
-        """B√∫squeda inteligente que determina tipo y redirige"""
+        """B˙squeda inteligente que determina tipo y redirige"""
         try:
             search_term = kwargs.get('term', '').strip()
             type_service = kwargs.get('type_service', '')
             property_type = kwargs.get('property_type', '')
-        
+
             if not search_term:
-                return {'success': False, 'message': 'T√©rmino requerido'}
-        
+                return {'success': False, 'message': 'TÈrmino requerido'}
+
             Property = request.env['product.template'].sudo()
-        
-            # 1. Buscar por c√≥digo
+
+            # 1. Buscar por cÛdigo
             property_by_code = Property.search([
                 ('is_property', '=', True),
                 ('default_code', '=ilike', search_term)
             ], limit=1)
-        
+
             if property_by_code:
                 return {
                     'success': True,
                     'type': 'property',
                     'redirect_url': f'/property/{property_by_code.id}'
                 }
-        
+
             # 2. Buscar ciudad
             City = request.env['res.city'].sudo()
             city = City.search([('name', 'ilike', search_term)], limit=1)
-        
+
             if city:
                 count = Property.search_count([
                     ('is_property', '=', True),
                     ('state', '=', 'free'),
                     ('city_id', '=', city.id)
                 ])
-            
+
                 if count > 0:
                     url = f'/properties?city_id={city.id}'
                     if type_service:
                         url += f'&type_service={type_service}'
                     if property_type:
                         url += f'&property_type={property_type}'
-                
+
                     return {
                         'success': True,
                         'type': 'city',
@@ -169,39 +167,38 @@ class MejorasController(http.Controller):
                         'count': count,
                         'redirect_url': url
                     }
-        
-            # 3. B√∫squeda general
+
+            # 3. B˙squeda general
             url = f'/properties?search={search_term}'
             if type_service:
                 url += f'&type_service={type_service}'
             if property_type:
                 url += f'&property_type={property_type}'
-        
+
             return {
                 'success': True,
                 'type': 'general',
                 'redirect_url': url
             }
-        
+
         except Exception as e:
             return {'success': False, 'error': str(e)}
 
 
-    # =================== 4. MARCADORES MEJORADOS PARA MAPA ===================
 
     @http.route(['/api/properties/map/markers'], type='json', auth='public', website=True, csrf=False)
     def api_properties_map_markers(self, **kwargs):
         """Marcadores mejorados con colores y datos para pins personalizados"""
         try:
             filters = kwargs.get('filters', {})
-        
+
             domain = [
                 ('is_property', '=', True),
                 ('state', '=', 'free'),
                 ('latitude', '!=', False),
                 ('longitude', '!=', False),
             ]
-        
+
             # Aplicar filtros
             if filters.get('type_service'):
                 ts = filters['type_service']
@@ -209,19 +206,19 @@ class MejorasController(http.Controller):
                     domain.append(('type_service', 'in', ['sale', 'rent', 'sale_rent']))
                 else:
                     domain.append(('type_service', 'in', [ts, 'sale_rent']))
-        
+
             if filters.get('property_type'):
                 domain.append(('property_type', '=', filters['property_type']))
-        
+
             if filters.get('city_id'):
                 domain.append(('city_id', '=', int(filters['city_id'])))
-        
+
             Property = request.env['product.template'].sudo()
             properties = Property.search(domain, limit=200)
-        
+
             markers = []
             for prop in properties:
-                # Color del pin seg√∫n tipo de servicio
+                # Color del pin seg˙n tipo de servicio
                 if prop.type_service == 'rent':
                     pin_color = '#28a745'  # Verde
                     price = prop.net_rental_price or 0
@@ -231,7 +228,7 @@ class MejorasController(http.Controller):
                 else:  # sale_rent
                     pin_color = '#ffc107'  # Amarillo
                     price = prop.net_price or 0
-            
+
                 markers.append({
                     'id': prop.id,
                     'lat': float(prop.latitude),
@@ -251,7 +248,7 @@ class MejorasController(http.Controller):
                     'pin_color': pin_color,
                     'icon': self._get_property_icon(prop.property_type),
                 })
-        
+
             # Calcular centro del mapa
             if markers:
                 lats = [m['lat'] for m in markers]
@@ -261,20 +258,20 @@ class MejorasController(http.Controller):
                     'lng': sum(lngs) / len(lngs)
                 }
             else:
-                center = {'lat': 8.7479, 'lng': -75.8814}  # Monter√≠a
-        
+                center = {'lat': 8.7479, 'lng': -75.8814}  # MonterÌa
+
             return {
                 'success': True,
                 'markers': markers,
                 'count': len(markers),
                 'center': center,
             }
-        
+
         except Exception as e:
             return {'success': False, 'error': str(e), 'markers': []}
 
     def _get_property_icon(self, property_type):
-        """√çcono seg√∫n tipo de propiedad"""
+        """Õcono seg˙n tipo de propiedad"""
         icons = {
             'apartment': 'fa-building',
             'house': 'fa-home',
@@ -283,3 +280,4 @@ class MejorasController(http.Controller):
             'farm': 'fa-tree',
         }
         return icons.get(property_type, 'fa-home')
+
