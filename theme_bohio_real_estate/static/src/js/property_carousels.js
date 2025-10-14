@@ -101,7 +101,7 @@ publicWidget.registry.PropertyCarouselWidget = publicWidget.Widget.extend({
         } else {
             throw new Error(result.error || 'No properties returned');
         }
-    }
+    },
 
     /**
      * Renderizar el carrusel en el DOM usando createElement helper
@@ -128,7 +128,7 @@ publicWidget.registry.PropertyCarouselWidget = publicWidget.Widget.extend({
         const carouselDiv = this._createCarouselStructure(carouselId, slides);
 
         this.el.appendChild(carouselDiv);
-    }
+    },
 
     /**
      * Crear estructura del carrusel completa usando createElement helper
@@ -170,7 +170,7 @@ publicWidget.registry.PropertyCarouselWidget = publicWidget.Widget.extend({
         carousel.appendChild(this._createCarouselIndicators(carouselId, slides.length));
 
         return carousel;
-    }
+    },
 
     /**
      * Crear control de carrusel (prev/next)
@@ -200,7 +200,7 @@ publicWidget.registry.PropertyCarouselWidget = publicWidget.Widget.extend({
         button.appendChild(visuallyHidden);
 
         return button;
-    }
+    },
 
     /**
      * Crear indicadores del carrusel
@@ -225,7 +225,7 @@ publicWidget.registry.PropertyCarouselWidget = publicWidget.Widget.extend({
         }
 
         return indicators;
-    }
+    },
 
     /**
      * Crear elemento de tarjeta de propiedad usando createElement helper
@@ -275,7 +275,7 @@ publicWidget.registry.PropertyCarouselWidget = publicWidget.Widget.extend({
         colDiv.appendChild(card);
 
         return colDiv;
-    }
+    },
 
     /**
      * Crear badge de proyecto
@@ -295,7 +295,7 @@ publicWidget.registry.PropertyCarouselWidget = publicWidget.Widget.extend({
 
         div.appendChild(link);
         return div;
-    }
+    },
 
     /**
      * Crear imagen de propiedad
@@ -313,7 +313,7 @@ publicWidget.registry.PropertyCarouselWidget = publicWidget.Widget.extend({
         });
 
         return img;
-    }
+    },
 
     /**
      * Crear título de propiedad
@@ -325,7 +325,7 @@ publicWidget.registry.PropertyCarouselWidget = publicWidget.Widget.extend({
             text: name,
             attributes: { title: name }
         });
-    }
+    },
 
     /**
      * Crear ubicación de propiedad
@@ -341,7 +341,7 @@ publicWidget.registry.PropertyCarouselWidget = publicWidget.Widget.extend({
         });
 
         return p;
-    }
+    },
 
     /**
      * Crear características de propiedad (área, habitaciones, baños)
@@ -364,7 +364,7 @@ publicWidget.registry.PropertyCarouselWidget = publicWidget.Widget.extend({
         }
 
         return div;
-    }
+    },
 
     /**
      * Crear característica individual
@@ -377,7 +377,7 @@ publicWidget.registry.PropertyCarouselWidget = publicWidget.Widget.extend({
                 document.createTextNode(text)
             ]
         });
-    }
+    },
 
     /**
      * Crear sección de precio
@@ -399,7 +399,7 @@ publicWidget.registry.PropertyCarouselWidget = publicWidget.Widget.extend({
         });
 
         return div;
-    }
+    },
 
     /**
      * Crear botón de detalles
@@ -414,7 +414,7 @@ publicWidget.registry.PropertyCarouselWidget = publicWidget.Widget.extend({
                 document.createTextNode('Ver detalles')
             ]
         });
-    }
+    },
 
     /**
      * Renderizar estado vacío
@@ -433,7 +433,7 @@ publicWidget.registry.PropertyCarouselWidget = publicWidget.Widget.extend({
         });
 
         this.el.appendChild(div);
-    }
+    },
 
     /**
      * Renderizar error
@@ -449,7 +449,7 @@ publicWidget.registry.PropertyCarouselWidget = publicWidget.Widget.extend({
         });
 
         this.el.appendChild(div);
-    }
+    },
 
     /**
      * Inicializar Bootstrap Carousel con opciones
