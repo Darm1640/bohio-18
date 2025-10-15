@@ -292,7 +292,7 @@
                     };
                     
                     params.forEach((value, key) => {
-                        if (value && filterLabels[key]) {
+                        if (value &amp;&amp; filterLabels[key]) {
                             hasFilters = true;
                             const badge = document.createElement('span');
                             badge.className = 'badge bg-danger';
