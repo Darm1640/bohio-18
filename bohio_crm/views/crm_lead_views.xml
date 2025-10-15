@@ -146,7 +146,6 @@
                 <field name="color"/>
                 <field name="priority"/>
                 <field name="property_ids"/>
-                <field name="image_128"/>
 
                 <templates>
                     <t t-name="card">
