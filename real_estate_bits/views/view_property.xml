@@ -2886,6 +2886,7 @@ m Fondo
 
 
 
+<!-- Vista Map comentada - Requiere módulo web_map (Odoo Enterprise)
 <record id="product_template_view_map" model="ir.ui.view">
 <field name="name">product.template.view.map</field>
 <field name="model">product.template</field>
@@ -2895,10 +2896,11 @@ m Fondo
 </map>
 </field>
 </record>
+-->
 <record model="ir.actions.act_window" id="action_property_act_window">
 <field name="name">Property</field>
 <field name="res_model">product.template</field>
-<field name="view_mode">kanban,list,form,graph,map</field>
+<field name="view_mode">kanban,list,form,graph</field>
 <field name="domain">[('is_property','=',True)]</field>
 <field name="context">{
                 'search_default_region': 1,
