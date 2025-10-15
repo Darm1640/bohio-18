@@ -341,7 +341,7 @@
 
                             <!-- Tags (Etiquetas circulares) -->
                             <div class="o_kanban_card_tags mb-2">
-                                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                                <field name="tag_ids" widget="many2many_tags"/>
                             </div>
 
                             <!-- Footer: Actividad + Usuario -->

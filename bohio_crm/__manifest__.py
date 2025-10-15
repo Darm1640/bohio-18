@@ -55,6 +55,7 @@
             'bohio_crm/static/src/views/bohio_crm_dashboard.xml',
             'bohio_crm/static/src/views/bohio_crm_kanbanview.js',
             'bohio_crm/static/src/views/bohio_crm_kanbanview.xml',
+            'bohio_crm/static/src/views/bohio_crm_modern_views.js',
 
             # JavaScript - Dashboard del Vendedor (con barra deslizable)
             'bohio_crm/static/src/js/crm_salesperson_dashboard.js',
