@@ -188,5 +188,7 @@ export class PropertyCompareZoom extends Component {
 
 PropertyCompareZoom.template = "bohio_crm.PropertyCompareZoomTemplate";
 
-// Registrar el componente en el registro de vistas
-registry.category("view_widgets").add("property_compare_zoom", PropertyCompareZoom);
+// Registrar el componente en el registro de vistas (Odoo 18 format)
+registry.category("view_widgets").add("property_compare_zoom", {
+    component: PropertyCompareZoom,
+});
