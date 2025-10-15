@@ -22,9 +22,9 @@
     'external_dependencies': {
         'python': [],
     },
-    'pre_init_hook': 'pre_init_hook',
-    'post_init_hook': 'post_init_hook',
-    'uninstall_hook': 'uninstall_hook',
+    # 'pre_init_hook': 'pre_init_hook',
+    # 'post_init_hook': 'post_init_hook',
+    # 'uninstall_hook': 'uninstall_hook',
     'data': [
         # Layout
         'views/layout/loader_template.xml',

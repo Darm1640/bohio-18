@@ -10,7 +10,7 @@ from odoo import api, SUPERUSER_ID
 _logger = logging.getLogger(__name__)
 
 
-def pre_init_hook(cr):
+def pre_init_hook(env):
     """
     Hook ejecutado ANTES de instalar/actualizar el módulo
 
@@ -35,16 +35,16 @@ def pre_init_hook(cr):
     # NOTA: NO crear Environment aquí, solo usar SQL directo
 
     # 1. Limpiar vistas obsoletas del tema que puedan causar conflicto
-    _clean_obsolete_views(cr)
+    _clean_obsolete_views(env.cr)
 
     # 2. Limpiar assets obsoletos
-    _clean_obsolete_assets(cr)
+    _clean_obsolete_assets(env.cr)
 
     # 3. Limpiar registros de menú duplicados
-    _clean_duplicate_menus(cr)
+    _clean_duplicate_menus(env.cr)
 
     # 4. Limpiar datos de caché del tema
-    _clean_theme_cache(cr)
+    _clean_theme_cache(env.cr)
 
     _logger.info("✓ Pre-init hook completado exitosamente")
 
@@ -93,7 +93,7 @@ def _clean_obsolete_views(cr):
         _logger.warning(f"  ⚠ Error limpiando vistas obsoletas: {e}")
 
 
-def _clean_obsolete_assets(cr):
+def _clean_obsolete_assets(env):
     """
     Limpia assets JS/CSS obsoletos que puedan causar conflictos
 
@@ -106,7 +106,7 @@ def _clean_obsolete_assets(cr):
 
     try:
         # Buscar assets del módulo sin bundle válido
-        cr.execute("""
+        env.cr.execute("""
             SELECT id, name, path
             FROM ir_asset
             WHERE path LIKE 'theme_bohio_real_estate/%%'
@@ -117,13 +117,13 @@ def _clean_obsolete_assets(cr):
             )
         """)
 
-        obsolete_assets = cr.fetchall()
+        obsolete_assets = env.cr.fetchall()
 
         if obsolete_assets:
             asset_ids = [a[0] for a in obsolete_assets]
             _logger.warning(f"  Encontrados {len(obsolete_assets)} assets obsoletos")
 
-            cr.execute("""
+            env.cr.execute("""
                 DELETE FROM ir_asset
                 WHERE id IN %s
             """, (tuple(asset_ids),))
@@ -136,7 +136,7 @@ def _clean_obsolete_assets(cr):
         _logger.warning(f"  ⚠ Error limpiando assets obsoletos: {e}")
 
 
-def _clean_duplicate_menus(cr):
+def _clean_duplicate_menus(env):
     """
     Limpia menús duplicados del tema
 
@@ -148,7 +148,7 @@ def _clean_duplicate_menus(cr):
 
     try:
         # Buscar menús duplicados por nombre y parent_id
-        cr.execute("""
+        env.cr.execute("""
             SELECT name, parent_id, COUNT(*) as count
             FROM ir_ui_menu
             WHERE name LIKE '%%BOHIO%%'
@@ -157,14 +157,14 @@ def _clean_duplicate_menus(cr):
             HAVING COUNT(*) > 1
         """)
 
-        duplicates = cr.fetchall()
+        duplicates = env.cr.fetchall()
 
         if duplicates:
             _logger.warning(f"  Encontrados {len(duplicates)} grupos de menús duplicados")
 
             for name, parent_id, count in duplicates:
                 # Mantener solo el más reciente
-                cr.execute("""
+                env.cr.execute("""
                     DELETE FROM ir_ui_menu
                     WHERE name = %s
                     AND parent_id %s
@@ -186,7 +186,7 @@ def _clean_duplicate_menus(cr):
         _logger.warning(f"  ⚠ Error limpiando menús duplicados: {e}")
 
 
-def _clean_theme_cache(cr):
+def _clean_theme_cache(env):
     """
     Limpia datos de caché del tema almacenados en ir.config_parameter
 
@@ -196,12 +196,12 @@ def _clean_theme_cache(cr):
 
     try:
         # Eliminar parámetros de configuración del tema antiguo
-        cr.execute("""
+        env.cr.execute("""
             DELETE FROM ir_config_parameter
             WHERE key LIKE 'theme_bohio_real_estate.cache.%%'
         """)
 
-        rows_deleted = cr.rowcount
+        rows_deleted = env.cr.rowcount
         if rows_deleted > 0:
             _logger.info(f"  ✓ Eliminados {rows_deleted} parámetros de caché")
         else:
@@ -211,7 +211,7 @@ def _clean_theme_cache(cr):
         _logger.warning(f"  ⚠ Error limpiando caché del tema: {e}")
 
 
-def post_init_hook(cr, registry):
+def post_init_hook(env):
     """
     Hook ejecutado DESPUÉS de instalar el módulo
 
@@ -224,16 +224,16 @@ def post_init_hook(cr, registry):
     _logger.info("BOHIO Real Estate - Ejecutando post_init_hook")
     _logger.info("="*80)
 
-    env = api.Environment(cr, SUPERUSER_ID, {})
+    env = api.Environment(env.cr, SUPERUSER_ID, {})
 
     # 1. Crear datos demo si no existen (opcional)
     # _create_demo_data(cr, env)
 
     # 2. Configurar valores por defecto del tema
-    _configure_theme_defaults(cr, env)
+    _configure_theme_defaults(env.cr, env)
 
     # 3. Reindexar campos de búsqueda si usa trigram
-    _reindex_search_fields(cr, env)
+    _reindex_search_fields(env.cr, env)
 
     _logger.info("✓ Post-init hook completado exitosamente")
 
@@ -308,8 +308,8 @@ def _reindex_search_fields(cr, env):
     except Exception as e:
         _logger.warning(f"  ⚠ Error verificando índices: {e}")
 
+def uninstall_hook(env):
 
-def uninstall_hook(cr, registry):
     """
     Hook ejecutado al DESINSTALAR el módulo
 
@@ -322,13 +322,13 @@ def uninstall_hook(cr, registry):
     _logger.info("BOHIO Real Estate - Ejecutando uninstall_hook")
     _logger.info("="*80)
 
-    env = api.Environment(cr, SUPERUSER_ID, {})
+    env = api.Environment(env.cr, SUPERUSER_ID, {})
 
     # 1. Eliminar configuraciones del tema
-    _remove_theme_config(cr, env)
+    _remove_theme_config(env.cr, env)
 
     # 2. Eliminar assets registrados
-    _remove_theme_assets(cr, env)
+    _remove_theme_assets(env.cr, env)
 
     _logger.info("✓ Uninstall hook completado exitosamente")
     _logger.warning("⚠ Los datos de negocio (propiedades, contactos) se mantienen intactos")
@@ -351,17 +351,17 @@ def _remove_theme_config(cr, env):
         _logger.warning(f"  ⚠ Error eliminando configuraciones: {e}")
 
 
-def _remove_theme_assets(cr, env):
+def _remove_theme_assets(env):
     """Eliminar assets del tema registrados dinámicamente"""
     _logger.info("→ Eliminando assets del tema...")
 
     try:
-        cr.execute("""
+        env.cr.execute("""
             DELETE FROM ir_asset
             WHERE path LIKE 'theme_bohio_real_estate/%%'
         """)
 
-        rows_deleted = cr.rowcount
+        rows_deleted = env.cr.rowcount
         _logger.info(f"  ✓ Eliminados {rows_deleted} assets")
 
     except Exception as e:

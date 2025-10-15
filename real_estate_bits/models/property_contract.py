@@ -1144,8 +1144,19 @@ Nota: Si el día no existe en el mes (ej: 31 en febrero), se usa el último día
         self.write({"loan_line_ids": rental_lines})
 
     def _get_period_end_date(self, start_date, period_months, contract_end_date):
-        """Calcula la fecha de fin del período"""
-        period_end = start_date + relativedelta(months=period_months, days=-1)
+        """
+        Calcula la fecha de fin del período.
+
+        Ejemplos:
+        - start_date=2025-01-15, period_months=1 -> 2025-02-14 (30 días completos)
+        - start_date=2025-01-01, period_months=1 -> 2025-01-31 (mes calendario completo)
+        - start_date=2025-01-31, period_months=1 -> 2025-02-28 (ajuste por días del mes)
+        """
+        # Calcular el día anterior al mismo día del mes siguiente
+        # Ejemplo: 15 Ene + 1 mes = 15 Feb, menos 1 día = 14 Feb
+        next_billing_date = start_date + relativedelta(months=period_months)
+        period_end = next_billing_date + relativedelta(days=-1)
+
         return min(period_end, contract_end_date)
 
     def _get_invoice_date(self, period_end_date):

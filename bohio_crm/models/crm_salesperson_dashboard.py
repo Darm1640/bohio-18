@@ -340,7 +340,7 @@ class CRMSalespersonDashboard(models.AbstractModel):
                 months = 12  # Asumir 12 meses si no hay fechas
 
             monthly_rent = contract.rent or 0
-            commission_percentage = contract.channel_partner_commission or 8.0
+            commission_percentage = contract.commission_percentage or 8.0
 
             data.append({
                 'contract_id': contract.id,
