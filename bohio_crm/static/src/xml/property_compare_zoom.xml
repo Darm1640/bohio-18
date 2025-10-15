@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <!-- ====================================================================
+         TEMPLATE: Property Compare Zoom Widget
+         ==================================================================== -->
+    <t t-name="bohio_crm.PropertyCompareZoomTemplate">
+        <div class="o_property_compare_zoom_widget" t-ref="zoomContainer" tabindex="0">
+
+            <!-- Barra de controles de zoom -->
+            <div class="o_zoom_controls position-sticky top-0 bg-white shadow-sm p-2 mb-3 rounded d-flex align-items-center justify-content-between"
+                 style="z-index: 999;">
+
+                <!-- Controles de navegación horizontal -->
+                <div class="btn-group me-3" role="group">
+                    <button type="button"
+                            class="btn btn-outline-secondary btn-sm"
+                            t-on-click="scrollLeft"
+                            title="Desplazar a la izquierda">
+                        <i class="bi bi-chevron-left"/>
+                    </button>
+                    <button type="button"
+                            class="btn btn-outline-secondary btn-sm"
+                            t-on-click="scrollRight"
+                            title="Desplazar a la derecha">
+                        <i class="bi bi-chevron-right"/>
+                    </button>
+                </div>
+
+                <!-- Controles de zoom -->
+                <div class="d-flex align-items-center flex-grow-1">
+                    <button type="button"
+                            class="btn btn-outline-primary btn-sm me-2"
+                            t-on-click="zoomOut"
+                            t-att-disabled="state.zoomLevel &lt;= 50"
+                            title="Alejar (Ctrl/Cmd + -)">
+                        <i class="bi bi-dash-circle-fill"/>
+                    </button>
+
+                    <div class="flex-grow-1 mx-2" style="max-width: 200px;">
+                        <div class="d-flex align-items-center">
+                            <input type="range"
+                                   class="form-range flex-grow-1"
+                                   min="50"
+                                   max="200"
+                                   step="10"
+                                   t-model="state.zoomLevel"
+                                   t-on-input="applyZoom"
+                                   style="cursor: pointer;"/>
+                            <span class="badge bg-primary ms-2" style="min-width: 50px;">
+                                <t t-esc="state.zoomLevel"/>%
+                            </span>
+                        </div>
+                    </div>
+
+                    <button type="button"
+                            class="btn btn-outline-primary btn-sm me-2"
+                            t-on-click="zoomIn"
+                            t-att-disabled="state.zoomLevel >= 200"
+                            title="Acercar (Ctrl/Cmd + +)">
+                        <i class="bi bi-plus-circle-fill"/>
+                    </button>
+
+                    <button type="button"
+                            class="btn btn-outline-secondary btn-sm me-2"
+                            t-on-click="resetZoom"
+                            title="Restablecer zoom (Ctrl/Cmd + 0)">
+                        <i class="bi bi-arrow-counterclockwise"/>
+                    </button>
+                </div>
+
+                <!-- Control de fullscreen -->
+                <div class="ms-auto">
+                    <button type="button"
+                            class="btn btn-outline-dark btn-sm"
+                            t-on-click="toggleFullscreen"
+                            title="Pantalla completa (F)">
+                        <i t-if="!state.isFullscreen" class="bi bi-arrows-fullscreen"/>
+                        <i t-if="state.isFullscreen" class="bi bi-fullscreen-exit"/>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Ayuda de atajos de teclado -->
+            <div class="alert alert-info alert-dismissible fade show py-2 px-3 mb-3" role="alert">
+                <small>
+                    <i class="bi bi-keyboard me-2"/>
+                    <strong>Atajos:</strong>
+                    <kbd class="ms-2">Ctrl/Cmd</kbd> + <kbd>+</kbd> Acercar |
+                    <kbd class="ms-2">Ctrl/Cmd</kbd> + <kbd>-</kbd> Alejar |
+                    <kbd class="ms-2">Ctrl/Cmd</kbd> + <kbd>0</kbd> Restablecer |
+                    <kbd class="ms-2">F</kbd> Pantalla completa
+                </small>
+                <button type="button" class="btn-close py-2" data-bs-dismiss="alert" aria-label="Close"/>
+            </div>
+
+            <!-- Contenedor con scroll horizontal para el kanban -->
+            <div class="o_property_kanban_scroll_container overflow-auto position-relative"
+                 t-att-class="{'o_fullscreen_active': state.isFullscreen}"
+                 style="max-height: 600px;">
+
+                <!-- Aquí se renderizará el kanban de propiedades -->
+                <div class="o_property_kanban_wrapper"
+                     t-ref="propertyKanban"
+                     style="transition: transform 0.2s ease-in-out;">
+                    <t t-slot="default"/>
+                </div>
+            </div>
+
+            <!-- Indicador de cantidad de propiedades -->
+            <div class="text-center mt-3 text-muted small">
+                <i class="bi bi-info-circle me-1"/>
+                Puedes comparar hasta 4 propiedades simultáneamente
+            </div>
+        </div>
+    </t>
+
+</templates>

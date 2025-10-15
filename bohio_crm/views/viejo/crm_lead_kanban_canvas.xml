@@ -53,8 +53,8 @@
                 <field name="budget_min"/>
                 <field name="budget_max"/>
                 <field name="desired_city"/>
-                <field name="num_bedrooms_min"/>
-                <field name="property_area_min"/>
+                <field name="min_bedrooms"/>
+                <field name="min_area"/>
 
                 <!-- Contrato -->
                 <field name="contract_template_id"/>
@@ -148,10 +148,10 @@
                                         <field name="budget_min" widget="monetary"/>
                                     </span>
                                 </t>
-                                <t t-if="record.num_bedrooms_min.raw_value">
+                                <t t-if="record.min_bedrooms.raw_value">
                                     <span class="o_pref_badge">
                                         <i class="bi bi-bed me-1"/>
-                                        <field name="num_bedrooms_min"/> HAB
+                                        <field name="min_bedrooms"/> HAB
                                     </span>
                                 </t>
                             </div>

@@ -162,10 +162,9 @@ class PropertyContractTypeDocument(models.Model):
 class PropertyContract(models.Model):
     """
     Extensión de property.contract con gestión de documentos y tipos de contrato.
-    Incluye integración opcional con portal.mixin para acceso de clientes.
     """
     _name = 'property.contract'
-    _inherit = ['property.contract', 'portal.mixin']
+    _inherit = 'property.contract'
 
     # Tipo de contrato
     contract_type_id = fields.Many2one(
@@ -453,12 +452,6 @@ Período: {contract_data['dates']['date_from']} - {contract_data['dates']['date_
     # ======================================
     # MÉTODOS DE PORTAL
     # ======================================
-
-    def _compute_access_url(self):
-        """Generar URL de acceso al portal para el contrato"""
-        super(PropertyContract, self)._compute_access_url()
-        for contract in self:
-            contract.access_url = f'/my/contract/{contract.id}'
 
     def _get_report_base_filename(self):
         """Nombre base para reportes PDF"""

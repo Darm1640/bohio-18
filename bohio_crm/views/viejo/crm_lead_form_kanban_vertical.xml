@@ -161,7 +161,7 @@
                                 <field name="monthly_income"
                                        widget="monetary"
                                        options="{'currency_field': 'company_currency'}"/>
-                                <field name="num_occupants"/>
+                                <field name="number_of_occupants"/>
                                 <field name="property_purpose"/>
                             </group>
                         </div>
@@ -202,18 +202,18 @@
                                            options="{'no_create': True}"/>
                                 </group>
                                 <group>
-                                    <label for="num_bedrooms_min" string="Habitaciones"/>
+                                    <label for="min_bedrooms" string="Habitaciones"/>
                                     <div class="o_row">
-                                        <field name="num_bedrooms_min" placeholder="Min"/>
+                                        <field name="min_bedrooms" placeholder="Min"/>
                                         <span class="mx-2">-</span>
-                                        <field name="num_bedrooms_max" placeholder="Max"/>
+                                        <field name="max_bedrooms" placeholder="Max"/>
                                     </div>
-                                    <field name="num_bathrooms_min"/>
-                                    <label for="property_area_min" string="Área (m²)"/>
+                                    <field name="min_bathrooms"/>
+                                    <label for="min_area" string="Área (m²)"/>
                                     <div class="o_row">
-                                        <field name="property_area_min" placeholder="Min"/>
+                                        <field name="min_area" placeholder="Min"/>
                                         <span class="mx-2">-</span>
-                                        <field name="property_area_max" placeholder="Max"/>
+                                        <field name="max_area" placeholder="Max"/>
                                     </div>
                                 </group>
                             </group>

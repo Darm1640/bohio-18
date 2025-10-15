@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ====================================================================== -->
+    <!-- VISTA LIST MODERNA - ESTILO CRM PROFESIONAL -->
+    <!-- ====================================================================== -->
+    <record id="view_crm_lead_list_bohio" model="ir.ui.view">
+        <field name="name">crm.lead.list.bohio</field>
+        <field name="model">crm.lead</field>
+        <field name="priority">1</field>
+        <field name="arch" type="xml">
+            <list string="Client List (CRM)"
+                  sample="1"
+                  multi_edit="1"
+                  js_class="bohio_crm_list_modern"
+                  decoration-success="probability &gt;= 75"
+                  decoration-info="probability &gt;= 50 and probability &lt; 75"
+                  decoration-warning="probability &gt;= 25 and probability &lt; 50"
+                  decoration-danger="probability &lt; 25">
+
+                <!-- Botones de Acción -->
+                <header>
+                    <button name="action_schedule_meeting" type="object" string="Nueva Interacción" class="btn-primary"/>
+                    <button name="action_set_won_rainbowman" type="object" string="Cerrar Ganada" class="btn-success"/>
+                </header>
+
+                <!-- Avatar/Imagen (si tiene propiedad, mostrar imagen) -->
+                <field name="id" column_invisible="1"/>
+                <field name="color" column_invisible="1"/>
+                <field name="company_currency" column_invisible="1"/>
+
+                <!-- COLUMNA 1: Cliente + Contacto (combinado) -->
+                <field name="partner_id" string="Cliente"
+                       decoration-bf="1"
+                       widget="many2one_avatar"
+                       optional="show"/>
+
+                <field name="name" string="Oportunidad" optional="show"/>
+
+                <!-- COLUMNA 2: Contacto Info (Email + Teléfono en una columna) -->
+                <field name="email_from" string="Email / Teléfono"
+                       optional="show"
+                       widget="email"
+                       decoration-bf="1"/>
+                <field name="phone" optional="hide" widget="phone"/>
+                <field name="mobile" optional="hide" widget="phone"/>
+
+                <!-- COLUMNA 3: Ubicación (Ciudad + Dirección) -->
+                <field name="desired_city" string="Ubicación" optional="show"/>
+                <field name="desired_neighborhood" optional="hide"/>
+                <field name="street" optional="hide"/>
+
+                <!-- COLUMNA 4: Estado + Prioridad -->
+                <field name="stage_id" string="Estado" optional="show"/>
+                <field name="client_type" string="Tipo" optional="show" widget="badge"/>
+                <field name="service_interested" string="Servicio" optional="show" widget="badge"/>
+
+                <!-- COLUMNA 5: Proyecto -->
+                <field name="project_id" string="Proyecto" optional="show"/>
+
+                <!-- COLUMNA 6: Métricas (Valor esperado + Comisión) -->
+                <field name="expected_revenue" string="Valor Estimado"
+                       widget="monetary"
+                       sum="Total Pipeline"
+                       optional="show"/>
+                <field name="estimated_commission" string="Comisión Est."
+                       widget="monetary"
+                       sum="Total Comisión"
+                       optional="show"/>
+
+                <!-- COLUMNA 7: Probabilidad + Días -->
+                <field name="probability" string="Probabilidad"
+                       widget="progressbar"
+                       optional="show"/>
+                <field name="day_open" string="Días Abierto" optional="show"/>
+
+                <!-- COLUMNA 8: Próxima Actividad -->
+                <field name="date_deadline" string="Cierre Esperado" optional="show"/>
+                <field name="activity_ids" string="Siguiente"
+                       widget="list_activity"
+                       optional="show"/>
+
+                <!-- COLUMNA 9: Responsable -->
+                <field name="user_id" string="Owner"
+                       widget="many2one_avatar_user"
+                       optional="show"/>
+
+                <!-- Campos adicionales ocultos por defecto -->
+                <field name="tag_ids" string="Etiquetas"
+                       widget="many2many_tags"
+                       optional="hide"/>
+                <field name="budget_min" string="Presup. Mín"
+                       widget="monetary"
+                       optional="hide"/>
+                <field name="budget_max" string="Presup. Máx"
+                       widget="monetary"
+                       optional="hide"/>
+                <field name="min_bedrooms" string="Hab." optional="hide"/>
+                <field name="min_bathrooms" string="Baños" optional="hide"/>
+                <field name="property_ids" string="Propiedades"
+                       widget="many2many_tags"
+                       optional="hide"/>
+                <field name="compared_properties_count" string="En Comparación" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ====================================================================== -->
+    <!-- VISTA KANBAN MODERNA - TARJETAS ESTILO PROFESIONAL -->
+    <!-- ====================================================================== -->
+    <record id="view_crm_lead_kanban_bohio" model="ir.ui.view">
+        <field name="name">crm.lead.kanban.bohio</field>
+        <field name="model">crm.lead</field>
+        <field name="priority">1</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="stage_id"
+                    class="o_kanban_small_column o_crm_kanban_modern"
+                    sample="1"
+                    quick_create="false"
+                    js_class="bohio_crm_kanban_modern">
+
+                <!-- Campos Necesarios -->
+                <field name="id"/>
+                <field name="name"/>
+                <field name="stage_id"/>
+                <field name="partner_id"/>
+                <field name="contact_name"/>
+                <field name="email_from"/>
+                <field name="phone"/>
+                <field name="mobile"/>
+                <field name="desired_city"/>
+                <field name="desired_neighborhood"/>
+                <field name="street"/>
+                <field name="client_type"/>
+                <field name="service_interested"/>
+                <field name="project_id"/>
+                <field name="expected_revenue"/>
+                <field name="estimated_commission"/>
+                <field name="probability"/>
+                <field name="company_currency"/>
+                <field name="date_deadline"/>
+                <field name="day_open"/>
+                <field name="user_id"/>
+                <field name="activity_ids"/>
+                <field name="activity_state"/>
+                <field name="tag_ids"/>
+                <field name="color"/>
+                <field name="priority"/>
+                <field name="property_ids"/>
+                <field name="image_128"/>
+
+                <templates>
+                    <t t-name="card">
+                        <div class="oe_kanban_global_click o_crm_card_modern">
+
+                            <!-- Header: Imagen circular + Dropdown -->
+                            <div class="o_kanban_card_header d-flex align-items-center mb-2">
+                                <!-- Imagen Circular de la Primera Propiedad -->
+                                <div class="o_kanban_avatar me-2">
+                                    <t t-if="record.property_ids.raw_value and record.property_ids.raw_value.length > 0">
+                                        <img t-att-src="'/web/image/product.template/' + record.property_ids.raw_value[0] + '/image_128'"
+                                             class="rounded-circle"
+                                             style="width: 48px; height: 48px; object-fit: cover;"
+                                             alt="Propiedad"/>
+                                    </t>
+                                    <t t-else="">
+                                        <div class="rounded-circle bg-secondary d-flex align-items-center justify-content-center"
+                                             style="width: 48px; height: 48px;">
+                                            <i class="bi bi-house-door-fill text-white fs-4"/>
+                                        </div>
+                                    </t>
+                                </div>
+
+                                <div class="flex-grow-1">
+                                    <!-- Prioridad + Dropdown -->
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <field name="priority" widget="priority"/>
+                                        <div class="o_dropdown_kanban dropdown">
+                                            <a class="dropdown-toggle o-no-caret btn btn-sm" role="button" data-bs-toggle="dropdown">
+                                                <i class="bi bi-three-dots-vertical"/>
+                                            </a>
+                                            <div class="dropdown-menu" role="menu">
+                                                <a role="menuitem" type="edit" class="dropdown-item">
+                                                    <i class="bi bi-pencil me-2"/> Editar
+                                                </a>
+                                                <a role="menuitem" type="object" name="action_schedule_meeting" class="dropdown-item">
+                                                    <i class="bi bi-calendar-event me-2"/> Agendar
+                                                </a>
+                                                <a role="menuitem" type="object" name="action_make_call" class="dropdown-item">
+                                                    <i class="bi bi-telephone me-2"/> Llamar
+                                                </a>
+                                                <div class="dropdown-divider"/>
+                                                <ul class="oe_kanban_colorpicker" data-field="color"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Título Oportunidad -->
+                            <div class="o_kanban_card_title mb-2">
+                                <strong class="fs-6">
+                                    <field name="name"/>
+                                </strong>
+                            </div>
+
+                            <!-- Cliente Info Comprimida -->
+                            <div class="o_kanban_card_client bg-light rounded p-2 mb-2">
+                                <div class="d-flex align-items-center mb-1">
+                                    <i class="bi bi-person-circle text-primary me-2 fs-5"/>
+                                    <strong>
+                                        <field name="partner_id"/>
+                                    </strong>
+                                </div>
+
+                                <!-- Email + Teléfono en una línea -->
+                                <div class="small text-muted">
+                                    <t t-if="record.email_from.raw_value">
+                                        <i class="bi bi-envelope-fill me-1"/>
+                                        <span t-esc="record.email_from.value"/>
+                                    </t>
+                                    <t t-if="record.phone.raw_value">
+                                        <span class="mx-1">|</span>
+                                        <i class="bi bi-telephone-fill me-1"/>
+                                        <span t-esc="record.phone.value"/>
+                                    </t>
+                                </div>
+
+                                <!-- Ubicación -->
+                                <t t-if="record.desired_city.raw_value or record.desired_neighborhood.raw_value">
+                                    <div class="small text-muted mt-1">
+                                        <i class="bi bi-geo-alt-fill me-1"/>
+                                        <t t-if="record.desired_city.raw_value">
+                                            <span t-esc="record.desired_city.value"/>
+                                        </t>
+                                        <t t-if="record.desired_neighborhood.raw_value">
+                                            <span class="ms-1" t-esc="'(' + record.desired_neighborhood.value + ')'"/>
+                                        </t>
+                                    </div>
+                                </t>
+                            </div>
+
+                            <!-- Badges: Tipo + Servicio -->
+                            <div class="o_kanban_card_badges mb-2">
+                                <t t-if="record.client_type.raw_value">
+                                    <span class="badge bg-info text-white me-1">
+                                        <t t-esc="record.client_type.value"/>
+                                    </span>
+                                </t>
+                                <t t-if="record.service_interested.raw_value">
+                                    <span class="badge bg-success text-white">
+                                        <t t-esc="record.service_interested.value"/>
+                                    </span>
+                                </t>
+                            </div>
+
+                            <!-- Proyecto (si existe) -->
+                            <t t-if="record.project_id.raw_value">
+                                <div class="o_kanban_card_project mb-2">
+                                    <div class="d-flex align-items-center p-2 bg-secondary bg-opacity-10 rounded">
+                                        <i class="bi bi-building me-2 text-secondary"/>
+                                        <small class="fw-bold">
+                                            <field name="project_id"/>
+                                        </small>
+                                    </div>
+                                </div>
+                            </t>
+
+                            <!-- Métricas Card (Estilo Comprimido) -->
+                            <div class="o_kanban_card_metrics mb-2">
+                                <div class="row g-1">
+                                    <!-- Valor Estimado -->
+                                    <div class="col-6">
+                                        <div class="metric-card bg-primary bg-opacity-10 rounded p-2 text-center">
+                                            <i class="bi bi-cash-coin text-primary"/>
+                                            <div class="small text-muted">Valor Est.</div>
+                                            <strong class="text-primary">
+                                                <field name="expected_revenue" widget="monetary" options="{'currency_field': 'company_currency'}"/>
+                                            </strong>
+                                        </div>
+                                    </div>
+
+                                    <!-- Comisión -->
+                                    <div class="col-6">
+                                        <div class="metric-card bg-warning bg-opacity-10 rounded p-2 text-center">
+                                            <i class="bi bi-percent text-warning"/>
+                                            <div class="small text-muted">Comisión</div>
+                                            <strong class="text-warning">
+                                                <field name="estimated_commission" widget="monetary" options="{'currency_field': 'company_currency'}"/>
+                                            </strong>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Barra Probabilidad -->
+                            <div class="o_kanban_card_probability mb-2">
+                                <div class="d-flex justify-content-between align-items-center mb-1">
+                                    <small class="text-muted">
+                                        <i class="bi bi-graph-up-arrow me-1"/>
+                                        Probabilidad
+                                    </small>
+                                    <strong><t t-esc="record.probability.value"/>%</strong>
+                                </div>
+                                <div class="progress" style="height: 6px;">
+                                    <div class="progress-bar"
+                                         t-attf-class="bg-#{record.probability.raw_value >= 75 ? 'success' : record.probability.raw_value >= 50 ? 'info' : record.probability.raw_value >= 25 ? 'warning' : 'danger'}"
+                                         t-attf-style="width: #{record.probability.value}%">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Datos Temporales (Íconos circulares) -->
+                            <div class="o_kanban_card_time_info d-flex justify-content-between align-items-center mb-2">
+                                <!-- Días Abierto -->
+                                <t t-if="record.day_open.raw_value">
+                                    <div class="time-badge">
+                                        <div class="d-flex align-items-center">
+                                            <div class="icon-circle bg-info text-white rounded-circle d-flex align-items-center justify-content-center me-1"
+                                                 style="width: 24px; height: 24px;">
+                                                <i class="bi bi-clock-history"/>
+                                            </div>
+                                            <small>
+                                                <strong t-esc="record.day_open.value"/> días
+                                            </small>
+                                        </div>
+                                    </div>
+                                </t>
+
+                                <!-- Fecha Cierre -->
+                                <t t-if="record.date_deadline.raw_value">
+                                    <div class="time-badge">
+                                        <div class="d-flex align-items-center">
+                                            <div class="icon-circle bg-success text-white rounded-circle d-flex align-items-center justify-content-center me-1"
+                                                 style="width: 24px; height: 24px;">
+                                                <i class="bi bi-calendar-check"/>
+                                            </div>
+                                            <small t-esc="record.date_deadline.value"/>
+                                        </div>
+                                    </div>
+                                </t>
+                            </div>
+
+                            <!-- Tags (Etiquetas circulares) -->
+                            <div class="o_kanban_card_tags mb-2">
+                                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                            </div>
+
+                            <!-- Footer: Actividad + Usuario -->
+                            <div class="o_kanban_card_footer d-flex justify-content-between align-items-center mt-2 pt-2 border-top">
+                                <div class="flex-grow-1">
+                                    <field name="activity_ids" widget="kanban_activity"/>
+                                </div>
+                                <div>
+                                    <field name="user_id" widget="many2one_avatar_user"/>
+                                </div>
+                            </div>
+
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+</odoo>

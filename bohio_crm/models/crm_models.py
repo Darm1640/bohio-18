@@ -71,19 +71,21 @@ class CrmLead(models.Model):
     desired_neighborhood = fields.Char('Barrio Deseado', tracking=True)
     desired_city = fields.Char('Ciudad Deseada', tracking=True)
     desired_property_type_id = fields.Many2one('property.type', 'Tipo de Propiedad Deseada', tracking=True)
-    num_bedrooms_min = fields.Integer('Habitaciones Mínimas', tracking=True)
-    num_bedrooms_max = fields.Integer('Habitaciones Máximas', tracking=True)
+
+    # Habitaciones
     min_bedrooms = fields.Integer('Habitaciones Mínimas', tracking=True)
+    max_bedrooms = fields.Integer('Habitaciones Máximas', tracking=True)
     ideal_bedrooms = fields.Integer('Habitaciones Ideales', tracking=True)
-    num_bathrooms_min = fields.Integer('Baños Mínimos', tracking=True)
+
+    # Baños
     min_bathrooms = fields.Integer('Baños Mínimos', tracking=True)
-    property_area_min = fields.Float('Área Mínima (m²)', tracking=True)
-    property_area_max = fields.Float('Área Máxima (m²)', tracking=True)
+    max_bathrooms = fields.Integer('Baños Máximos', tracking=True)
+
+    # Área
     min_area = fields.Float('Área Mínima (m²)', tracking=True)
     max_area = fields.Float('Área Máxima (m²)', tracking=True)
 
     # Información adicional
-    num_occupants = fields.Integer('Número de Personas', tracking=True)
     number_of_occupants = fields.Integer('Número de Ocupantes', tracking=True)
     has_pets = fields.Boolean('Tiene Mascotas', tracking=True)
     pet_type = fields.Selection([

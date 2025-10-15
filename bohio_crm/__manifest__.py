@@ -1,6 +1,6 @@
 {
     'name': 'BOHIO CRM',
-    'version': '18.0.1.0.2',
+    'version': '18.0.1.0.3',
     'category': 'Sales/CRM',
     'summary': 'CRM especializado para negocio inmobiliario',
     'description': """
@@ -13,6 +13,11 @@
         - Comparador de hasta 4 propiedades
         - Cálculo automático de comisiones
         - Integración con propiedades
+
+        Versión 18.0.1.0.3 - REFACTORIZACIÓN:
+        - Eliminación de campos duplicados
+        - Consolidación de nomenclatura
+        - Migración automática de datos
     """,
     'author': 'BOHIO Inmobiliaria',
     'website': 'https://www.bohio.com.co',
@@ -31,63 +36,33 @@
         'data/crm_server_actions.xml',       # Server actions con codigo Python (Odoo 18)
         'data/crm_automated_actions_v2.xml',  # Base automations que referencian server actions
 
-        # Acciones y Reportes - ANTES de las vistas que las referencian
-        'views/bohio_crm_actions.xml',
-        'report/property_comparison_report.xml',
-        'views/crm_capture_commission_report.xml',  # Define action_crm_capture_commission_report
-
-        # Vistas - DESPUES de las acciones
-        'views/bohio_crm_complete_views.xml',
-        'views/crm_lead_form_complete.xml',          # USA action_crm_capture_commission_report
-        'views/crm_lead_quick_create_form.xml',
-        'views/crm_lead_kanban_canvas.xml',          # Vista Kanban Canvas ÚNICA (con mapa y lista)
-        'views/crm_lead_form_kanban_vertical.xml',   # Vista Form Kanban Vertical (formato reporte)
-        'views/company_contract_config_views.xml',
-        'views/crm_salesperson_dashboard_views.xml',
-
-        # Menús - Al final
-        'views/bohio_crm_menu.xml',
-
-        # Timeline View
-        'views/bohio_timeline_view_actions.xml',
+        # Vistas Principales
+        'views/crm_lead_views.xml',          # Vista List y Kanban mejoradas con js_class
+        'views/crm_dashboard.xml',           # Dashboard CRM BOHIO
+        'views/menu.xml',                    # Menús (vacío por ahora)
     ],
     'assets': {
         'web.assets_backend': [
-            # CSS
-            'bohio_crm/static/src/css/crm_bohio_form.css',
+            # CSS Activos
             'bohio_crm/static/src/css/bohio_crm_kanban.css',
             'bohio_crm/static/src/css/bohio_crm_list.css',
             'bohio_crm/static/src/css/bohio_dashboard.css',
-            'bohio_crm/static/src/css/crm_quick_create_smart.css',  # Quick Create CSS
-            'bohio_crm/static/src/css/crm_kanban_canvas.css',       # Kanban Canvas CSS ÚNICA
-            'bohio_crm/static/src/css/crm_form_kanban_vertical.css',# Form Kanban Vertical CSS
+            'bohio_crm/static/src/css/crm_modern_style.css',       # Estilos Modernos con Iconos Bootstrap
+            'bohio_crm/static/src/css/property_compare_zoom.css',  # Widget de Zoom
 
-            # JS - Dashboard
-            'bohio_crm/static/src/js/crm_bohio_form.js',
+            # JavaScript - Vistas Kanban y List con Dashboard
             'bohio_crm/static/src/views/bohio_crm_dashboard.js',
             'bohio_crm/static/src/views/bohio_crm_dashboard.xml',
             'bohio_crm/static/src/views/bohio_crm_kanbanview.js',
             'bohio_crm/static/src/views/bohio_crm_kanbanview.xml',
 
-            # Quick Create Inteligente
-            'bohio_crm/static/src/js/crm_quick_create_smart.js',    # Quick Create JS
-
-            # Kanban Expandible con Sidebar
-            'bohio_crm/static/src/js/crm_kanban_sidebar.js',        # Kanban Sidebar JS
-            'bohio_crm/static/src/xml/crm_kanban_sidebar_templates.xml',  # Kanban Sidebar Templates
-
-            # Form Expandible Completo
-            'bohio_crm/static/src/js/crm_form_expandable.js',       # Form Expandible JS
-            'bohio_crm/static/src/js/crm_map_widget.js',             # Widget de Mapa Leaflet
-            'bohio_crm/static/src/xml/crm_map_widget_template.xml', # Template del Mapa
-
-            # Salesperson Dashboard
+            # JavaScript - Dashboard del Vendedor (con barra deslizable)
             'bohio_crm/static/src/js/crm_salesperson_dashboard.js',
             'bohio_crm/static/src/xml/crm_salesperson_dashboard.xml',
 
-            # Timeline View V2 (Vista timeline principal)
-            'bohio_crm/static/src/components/timeline_view_v2/bohio_timeline_view_v2.js',
-            'bohio_crm/static/src/components/timeline_view_v2/bohio_timeline_view_v2.xml',
+            # JavaScript - Widget de Zoom para Comparación de Propiedades
+            'bohio_crm/static/src/js/property_compare_zoom.js',
+            'bohio_crm/static/src/xml/property_compare_zoom.xml',
         ],
     },
     'installable': True,

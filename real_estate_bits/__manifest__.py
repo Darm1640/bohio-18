@@ -13,7 +13,7 @@
     """,
     "author": "Terabits Technolab",
     "website": "https://www.terabits.xyz",
-    "depends": ["base", "account", "analytic", 'repair', 'sale_management', 'web', "website_sale"],
+    "depends": ["base", "account", "analytic", 'repair', 'sale_management', 'web', "website_sale",'document_sign'],
     "license": "OPL-1",
     "price": "399.99",
     "currency": "USD",

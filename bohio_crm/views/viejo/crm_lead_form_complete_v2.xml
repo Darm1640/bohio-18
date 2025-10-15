@@ -1,0 +1,772 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ============================================================================
+         VISTA FORM COMPLETA BOHIO CRM - VERSIÓN MEJORADA v18.0.1.0.3
+         ============================================================================
+         Características:
+         - Smart buttons con métricas detalladas
+         - Header expandido con statusbar mejorado
+         - Layout responsivo con avatar del cliente
+         - Notebook con múltiples páginas organizadas
+         - Kanban de propiedades con imágenes y detalles
+         - Widgets modernos y estilos Bootstrap 5
+         - Campos refactorizados (min_bedrooms, max_bedrooms, min_bathrooms, etc.)
+         ============================================================================ -->
+
+    <record id="view_crm_lead_form_bohio_complete_v2" model="ir.ui.view">
+        <field name="name">crm.lead.form.bohio.complete.v2</field>
+        <field name="model">crm.lead</field>
+        <field name="priority">1</field>
+        <field name="arch" type="xml">
+            <form string="Oportunidad Inmobiliaria" js_class="crm_form">
+
+                <!-- ==================== ESTILOS CSS PERSONALIZADOS ==================== -->
+                <style>
+                    .bg-purple {
+                        background-color: #9b59b6 !important;
+                    }
+
+                    .o_crm_statusbar_container {
+                        border-left: 4px solid #007bff;
+                        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+                    }
+
+                    .o_stat_button:hover {
+                        transform: translateY(-2px);
+                        transition: all 0.2s ease-in-out;
+                        box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+                    }
+
+                    .o_property_interest_card:hover,
+                    .o_property_card_full:hover {
+                        transform: translateY(-5px);
+                        transition: all 0.3s ease-in-out;
+                        box-shadow: 0 8px 16px rgba(0,0,0,0.2) !important;
+                    }
+
+                    .badge.bg-purple {
+                        background-color: #9b59b6;
+                    }
+
+                    .o_employee_avatar {
+                        border: 3px solid #007bff;
+                        border-radius: 50%;
+                        overflow: hidden;
+                    }
+                </style>
+
+                <!-- ==================== HEADER CON BOTONES Y STATUSBAR ==================== -->
+                <header>
+                    <!-- Fila de botones de acción -->
+                    <div class="row w-100 mb-2">
+                        <div class="col-12 d-flex justify-content-between align-items-center mb-2">
+                            <!-- Botones de acción principales -->
+                            <div class="btn-group" role="group">
+                                <button name="action_set_won_rainbowman"
+                                        string="Marcar como Ganada"
+                                        type="object"
+                                        class="btn btn-success"
+                                        invisible="active == False or probability == 100"
+                                        data-hotkey="w">
+                                    <i class="bi bi-check-circle-fill me-1"/>Ganada
+                                </button>
+
+                                <button name="action_set_lost"
+                                        string="Marcar como Perdida"
+                                        type="object"
+                                        class="btn btn-danger"
+                                        invisible="active == False or probability == 0"
+                                        data-hotkey="l">
+                                    <i class="bi bi-x-circle-fill me-1"/>Perdida
+                                </button>
+
+                                <button name="action_schedule_meeting"
+                                        string="Agendar Reunión"
+                                        type="object"
+                                        icon="bi-calendar-event"
+                                        class="btn btn-primary">
+                                    <i class="bi bi-calendar-event me-1"/>Reunión
+                                </button>
+
+                                <button name="action_generate_contract"
+                                        string="Generar Contrato"
+                                        type="object"
+                                        class="btn btn-info"
+                                        invisible="service_interested not in ['rent', 'sale']">
+                                    <i class="bi bi-file-earmark-text me-1"/>Contrato
+                                </button>
+                            </div>
+
+                            <!-- Botones de archivo -->
+                            <div class="btn-group" role="group">
+                                <button name="toggle_active"
+                                        string="Archivar"
+                                        type="object"
+                                        class="btn btn-secondary"
+                                        invisible="active == False">
+                                    <i class="bi bi-archive-fill me-1"/>Archivar
+                                </button>
+
+                                <button name="toggle_active"
+                                        string="Desarchivar"
+                                        type="object"
+                                        class="btn btn-warning"
+                                        invisible="active == True">
+                                    <i class="bi bi-box-arrow-up me-1"/>Desarchivar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Statusbar Expandido con métricas de tiempo -->
+                    <div class="w-100 o_crm_statusbar_container bg-light p-3 rounded mb-3 shadow-sm">
+                        <field name="stage_id"
+                               widget="statusbar"
+                               options="{'clickable': '1', 'fold_field': 'fold'}"
+                               domain="['|', ('team_id', '=', False), ('team_id', '=', team_id)]"
+                               class="w-100"/>
+
+                        <!-- Métricas de tiempo debajo del statusbar -->
+                        <div class="d-flex justify-content-between align-items-center mt-2 text-muted small">
+                            <div>
+                                <i class="bi bi-clock-history me-1"/>
+                                <strong>Tiempo en esta etapa:</strong>
+                                <span class="badge bg-primary ms-1">
+                                    <field name="day_open"/> días
+                                </span>
+                            </div>
+
+                            <div invisible="not date_deadline">
+                                <i class="bi bi-calendar-x me-1"/>
+                                <strong>Fecha límite:</strong>
+                                <span class="badge bg-warning text-dark ms-1">
+                                    <field name="date_deadline"/>
+                                </span>
+                            </div>
+
+                            <div invisible="not date_closed">
+                                <i class="bi bi-check-circle me-1"/>
+                                <strong>Fecha cierre:</strong>
+                                <span class="badge bg-success ms-1">
+                                    <field name="date_closed"/>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+
+                <sheet>
+                    <!-- ==================== SMART BUTTONS CON MÉTRICAS ==================== -->
+                    <div class="oe_button_box" name="button_box">
+
+                        <!-- FILA 1: MÉTRICAS FINANCIERAS -->
+                        <div class="w-100 d-flex flex-wrap mb-2">
+                            <!-- Ingreso Esperado -->
+                            <button class="oe_stat_button" type="action" name="%(crm.crm_lead_opportunities)d">
+                                <div class="o_field_widget o_stat_info">
+                                    <span class="o_stat_value text-success">
+                                        <i class="bi bi-bullseye me-1"/>
+                                        <field name="expected_revenue" widget="monetary"/>
+                                    </span>
+                                    <span class="o_stat_text">Ingreso Esperado</span>
+                                </div>
+                            </button>
+
+                            <!-- Ingreso Recurrente (Solo Arriendo) -->
+                            <button class="oe_stat_button"
+                                    type="action"
+                                    name="%(crm.crm_lead_opportunities)d"
+                                    invisible="service_interested != 'rent'">
+                                <div class="o_field_widget o_stat_info">
+                                    <span class="o_stat_value text-info">
+                                        <i class="bi bi-arrow-repeat me-1"/>
+                                        <field name="recurring_revenue" widget="monetary"/>
+                                    </span>
+                                    <span class="o_stat_text">Recurrente Mensual</span>
+                                </div>
+                            </button>
+
+                            <!-- Probabilidad -->
+                            <button class="oe_stat_button" type="action" name="%(crm.crm_lead_opportunities)d">
+                                <div class="o_field_widget o_stat_info">
+                                    <span class="o_stat_value">
+                                        <i class="bi bi-graph-up-arrow me-1"/>
+                                        <field name="probability" widget="progressbar"/>
+                                    </span>
+                                    <span class="o_stat_text">Probabilidad</span>
+                                </div>
+                            </button>
+
+                            <!-- Comisión Estimada -->
+                            <button class="oe_stat_button" type="action" name="%(crm.crm_lead_opportunities)d">
+                                <div class="o_field_widget o_stat_info">
+                                    <span class="o_stat_value text-warning">
+                                        <i class="bi bi-cash-coin me-1"/>
+                                        <field name="estimated_commission" widget="monetary"/>
+                                    </span>
+                                    <span class="o_stat_text">Comisión Estimada</span>
+                                    <div class="small text-muted">
+                                        <field name="commission_percentage" widget="percentage"/> del total
+                                    </div>
+                                </div>
+                            </button>
+
+                            <!-- Días Abierto -->
+                            <button class="oe_stat_button" type="action" name="%(crm.crm_lead_opportunities)d">
+                                <div class="o_field_widget o_stat_info">
+                                    <span class="o_stat_value text-primary">
+                                        <i class="bi bi-calendar-event me-1"/>
+                                        <field name="day_open"/>
+                                    </span>
+                                    <span class="o_stat_text">Días Abierto</span>
+                                </div>
+                            </button>
+
+                            <!-- Días para Cierre -->
+                            <button class="oe_stat_button"
+                                    type="action"
+                                    name="%(crm.crm_lead_opportunities)d"
+                                    invisible="not day_close">
+                                <div class="o_field_widget o_stat_info">
+                                    <span class="o_stat_value text-danger">
+                                        <i class="bi bi-hourglass-split me-1"/>
+                                        <field name="day_close"/>
+                                    </span>
+                                    <span class="o_stat_text">Días para Cierre</span>
+                                </div>
+                            </button>
+                        </div>
+
+                        <!-- FILA 2: ACCIONES RÁPIDAS -->
+                        <div class="w-100 d-flex flex-wrap mb-2">
+                            <!-- Programar Llamada -->
+                            <button class="oe_stat_button btn-light"
+                                    type="object"
+                                    name="action_schedule_call">
+                                <div class="o_field_widget o_stat_info">
+                                    <span class="o_stat_value">
+                                        <i class="bi bi-telephone-fill text-primary" style="font-size: 2rem;"/>
+                                    </span>
+                                    <span class="o_stat_text">Programar Llamada</span>
+                                </div>
+                            </button>
+
+                            <!-- Agendar Reunión -->
+                            <button class="oe_stat_button btn-light"
+                                    type="object"
+                                    name="action_schedule_meeting">
+                                <div class="o_field_widget o_stat_info">
+                                    <span class="o_stat_value">
+                                        <i class="bi bi-calendar-check-fill text-success" style="font-size: 2rem;"/>
+                                    </span>
+                                    <span class="o_stat_text">Agendar Reunión</span>
+                                </div>
+                            </button>
+
+                            <!-- Enviar Email -->
+                            <button class="oe_stat_button btn-light"
+                                    type="object"
+                                    name="action_send_email">
+                                <div class="o_field_widget o_stat_info">
+                                    <span class="o_stat_value">
+                                        <i class="bi bi-envelope-fill text-info" style="font-size: 2rem;"/>
+                                    </span>
+                                    <span class="o_stat_text">Enviar Email</span>
+                                </div>
+                            </button>
+
+                            <!-- WhatsApp -->
+                            <button class="oe_stat_button btn-light"
+                                    type="object"
+                                    name="action_share_whatsapp"
+                                    invisible="not phone and not mobile">
+                                <div class="o_field_widget o_stat_info">
+                                    <span class="o_stat_value">
+                                        <i class="bi bi-whatsapp text-success" style="font-size: 2rem;"/>
+                                    </span>
+                                    <span class="o_stat_text">WhatsApp</span>
+                                </div>
+                            </button>
+
+                            <!-- Programar Visita -->
+                            <button class="oe_stat_button btn-light"
+                                    type="object"
+                                    name="action_schedule_visit"
+                                    invisible="service_interested not in ['rent', 'sale']">
+                                <div class="o_field_widget o_stat_info">
+                                    <span class="o_stat_value">
+                                        <i class="bi bi-geo-alt-fill text-danger" style="font-size: 2rem;"/>
+                                    </span>
+                                    <span class="o_stat_text">Programar Visita</span>
+                                </div>
+                            </button>
+                        </div>
+
+                        <!-- FILA 3: CONTADORES Y ACCESOS RÁPIDOS -->
+                        <div class="w-100 d-flex flex-wrap">
+                            <!-- Propiedades Comparadas -->
+                            <button class="oe_stat_button"
+                                    type="object"
+                                    name="action_view_compared_properties"
+                                    icon="bi-diagram-3-fill"
+                                    invisible="compared_properties_count == 0">
+                                <div class="o_field_widget o_stat_info">
+                                    <span class="o_stat_value">
+                                        <field name="compared_properties_count"/>
+                                    </span>
+                                    <span class="o_stat_text">Comparadas</span>
+                                </div>
+                            </button>
+
+                            <!-- Contratos del Cliente -->
+                            <button class="oe_stat_button"
+                                    type="object"
+                                    name="action_view_partner_contracts"
+                                    icon="bi-file-earmark-text-fill"
+                                    invisible="not partner_id or partner_contracts_count == 0">
+                                <div class="o_field_widget o_stat_info">
+                                    <span class="o_stat_value">
+                                        <field name="partner_contracts_count"/>
+                                    </span>
+                                    <span class="o_stat_text">Contratos</span>
+                                </div>
+                            </button>
+
+                            <!-- Reservas -->
+                            <button class="oe_stat_button"
+                                    type="object"
+                                    name="action_view_reservations"
+                                    icon="bi-calendar-check-fill"
+                                    invisible="reservation_count == 0">
+                                <div class="o_field_widget o_stat_info">
+                                    <span class="o_stat_value">
+                                        <field name="reservation_count"/>
+                                    </span>
+                                    <span class="o_stat_text">Reservas</span>
+                                </div>
+                            </button>
+
+                            <!-- Propiedades Recomendadas -->
+                            <button class="oe_stat_button"
+                                    type="object"
+                                    name="action_view_recommended_properties"
+                                    icon="bi-lightbulb-fill"
+                                    invisible="recommendation_count == 0">
+                                <div class="o_field_widget o_stat_info">
+                                    <span class="o_stat_value">
+                                        <field name="recommendation_count"/>
+                                    </span>
+                                    <span class="o_stat_text">Recomendadas</span>
+                                </div>
+                            </button>
+
+                            <!-- Documentos de Crédito -->
+                            <button class="oe_stat_button"
+                                    type="object"
+                                    name="action_view_loan_documents"
+                                    icon="bi-folder2-open"
+                                    invisible="not requires_financing">
+                                <div class="o_field_widget o_stat_info">
+                                    <span class="o_stat_text">Documentos</span>
+                                </div>
+                            </button>
+
+                            <!-- Timeline View -->
+                            <button class="oe_stat_button"
+                                    type="object"
+                                    name="action_open_timeline_view"
+                                    icon="bi-graph-up">
+                                <div class="o_field_widget o_stat_info">
+                                    <span class="o_stat_text">Timeline</span>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Widget ribbon para archivado -->
+                    <widget name="web_ribbon" title="Archivado" bg_color="text-bg-danger" invisible="active"/>
+
+                    <!-- ==================== LAYOUT PRINCIPAL: AVATAR + INFORMACIÓN ==================== -->
+                    <div class="row flex-column flex-sm-row align-items-center">
+                        <!-- Avatar del Cliente -->
+                        <div class="o_employee_avatar ms-2 p-0 h-100 mw-25 align-self-start align-self-sm-center">
+                            <field name="partner_id"
+                                   widget="many2one_avatar"
+                                   class="m-0"
+                                   options="{'size': [128,158]}"
+                                   context="{'default_is_company': type == 'opportunity', 'show_vat': True}"/>
+                        </div>
+
+                        <!-- Información Principal -->
+                        <div class="align-self-start o_employee_form_header_info">
+                            <div class="oe_title ps-0 pe-2 mw-100">
+                                <!-- Título de la Oportunidad -->
+                                <h1 class="d-flex flex-row align-items-center">
+                                    <field name="name"
+                                           placeholder="ej. Juan Pérez - Apartamento en El Poblado"
+                                           required="True"
+                                           style="font-size: min(4vw, 2.6rem);"/>
+                                </h1>
+
+                                <!-- Email -->
+                                <h5 class="d-flex align-items-baseline mb-0">
+                                    <i class="bi bi-envelope-fill me-1 text-primary" title="Email"/>
+                                    <field name="email_from"
+                                           widget="email"
+                                           placeholder="email@ejemplo.com"
+                                           string="Email"/>
+                                </h5>
+
+                                <!-- Teléfono -->
+                                <h5 class="d-flex align-items-baseline mb-0">
+                                    <i class="bi bi-telephone-fill me-1 text-primary" title="Teléfono"/>
+                                    <field name="phone"
+                                           widget="phone"
+                                           placeholder="Teléfono de contacto"
+                                           string="Teléfono"/>
+                                </h5>
+
+                                <!-- Móvil -->
+                                <h5 class="d-flex align-items-baseline mb-0">
+                                    <i class="bi bi-phone-fill me-1 text-primary" title="Móvil"/>
+                                    <field name="mobile"
+                                           widget="phone"
+                                           placeholder="Celular"
+                                           string="Móvil"/>
+                                </h5>
+
+                                <!-- Etiquetas -->
+                                <h5>
+                                    <i class="bi bi-tags-fill me-1 text-primary" title="Etiquetas"/>
+                                    <field name="tag_ids"
+                                           widget="many2many_tags"
+                                           options="{'color_field': 'color', 'no_create_edit': True}"
+                                           placeholder="Etiquetas para clasificar..."/>
+                                </h5>
+                            </div>
+                        </div>
+
+                        <!-- Estado y Prioridad -->
+                        <div class="align-self-start w-auto end-0 mt-2 d-flex align-items-center justify-content-end gap-2">
+                            <field name="priority" widget="priority"/>
+                            <div invisible="not user_id">
+                                <field name="user_id"
+                                       widget="many2one_avatar_user"
+                                       domain="[('share', '=', False)]"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ==================== CAMPOS OCULTOS NECESARIOS ==================== -->
+                    <field name="type" invisible="1"/>
+                    <field name="active" invisible="1"/>
+                    <field name="probability" invisible="1"/>
+                    <field name="company_currency" invisible="1"/>
+                    <field name="compared_properties_count" invisible="1"/>
+                    <field name="partner_contracts_count" invisible="1"/>
+                    <field name="reservation_count" invisible="1"/>
+                    <field name="recommendation_count" invisible="1"/>
+
+                    <!-- ==================== NOTEBOOK PRINCIPAL ==================== -->
+                    <notebook>
+                        <!-- ========== PÁGINA 1: INFORMACIÓN PRINCIPAL ========== -->
+                        <page name="main_information" string="Información Principal">
+                            <div class="row" id="o_crm_main_information_container">
+                                <!-- COLUMNA IZQUIERDA -->
+                                <div id="o_main_information_left" class="o_hr_column col-lg-7 d-flex flex-column">
+
+                                    <!-- Clasificación del Lead -->
+                                    <group string="Clasificación">
+                                        <field name="client_type"
+                                               widget="radio"
+                                               options="{'horizontal': true}"/>
+                                        <field name="service_interested" required="1"/>
+                                        <field name="request_source"/>
+                                        <field name="team_id"
+                                               domain="[('use_opportunities', '=', True)]"/>
+                                    </group>
+
+                                    <!-- Fechas y Seguimiento -->
+                                    <group string="Seguimiento">
+                                        <field name="date_deadline" widget="date"/>
+                                        <field name="date_closed" readonly="1"/>
+                                        <label for="day_open" string="Tiempo"/>
+                                        <div class="o_row">
+                                            <field name="day_open" readonly="1" class="o_hr_narrow_field"/>
+                                            <span>días abierto</span>
+                                            <span invisible="not day_close"> / </span>
+                                            <field name="day_close" readonly="1" class="o_hr_narrow_field" invisible="not day_close"/>
+                                            <span invisible="not day_close">días para cierre</span>
+                                        </div>
+                                    </group>
+
+                                    <!-- Información Financiera -->
+                                    <group string="Información Financiera">
+                                        <field name="expected_revenue" widget="monetary"/>
+                                        <field name="recurring_revenue"
+                                               widget="monetary"
+                                               invisible="service_interested != 'rent'"/>
+                                        <label for="commission_percentage" string="Comisión"/>
+                                        <div class="o_row">
+                                            <field name="commission_percentage"
+                                                   widget="percentage"
+                                                   class="o_hr_narrow_field"/>
+                                            <span class="mx-2">=</span>
+                                            <field name="estimated_commission"
+                                                   widget="monetary"
+                                                   readonly="1"
+                                                   class="o_hr_narrow_field"/>
+                                        </div>
+                                    </group>
+
+                                    <!-- Presupuesto del Cliente -->
+                                    <group string="Presupuesto">
+                                        <label for="budget_min" string="Rango"/>
+                                        <div class="o_row">
+                                            <field name="budget_min"
+                                                   widget="monetary"
+                                                   class="o_hr_narrow_field"/>
+                                            <span class="mx-2">-</span>
+                                            <field name="budget_max"
+                                                   widget="monetary"
+                                                   class="o_hr_narrow_field"/>
+                                        </div>
+                                        <field name="estimated_total_amount"
+                                               widget="monetary"
+                                               readonly="1"/>
+                                        <field name="estimated_monthly_rent"
+                                               widget="monetary"
+                                               readonly="1"
+                                               invisible="service_interested != 'rent'"/>
+                                    </group>
+
+                                    <!-- Proyecto -->
+                                    <group string="Proyecto" invisible="service_interested != 'projects'">
+                                        <field name="project_id"/>
+                                    </group>
+
+                                    <!-- Información de Captación -->
+                                    <group string="Captación" invisible="service_interested != 'consign'">
+                                        <field name="captured_by_id" widget="many2one_avatar_user"/>
+                                        <field name="capture_date"/>
+                                        <field name="capture_source"/>
+                                        <label for="capture_commission_rate"/>
+                                        <div class="o_row">
+                                            <field name="capture_commission_rate"
+                                                   widget="percentage"
+                                                   class="o_hr_narrow_field"/>
+                                            <span class="mx-2">=</span>
+                                            <field name="capture_commission_amount"
+                                                   widget="monetary"
+                                                   readonly="1"
+                                                   class="o_hr_narrow_field"/>
+                                        </div>
+                                    </group>
+                                </div>
+
+                                <!-- COLUMNA DERECHA -->
+                                <div id="o_main_information_right" class="o_hr_column col-lg-5">
+
+                                    <!-- Proyecto en la columna derecha -->
+                                    <group string="Proyecto Relacionado">
+                                        <field name="project_id"/>
+                                    </group>
+
+                                    <!-- Preferencias de Búsqueda -->
+                                    <div class="o_horizontal_separator mt-4 mb-3 text-uppercase fw-bolder small">
+                                        Preferencias de Búsqueda
+                                    </div>
+
+                                    <group string="Ubicación">
+                                        <field name="desired_city"/>
+                                        <field name="desired_neighborhood"/>
+                                    </group>
+
+                                    <group string="Características">
+                                        <field name="desired_property_type_id"/>
+
+                                        <!-- REFACTORIZADO: min_bedrooms, max_bedrooms -->
+                                        <label for="min_bedrooms" string="Habitaciones"/>
+                                        <div class="o_row">
+                                            <field name="min_bedrooms" class="o_hr_narrow_field"/>
+                                            <span class="mx-2">-</span>
+                                            <field name="max_bedrooms" class="o_hr_narrow_field"/>
+                                            <span class="mx-2">|</span>
+                                            <field name="ideal_bedrooms" class="o_hr_narrow_field"/>
+                                            <span class="text-muted">(ideal)</span>
+                                        </div>
+
+                                        <!-- REFACTORIZADO: min_bathrooms, max_bathrooms -->
+                                        <label for="min_bathrooms" string="Baños"/>
+                                        <div class="o_row">
+                                            <field name="min_bathrooms" class="o_hr_narrow_field"/>
+                                            <span class="mx-2">-</span>
+                                            <field name="max_bathrooms" class="o_hr_narrow_field"/>
+                                        </div>
+
+                                        <!-- REFACTORIZADO: min_area, max_area -->
+                                        <label for="min_area" string="Área (m²)"/>
+                                        <div class="o_row">
+                                            <field name="min_area" class="o_hr_narrow_field"/>
+                                            <span class="mx-2">-</span>
+                                            <field name="max_area" class="o_hr_narrow_field"/>
+                                        </div>
+                                    </group>
+
+                                    <!-- Amenidades Requeridas -->
+                                    <group string="Amenidades">
+                                        <field name="requires_parking" widget="boolean_toggle"/>
+                                        <field name="parking_spots"
+                                               invisible="not requires_parking"
+                                               class="o_hr_narrow_field"/>
+                                        <field name="requires_gym" widget="boolean_toggle"/>
+                                        <field name="requires_pool" widget="boolean_toggle"/>
+                                        <field name="requires_security" widget="boolean_toggle"/>
+                                        <field name="requires_elevator" widget="boolean_toggle"/>
+                                        <field name="requires_common_areas" widget="boolean_toggle"/>
+                                    </group>
+
+                                    <!-- Información Adicional del Cliente -->
+                                    <group string="Información del Cliente">
+                                        <!-- REFACTORIZADO: number_of_occupants -->
+                                        <field name="number_of_occupants"/>
+                                        <field name="has_pets" widget="boolean_toggle"/>
+                                        <field name="pet_type" invisible="not has_pets"/>
+                                        <field name="property_purpose"/>
+                                        <field name="occupation"/>
+                                        <field name="monthly_income" widget="monetary"/>
+                                    </group>
+
+                                    <!-- Referencias -->
+                                    <group string="Referencias">
+                                        <field name="referred_by_partner_id"/>
+                                    </group>
+                                </div>
+                            </div>
+                        </page>
+
+                        <!-- ========== PÁGINA 2: PROPIEDADES Y COMPARACIÓN ========== -->
+                        <page name="properties" string="Propiedades">
+
+                            <!-- Propiedades de Interés -->
+                            <div class="o_horizontal_separator mt-4 mb-3 text-uppercase fw-bolder small">
+                                <i class="bi bi-heart-fill text-danger me-2"/>
+                                Propiedades de Interés
+                                <button name="action_generate_recommendations"
+                                        type="object"
+                                        role="button"
+                                        class="float-end me-2 cursor-pointer btn btn-link p-0">
+                                    <i class="bi bi-arrow-clockwise ms-1 mt-1" role="img" aria-label="Generar Recomendaciones"/>
+                                    Generar Recomendaciones
+                                </button>
+                            </div>
+
+                            <!-- Campo de propiedades (se mostrará como Kanban con las vistas inline) -->
+                            <field name="property_ids"
+                                   mode="kanban"
+                                   nolabel="1"
+                                   domain="[('is_property', '=', True)]"
+                                   context="{'default_is_property': True}"/>
+
+                            <!-- Comparador de Propiedades con Zoom -->
+                            <div class="o_horizontal_separator mt-4 mb-3 text-uppercase fw-bolder small">
+                                <i class="bi bi-sliders text-primary me-2"/>
+                                Comparador de Propiedades (Máximo 4) - Con Zoom Interactivo
+                            </div>
+
+                            <!-- Widget con controles de zoom -->
+                            <widget name="property_compare_zoom">
+                                <field name="compared_properties_ids"
+                                       mode="kanban"
+                                       nolabel="1"
+                                       domain="[('is_property', '=', True), ('state', '=', 'free')]"
+                                       context="{'create': False, 'delete': False}"/>
+                            </widget>
+
+                            <!-- Botón para abrir el comparador completo -->
+                            <div class="mt-3 text-center">
+                                <button name="action_compare_properties"
+                                        type="object"
+                                        string="Abrir Comparador Completo"
+                                        class="btn btn-primary"
+                                        invisible="compared_properties_count &lt; 2">
+                                    <i class="bi bi-layout-three-columns me-2"/>Ver Comparación Detallada
+                                </button>
+                            </div>
+                        </page>
+
+                        <!-- ========== PÁGINA 3: FINANCIACIÓN ========== -->
+                        <page name="financing" string="Financiación" invisible="not requires_financing">
+                            <group>
+                                <group>
+                                    <field name="requires_financing"/>
+                                    <field name="loan_type" invisible="not requires_financing"/>
+                                    <field name="loan_amount"
+                                           widget="monetary"
+                                           invisible="not requires_financing"/>
+                                    <field name="loan_bank_id" invisible="not requires_financing"/>
+                                </group>
+                                <group>
+                                    <field name="loan_approval_status" invisible="not requires_financing"/>
+                                    <field name="loan_document_ids"
+                                           widget="many2many_binary"
+                                           invisible="not requires_financing"/>
+                                </group>
+                            </group>
+                        </page>
+
+                        <!-- ========== PÁGINA 4: MARKETING ========== -->
+                        <page name="marketing" string="Marketing" invisible="service_interested not in ['sale', 'rent', 'projects', 'marketing']">
+                            <group>
+                                <group>
+                                    <field name="marketing_campaign_type"/>
+                                    <field name="marketing_quantity"/>
+                                    <field name="marketing_estimated_reach"/>
+                                    <field name="marketing_budget_allocated" widget="monetary"/>
+                                </group>
+                                <group>
+                                    <field name="marketing_schedule"/>
+                                    <field name="marketing_start_date"/>
+                                    <field name="marketing_end_date"/>
+                                </group>
+                            </group>
+                            <field name="marketing_description" placeholder="Descripción de la campaña, objetivos, público objetivo..."/>
+                        </page>
+
+                        <!-- ========== PÁGINA 5: NOTAS INTERNAS ========== -->
+                        <page name="internal_notes" string="Notas Internas">
+                            <field name="description" placeholder="Notas internas sobre el cliente, sus preferencias, historial de interacciones..."/>
+                        </page>
+                    </notebook>
+
+                </sheet>
+
+                <!-- ==================== CHATTER ==================== -->
+                <chatter/>
+
+            </form>
+        </field>
+    </record>
+
+    <!-- Acción para abrir la nueva vista -->
+    <record id="action_crm_lead_form_complete_v2" model="ir.actions.act_window">
+        <field name="name">Oportunidades Completas v2</field>
+        <field name="res_model">crm.lead</field>
+        <field name="view_mode">list,kanban,form</field>
+        <field name="view_id" ref="view_crm_lead_form_bohio_complete_v2"/>
+        <field name="domain">[('type', '=', 'opportunity')]</field>
+        <field name="context">{
+            'default_type': 'opportunity',
+            'default_user_id': uid,
+        }</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                ¡Crea tu primera oportunidad!
+            </p>
+            <p>
+                Gestiona tus leads y oportunidades inmobiliarias con todas las herramientas profesionales.
+            </p>
+        </field>
+    </record>
+
+</odoo>

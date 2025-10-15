@@ -180,15 +180,29 @@ class Contract(models.Model):
     project_code = fields.Char("Código", related="project_id.default_code", store=True)
     
     property_id = fields.Many2one(
-        "product.template", 
-        "Propiedad", 
-        copy=False, 
+        "product.template",
+        "Propiedad",
+        copy=False,
         required=True,
         domain=[("is_property", "=", True), ("state", "=", "free")]
     )
     partner_is_owner_id = fields.Many2one(related="property_id.partner_id")
     is_multi_propietario = fields.Boolean(related="property_id.is_multi_owner")
     owners_lines = fields.One2many(related="property_id.owners_lines")
+
+    # CAMPOS MULTI-PROPIEDAD
+    is_multi_property = fields.Boolean(
+        string='Contrato Multi-Propiedad',
+        default=False,
+        tracking=True,
+        help='Indica si este contrato cubre múltiples propiedades'
+    )
+    contract_line_ids = fields.One2many(
+        'property.contract.line',
+        'contract_id',
+        string='Líneas de Propiedades',
+        help='Propiedades incluidas en este contrato multi-propiedad'
+    )
     property_code = fields.Char("Código de Propiedad", related="property_id.default_code", store=True)
     property_area = fields.Float("Área de Propiedad", related="property_id.property_area", store=True)
     price_per_m = fields.Float("Precio Base", related="property_id.price_per_unit", store=True)
@@ -386,29 +400,12 @@ Nota: Si el día no existe en el mes (ej: 31 en febrero), se usa el último día
         digits='Account'
     )
 
-    # FECHAS CALCULADAS MEJORADAS
-    first_billing_date = fields.Date(
-        string='Primera Factura Calculada',
-        compute='_compute_first_billing_date',
-        store=True,
-        readonly=False,
-        help='Fecha real de la primera factura considerando día de facturación'
-    )
-    next_payment_date = fields.Date(
-        string='Próximo Pago',
-        compute='_compute_next_payment_info',
-        help='Fecha del próximo pago pendiente'
-    )
+    # Campo adicional para monto del próximo pago
     next_payment_amount = fields.Float(
         string='Monto Próximo Pago',
         compute='_compute_next_payment_info',
         help='Monto de la próxima cuota a pagar',
         digits='Account'
-    )
-    last_payment_date = fields.Date(
-        string='Último Pago',
-        compute='_compute_last_payment_info',
-        help='Fecha del último pago realizado'
     )
 
     # RELACIONES CON PAGOS
@@ -426,15 +423,25 @@ Nota: Si el día no existe en el mes (ej: 31 en febrero), se usa el último día
         help='Reserva desde la cual se creó este contrato'
     )
 
-    # ESTADO DE FIRMA
-    signature_state = fields.Selection([
-        ('not_required', 'No Requerida'),
-        ('pending', 'Pendiente'),
-        ('partial', 'Parcialmente Firmado'),
-        ('complete', 'Completamente Firmado')
-    ], string='Estado de Firma', default='not_required', tracking=True)
-
-    # MÉTODOS DE WIZARDS ELIMINADOS - AHORA USAR EL WIZARD UNIFICADO
+    # INTEGRACIÓN CON ODOO SIGN
+    sign_request_id = fields.Many2one(
+        'sign.request',
+        string='Solicitud de Firma',
+        help='Solicitud de firma electrónica vinculada',
+        copy=False,
+        tracking=True
+    )
+    sign_request_state = fields.Selection(
+        related='sign_request_id.state',
+        string='Estado Firma Sign',
+        store=True,
+        readonly=True
+    )
+    sign_completed_document = fields.Binary(
+        related='sign_request_id.completed_document',
+        string='Contrato Firmado',
+        readonly=True
+    )
 
     def compute_interest(self, base_amount, days_overdue):
         """
@@ -495,20 +502,23 @@ Nota: Si el día no existe en el mes (ej: 31 en febrero), se usa el último día
         return preview_html
 
 
-    @api.depends("loan_line_ids.amount", "loan_line_ids.amount_residual")
+    @api.depends("loan_line_ids.amount", "loan_line_ids.amount_residual", "loan_line_ids.payment_state")
     def _check_amounts(self):
-        total_paid = 0
-        total_non_paid = 0
-        amount_total = 0
+        """
+        Calcula los totales del contrato de manera consistente:
+        - amount_total: Suma de TODOS los loan_line_ids.amount
+        - paid: Suma de SOLO las líneas completamente pagadas (payment_state='paid')
+        - balance: amount_total - paid
+        """
         for rec in self:
-            for line in rec.loan_line_ids:
-                amount_total += line.amount
-                total_non_paid += line.amount_residual
-                total_paid += line.amount - line.amount_residual
+            # Total del contrato: suma de todas las cuotas
+            rec.amount_total = sum(rec.loan_line_ids.mapped('amount'))
 
+            # Pagado: suma de cuotas completamente pagadas
             rec.paid = sum(rec.loan_line_ids.filtered(lambda x: x.payment_state == 'paid').mapped('amount'))
-            rec.balance = total_non_paid
-            rec.amount_total = amount_total
+
+            # Saldo: total menos pagado
+            rec.balance = rec.amount_total - rec.paid
 
     def _voucher_count(self):
         """Cuenta los pagos relacionados al contrato"""
@@ -793,7 +803,9 @@ Nota: Si el día no existe en el mes (ej: 31 en febrero), se usa el último día
         if first_invoice:
             line.invoice_id = first_invoice.id
 
-    @api.depends("rent", "property_area", "property_id", "rental_agreement", "is_multi_property", "contract_line_ids.rental_fee", "contract_line_ids.state")
+    @api.depends("rent", "property_area", "property_id", "property_id.rent_value_from",
+                 "rental_agreement", "is_multi_property",
+                 "contract_line_ids.rental_fee", "contract_line_ids.state")
     def _compute_rental_fee(self):
         for rec in self:
             if rec.is_multi_property and rec.contract_line_ids:
@@ -802,7 +814,7 @@ Nota: Si el día no existe en el mes (ej: 31 en febrero), se usa el último día
                 rec.rental_fee = sum(active_lines.mapped('rental_fee'))
             else:
                 # Método original para contratos de una sola propiedad
-                rec.rental_fee = rec.property_id.rent_value_from
+                rec.rental_fee = rec.property_id.rent_value_from if rec.property_id else 0.0
 
     @api.depends('date_to', 'state')
     def _compute_color(self):
@@ -1104,6 +1116,9 @@ Nota: Si el día no existe en el mes (ej: 31 en febrero), se usa el último día
             # Fecha de facturación (día específico del mes siguiente o día de corte)
             invoice_date = self._get_invoice_date(period_end)
 
+            # Calcular comisión para esta cuota
+            commission_amount = self._calculate_commission(prorated_amount)
+
             rental_lines.append((0, 0, {
                 "serial": serial,
                 "amount": self.company_id.currency_id.round(prorated_amount),
@@ -1114,6 +1129,8 @@ Nota: Si el día no existe en el mes (ej: 31 en febrero), se usa el último día
                 ),
                 "period_start": period_start,
                 "period_end": period_end,
+                "commission": self.company_id.currency_id.round(commission_amount),
+                "commission_percentage": self.commission_percentage,
             }))
 
             # Avanzar al siguiente período
@@ -1168,6 +1185,30 @@ Nota: Si el día no existe en el mes (ej: 31 en febrero), se usa el último día
     def _get_months_between(self, start_date, end_date):
         """Calcula meses entre dos fechas"""
         return (end_date.year - start_date.year) * 12 + (end_date.month - start_date.month)
+
+    def _calculate_commission(self, base_amount):
+        """
+        Calcula la comisión según el método configurado
+        :param base_amount: Monto base (canon de la cuota)
+        :return: Monto de comisión
+        """
+        self.ensure_one()
+
+        if not self.commission_percentage:
+            return 0.0
+
+        # Aplicar porcentaje según el método
+        if self.commission_calculation_method == 'rental_fee_only':
+            # Solo sobre el canon
+            commission = base_amount * (self.commission_percentage / 100.0)
+        elif self.commission_calculation_method == 'net_amount':
+            # Sobre monto neto (canon - descuentos, si aplicara)
+            commission = base_amount * (self.commission_percentage / 100.0)
+        else:  # 'gross_amount' (default)
+            # Sobre monto bruto
+            commission = base_amount * (self.commission_percentage / 100.0)
+
+        return commission
 
     def days_between(self, start_date, end_date):
         s1, e1 = start_date, end_date + timedelta(days=1)
@@ -1595,6 +1636,9 @@ Nota: Si el día no existe en el mes (ej: 31 en febrero), se usa el último día
             # Fecha de facturación
             invoice_date = self._get_invoice_date(period_end)
 
+            # Calcular comisión
+            commission_amount = self._calculate_commission(period_rental_fee)
+
             rental_lines.append((0, 0, {
                 "serial": serial,
                 "amount": self.company_id.currency_id.round(period_rental_fee),
@@ -1605,6 +1649,8 @@ Nota: Si el día no existe en el mes (ej: 31 en febrero), se usa el último día
                 ),
                 "period_start": period_start,
                 "period_end": period_end,
+                "commission": self.company_id.currency_id.round(commission_amount),
+                "commission_percentage": self.commission_percentage,
             }))
 
             # Avanzar al siguiente período
@@ -1828,3 +1874,59 @@ class AccountDebitTermLine(models.Model):
         """Calcula la fecha de vencimiento"""
         self.ensure_one()
         return date_ref + relativedelta(days=self.nb_days)
+
+
+class PropertyContractLine(models.Model):
+    """Línea de Contrato Multi-Propiedad"""
+    _name = 'property.contract.line'
+    _description = 'Línea de Contrato Multi-Propiedad'
+    _order = 'sequence, date_from'
+
+    sequence = fields.Integer('Secuencia', default=10)
+
+    contract_id = fields.Many2one(
+        'property.contract',
+        string='Contrato',
+        required=True,
+        ondelete='cascade',
+        index=True
+    )
+
+    property_id = fields.Many2one(
+        'product.template',
+        string='Propiedad',
+        required=True,
+        domain=[('is_property', '=', True)]
+    )
+
+    rental_fee = fields.Float(
+        'Canon Mensual',
+        required=True,
+        digits='Product Price'
+    )
+
+    state = fields.Selection([
+        ('active', 'Activo'),
+        ('terminated', 'Terminado'),
+        ('suspended', 'Suspendido')
+    ], string='Estado', default='active', required=True, tracking=True)
+
+    date_from = fields.Date('Fecha Inicio', required=True)
+    date_to = fields.Date('Fecha Fin Planificada')
+    date_end_real = fields.Date('Fecha Fin Real')
+
+    # Campos relacionados para facilitar reportes
+    property_code = fields.Char('Código', related='property_id.default_code', store=True)
+    property_area = fields.Float('Área', related='property_id.property_area', store=True)
+
+    @api.constrains('date_from', 'date_to')
+    def _check_dates(self):
+        for line in self:
+            if line.date_to and line.date_from > line.date_to:
+                raise ValidationError(_("La fecha de inicio debe ser menor que la fecha de fin"))
+
+    @api.constrains('rental_fee')
+    def _check_rental_fee(self):
+        for line in self:
+            if line.rental_fee <= 0:
+                raise ValidationError(_("El canon debe ser mayor a cero"))

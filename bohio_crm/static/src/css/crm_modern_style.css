@@ -1,0 +1,385 @@
+/* ============================================================================ */
+/* ESTILOS MODERNOS CRM BOHIO - Inspirado en diseño profesional */
+/* ============================================================================ */
+
+/* ====================================== */
+/* VISTA LIST MODERNA - Iconos Bootstrap en Headers */
+/* ====================================== */
+.o_list_view thead th[data-name="email_from"]::before {
+    content: "\F32F"; /* bi-envelope-fill */
+    font-family: "bootstrap-icons" !important;
+    margin-right: 0.5rem;
+    color: #0d6efd;
+}
+
+.o_list_view thead th[data-name="desired_city"]::before {
+    content: "\F3E0"; /* bi-geo-alt-fill */
+    font-family: "bootstrap-icons" !important;
+    margin-right: 0.5rem;
+    color: #dc3545;
+}
+
+.o_list_view thead th[data-name="project_id"]::before {
+    content: "\F3A1"; /* bi-building */
+    font-family: "bootstrap-icons" !important;
+    margin-right: 0.5rem;
+    color: #6c757d;
+}
+
+.o_list_view thead th[data-name="expected_revenue"]::before {
+    content: "\F2D3"; /* bi-cash-coin */
+    font-family: "bootstrap-icons" !important;
+    margin-right: 0.5rem;
+    color: #198754;
+}
+
+.o_list_view thead th[data-name="estimated_commission"]::before {
+    content: "\F5CB"; /* bi-percent */
+    font-family: "bootstrap-icons" !important;
+    margin-right: 0.5rem;
+    color: #ffc107;
+}
+
+.o_list_view thead th[data-name="probability"]::before {
+    content: "\F3B4"; /* bi-graph-up-arrow */
+    font-family: "bootstrap-icons" !important;
+    margin-right: 0.5rem;
+    color: #0dcaf0;
+}
+
+.o_list_view thead th[data-name="day_open"]::before {
+    content: "\F2EF"; /* bi-clock-history */
+    font-family: "bootstrap-icons" !important;
+    margin-right: 0.5rem;
+    color: #6610f2;
+}
+
+.o_list_view thead th[data-name="date_deadline"]::before {
+    content: "\F2BE"; /* bi-calendar-check */
+    font-family: "bootstrap-icons" !important;
+    margin-right: 0.5rem;
+    color: #198754;
+}
+
+.o_list_view_modern {
+    font-size: 13px;
+}
+
+.o_list_view_modern .o_data_row {
+    transition: all 0.2s ease;
+}
+
+.o_list_view_modern .o_data_row:hover {
+    background-color: #f8f9fa !important;
+    transform: translateX(2px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Columnas combinadas con mejor espaciado */
+.o_list_view_modern .o_data_cell {
+    padding: 12px 8px;
+    vertical-align: middle;
+}
+
+/* Avatar en lista */
+.o_list_view_modern .o_m2o_avatar {
+    display: flex;
+    align-items: center;
+}
+
+.o_list_view_modern .o_m2o_avatar img {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    margin-right: 8px;
+}
+
+/* ====================================== */
+/* VISTA KANBAN MODERNA */
+/* ====================================== */
+.o_crm_kanban_modern {
+    background: #f5f7fa;
+}
+
+.o_crm_kanban_modern .o_kanban_record {
+    margin-bottom: 12px;
+}
+
+.o_crm_card_modern {
+    background: white;
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+    border-left: 4px solid transparent;
+}
+
+.o_crm_card_modern:hover {
+    box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+    transform: translateY(-2px);
+}
+
+/* Header de la card */
+.o_kanban_card_header {
+    margin-bottom: 12px;
+}
+
+/* Avatar circular en kanban */
+.o_kanban_avatar img,
+.o_kanban_avatar > div {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Cliente info comprimida */
+.o_kanban_card_client {
+    border-left: 3px solid #0d6efd;
+}
+
+.o_kanban_card_client strong {
+    color: #212529;
+    font-size: 14px;
+}
+
+.o_kanban_card_client .small {
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+/* Badges mejorados */
+.o_kanban_card_badges .badge {
+    font-size: 11px;
+    padding: 4px 10px;
+    font-weight: 600;
+    border-radius: 12px;
+}
+
+/* Proyecto card */
+.o_kanban_card_project {
+    font-size: 12px;
+}
+
+/* Métricas cards */
+.o_kanban_card_metrics .metric-card {
+    border: 1px solid rgba(0,0,0,0.08);
+    transition: all 0.2s ease;
+}
+
+.o_kanban_card_metrics .metric-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.o_kanban_card_metrics .metric-card i {
+    font-size: 16px;
+}
+
+.o_kanban_card_metrics .small {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.o_kanban_card_metrics strong {
+    font-size: 14px;
+}
+
+/* Barra de probabilidad */
+.o_kanban_card_probability .progress {
+    border-radius: 10px;
+    background-color: #e9ecef;
+}
+
+.o_kanban_card_probability .progress-bar {
+    border-radius: 10px;
+    transition: width 0.6s ease;
+}
+
+/* Íconos circulares para tiempo */
+.o_kanban_card_time_info .icon-circle {
+    font-size: 11px;
+}
+
+.o_kanban_card_time_info small {
+    font-size: 11px;
+    color: #6c757d;
+}
+
+/* Footer */
+.o_kanban_card_footer {
+    border-top: 1px solid #e9ecef;
+}
+
+/* ====================================== */
+/* VISTA FORM MODERNA - CARDS COMPRIMIBLES */
+/* ====================================== */
+.o_crm_collapsible_card {
+    border-radius: 8px;
+    border: none;
+    overflow: hidden;
+}
+
+.o_crm_collapsible_card .card-header {
+    border-radius: 8px 8px 0 0;
+    padding: 12px 16px;
+    font-size: 14px;
+    font-weight: 600;
+    border: none;
+}
+
+.o_crm_collapsible_card .card-header:hover {
+    opacity: 0.9;
+}
+
+.o_crm_collapsible_card .card-header i.bi-chevron-down,
+.o_crm_collapsible_card .card-header i.bi-chevron-right {
+    transition: transform 0.3s ease;
+    font-size: 16px;
+}
+
+.o_crm_collapsible_card .card-header[aria-expanded="true"] i.bi-chevron-right {
+    transform: rotate(90deg);
+}
+
+.o_crm_collapsible_card .card-body {
+    padding: 16px;
+}
+
+.o_crm_collapsible_card .collapse {
+    transition: height 0.3s ease;
+}
+
+/* Card de contrato con íconos circulares */
+.o_crm_contract_card .icon-circle {
+    flex-shrink: 0;
+}
+
+.o_crm_contract_card .card-body {
+    font-size: 13px;
+}
+
+.o_crm_contract_card small {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Card de imagen de propiedad */
+.o_crm_property_image_card .o_property_image_container:hover .overlay {
+    opacity: 1 !important;
+}
+
+.o_crm_property_image_card .o_property_main_image {
+    transition: transform 0.3s ease;
+}
+
+.o_crm_property_image_card .o_property_image_container:hover .o_property_main_image {
+    transform: scale(1.05);
+}
+
+/* ====================================== */
+/* ICONOS BOOTSTRAP - MEJORAS GENERALES */
+/* ====================================== */
+.bi {
+    vertical-align: middle;
+}
+
+.icon-circle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+/* ====================================== */
+/* BADGES Y ETIQUETAS */
+/* ====================================== */
+.badge {
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 12px;
+}
+
+.o_tag {
+    border-radius: 12px;
+    padding: 4px 12px;
+    font-size: 11px;
+}
+
+/* ====================================== */
+/* ANIMACIONES SUAVES */
+/* ====================================== */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.o_crm_card_modern,
+.o_crm_collapsible_card {
+    animation: fadeIn 0.3s ease;
+}
+
+/* ====================================== */
+/* RESPONSIVE */
+/* ====================================== */
+@media (max-width: 768px) {
+    .o_crm_card_modern {
+        padding: 12px;
+    }
+
+    .o_kanban_card_metrics .col-6 {
+        margin-bottom: 8px;
+    }
+
+    .o_crm_collapsible_card .card-header {
+        font-size: 13px;
+        padding: 10px 12px;
+    }
+}
+
+/* ====================================== */
+/* MEJORAS DE ACCESIBILIDAD */
+/* ====================================== */
+.o_crm_collapsible_card .card-header:focus {
+    outline: 2px solid #0d6efd;
+    outline-offset: 2px;
+}
+
+.o_property_image_container:focus {
+    outline: 2px solid #0d6efd;
+    outline-offset: 2px;
+}
+
+/* ====================================== */
+/* STATUSBAR MEJORADO */
+/* ====================================== */
+.o_statusbar_status button {
+    border-radius: 20px;
+    padding: 6px 16px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.o_statusbar_status button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* ====================================== */
+/* PROGRESS BAR */
+/* ====================================== */
+.o_field_progressbar .o_progressbar {
+    height: 8px;
+    border-radius: 10px;
+    background-color: #e9ecef;
+}
+
+.o_field_progressbar .o_progressbar .o_progressbar_value {
+    border-radius: 10px;
+    transition: width 0.6s ease;
+}

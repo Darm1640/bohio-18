@@ -1,0 +1,389 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ====================================================================== -->
+    <!-- VISTA FORM MODERNA - ESTILO CRM PROFESIONAL CON SECCIONES COMPRIMIBLES -->
+    <!-- ====================================================================== -->
+    <record id="view_crm_lead_form_modern" model="ir.ui.view">
+        <field name="name">crm.lead.form.modern</field>
+        <field name="model">crm.lead</field>
+        <field name="priority">2</field>
+        <field name="arch" type="xml">
+            <form string="Oportunidad" js_class="bohio_crm_form_collapsible">
+                <header>
+                    <!-- Statusbar -->
+                    <field name="stage_id"
+                           widget="statusbar"
+                           options="{'clickable': '1', 'fold_field': 'fold'}"
+                           domain="['|', ('team_id', '=', False), ('team_id', '=', team_id)]"/>
+                </header>
+
+                <sheet>
+                    <!-- Título y Avatar -->
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Nombre de la Oportunidad..."/>
+                        </h1>
+                    </div>
+
+                    <div class="row mt-3">
+                        <!-- Columna Izquierda: Información Principal -->
+                        <div class="col-md-8">
+
+                            <!-- ============================================ -->
+                            <!-- CARD 1: DATOS BÁSICOS DEL CLIENTE (Comprimible) -->
+                            <!-- ============================================ -->
+                            <div class="card mb-3 shadow-sm o_crm_collapsible_card">
+                                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center"
+                                     data-bs-toggle="collapse"
+                                     data-bs-target="#collapseClientBasic"
+                                     style="cursor: pointer;">
+                                    <div>
+                                        <i class="bi bi-person-circle me-2"/>
+                                        <strong>Datos Básicos del Cliente</strong>
+                                    </div>
+                                    <i class="bi bi-chevron-down"/>
+                                </div>
+                                <div id="collapseClientBasic" class="collapse show">
+                                    <div class="card-body">
+                                        <group>
+                                            <group>
+                                                <field name="partner_id"
+                                                       widget="many2one_avatar"
+                                                       string="Cliente"
+                                                       context="{'show_address': 1}"
+                                                       options="{'always_reload': True}"/>
+                                                <field name="contact_name" string="Nombre Contacto"/>
+                                                <field name="email_from" widget="email" string="Email"/>
+                                                <field name="phone" widget="phone" string="Teléfono"/>
+                                                <field name="mobile" widget="phone" string="Móvil"/>
+                                            </group>
+                                            <group>
+                                                <field name="client_type" widget="badge"/>
+                                                <field name="service_interested" widget="badge"/>
+                                                <field name="request_source"/>
+                                                <field name="referred_by_partner_id"/>
+                                            </group>
+                                        </group>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- ============================================ -->
+                            <!-- CARD 2: DATOS ADICIONALES (Comprimido por defecto) -->
+                            <!-- ============================================ -->
+                            <div class="card mb-3 shadow-sm o_crm_collapsible_card">
+                                <div class="card-header bg-info text-white d-flex justify-content-between align-items-center"
+                                     data-bs-toggle="collapse"
+                                     data-bs-target="#collapseClientExtra"
+                                     style="cursor: pointer;">
+                                    <div>
+                                        <i class="bi bi-briefcase-fill me-2"/>
+                                        <strong>Datos Adicionales (Trabajo e Industria)</strong>
+                                    </div>
+                                    <i class="bi bi-chevron-right"/>
+                                </div>
+                                <div id="collapseClientExtra" class="collapse">
+                                    <div class="card-body">
+                                        <group>
+                                            <group string="Información Laboral">
+                                                <field name="occupation" string="Puesto de Trabajo"/>
+                                                <field name="monthly_income" widget="monetary" string="Ingresos Mensuales"/>
+                                                <field name="number_of_occupants" string="Núm. Ocupantes"/>
+                                            </group>
+                                            <group string="Industria/Sector">
+                                                <label for="street" string="Dirección"/>
+                                                <div class="o_address_format">
+                                                    <field name="street" placeholder="Calle..."/>
+                                                    <field name="city" placeholder="Ciudad"/>
+                                                    <field name="state_id" placeholder="Departamento"/>
+                                                </div>
+                                            </group>
+                                        </group>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- ============================================ -->
+                            <!-- CARD 3: PREFERENCIAS DE BÚSQUEDA (Expandido) -->
+                            <!-- ============================================ -->
+                            <div class="card mb-3 shadow-sm o_crm_collapsible_card">
+                                <div class="card-header bg-success text-white d-flex justify-content-between align-items-center"
+                                     data-bs-toggle="collapse"
+                                     data-bs-target="#collapsePreferences"
+                                     style="cursor: pointer;">
+                                    <div>
+                                        <i class="bi bi-search-heart me-2"/>
+                                        <strong>Preferencias de Búsqueda</strong>
+                                    </div>
+                                    <i class="bi bi-chevron-down"/>
+                                </div>
+                                <div id="collapsePreferences" class="collapse show">
+                                    <div class="card-body">
+                                        <group>
+                                            <group string="Tipo de Propiedad">
+                                                <field name="desired_property_type_id"/>
+                                                <field name="property_purpose"/>
+                                            </group>
+                                            <group string="Ubicación Deseada">
+                                                <field name="desired_city"/>
+                                                <field name="desired_neighborhood"/>
+                                            </group>
+                                        </group>
+
+                                        <group>
+                                            <group string="Habitaciones y Baños">
+                                                <label for="min_bedrooms" string="Habitaciones"/>
+                                                <div class="o_row">
+                                                    <field name="min_bedrooms" placeholder="Mín"/>
+                                                    <span class="mx-2">-</span>
+                                                    <field name="max_bedrooms" placeholder="Máx"/>
+                                                    <span class="mx-2">|</span>
+                                                    <field name="ideal_bedrooms" placeholder="Ideal"/>
+                                                </div>
+
+                                                <label for="min_bathrooms" string="Baños"/>
+                                                <div class="o_row">
+                                                    <field name="min_bathrooms" placeholder="Mín"/>
+                                                    <span class="mx-2">-</span>
+                                                    <field name="max_bathrooms" placeholder="Máx"/>
+                                                </div>
+                                            </group>
+
+                                            <group string="Área y Presupuesto">
+                                                <label for="min_area" string="Área (m²)"/>
+                                                <div class="o_row">
+                                                    <field name="min_area" placeholder="Mín"/>
+                                                    <span class="mx-2">-</span>
+                                                    <field name="max_area" placeholder="Máx"/>
+                                                </div>
+
+                                                <label for="budget_min" string="Presupuesto"/>
+                                                <div class="o_row">
+                                                    <field name="budget_min" widget="monetary" placeholder="Mínimo"/>
+                                                    <span class="mx-2">-</span>
+                                                    <field name="budget_max" widget="monetary" placeholder="Máximo"/>
+                                                </div>
+                                            </group>
+                                        </group>
+
+                                        <group>
+                                            <group string="Otros Requisitos">
+                                                <field name="has_pets" widget="boolean_toggle"/>
+                                                <field name="pet_type" invisible="not has_pets"/>
+                                                <field name="requires_parking" widget="boolean_toggle"/>
+                                                <field name="parking_spots" invisible="not requires_parking"/>
+                                            </group>
+                                            <group string="Amenidades">
+                                                <field name="requires_common_areas" widget="boolean_toggle"/>
+                                                <field name="requires_gym" widget="boolean_toggle"/>
+                                                <field name="requires_pool" widget="boolean_toggle"/>
+                                                <field name="requires_security" widget="boolean_toggle"/>
+                                                <field name="requires_elevator" widget="boolean_toggle"/>
+                                            </group>
+                                        </group>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- ============================================ -->
+                            <!-- CARD 4: PROPIEDADES (Comprimida) -->
+                            <!-- ============================================ -->
+                            <div class="card mb-3 shadow-sm o_crm_collapsible_card">
+                                <div class="card-header bg-warning text-dark d-flex justify-content-between align-items-center"
+                                     data-bs-toggle="collapse"
+                                     data-bs-target="#collapseProperties"
+                                     style="cursor: pointer;">
+                                    <div>
+                                        <i class="bi bi-house-heart-fill me-2"/>
+                                        <strong>Propiedades de Interés</strong>
+                                    </div>
+                                    <i class="bi bi-chevron-right"/>
+                                </div>
+                                <div id="collapseProperties" class="collapse">
+                                    <div class="card-body">
+                                        <field name="property_ids"
+                                               widget="many2many_tags"
+                                               options="{'color_field': 'color', 'no_create': True}"
+                                               domain="[('is_property', '=', True)]"/>
+
+                                        <separator string="Propiedades en Comparación"/>
+                                        <field name="compared_properties_ids"
+                                               widget="many2many_tags"
+                                               options="{'no_create': True}"
+                                               domain="[('is_property', '=', True)]"/>
+
+                                        <div class="mt-2">
+                                            <button name="action_generate_recommendations"
+                                                    type="object"
+                                                    string="Generar Recomendaciones IA"
+                                                    class="btn btn-primary">
+                                                <i class="bi bi-stars me-2"/>
+                                            </button>
+                                            <button name="action_print_comparison"
+                                                    type="object"
+                                                    string="Imprimir Comparación"
+                                                    class="btn btn-secondary ms-2"
+                                                    invisible="compared_properties_count &lt; 2">
+                                                <i class="bi bi-printer me-2"/>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- Columna Derecha: Cards Informativos -->
+                        <div class="col-md-4">
+
+                            <!-- ============================================ -->
+                            <!-- CARD: DATOS DEL CONTRATO (Comprimida - Solo fechas visibles) -->
+                            <!-- ============================================ -->
+                            <div class="card mb-3 shadow-sm o_crm_contract_card">
+                                <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center"
+                                     data-bs-toggle="collapse"
+                                     data-bs-target="#collapseContract"
+                                     style="cursor: pointer;">
+                                    <div>
+                                        <i class="bi bi-file-earmark-text-fill me-2"/>
+                                        <strong>Contrato</strong>
+                                    </div>
+                                    <i class="bi bi-chevron-right"/>
+                                </div>
+
+                                <!-- Vista Comprimida: Solo fechas importantes -->
+                                <div class="card-body bg-light p-3">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <div class="icon-circle bg-primary text-white rounded-circle me-2"
+                                             style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;">
+                                            <i class="bi bi-calendar-event"/>
+                                        </div>
+                                        <div>
+                                            <small class="text-muted">Fecha Esperada Cierre</small>
+                                            <div>
+                                                <field name="date_deadline" widget="date"/>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="d-flex align-items-center">
+                                        <div class="icon-circle bg-success text-white rounded-circle me-2"
+                                             style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;">
+                                            <i class="bi bi-hourglass-split"/>
+                                        </div>
+                                        <div>
+                                            <small class="text-muted">Días Abierto</small>
+                                            <div>
+                                                <field name="day_open" readonly="1"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Vista Expandida: Detalles completos -->
+                                <div id="collapseContract" class="collapse">
+                                    <div class="card-body border-top">
+                                        <group>
+                                            <field name="contract_template_id"/>
+                                            <field name="contract_start_date"/>
+                                            <field name="contract_duration_months"/>
+                                            <field name="commission_percentage" widget="percentage"/>
+                                            <field name="expected_revenue" widget="monetary"/>
+                                            <field name="estimated_commission" widget="monetary"/>
+                                        </group>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- ============================================ -->
+                            <!-- CARD: ETIQUETAS (Íconos Circulares) -->
+                            <!-- ============================================ -->
+                            <div class="card mb-3 shadow-sm">
+                                <div class="card-header bg-dark text-white">
+                                    <i class="bi bi-tags-fill me-2"/>
+                                    <strong>Etiquetas</strong>
+                                </div>
+                                <div class="card-body">
+                                    <field name="tag_ids"
+                                           widget="many2many_tags"
+                                           options="{'color_field': 'color'}"
+                                           placeholder="Agregar etiquetas..."/>
+                                </div>
+                            </div>
+
+                            <!-- ============================================ -->
+                            <!-- CARD: IMAGEN DE LA PROPIEDAD PRINCIPAL (Clickeable) -->
+                            <!-- ============================================ -->
+                            <div class="card mb-3 shadow-sm o_crm_property_image_card">
+                                <div class="card-header bg-primary text-white">
+                                    <i class="bi bi-image-fill me-2"/>
+                                    <strong>Propiedad Principal</strong>
+                                </div>
+                                <div class="card-body p-0">
+                                    <field name="property_ids" invisible="1"/>
+                                    <!-- JavaScript manejará mostrar la imagen clickeable aquí -->
+                                    <div class="o_property_image_container position-relative"
+                                         style="height: 200px; background: #f8f9fa; cursor: pointer;">
+                                        <img class="o_property_main_image w-100 h-100"
+                                             style="object-fit: cover;"
+                                             alt="Propiedad"/>
+                                        <div class="overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center"
+                                             style="background: rgba(0,0,0,0.3); opacity: 0; transition: opacity 0.3s;">
+                                            <i class="bi bi-eye-fill text-white fs-1"/>
+                                        </div>
+                                    </div>
+                                    <div class="p-2 text-center bg-light border-top">
+                                        <small class="text-muted">Click para ver detalles de la propiedad</small>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- ============================================ -->
+                            <!-- CARD: PROYECTO -->
+                            <!-- ============================================ -->
+                            <div class="card mb-3 shadow-sm">
+                                <div class="card-header bg-info text-white">
+                                    <i class="bi bi-building me-2"/>
+                                    <strong>Proyecto Inmobiliario</strong>
+                                </div>
+                                <div class="card-body">
+                                    <field name="project_id" options="{'no_create': True}"/>
+                                </div>
+                            </div>
+
+                            <!-- ============================================ -->
+                            <!-- CARD: RESPONSABLE Y EQUIPO -->
+                            <!-- ============================================ -->
+                            <div class="card mb-3 shadow-sm">
+                                <div class="card-header bg-success text-white">
+                                    <i class="bi bi-people-fill me-2"/>
+                                    <strong>Equipo</strong>
+                                </div>
+                                <div class="card-body">
+                                    <group>
+                                        <field name="user_id" widget="many2one_avatar_user" string="Responsable"/>
+                                        <field name="team_id"/>
+                                        <field name="priority" widget="priority"/>
+                                        <field name="probability" widget="progressbar"/>
+                                    </group>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- Campos ocultos necesarios -->
+                    <field name="company_currency" invisible="1"/>
+                    <field name="compared_properties_count" invisible="1"/>
+                    <field name="type" invisible="1"/>
+
+                </sheet>
+
+                <!-- Chatter -->
+                <chatter/>
+
+            </form>
+        </field>
+    </record>
+
+</odoo>

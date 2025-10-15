@@ -174,7 +174,7 @@
                                    placeholder="Ej: Chapinero, Poblado..."/>
 
                             <!-- Habitaciones: Al menos 1 si es venta -->
-                            <field name="num_bedrooms_min"
+                            <field name="min_bedrooms"
                                    string="Habitaciones Mínimas"
                                    placeholder="Ej: 2"/>
                         </group>
@@ -275,11 +275,11 @@
                                    required="service_interested == 'consign'"
                                    help="Valor aproximado del inmueble"/>
 
-                            <field name="property_area_min"
+                            <field name="min_area"
                                    string="Área (m²)"
                                    placeholder="Ej: 80"/>
 
-                            <field name="num_bedrooms_min"
+                            <field name="min_bedrooms"
                                    string="Habitaciones"/>
                         </group>
                     </group>
@@ -411,29 +411,29 @@
                            string="Características Deseadas"
                            invisible="service_interested not in ['sale', 'rent']">
                         <group>
-                            <label for="num_bedrooms_min" string="Habitaciones"/>
+                            <label for="min_bedrooms" string="Habitaciones"/>
                             <div class="o_row">
-                                <field name="num_bedrooms_min"
+                                <field name="min_bedrooms"
                                        class="oe_inline"
                                        placeholder="Mín: 2"/>
                                 <span class="mx-2 text-muted">a</span>
-                                <field name="num_bedrooms_max"
+                                <field name="max_bedrooms"
                                        class="oe_inline"
                                        placeholder="Máx: 4"/>
                             </div>
 
-                            <field name="num_bathrooms_min"
+                            <field name="min_bathrooms"
                                    string="Baños Mínimos"
                                    placeholder="Ej: 2"/>
                         </group>
                         <group>
-                            <label for="property_area_min" string="Área (m²)"/>
+                            <label for="min_area" string="Área (m²)"/>
                             <div class="o_row">
-                                <field name="property_area_min"
+                                <field name="min_area"
                                        class="oe_inline"
                                        placeholder="Mín: 60"/>
                                 <span class="mx-2 text-muted">a</span>
-                                <field name="property_area_max"
+                                <field name="max_area"
                                        class="oe_inline"
                                        placeholder="Máx: 120"/>
                             </div>

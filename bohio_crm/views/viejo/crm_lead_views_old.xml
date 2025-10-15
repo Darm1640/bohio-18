@@ -1,0 +1,471 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ====================================================================== -->
+    <!-- VISTA LIST BOHIO CRM - MEJORADA CON MÁS DATOS DEL CLIENTE -->
+    <!-- ====================================================================== -->
+    <record id="view_crm_lead_list_bohio" model="ir.ui.view">
+        <field name="name">crm.lead.list.bohio.enhanced</field>
+        <field name="model">crm.lead</field>
+        <field name="priority">1</field>
+        <field name="arch" type="xml">
+            <list string="Oportunidades CRM BOHIO"
+                  sample="1"
+                  multi_edit="1"
+                  js_class="bohio_crm_dashboard_list"
+                  decoration-success="probability &gt;= 75"
+                  decoration-info="probability &gt;= 50 and probability &lt; 75"
+                  decoration-warning="probability &gt;= 25 and probability &lt; 50"
+                  decoration-danger="probability &lt; 25">
+
+                <!-- Botones de Acción Masiva -->
+                <header>
+                    <button name="action_schedule_meeting" type="object" string="Agendar Reunión" class="btn-primary">
+                        <i class="bi bi-calendar-event me-1"/> Agendar Reunión
+                    </button>
+                    <button name="action_set_won_rainbowman" type="object" string="Marcar Ganada" class="btn-success">
+                        <i class="bi bi-trophy me-1"/> Marcar Ganada
+                    </button>
+                    <button name="action_set_lost" type="object" string="Marcar Perdida" class="btn-danger">
+                        <i class="bi bi-x-circle me-1"/> Marcar Perdida
+                    </button>
+                    <button name="action_generate_recommendations" type="object" string="Generar Recomendaciones">
+                        <i class="bi bi-stars me-1"/> Recomendaciones IA
+                    </button>
+                </header>
+
+                <!-- CAMPOS PRINCIPALES -->
+                <!-- Información Básica -->
+                <field name="priority" widget="priority" nolabel="1" optional="show"/>
+                <field name="name" string="Oportunidad" required="1"/>
+
+                <!-- Información del Cliente -->
+                <field name="partner_id" string="Cliente" optional="show"/>
+                <field name="contact_name" string="Contacto" optional="hide"/>
+                <field name="email_from" string="Email" optional="show" widget="email"/>
+                <field name="phone" string="Teléfono" optional="show" widget="phone"/>
+                <field name="mobile" string="Móvil" optional="hide" widget="phone"/>
+
+                <!-- Clasificación del Cliente -->
+                <field name="client_type" string="Tipo Cliente" optional="show"/>
+                <field name="service_interested" string="Servicio" optional="show"/>
+                <field name="request_source" string="Origen" optional="hide"/>
+
+                <!-- Preferencias de Búsqueda -->
+                <field name="desired_neighborhood" string="Barrio Deseado" optional="hide"/>
+                <field name="desired_city" string="Ciudad" optional="hide"/>
+                <field name="desired_property_type_id" string="Tipo Propiedad" optional="hide"/>
+
+                <!-- Rangos de Búsqueda -->
+                <field name="min_bedrooms" string="Hab. Mín" optional="hide"/>
+                <field name="max_bedrooms" string="Hab. Máx" optional="hide"/>
+                <field name="min_bathrooms" string="Baños Mín" optional="hide"/>
+                <field name="min_area" string="Área Mín (m²)" optional="hide"/>
+                <field name="max_area" string="Área Máx (m²)" optional="hide"/>
+
+                <!-- Presupuesto -->
+                <field name="budget_min" string="Presup. Mín" widget="monetary" optional="hide"/>
+                <field name="budget_max" string="Presup. Máx" widget="monetary" optional="hide"/>
+                <field name="monthly_income" string="Ingresos Mensuales" widget="monetary" optional="hide"/>
+
+                <!-- Información Adicional Cliente -->
+                <field name="number_of_occupants" string="Ocupantes" optional="hide"/>
+                <field name="has_pets" string="Mascotas" optional="hide" widget="boolean_toggle"/>
+                <field name="requires_parking" string="Parqueadero" optional="hide" widget="boolean_toggle"/>
+                <field name="occupation" string="Ocupación" optional="hide"/>
+
+                <!-- Propiedades y Proyecto -->
+                <field name="project_id" string="Proyecto" optional="show"/>
+                <field name="property_ids" string="Propiedades Interés" widget="many2many_tags" optional="show"/>
+                <field name="compared_properties_count" string="En Comparación" optional="show"/>
+                <field name="recommendation_count" string="Recomendadas" optional="hide"/>
+
+                <!-- Referencias -->
+                <field name="referred_by_partner_id" string="Referido Por" optional="hide"/>
+                <field name="captured_by_id" string="Captado Por" optional="hide"/>
+
+                <!-- Etapa y Estado -->
+                <field name="stage_id" string="Etapa"/>
+                <field name="probability" string="Probabilidad" widget="progressbar" optional="show"/>
+                <field name="active" string="Activo" optional="hide" widget="boolean_toggle"/>
+
+                <!-- Métricas Financieras -->
+                <field name="expected_revenue" string="Ingreso Esperado" widget="monetary" sum="Total Ingresos" optional="show"/>
+                <field name="recurring_revenue" string="Recurrente Mensual" widget="monetary" sum="Total Recurrente" optional="hide"/>
+                <field name="estimated_commission" string="Comisión Estimada" widget="monetary" sum="Total Comisión" optional="show"/>
+                <field name="estimated_total_amount" string="Monto Total" widget="monetary" optional="hide"/>
+
+                <!-- Financiación -->
+                <field name="requires_financing" string="Req. Financiación" optional="hide" widget="boolean_toggle"/>
+                <field name="loan_approval_status" string="Estado Préstamo" optional="hide"/>
+
+                <!-- Fechas -->
+                <field name="date_deadline" string="Fecha Esperada Cierre" optional="show"/>
+                <field name="create_date" string="Creado" optional="hide"/>
+                <field name="date_open" string="Fecha Asignación" optional="hide"/>
+                <field name="date_closed" string="Fecha Cierre" optional="hide"/>
+                <field name="day_open" string="Días Abierto" optional="hide"/>
+                <field name="day_close" string="Días para Cerrar" optional="hide"/>
+
+                <!-- Contrato y Reserva -->
+                <field name="contract_id" string="Contrato" optional="hide"/>
+                <field name="reservation_count" string="Reservas" optional="hide"/>
+
+                <!-- Equipo y Responsable -->
+                <field name="team_id" string="Equipo" optional="hide"/>
+                <field name="user_id" string="Responsable" widget="many2one_avatar_user" optional="show"/>
+
+                <!-- Tags y Actividades -->
+                <field name="tag_ids" string="Etiquetas" widget="many2many_tags" options="{'color_field': 'color'}" optional="show"/>
+                <field name="activity_ids" string="Siguiente Actividad" widget="list_activity" optional="show"/>
+                <field name="activity_state" string="Estado Actividad" optional="hide"/>
+
+                <!-- Marketing -->
+                <field name="marketing_campaign_type" string="Tipo Campaña" optional="hide"/>
+                <field name="marketing_budget_allocated" string="Presupuesto Marketing" widget="monetary" optional="hide"/>
+
+                <!-- PQRS -->
+                <field name="pqrs_type" string="Tipo PQRS" optional="hide"/>
+                <field name="pqrs_status" string="Estado PQRS" optional="hide"/>
+
+                <!-- Campos Invisibles (necesarios para funcionalidad) -->
+                <field name="company_currency" column_invisible="1"/>
+                <field name="color" column_invisible="1"/>
+                <field name="type" column_invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ====================================================================== -->
+    <!-- VISTA KANBAN BOHIO CRM - MEJORADA -->
+    <!-- ====================================================================== -->
+    <record id="view_crm_lead_kanban_bohio" model="ir.ui.view">
+        <field name="name">crm.lead.kanban.bohio.enhanced</field>
+        <field name="model">crm.lead</field>
+        <field name="priority">1</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="stage_id"
+                    class="o_kanban_small_column o_bohio_crm_kanban"
+                    sample="1"
+                    quick_create="false"
+                    on_create="quick_create"
+                    js_class="bohio_crm_dashboard_kanban">
+
+                <!-- Campos Necesarios -->
+                <field name="id"/>
+                <field name="name"/>
+                <field name="stage_id"/>
+                <field name="partner_id"/>
+                <field name="contact_name"/>
+                <field name="user_id"/>
+                <field name="team_id"/>
+                <field name="expected_revenue"/>
+                <field name="recurring_revenue"/>
+                <field name="estimated_commission"/>
+                <field name="probability"/>
+                <field name="company_currency"/>
+                <field name="email_from"/>
+                <field name="phone"/>
+                <field name="mobile"/>
+                <field name="tag_ids"/>
+                <field name="activity_ids"/>
+                <field name="activity_state"/>
+                <field name="project_id"/>
+                <field name="compared_properties_ids"/>
+                <field name="compared_properties_count"/>
+                <field name="property_ids"/>
+                <field name="recommendation_count"/>
+                <field name="color"/>
+                <field name="priority"/>
+                <field name="client_type"/>
+                <field name="service_interested"/>
+                <field name="request_source"/>
+                <field name="budget_min"/>
+                <field name="budget_max"/>
+                <field name="min_bedrooms"/>
+                <field name="max_bedrooms"/>
+                <field name="min_bathrooms"/>
+                <field name="requires_financing"/>
+                <field name="has_pets"/>
+                <field name="requires_parking"/>
+                <field name="date_deadline"/>
+                <field name="day_open"/>
+
+                <templates>
+                    <t t-name="card">
+                        <div class="oe_kanban_global_click o_bohio_crm_card"
+                             t-attf-style="border-left: 4px solid #{kanban_color(record.color.raw_value)}">
+
+                            <!-- Header con Dropdown y Prioridad -->
+                            <div class="o_kanban_record_headings d-flex justify-content-between align-items-start mb-2">
+                                <field name="priority" widget="priority" class="me-1"/>
+
+                                <div class="o_dropdown_kanban dropdown">
+                                    <a class="dropdown-toggle o-no-caret btn" role="button" data-bs-toggle="dropdown" href="#" aria-label="Menu" title="Menu">
+                                        <span class="bi bi-three-dots-vertical"/>
+                                    </a>
+                                    <div class="dropdown-menu" role="menu">
+                                        <a role="menuitem" type="edit" class="dropdown-item">
+                                            <i class="bi bi-pencil me-2"/> Editar
+                                        </a>
+                                        <a role="menuitem" type="delete" class="dropdown-item text-danger">
+                                            <i class="bi bi-trash me-2"/> Eliminar
+                                        </a>
+                                        <div class="dropdown-divider"/>
+                                        <a role="menuitem" type="object" name="action_schedule_meeting" class="dropdown-item">
+                                            <i class="bi bi-calendar-event me-2"/> Agendar Reunión
+                                        </a>
+                                        <a role="menuitem" class="dropdown-item" type="object" name="action_make_call">
+                                            <i class="bi bi-telephone me-2"/> Llamar
+                                        </a>
+                                        <a role="menuitem" class="dropdown-item" type="object" name="action_send_email">
+                                            <i class="bi bi-envelope me-2"/> Enviar Email
+                                        </a>
+                                        <a role="menuitem" class="dropdown-item" type="object" name="action_generate_recommendations">
+                                            <i class="bi bi-stars me-2"/> Generar Recomendaciones
+                                        </a>
+                                        <div class="dropdown-divider"/>
+                                        <ul class="oe_kanban_colorpicker" data-field="color"/>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Título de la Oportunidad -->
+                            <div class="o_kanban_record_top mb-2">
+                                <strong class="o_kanban_record_title fs-6">
+                                    <field name="name"/>
+                                </strong>
+                            </div>
+
+                            <!-- Información del Cliente -->
+                            <div class="mb-2">
+                                <div class="d-flex align-items-center mb-1">
+                                    <i class="bi bi-person-fill text-primary me-2" title="Cliente"/>
+                                    <strong>
+                                        <field name="partner_id"/>
+                                    </strong>
+                                </div>
+                                <t t-if="record.contact_name.raw_value">
+                                    <div class="text-muted small">
+                                        <i class="bi bi-person-badge me-1"/>
+                                        <t t-esc="record.contact_name.value"/>
+                                    </div>
+                                </t>
+                            </div>
+
+                            <!-- Badges: Tipo Cliente y Servicio -->
+                            <div class="mb-2">
+                                <t t-if="record.client_type.raw_value">
+                                    <span class="badge bg-info text-white me-1">
+                                        <i class="bi bi-tag-fill me-1"/>
+                                        <t t-esc="record.client_type.value"/>
+                                    </span>
+                                </t>
+                                <t t-if="record.service_interested.raw_value">
+                                    <span class="badge bg-success text-white">
+                                        <i class="bi bi-house-door-fill me-1"/>
+                                        <t t-esc="record.service_interested.value"/>
+                                    </span>
+                                </t>
+                            </div>
+
+                            <!-- Información de Contacto -->
+                            <div class="mb-2">
+                                <t t-if="record.email_from.raw_value">
+                                    <div class="text-muted small mb-1">
+                                        <i class="bi bi-envelope-fill me-1 text-primary"/>
+                                        <a t-attf-href="mailto:#{record.email_from.value}" class="text-decoration-none">
+                                            <t t-esc="record.email_from.value"/>
+                                        </a>
+                                    </div>
+                                </t>
+                                <t t-if="record.phone.raw_value">
+                                    <div class="text-muted small mb-1">
+                                        <i class="bi bi-telephone-fill me-1 text-success"/>
+                                        <a t-attf-href="tel:#{record.phone.value}" class="text-decoration-none">
+                                            <t t-esc="record.phone.value"/>
+                                        </a>
+                                    </div>
+                                </t>
+                                <t t-if="record.mobile.raw_value">
+                                    <div class="text-muted small">
+                                        <i class="bi bi-phone-fill me-1 text-info"/>
+                                        <a t-attf-href="tel:#{record.mobile.value}" class="text-decoration-none">
+                                            <t t-esc="record.mobile.value"/>
+                                        </a>
+                                    </div>
+                                </t>
+                            </div>
+
+                            <!-- Preferencias de Búsqueda -->
+                            <t t-if="record.min_bedrooms.raw_value or record.budget_min.raw_value">
+                                <div class="mb-2">
+                                    <div class="small text-muted">
+                                        <strong>Preferencias:</strong>
+                                    </div>
+                                    <div class="d-flex flex-wrap gap-1">
+                                        <t t-if="record.min_bedrooms.raw_value">
+                                            <span class="badge bg-light text-dark">
+                                                <i class="bi bi-door-closed me-1"/>
+                                                <t t-esc="record.min_bedrooms.value"/>-<t t-esc="record.max_bedrooms.value or '?'"/> Hab
+                                            </span>
+                                        </t>
+                                        <t t-if="record.min_bathrooms.raw_value">
+                                            <span class="badge bg-light text-dark">
+                                                <i class="bi bi-water me-1"/>
+                                                <t t-esc="record.min_bathrooms.value"/>+ Baños
+                                            </span>
+                                        </t>
+                                        <t t-if="record.has_pets.raw_value">
+                                            <span class="badge bg-warning text-dark">
+                                                <i class="bi bi-heart-fill me-1"/> Mascotas
+                                            </span>
+                                        </t>
+                                        <t t-if="record.requires_parking.raw_value">
+                                            <span class="badge bg-secondary">
+                                                <i class="bi bi-car-front-fill me-1"/> Parqueadero
+                                            </span>
+                                        </t>
+                                    </div>
+                                </div>
+                            </t>
+
+                            <!-- Presupuesto -->
+                            <t t-if="record.budget_min.raw_value or record.budget_max.raw_value">
+                                <div class="mb-2 p-2 bg-light rounded">
+                                    <div class="small text-muted mb-1">
+                                        <i class="bi bi-cash-stack me-1"/> Presupuesto:
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                        <span class="small">
+                                            <field name="budget_min" widget="monetary" options="{'currency_field': 'company_currency'}"/>
+                                        </span>
+                                        <span class="text-muted">-</span>
+                                        <span class="small">
+                                            <field name="budget_max" widget="monetary" options="{'currency_field': 'company_currency'}"/>
+                                        </span>
+                                    </div>
+                                </div>
+                            </t>
+
+                            <!-- Proyecto -->
+                            <t t-if="record.project_id.raw_value">
+                                <div class="mb-2">
+                                    <span class="badge bg-secondary">
+                                        <i class="bi bi-building me-1" title="Proyecto"/>
+                                        <field name="project_id"/>
+                                    </span>
+                                </div>
+                            </t>
+
+                            <!-- Propiedades -->
+                            <t t-if="record.property_ids.raw_value">
+                                <div class="mb-2">
+                                    <div class="small text-muted mb-1">
+                                        <i class="bi bi-house-heart me-1"/> Propiedades de Interés:
+                                    </div>
+                                    <field name="property_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                                </div>
+                            </t>
+
+                            <!-- Comparación y Recomendaciones -->
+                            <t t-if="record.compared_properties_count.raw_value or record.recommendation_count.raw_value">
+                                <div class="mb-2 d-flex gap-2">
+                                    <t t-if="record.compared_properties_count.raw_value">
+                                        <span class="badge bg-primary">
+                                            <i class="bi bi-columns-gap me-1"/>
+                                            <t t-esc="record.compared_properties_count.value"/> En Comparación
+                                        </span>
+                                    </t>
+                                    <t t-if="record.recommendation_count.raw_value">
+                                        <span class="badge bg-warning text-dark">
+                                            <i class="bi bi-stars me-1"/>
+                                            <t t-esc="record.recommendation_count.value"/> Recomendadas
+                                        </span>
+                                    </t>
+                                </div>
+                            </t>
+
+                            <!-- Métricas Financieras -->
+                            <div class="o_kanban_tags_section mb-2">
+                                <div class="row g-1">
+                                    <div class="col-6">
+                                        <div class="text-center p-2 bg-light rounded">
+                                            <small class="text-muted d-block">Ingreso Esp.</small>
+                                            <strong class="text-primary">
+                                                <field name="expected_revenue" widget="monetary" options="{'currency_field': 'company_currency'}"/>
+                                            </strong>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="text-center p-2 bg-light rounded">
+                                            <small class="text-muted d-block">Comisión</small>
+                                            <strong class="text-warning">
+                                                <field name="estimated_commission" widget="monetary" options="{'currency_field': 'company_currency'}"/>
+                                            </strong>
+                                        </div>
+                                    </div>
+                                </div>
+                                <t t-if="record.recurring_revenue.raw_value">
+                                    <div class="text-center p-1 bg-success bg-opacity-10 rounded mt-1">
+                                        <small class="text-muted">Recurrente Mensual:</small>
+                                        <strong class="text-success d-block">
+                                            <field name="recurring_revenue" widget="monetary" options="{'currency_field': 'company_currency'}"/>
+                                        </strong>
+                                    </div>
+                                </t>
+                            </div>
+
+                            <!-- Barra de Probabilidad -->
+                            <div class="mb-2">
+                                <div class="d-flex justify-content-between mb-1">
+                                    <small class="text-muted">
+                                        <i class="bi bi-graph-up me-1"/> Probabilidad
+                                    </small>
+                                    <small class="fw-bold"><t t-esc="record.probability.value"/>%</small>
+                                </div>
+                                <div class="progress" style="height: 8px;">
+                                    <div class="progress-bar"
+                                         t-attf-class="bg-#{record.probability.raw_value >= 75 ? 'success' : record.probability.raw_value >= 50 ? 'info' : record.probability.raw_value >= 25 ? 'warning' : 'danger'}"
+                                         t-attf-style="width: #{record.probability.value}%">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Días Abierto -->
+                            <t t-if="record.day_open.raw_value">
+                                <div class="mb-2 small text-muted">
+                                    <i class="bi bi-clock-history me-1"/>
+                                    Abierto hace <strong><t t-esc="record.day_open.value"/></strong> días
+                                </div>
+                            </t>
+
+                            <!-- Fecha Esperada -->
+                            <t t-if="record.date_deadline.raw_value">
+                                <div class="mb-2 small text-muted">
+                                    <i class="bi bi-calendar-check me-1"/>
+                                    Cierre esperado: <strong><t t-esc="record.date_deadline.value"/></strong>
+                                </div>
+                            </t>
+
+                            <!-- Tags -->
+                            <div class="mb-2">
+                                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                            </div>
+
+                            <!-- Footer: Actividades y Usuario -->
+                            <div class="o_kanban_record_bottom mt-3">
+                                <div class="oe_kanban_bottom_left">
+                                    <field name="activity_ids" widget="kanban_activity"/>
+                                </div>
+                                <div class="oe_kanban_bottom_right">
+                                    <field name="user_id" widget="many2one_avatar_user"/>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+</odoo>
