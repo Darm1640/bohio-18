@@ -787,8 +787,8 @@ class CrmLead(models.Model):
                 'preferences': {
                     'neighborhood': lead.desired_neighborhood or 'Cualquiera',
                     'property_type': lead.desired_property_type_id.name if lead.desired_property_type_id else 'Cualquiera',
-                    'bedrooms': f"{lead.num_bedrooms_min}-{lead.num_bedrooms_max}" if lead.num_bedrooms_min and lead.num_bedrooms_max else 'Flexible',
-                    'area': f"{lead.property_area_min}-{lead.property_area_max} m²" if lead.property_area_min and lead.property_area_max else 'Flexible',
+                    'bedrooms': f"{lead.min_bedrooms}-{lead.max_bedrooms}" if lead.min_bedrooms and lead.max_bedrooms else 'Flexible',
+                    'area': f"{lead.min_area}-{lead.max_area} m²" if lead.min_area and lead.max_area else 'Flexible',
                 }
             }
             lead.dashboard_data = lead_data
@@ -966,8 +966,8 @@ class CrmLead(models.Model):
                 lead.days_open = 0
 
     @api.depends('desired_neighborhood', 'desired_property_type_id', 'budget_min', 'budget_max',
-                 'num_bedrooms_min', 'num_bedrooms_max', 'num_bathrooms_min', 'property_area_min',
-                 'property_area_max', 'has_pets', 'requires_common_areas', 'property_purpose', 'service_interested')
+                 'min_bedrooms', 'max_bedrooms', 'min_bathrooms', 'min_area',
+                 'max_area', 'has_pets', 'requires_common_areas', 'property_purpose', 'service_interested')
     def _compute_recommended_properties(self):
         """Calcular propiedades recomendadas"""
         for lead in self:
@@ -1356,7 +1356,7 @@ class CrmLead(models.Model):
             'net_price': self.expected_revenue or 0,
 
             # Área
-            'property_area': self.property_area_min or 0,
+            'property_area': self.min_area or 0,
 
             # Notas
             'description': f'''
