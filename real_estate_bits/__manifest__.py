@@ -44,6 +44,10 @@
         "reports/contract_quotation_report.xml",
         "static/src/xml/home.xml",
 
+        # VISTAS MODERNAS (REEMPLAZAN LAS ANTERIORES POR PRIORIDAD)
+        "views/property_contract_views_modern.xml",
+        "views/bohio_mass_payment_views_modern.xml",
+
     ],
     "assets": {
         "web.assets_backend": [

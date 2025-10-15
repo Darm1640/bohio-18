@@ -1,0 +1,554 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ====================================================================== -->
+    <!-- PROPERTY CONTRACT - VISTA LIST MODERNA (REEMPLAZA LA ANTERIOR) -->
+    <!-- ====================================================================== -->
+    <record id="view_property_contract_tree" model="ir.ui.view">
+        <field name="name">property.contract.list</field>
+        <field name="model">property.contract</field>
+        <field name="priority">1</field>
+        <field name="arch" type="xml">
+            <list string="Contratos"
+                  sample="1"
+                  multi_edit="1"
+                  decoration-success="state == 'confirmed'"
+                  decoration-info="state == 'pending_signature'"
+                  decoration-warning="state == 'draft'"
+                  decoration-muted="state == 'cancel'">
+
+                <!-- Campos ocultos necesarios -->
+                <field name="color" column_invisible="1"/>
+                <field name="currency_id" column_invisible="1"/>
+                <field name="state" column_invisible="1"/>
+
+                <!-- COLUMNA 1: Número y Estado -->
+                <field name="name" string="Número" decoration-bf="1" optional="show"/>
+                <field name="state" string="Estado" widget="badge"
+                       decoration-success="state == 'confirmed'"
+                       decoration-info="state == 'pending_signature'"
+                       decoration-warning="state == 'draft'"
+                       optional="show"/>
+
+                <!-- COLUMNA 2: Cliente/Inquilino -->
+                <field name="partner_id" string="Inquilino"
+                       widget="many2one_avatar"
+                       optional="show"/>
+
+                <!-- COLUMNA 3: Propiedad -->
+                <field name="property_id" string="Propiedad" optional="show"/>
+                <field name="property_code" string="Código" optional="hide"/>
+                <field name="project_id" string="Proyecto" optional="hide"/>
+
+                <!-- COLUMNA 4: Fechas -->
+                <field name="date_from" string="Inicio" optional="show"/>
+                <field name="date_to" string="Fin" optional="show"/>
+
+                <!-- COLUMNA 5: Información Financiera -->
+                <field name="rental_fee" string="Canon"
+                       widget="monetary"
+                       optional="show"/>
+                <field name="amount_total" string="Total Contrato"
+                       widget="monetary"
+                       sum="Total"
+                       optional="show"/>
+                <field name="paid" string="Pagado"
+                       widget="monetary"
+                       sum="Total Pagado"
+                       optional="show"/>
+                <field name="balance" string="Saldo"
+                       widget="monetary"
+                       sum="Saldo Total"
+                       optional="show"
+                       decoration-danger="balance > 0"/>
+
+                <!-- COLUMNA 6: Comisión -->
+                <field name="commission_percentage" string="Com. %"
+                       optional="hide"/>
+                <field name="total_commission" string="Comisión Total"
+                       widget="monetary"
+                       optional="hide"/>
+
+                <!-- COLUMNA 7: Próximo Pago -->
+                <field name="next_payment_date" string="Próximo Pago"
+                       optional="show"/>
+                <field name="next_payment_amount" string="Monto Próx."
+                       widget="monetary"
+                       optional="hide"/>
+
+                <!-- COLUMNA 8: Responsable -->
+                <field name="user_id" string="Responsable"
+                       widget="many2one_avatar_user"
+                       optional="show"/>
+
+                <!-- COLUMNA 9: Firma -->
+                <field name="signature_state" string="Firma"
+                       widget="badge"
+                       optional="hide"
+                       decoration-success="signature_state == 'signed'"
+                       decoration-warning="signature_state == 'pending'"/>
+
+                <!-- Campos adicionales ocultos -->
+                <field name="periodicity" string="Periodicidad" optional="hide"/>
+                <field name="contract_type" string="Tipo" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ====================================================================== -->
+    <!-- PROPERTY CONTRACT - VISTA FORM MODERNA CON FLUJO (REEMPLAZA LA ANTERIOR) -->
+    <!-- ====================================================================== -->
+    <record id="view_property_contract_form" model="ir.ui.view">
+        <field name="name">property.contract.form</field>
+        <field name="model">property.contract</field>
+        <field name="priority">1</field>
+        <field name="arch" type="xml">
+            <form string="Contrato de Propiedad">
+                <!-- HEADER CON FLUJO DE ESTADOS -->
+                <header>
+                    <!-- STATUS BAR -->
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="quotation,draft,pending_signature,confirmed"/>
+
+                    <!-- BOTONES DE ACCIÓN POR ESTADO -->
+
+                    <!-- Estado: Cotización -->
+                    <button name="action_quotation_to_draft" string="Convertir a Pre-Contrato"
+                            type="object" class="btn-primary"
+                            invisible="state != 'quotation'"/>
+
+                    <!-- Estado: Borrador/Pre-Contrato -->
+                    <button name="action_back_to_quotation" string="Regresar a Cotización"
+                            type="object" class="btn-secondary"
+                            invisible="state not in ('draft', 'pending_signature')"/>
+
+                    <button name="action_send_for_signature" string="Enviar para Firma"
+                            type="object" class="btn-primary"
+                            invisible="state != 'draft' or skip_signature"/>
+
+                    <button name="action_confirm" string="Confirmar Contrato"
+                            type="object" class="btn-success"
+                            invisible="state != 'draft' or not skip_signature"
+                            confirm="¿Está seguro de confirmar este contrato?"/>
+
+                    <!-- Estado: Pendiente Firma -->
+                    <button name="action_mark_signed" string="Marcar como Firmado"
+                            type="object" class="btn-success"
+                            invisible="state != 'pending_signature'"/>
+
+                    <button name="action_reject_signature" string="Rechazar Firma"
+                            type="object" class="btn-danger"
+                            invisible="state != 'pending_signature'"/>
+
+                    <!-- Estado: Confirmado -->
+                    <button name="action_modify_contract" string="Modificar Contrato"
+                            type="object" class="btn-warning"
+                            invisible="state != 'confirmed'"/>
+
+                    <button name="prepare_lines" string="Recalcular Cuotas"
+                            type="object" class="btn-secondary"
+                            invisible="state not in ('draft', 'quotation')"/>
+
+                    <!-- Acción de Cancelar (disponible en varios estados) -->
+                    <button name="action_cancel" string="Cancelar Contrato"
+                            type="object" class="btn-danger"
+                            invisible="state in ('cancel', 'confirmed')"
+                            confirm="¿Está seguro de cancelar este contrato?"/>
+                </header>
+
+                <sheet>
+                    <!-- TÍTULO Y BADGES SUPERIORES -->
+                    <div class="oe_button_box" name="button_box">
+                        <!-- Botón de Comprobantes -->
+                        <button class="oe_stat_button" type="object" name="view_vouchers" icon="fa-money">
+                            <field name="voucher_count" widget="statinfo" string="Pagos"/>
+                        </button>
+
+                        <!-- Botón de Facturas -->
+                        <button class="oe_stat_button" type="object" name="view_entries" icon="fa-file-text-o">
+                            <field name="entry_count" widget="statinfo" string="Facturas"/>
+                        </button>
+                    </div>
+
+                    <!-- TÍTULO PRINCIPAL -->
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1" placeholder="Nuevo"/>
+                        </h1>
+                        <h3>
+                            <field name="contract_type" widget="radio" options="{'horizontal': true}"/>
+                        </h3>
+                    </div>
+
+                    <!-- CARDS DE INDICADORES SUPERIORES -->
+                    <div class="row mt-3 mb-3">
+                        <!-- Card: Total Contrato -->
+                        <div class="col-lg-3">
+                            <div class="card bg-primary bg-opacity-10 border-primary">
+                                <div class="card-body text-center">
+                                    <i class="fa fa-money fa-2x text-primary mb-2"/>
+                                    <h6 class="text-muted small mb-1">Total Contrato</h6>
+                                    <h4 class="text-primary mb-0">
+                                        <field name="amount_total" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                    </h4>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card: Pagado -->
+                        <div class="col-lg-3">
+                            <div class="card bg-success bg-opacity-10 border-success">
+                                <div class="card-body text-center">
+                                    <i class="fa fa-check-circle fa-2x text-success mb-2"/>
+                                    <h6 class="text-muted small mb-1">Pagado</h6>
+                                    <h4 class="text-success mb-0">
+                                        <field name="paid" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                    </h4>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card: Saldo -->
+                        <div class="col-lg-3">
+                            <div class="card bg-warning bg-opacity-10 border-warning">
+                                <div class="card-body text-center">
+                                    <i class="fa fa-exclamation-triangle fa-2x text-warning mb-2"/>
+                                    <h6 class="text-muted small mb-1">Saldo Pendiente</h6>
+                                    <h4 class="text-warning mb-0">
+                                        <field name="balance" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                    </h4>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card: Comisión Total -->
+                        <div class="col-lg-3">
+                            <div class="card bg-info bg-opacity-10 border-info">
+                                <div class="card-body text-center">
+                                    <i class="fa fa-percent fa-2x text-info mb-2"/>
+                                    <h6 class="text-muted small mb-1">Comisión Total</h6>
+                                    <h4 class="text-info mb-0">
+                                        <field name="total_commission" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                    </h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- NOTEBOOK CON PESTAÑAS -->
+                    <notebook>
+                        <!-- PESTAÑA 1: INFORMACIÓN GENERAL -->
+                        <page string="Información General" name="general">
+                            <group>
+                                <group string="Datos del Contrato">
+                                    <field name="origin"/>
+                                    <field name="user_id" widget="many2one_avatar_user"/>
+                                    <field name="company_id" groups="base.group_multi_company"/>
+                                    <field name="currency_id" invisible="1"/>
+                                    <field name="contract_template"
+                                           placeholder="Seleccionar plantilla predefinida..."
+                                           help="Aplica configuración estándar según el tipo"/>
+                                </group>
+
+                                <group string="Cliente/Inquilino">
+                                    <field name="partner_id"
+                                           options="{'no_create': True, 'no_open': True}"
+                                           context="{'show_address': 1}"/>
+                                    <field name="skip_signature" widget="boolean_toggle"/>
+                                    <field name="signature_state"
+                                           invisible="skip_signature"
+                                           widget="badge"
+                                           decoration-success="signature_state == 'signed'"
+                                           decoration-warning="signature_state == 'pending'"
+                                           decoration-danger="signature_state == 'rejected'"/>
+                                </group>
+                            </group>
+
+                            <group>
+                                <group string="Propiedad">
+                                    <field name="is_multi_property" widget="boolean_toggle"/>
+                                    <field name="property_id"
+                                           invisible="is_multi_property"
+                                           options="{'no_create': True}"
+                                           domain="[('is_property', '=', True), ('state', '=', 'free')]"/>
+                                    <field name="property_code" readonly="1" invisible="is_multi_property"/>
+                                    <field name="property_area" readonly="1" invisible="is_multi_property"/>
+                                    <field name="floor" readonly="1" invisible="is_multi_property"/>
+                                    <field name="address" readonly="1" invisible="is_multi_property"/>
+                                    <field name="type"/>
+                                </group>
+
+                                <group string="Ubicación y Proyecto">
+                                    <field name="region_id"/>
+                                    <field name="project_id"/>
+                                    <field name="project_code" readonly="1"/>
+                                </group>
+                            </group>
+
+                            <!-- Propiedades Multi-Propiedad -->
+                            <group string="Propiedades del Contrato" invisible="not is_multi_property">
+                                <field name="contract_line_ids" nolabel="1">
+                                    <list editable="bottom">
+                                        <field name="sequence" widget="handle"/>
+                                        <field name="property_id"/>
+                                        <field name="property_code" readonly="1"/>
+                                        <field name="property_area" readonly="1"/>
+                                        <field name="rental_fee" sum="Total Canon"/>
+                                        <field name="state" widget="badge"/>
+                                        <field name="date_from"/>
+                                        <field name="date_to"/>
+                                        <field name="date_end_real"/>
+                                    </list>
+                                </field>
+                            </group>
+
+                            <!-- Información de Propietario -->
+                            <group string="Información del Propietario">
+                                <group>
+                                    <field name="partner_is_owner_id" readonly="1"/>
+                                    <field name="is_multi_propietario" readonly="1" widget="boolean_toggle"/>
+                                </group>
+                            </group>
+
+                            <group string="Propietarios" invisible="not is_multi_propietario">
+                                <field name="owners_lines" nolabel="1" readonly="1">
+                                    <list>
+                                        <field name="partner_id"/>
+                                        <field name="ownership_percentage"/>
+                                        <field name="document_type"/>
+                                        <field name="email"/>
+                                        <field name="phone"/>
+                                    </list>
+                                </field>
+                            </group>
+                        </page>
+
+                        <!-- PESTAÑA 2: CONFIGURACIÓN FINANCIERA -->
+                        <page string="Configuración Financiera" name="financial">
+                            <group>
+                                <group string="Canon y Acuerdo">
+                                    <field name="rental_agreement"/>
+                                    <field name="rental_fee"
+                                           widget="monetary"
+                                           decoration-bf="1"/>
+                                    <field name="rent" invisible="rental_agreement != 'per_sft'"/>
+                                    <field name="maintenance"/>
+                                    <field name="maintenance_type"/>
+                                </group>
+
+                                <group string="Depósito y Seguro">
+                                    <field name="deposit" widget="monetary"/>
+                                    <field name="deposit_return_status"/>
+                                    <field name="insurance_fee"/>
+                                </group>
+                            </group>
+
+                            <group>
+                                <group string="Comisiones">
+                                    <field name="commission_percentage"/>
+                                    <field name="commission_calculation_method"/>
+                                    <field name="total_commission"
+                                           widget="monetary"
+                                           readonly="1"
+                                           decoration-bf="1"/>
+                                </group>
+
+                                <group string="Impuestos">
+                                    <field name="apply_tax" widget="boolean_toggle"/>
+                                    <field name="tax_status" invisible="not apply_tax"/>
+                                </group>
+                            </group>
+
+                            <group>
+                                <group string="Cuentas Contables">
+                                    <field name="account_income"
+                                           options="{'no_create': True}"
+                                           domain="[('account_type', '=', 'income')]"/>
+                                    <field name="account_security_deposit"
+                                           options="{'no_create': True}"
+                                           domain="[('account_type', '=', 'liability_current')]"/>
+                                </group>
+                            </group>
+                        </page>
+
+                        <!-- PESTAÑA 3: FECHAS Y PERIODICIDAD -->
+                        <page string="Fechas y Periodicidad" name="dates">
+                            <group>
+                                <group string="Fechas del Contrato">
+                                    <field name="date_from"/>
+                                    <field name="date_to"/>
+                                    <field name="date_end" readonly="1"/>
+                                    <field name="first_invoice_date"/>
+                                    <field name="first_billing_date" readonly="1"/>
+                                </group>
+
+                                <group string="Información de Pagos">
+                                    <field name="next_payment_date" readonly="1"/>
+                                    <field name="next_payment_amount"
+                                           widget="monetary"
+                                           readonly="1"/>
+                                    <field name="last_payment_date" readonly="1"/>
+                                </group>
+                            </group>
+
+                            <group>
+                                <group string="Periodicidad de Facturación">
+                                    <field name="periodicity" widget="radio"/>
+                                    <field name="recurring_interval"/>
+                                    <field name="billing_date"/>
+                                </group>
+
+                                <group string="Prorrateo">
+                                    <field name="prorate_first_period" widget="boolean_toggle"/>
+                                    <field name="prorata_computation_type"
+                                           invisible="not prorate_first_period"/>
+                                </group>
+                            </group>
+
+                            <!-- Información de Prorrateo -->
+                            <group string="Información de Prorrateo" invisible="not prorate_first_period">
+                                <group>
+                                    <label for="prorate_info_first" string="Primer Período"/>
+                                    <div>
+                                        <field name="prorate_info_first" readonly="1" nolabel="1"/>
+                                    </div>
+                                </group>
+                                <group>
+                                    <label for="prorate_info_last" string="Último Período"/>
+                                    <div>
+                                        <field name="prorate_info_last" readonly="1" nolabel="1"/>
+                                    </div>
+                                </group>
+                            </group>
+                        </page>
+
+                        <!-- PESTAÑA 4: INCREMENTOS E INTERESES -->
+                        <page string="Incrementos e Intereses" name="increments">
+                            <group>
+                                <group string="Incrementos Automáticos">
+                                    <field name="increment_percentage"/>
+                                    <field name="increment_recurring_interval"/>
+                                    <field name="increment_period"/>
+                                </group>
+
+                                <group string="Intereses por Mora">
+                                    <field name="apply_interest" widget="boolean_toggle"/>
+                                    <field name="interest_rate" invisible="not apply_interest"/>
+                                    <field name="interest_days_grace" invisible="not apply_interest"/>
+                                    <field name="interest_method" invisible="not apply_interest"/>
+                                </group>
+                            </group>
+
+                            <!-- Preview de Intereses -->
+                            <div class="alert alert-info" role="alert" invisible="not apply_interest">
+                                <h5><i class="fa fa-info-circle"/> Vista Previa de Cálculo de Intereses</h5>
+                                <div>
+                                    <strong>Tasa:</strong> <field name="interest_rate" readonly="1" nolabel="1"/>% mensual<br/>
+                                    <strong>Días de gracia:</strong> <field name="interest_days_grace" readonly="1" nolabel="1"/> días<br/>
+                                    <strong>Método:</strong> <field name="interest_method" readonly="1" nolabel="1"/>
+                                </div>
+                            </div>
+                        </page>
+
+                        <!-- PESTAÑA 5: CUOTAS DE PAGO -->
+                        <page string="Cuotas de Pago" name="installments">
+                            <div class="alert alert-warning" role="alert"
+                                 invisible="loan_line_ids">
+                                <i class="fa fa-exclamation-triangle"/>
+                                <strong>No hay cuotas generadas.</strong>
+                                Haga clic en "Recalcular Cuotas" en la parte superior para generar el cronograma de pagos.
+                            </div>
+
+                            <field name="loan_line_ids" nolabel="1">
+                                <list editable="bottom"
+                                      decoration-success="payment_state == 'paid'"
+                                      decoration-warning="payment_state == 'partial'"
+                                      decoration-danger="is_overdue and payment_state != 'paid'">
+                                    <field name="serial" readonly="1"/>
+                                    <field name="name"/>
+                                    <field name="period_start" optional="show"/>
+                                    <field name="period_end" optional="show"/>
+                                    <field name="date"/>
+                                    <field name="amount" sum="Total"/>
+                                    <field name="amount_residual" sum="Saldo Total" optional="show"/>
+                                    <field name="commission" sum="Total Comisión" optional="hide"/>
+                                    <field name="commission_percentage" optional="hide"/>
+                                    <field name="payment_state" widget="badge"/>
+                                    <field name="is_overdue" column_invisible="1"/>
+                                    <field name="invoice_id" optional="hide"/>
+                                </list>
+                            </field>
+                        </page>
+
+                        <!-- PESTAÑA 6: NOTAS DE DÉBITO -->
+                        <page string="Notas de Débito" name="debit_notes"
+                              invisible="not apply_interest">
+                            <field name="debit_line_ids" nolabel="1">
+                                <list editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="name"/>
+                                    <field name="value_amount"/>
+                                    <field name="nb_days"/>
+                                </list>
+                            </field>
+                        </page>
+
+                        <!-- PESTAÑA 7: FIRMA DIGITAL -->
+                        <page string="Firma Digital" name="signature"
+                              invisible="skip_signature">
+                            <group>
+                                <group string="Estado de Firma">
+                                    <field name="signature_state"
+                                           widget="badge"
+                                           decoration-success="signature_state == 'signed'"
+                                           decoration-warning="signature_state == 'pending'"
+                                           decoration-danger="signature_state == 'rejected'"/>
+                                    <field name="sign_request_id" readonly="1"/>
+                                    <field name="sign_request_state" readonly="1"
+                                           invisible="not sign_request_id"/>
+                                </group>
+                            </group>
+
+                            <group string="Documento Firmado"
+                                   invisible="signature_state != 'signed'">
+                                <field name="sign_completed_document"
+                                       widget="binary"
+                                       filename="contrato_firmado.pdf"/>
+                            </group>
+                        </page>
+
+                        <!-- PESTAÑA 8: INFORMACIÓN ADICIONAL -->
+                        <page string="Información Adicional" name="additional">
+                            <group>
+                                <group string="Clasificación">
+                                    <field name="contract_use"/>
+                                    <field name="contract_scenery_id"
+                                           options="{'no_create': True, 'no_open': True}"/>
+                                    <field name="is_escenary_propiedad" widget="boolean_toggle"/>
+                                    <field name="reservation_id" readonly="1"/>
+                                </group>
+
+                                <group string="Visualización">
+                                    <field name="show_payment_schedule" widget="boolean_toggle"/>
+                                    <field name="color" widget="color"/>
+                                </group>
+                            </group>
+
+                            <group string="Descripción">
+                                <field name="descripcion" nolabel="1" placeholder="Descripción del contrato..."/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+
+                <!-- CHATTER -->
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!--
+    NOTA: El action ya existe en view_property_contract.xml como 'action_property_contract_act_window'
+    No es necesario duplicarlo aquí. Las vistas se referencian automáticamente por ID.
+    -->
+
+</odoo>

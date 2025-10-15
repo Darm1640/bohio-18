@@ -19,13 +19,13 @@
             <field name="context">{'default_modify_action': 'renew'}</field>
         </record>
 
-        <!-- VISTA FORM CON CARD ARRIBA -->
+        <!-- VISTA FORM MODERNA CON FLUJO -->
         <record id="view_property_contract_form" model="ir.ui.view">
             <field name="name">property.contract.form</field>
             <field name="model">property.contract</field>
             <field name="priority">1</field>
             <field name="arch" type="xml">
-                <form string="Contrato de Arrendamiento" >
+                <form string="Contrato de Propiedad">
                     <header>
                         <button name="action_quotation_to_draft" type="object" string="Convertir a Pre-Contrato"
                                 class="btn-primary oe_highlight"

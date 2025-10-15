@@ -1,0 +1,499 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ====================================================================== -->
+    <!-- BOHIO MASS PAYMENT - VISTA LIST MODERNA (REEMPLAZA LA ANTERIOR) -->
+    <!-- ====================================================================== -->
+    <record id="view_bohio_mass_payment_tree" model="ir.ui.view">
+        <field name="name">bohio.mass.payment.list</field>
+        <field name="model">bohio.mass.payment</field>
+        <field name="priority">1</field>
+        <field name="arch" type="xml">
+            <list string="Pagos Masivos"
+                  sample="1"
+                  decoration-success="state == 'processed'"
+                  decoration-info="state == 'confirmed'"
+                  decoration-warning="state == 'simulated'"
+                  decoration-muted="state == 'cancelled'">
+
+                <!-- Campos ocultos necesarios -->
+                <field name="currency_id" column_invisible="1"/>
+                <field name="state" column_invisible="1"/>
+
+                <!-- COLUMNA 1: Número y Estado -->
+                <field name="name" string="Número" decoration-bf="1" optional="show"/>
+                <field name="state" string="Estado" widget="badge"
+                       decoration-success="state == 'processed'"
+                       decoration-info="state == 'confirmed'"
+                       decoration-warning="state == 'simulated'"
+                       optional="show"/>
+
+                <!-- COLUMNA 2: Fechas -->
+                <field name="date" string="Fecha Proceso" optional="show"/>
+                <field name="simulation_month" string="Mes Simulación" optional="show"/>
+
+                <!-- COLUMNA 3: Filtros Aplicados -->
+                <field name="region_ids" widget="many2many_tags" optional="hide"/>
+                <field name="project_ids" widget="many2many_tags" optional="hide"/>
+
+                <!-- COLUMNA 4: Totales Financieros -->
+                <field name="total_canon" string="Total Canon"
+                       widget="monetary"
+                       sum="Total Canon"
+                       optional="show"/>
+                <field name="total_commission" string="Total Comisión"
+                       widget="monetary"
+                       sum="Total Comisión"
+                       optional="show"/>
+                <field name="total_to_pay" string="Total a Pagar"
+                       widget="monetary"
+                       sum="Total a Pagar"
+                       optional="show"
+                       decoration-bf="1"/>
+
+                <!-- COLUMNA 5: Detalles Adicionales -->
+                <field name="total_taxes" string="Impuestos"
+                       widget="monetary"
+                       optional="hide"/>
+                <field name="total_interest" string="Intereses"
+                       widget="monetary"
+                       optional="hide"/>
+                <field name="total_novelties" string="Novedades"
+                       widget="monetary"
+                       optional="hide"/>
+
+                <!-- COLUMNA 6: Configuración -->
+                <field name="journal_id" optional="hide"/>
+                <field name="separate_payments" widget="boolean_toggle" optional="hide"/>
+                <field name="auto_post" widget="boolean_toggle" optional="hide"/>
+
+                <!-- COLUMNA 7: Compañía -->
+                <field name="company_id" groups="base.group_multi_company" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ====================================================================== -->
+    <!-- BOHIO MASS PAYMENT - VISTA FORM MODERNA CON FLUJO (REEMPLAZA LA ANTERIOR) -->
+    <!-- ====================================================================== -->
+    <record id="view_bohio_mass_payment_form" model="ir.ui.view">
+        <field name="name">bohio.mass.payment.form</field>
+        <field name="model">bohio.mass.payment</field>
+        <field name="priority">1</field>
+        <field name="arch" type="xml">
+            <form string="Pago Masivo">
+                <!-- HEADER CON FLUJO DE ESTADOS -->
+                <header>
+                    <!-- STATUS BAR -->
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,simulated,confirmed,processed"/>
+
+                    <!-- BOTONES DE ACCIÓN POR ESTADO -->
+
+                    <!-- Estado: Borrador -->
+                    <button name="action_simulate" string="Simular Pagos"
+                            type="object" class="btn-primary"
+                            invisible="state != 'draft'"
+                            confirm="¿Desea ejecutar la simulación de pagos para el mes seleccionado?"/>
+
+                    <!-- Estado: Simulado -->
+                    <button name="action_confirm" string="Confirmar Simulación"
+                            type="object" class="btn-success"
+                            invisible="state != 'simulated'"/>
+
+                    <button name="action_reset_to_draft" string="Volver a Borrador"
+                            type="object" class="btn-secondary"
+                            invisible="state != 'simulated'"/>
+
+                    <!-- Estado: Confirmado -->
+                    <button name="action_process_payments" string="Procesar Pagos"
+                            type="object" class="btn-success"
+                            invisible="state != 'confirmed'"
+                            confirm="¿Está seguro de procesar todos los pagos? Esta acción creará movimientos contables."/>
+
+                    <button name="action_create_payment_from_selection" string="Procesar Selección"
+                            type="object" class="btn-info"
+                            invisible="state != 'confirmed'"/>
+
+                    <!-- Estado: Procesado -->
+                    <button name="action_show_tax_income_balance" string="Balance Impuestos/Ingresos"
+                            type="object" class="btn-info"
+                            invisible="state != 'processed'"/>
+
+                    <!-- Botones Auxiliares (disponibles en varios estados) -->
+                    <button name="action_create_debit_note" string="Crear Nota Débito"
+                            type="object" class="btn-warning"
+                            invisible="state in ('draft', 'cancelled')"/>
+
+                    <button name="action_postpone_month" string="Aplazar al Mes Siguiente"
+                            type="object" class="btn-secondary"
+                            invisible="state not in ('simulated', 'confirmed')"/>
+
+                    <!-- Acción de Cancelar -->
+                    <button name="action_cancel" string="Cancelar"
+                            type="object" class="btn-danger"
+                            invisible="state in ('processed', 'cancelled')"
+                            confirm="¿Está seguro de cancelar este proceso de pago masivo?"/>
+                </header>
+
+                <sheet>
+                    <!-- TÍTULO PRINCIPAL -->
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1" placeholder="Nuevo"/>
+                        </h1>
+                        <h3 class="text-muted">
+                            Pago Masivo - <field name="simulation_month" readonly="state != 'draft'" nolabel="1"/>
+                        </h3>
+                    </div>
+
+                    <!-- CARDS DE INDICADORES SUPERIORES -->
+                    <div class="row mt-3 mb-3">
+                        <!-- Card: Total Canon -->
+                        <div class="col-lg-3">
+                            <div class="card bg-primary bg-opacity-10 border-primary">
+                                <div class="card-body text-center">
+                                    <i class="fa fa-home fa-2x text-primary mb-2"/>
+                                    <h6 class="text-muted small mb-1">Total Canon</h6>
+                                    <h4 class="text-primary mb-0">
+                                        <field name="total_canon" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                    </h4>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card: Comisión -->
+                        <div class="col-lg-3">
+                            <div class="card bg-warning bg-opacity-10 border-warning">
+                                <div class="card-body text-center">
+                                    <i class="fa fa-percent fa-2x text-warning mb-2"/>
+                                    <h6 class="text-muted small mb-1">Total Comisión</h6>
+                                    <h4 class="text-warning mb-0">
+                                        <field name="total_commission" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                    </h4>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card: Impuestos -->
+                        <div class="col-lg-3">
+                            <div class="card bg-info bg-opacity-10 border-info">
+                                <div class="card-body text-center">
+                                    <i class="fa fa-file-text fa-2x text-info mb-2"/>
+                                    <h6 class="text-muted small mb-1">Total Impuestos</h6>
+                                    <h4 class="text-info mb-0">
+                                        <field name="total_taxes" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                    </h4>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card: Neto a Pagar -->
+                        <div class="col-lg-3">
+                            <div class="card bg-success bg-opacity-10 border-success">
+                                <div class="card-body text-center">
+                                    <i class="fa fa-money fa-2x text-success mb-2"/>
+                                    <h6 class="text-muted small mb-1">Neto a Pagar</h6>
+                                    <h4 class="text-success mb-0">
+                                        <field name="total_to_pay" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                    </h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- NOTEBOOK CON PESTAÑAS -->
+                    <notebook>
+                        <!-- PESTAÑA 1: CONFIGURACIÓN DE FILTROS -->
+                        <page string="Filtros y Configuración" name="filters">
+                            <group>
+                                <group string="Fechas">
+                                    <field name="date" readonly="state != 'draft'"/>
+                                    <field name="simulation_month" readonly="state != 'draft'"/>
+                                </group>
+
+                                <group string="Configuración de Pagos">
+                                    <field name="journal_id" readonly="state not in ('draft', 'simulated')"/>
+                                    <field name="separate_payments" widget="boolean_toggle"
+                                           readonly="state != 'draft'"/>
+                                    <field name="auto_post" widget="boolean_toggle"
+                                           readonly="state != 'draft'"/>
+                                    <field name="currency_id" invisible="1"/>
+                                    <field name="company_id" groups="base.group_multi_company" readonly="1"/>
+                                </group>
+                            </group>
+
+                            <group>
+                                <group string="Filtros Geográficos">
+                                    <field name="region_ids" widget="many2many_tags"
+                                           readonly="state != 'draft'"
+                                           placeholder="Todas las regiones..."/>
+                                    <field name="city_ids" widget="many2many_tags"
+                                           readonly="state != 'draft'"
+                                           placeholder="Todas las ciudades..."/>
+                                    <field name="project_ids" widget="many2many_tags"
+                                           readonly="state != 'draft'"
+                                           placeholder="Todos los proyectos..."/>
+                                </group>
+
+                                <group string="Filtros por Terceros">
+                                    <field name="partner_type_filter" readonly="state != 'draft'"/>
+                                    <field name="partner_tag_ids" widget="many2many_tags"
+                                           readonly="state != 'draft'"
+                                           placeholder="Todas las etiquetas..."/>
+                                </group>
+                            </group>
+
+                            <group>
+                                <group string="Filtros de Contratos">
+                                    <field name="contract_ids" widget="many2many_tags"
+                                           readonly="state != 'draft'"
+                                           placeholder="Todos los contratos confirmados..."/>
+                                </group>
+
+                                <group string="Inclusión de Conceptos">
+                                    <field name="include_overdue" widget="boolean_toggle"
+                                           readonly="state != 'draft'"/>
+                                    <field name="include_novelties" widget="boolean_toggle"
+                                           readonly="state != 'draft'"/>
+                                    <field name="include_loans" widget="boolean_toggle"
+                                           readonly="state != 'draft'"/>
+                                </group>
+                            </group>
+                        </page>
+
+                        <!-- PESTAÑA 2: LÍNEAS DE SIMULACIÓN -->
+                        <page string="Líneas de Simulación" name="simulation_lines">
+                            <div class="alert alert-info" role="alert"
+                                 invisible="simulation_line_ids">
+                                <i class="fa fa-info-circle"/>
+                                <strong>No hay líneas de simulación.</strong>
+                                Haga clic en "Simular Pagos" en la parte superior para generar las líneas.
+                            </div>
+
+                            <field name="simulation_line_ids" nolabel="1"
+                                   readonly="state == 'processed'">
+                                <list editable="bottom"
+                                      decoration-muted="skip_payment"
+                                      decoration-success="not skip_payment and net_to_pay > 0"
+                                      decoration-warning="processed">
+                                    <field name="selected" widget="boolean_toggle"
+                                           invisible="state != 'confirmed'"/>
+                                    <field name="contract_id"/>
+                                    <field name="partner_id" widget="many2one_avatar"/>
+                                    <field name="partner_percentage"/>
+                                    <field name="canon_amount"
+                                           sum="Total Canon"
+                                           widget="monetary"/>
+                                    <field name="commission_amount"
+                                           sum="Total Comisión"
+                                           widget="monetary"
+                                           optional="hide"/>
+                                    <field name="tax_amount"
+                                           sum="Total Impuestos"
+                                           widget="monetary"
+                                           optional="hide"/>
+                                    <field name="novelty_amount"
+                                           sum="Total Novedades"
+                                           widget="monetary"
+                                           optional="hide"/>
+                                    <field name="loan_amount"
+                                           sum="Total Préstamos"
+                                           widget="monetary"
+                                           optional="hide"/>
+                                    <field name="interest_amount"
+                                           sum="Total Intereses"
+                                           widget="monetary"
+                                           optional="hide"/>
+                                    <field name="net_to_pay"
+                                           sum="Neto a Pagar"
+                                           widget="monetary"
+                                           decoration-bf="1"/>
+                                    <field name="paid_canon"
+                                           widget="monetary"
+                                           optional="hide"/>
+                                    <field name="paid_percentage" optional="hide"/>
+                                    <field name="skip_payment" widget="boolean_toggle"/>
+                                    <field name="processed" widget="boolean_toggle" readonly="1"/>
+                                    <field name="notes" optional="hide"/>
+                                    <field name="currency_id" column_invisible="1"/>
+                                    <button name="action_update_paid_canon" type="object"
+                                            icon="fa-refresh"
+                                            title="Actualizar Canon Pagado"
+                                            invisible="state == 'processed'"/>
+                                    <button name="action_mark_tax_reconciled" type="object"
+                                            icon="fa-check-square-o"
+                                            title="Marcar Estado Conciliación"
+                                            invisible="state == 'processed'"/>
+                                </list>
+                            </field>
+
+                            <!-- Resumen de líneas -->
+                            <group class="mt-3">
+                                <group>
+                                    <div class="alert alert-secondary">
+                                        <strong>Resumen:</strong><br/>
+                                        Total de líneas: <field name="simulation_line_ids" readonly="1" nolabel="1"/> registros<br/>
+                                        Líneas omitidas: <span class="text-muted">(Ver campo "Omitir Pago")</span>
+                                    </div>
+                                </group>
+                                <group>
+                                    <div class="alert alert-success">
+                                        <strong>Totales Calculados:</strong><br/>
+                                        Canon Recibido: <field name="total_received" widget="monetary" readonly="1" nolabel="1"/><br/>
+                                        Neto a Pagar: <field name="total_to_pay" widget="monetary" readonly="1" nolabel="1"/>
+                                    </div>
+                                </group>
+                            </group>
+                        </page>
+
+                        <!-- PESTAÑA 3: NOTAS DÉBITO -->
+                        <page string="Notas Débito" name="debit_notes">
+                            <div class="alert alert-info" role="alert"
+                                 invisible="debit_note_ids">
+                                <i class="fa fa-info-circle"/>
+                                <strong>No hay notas débito asociadas.</strong>
+                                Use el botón "Crear Nota Débito" en la parte superior para agregar cargos adicionales.
+                            </div>
+
+                            <field name="debit_note_ids" nolabel="1">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="date"/>
+                                    <field name="partner_id" widget="many2one_avatar"/>
+                                    <field name="contract_id"/>
+                                    <field name="concept"/>
+                                    <field name="base_amount" widget="monetary"/>
+                                    <field name="rate"/>
+                                    <field name="amount" widget="monetary"/>
+                                    <field name="tax_amount" widget="monetary" optional="hide"/>
+                                    <field name="amount_total" widget="monetary" sum="Total"/>
+                                    <field name="state" widget="badge"
+                                           decoration-success="state == 'invoiced'"
+                                           decoration-info="state == 'confirmed'"/>
+                                    <field name="invoice_id" optional="hide"/>
+                                    <button name="action_confirm" type="object"
+                                            string="Confirmar"
+                                            icon="fa-check"
+                                            invisible="state != 'draft'"/>
+                                    <button name="action_create_invoice" type="object"
+                                            string="Facturar"
+                                            icon="fa-file-text-o"
+                                            invisible="state != 'confirmed'"/>
+                                    <button name="action_view_invoice" type="object"
+                                            string="Ver Factura"
+                                            icon="fa-external-link"
+                                            invisible="not invoice_id"/>
+                                </list>
+                            </field>
+                        </page>
+
+                        <!-- PESTAÑA 4: PAGOS CREADOS -->
+                        <page string="Pagos Creados" name="payments"
+                              invisible="state != 'processed'">
+                            <field name="payment_ids" nolabel="1" readonly="1">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="date"/>
+                                    <field name="partner_id" widget="many2one_avatar"/>
+                                    <field name="amount" widget="monetary" sum="Total Pagado"/>
+                                    <field name="payment_type" widget="badge"/>
+                                    <field name="journal_id"/>
+                                    <field name="state" widget="badge"
+                                           decoration-success="state == 'posted'"
+                                           decoration-info="state == 'draft'"/>
+                                    <field name="ref" optional="hide"/>
+                                </list>
+                            </field>
+
+                            <group class="mt-3">
+                                <div class="alert alert-success">
+                                    <i class="fa fa-check-circle"/>
+                                    <strong>Proceso Completado</strong><br/>
+                                    Se han generado los pagos correspondientes. Puede revisar los detalles en la lista superior.
+                                </div>
+                            </group>
+                        </page>
+
+                        <!-- PESTAÑA 5: ANÁLISIS Y REPORTES -->
+                        <page string="Análisis" name="analysis"
+                              invisible="state in ('draft', 'cancelled')">
+                            <group>
+                                <group string="Resumen Financiero">
+                                    <label for="total_canon" string="Canon Total"/>
+                                    <div>
+                                        <field name="total_canon" widget="monetary" readonly="1" nolabel="1" class="oe_inline"/>
+                                    </div>
+
+                                    <label for="total_commission" string="Comisión Total"/>
+                                    <div>
+                                        <field name="total_commission" widget="monetary" readonly="1" nolabel="1" class="oe_inline"/>
+                                        <span class="text-muted ms-2">
+                                            (<span class="oe_inline">
+                                                <t t-esc="(total_commission / total_canon * 100).toFixed(2) if total_canon > 0 else 0"/>%
+                                            </span>)
+                                        </span>
+                                    </div>
+
+                                    <label for="total_taxes" string="Impuestos Total"/>
+                                    <div>
+                                        <field name="total_taxes" widget="monetary" readonly="1" nolabel="1" class="oe_inline"/>
+                                    </div>
+
+                                    <label for="total_novelties" string="Novedades Total"/>
+                                    <div>
+                                        <field name="total_novelties" widget="monetary" readonly="1" nolabel="1" class="oe_inline"/>
+                                    </div>
+
+                                    <label for="total_loans" string="Préstamos Total"/>
+                                    <div>
+                                        <field name="total_loans" widget="monetary" readonly="1" nolabel="1" class="oe_inline"/>
+                                    </div>
+
+                                    <label for="total_interest" string="Intereses Total"/>
+                                    <div>
+                                        <field name="total_interest" widget="monetary" readonly="1" nolabel="1" class="oe_inline"/>
+                                    </div>
+                                </group>
+
+                                <group string="Totales Netos">
+                                    <label for="total_received" string="Total Recibido"/>
+                                    <div>
+                                        <field name="total_received" widget="monetary" readonly="1" nolabel="1" class="oe_inline text-success"/>
+                                    </div>
+
+                                    <label for="total_to_pay" string="Total a Pagar"/>
+                                    <div>
+                                        <field name="total_to_pay" widget="monetary" readonly="1" nolabel="1" class="oe_inline text-primary" decoration-bf="1"/>
+                                    </div>
+                                </group>
+                            </group>
+
+                            <div class="row mt-3">
+                                <div class="col-12">
+                                    <div class="alert alert-info">
+                                        <h5><i class="fa fa-pie-chart"/> Distribución de Egresos</h5>
+                                        <ul class="mb-0">
+                                            <li>Comisiones: <strong><field name="total_commission" widget="monetary" readonly="1" nolabel="1"/></strong></li>
+                                            <li>Impuestos: <strong><field name="total_taxes" widget="monetary" readonly="1" nolabel="1"/></strong></li>
+                                            <li>Novedades/Descuentos: <strong><field name="total_novelties" widget="monetary" readonly="1" nolabel="1"/></strong></li>
+                                            <li>Préstamos Descontados: <strong><field name="total_loans" widget="monetary" readonly="1" nolabel="1"/></strong></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </page>
+                    </notebook>
+                </sheet>
+
+                <!-- CHATTER -->
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!--
+    NOTA: El action ya existe en bohio_mass_payment_views.xml como 'action_bohio_mass_payment'
+    No es necesario duplicarlo aquí. Las vistas se referencian automáticamente por ID.
+    -->
+
+</odoo>

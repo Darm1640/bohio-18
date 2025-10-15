@@ -1088,8 +1088,8 @@ Nota: Si el día no existe en el mes (ej: 31 en febrero), se usa el último día
             period_end = self._get_period_end_date(current_date, period_months, end_date)
 
             # Calcular monto prorrateado
-            if serial == 1 and self.prorate_first_period:
-                # Primer período con prorrateo
+            if serial == 1 and self.prorate_first_period and period_start.day != 1:
+                # Primer período con prorrateo (solo si NO inicia el día 1)
                 prorated_amount = self._compute_prorated_amount(
                     period_start, period_end, current_rental_fee, is_first=True
                 )
@@ -1134,7 +1134,13 @@ Nota: Si el día no existe en el mes (ej: 31 en febrero), se usa el último día
             }))
 
             # Avanzar al siguiente período
-            current_date = period_end + relativedelta(days=1)
+            # Si el primer período fue prorrateado (no empezó el día 1),
+            # el siguiente debe empezar el día 1 del mes siguiente
+            if serial == 1 and start_date.day != 1:
+                current_date = (period_end + relativedelta(days=1)).replace(day=1)
+            else:
+                current_date = period_end + relativedelta(days=1)
+
             serial += 1
 
             # Prevenir loops infinitos
@@ -1145,17 +1151,26 @@ Nota: Si el día no existe en el mes (ej: 31 en febrero), se usa el último día
 
     def _get_period_end_date(self, start_date, period_months, contract_end_date):
         """
-        Calcula la fecha de fin del período.
+        Calcula la fecha de fin del período MENSUAL CALENDARIO.
+
+        Lógica:
+        - Si es el primer día del mes: período va del 1 al último día del mes
+        - Si NO es el primer día: período va hasta el último día del mes actual
+        - Períodos posteriores van del 1 al último día del mes
 
         Ejemplos:
-        - start_date=2025-01-15, period_months=1 -> 2025-02-14 (30 días completos)
+        - start_date=2025-01-15, period_months=1 -> 2025-01-31 (fin del mes actual)
+        - start_date=2025-02-01, period_months=1 -> 2025-02-28 (mes completo)
         - start_date=2025-01-01, period_months=1 -> 2025-01-31 (mes calendario completo)
-        - start_date=2025-01-31, period_months=1 -> 2025-02-28 (ajuste por días del mes)
         """
-        # Calcular el día anterior al mismo día del mes siguiente
-        # Ejemplo: 15 Ene + 1 mes = 15 Feb, menos 1 día = 14 Feb
-        next_billing_date = start_date + relativedelta(months=period_months)
-        period_end = next_billing_date + relativedelta(days=-1)
+        # Si el contrato inicia el día 1, cubrir el mes completo
+        if start_date.day == 1:
+            # Calcular último día del mes según period_months
+            target_month = start_date + relativedelta(months=period_months - 1)
+            period_end = target_month + relativedelta(day=31)  # Último día del mes
+        else:
+            # Si inicia en cualquier otro día, ir hasta el fin del mes actual
+            period_end = start_date + relativedelta(day=31)  # Último día del mes de inicio
 
         return min(period_end, contract_end_date)
 
