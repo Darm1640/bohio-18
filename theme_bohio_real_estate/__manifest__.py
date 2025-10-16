@@ -101,11 +101,15 @@
 
             # JavaScript - DOM Manipulation (usa utils)
             'theme_bohio_real_estate/static/src/js/dom/markers.js',
-            # 'theme_bohio_real_estate/static/src/js/dom/property_cards.js',  # ARCHIVO NO EXISTE
 
-            # JavaScript - Components (componentes reutilizables)
-            # 'theme_bohio_real_estate/static/src/js/components/property_card_enhanced.js',  # ARCHIVO NO EXISTE
-            # 'theme_bohio_real_estate/static/src/js/components/property_card_clean.js',  # ARCHIVO NO EXISTE
+            # JavaScript - Services (servicios centralizados - REFACTORIZACIÓN)
+            'theme_bohio_real_estate/static/src/js/services/property_service.js',
+            'theme_bohio_real_estate/static/src/js/services/map_service.js',
+            'theme_bohio_real_estate/static/src/js/services/wishlist_service.js',
+
+            # JavaScript - Components (componentes reutilizables - REFACTORIZACIÓN)
+            'theme_bohio_real_estate/static/src/js/components/property_card.js',
+            'theme_bohio_real_estate/static/src/js/components/property_gallery.js',
 
             # JavaScript - Widgets (PublicWidget - usa utils y dom)
             'theme_bohio_real_estate/static/src/js/widgets/map_widget.js',

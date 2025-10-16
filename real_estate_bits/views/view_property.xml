@@ -625,8 +625,7 @@
 
 
                     <page string="Documentos">
-                        <field name="property_attachment_ids"
-                               context="{'default_res_model': 'product.template', 'default_res_id': id, 'default_is_property_document': True}">
+                        <field name="property_attachment_ids" context="{'default_res_model': 'product.template', 'default_res_id': id, 'default_is_property_document': True}">
                             <list editable="bottom">
                                 <field name="name"/>
                                 <field name="document_type"/>

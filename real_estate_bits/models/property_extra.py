@@ -14,7 +14,6 @@ class PropertyType(models.Model):
     
     @api.depends("name", "parent_id")
     def _compute_display_name(self):
-        """Forms complete name of property type from parent to child."""
         for rec in self:
             if rec.parent_id:
                 rec.display_name = f"{rec.parent_id.display_name} / {rec.name}"
@@ -22,7 +21,6 @@ class PropertyType(models.Model):
                 rec.display_name = rec.name
 
     name = fields.Char(string="Nombre del Tipo", required=True)
-    display_name = fields.Char("Nombre Completo", compute="_compute_display_name", recursive=True, store=True)
     parent_id = fields.Many2one("property.type", "Tipo Padre", ondelete="cascade")
     child_ids = fields.One2many("property.type", "parent_id", "Tipos Hijos")
     parent_left = fields.Integer("Left Parent", index=True)
@@ -69,8 +67,6 @@ class PropertyType(models.Model):
     def _create_product_category(self):
         """Crear categoría de producto asociada"""
         self.ensure_one()
-
-        # Buscar o crear categoría padre "Tipos de Propiedades"
         parent_category = self.env['product.category'].search([
             ('name', '=', 'Tipos de Propiedades'),
             ('parent_id', '=', False)
@@ -80,19 +76,13 @@ class PropertyType(models.Model):
             parent_category = self.env['product.category'].create({
                 'name': 'Tipos de Propiedades'
             })
-
-        # Determinar categoría padre para este tipo
         category_parent_id = parent_category.id
         if self.parent_id and self.parent_id.product_category_id:
             category_parent_id = self.parent_id.product_category_id.id
-
-        # Crear categoría
         category = self.env['product.category'].create({
             'name': self.name,
             'parent_id': category_parent_id,
-            #'property_type': 'product'
         })
-
         self.product_category_id = category.id
     
     def _update_product_category(self):
