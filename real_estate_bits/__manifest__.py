@@ -33,7 +33,6 @@
         "views/view_res_config_settings.xml",
         "wizard/modify_contract_wizard_views.xml",
         "views/menu_items.xml",
-        "views/templates.xml",
         "views/property_dashboard_views.xml",
         "views/bohio_mass_payment_views.xml",
         "views/bohio_mass_payment_actions.xml",

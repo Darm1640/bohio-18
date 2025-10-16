@@ -7,10 +7,11 @@
 // Basado en el patrón oficial de Odoo 18
 
 import publicWidget from "@web/legacy/js/public/public_widget";
-import { rpc } from "@web/core/network/rpc";
 
 import { getElement, clearElement } from '../utils/dom_helpers';
-import { createPropertyCard, createEmptyState, createMapPopup } from '../dom/property_cards';
+import { createPropertyCard, createEmptyState, createMapPopup } from '../components/property_card';
+import PropertyService from '../services/property_service';
+import MapService from '../services/map_service';
 
 // =============================================================================
 // HOMEPAGE PROPERTIES WIDGET
@@ -102,7 +103,7 @@ const HomepagePropertiesWidget = publicWidget.Widget.extend({
                 return;
             }
 
-            const data = await rpc('/api/properties/arriendo', { limit: 4 });
+            const data = await PropertyService.loadByType('rent', { limit: 4 });
 
             if (data.success && data.properties && data.properties.length > 0) {
                 this._renderProperties(container, data.properties);
@@ -131,7 +132,7 @@ const HomepagePropertiesWidget = publicWidget.Widget.extend({
                 return;
             }
 
-            const data = await rpc('/api/properties/venta-usada', { limit: 4 });
+            const data = await PropertyService.loadByType('sale', { limit: 4 });
 
             if (data.success && data.properties && data.properties.length > 0) {
                 this._renderProperties(container, data.properties);
@@ -160,7 +161,7 @@ const HomepagePropertiesWidget = publicWidget.Widget.extend({
                 return;
             }
 
-            const data = await rpc('/api/properties/proyectos', { limit: 4 });
+            const data = await PropertyService.loadByType('projects', { limit: 4 });
 
             if (data.success && data.properties && data.properties.length > 0) {
                 this._renderProperties(container, data.properties);
