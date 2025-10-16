@@ -6,7 +6,7 @@ import { rpc } from "@web/core/network/rpc";
 // Importar utilidades centralizadas
 import { CAROUSEL_INTERVAL } from './utils/constants';
 import { createElement } from './utils/dom_helpers';
-import PropertyCardClean from './components/property_card_clean';
+import { PropertyCard } from './components/property_card';
 
 /**
  * BOHIO Property Carousels Widget
@@ -232,23 +232,18 @@ publicWidget.registry.PropertyCarouselWidget = publicWidget.Widget.extend({
      * @private
      */
     _createPropertyCardElement(property) {
-        // Usar la nueva clase PropertyCardClean para crear tarjetas limpias
-        const cleanCard = new PropertyCardClean(property, {
+        // Usar PropertyCard en modo 'clean' para crear tarjetas limpias
+        const propertyCard = new PropertyCard(property, {
+            mode: 'clean',
             imageQuality: 'medium',
             showActions: true,
-            enableCompare: true,
-            enableWishlist: true
+            showCompare: true,
+            showWishlist: true
         });
 
-        // Crear el contenedor de columna para el carrusel
-        // col-12 para móvil, col-md-6 para tablet, col-lg-3 para desktop
-        const colDiv = createElement('div', 'col-12 col-sm-6 col-md-6 col-lg-3 mb-4');
-
-        // Crear la tarjeta limpia y agregarla al contenedor
-        const card = cleanCard.create();
-        colDiv.appendChild(card);
-
-        return colDiv;
+        // La clase PropertyCard ya devuelve el contenedor col-* completo
+        // Directamente retornamos la card creada
+        return propertyCard.create();
     },
 
     /**
