@@ -36,7 +36,7 @@ class PropertySearchController(http.Controller):
 
     SEARCH_CONTEXTS = {
         'public': {
-            'name': _('Búsqueda Pública'),
+            'name': 'Búsqueda Pública',
             'allowed_states': ['free'],
             'show_price': True,
             'show_contact': True,
@@ -44,7 +44,7 @@ class PropertySearchController(http.Controller):
             'cache_ttl': 300,  # 5 minutos
         },
         'admin': {
-            'name': _('Búsqueda Administrativa'),
+            'name': 'Búsqueda Administrativa',
             'allowed_states': ['free', 'reserved', 'sold', 'on_lease'],
             'show_price': True,
             'show_contact': True,
@@ -52,7 +52,7 @@ class PropertySearchController(http.Controller):
             'cache_ttl': 0,  # Sin cache
         },
         'project': {
-            'name': _('Búsqueda por Proyecto'),
+            'name': 'Búsqueda por Proyecto',
             'allowed_states': ['free'],
             'filter_by_project': True,
             'show_price': True,
@@ -61,7 +61,7 @@ class PropertySearchController(http.Controller):
             'cache_ttl': 600,  # 10 minutos
         },
         'quick': {
-            'name': _('Búsqueda Rápida'),
+            'name': 'Búsqueda Rápida',
             'allowed_states': ['free'],
             'show_price': False,
             'show_contact': False,
