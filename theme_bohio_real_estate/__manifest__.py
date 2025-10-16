@@ -109,6 +109,7 @@
             # JavaScript - Components (componentes reutilizables - REFACTORIZACIÓN)
             'theme_bohio_real_estate/static/src/js/components/property_card.js',
             'theme_bohio_real_estate/static/src/js/components/property_gallery.js',
+            'theme_bohio_real_estate/static/src/js/components/property_gallery_enhanced.js',
 
             # JavaScript - Widgets (PublicWidget - usa utils y dom)
             'theme_bohio_real_estate/static/src/js/widgets/map_widget.js',
@@ -128,7 +129,9 @@
             'theme_bohio_real_estate/static/src/js/property_detail_gallery.js',
             'theme_bohio_real_estate/static/src/js/property_wishlist.js',
             'theme_bohio_real_estate/static/src/js/property_carousels.js',
+            'theme_bohio_real_estate/static/src/js/init_carousels.js',
             'theme_bohio_real_estate/static/src/js/property_detail_modals.js',
+            'theme_bohio_real_estate/static/src/js/advanced_image_zoom.js',
 
             # ========================================================================
             # CSS - PROPERTY SNIPPETS Y CAROUSELS
