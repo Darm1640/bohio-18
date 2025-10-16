@@ -277,7 +277,7 @@
                                       decoration-success="not skip_payment and net_to_pay > 0"
                                       decoration-warning="processed">
                                     <field name="selected" widget="boolean_toggle"
-                                           invisible="state != 'confirmed'"/>
+                                           invisible="parent.state != 'confirmed'"/>
                                     <field name="contract_id"/>
                                     <field name="partner_id" widget="many2one_avatar"/>
                                     <field name="partner_percentage"/>
@@ -319,11 +319,11 @@
                                     <button name="action_update_paid_canon" type="object"
                                             icon="fa-refresh"
                                             title="Actualizar Canon Pagado"
-                                            invisible="state == 'processed'"/>
+                                            invisible="parent.state == 'processed'"/>
                                     <button name="action_mark_tax_reconciled" type="object"
                                             icon="fa-check-square-o"
                                             title="Marcar Estado Conciliación"
-                                            invisible="state == 'processed'"/>
+                                            invisible="parent.state == 'processed'"/>
                                 </list>
                             </field>
 
