@@ -91,7 +91,7 @@ class BohioPropertyInteractions(WebsiteSaleWishlist):
                 }
 
             # Usar el método padre para agregar
-            result = super(BohioPropertyWishlist, self).add_to_wishlist(
+            result = super(BohioPropertyInteractions, self).add_to_wishlist(
                 product_id=property_rec.product_variant_id.id,
                 **kw
             )

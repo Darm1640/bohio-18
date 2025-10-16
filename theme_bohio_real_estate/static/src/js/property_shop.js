@@ -692,7 +692,7 @@ class PropertyShop {
                     <div class="card-body d-flex flex-column">
                         <h5 class="card-title mb-2">
                             <a href="/property/${property.id}" class="text-decoration-none" style="color: #E31E24; font-weight: 600;">
-                                ${property.name.substring(0, 50)}${property.name.length > 50 ? '...' : ''}
+                                ${(property.name || 'Propiedad sin nombre').substring(0, 50)}${(property.name || '').length > 50 ? '...' : ''}
                             </a>
                         </h5>
 
@@ -716,7 +716,7 @@ class PropertyShop {
                         ` : ''}
 
                         <!-- OBSERVACIONES PRIMERO -->
-                        ${property.description ? `
+                        ${property.description && typeof property.description === 'string' && property.description.trim() ? `
                             <div class="alert alert-light mb-3 p-2" style="border-left: 3px solid #E31E24;">
                                 <small class="fw-bold text-danger d-block mb-1">
                                     <i class="bi bi-chat"></i> Observaciones:

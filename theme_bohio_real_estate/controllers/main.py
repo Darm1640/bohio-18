@@ -1100,6 +1100,105 @@ class BohioRealEstateController(http.Controller):
             'total': len(serialized)
         }
 
+    # -------------------------
+    # Propiedades agrupadas por tipo (Homepage)
+    # -------------------------
+    @http.route(['/api/properties/grouped_by_type'], type='json', auth='public', website=True, csrf=False)
+    def api_properties_grouped_by_type(self, limit_per_type=4):
+        """
+        Endpoint para obtener propiedades agrupadas por tipo para homepage
+        Retorna un diccionario con tipos de propiedad como keys y arrays de propiedades como values
+
+        Args:
+            limit_per_type: Número máximo de propiedades por tipo (default: 4)
+
+        Returns:
+            {
+                'success': True,
+                'grouped_properties': {
+                    'apartment': [{...}, {...}],
+                    'house': [{...}, {...}],
+                    'lot': [{...}, {...}],
+                    ...
+                },
+                'property_types': [
+                    {'value': 'apartment', 'label': 'Apartamento', 'count': 150},
+                    {'value': 'house', 'label': 'Casa', 'count': 80},
+                    ...
+                ]
+            }
+        """
+        _logger.info(f"[HOMEPAGE] Cargando propiedades agrupadas por tipo (limit_per_type={limit_per_type})")
+
+        Property = request.env['product.template'].sudo()
+        limit_per_type = int(limit_per_type)
+
+        # Dominio base: propiedades disponibles con ficha completa
+        base_domain = [
+            ('is_property', '=', True),
+            ('active', '=', True),
+            ('state', '=', 'free'),
+            ('image_1920', '!=', False),  # Solo con imagen
+        ]
+
+        # Obtener todos los tipos de propiedad con contadores
+        property_types_data = Property.read_group(
+            base_domain,
+            ['property_type'],
+            ['property_type']
+        )
+
+        # Obtener labels de los tipos
+        type_labels = dict(Property._fields['property_type'].selection)
+
+        # Preparar info de tipos con contadores
+        property_types_info = []
+        grouped_properties = {}
+
+        for type_data in property_types_data:
+            property_type_value = type_data.get('property_type')
+            if not property_type_value:
+                continue
+
+            count = type_data.get('property_type_count', 0)
+            label = type_labels.get(property_type_value, property_type_value)
+
+            property_types_info.append({
+                'value': property_type_value,
+                'label': label,
+                'count': count
+            })
+
+            # Buscar propiedades de este tipo
+            type_domain = base_domain + [('property_type', '=', property_type_value)]
+
+            properties_data = Property.search_read(
+                type_domain,
+                fields=self._homepage_fields(),
+                limit=limit_per_type,
+                order='write_date desc'
+            )
+
+            # Serializar propiedades
+            grouped_properties[property_type_value] = self._serialize_properties_fast(
+                properties_data,
+                'public'
+            )
+
+            _logger.info(f"[HOMEPAGE] Tipo '{label}': {len(properties_data)} propiedades cargadas (total: {count})")
+
+        # Ordenar tipos por cantidad descendente
+        property_types_info.sort(key=lambda x: x['count'], reverse=True)
+
+        _logger.info(f"[HOMEPAGE] Total tipos con propiedades: {len(property_types_info)}")
+
+        return {
+            'success': True,
+            'grouped_properties': grouped_properties,
+            'property_types': property_types_info,
+            'limit_per_type': limit_per_type
+        }
+
     @http.route(['/bohio/api/properties/map'], type='json', auth='public', website=True)
     def api_get_properties_for_map(self, **params):
         """
@@ -2077,10 +2176,17 @@ class BohioRealEstateController(http.Controller):
                     # Para venta, usar net_price (Precio Final de Venta)
                     price = float(prop.net_price) if prop.net_price else 0
 
+                # Asegurar que description sea string
+                description_text = ''
+                if prop.description:
+                    description_text = str(prop.description) if prop.description else ''
+                elif prop.note:
+                    description_text = str(prop.note) if prop.note else ''
+
                 properties_data.append({
                     'id': prop.id,
                     'name': prop.name,
-                    'description': prop.description or prop.note or '',
+                    'description': description_text,
                     'price': price,
                     'type_service': type_service,
                     'bedrooms': int(prop.num_bedrooms) if prop.num_bedrooms else 0,

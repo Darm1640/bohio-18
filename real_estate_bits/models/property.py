@@ -29,7 +29,15 @@ class Property(models.Model):
     _description = "Propiedad"
     _order = "sequence, id"
 
-
+    
+    @api.depends('property_type_id')
+    def _compute_default_code(self):
+        """Generar código automático BOH-XXX"""
+        for rec in self:
+            if not rec.default_code and rec.id:
+                sequence = self.env['ir.sequence'].next_by_code('property.code') or str(rec.id).zfill(3)
+                rec.default_code = f"BOH-{sequence}"
+                
     # =================== BASIC INFO ===================
     state = fields.Selection([
         ("free", "Disponible"), 
@@ -41,16 +49,9 @@ class Property(models.Model):
 
     sequence = fields.Integer("Secuencia", tracking=True, index=True)
     
-    # Código interno automático
+    # Código interno 
     default_code = fields.Char("Código Interno", compute="_compute_default_code", store=True, readonly=False, tracking=True, index='trigram')
-    
-    @api.depends('property_type_id')
-    def _compute_default_code(self):
-        """Generar código automático BOH-XXX"""
-        for rec in self:
-            if not rec.default_code and rec.id:
-                sequence = self.env['ir.sequence'].next_by_code('property.code') or str(rec.id).zfill(3)
-                rec.default_code = f"BOH-{sequence}"
+
 
     partner_id = fields.Many2one("res.partner", "Propietario Principal", tracking=True, index=True)
     region_id = fields.Many2one("region.region", "Barrio", tracking=True, index=True)

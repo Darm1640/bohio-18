@@ -42,7 +42,8 @@ class PropertyType(models.Model):
         ('building', 'Edificio'),
         ('country_lot', 'Lote Campestre'),
         ('blueprint', 'Sobre Plano'),
-        ('plot', 'Parcela')
+        ('plot', 'Parcela'),
+        ('project', 'Proyecto')
     ], string='Tipo de Inmueble', required=True)
     product_category_id = fields.Many2one("product.category", "Categoría de Producto", readonly=True)
     
