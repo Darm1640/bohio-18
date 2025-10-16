@@ -2472,11 +2472,11 @@ class BohioRealEstateController(http.Controller):
             if property_obj.property_type_id:
                 lead_vals['desired_property_type_id'] = property_obj.property_type_id.id
             if property_obj.num_bedrooms:
-                lead_vals['num_bedrooms_min'] = property_obj.num_bedrooms
+                lead_vals['min_bedrooms'] = property_obj.num_bedrooms
             if property_obj.num_bathrooms:
-                lead_vals['num_bathrooms_min'] = property_obj.num_bathrooms
+                lead_vals['min_bathrooms'] = property_obj.num_bathrooms
             if property_obj.property_area:
-                lead_vals['property_area_min'] = property_obj.property_area
+                lead_vals['min_area'] = property_obj.property_area
 
             lead = request.env['crm.lead'].sudo().create(lead_vals)
 
