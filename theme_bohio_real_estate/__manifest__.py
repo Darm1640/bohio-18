@@ -89,7 +89,6 @@
             'theme_bohio_real_estate/static/src/scss/property_detail.scss',
             'theme_bohio_real_estate/static/src/scss/property_shop.scss',
             'theme_bohio_real_estate/static/src/scss/components/_property_card_enhanced.scss',
-            'theme_bohio_real_estate/static/src/scss/components/_property_card_clean.scss',
 
             # JavaScript - Utils (Orden: utils primero, luego DOM, luego widgets)
             'theme_bohio_real_estate/static/src/js/utils/constants.js',
