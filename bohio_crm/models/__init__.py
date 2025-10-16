@@ -6,3 +6,4 @@ from . import crm_salesperson_dashboard
 from . import product_template
 from . import property_compare
 from . import property_compare_wizard
+from . import account_move_reports

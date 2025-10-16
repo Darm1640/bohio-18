@@ -320,9 +320,7 @@ export class PropertyFilters extends Component {
     }
 }
 
-// Template del componente
+
 PropertyFilters.template = "theme_bohio_real_estate.PropertyFiltersTemplate";
 
-// Registrar componente en el registry de componentes públicos
-// Esto permite que sea montado automáticamente en páginas con <owl-component name="PropertyFilters"/>
 registry.category("public_components").add("PropertyFilters", PropertyFilters);

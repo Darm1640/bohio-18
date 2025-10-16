@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Reporte personalizado para Factura Electrónica DIAN - Bohío Consultores -->
+    <record id="paperformat_factura_electronica" model="report.paperformat">
+        <field name="name">Factura Electrónica DIAN - Bohío</field>
+        <field name="default" eval="True"/>
+        <field name="format">Letter</field>
+        <field name="page_height">0</field>
+        <field name="page_width">0</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">40</field>
+        <field name="margin_bottom">30</field>
+        <field name="margin_left">7</field>
+        <field name="margin_right">7</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">35</field>
+        <field name="dpi">90</field>
+    </record>
+
+    <!-- Herencia del reporte DIAN para personalizarlo -->
+    <template id="report_factura_electronica_bohio" inherit_id="l10n_co_dian.report_invoice_document" primary="True">
+
+        <!-- Personalizar encabezado con estilo Bohío -->
+        <xpath expr="//t[@t-set='layout_document_title']" position="replace">
+            <t t-set="layout_document_title">
+                <div class="text-center">
+                    <h2 class="mb-0">
+                        <span t-if="not proforma"></span>
+                        <span t-else="">PROFORMA - </span>
+                        <span>FACTURA ELECTRÓNICA DE VENTA</span>
+                    </h2>
+                    <h3 class="text-danger mt-2">
+                        <strong t-if="o.name != '/'" t-field="o.name">FIP4034</strong>
+                    </h3>
+                </div>
+            </t>
+        </xpath>
+
+        <!-- Mejorar la sección de información del documento -->
+        <xpath expr="//div[@id='informations']" position="before">
+            <div class="row mt-3 mb-3 p-3 bg-light border">
+                <div class="col-6">
+                    <strong>Forma de pago:</strong>
+                    <span t-if="o.l10n_co_edi_is_direct_payment">Contado</span>
+                    <span t-else="">Crédito</span>
+                </div>
+                <div class="col-6">
+                    <strong>Fecha de emisión:</strong>
+                    <span t-field="o.invoice_date"/>
+                </div>
+                <div class="col-6 mt-2" t-if="o.invoice_date_due">
+                    <strong>Fecha vencimiento:</strong>
+                    <span t-field="o.invoice_date_due"/>
+                </div>
+                <div class="col-6 mt-2" t-if="o.l10n_co_dian_post_time">
+                    <strong>Fecha generación:</strong>
+                    <span t-field="o.l10n_co_dian_post_time"/>
+                </div>
+            </div>
+        </xpath>
+
+        <!-- Mejorar la información del cliente -->
+        <xpath expr="//div[@id='informations']" position="after">
+            <div class="client-info-bohio mt-3 p-3 border">
+                <h3 class="text-primary mb-3">Información del Cliente</h3>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-2">
+                            <strong>Cliente:</strong> <span t-field="o.partner_id.name"/>
+                        </div>
+                        <div class="mb-2">
+                            <strong>NIT o C.C:</strong> <span t-field="o.partner_id.vat"/>
+                        </div>
+                        <div class="mb-2" t-if="o.partner_id.phone">
+                            <strong>Teléfono:</strong> <span t-field="o.partner_id.phone"/>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-2" t-if="o.partner_id.street">
+                            <strong>Dirección:</strong> <span t-field="o.partner_id.street"/>
+                        </div>
+                        <div class="mb-2" t-if="o.partner_id.city">
+                            <strong>Ciudad:</strong> <span t-field="o.partner_id.city"/>
+                        </div>
+                        <div class="mb-2" t-if="o.partner_id.email">
+                            <strong>E-Mail:</strong> <span t-field="o.partner_id.email"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+
+        <!-- Mejorar la presentación de las líneas -->
+        <xpath expr="//table[@name='invoice_line_table']/thead/tr" position="replace">
+            <tr class="bg-primary text-white">
+                <th class="text-start">No.</th>
+                <th class="text-start">Descripción</th>
+                <th class="text-center">Cantidad</th>
+                <th class="text-end">Valor Unitario</th>
+                <th class="text-end">Valor Total</th>
+            </tr>
+        </xpath>
+
+        <xpath expr="//table[@name='invoice_line_table']/tbody//tr[1]" position="before">
+            <t t-set="line_number" t-value="0"/>
+        </xpath>
+
+        <xpath expr="//table[@name='invoice_line_table']/tbody//tr[1]/td[1]" position="before">
+            <t t-set="line_number" t-value="line_number + 1"/>
+            <td class="text-start">
+                <span t-esc="line_number"/>
+            </td>
+        </xpath>
+
+        <!-- Personalizar sección CUFE/CUDE -->
+        <xpath expr="//div[@id='complement']" position="replace">
+            <div id="complement" class="mt-4 p-3 border bg-light">
+                <t t-set="dian_values" t-value="o._l10n_co_dian_get_extra_invoice_report_values()"/>
+
+                <div class="row">
+                    <div class="col-md-4 text-center">
+                        <img alt="Código QR" t-att-src="dian_values.get('barcode_src')" class="img-fluid"/>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="dian-resolution-info">
+                            <h5 class="text-primary mb-3">Información de Resolución DIAN</h5>
+                            <ul class="list-unstyled">
+                                <li class="mb-1">
+                                    <strong>Resolución DIAN Nro:</strong>
+                                    <span t-out="o.journal_id.l10n_co_edi_dian_authorization_number">18760000001</span>
+                                </li>
+                                <li class="mb-1">
+                                    <strong>Vigencia:</strong> Desde
+                                    <span t-out="o.journal_id.l10n_co_edi_dian_authorization_date">2019-01-01</span>
+                                    hasta <span t-out="o.journal_id.l10n_co_edi_dian_authorization_end_date">2030-12-31</span>
+                                </li>
+                                <li class="mb-1">
+                                    <strong>Rango de numeración:</strong> Del
+                                    <span t-out="o.journal_id.code + str(o.journal_id.l10n_co_edi_min_range_number)">FIP1</span>
+                                    al <span t-out="o.journal_id.code + str(o.journal_id.l10n_co_edi_max_range_number)">FIP5000</span>
+                                </li>
+                                <li class="mb-1">
+                                    <strong>Gran Contribuyente:</strong>
+                                    <span t-if="o.company_id.partner_id.l10n_co_edi_large_taxpayer">Sí</span>
+                                    <span t-else="">No</span>
+                                </li>
+                                <li class="mb-1">
+                                    <strong>Régimen Tributario:</strong>
+                                    <span t-out="', '.join(o.company_id.partner_id.l10n_co_edi_obligation_type_ids.mapped('description'))">Régimen Común</span>
+                                </li>
+                                <li class="mb-1">
+                                    <strong>Responsabilidad Fiscal:</strong>
+                                    <span t-out="o.company_id.partner_id._l10n_co_edi_get_fiscal_regimen_name()">IVA</span>
+                                </li>
+                                <li class="mb-1">
+                                    <strong>Actividad Económica:</strong>
+                                    <span t-out="o.company_id.l10n_co_edi_header_actividad_economica">4390</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mt-3 p-3 bg-white border">
+                    <div class="col-12">
+                        <h5 class="text-danger mb-3">Identificación del Documento Electrónico</h5>
+                        <ul class="list-unstyled">
+                            <li class="mb-2">
+                                <strong class="text-uppercase">
+                                    <span t-out="o.l10n_co_dian_identifier_type.upper()">CUFE</span>:
+                                </strong>
+                                <br/>
+                                <code class="text-break" t-out="dian_values.get('identifier')">
+                                    6c33aba6cd0086c0af774f5ff5e3535e16dc9a753df6bdd8da3d5d242ccee701
+                                </code>
+                            </li>
+                            <li class="mb-1">
+                                <strong>Fecha de firma digital:</strong>
+                                <span t-out="dian_values.get('signing_datetime')">2024-03-15 15:43:58</span>
+                            </li>
+                            <li class="mb-1">
+                                <strong>Fecha de emisión:</strong>
+                                <span t-out="o.l10n_co_dian_post_time">2024-03-15 15:43:50</span>
+                            </li>
+                            <li class="mb-1">
+                                <strong>Generado por:</strong> Software Propio
+                            </li>
+                            <li class="mb-1">
+                                <strong>NIT Proveedor Tecnológico:</strong>
+                                <span t-if="o.company_id.l10n_co_edi_header_gran_contribuyente">
+                                    BIT Consulting - 830005677
+                                </span>
+                                <span t-else="">Software Propio</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Notas legales -->
+                <div class="row mt-3">
+                    <div class="col-12 p-3 bg-warning bg-opacity-10 border">
+                        <h6 class="text-dark"><strong>Notas Legales:</strong></h6>
+                        <ul class="small mb-0">
+                            <li>
+                                <strong>Tipo de Entidad:</strong> Régimen Común
+                            </li>
+                            <li>
+                                Las partes acuerdan que este documento presta mérito ejecutivo.
+                            </li>
+                            <li>
+                                El presente documento es una factura de venta electrónica y se asemeja
+                                para todos los efectos legales a una letra de cambio.
+                            </li>
+                            <li>
+                                Después del vencimiento se cobran intereses moratorios según la ley colombiana.
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+
+    </template>
+
+    <!-- Acción de reporte específica para Bohío -->
+    <record id="action_report_factura_electronica_bohio" model="ir.actions.report">
+        <field name="name">Factura Electrónica Bohío</field>
+        <field name="model">account.move</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">bohio_crm.report_factura_electronica_bohio</field>
+        <field name="report_file">bohio_crm.report_factura_electronica_bohio</field>
+        <field name="binding_model_id" ref="account.model_account_move"/>
+        <field name="binding_type">report</field>
+        <field name="paperformat_id" ref="paperformat_factura_electronica"/>
+    </record>
+
+</odoo>

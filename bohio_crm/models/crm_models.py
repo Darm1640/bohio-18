@@ -1996,10 +1996,7 @@ class CrmTeam(models.Model):
             })
 
 
-# ELIMINADO: CrmDashboard - usar crm.salesperson.dashboard en su lugar
 
-
-# ELIMINADO: CrmAnalytics - funcionalidad incompleta, usar crm.salesperson.dashboard
 
 
 # Agregar métodos del timeline al CrmLead

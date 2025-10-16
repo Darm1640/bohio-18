@@ -16,7 +16,7 @@
 window.openShareModal = function() {
     const modalEl = document.getElementById('shareModal');
     if (!modalEl) {
-        console.warn('⚠️ Modal de compartir no encontrado');
+        console.warn('Modal de compartir no encontrado');
         return;
     }
 
@@ -25,18 +25,26 @@ window.openShareModal = function() {
 };
 
 /**
- * Copiar link al portapapeles
+ * Copiar link al portapapeles usando Clipboard API moderna
+ * Requiere HTTPS o localhost
  */
-window.copyToClipboard = function() {
+window.copyToClipboard = async function() {
     const linkInput = document.getElementById('propertyShareLink');
-    if (!linkInput) return;
+    if (!linkInput) {
+        console.error('Campo de enlace no encontrado');
+        return;
+    }
 
-    // Seleccionar y copiar
-    linkInput.select();
-    linkInput.setSelectionRange(0, 99999); // Para móviles
+    // Verificar si Clipboard API está disponible
+    if (!navigator.clipboard) {
+        console.error('Clipboard API no disponible. Requiere HTTPS o localhost.');
+        alert('La función de copiar requiere una conexión segura (HTTPS).');
+        return;
+    }
 
     try {
-        document.execCommand('copy');
+        // Copiar usando Clipboard API moderna
+        await navigator.clipboard.writeText(linkInput.value);
 
         // Mostrar mensaje de éxito
         const successMsg = document.getElementById('copySuccess');
@@ -46,8 +54,11 @@ window.copyToClipboard = function() {
                 successMsg.style.display = 'none';
             }, 3000);
         }
+
+        console.log('Enlace copiado al portapapeles');
     } catch (err) {
-        console.error('❌ Error al copiar:', err);
+        console.error('Error al copiar:', err);
+        alert('No se pudo copiar el enlace. Por favor, cópialo manualmente.');
     }
 };
 
@@ -116,7 +127,7 @@ window.shareViaEmail = function() {
 window.openReportModal = function() {
     const modalEl = document.getElementById('reportModal');
     if (!modalEl) {
-        console.warn('⚠️ Modal de reportar no encontrado');
+        console.warn('Modal de reportar no encontrado');
         return;
     }
 
@@ -174,7 +185,7 @@ window.submitReport = async function() {
 
         if (response.ok) {
             // Éxito
-            alert('✅ Reporte enviado exitosamente. Gracias por ayudarnos a mejorar.');
+            alert('Reporte enviado exitosamente. Gracias por ayudarnos a mejorar.');
 
             // Cerrar modal
             const modalEl = document.getElementById('reportModal');
@@ -192,8 +203,8 @@ window.submitReport = async function() {
         submitBtn.innerHTML = originalText;
 
     } catch (error) {
-        console.error('❌ Error al enviar reporte:', error);
-        alert('❌ Error al enviar el reporte. Por favor intenta de nuevo.');
+        console.error('Error al enviar reporte:', error);
+        alert('Error al enviar el reporte. Por favor intenta de nuevo.');
 
         // Restaurar botón
         const submitBtn = document.querySelector('#reportModal button[onclick="submitReport()"]');
@@ -214,7 +225,7 @@ window.toggleMapView = function() {
     const carouselContainer = document.querySelector('.property-gallery-container');
 
     if (!mapSection || !carouselContainer) {
-        console.error('❌ Elementos de mapa/carrusel no encontrados');
+        console.error('Elementos de mapa/carrusel no encontrados');
         return;
     }
 
@@ -240,4 +251,4 @@ window.toggleMapView = function() {
 // INICIALIZACIÓN
 // ============================================================================
 
-console.log('✅ Property Detail Modals cargado');
+console.log('Property Detail Modals cargado');

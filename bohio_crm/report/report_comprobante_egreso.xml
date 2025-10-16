@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Reporte para Comprobante de Egreso -->
+    <record id="paperformat_comprobante_egreso" model="report.paperformat">
+        <field name="name">Comprobante de Egreso - Bohío</field>
+        <field name="default" eval="True"/>
+        <field name="format">Letter</field>
+        <field name="page_height">0</field>
+        <field name="page_width">0</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">40</field>
+        <field name="margin_bottom">30</field>
+        <field name="margin_left">7</field>
+        <field name="margin_right">7</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">35</field>
+        <field name="dpi">90</field>
+    </record>
+
+    <record id="action_report_comprobante_egreso" model="ir.actions.report">
+        <field name="name">Comprobante de Egreso</field>
+        <field name="model">account.move</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">bohio_crm.report_comprobante_egreso_document</field>
+        <field name="report_file">bohio_crm.report_comprobante_egreso_document</field>
+        <field name="binding_model_id" ref="account.model_account_move"/>
+        <field name="binding_type">report</field>
+        <field name="paperformat_id" ref="paperformat_comprobante_egreso"/>
+    </record>
+
+    <template id="report_comprobante_egreso_document">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page bohio-comprobante-egreso">
+                        <!-- Encabezado del Documento -->
+                        <div class="document-header">
+                            <div class="row">
+                                <div class="col-7 company-info">
+                                    <div class="company-name">
+                                        <strong t-field="o.company_id.name">BOHÍO CONSULTORES</strong>
+                                    </div>
+                                    <div class="company-details">
+                                        <strong>NIT:</strong> <span t-field="o.company_id.vat">900.479.883-8</span><br/>
+                                        <t t-if="o.company_id.company_registry">
+                                            <strong>Matrícula N°:</strong> <span t-field="o.company_id.company_registry">115331</span><br/>
+                                        </t>
+                                        <strong>Dirección:</strong> <span t-field="o.company_id.street">CL 30 # 6 - 44 LC 1 CENTRO</span><br/>
+                                        <strong>Teléfono:</strong> <span t-field="o.company_id.phone">7917070</span>
+                                        <t t-if="o.company_id.mobile"> - <span t-field="o.company_id.mobile">3217403356</span></t>
+                                    </div>
+                                </div>
+                                <div class="col-5 document-type">
+                                    <h2 class="text-center">COMPROBANTE DE EGRESO</h2>
+                                    <div class="document-number text-center">
+                                        <span t-field="o.name">28849</span>
+                                    </div>
+                                    <div class="document-date">
+                                        <div class="date-item">
+                                            <small>DÍA</small><br/>
+                                            <strong t-esc="o.invoice_date.strftime('%d') if o.invoice_date else ''">10</strong>
+                                        </div>
+                                        <div class="date-item">
+                                            <small>MES</small><br/>
+                                            <strong t-esc="o.invoice_date.strftime('%m') if o.invoice_date else ''">08</strong>
+                                        </div>
+                                        <div class="date-item">
+                                            <small>AÑO</small><br/>
+                                            <strong t-esc="o.invoice_date.strftime('%Y') if o.invoice_date else ''">2022</strong>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Información del Cliente/Proveedor -->
+                        <div class="client-info mt-4">
+                            <h3>Información del Beneficiario</h3>
+                            <div class="row">
+                                <div class="col-3 info-label">Cliente:</div>
+                                <div class="col-9"><span t-field="o.partner_id.name">ALFONSO GARCES ZULUAGA</span></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3 info-label">NIT o C.C:</div>
+                                <div class="col-9"><span t-field="o.partner_id.vat">70160738</span></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3 info-label">Teléfono:</div>
+                                <div class="col-9">
+                                    <span t-field="o.partner_id.phone">7842125</span>
+                                    <t t-if="o.partner_id.mobile"> / <span t-field="o.partner_id.mobile"/></t>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Observaciones -->
+                        <t t-if="o.narration">
+                            <div class="observations mt-3">
+                                <strong>Observaciones:</strong> <span t-field="o.narration"/>
+                            </div>
+                        </t>
+
+                        <!-- Formas de Pago -->
+                        <div class="payment-methods mt-4">
+                            <h3 class="text-center">Relación de Formas de Pago</h3>
+                            <table class="table table-sm payment-table">
+                                <thead>
+                                    <tr>
+                                        <th>FORMA DE PAGO</th>
+                                        <th>CHEQUE No.</th>
+                                        <th class="text-end">VALOR</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <span t-if="o.l10n_co_edi_payment_option_id" t-field="o.l10n_co_edi_payment_option_id.name">Transferencia Electrónica</span>
+                                            <span t-else="">Efectivo</span>
+                                        </td>
+                                        <td>-</td>
+                                        <td class="text-end">
+                                            <span t-field="o.amount_total" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                        </td>
+                                    </tr>
+                                    <tr class="table-active fw-bold">
+                                        <td colspan="2">TOTAL FORMAS DE PAGO</td>
+                                        <td class="text-end">
+                                            <span t-field="o.amount_total" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Líneas de Factura -->
+                        <table class="table table-sm items-table mt-4">
+                            <thead>
+                                <tr>
+                                    <th style="width: 5%;">No.</th>
+                                    <th style="width: 70%;">Descripción</th>
+                                    <th style="width: 25%;" class="text-end">Valor</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-set="line_index" t-value="1"/>
+                                <t t-foreach="o.invoice_line_ids" t-as="line">
+                                    <tr>
+                                        <td><t t-esc="line_index"/></td>
+                                        <td>
+                                            <span t-field="line.name"/>
+                                            <t t-if="line.product_id.default_code">
+                                                <br/><small>Código: <span t-field="line.product_id.default_code"/></small>
+                                            </t>
+                                        </td>
+                                        <td class="text-end">
+                                            <span t-field="line.price_subtotal" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                        </td>
+                                    </tr>
+                                    <t t-set="line_index" t-value="line_index + 1"/>
+                                </t>
+                            </tbody>
+                        </table>
+
+                        <!-- Totales -->
+                        <div class="row mt-4">
+                            <div class="col-7"></div>
+                            <div class="col-5">
+                                <table class="table table-sm totals-table">
+                                    <tr>
+                                        <td><strong>SUBTOTAL</strong></td>
+                                        <td class="text-end">
+                                            <span t-field="o.amount_untaxed" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                        </td>
+                                    </tr>
+                                    <t t-foreach="o.amount_by_group" t-as="amount_by_group">
+                                        <tr>
+                                            <td><span t-esc="amount_by_group[0]"/></td>
+                                            <td class="text-end">
+                                                <span t-esc="amount_by_group[1]" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                    <tr class="table-danger">
+                                        <td><strong>VALOR TOTAL</strong></td>
+                                        <td class="text-end">
+                                            <strong>
+                                                <span t-field="o.amount_total" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                            </strong>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Firmas -->
+                        <div class="signatures mt-5">
+                            <div class="row">
+                                <div class="col-6 text-center signature-box">
+                                    <div class="signature-line">
+                                        <strong t-field="o.invoice_user_id.name">MARIA ALEJANDRA CAVADIA MORENO</strong><br/>
+                                        Elaboró
+                                    </div>
+                                </div>
+                                <div class="col-6 text-center signature-box">
+                                    <div class="signature-line">
+                                        Recibí Conforme
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>
