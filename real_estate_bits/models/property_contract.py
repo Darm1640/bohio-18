@@ -203,6 +203,18 @@ class Contract(models.Model):
         string='Líneas de Propiedades',
         help='Propiedades incluidas en este contrato multi-propiedad'
     )
+    active_properties_count = fields.Integer(
+        string='Propiedades Activas',
+        compute='_compute_properties_count',
+        store=False,
+        help='Cantidad de propiedades activas en el contrato'
+    )
+    terminated_properties_count = fields.Integer(
+        string='Propiedades Terminadas',
+        compute='_compute_properties_count',
+        store=False,
+        help='Cantidad de propiedades terminadas en el contrato'
+    )
     property_code = fields.Char("Código de Propiedad", related="property_id.default_code", store=True)
     property_area = fields.Float("Área de Propiedad", related="property_id.property_area", store=True)
     price_per_m = fields.Float("Precio Base", related="property_id.price_per_unit", store=True)
@@ -815,6 +827,17 @@ Nota: Si el día no existe en el mes (ej: 31 en febrero), se usa el último día
             else:
                 # Método original para contratos de una sola propiedad
                 rec.rental_fee = rec.property_id.rent_value_from if rec.property_id else 0.0
+
+    @api.depends('contract_line_ids.state')
+    def _compute_properties_count(self):
+        """Calcular cantidad de propiedades activas y terminadas"""
+        for rec in self:
+            if rec.is_multi_property and rec.contract_line_ids:
+                rec.active_properties_count = len(rec.contract_line_ids.filtered(lambda l: l.state == 'active'))
+                rec.terminated_properties_count = len(rec.contract_line_ids.filtered(lambda l: l.state == 'terminated'))
+            else:
+                rec.active_properties_count = 0
+                rec.terminated_properties_count = 0
 
     @api.depends('date_to', 'state')
     def _compute_color(self):
