@@ -427,11 +427,6 @@
                                     <label for="total_commission" string="Comisión Total"/>
                                     <div>
                                         <field name="total_commission" widget="monetary" readonly="1" nolabel="1" class="oe_inline"/>
-                                        <span class="text-muted ms-2">
-                                            (<span class="oe_inline">
-                                                <t t-esc="(total_commission / total_canon * 100).toFixed(2) if total_canon > 0 else 0"/>%
-                                            </span>)
-                                        </span>
                                     </div>
 
                                     <label for="total_taxes" string="Impuestos Total"/>
@@ -491,9 +486,5 @@
         </field>
     </record>
 
-    <!--
-    NOTA: El action ya existe en bohio_mass_payment_views.xml como 'action_bohio_mass_payment'
-    No es necesario duplicarlo aquí. Las vistas se referencian automáticamente por ID.
-    -->
-
+  
 </odoo>
