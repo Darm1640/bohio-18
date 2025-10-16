@@ -401,7 +401,7 @@
                                     <field name="state" widget="badge"
                                            decoration-success="state == 'posted'"
                                            decoration-info="state == 'draft'"/>
-                                    <field name="ref" optional="hide"/>
+                                    <field name="memo" optional="hide"/>
                                 </list>
                             </field>
 
