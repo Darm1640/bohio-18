@@ -191,14 +191,15 @@
                 <!-- Las opciones se cargarán dinámicamente vía JavaScript -->
             </select>
         </xpath>
-        
-        <!-- Mejorar el select de ciudades para que sea dinámico -->
+
+        <!-- COMENTADO: El filtro city_id no existe en la vista padre properties_shop -->
+        <!--
         <xpath expr="//select[@data-filter='city_id']" position="replace">
             <select class="form-select form-select-sm property-filter" data-filter="city_id" id="cityFilterShop">
                 <option value="">Cargando ciudades...</option>
-                <!-- Las opciones se cargarán dinámicamente vía JavaScript -->
             </select>
         </xpath>
+        -->
         
         <!-- Agregar indicador de filtros activos -->
         <xpath expr="//div[@class='filters-panel-horizontal card shadow-sm']" position="before">

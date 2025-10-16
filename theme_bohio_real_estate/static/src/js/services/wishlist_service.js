@@ -26,10 +26,11 @@ export class WishlistService {
 
         try {
             console.log('[WishlistService] Initializing...');
-            const response = await rpc('/property/wishlist/get');
+            // CORREGIDO: Usar /property/wishlist/list en lugar de /property/wishlist/get
+            const response = await rpc('/property/wishlist/list');
 
-            if (response.success && Array.isArray(response.property_ids)) {
-                this._wishlist = new Set(response.property_ids);
+            if (response && Array.isArray(response.properties)) {
+                this._wishlist = new Set(response.properties.map(p => p.id));
                 console.log(`[WishlistService] Loaded ${this._wishlist.size} favorites`);
             }
 
@@ -143,7 +144,8 @@ export class WishlistService {
             console.log('[WishlistService] Getting all favorites');
             const response = await rpc('/property/wishlist/list');
 
-            if (response.success && Array.isArray(response.properties)) {
+            // El controller retorna directamente { properties: [], count: N }
+            if (response && Array.isArray(response.properties)) {
                 // Actualizar cache local
                 this._wishlist = new Set(response.properties.map(p => p.id));
                 return response.properties;
@@ -165,20 +167,26 @@ export class WishlistService {
     }
 
     /**
+     * NOTA: Estos métodos requieren endpoints adicionales en el controller
+     * Por ahora están deshabilitados hasta implementar los endpoints faltantes
+     */
+
+    /**
      * Limpiar todos los favoritos
+     * TODO: Implementar endpoint /property/wishlist/clear en controller
      * @returns {Promise<Object>}
      */
     static async clear() {
         try {
             console.log('[WishlistService] Clearing wishlist');
             const response = await rpc('/property/wishlist/clear');
-
+    
             if (response.success) {
                 this._wishlist.clear();
                 this._dispatchEvent('cleared');
                 return { success: true, message: 'Favoritos eliminados' };
             }
-
+    
             return { success: false, message: response.message || 'Error al limpiar' };
         } catch (error) {
             console.error('[WishlistService] Clear error:', error);
@@ -188,17 +196,18 @@ export class WishlistService {
 
     /**
      * Compartir wishlist (generar enlace)
+     * TODO: Implementar endpoint /property/wishlist/share en controller
      * @returns {Promise<string|null>}
      */
     static async share() {
         try {
             console.log('[WishlistService] Sharing wishlist');
             const response = await rpc('/property/wishlist/share');
-
+    
             if (response.success && response.share_url) {
                 return response.share_url;
             }
-
+    
             return null;
         } catch (error) {
             console.error('[WishlistService] Share error:', error);
@@ -208,6 +217,7 @@ export class WishlistService {
 
     /**
      * Exportar wishlist (PDF, Excel, etc.)
+     * TODO: Implementar endpoint /property/wishlist/export en controller
      * @param {string} format - 'pdf' o 'excel'
      * @returns {Promise<string|null>}
      */
@@ -215,11 +225,11 @@ export class WishlistService {
         try {
             console.log('[WishlistService] Exporting wishlist as:', format);
             const response = await rpc('/property/wishlist/export', { format });
-
+    
             if (response.success && response.download_url) {
                 return response.download_url;
             }
-
+    
             return null;
         } catch (error) {
             console.error('[WishlistService] Export error:', error);

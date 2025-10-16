@@ -13,15 +13,19 @@ import { rpc } from "@web/core/network/rpc";
 export class PropertyService {
     /**
      * Endpoints disponibles
+     * IMPORTANTE: Estos endpoints deben coincidir EXACTAMENTE con las rutas en los controladores
      */
     static ENDPOINTS = {
         rent: '/api/properties/arriendo',
-        sale: '/api/properties/venta-usada',
+        sale: '/api/properties/venta-usada', 
         projects: '/api/properties/proyectos',
         search: '/property/search/ajax',
-        detail: '/property/detail',
-        map: '/api/properties/map',
-        autocomplete: '/property/search/autocomplete'
+        detail: '/properties/api/list',  
+        map: '/bohio/api/properties/map',        
+        autocomplete: '/property/search/autocomplete', 
+        mapMarkers: '/api/properties/map/markers',
+        count: '/api/properties/count',   
+        filters: '/api/properties/filters'         
     };
 
     /**
