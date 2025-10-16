@@ -53,21 +53,18 @@
             'bohio_crm/static/src/css/bohio_crm_kanban.css',
             'bohio_crm/static/src/css/bohio_crm_list.css',
             'bohio_crm/static/src/css/bohio_dashboard.css',
-            'bohio_crm/static/src/css/crm_modern_style.css',       # Estilos Modernos con Iconos Bootstrap
-            'bohio_crm/static/src/css/property_compare_zoom.css',  # Widget de Zoom
+            'bohio_crm/static/src/css/crm_modern_style.css',
+            'bohio_crm/static/src/css/property_compare_zoom.css', 
 
-            # JavaScript - Vistas Kanban y List con Dashboard
             'bohio_crm/static/src/views/bohio_crm_dashboard.js',
             'bohio_crm/static/src/views/bohio_crm_dashboard.xml',
             'bohio_crm/static/src/views/bohio_crm_kanbanview.js',
             'bohio_crm/static/src/views/bohio_crm_kanbanview.xml',
             'bohio_crm/static/src/views/bohio_crm_modern_views.js',
 
-            # JavaScript - Dashboard del Vendedor (con barra deslizable)
             'bohio_crm/static/src/js/crm_salesperson_dashboard.js',
             'bohio_crm/static/src/xml/crm_salesperson_dashboard.xml',
 
-            # JavaScript - Widget de Zoom para Comparación de Propiedades
             'bohio_crm/static/src/js/property_compare_zoom.js',
             'bohio_crm/static/src/xml/property_compare_zoom.xml',
         ],
@@ -80,7 +77,7 @@
     'application': True,
     'auto_install': False,
     'license': 'LGPL-3',
-    'post_init_hook': 'post_init_hook',
-    'uninstall_hook': 'uninstall_hook',
+    # 'post_init_hook': 'post_init_hook',
+    # 'uninstall_hook': 'uninstall_hook',
     'web_icon': 'bohio_crm/static/description/icon.png',
 }
