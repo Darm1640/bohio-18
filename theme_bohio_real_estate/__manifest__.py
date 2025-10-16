@@ -35,11 +35,7 @@
         'data/torre_rialto_proyecto.xml',
         'data/torre_rialto_propiedades.xml',
         'data/torre_rialto_planos.xml',
-
-        # Views - Homepage
         'views/homepage_new.xml',
-
-        # Views - Pages
         'views/pages/servicios_page.xml',
         'views/pages/sobre_nosotros_page.xml',
         'views/pages/contacto_page.xml',
@@ -131,7 +127,8 @@
             'theme_bohio_real_estate/static/src/js/property_carousels.js',
             'theme_bohio_real_estate/static/src/js/property_detail_modals.js',
 
-            # CSS Additional
+            # ========================================================================
+            # CSS - PROPERTY SNIPPETS Y CAROUSELS
             # ========================================================================
             'theme_bohio_real_estate/static/src/css/property_carousels.css',
             'theme_bohio_real_estate/static/src/css/property_snippets.css',

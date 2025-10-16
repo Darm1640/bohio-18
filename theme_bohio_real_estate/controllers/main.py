@@ -5,8 +5,6 @@ from odoo.osv import expression
 from datetime import datetime, timedelta
 import json
 import logging
-
-# Helpers de Odoo para URLs (mismo patrón que website_sale)
 from odoo.addons.website.controllers.main import QueryURL
 from odoo.addons.portal.controllers.portal import _build_url_w_params
 
@@ -2417,3 +2415,509 @@ class BohioRealEstateController(http.Controller):
             return request.render('theme_bohio_real_estate.property_contact_error', {
                 'error': 'Ocurrió un error al procesar su solicitud. Por favor intente nuevamente.'
             })
+
+
+    @http.route(['/api/properties/count'], type='json', auth='public', website=True, csrf=False)
+    def api_properties_count(self, **kwargs):
+        """Contador de propiedades para mostrar en homepage"""
+        try:
+            Property = request.env['product.template'].sudo()
+
+            total = Property.search_count([
+                ('is_property', '=', True),
+                ('state', '=', 'free'),
+            ])
+
+            rent_count = Property.search_count([
+                ('is_property', '=', True),
+                ('state', '=', 'free'),
+                ('type_service', 'in', ['rent', 'sale_rent']),
+            ])
+
+            sale_count = Property.search_count([
+                ('is_property', '=', True),
+                ('state', '=', 'free'),
+                ('type_service', '=', 'sale'),
+                ('project_worksite_id', '=', False),
+            ])
+
+            projects_count = Property.search_count([
+                ('is_property', '=', True),
+                ('state', '=', 'free'),
+                ('project_worksite_id', '!=', False),
+            ])
+
+            return {
+                'success': True,
+                'total': total,
+                'rent': rent_count,
+                'sale': sale_count,
+                'projects': projects_count,
+            }
+
+        except Exception as e:
+            return {'success': False, 'error': str(e)}
+
+    @http.route(['/api/properties/filters'], type='json', auth='public', website=True, csrf=False)
+    def api_properties_filters(self, **kwargs):
+        """Obtener filtros dinámicos con contadores"""
+        try:
+            Property = request.env['product.template'].sudo()
+            current_filters = kwargs.get('filters', {})
+
+            base_domain = [
+                ('is_property', '=', True),
+                ('state', '=', 'free'),
+            ]
+
+            # Aplicar filtro de servicio si existe
+            if current_filters.get('type_service'):
+                ts = current_filters['type_service']
+                if ts == 'sale_rent':
+                    base_domain.append(('type_service', 'in', ['sale', 'rent', 'sale_rent']))
+                else:
+                    base_domain.append(('type_service', 'in', [ts, 'sale_rent']))
+
+            # Tipos de propiedad con contadores
+            property_types_data = Property.read_group(
+                base_domain,
+                ['property_type'],
+                ['property_type']
+            )
+
+            property_types = []
+            type_labels = dict(Property._fields['property_type'].selection)
+
+            for item in property_types_data:
+                if item['property_type']:
+                    property_types.append({
+                        'value': item['property_type'],
+                        'label': type_labels.get(item['property_type'], item['property_type']),
+                        'count': item['property_type_count']
+                    })
+
+            # Ciudades con contadores
+            cities_data = Property.read_group(base_domain, ['city_id'], ['city_id'])
+            cities = [
+                {
+                    'id': item['city_id'][0],
+                    'name': item['city_id'][1],
+                    'count': item['city_id_count']
+                }
+                for item in cities_data if item['city_id']
+            ]
+
+            return {
+                'success': True,
+                'property_types': property_types,
+                'cities': cities,
+            }
+
+        except Exception as e:
+            return {'success': False, 'error': str(e)}
+
+    @http.route(['/api/search/smart'], type='json', auth='public', website=True, csrf=False)
+    def api_smart_search(self, **kwargs):
+        """Búsqueda inteligente que determina tipo y redirige"""
+        try:
+            search_term = kwargs.get('term', '').strip()
+            type_service = kwargs.get('type_service', '')
+            property_type = kwargs.get('property_type', '')
+
+            if not search_term:
+                return {'success': False, 'message': 'Término requerido'}
+
+            Property = request.env['product.template'].sudo()
+
+            # 1. Buscar por código
+            property_by_code = Property.search([
+                ('is_property', '=', True),
+                ('default_code', '=ilike', search_term)
+            ], limit=1)
+
+            if property_by_code:
+                return {
+                    'success': True,
+                    'type': 'property',
+                    'redirect_url': f'/property/{property_by_code.id}'
+                }
+
+            # 2. Buscar ciudad
+            City = request.env['res.city'].sudo()
+            city = City.search([('name', 'ilike', search_term)], limit=1)
+
+            if city:
+                count = Property.search_count([
+                    ('is_property', '=', True),
+                    ('state', '=', 'free'),
+                    ('city_id', '=', city.id)
+                ])
+
+                if count > 0:
+                    url = f'/properties?city_id={city.id}'
+                    if type_service:
+                        url += f'&type_service={type_service}'
+                    if property_type:
+                        url += f'&property_type={property_type}'
+
+                    return {
+                        'success': True,
+                        'type': 'city',
+                        'name': city.name,
+                        'count': count,
+                        'redirect_url': url
+                    }
+
+            # 3. Búsqueda general
+            url = f'/properties?search={search_term}'
+            if type_service:
+                url += f'&type_service={type_service}'
+            if property_type:
+                url += f'&property_type={property_type}'
+
+            return {
+                'success': True,
+                'type': 'general',
+                'redirect_url': url
+            }
+
+        except Exception as e:
+            return {'success': False, 'error': str(e)}
+
+    @http.route(['/api/properties/map/markers'], type='json', auth='public', website=True, csrf=False)
+    def api_properties_map_markers(self, **kwargs):
+        """Marcadores mejorados con colores y datos para pins personalizados"""
+        try:
+            filters = kwargs.get('filters', {})
+
+            domain = [
+                ('is_property', '=', True),
+                ('state', '=', 'free'),
+                ('latitude', '!=', False),
+                ('longitude', '!=', False),
+            ]
+
+            # Aplicar filtros
+            if filters.get('type_service'):
+                ts = filters['type_service']
+                if ts == 'sale_rent':
+                    domain.append(('type_service', 'in', ['sale', 'rent', 'sale_rent']))
+                else:
+                    domain.append(('type_service', 'in', [ts, 'sale_rent']))
+
+            if filters.get('property_type'):
+                domain.append(('property_type', '=', filters['property_type']))
+
+            if filters.get('city_id'):
+                domain.append(('city_id', '=', int(filters['city_id'])))
+
+            Property = request.env['product.template'].sudo()
+            properties = Property.search(domain, limit=200)
+
+            markers = []
+            for prop in properties:
+                # Color del pin según tipo de servicio
+                if prop.type_service == 'rent':
+                    pin_color = '#28a745'  # Verde
+                    price = prop.net_rental_price or 0
+                elif prop.type_service == 'sale':
+                    pin_color = '#E31E24'  # Rojo
+                    price = prop.net_price or 0
+                else:  # sale_rent
+                    pin_color = '#ffc107'  # Amarillo
+                    price = prop.net_price or 0
+
+                markers.append({
+                    'id': prop.id,
+                    'lat': float(prop.latitude),
+                    'lng': float(prop.longitude),
+                    'title': prop.name,
+                    'price': price,
+                    'price_formatted': f'${price:,.0f}',
+                    'type_service': prop.type_service,
+                    'property_type': prop.property_type,
+                    'bedrooms': int(prop.num_bedrooms or 0),
+                    'bathrooms': int(prop.num_bathrooms or 0),
+                    'area': float(prop.property_area or 0),
+                    'city': prop.city_id.name if prop.city_id else prop.city,
+                    'neighborhood': prop.neighborhood or '',
+                    'image_url': f'/web/image/product.template/{prop.id}/image_256',
+                    'url': f'/property/{prop.id}',
+                    'pin_color': pin_color,
+                    'icon': self._get_property_icon_map(prop.property_type),
+                })
+
+            # Calcular centro del mapa
+            if markers:
+                lats = [m['lat'] for m in markers]
+                lngs = [m['lng'] for m in markers]
+                center = {
+                    'lat': sum(lats) / len(lats),
+                    'lng': sum(lngs) / len(lngs)
+                }
+            else:
+                center = {'lat': 8.7479, 'lng': -75.8814}  # Montería
+
+            return {
+                'success': True,
+                'markers': markers,
+                'count': len(markers),
+                'center': center,
+            }
+
+        except Exception as e:
+            return {'success': False, 'error': str(e), 'markers': []}
+
+    def _get_property_icon_map(self, property_type):
+        """Ícono según tipo de propiedad"""
+        icons = {
+            'apartment': 'fa-building',
+            'house': 'fa-home',
+            'commercial': 'fa-store',
+            'lot': 'fa-map',
+            'farm': 'fa-tree',
+        }
+        return icons.get(property_type, 'fa-home')
+
+    # ========================================================================
+    # CONSOLIDACIÓN: Métodos fusionados desde map_controller.py
+    # ========================================================================
+
+    @http.route('/mapa-propiedades', type='http', auth='public', website=True)
+    def mapa_propiedades(self, **kw):
+        """Vista principal del mapa"""
+        return request.render('theme_bohio_real_estate.mapa_propiedades_view')
+
+    @http.route('/api/properties/mapa', type='json', auth='public', website=True, csrf=False)
+    def get_properties_mapa(self, **kw):
+        """Obtener propiedades para el mapa con geolocalización"""
+        DEFAULT_LAT = 8.7479
+        DEFAULT_LNG = -75.8814
+        DEFAULT_ZOOM = 12
+        ZOOM_WITH_USER = 13
+        RADIUS_KM = 50
+
+        user_lat = kw.get('user_lat')
+        user_lng = kw.get('user_lng')
+
+        # Dominio base
+        domain = [
+            ('is_property', '=', True),
+            ('state', '=', 'free'),
+            ('latitude', '!=', False),
+            ('longitude', '!=', False)
+        ]
+
+        # Filtro por proximidad si hay ubicación del usuario
+        if user_lat and user_lng:
+            try:
+                bbox = self._get_bounding_box(float(user_lat), float(user_lng), RADIUS_KM)
+                domain.extend([
+                    ('latitude', '>=', bbox['lat_min']),
+                    ('latitude', '<=', bbox['lat_max']),
+                    ('longitude', '>=', bbox['lng_min']),
+                    ('longitude', '<=', bbox['lng_max'])
+                ])
+                _logger.info(f"Filtering properties within {RADIUS_KM}km of user location")
+            except (ValueError, TypeError) as e:
+                _logger.warning(f"Invalid user coordinates: {e}")
+
+        # Buscar propiedades
+        properties = request.env['product.template'].sudo().search_read(
+            domain,
+            ['id', 'name', 'latitude', 'longitude', 'list_price',
+             'type_service', 'num_bedrooms', 'num_bathrooms',
+             'property_area', 'street', 'city_id', 'image_1920'],
+            limit=200
+        )
+
+        # Formatear datos para el mapa
+        property_data = []
+        for prop in properties:
+            # Determinar precio
+            price_text = f"${prop['list_price']:,.0f}"
+            if prop['type_service'] == 'rent':
+                price_text += "/mes"
+            elif prop['type_service'] == 'sale_rent':
+                price_text += " (V/A)"
+
+            # URL de la propiedad
+            prop_url = f"/shop/product/{prop['id']}"
+
+            property_data.append({
+                'id': prop['id'],
+                'name': prop['name'],
+                'lat': prop['latitude'],
+                'lng': prop['longitude'],
+                'price': price_text,
+                'url': prop_url,
+                'bedrooms': int(prop['num_bedrooms'] or 0),
+                'bathrooms': int(prop['num_bathrooms'] or 0),
+                'area': prop['property_area'] or 0,
+                'city': prop['city_id'][1] if prop['city_id'] else '',
+                'address': prop['street'] or '',
+                'type': prop['type_service']
+            })
+
+        # Determinar centro del mapa
+        if property_data:
+            center_lat = property_data[0]['lat']
+            center_lng = property_data[0]['lng']
+            zoom = ZOOM_WITH_USER if user_lat and user_lng else DEFAULT_ZOOM
+        elif user_lat and user_lng:
+            center_lat = float(user_lat)
+            center_lng = float(user_lng)
+            zoom = ZOOM_WITH_USER
+        else:
+            center_lat = DEFAULT_LAT
+            center_lng = DEFAULT_LNG
+            zoom = DEFAULT_ZOOM
+
+        return {
+            'properties': property_data,
+            'center': {'lat': center_lat, 'lng': center_lng},
+            'zoom': zoom,
+            'has_user_location': bool(user_lat and user_lng),
+            'property_count': len(property_data)
+        }
+
+    def _get_bounding_box(self, lat, lng, radius_km):
+        """Calcular bounding box para búsqueda por proximidad"""
+        # Aproximación: 1 grado de latitud ≈ 111 km
+        lat_delta = radius_km / 111.0
+        # Ajustar longitud según latitud
+        import math
+        lng_delta = radius_km / (111.0 * math.cos(math.radians(lat)))
+
+        return {
+            'lat_min': lat - lat_delta,
+            'lat_max': lat + lat_delta,
+            'lng_min': lng - lng_delta,
+            'lng_max': lng + lng_delta
+        }
+
+    # ========================================================================
+    # CONSOLIDACIÓN: Métodos fusionados desde property_banner.py
+    # ========================================================================
+
+    @http.route(['/bohio/property_banner/select_list'], type='json', auth='public', website=True)
+    def bohio_property_select_list(self, **kwargs):
+        """
+        Retorna lista de propiedades disponibles para seleccionar en el snippet.
+        OPTIMIZADO: Usa search_read en lugar de search + acceso a campos
+        """
+        try:
+            Property = request.env['product.template'].sudo()
+
+            # Buscar propiedades activas y disponibles
+            domain = [
+                ('is_property', '=', True),
+                ('active', '=', True),
+                ('state', 'in', ['free', 'reserved']),
+            ]
+
+            # OPTIMIZACIÓN: search_read carga solo los campos necesarios en 1 query
+            properties = Property.search_read(
+                domain,
+                fields=['id', 'name', 'default_code', 'city_id'],
+                order='name asc',
+                limit=100
+            )
+
+            # Formato para el select dropdown
+            result = []
+            for prop in properties:
+                # Información básica para mostrar en el selector
+                label = prop['name']
+                if prop.get('default_code'):
+                    label = f"[{prop['default_code']}] {label}"
+                if prop.get('city_id'):
+                    # city_id viene como tupla (id, name) en search_read
+                    city_name = prop['city_id'][1] if isinstance(prop['city_id'], (list, tuple)) else ''
+                    if city_name:
+                        label = f"{label} - {city_name}"
+
+                result.append({
+                    'id': prop['id'],
+                    'name': label,
+                })
+
+            _logger.info(f"[PROPERTY BANNER] Lista de propiedades: {len(result)} encontradas")
+            return result
+
+        except Exception as e:
+            _logger.error(f"[PROPERTY BANNER] Error en select_list: {str(e)}")
+            return []
+
+    @http.route(['/bohio/property_banner/details_js'], type='json', auth='public', website=True)
+    def bohio_property_banner_details_js(self, **post):
+        """
+        Retorna datos básicos de la propiedad para modo de edición (preview).
+        OPTIMIZADO: Usa search_read para cargar campos en 1 query
+        """
+        try:
+            property_id = int(post.get('property_id', 0))
+            if not property_id:
+                return {}
+
+            Property = request.env['product.template'].sudo()
+
+            # OPTIMIZACIÓN: search_read carga solo campos necesarios
+            properties = Property.search_read(
+                [('id', '=', property_id)],
+                fields=['id', 'name', 'description_sale', 'default_code', 'city_id', 'region_id'],
+                limit=1
+            )
+
+            if not properties:
+                return {}
+
+            prop = properties[0]
+
+            values = {
+                'property_id': prop['id'],
+                'property_name': prop['name'],
+                'property_description': prop.get('description_sale') or 'No description available',
+                'property_code': prop.get('default_code') or '',
+                'city': prop['city_id'][1] if prop.get('city_id') else '',
+                'region': prop['region_id'][1] if prop.get('region_id') else '',
+            }
+
+            _logger.info(f"[PROPERTY BANNER] Detalles JS: Propiedad {property_id} - {prop['name']}")
+            return values
+
+        except Exception as e:
+            _logger.error(f"[PROPERTY BANNER] Error en details_js: {str(e)}")
+            return {}
+
+    @http.route(['/bohio/property_banner/details_xml'], type='http', auth='public', website=True, sitemap=False)
+    def bohio_property_banner_details_xml(self, **post):
+        """
+        Renderiza el template completo con datos de la propiedad para modo público.
+
+        NOTA: Este endpoint usa browse() normal porque necesita renderizar un template QWeb
+        que accede a campos relacionados (city_id.name, project_worksite_id.name, etc.)
+        El template espera objetos de modelo, no diccionarios.
+        """
+        try:
+            property_id = post.get('property_id')
+
+            if not property_id:
+                return ''
+
+            property_obj = request.env['product.template'].sudo().browse(int(property_id))
+
+            if not property_obj.exists():
+                return ''
+
+            values = {
+                'property': property_obj,
+                'add_qty': 1,
+            }
+
+            _logger.info(f"[PROPERTY BANNER] Detalles XML: Renderizando propiedad {property_id} - {property_obj.name}")
+            return request.render("theme_bohio_real_estate.property_banner_dynamic_data", values)
+
+        except Exception as e:
+            _logger.error(f"[PROPERTY BANNER] Error en details_xml: {str(e)}")
+            return ''
