@@ -27,6 +27,7 @@
         'hr_expense',
         'real_estate_bits',
         'portal',
+        'l10n_co_dian',  # Facturación electrónica Colombia
     ],
     'data': [
         # Seguridad
@@ -35,6 +36,11 @@
         # Datos - IMPORTANTE: server_actions ANTES de automated_actions
         'data/crm_server_actions.xml',       # Server actions con codigo Python (Odoo 18)
         'data/crm_automated_actions_v2.xml',  # Base automations que referencian server actions
+
+        # Reportes PDF - Bohío Consultores
+        'report/report_comprobante_egreso.xml',   # Comprobante de Egreso
+        'report/report_recibo_caja.xml',          # Recibo de Caja (Ingreso)
+        'report/report_factura_electronica.xml',  # Factura Electrónica DIAN
 
         # Vistas Principales
         'views/crm_lead_views.xml',          # Vista List y Kanban mejoradas con js_class
@@ -64,6 +70,10 @@
             # JavaScript - Widget de Zoom para Comparación de Propiedades
             'bohio_crm/static/src/js/property_compare_zoom.js',
             'bohio_crm/static/src/xml/property_compare_zoom.xml',
+        ],
+        'web.report_assets_common': [
+            # Estilos para reportes PDF
+            'bohio_crm/static/src/scss/bohio_reports.scss',
         ],
     },
     'installable': True,
