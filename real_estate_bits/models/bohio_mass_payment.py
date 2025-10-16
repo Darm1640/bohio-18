@@ -346,7 +346,7 @@ class BohioMassPayment(models.Model):
             'partner_type': 'supplier' if total_amount > 0 else 'customer',
             'journal_id': self.journal_id.id,
             'date': self.date,
-            'ref': f'{self.name} - {partner.name} - Mes {self.simulation_month.strftime("%m/%Y")}',
+            'memo': f'{self.name} - {partner.name} - Mes {self.simulation_month.strftime("%m/%Y")}',
         }
 
         payment = self.env['account.payment'].create(payment_vals)
