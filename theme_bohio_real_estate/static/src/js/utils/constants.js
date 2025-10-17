@@ -196,17 +196,17 @@ export const SERVICE_TYPES = {
     rent: {
         label: 'Arriendo',
         icon: 'bi-key',
-        color: '#E31E24'
+        color: '#FF1D25'
     },
     sale: {
         label: 'Venta',
         icon: 'bi-house',
-        color: '#E31E24'
+        color: '#FF1D25'
     },
     sale_rent: {
         label: 'Venta y Arriendo',
         icon: 'bi-grid',
-        color: '#E31E24'
+        color: '#FF1D25'
     }
 };
 

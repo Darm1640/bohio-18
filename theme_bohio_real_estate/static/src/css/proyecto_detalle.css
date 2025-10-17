@@ -50,7 +50,7 @@
 
 .property-type-card:hover {
     transform: translateY(-10px);
-    box-shadow: 0 20px 60px rgba(227, 30, 36, 0.3) !important;
+    box-shadow: 0 20px 60px rgba(255, 29, 37, 0.3) !important;
 }
 
 .property-type-card .property-img {
@@ -67,7 +67,7 @@
 }
 
 .property-type-card:hover .btn {
-    background: #E31E24 !important;
+    background: #FF1D25 !important;
     color: white !important;
     transform: scale(1.05);
 }
@@ -189,12 +189,12 @@
 
 /* Accessibility improvements */
 .property-type-card:focus-within {
-    outline: 3px solid #E31E24;
+    outline: 3px solid #FF1D25;
     outline-offset: 2px;
 }
 
 .btn:focus {
-    outline: 2px solid #E31E24;
+    outline: 2px solid #FF1D25;
     outline-offset: 2px;
 }
 
@@ -213,7 +213,7 @@
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #E31E24;
+    background: #FF1D25;
     border-radius: 5px;
 }
 

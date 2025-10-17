@@ -68,7 +68,7 @@
 }
 
 .service-type-btn.active {
-    background: #E31E24 !important;
+    background: #FF1D25 !important;
     box-shadow: 0 4px 15px rgba(227,30,36,0.4);
 }
 
@@ -81,13 +81,13 @@
 }
 
 .nav-tabs .nav-link:hover {
-    border-bottom-color: #E31E24;
-    color: #E31E24;
+    border-bottom-color: #FF1D25;
+    color: #FF1D25;
 }
 
 .nav-tabs .nav-link.active {
-    color: #E31E24;
-    border-bottom-color: #E31E24;
+    color: #FF1D25;
+    border-bottom-color: #FF1D25;
     background-color: transparent;
     font-weight: 600;
 }
@@ -114,7 +114,7 @@
     width: 50px;
     height: 50px;
     border: 5px solid #f3f3f3;
-    border-top: 5px solid #E31E24;
+    border-top: 5px solid #FF1D25;
     border-radius: 50%;
     animation: spin 1s linear infinite;
 }

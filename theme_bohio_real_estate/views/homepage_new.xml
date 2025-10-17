@@ -6,7 +6,7 @@
                 <div id="wrap" class="bohio-homepage">
 
 
-                    <section class="portal-menu py-2" style="background: rgba(227, 30, 36, 0.95);">
+                    <section class="portal-menu py-2" style="background: rgba(255, 29, 37, 0.95);">
                         <div class="container">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="d-flex gap-4">
@@ -88,7 +88,7 @@ Iniciar Sesión
                                                             <i class="bi bi-grid me-2"/>
                                         Todo
                                                         </button>
-                                                        <button type="button" class="btn service-type-btn active" data-service="rent" style="min-width: 140px; padding: 12px 24px; font-size: 1rem; font-weight: 600; border-radius: 50px; border: 1px solid rgba(227, 30, 36, 0.8); background: linear-gradient(135deg, rgba(227, 30, 36, 0.85) 0%, rgba(201, 25, 32, 0.85) 100%); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); color: white; transition: all 0.3s ease; box-shadow: 0 6px 20px rgba(227, 30, 36, 0.4);">
+                                                        <button type="button" class="btn service-type-btn active" data-service="rent" style="min-width: 140px; padding: 12px 24px; font-size: 1rem; font-weight: 600; border-radius: 50px; border: 1px solid rgba(255, 29, 37, 0.8); background: linear-gradient(135deg, rgba(255, 29, 37, 0.85) 0%, rgba(204, 23, 32, 0.85) 100%); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); color: white; transition: all 0.3s ease; box-shadow: 0 6px 20px rgba(255, 29, 37, 0.4);">
                                                             <i class="bi bi-key me-2"/>
                                         Arrendar
                                                         </button>
@@ -109,20 +109,20 @@ Iniciar Sesión
                                                             <div class="col-lg-8 col-md-12">
                                                                 <div class="search-bar-container position-relative">
                                                                     <div class="input-group input-group-lg" style="border-radius: 10px; overflow: hidden; box-shadow: 0 3px 15px rgba(0, 0, 0, 0.15); border: 1px solid rgba(255, 255, 255, 0.15); background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);">
-                                                                        <span class="input-group-text search-icon-red" style="background: linear-gradient(135deg, rgba(227, 30, 36, 0.85) 0%, rgba(201, 25, 32, 0.85) 100%); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border: none; padding: 0 16px; color: white; font-size: 1rem;">
+                                                                        <span class="input-group-text search-icon-red" style="background: linear-gradient(135deg, rgba(255, 29, 37, 0.85) 0%, rgba(204, 23, 32, 0.85) 100%); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border: none; padding: 0 16px; color: white; font-size: 1rem;">
                                                                             <i class="bi bi-search"/>
                                                                         </span>
                                                                         <input type="text" name="search_query" class="form-control property-search-input" placeholder="Buscar por ciudad, barrio, dirección o código..." autocomplete="off" style="border: none; padding: 13px 16px; font-size: 0.95rem; background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); color: #fff; font-weight: 500;"/>
                                                                     </div>
                                                                     <!-- Contenedor de autocompletado - DEBE APARECER JUSTO DEBAJO DEL INPUT -->
-                                                                    <div class="autocomplete-container shadow-lg" style="display: none; position: absolute; top: 100%; left: 0; right: 0; z-index: 2000; margin-top: 5px; background: white; border-radius: 8px; max-height: 400px; overflow-y: auto; border: 2px solid #E31E24;"></div>
+                                                                    <div class="autocomplete-container shadow-lg" style="display: none; position: absolute; top: 100%; left: 0; right: 0; z-index: 2000; margin-top: 5px; background: white; border-radius: 8px; max-height: 400px; overflow-y: auto; border: 2px solid #FF1D25;"></div>
                                                                 </div>
                                                             </div>
 
                                                             <!-- Tipo de inmueble -->
                                                             <div class="col-lg-4 col-md-12">
                                                                 <div class="input-group input-group-lg" style="border-radius: 10px; overflow: hidden; box-shadow: 0 3px 15px rgba(0, 0, 0, 0.15); border: 1px solid rgba(255, 255, 255, 0.15); background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);">
-                                                                    <span class="input-group-text search-icon-red" style="background: linear-gradient(135deg, rgba(227, 30, 36, 0.85) 0%, rgba(201, 25, 32, 0.85) 100%); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border: none; padding: 0 16px; color: white; font-size: 1rem;">
+                                                                    <span class="input-group-text search-icon-red" style="background: linear-gradient(135deg, rgba(255, 29, 37, 0.85) 0%, rgba(204, 23, 32, 0.85) 100%); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border: none; padding: 0 16px; color: white; font-size: 1rem;">
                                                                         <i class="bi bi-building"/>
                                                                     </span>
                                                                     <select name="property_type" class="form-select property-type-select" style="border: none; padding: 13px 16px; font-size: 0.95rem; background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); color: #fff; font-weight: 500;">
@@ -143,7 +143,7 @@ Iniciar Sesión
                                                         <!-- Fila inferior: Botón de búsqueda -->
                                                         <div class="row">
                                                             <div class="col-12">
-                                                                <button type="submit" class="btn btn-search btn-lg w-100" style="background: linear-gradient(135deg, #E31E24 0%, #c91920 100%); color: white; border: none; border-radius: 10px; padding: 13px 30px; font-weight: 700; font-size: 1rem; letter-spacing: 0.5px; box-shadow: 0 5px 18px rgba(227, 30, 36, 0.35); transition: all 0.3s ease; text-transform: uppercase;">
+                                                                <button type="submit" class="btn btn-search btn-lg w-100" style="background: linear-gradient(135deg, #FF1D25 0%, #c91920 100%); color: white; border: none; border-radius: 10px; padding: 13px 30px; font-weight: 700; font-size: 1rem; letter-spacing: 0.5px; box-shadow: 0 5px 18px rgba(255, 29, 37, 0.35); transition: all 0.3s ease; text-transform: uppercase;">
                                                                     <i class="bi bi-search me-2"/>
                                                 Buscar Propiedad
                                                                 </button>
@@ -157,7 +157,7 @@ Iniciar Sesión
                                                     <a href="https://darm1640-bohio-18.odoo.com/proyecto/1" target="_blank" rel="noopener noreferrer" style="text-decoration: none; display: block;">
                                                         <img src="/theme_bohio_real_estate/static/src/img/Logo_Rialto.png" alt="Rialto - Eleva tus sueños" class="img-fluid logo-rialto-corner" style="max-width: 200px; height: auto; filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.4)); cursor: pointer;" loading="eager"/>
                                                         <!-- Barra decorativa con degradado -->
-                                                        <div class="logo-underline" style="width: 100%; height: 4px; background: linear-gradient(90deg, transparent 0%, #E31E24 50%, transparent 100%); margin-top: 8px; border-radius: 2px; box-shadow: 0 2px 8px rgba(227, 30, 36, 0.4);"/>
+                                                        <div class="logo-underline" style="width: 100%; height: 4px; background: linear-gradient(90deg, transparent 0%, #FF1D25 50%, transparent 100%); margin-top: 8px; border-radius: 2px; box-shadow: 0 2px 8px rgba(255, 29, 37, 0.4);"/>
                                                     </a>
                                                 </div>
 
@@ -517,13 +517,13 @@ Iniciar Sesión
                                             </h3>
                                         </div>
                                         <div class="col-md-4">
-                                            <button type="button" class="btn btn-light btn-lg w-100 shadow-sm fw-bold" data-bs-toggle="modal" data-bs-target="#codeSearchModal" style="border: 2px solid #E31E24; color: #E31E24; padding: 12px 25px;">
+                                            <button type="button" class="btn btn-light btn-lg w-100 shadow-sm fw-bold" data-bs-toggle="modal" data-bs-target="#codeSearchModal" style="border: 2px solid #FF1D25; color: #FF1D25; padding: 12px 25px;">
                                                 <i class="bi bi-search me-2"/>
 Código
                                             </button>
                                         </div>
                                         <div class="col-md-3">
-                                            <a href="/contacto" class="btn btn-lg w-100 shadow fw-bold text-white" style="background: #E31E24; border: none; padding: 12px 25px;">
+                                            <a href="/contacto" class="btn btn-lg w-100 shadow fw-bold text-white" style="background: #FF1D25; border: none; padding: 12px 25px;">
                                                 Consigna tu inmueble
                                             </a>
                                         </div>
@@ -563,7 +563,7 @@ Código
                     <div class="modal fade" id="codeSearchModal" tabindex="-1" aria-labelledby="codeSearchModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content">
-                                <div class="modal-header" style="background: linear-gradient(135deg, #E31E24 0%, #B81820 100%); color: white;">
+                                <div class="modal-header" style="background: linear-gradient(135deg, #FF1D25 0%, #B81820 100%); color: white;">
                                     <h5 class="modal-title fw-bold" id="codeSearchModalLabel">
                                         <i class="bi bi-search me-2"/>
 Búsqueda por Código
@@ -577,7 +577,7 @@ Búsqueda por Código
                                     </p>
                                     <div class="input-group input-group-lg mb-3">
                                         <input type="text" id="modalPropertyCode" class="form-control" placeholder="Ej: BOH-001, APT-2023-045" autocomplete="off" style="font-size: 1.1rem; padding: 15px;"/>
-                                        <button class="btn btn-danger px-4" type="button" onclick="window.bohioHomepage &amp;&amp; window.bohioHomepage.searchPropertyByCode()" style="background: #E31E24; border: none;">
+                                        <button class="btn btn-danger px-4" type="button" onclick="window.bohioHomepage &amp;&amp; window.bohioHomepage.searchPropertyByCode()" style="background: #FF1D25; border: none;">
                                             <i class="bi bi-search fa-lg"/>
                                         </button>
                                     </div>

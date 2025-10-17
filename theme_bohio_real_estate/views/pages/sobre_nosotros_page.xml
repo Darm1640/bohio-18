@@ -11,7 +11,7 @@
                     <div class="hero-bg position-absolute top-0 start-0 w-100 h-100"
                          style="background: url('/theme_bohio_real_estate/static/src/img/quienes-somos.jpg') center/cover; transform: translateZ(0);"></div>
                     <div class="overlay position-absolute top-0 start-0 w-100 h-100"
-                         style="background: linear-gradient(rgba(227, 30, 36, 0.7), rgba(0,0,0,0.6)); will-change: opacity;"></div>
+                         style="background: linear-gradient(rgba(255, 29, 37, 0.7), rgba(0,0,0,0.6)); will-change: opacity;"></div>
                     <div class="container position-relative h-100 d-flex align-items-center justify-content-center" style="min-height: 500px;">
                         <div class="text-center text-white">
                             <h1 class="display-2 fw-bold mb-3" style="text-shadow: 2px 2px 4px rgba(0,0,0,0.5); will-change: transform;">

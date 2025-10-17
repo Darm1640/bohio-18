@@ -252,7 +252,7 @@ export class MapService {
 
                 <a href="/property/${property.id}"
                    class="btn btn-sm btn-danger w-100"
-                   style="background: #E31E24; border: none;">
+                   style="background: #FF1D25; border: none;">
                    <i class="bi bi-eye me-1"></i>Ver detalles
                 </a>
             </div>

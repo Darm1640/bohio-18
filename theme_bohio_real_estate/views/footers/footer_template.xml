@@ -11,7 +11,9 @@
                         <!-- Columna 1: Logo y Descripción -->
                         <div class="col-lg-4 mb-4">
                             <div class="d-flex align-items-center mb-3">
-                                <img src="/theme_bohio_real_estate/static/src/img/logo-blanco.png" alt="BOHIO Logo" style="max-width: 220px; height: auto; margin-right: 15px;"/>
+                                <img src="/theme_bohio_real_estate/static/src/img/logos/logo-bohio-blanco.png"
+                                     alt="BOHIO Consultores - Soluciones Inmobiliarias"
+                                     style="max-width: 220px; width: auto; height: auto; margin-right: 15px;"/>
                             </div>
                             <p class="text-white-50" style="font-size: 14px; line-height: 1.6;">
                                 En Bohío, trabajamos con transparencia, compromiso y experiencia para que
@@ -186,7 +188,7 @@
 
                 /* Hover en links del footer */
                 .bohio-footer a:hover {
-                    color: #E31E24 !important;
+                    color: #FF1D25 !important;
                     transform: translateX(5px);
                 }
 

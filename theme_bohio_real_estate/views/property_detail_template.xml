@@ -11,7 +11,7 @@
                                 <div class="position-relative property-gallery-container">
                                     <!-- Badges superiores -->
                                     <div class="position-absolute top-0 start-0 p-3" style="z-index: 10;">
-                                        <span class="badge px-3 py-2" style="background: #E31E24; font-size: 0.9rem;">
+                                        <span class="badge px-3 py-2" style="background: #FF1D25; font-size: 0.9rem;">
                                             <i class="bi bi-star me-1"></i>DESTACADO
                                         </span>
                                     </div>
@@ -86,7 +86,7 @@
                                                              style="object-fit: cover; opacity: 0.7; filter: brightness(0.8);"
                                                              alt="Propiedad BOHIO"/>
                                                         <div class="position-absolute top-50 start-50 translate-middle text-white text-center"
-                                                             style="background: rgba(227, 30, 36, 0.95); padding: 20px 40px; border-radius: 10px;">
+                                                             style="background: rgba(255, 29, 37, 0.95); padding: 20px 40px; border-radius: 10px;">
                                                             <i class="bi bi-image fa-3x mb-2"></i>
                                                             <p class="mb-0 fw-bold fs-5">Imagen no disponible</p>
                                                         </div>
@@ -275,8 +275,8 @@
                         <!-- Sidebar derecho con formulario de contacto -->
                         <div class="col-lg-4">
                             <!-- FORMULARIO DE CONTACTO -->
-                            <div class="card shadow-sm sticky-top mb-4" style="top: 20px; border: 2px solid #E31E24;">
-                                <div class="card-header text-white" style="background: #E31E24;">
+                            <div class="card shadow-sm sticky-top mb-4" style="top: 20px; border: 2px solid #FF1D25;">
+                                <div class="card-header text-white" style="background: #FF1D25;">
                                     <h5 class="mb-0"><i class="bi bi-envelope"/> Contactar</h5>
                                 </div>
                                 <div class="card-body">
@@ -304,7 +304,7 @@
                                             <textarea name="message" class="form-control" rows="4" placeholder="Estoy interesado en esta propiedad..."></textarea>
                                         </div>
 
-                                        <button type="submit" class="btn w-100 text-white" style="background: #E31E24; border: none;">
+                                        <button type="submit" class="btn w-100 text-white" style="background: #FF1D25; border: none;">
                                             <i class="bi bi-send"/> Enviar Consulta
                                         </button>
                                     </form>
@@ -374,7 +374,7 @@
             <div class="modal fade" id="shareModal" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
-                        <div class="modal-header" style="background: linear-gradient(135deg, #E31E24 0%, #c91920 100%); color: white;">
+                        <div class="modal-header" style="background: linear-gradient(135deg, #FF1D25 0%, #c91920 100%); color: white;">
                             <h5 class="modal-title">
                                 <i class="bi bi-share-fill me-2"></i>Compartir Propiedad
                             </h5>

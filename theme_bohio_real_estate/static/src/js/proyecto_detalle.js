@@ -62,7 +62,7 @@ function inicializarMapaProyecto() {
             className: 'custom-marker-proyecto',
             html: `
                 <div style="
-                    background: #E31E24;
+                    background: #FF1D25;
                     width: 40px;
                     height: 40px;
                     border-radius: 50% 50% 50% 0;
@@ -92,12 +92,12 @@ function inicializarMapaProyecto() {
         // Crear contenido del popup
         const popupContent = `
             <div style="min-width: 200px; max-width: 250px;">
-                <h6 class="fw-bold mb-2" style="color: #E31E24;">${projectName}</h6>
+                <h6 class="fw-bold mb-2" style="color: #FF1D25;">${projectName}</h6>
                 <p class="small text-muted mb-2">
                     <i class="bi bi-geo-alt-fill me-1"></i>
                     Ubicación del proyecto
                 </p>
-                <a href="#propiedades" class="btn btn-sm w-100" style="background: #E31E24; color: white; border: none;">
+                <a href="#propiedades" class="btn btn-sm w-100" style="background: #FF1D25; color: white; border: none;">
                     <i class="bi bi-building me-1"></i>Ver Propiedades
                 </a>
             </div>

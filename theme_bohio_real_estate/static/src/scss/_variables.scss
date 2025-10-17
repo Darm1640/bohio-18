@@ -3,16 +3,23 @@
 // =============================================================================
 // Archivo centralizado de variables para todo el tema
 // Basado en mejores prácticas de Odoo 18
+// ACTUALIZADO: 2025-10-17 - Colores según Manual de Identidad Corporativa
 
 // -----------------------------------------------------------------------------
 // COLORES PRINCIPALES
 // -----------------------------------------------------------------------------
 
-// Colores de marca BOHIO
-$bohio-red-primary: #dc2626;
-$bohio-red-secondary: #ef4444;
-$bohio-red-light: #f87171;
-$bohio-red-dark: #b91c1c;
+// Colores de marca BOHIO - MANUAL DE IDENTIDAD CORPORATIVA OFICIAL
+// Pantone 485C: #FF1D25 | RGB(255, 29, 37) | CMYK(0, 92, 80, 0)
+$bohio-red-primary: #FF1D25;              // Pantone 485C (Color oficial)
+$bohio-red-primary-rgb: 255, 29, 37;     // Para rgba()
+$bohio-red-dark: #CC1720;                // Hover y estados activos
+$bohio-red-light: #FF4D54;               // Backgrounds suaves
+$bohio-red-lighter: #FF7A7F;             // Alerts y notificaciones
+
+// Colores secundarios
+$bohio-black: #000000;                   // Pantone 1788C (Identificador y slogan)
+$bohio-white: #FFFFFF;                   // Para versiones en negativo
 
 // Colores de texto
 $text-primary: #1f2937;
@@ -93,9 +100,9 @@ $shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.
 $shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
 $shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
 
-// Sombras de color BOHIO
-$shadow-bohio: 0 5px 15px rgba(220, 38, 38, 0.3);
-$shadow-bohio-lg: 0 10px 30px rgba(220, 38, 38, 0.4);
+// Sombras de color BOHIO - Actualizado con color oficial
+$shadow-bohio: 0 5px 15px rgba(255, 29, 37, 0.3);
+$shadow-bohio-lg: 0 10px 30px rgba(255, 29, 37, 0.4);
 
 // -----------------------------------------------------------------------------
 // TRANSICIONES
@@ -195,3 +202,21 @@ $h6-font-size: $font-size-base;
 
 // Bordes
 $border-color: #e5e7eb;
+
+// -----------------------------------------------------------------------------
+// TIPOGRAFÍAS CORPORATIVAS - MANUAL DE MARCA
+// -----------------------------------------------------------------------------
+
+// Tipografía Principal (Arista Pro alternativa web)
+$font-family-bohio-primary: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+
+// Tipografía Secundaria (Bebas Neue Pro alternativa web)
+$font-family-bohio-secondary: 'Oswald', 'Arial Narrow', sans-serif;
+
+// Tipografía de Cuerpo
+$font-family-bohio-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+// Pesos corporativos
+$font-weight-bohio-bold: 700;
+$font-weight-bohio-semibold: 600;
+$font-weight-bohio-regular: 400;

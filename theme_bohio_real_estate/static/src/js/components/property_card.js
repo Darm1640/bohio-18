@@ -837,7 +837,7 @@ export function createMapPopup(property) {
         className: 'btn btn-sm btn-danger w-100',
         attributes: {
             href: `/property/${property.id}`,
-            style: 'background: #E31E24; border: none;'
+            style: 'background: #FF1D25; border: none;'
         }
     });
     link.appendChild(createElement('i', { className: 'bi bi-eye me-1' }));

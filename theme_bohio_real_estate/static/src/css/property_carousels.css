@@ -21,7 +21,7 @@
     height: 50px;
     top: 50%;
     transform: translateY(-50%);
-    background: rgba(227, 30, 36, 0.8);
+    background: rgba(255, 29, 37, 0.8);
     border-radius: 50%;
     opacity: 0.8;
     transition: all 0.3s ease;
@@ -30,7 +30,7 @@
 .property-carousel-container .carousel-control-prev:hover,
 .property-carousel-container .carousel-control-next:hover {
     opacity: 1;
-    background: rgba(227, 30, 36, 1);
+    background: rgba(255, 29, 37, 1);
 }
 
 .property-carousel-container .carousel-control-prev {
@@ -64,7 +64,7 @@
 }
 
 .property-carousel-container .carousel-indicators button.active {
-    background-color: #E31E24;
+    background-color: #FF1D25;
     opacity: 1;
     transform: scale(1.2);
 }
@@ -169,7 +169,7 @@
 .property-carousel-loading .spinner-border {
     width: 3rem;
     height: 3rem;
-    color: #E31E24;
+    color: #FF1D25;
 }
 
 /* Empty state */

@@ -62,7 +62,7 @@
                                         <a t-attf-href="/properties/#{property.id}" class="btn btn-outline-primary">
                                             <i class="bi bi-arrow-left me-2"/>Ver Propiedad
                                         </a>
-                                        <a href="/properties" class="btn text-white" style="background: #E31E24; border: none;">
+                                        <a href="/properties" class="btn text-white" style="background: #FF1D25; border: none;">
                                             <i class="bi bi-search me-2"/>Explorar Más Propiedades
                                         </a>
                                     </div>
@@ -137,7 +137,7 @@
                                         <a href="javascript:history.back()" class="btn btn-outline-primary">
                                             <i class="bi bi-arrow-left me-2"/>Volver e Intentar de Nuevo
                                         </a>
-                                        <a href="/properties" class="btn text-white" style="background: #E31E24; border: none;">
+                                        <a href="/properties" class="btn text-white" style="background: #FF1D25; border: none;">
                                             <i class="bi bi-house-fill me-2"/>Ir a Propiedades
                                         </a>
                                     </div>

@@ -7,7 +7,7 @@
             <div id="wrap" class="oe_structure bohio-contacto-page">
 
                 <!-- Hero Section -->
-                <section class="contacto-hero position-relative" style="background: linear-gradient(rgba(0,0,0,0.6), rgba(227, 30, 36, 0.7)), url('/theme_bohio_real_estate/static/src/img/contactanos.jpg') center/cover; min-height: 400px;">
+                <section class="contacto-hero position-relative" style="background: linear-gradient(rgba(0,0,0,0.6), rgba(255, 29, 37, 0.7)), url('/theme_bohio_real_estate/static/src/img/contactanos.jpg') center/cover; min-height: 400px;">
                     <div class="container h-100 d-flex align-items-center justify-content-center text-white text-center py-5">
                         <div>
                             <h1 class="display-3 fw-bold mb-4">Contáctanos</h1>

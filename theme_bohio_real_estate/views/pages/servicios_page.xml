@@ -29,7 +29,7 @@
                                              class="w-100"
                                              style="height: 250px; object-fit: cover;"/>
                                         <div class="servicio-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center"
-                                             style="background: rgba(227, 30, 36, 0.9); opacity: 0; transition: opacity 0.3s;">
+                                             style="background: rgba(255, 29, 37, 0.9); opacity: 0; transition: opacity 0.3s;">
                                             <a href="/properties?type_service=rent" class="btn btn-light btn-lg">Ver Propiedades</a>
                                         </div>
                                     </div>
@@ -63,7 +63,7 @@
                                              class="w-100"
                                              style="height: 250px; object-fit: cover;"/>
                                         <div class="servicio-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center"
-                                             style="background: rgba(227, 30, 36, 0.9); opacity: 0; transition: opacity 0.3s;">
+                                             style="background: rgba(255, 29, 37, 0.9); opacity: 0; transition: opacity 0.3s;">
                                             <a href="/properties?type_service=sale" class="btn btn-light btn-lg">Ver Propiedades</a>
                                         </div>
                                     </div>
@@ -97,7 +97,7 @@
                                              class="w-100"
                                              style="height: 250px; object-fit: cover;"/>
                                         <div class="servicio-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center"
-                                             style="background: rgba(227, 30, 36, 0.9); opacity: 0; transition: opacity 0.3s;">
+                                             style="background: rgba(255, 29, 37, 0.9); opacity: 0; transition: opacity 0.3s;">
                                             <a href="/contacto" class="btn btn-light btn-lg">Solicitar Servicio</a>
                                         </div>
                                     </div>
@@ -131,7 +131,7 @@
                                              class="w-100"
                                              style="height: 250px; object-fit: cover;"/>
                                         <div class="servicio-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center"
-                                             style="background: rgba(227, 30, 36, 0.9); opacity: 0; transition: opacity 0.3s;">
+                                             style="background: rgba(255, 29, 37, 0.9); opacity: 0; transition: opacity 0.3s;">
                                             <a href="/contacto" class="btn btn-light btn-lg">Solicitar Servicio</a>
                                         </div>
                                     </div>
@@ -165,7 +165,7 @@
                                              class="w-100"
                                              style="height: 250px; object-fit: cover;"/>
                                         <div class="servicio-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center"
-                                             style="background: rgba(227, 30, 36, 0.9); opacity: 0; transition: opacity 0.3s;">
+                                             style="background: rgba(255, 29, 37, 0.9); opacity: 0; transition: opacity 0.3s;">
                                             <a href="/contacto" class="btn btn-light btn-lg">Solicitar Servicio</a>
                                         </div>
                                     </div>
@@ -199,7 +199,7 @@
                                              class="w-100"
                                              style="height: 250px; object-fit: cover;"/>
                                         <div class="servicio-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center"
-                                             style="background: rgba(227, 30, 36, 0.9); opacity: 0; transition: opacity 0.3s;">
+                                             style="background: rgba(255, 29, 37, 0.9); opacity: 0; transition: opacity 0.3s;">
                                             <a href="/contacto" class="btn btn-light btn-lg">Solicitar Servicio</a>
                                         </div>
                                     </div>

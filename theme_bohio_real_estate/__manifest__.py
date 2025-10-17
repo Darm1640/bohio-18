@@ -2,7 +2,7 @@
 {
     'name': 'Theme Bohio Real Estate',
     'category': 'Theme/Website',
-    'version': '18.0.3.0.1',
+    'version': '18.0.3.0.2',
     'summary': 'Tema inmobiliario profesional con búsqueda avanzada',
     'description': """
         Tema profesional para inmobiliarias BOHIO con:
@@ -13,9 +13,11 @@
         - Diseño responsivo Bootstrap 5.3.3
         - Integración redes sociales
 
-        Versión 18.0.3.0.1:
-        - Limpieza de assets inexistentes
-        - Optimización de manifest
+        Versión 18.0.3.0.2 (2025-10-17):
+        - ACTUALIZADO: Color rojo corporativo #FF1D25 (Pantone 485C - Manual de Marca)
+        - ACTUALIZADO: Logos oficiales del manual de identidad corporativa
+        - AGREGADO: Tipografías corporativas (Montserrat + Oswald)
+        - MEJORADO: Área de protección del logo según manual
     """,
     'author': 'BOHIO Inmobiliaria',
     'website': 'https://www.bohio.com.co',
@@ -67,7 +69,11 @@
     ],
     'assets': {
         'web.assets_frontend': [
-           
+            # Google Fonts - Tipografías Corporativas (Manual de Marca)
+            # Montserrat: Alternativa a Arista Pro Bold
+            # Oswald: Alternativa a Bebas Neue Pro Bold
+            'https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Oswald:wght@400;600;700&display=swap',
+
             'theme_bohio_real_estate/static/lib/bootstrap-5.3.3/css/bootstrap.min.css',
             'theme_bohio_real_estate/static/lib/bootstrap-5.3.3/js/bootstrap.bundle.min.js',
             'theme_bohio_real_estate/static/src/css/style.css',

@@ -278,7 +278,7 @@ function showWishlistNotification(message, type = 'success') {
     let icon = 'bi-check-circle';
 
     if (type === 'error') {
-        bgColor = '#E31E24';  // Rojo error
+        bgColor = '#FF1D25';  // Rojo error
         icon = 'bi-exclamation-circle';
     } else if (type === 'info') {
         bgColor = '#0d6efd';  // Azul info
@@ -410,7 +410,7 @@ style.textContent = `
         justify-content: center;
         min-width: 20px;
         height: 20px;
-        background: #E31E24;
+        background: #FF1D25;
         color: white;
         border-radius: 10px;
         font-size: 11px;

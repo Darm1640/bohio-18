@@ -3,11 +3,11 @@
 @keyframes pulse-office {
     0%, 100% {
         transform: scale(1);
-        box-shadow: 0 4px 15px rgba(227, 30, 36, 0.4);
+        box-shadow: 0 4px 15px rgba(255, 29, 37, 0.4);
     }
     50% {
         transform: scale(1.05);
-        box-shadow: 0 6px 25px rgba(227, 30, 36, 0.6);
+        box-shadow: 0 6px 25px rgba(255, 29, 37, 0.6);
     }
 }
 

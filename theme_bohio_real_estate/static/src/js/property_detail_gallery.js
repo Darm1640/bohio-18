@@ -259,7 +259,7 @@ class PropertyGallery {
             thumbDiv.style.cssText = `
                 cursor: pointer;
                 opacity: ${index === this.currentIndex ? '1' : '0.6'};
-                border: ${index === this.currentIndex ? '3px solid #E31E24' : '3px solid transparent'};
+                border: ${index === this.currentIndex ? '3px solid #FF1D25' : '3px solid transparent'};
                 border-radius: 8px;
                 transition: all 0.3s ease;
                 width: 80px;
@@ -314,7 +314,7 @@ class PropertyGallery {
         thumbnails.forEach((thumb, index) => {
             if (index === this.currentIndex) {
                 thumb.style.opacity = '1';
-                thumb.style.border = '3px solid #E31E24';
+                thumb.style.border = '3px solid #FF1D25';
                 thumb.style.transform = 'scale(1.1)';
                 
                 // Scroll suave a la miniatura activa

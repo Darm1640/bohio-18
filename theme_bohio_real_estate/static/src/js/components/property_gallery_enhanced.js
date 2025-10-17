@@ -621,7 +621,7 @@ const styles = `
 
 .zoom-thumbnail.active {
     opacity: 1;
-    border-color: #E31E24;
+    border-color: #FF1D25;
 }
 
 .zoom-thumbnail:hover {

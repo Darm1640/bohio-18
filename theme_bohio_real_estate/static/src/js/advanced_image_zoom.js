@@ -495,7 +495,7 @@ class AdvancedImageZoom {
 
             if (index === this.currentIndex) {
                 thumb.style.opacity = '1';
-                thumb.style.border = '2px solid #E31E24';
+                thumb.style.border = '2px solid #FF1D25';
                 thumb.style.transform = 'scale(1.1)';
             }
 
@@ -525,7 +525,7 @@ class AdvancedImageZoom {
         thumbnails.forEach((thumb, index) => {
             if (index === this.currentIndex) {
                 thumb.style.opacity = '1';
-                thumb.style.border = '2px solid #E31E24';
+                thumb.style.border = '2px solid #FF1D25';
                 thumb.style.transform = 'scale(1.1)';
 
                 // Scroll a la miniatura visible

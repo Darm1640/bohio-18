@@ -35,7 +35,7 @@ const HomepageAutocomplete = publicWidget.Widget.extend({
             console.warn('[HOMEPAGE-AUTOCOMPLETE] Contenedor NO encontrado, creando...');
             this.autocompleteContainer = document.createElement('div');
             this.autocompleteContainer.className = 'autocomplete-container shadow-lg';
-            this.autocompleteContainer.style.cssText = 'display: none; position: absolute; top: 100%; left: 0; right: 0; z-index: 2000; margin-top: 5px; background: white; border-radius: 8px; max-height: 400px; overflow-y: auto; border: 2px solid #E31E24;';
+            this.autocompleteContainer.style.cssText = 'display: none; position: absolute; top: 100%; left: 0; right: 0; z-index: 2000; margin-top: 5px; background: white; border-radius: 8px; max-height: 400px; overflow-y: auto; border: 2px solid #FF1D25;';
             this.el.appendChild(this.autocompleteContainer);
         }
 
@@ -217,7 +217,7 @@ const HomepageAutocomplete = publicWidget.Widget.extend({
 
         const icon = document.createElement('i');
         icon.className = `fa ${iconInfo.class}`;
-        icon.style.cssText = 'color: #E31E24; font-size: 16px;';
+        icon.style.cssText = 'color: #FF1D25; font-size: 16px;';
 
         iconWrapper.appendChild(icon);
         li.appendChild(iconWrapper);
@@ -260,7 +260,7 @@ const HomepageAutocomplete = publicWidget.Widget.extend({
     _highlightTerm: function (text, term) {
         if (!term) return text;
         const regex = new RegExp(`(${this._escapeRegex(term)})`, 'gi');
-        return text.replace(regex, '<strong style="color: #E31E24;">$1</strong>');
+        return text.replace(regex, '<strong style="color: #FF1D25;">$1</strong>');
     },
 
     /**

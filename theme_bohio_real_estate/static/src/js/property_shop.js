@@ -635,12 +635,12 @@ class PropertyShop {
             priceDisplay = `
                 <div class="d-flex flex-column gap-1">
                     <span class="badge px-2 py-1 fs-7 fw-bold" style="background: #10B981;">Venta: $${salePrice}</span>
-                    <span class="badge px-2 py-1 fs-7 fw-bold" style="background: #E31E24;">Arriendo: $${rentPrice}/mes</span>
+                    <span class="badge px-2 py-1 fs-7 fw-bold" style="background: #FF1D25;">Arriendo: $${rentPrice}/mes</span>
                 </div>
             `;
         } else if (property.type_service === 'rent') {
             const rentPrice = this.formatPrice(property.net_rental_price || property.list_price);
-            priceDisplay = `<span class="badge px-3 py-2 fs-6 fw-bold" style="background: #E31E24;">$${rentPrice}/mes</span>`;
+            priceDisplay = `<span class="badge px-3 py-2 fs-6 fw-bold" style="background: #FF1D25;">$${rentPrice}/mes</span>`;
         } else { // sale
             const salePrice = this.formatPrice(property.net_price || property.list_price);
             priceDisplay = `<span class="badge px-3 py-2 fs-6 fw-bold" style="background: #10B981;">$${salePrice}</span>`;
@@ -655,10 +655,10 @@ class PropertyShop {
         if (property.type_service === 'sale_rent') {
             serviceBadges = `
                 <span class="badge me-1" style="background: #10B981;">Venta</span>
-                <span class="badge me-1" style="background: #E31E24;">Arriendo</span>
+                <span class="badge me-1" style="background: #FF1D25;">Arriendo</span>
             `;
         } else if (property.type_service === 'rent') {
-            serviceBadges = '<span class="badge me-1" style="background: #E31E24;">Arriendo</span>';
+            serviceBadges = '<span class="badge me-1" style="background: #FF1D25;">Arriendo</span>';
         } else if (property.type_service === 'sale') {
             serviceBadges = '<span class="badge me-1" style="background: #10B981;">Venta</span>';
         }
@@ -691,14 +691,14 @@ class PropertyShop {
                     </div>
                     <div class="card-body d-flex flex-column">
                         <h5 class="card-title mb-2">
-                            <a href="/property/${property.id}" class="text-decoration-none" style="color: #E31E24; font-weight: 600;">
+                            <a href="/property/${property.id}" class="text-decoration-none" style="color: #FF1D25; font-weight: 600;">
                                 ${(property.name || 'Propiedad sin nombre').substring(0, 50)}${(property.name || '').length > 50 ? '...' : ''}
                             </a>
                         </h5>
 
                         <!-- Código -->
                         <div class="mb-2">
-                            <small class="text-muted">Código: <strong style="color: #E31E24;">${property.default_code || 'N/A'}</strong></small>
+                            <small class="text-muted">Código: <strong style="color: #FF1D25;">${property.default_code || 'N/A'}</strong></small>
                         </div>
 
                         <!-- Ubicación Precisa -->
@@ -717,7 +717,7 @@ class PropertyShop {
 
                         <!-- OBSERVACIONES PRIMERO -->
                         ${property.description && typeof property.description === 'string' && property.description.trim() ? `
-                            <div class="alert alert-light mb-3 p-2" style="border-left: 3px solid #E31E24;">
+                            <div class="alert alert-light mb-3 p-2" style="border-left: 3px solid #FF1D25;">
                                 <small class="fw-bold text-danger d-block mb-1">
                                     <i class="bi bi-chat"></i> Observaciones:
                                 </small>
@@ -733,7 +733,7 @@ class PropertyShop {
                         <!-- Características Adicionales Agrupadas -->
                         ${this.renderAdditionalFeatures(property)}
 
-                        <a href="/property/${property.id}" class="btn w-100 mt-auto" style="background: #E31E24; color: white; border: none;">
+                        <a href="/property/${property.id}" class="btn w-100 mt-auto" style="background: #FF1D25; color: white; border: none;">
                             Ver Detalles
                         </a>
                     </div>
@@ -1092,7 +1092,7 @@ class PropertyShop {
                                 ${bedrooms > 0 ? `<span><i class="bi bi-bed me-1"></i>${bedrooms} hab</span>` : ''}
                                 ${bathrooms > 0 ? `<span><i class="bi bi-droplet me-1"></i>${bathrooms} baños</span>` : ''}
                             </div>
-                            <a href="/property/${prop.id}" class="btn btn-sm w-100" style="background: #E31E24; color: white; border: none;">
+                            <a href="/property/${prop.id}" class="btn btn-sm w-100" style="background: #FF1D25; color: white; border: none;">
                                 Ver Detalles <i class="bi bi-arrow-right ms-1"></i>
                             </a>
                         </div>
@@ -1413,7 +1413,7 @@ class PropertyShop {
             top: 20px;
             right: 20px;
             padding: 15px 20px;
-            background: ${type === 'success' ? '#E31E24' : '#dc3545'};
+            background: ${type === 'success' ? '#FF1D25' : '#dc3545'};
             color: white;
             border-radius: 5px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);

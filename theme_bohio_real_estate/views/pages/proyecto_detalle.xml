@@ -31,7 +31,7 @@
                                         <t t-esc="project.address"/>
                                     </t>
                                     <t t-else="">
-                                        Un proyecto exclusivo de <span style="color: #E31E24; font-weight: 600;">lujo</span>
+                                        Un proyecto exclusivo de <span style="color: #FF1D25; font-weight: 600;">lujo</span>
                                     </t>
                                 </p>
                                 <!-- Descripcion -->
@@ -44,7 +44,7 @@
                                     </t>
                                 </p>
                                 <div class="d-flex gap-3 mb-5 flex-wrap">
-                                    <a href="#propiedades" class="btn btn-lg px-5 py-3" style="background: #E31E24; color: white; border: none; border-radius: 50px; font-weight: 600; transition: all 0.3s;">
+                                    <a href="#propiedades" class="btn btn-lg px-5 py-3" style="background: #FF1D25; color: white; border: none; border-radius: 50px; font-weight: 600; transition: all 0.3s;">
                                         <t t-if="project.project_type == 'tower'">Ver Apartamentos</t>
                                         <t t-elif="project.project_type == 'residential'">Ver Casas</t>
                                         <t t-else="">Ver Propiedades</t>
@@ -57,12 +57,12 @@
                                 <div class="row mt-5">
                                     <t t-if="project.no_of_floors">
                                         <div class="col-4 text-center border-end border-secondary">
-                                            <h3 class="display-4 fw-bold" style="color: #E31E24;"><t t-esc="project.no_of_floors"/></h3>
+                                            <h3 class="display-4 fw-bold" style="color: #FF1D25;"><t t-esc="project.no_of_floors"/></h3>
                                             <p class="text-uppercase small" style="color: #999;">Pisos</p>
                                         </div>
                                     </t>
                                     <div class="col-4 text-center" t-attf-class="#{project.project_size and 'border-end border-secondary' or ''}">
-                                        <h3 class="display-4 fw-bold" style="color: #E31E24;"><t t-esc="property_count"/></h3>
+                                        <h3 class="display-4 fw-bold" style="color: #FF1D25;"><t t-esc="property_count"/></h3>
                                         <p class="text-uppercase small" style="color: #999;">
                                             <t t-if="project.project_type == 'tower'">Apartamentos</t>
                                             <t t-elif="project.project_type == 'residential'">Casas</t>
@@ -71,7 +71,7 @@
                                     </div>
                                     <t t-if="project.project_size">
                                         <div class="col-4 text-center">
-                                            <h3 class="display-4 fw-bold" style="color: #E31E24;"><t t-esc="'{:,.0f}'.format(project.project_size)"/></h3>
+                                            <h3 class="display-4 fw-bold" style="color: #FF1D25;"><t t-esc="'{:,.0f}'.format(project.project_size)"/></h3>
                                             <p class="text-uppercase small" style="color: #999;">m² Total</p>
                                         </div>
                                     </t>
@@ -97,7 +97,7 @@
                     <!-- Scroll indicator -->
                     <div class="position-absolute bottom-0 start-50 translate-middle-x mb-5" style="z-index: 2;">
                         <div class="scroll-indicator" style="width: 30px; height: 50px; border: 2px solid #fff; border-radius: 20px; position: relative;">
-                            <div style="width: 6px; height: 6px; background: #E31E24; border-radius: 50%; position: absolute; top: 10px; left: 50%; transform: translateX(-50%); animation: scroll-down 2s infinite;"></div>
+                            <div style="width: 6px; height: 6px; background: #FF1D25; border-radius: 50%; position: absolute; top: 10px; left: 50%; transform: translateX(-50%); animation: scroll-down 2s infinite;"></div>
                         </div>
                     </div>
                 </section>
@@ -139,7 +139,7 @@
                 <section id="propiedades" class="py-5" style="background: #000000;">
                     <div class="container py-5">
                         <div class="text-center mb-5">
-                            <div class="badge text-white px-3 py-2 mb-3" style="background: #E31E24;">
+                            <div class="badge text-white px-3 py-2 mb-3" style="background: #FF1D25;">
                                 <t t-if="project.project_type == 'tower'">APARTAMENTOS</t>
                                 <t t-elif="project.project_type == 'residential'">CASAS</t>
                                 <t t-else="">PROPIEDADES</t>
@@ -193,7 +193,7 @@
 
                                             <!-- Badge tipo -->
                                             <div class="position-absolute top-0 start-0 m-3">
-                                                <span class="badge px-3 py-2" style="background: #E31E24; font-size: 14px; font-weight: 600;">
+                                                <span class="badge px-3 py-2" style="background: #FF1D25; font-size: 14px; font-weight: 600;">
                                                     <t t-if="tipo != 'General'">TIPO <t t-esc="tipo"/></t>
                                                     <t t-else=""><t t-esc="sample_prop.property_type_id.name or 'Propiedad'"/></t>
                                                 </span>
@@ -229,19 +229,19 @@
                                             <div class="d-flex gap-4 mb-3 text-white-50 small flex-wrap">
                                                 <t t-if="sample_prop.num_bedrooms">
                                                     <div>
-                                                        <i class="bi bi-bed me-1" style="color: #E31E24;"></i>
+                                                        <i class="bi bi-bed me-1" style="color: #FF1D25;"></i>
                                                         <t t-esc="sample_prop.num_bedrooms"/> Hab
                                                     </div>
                                                 </t>
                                                 <t t-if="sample_prop.num_bathrooms">
                                                     <div>
-                                                        <i class="bi bi-droplet me-1" style="color: #E31E24;"></i>
+                                                        <i class="bi bi-droplet me-1" style="color: #FF1D25;"></i>
                                                         <t t-esc="sample_prop.num_bathrooms"/> Baños
                                                     </div>
                                                 </t>
                                                 <t t-if="sample_prop.covered_parking">
                                                     <div>
-                                                        <i class="bi bi-car-front me-1" style="color: #E31E24;"></i>
+                                                        <i class="bi bi-car-front me-1" style="color: #FF1D25;"></i>
                                                         <t t-esc="sample_prop.covered_parking"/> Parq
                                                     </div>
                                                 </t>
@@ -257,11 +257,11 @@
                                                     </div>
                                                     <div>
                                                         <div class="small text-white-50">Arriendo:</div>
-                                                        <h6 class="fw-bold mb-0" style="color: #E31E24;">$<t t-esc="'{:,.0f}'.format(sample_prop.net_rental_price)"/>/mes</h6>
+                                                        <h6 class="fw-bold mb-0" style="color: #FF1D25;">$<t t-esc="'{:,.0f}'.format(sample_prop.net_rental_price)"/>/mes</h6>
                                                     </div>
                                                 </t>
                                                 <t t-elif="sample_prop.type_service == 'rent'">
-                                                    <h5 class="fw-bold mb-0" style="color: #E31E24;">$<t t-esc="'{:,.0f}'.format(sample_prop.net_rental_price)"/>/mes</h5>
+                                                    <h5 class="fw-bold mb-0" style="color: #FF1D25;">$<t t-esc="'{:,.0f}'.format(sample_prop.net_rental_price)"/>/mes</h5>
                                                 </t>
                                                 <t t-else="">
                                                     <h5 class="text-white fw-bold mb-0">$<t t-esc="'{:,.0f}'.format(sample_prop.net_price)"/></h5>
@@ -269,7 +269,7 @@
                                             </div>
 
                                             <!-- Boton -->
-                                            <a t-attf-href="/propiedades/#{sample_prop.id}" class="btn w-100 py-2" style="background: transparent; border: 2px solid #E31E24; color: #E31E24; border-radius: 50px; font-weight: 600; transition: all 0.3s;">
+                                            <a t-attf-href="/propiedades/#{sample_prop.id}" class="btn w-100 py-2" style="background: transparent; border: 2px solid #FF1D25; color: #FF1D25; border-radius: 50px; font-weight: 600; transition: all 0.3s;">
                                                 Ver Detalles
                                             </a>
                                         </div>
@@ -280,7 +280,7 @@
 
                         <!-- Ver todas -->
                         <div class="text-center mt-5">
-                            <a t-attf-href="/propiedades?project=#{project.id}" class="btn btn-lg px-5 py-3" style="background: #E31E24; color: white; border: none; border-radius: 50px; font-weight: 600;">
+                            <a t-attf-href="/propiedades?project=#{project.id}" class="btn btn-lg px-5 py-3" style="background: #FF1D25; color: white; border: none; border-radius: 50px; font-weight: 600;">
                                 Ver Todas las Propiedades
                             </a>
                         </div>
@@ -288,7 +288,7 @@
                 </section>
 
                 <!-- CONTACTO CTA -->
-                <section class="py-5" style="background: linear-gradient(135deg, #000000 0%, #E31E24 100%);">
+                <section class="py-5" style="background: linear-gradient(135deg, #000000 0%, #FF1D25 100%);">
                     <div class="container py-5 text-center text-white">
                         <h2 class="display-3 fw-bold mb-4">¿Listo para Conocer Este Proyecto?</h2>
                         <p class="lead mb-4" style="max-width: 600px; margin: 0 auto; opacity: 0.9;">
@@ -353,7 +353,7 @@
 
                 .property-type-card:hover {
                     transform: translateY(-10px);
-                    border-color: #E31E24 !important;
+                    border-color: #FF1D25 !important;
                     box-shadow: 0 20px 60px rgba(227,30,36,0.3);
                 }
 
@@ -362,7 +362,7 @@
                 }
 
                 .property-type-card:hover .btn {
-                    background: #E31E24 !important;
+                    background: #FF1D25 !important;
                     color: white !important;
                 }
             </style>
