@@ -29,18 +29,19 @@
     <!-- Template: Property Card -->
     <template id="property_card_shop_template" name="Property Card Shop Template">
         <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 mb-4">
-            <div class="card property-card shadow-sm border-0 h-100">
+            <div class="card property-card shadow-sm border-0 h-100 bohio-property-card">
                 <!-- Image Section -->
                 <div class="position-relative">
                     <img t-att-src="property.image_url"
                          t-att-alt="property.name"
-                         class="card-img-top"
+                         class="card-img-top property-card-image"
                          style="height: 200px; object-fit: cover;"/>
 
-                    <!-- Price Badge -->
+                    <!-- Price Badge - Color rojo BOHIO -->
                     <div class="position-absolute top-0 end-0 m-3">
                         <span t-if="property.net_price or property.net_rental_price"
-                              class="badge bg-bohio-red text-white fs-6 px-3 py-2">
+                              class="badge text-white fs-6 px-3 py-2"
+                              style="background-color: #FF1D25;">
                             <t t-esc="property.price_formatted"/>
                         </span>
                         <span t-else=""
@@ -59,10 +60,22 @@
                     <!-- Property Type Badge -->
                     <div class="position-absolute bottom-0 start-0 m-3">
                         <span class="badge bg-dark text-white">
-                            <i t-attf-class="fa #{property.type_icon} me-1"></i>
+                            <i t-attf-class="bi #{property.type_icon} me-1"></i>
                             <t t-esc="property.type_name"/>
                         </span>
                     </div>
+
+                    <!-- Project Badge (Nuevo) -->
+                    <t t-if="property.project_id and property.project_name">
+                        <div class="position-absolute bottom-0 end-0 m-3">
+                            <a t-attf-href="/proyecto/#{property.project_id}"
+                               class="badge text-white text-decoration-none property-project-badge"
+                               style="background-color: #FF1D25;">
+                                <i class="bi bi-building me-1"></i>
+                                <t t-esc="property.project_name"/>
+                            </a>
+                        </div>
+                    </t>
                 </div>
 
                 <!-- Card Body -->
@@ -77,34 +90,34 @@
 
                     <!-- Location -->
                     <p class="text-muted small mb-2">
-                        <i class="fa fa-map-marker-alt me-1"></i>
+                        <i class="bi bi-geo-alt-fill me-1" style="color: #FF1D25;"></i>
                         <t t-esc="property.location"/>
                     </p>
 
                     <!-- Features -->
                     <div class="mt-auto">
-                        <div class="d-flex justify-content-between text-muted small">
+                        <div class="d-flex justify-content-between text-muted small property-features">
                             <!-- Area -->
                             <span t-if="property.area">
-                                <i class="fa fa-ruler-combined me-1"></i>
+                                <i class="bi bi-rulers me-1" style="color: #FF1D25;"></i>
                                 <t t-esc="property.area_formatted"/>
                             </span>
 
                             <!-- Bedrooms -->
                             <span t-if="property.bedrooms">
-                                <i class="fa fa-bed me-1"></i>
+                                <i class="bi bi-bed me-1" style="color: #FF1D25;"></i>
                                 <t t-esc="property.bedrooms"/>
                             </span>
 
                             <!-- Bathrooms -->
                             <span t-if="property.bathrooms">
-                                <i class="fa fa-bath me-1"></i>
+                                <i class="bi bi-droplet me-1" style="color: #FF1D25;"></i>
                                 <t t-esc="property.bathrooms"/>
                             </span>
 
                             <!-- Parking -->
                             <span t-if="property.parking_spaces">
-                                <i class="fa fa-car me-1"></i>
+                                <i class="bi bi-car-front me-1" style="color: #FF1D25;"></i>
                                 <t t-esc="property.parking_spaces"/>
                             </span>
                         </div>
@@ -123,12 +136,24 @@
                      t-att-alt="property.name"
                      style="width: 100%; height: 100%; object-fit: cover;"/>
 
-                <!-- Price Badge -->
+                <!-- Price Badge - Color rojo BOHIO -->
                 <div style="position: absolute; top: 10px; right: 10px;">
-                    <span class="badge bg-bohio-red text-white px-2 py-1">
+                    <span class="badge text-white px-2 py-1" style="background-color: #FF1D25;">
                         <t t-esc="property.price_formatted"/>
                     </span>
                 </div>
+
+                <!-- Project Badge (Nuevo) -->
+                <t t-if="property.project_id and property.project_name">
+                    <div style="position: absolute; bottom: 10px; right: 10px;">
+                        <a t-attf-href="/proyecto/#{property.project_id}"
+                           class="badge text-white text-decoration-none px-2 py-1"
+                           style="background-color: #FF1D25;">
+                            <i class="bi bi-building me-1"></i>
+                            <t t-esc="property.project_name"/>
+                        </a>
+                    </div>
+                </t>
             </div>
 
             <!-- Popup Body -->
@@ -153,30 +178,31 @@
 
                 <!-- Location -->
                 <p class="text-muted small mb-2">
-                    <i class="fa fa-map-marker-alt me-1"></i>
+                    <i class="bi bi-geo-alt-fill me-1" style="color: #FF1D25;"></i>
                     <t t-esc="property.location"/>
                 </p>
 
                 <!-- Features -->
                 <div class="d-flex justify-content-between text-muted small mb-2">
                     <span t-if="property.area">
-                        <i class="fa fa-ruler-combined me-1"></i>
+                        <i class="bi bi-rulers me-1" style="color: #FF1D25;"></i>
                         <t t-esc="property.area_formatted"/>
                     </span>
                     <span t-if="property.bedrooms">
-                        <i class="fa fa-bed me-1"></i>
+                        <i class="bi bi-bed me-1" style="color: #FF1D25;"></i>
                         <t t-esc="property.bedrooms"/>
                     </span>
                     <span t-if="property.bathrooms">
-                        <i class="fa fa-bath me-1"></i>
+                        <i class="bi bi-droplet me-1" style="color: #FF1D25;"></i>
                         <t t-esc="property.bathrooms"/>
                     </span>
                 </div>
 
                 <!-- View Button -->
                 <a t-attf-href="/property/#{property.id}"
-                   class="btn btn-sm btn-bohio-red w-100">
-                    Ver Detalles
+                   class="btn btn-sm w-100 text-white"
+                   style="background-color: #FF1D25;">
+                    <i class="bi bi-eye me-1"></i>Ver Detalles
                 </a>
             </div>
         </div>
@@ -205,8 +231,8 @@
     <template id="no_results_template" name="No Results Template">
         <div class="col-12">
             <div class="alert alert-info text-center">
-                <i class="fa fa-info-circle fa-2x mb-3"></i>
-                <h5>No se encontraron propiedades</h5>
+                <i class="bi bi-info-circle-fill" style="font-size: 3rem; color: #FF1D25;"></i>
+                <h5 class="mt-3">No se encontraron propiedades</h5>
                 <p class="mb-0">Intenta ajustar los filtros de búsqueda</p>
             </div>
         </div>
