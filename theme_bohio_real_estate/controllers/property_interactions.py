@@ -26,8 +26,9 @@ class BohioPropertyInteractions(WebsiteSaleWishlist):
     FUSIONA:
     - property_wishlist.py: Wishlist/favoritos (6 rutas)
     - property_map_controller.py: Mapas individuales (2 rutas)
+    - Reportes de problemas (1 ruta)
 
-    Total: 8 rutas
+    Total: 9 rutas
     """
 
     # ========================================================================
@@ -472,3 +473,131 @@ class BohioPropertyInteractions(WebsiteSaleWishlist):
         google_maps_url = f"https://www.google.com/maps/dir/?api=1&destination={property_obj.latitude},{property_obj.longitude}"
 
         return request.redirect(google_maps_url)
+
+    # ========================================================================
+    # SECCIÓN 3: REPORTES DE PROBLEMAS CON PROPIEDADES
+    # ========================================================================
+
+    @http.route('/property/report', type='json', auth='public', website=True, csrf=False)
+    def property_report(self, **post):
+        """
+        Recibir reportes de problemas con propiedades y crear tickets de helpdesk.
+
+        Datos esperados en POST:
+            - property_id: ID de la propiedad
+            - property_name: Nombre de la propiedad
+            - property_code: Código de la propiedad
+            - property_url: URL de la propiedad
+            - problem_type: Tipo de problema
+            - reporter_name: Nombre del reportante
+            - reporter_email: Email del reportante
+            - description: Descripción del problema
+
+        Returns:
+            dict: {'success': bool, 'message': str, 'ticket_id': int}
+        """
+        try:
+            # Validar datos requeridos
+            required_fields = ['property_id', 'problem_type', 'reporter_email', 'description']
+            for field in required_fields:
+                if not post.get(field):
+                    return {
+                        'success': False,
+                        'message': f'Campo requerido faltante: {field}'
+                    }
+
+            # Obtener o crear el partner del reportante
+            reporter_email = post.get('reporter_email')
+            reporter_name = post.get('reporter_name', 'Usuario Web')
+
+            partner = request.env['res.partner'].sudo().search([
+                ('email', '=', reporter_email)
+            ], limit=1)
+
+            if not partner:
+                # Crear partner temporal para el reportante
+                partner = request.env['res.partner'].sudo().create({
+                    'name': reporter_name,
+                    'email': reporter_email,
+                    'is_company': False,
+                })
+
+            # Obtener la propiedad
+            property_id = int(post.get('property_id'))
+            property_obj = request.env['product.template'].sudo().browse(property_id)
+
+            if not property_obj.exists():
+                return {
+                    'success': False,
+                    'message': 'Propiedad no encontrada'
+                }
+
+            # Mapear tipos de problemas a etiquetas legibles
+            problem_types = {
+                'incorrect_info': 'Información Incorrecta',
+                'outdated': 'Información Desactualizada',
+                'unavailable': 'Propiedad No Disponible',
+                'photos': 'Problema con Fotos',
+                'price': 'Problema con Precio',
+                'location': 'Ubicación Incorrecta',
+                'other': 'Otro Problema'
+            }
+
+            problem_type_label = problem_types.get(
+                post.get('problem_type'),
+                'Problema General'
+            )
+
+            # Buscar equipo de helpdesk
+            helpdesk_team = request.env['helpdesk.team'].sudo().search([], limit=1)
+
+            # Crear ticket de helpdesk
+            ticket_vals = {
+                'name': f'[Reporte Web] {problem_type_label} - {property_obj.name}',
+                'partner_id': partner.id,
+                'partner_email': reporter_email,
+                'team_id': helpdesk_team.id if helpdesk_team else False,
+                'description': f"""
+REPORTE DE PROBLEMA CON PROPIEDAD
+=================================
+
+Propiedad: {post.get('property_name', property_obj.name)}
+Código: {post.get('property_code', property_obj.default_code or 'N/A')}
+URL: {post.get('property_url', '')}
+
+Tipo de Problema: {problem_type_label}
+
+Reportado por: {reporter_name} ({reporter_email})
+
+Descripción:
+{post.get('description', '')}
+                """.strip(),
+                'priority': '2',  # Media prioridad
+            }
+
+            ticket = request.env['helpdesk.ticket'].sudo().create(ticket_vals)
+
+            # Vincular la propiedad al ticket usando message_post
+            if property_obj:
+                ticket.message_post(
+                    body=f'Propiedad reportada: <a href="/property/{property_obj.id}">{property_obj.name}</a>',
+                    message_type='notification'
+                )
+
+            _logger.info(
+                f'✅ Reporte creado: Ticket #{ticket.id} para propiedad {property_id} '
+                f'por {reporter_email}'
+            )
+
+            return {
+                'success': True,
+                'message': 'Reporte enviado exitosamente. Gracias por ayudarnos a mejorar.',
+                'ticket_id': ticket.id
+            }
+
+        except Exception as e:
+            _logger.error(f'❌ Error creando reporte de propiedad: {e}', exc_info=True)
+            return {
+                'success': False,
+                'message': 'Error al enviar el reporte. Por favor intenta de nuevo.'
+            }

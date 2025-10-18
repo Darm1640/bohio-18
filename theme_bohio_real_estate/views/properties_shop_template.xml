@@ -3,34 +3,37 @@
     <template id="properties_shop" name="BOHIO Properties Shop">
         <t t-call="website.layout">
             <div id="wrap" class="bohio-shop-page">
-                <!-- Banner Hero -->
-                <section class="properties-hero position-relative" style="background: linear-gradient(rgba(255, 29, 37, 0.75), rgba(0,0,0,0.6)), url('/theme_bohio_real_estate/static/src/img/banner_inicio.jpg') center/cover; min-height: 300px;">
-                    <div class="container h-100">
-                        <div class="row h-100 align-items-center text-white text-center" style="min-height: 300px;">
-                            <div class="col-12">
-                                <h1 class="display-4 fw-bold mb-3">Encuentra Tu Hogar Ideal</h1>
-                                <p class="lead mb-0">Explora nuestra amplia selección de propiedades</p>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
                 <!-- Contenedor con contexto para JavaScript -->
                 <div class="property_search_container" t-att-data-context="search_context or 'public'">
 
-                    <!-- Header con búsqueda principal -->
-                    <section class="shop-header bg-white border-bottom py-4">
+                    <!-- Header simplificado con búsqueda por código -->
+                    <section class="shop-header bg-white border-bottom py-4 mt-5">
                         <div class="container">
                             <div class="row align-items-center mb-4">
-                                <div class="col-md-6">
-                                    <h1 class="mb-0">
+                                <div class="col-md-8">
+                                    <h1 class="mb-3">
                                         <i class="bi bi-search"/> Propiedades
                                     </h1>
-                                    <p class="text-muted mb-0 mt-2">
-                                        <span id="property-count" class="fw-bold text-danger">0</span> propiedades encontradas
-                                    </p>
+
+                                    <!-- Barra de búsqueda por código -->
+                                    <div class="search-bar-container position-relative">
+                                        <div class="input-group input-group-lg">
+                                            <span class="input-group-text bg-light">
+                                                <i class="bi bi-hash"></i>
+                                            </span>
+                                            <input type="text"
+                                                   class="form-control property-search-input"
+                                                   placeholder="Buscar por código de propiedad (Ej: COD-3911, COD-3997)..."
+                                                   autocomplete="off"/>
+                                            <button class="btn btn-danger" type="submit">
+                                                <i class="bi bi-search"/> Buscar
+                                            </button>
+                                        </div>
+                                        <!-- Contenedor de autocompletado -->
+                                        <div class="autocomplete-container shadow-lg" style="display: none;"></div>
+                                    </div>
                                 </div>
-                                <div class="col-md-6 text-end">
+                                <div class="col-md-4 text-end">
                                     <!-- Botón comparar -->
                                     <button class="btn btn-outline-danger view-comparison" disabled="disabled">
                                         <i class="bi bi-balance-scale"/> Comparar
@@ -38,146 +41,12 @@
                                     </button>
                                 </div>
                             </div>
-
-                            <!-- Barra de búsqueda con autocompletado -->
-                            <div class="search-bar-container position-relative">
-                                <div class="input-group input-group-lg">
-                                    <input type="text"
-                                           class="form-control property-search-input"
-                                           placeholder="Buscar por ciudad, barrio o código..."
-                                           autocomplete="off"/>
-                                    <select class="form-select subdivision-filter" style="max-width: 200px;">
-                                        <option value="all">Buscar todo</option>
-                                        <option value="cities">Ciudades</option>
-                                        <option value="regions">Barrios</option>
-                                        <option value="properties">Propiedades</option>
-                                    </select>
-                                    <button class="btn btn-danger" type="submit">
-                                        <i class="bi bi-search"/> Buscar
-                                    </button>
-                                </div>
-                                <!-- Contenedor de autocompletado -->
-                                <div class="autocomplete-container shadow-lg" style="display: none;"></div>
-                            </div>
                         </div>
                     </section>
 
-                    <!-- Filtros y resultados -->
+                    <!-- Resultados -->
                     <section class="shop-content py-4">
                         <div class="container-fluid px-4">
-                            <!-- Filtros horizontales superiores -->
-                            <div class="row mb-4">
-                                <div class="col-12">
-                                    <div class="filters-panel-horizontal card shadow-sm">
-                                        <div class="card-body py-3">
-                                            <div class="row g-3 align-items-end">
-                                                <!-- Tipo de Servicio -->
-                                                <div class="col-md-2">
-                                                    <label class="form-label fw-bold mb-1 small">Servicio</label>
-                                                    <select class="form-select form-select-sm property-filter" data-filter="type_service">
-                                                        <option value="">Todos</option>
-                                                        <option value="sale">Venta</option>
-                                                        <option value="rent">Arriendo</option>
-                                                        <option value="vacation_rent">Arriendo Vacacional</option>
-                                                    </select>
-                                                </div>
-
-                                                <!-- Tipo de Propiedad -->
-                                                <div class="col-md-2">
-                                                    <label class="form-label fw-bold mb-1 small">Tipo</label>
-                                                    <select class="form-select form-select-sm property-filter" data-filter="property_type">
-                                                        <option value="">Todos</option>
-                                                        <option value="apartment">Apartamento</option>
-                                                        <option value="house">Casa</option>
-                                                        <option value="commercial">Comercial</option>
-                                                        <option value="lot">Lote</option>
-                                                    </select>
-                                                </div>
-
-                                                <!-- Habitaciones -->
-                                                <div class="col-md-1">
-                                                    <label class="form-label fw-bold mb-1 small">Habs</label>
-                                                    <select class="form-select form-select-sm property-filter" data-filter="bedrooms">
-                                                        <option value="">Todas</option>
-                                                        <option value="1">1+</option>
-                                                        <option value="2">2+</option>
-                                                        <option value="3">3+</option>
-                                                        <option value="4">4+</option>
-                                                        <option value="5">5+</option>
-                                                    </select>
-                                                </div>
-
-                                                <!-- Baños -->
-                                                <div class="col-md-1">
-                                                    <label class="form-label fw-bold mb-1 small">Baños</label>
-                                                    <select class="form-select form-select-sm property-filter" data-filter="bathrooms">
-                                                        <option value="">Todos</option>
-                                                        <option value="1">1+</option>
-                                                        <option value="2">2+</option>
-                                                        <option value="3">3+</option>
-                                                        <option value="4">4+</option>
-                                                    </select>
-                                                </div>
-
-                                                <!-- Precio Mínimo -->
-                                                <div class="col-md-2">
-                                                    <label class="form-label fw-bold mb-1 small">Precio Mín</label>
-                                                    <input type="number" class="form-control form-control-sm property-filter" placeholder="$0" data-filter="min_price"/>
-                                                </div>
-
-                                                <!-- Precio Máximo -->
-                                                <div class="col-md-2">
-                                                    <label class="form-label fw-bold mb-1 small">Precio Máx</label>
-                                                    <input type="number" class="form-control form-control-sm property-filter" placeholder="Sin límite" data-filter="max_price"/>
-                                                </div>
-
-                                                <!-- Botón Filtros Avanzados -->
-                                                <div class="col-md-1">
-                                                    <button class="btn btn-outline-secondary btn-sm w-100" type="button" data-bs-toggle="collapse" data-bs-target="#advancedFilters">
-                                                        <i class="bi bi-list"></i>
-                                                    </button>
-                                                </div>
-
-                                                <!-- Botón Limpiar -->
-                                                <div class="col-md-1">
-                                                    <button class="btn btn-outline-danger btn-sm w-100 clear-filters">
-                                                        <i class="bi bi-x"></i>
-                                                    </button>
-                                                </div>
-                                            </div>
-
-                                            <!-- Filtros Avanzados Colapsables -->
-                                            <div class="collapse mt-3" id="advancedFilters">
-                                                <hr/>
-                                                <div class="row g-3">
-                                                    <div class="col-md-12">
-                                                        <label class="form-label fw-bold mb-2">Características</label>
-                                                        <div class="d-flex gap-4 flex-wrap">
-                                                            <div class="form-check">
-                                                                <input class="form-check-input property-filter" type="checkbox" id="has_garage" data-filter="garage" data-value="true"/>
-                                                                <label class="form-check-label" for="has_garage">Garaje</label>
-                                                            </div>
-                                                            <div class="form-check">
-                                                                <input class="form-check-input property-filter" type="checkbox" id="has_pool" data-filter="pool" data-value="true"/>
-                                                                <label class="form-check-label" for="has_pool">Piscina</label>
-                                                            </div>
-                                                            <div class="form-check">
-                                                                <input class="form-check-input property-filter" type="checkbox" id="has_garden" data-filter="garden" data-value="true"/>
-                                                                <label class="form-check-label" for="has_garden">Jardín</label>
-                                                            </div>
-                                                            <div class="form-check">
-                                                                <input class="form-check-input property-filter" type="checkbox" id="has_elevator" data-filter="elevator" data-value="true"/>
-                                                                <label class="form-check-label" for="has_elevator">Ascensor</label>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
                             <!-- Área de resultados -->
                             <div class="row">
                                 <div class="col-12">
@@ -196,10 +65,7 @@
                                     </ul>
 
                                     <!-- Ordenamiento -->
-                                    <div class="d-flex justify-content-between align-items-center mb-3">
-                                        <div>
-                                            <span class="text-muted">Mostrando <span id="showing-count">0</span> propiedades</span>
-                                        </div>
+                                    <div class="d-flex justify-content-end align-items-center mb-3">
                                         <div>
                                             <select class="form-select form-select-sm property-sort" style="width: auto;">
                                                 <option value="relevance">Relevancia</option>

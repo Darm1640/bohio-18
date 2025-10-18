@@ -1,0 +1,541 @@
+// =============================================================================
+// BOHIO REAL ESTATE - PROPERTY CARDS (CONSOLIDATED)
+// =============================================================================
+// Archivo consolidado de estilos para tarjetas de propiedades
+// Incluye: Cards base, Carruseles, Variantes
+//
+// REEMPLAZA:
+// - theme_bohio_real_estate/static/src/scss/property_cards.scss
+// - theme_bohio_real_estate/static/src/css/property_carousels.css
+// - Parte de theme_bohio_real_estate/static/src/css/property_snippets.css
+//
+// NOTA: No usar @import en Odoo 18 - las variables y mixins se cargan en __manifest__.py
+// =============================================================================
+
+// -----------------------------------------------------------------------------
+// VARIABLES ESPECÍFICAS DE PROPERTY CARDS
+// -----------------------------------------------------------------------------
+
+$property-card-image-height: 200px;
+$property-card-image-height-lg: 180px;
+$property-card-image-height-md: 160px;
+
+$property-card-border-radius: $border-radius-lg;
+$property-card-shadow: $shadow-sm;
+$property-card-shadow-hover: $shadow-lg;
+
+$property-card-transition: transform $transition-base, box-shadow $transition-base;
+$property-card-hover-lift: -5px;
+$property-card-hover-lift-carousel: -8px;
+$property-card-image-zoom: 1.05;
+
+// Carrusel
+$carousel-control-size: 50px;
+$carousel-control-size-md: 40px;
+$carousel-control-bg: rgba($bohio-red-primary-rgb, 0.8);
+$carousel-indicator-size: 12px;
+$carousel-indicator-active-width: 30px;
+
+// -----------------------------------------------------------------------------
+// PROPERTY CARD BASE
+// -----------------------------------------------------------------------------
+
+.bohio-property-card {
+    transition: $property-card-transition;
+    border-radius: $property-card-border-radius;
+    overflow: hidden;
+    border: none;
+
+    &:hover {
+        transform: translateY($property-card-hover-lift);
+        box-shadow: $property-card-shadow-hover;
+    }
+
+    // Imagen de la propiedad
+    .property-card-image {
+        height: $property-card-image-height;
+        object-fit: cover;
+        width: 100%;
+        transition: transform $transition-base;
+    }
+
+    &:hover .property-card-image {
+        transform: scale($property-card-image-zoom);
+    }
+
+    // Badge de proyecto
+    .property-project-badge {
+        font-size: $font-size-xs;
+        padding: 0.4rem 0.6rem;
+        border-radius: $border-radius;
+        font-weight: $font-weight-semibold;
+        box-shadow: $shadow-sm;
+        z-index: 10;
+        transition: all $transition-fast;
+
+        &:hover {
+            transform: scale(1.05);
+            box-shadow: $shadow-md;
+        }
+    }
+
+    // Características (iconos de área, habitaciones, baños, parqueaderos)
+    .property-features {
+        span {
+            display: inline-flex;
+            align-items: center;
+            gap: $spacer-xs;
+
+            i {
+                color: $bohio-red-primary;
+                font-size: $font-size-sm;
+            }
+        }
+    }
+
+    // Título de la tarjeta
+    .card-title {
+        font-family: $font-family-bohio-primary; // Arista Pro
+        font-size: $font-size-lg;
+        font-weight: $font-weight-semibold;
+        color: $text-primary;
+        margin-bottom: $spacer-sm;
+        min-height: 2.5rem; // Para mantener altura consistente
+
+        // Variante con enlace
+        a {
+            color: $text-primary;
+            text-decoration: none;
+            transition: color $transition-base;
+
+            &:hover {
+                color: $bohio-red-primary;
+            }
+        }
+    }
+
+    // Precio
+    h4 {
+        font-family: $font-family-bohio-primary; // Arista Pro
+        font-weight: $font-weight-bold;
+        font-size: $font-size-xl;
+        color: $bohio-red-primary;
+    }
+
+    // Botón de detalles (variante outline)
+    .btn-outline-danger {
+        font-weight: $font-weight-semibold;
+        transition: all $transition-base;
+
+        &:hover {
+            background: $bohio-red-primary;
+            color: $text-white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba($bohio-red-primary-rgb, 0.3);
+        }
+    }
+
+    // Botón de detalles (variante sólida)
+    .btn {
+        font-weight: $font-weight-semibold;
+        transition: all $transition-base;
+
+        &:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba($bohio-red-primary-rgb, 0.3);
+        }
+    }
+}
+
+// -----------------------------------------------------------------------------
+// CARRUSELES DE PROPIEDADES
+// -----------------------------------------------------------------------------
+
+.property-carousel-container {
+    position: relative;
+    padding: $spacer-lg 0;
+
+    // Carrusel
+    .carousel {
+        padding: 0 3rem;
+
+        // Items del carrusel
+        .carousel-item {
+            transition: transform 0.6s ease-in-out;
+        }
+
+        // Controles (flechas)
+        .carousel-control-prev,
+        .carousel-control-next {
+            width: $carousel-control-size;
+            height: $carousel-control-size;
+            top: 50%;
+            transform: translateY(-50%);
+            background: $carousel-control-bg;
+            border-radius: $border-radius-full;
+            opacity: 0.8;
+            transition: all $transition-base;
+
+            &:hover {
+                opacity: 1;
+                background: rgba($bohio-red-primary-rgb, 1);
+            }
+
+            .carousel-control-prev-icon,
+            .carousel-control-next-icon {
+                width: 24px;
+                height: 24px;
+            }
+        }
+
+        .carousel-control-prev {
+            left: -25px;
+        }
+
+        .carousel-control-next {
+            right: -25px;
+        }
+
+        // Indicadores (puntos)
+        .carousel-indicators {
+            bottom: -40px;
+            margin-bottom: 0;
+
+            button {
+                width: $carousel-indicator-size;
+                height: $carousel-indicator-size;
+                border-radius: $border-radius-full;
+                background: $text-muted;
+                border: none;
+                margin: 0 $spacer-xs;
+                opacity: 0.5;
+                transition: all $transition-base;
+
+                &.active {
+                    background: $bohio-red-primary;
+                    opacity: 1;
+                    width: $carousel-indicator-active-width;
+                    transform: scale(1.2);
+                }
+            }
+        }
+    }
+
+    // Tarjetas dentro del carrusel (hover más pronunciado)
+    .bohio-property-card {
+        border-radius: $border-radius-lg;
+
+        &:hover {
+            transform: translateY($property-card-hover-lift-carousel);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        }
+    }
+
+    // Badge en carrusel (con backdrop-filter)
+    .badge {
+        z-index: 10;
+        font-weight: $font-weight-medium;
+        backdrop-filter: blur(4px);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        transition: all $transition-fast;
+
+        &:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+    }
+
+    // Estado de carga
+    .property-carousel-loading {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 400px;
+
+        .spinner-border {
+            width: 3rem;
+            height: 3rem;
+            color: $bohio-red-primary;
+        }
+    }
+
+    // Estado vacío
+    .property-carousel-empty {
+        text-align: center;
+        padding: 4rem 2rem;
+        color: $text-muted;
+
+        i {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            opacity: 0.5;
+        }
+    }
+}
+
+// -----------------------------------------------------------------------------
+// VARIANTES DE PROPERTY CARD
+// -----------------------------------------------------------------------------
+
+// Variante compacta (para grids densos)
+.property-card-compact {
+    .property-card-image {
+        height: 180px;
+    }
+
+    .card-title {
+        font-size: $font-size-base;
+        min-height: auto;
+    }
+
+    .card-body {
+        padding: $spacer-sm;
+    }
+}
+
+// Variante con overlay (precio sobre imagen)
+.property-card-overlay {
+    .card-img-overlay {
+        background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        padding: $spacer-md;
+
+        h4, h5, h6 {
+            color: $text-white;
+            margin-bottom: 0;
+        }
+
+        .text-muted {
+            color: rgba(255, 255, 255, 0.8) !important;
+        }
+    }
+}
+
+// Variante horizontal (lista)
+.property-card-horizontal {
+    .row {
+        height: 100%;
+    }
+
+    .property-card-image {
+        height: 150px;
+        width: 100%;
+    }
+
+    @media (min-width: $breakpoint-md) {
+        .property-card-image {
+            height: 100%;
+            min-height: 200px;
+        }
+    }
+}
+
+// Variante banner grande (50/50)
+.property-card-banner {
+    .property-card-image {
+        min-height: 400px;
+    }
+
+    .card-body {
+        padding: $spacer-2xl;
+    }
+
+    .card-title {
+        font-size: $font-size-3xl;
+    }
+
+    h4 {
+        font-size: $font-size-2xl;
+    }
+}
+
+// -----------------------------------------------------------------------------
+// SNIPPETS DINÁMICOS (Website Builder)
+// -----------------------------------------------------------------------------
+
+// Card para snippets dinámicos
+.o_carousel_property_card {
+    transition: $property-card-transition;
+    border-radius: $border-radius-lg;
+    overflow: hidden;
+
+    &:hover {
+        transform: translateY($property-card-hover-lift);
+        box-shadow: $property-card-shadow-hover;
+    }
+
+    // Ribbon de destacado
+    .o_ribbon_right {
+        position: absolute;
+        right: -5px;
+        top: 10px;
+        z-index: 10;
+        padding: 0.5rem 1rem;
+        box-shadow: $shadow-md;
+        transform: rotate(45deg);
+        transform-origin: top right;
+    }
+
+    // Link de imagen con hover
+    .o_carousel_property_img_link {
+        display: block;
+        overflow: hidden;
+        position: relative;
+
+        .o_img_property_cover {
+            transition: transform $transition-base;
+        }
+
+        &:hover .o_img_property_cover {
+            transform: scale($property-card-image-zoom);
+        }
+    }
+
+    // Body de la tarjeta
+    .o_carousel_property_card_body {
+        .card-title {
+            transition: color $transition-base;
+
+            &:hover {
+                color: $bohio-red-primary;
+            }
+        }
+    }
+}
+
+// Hover para elementos dinámicos
+.o_dynamic_property_hovered {
+    &:hover {
+        transform: translateY($property-card-hover-lift);
+        box-shadow: $property-card-shadow-hover;
+    }
+}
+
+// -----------------------------------------------------------------------------
+// RESPONSIVE
+// -----------------------------------------------------------------------------
+
+// Desktop grande (< 1200px)
+@media (max-width: $breakpoint-xl) {
+    .property-carousel-container {
+        .carousel {
+            padding: 0 2rem;
+        }
+
+        .carousel-control-prev {
+            left: -15px;
+        }
+
+        .carousel-control-next {
+            right: -15px;
+        }
+    }
+}
+
+// Laptop (< 992px)
+@media (max-width: $breakpoint-lg) {
+    .bohio-property-card {
+        margin-bottom: $spacer-lg;
+
+        .property-card-image {
+            height: $property-card-image-height-lg;
+        }
+    }
+
+    .property-carousel-container {
+        .carousel {
+            padding: 0 1rem;
+        }
+    }
+}
+
+// Tablet (< 768px)
+@media (max-width: $breakpoint-md) {
+    .bohio-property-card {
+        .property-card-image {
+            height: $property-card-image-height-md;
+        }
+
+        .card-title {
+            font-size: $font-size-base;
+            min-height: 2rem;
+        }
+
+        h4 {
+            font-size: $font-size-lg;
+        }
+    }
+
+    .property-carousel-container {
+        .carousel-control-prev,
+        .carousel-control-next {
+            width: $carousel-control-size-md;
+            height: $carousel-control-size-md;
+        }
+
+        .carousel-control-prev {
+            left: -10px;
+        }
+
+        .carousel-control-next {
+            right: -10px;
+        }
+
+        .carousel-indicators {
+            bottom: -30px;
+        }
+    }
+}
+
+// Mobile (< 576px)
+@media (max-width: $breakpoint-sm) {
+    .property-carousel-container {
+        .carousel {
+            padding: 0;
+        }
+
+        .carousel-control-prev,
+        .carousel-control-next {
+            display: none; // Ocultar controles en móviles
+        }
+    }
+
+    // Cards más compactas en móvil
+    .bohio-property-card {
+        .card-body {
+            padding: $spacer-sm;
+        }
+
+        .property-features {
+            font-size: $font-size-xs;
+        }
+    }
+}
+
+// -----------------------------------------------------------------------------
+// DARK MODE (Opcional - si se implementa en el futuro)
+// -----------------------------------------------------------------------------
+
+@media (prefers-color-scheme: dark) {
+    .bohio-property-card {
+        background-color: $bg-dark;
+
+        .card-title {
+            color: $text-white;
+
+            a {
+                color: $text-white;
+
+                &:hover {
+                    color: $bohio-red-light;
+                }
+            }
+        }
+
+        .text-muted {
+            color: $text-secondary !important;
+        }
+    }
+}

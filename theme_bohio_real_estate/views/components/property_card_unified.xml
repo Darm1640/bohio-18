@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ========================================================================= -->
+    <!-- PROPERTY CARD UNIFIED - Template Consolidado para Tarjetas de Propiedades -->
+    <!-- ========================================================================= -->
+    <!-- Versión: 18.0.3.0.4                                                      -->
+    <!-- Fecha: 2025-10-18                                                        -->
+    <!-- Descripción: Template unificado que reemplaza property_card_template y   -->
+    <!--              property_card_shop_template con parámetros flexibles        -->
+    <!--                                                                           -->
+    <!-- REEMPLAZA:                                                                -->
+    <!-- - property_card_template (property_card_qweb_template.xml)               -->
+    <!-- - property_card_shop_template (property_shop_templates.xml)              -->
+    <!--                                                                           -->
+    <!-- PARÁMETROS:                                                               -->
+    <!-- - property (required): Objeto con datos de la propiedad                  -->
+    <!-- - col_class (optional): Clases responsive (default: 'col-md-3')         -->
+    <!-- - show_parking (optional): Mostrar parqueaderos (default: False)         -->
+    <!-- - card_variant (optional): 'standard'|'enhanced' (default: 'standard')  -->
+    <!-- - image_height (optional): Altura imagen (default: '200px')             -->
+    <!-- ========================================================================= -->
+
+    <!-- ===================================================================== -->
+    <!-- TEMPLATE PRINCIPAL: Property Card Unified                            -->
+    <!-- ===================================================================== -->
+    <template id="property_card_unified" name="Property Card Unified">
+        <!-- Wrapper con clases responsive flexibles -->
+        <div t-attf-class="#{col_class or 'col-md-3'} mb-4">
+            <div t-attf-class="card h-100 shadow-sm border-0 bohio-property-card #{card_variant == 'enhanced' and 'bohio-property-card-enhanced' or ''} position-relative">
+
+                <!-- Badge de proyecto (esquina superior derecha) -->
+                <t t-if="property.project_id and property.project_name">
+                    <div class="position-absolute top-0 end-0 m-2" style="z-index: 2;">
+                        <a t-attf-href="/proyecto/#{property.project_id}"
+                           class="badge text-white text-decoration-none property-project-badge"
+                           style="background-color: #FF1D25;">
+                            <i class="bi bi-building me-1"></i>
+                            <t t-esc="property.project_name"/>
+                        </a>
+                    </div>
+                </t>
+
+                <!-- Badge de tipo de servicio (esquina superior izquierda) -->
+                <t t-if="property.type_service">
+                    <div class="position-absolute top-0 start-0 m-2" style="z-index: 2;">
+                        <span t-attf-class="badge #{property.type_service == 'sale' and 'bg-primary' or 'bg-danger'}">
+                            <t t-esc="property.type_service_label or property.type_service"/>
+                        </span>
+                    </div>
+                </t>
+
+                <!-- Imagen de la propiedad -->
+                <a t-attf-href="/property/#{property.id}">
+                    <img t-att-src="property.image_url or '/theme_bohio_real_estate/static/src/img/placeholder.jpg'"
+                         class="card-img-top property-card-image"
+                         t-att-alt="property.name"
+                         t-att-style="'height: ' + (image_height or '200px') + '; object-fit: cover;'"
+                         loading="lazy"
+                         onerror="this.src='/theme_bohio_real_estate/static/src/img/placeholder.jpg'"/>
+                </a>
+
+                <!-- Cuerpo de la tarjeta -->
+                <div class="card-body d-flex flex-column">
+                    <!-- Título -->
+                    <h5 class="card-title text-truncate mb-2" t-att-title="property.name">
+                        <a t-attf-href="/property/#{property.id}"
+                           class="text-dark text-decoration-none">
+                            <t t-esc="property.name"/>
+                        </a>
+                    </h5>
+
+                    <!-- Ubicación -->
+                    <p class="text-muted small mb-2">
+                        <i class="bi bi-geo-alt-fill me-1" style="color: #FF1D25;"></i>
+                        <t t-esc="property.location or (property.city_name and property.region_name and (property.city_name + ', ' + property.region_name)) or 'Sin ubicación'"/>
+                    </p>
+
+                    <!-- Tipo de propiedad (opcional) -->
+                    <t t-if="property.property_type_label or property.type_name">
+                        <div class="mb-2">
+                            <span class="badge bg-secondary" t-esc="property.property_type_label or property.type_name"/>
+                        </div>
+                    </t>
+
+                    <!-- Características (área, habitaciones, baños, parqueaderos) -->
+                    <div class="d-flex justify-content-between mb-2 text-muted small property-features flex-wrap">
+                        <span t-if="property.area and property.area > 0" class="me-1 mb-1">
+                            <i class="bi bi-rulers me-1" style="color: #FF1D25;"></i>
+                            <t t-esc="property.area_formatted or (str(int(property.area)) + ' m²')"/>
+                        </span>
+                        <span t-if="property.bedrooms and property.bedrooms > 0" class="me-1 mb-1">
+                            <i class="bi bi-bed me-1" style="color: #FF1D25;"></i>
+                            <t t-esc="int(property.bedrooms)"/>
+                        </span>
+                        <span t-if="property.bathrooms and property.bathrooms > 0" class="me-1 mb-1">
+                            <i class="bi bi-droplet me-1" style="color: #FF1D25;"></i>
+                            <t t-esc="int(property.bathrooms)"/>
+                        </span>
+                        <span t-if="show_parking and property.parking_spaces and property.parking_spaces > 0" class="me-1 mb-1">
+                            <i class="bi bi-car-front me-1" style="color: #FF1D25;"></i>
+                            <t t-esc="int(property.parking_spaces)"/>
+                        </span>
+                        <span t-if="show_parking and property.garages and property.garages > 0" class="me-1 mb-1">
+                            <i class="bi bi-car-front me-1" style="color: #FF1D25;"></i>
+                            <t t-esc="int(property.garages)"/>
+                        </span>
+                    </div>
+
+                    <!-- Precio -->
+                    <div class="mb-2">
+                        <small class="text-muted">
+                            <t t-esc="property.price_label or 'Precio'"/>
+                        </small>
+                        <h4 class="mb-0" style="color: #FF1D25;">
+                            <t t-esc="property.price_formatted or property.list_price"/>
+                        </h4>
+                    </div>
+
+                    <!-- Botón ver detalles -->
+                    <a t-attf-href="/property/#{property.id}"
+                       class="btn w-100 mt-auto text-white"
+                       style="background-color: #FF1D25;">
+                        <i class="bi bi-eye me-1"></i>Ver detalles
+                    </a>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- ===================================================================== -->
+    <!-- VARIANTE: Property Card Compact (para grids densos)                 -->
+    <!-- ===================================================================== -->
+    <template id="property_card_compact" name="Property Card Compact">
+        <div t-attf-class="#{col_class or 'col-md-4'} mb-3">
+            <div class="card h-100 border-0 bohio-property-card property-card-compact">
+                <!-- Imagen con overlay -->
+                <a t-attf-href="/property/#{property.id}" class="position-relative">
+                    <img t-att-src="property.image_url or '/theme_bohio_real_estate/static/src/img/placeholder.jpg'"
+                         class="card-img-top property-card-image"
+                         t-att-alt="property.name"
+                         style="height: 180px; object-fit: cover;"
+                         loading="lazy"
+                         onerror="this.src='/theme_bohio_real_estate/static/src/img/placeholder.jpg'"/>
+
+                    <!-- Overlay con precio -->
+                    <div class="position-absolute bottom-0 start-0 w-100 p-3"
+                         style="background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);">
+                        <div class="text-white">
+                            <small class="d-block mb-1" t-esc="property.location or property.city_name or 'Sin ubicación'"/>
+                            <h6 class="mb-0" t-esc="property.price_formatted or property.list_price"/>
+                        </div>
+                    </div>
+
+                    <!-- Badge de tipo de servicio -->
+                    <span t-if="property.type_service"
+                          t-attf-class="badge position-absolute top-0 end-0 m-2 #{property.type_service == 'sale' and 'bg-primary' or 'bg-danger'}">
+                        <t t-esc="property.type_service_label or property.type_service"/>
+                    </span>
+                </a>
+
+                <!-- Nombre solo -->
+                <div class="card-body p-2">
+                    <h6 class="card-title mb-0 text-truncate" t-att-title="property.name">
+                        <t t-esc="property.name"/>
+                    </h6>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- ===================================================================== -->
+    <!-- VARIANTE: Property Card Horizontal (para listas)                    -->
+    <!-- ===================================================================== -->
+    <template id="property_card_horizontal" name="Property Card Horizontal">
+        <div t-attf-class="#{col_class or 'col-12'} mb-3">
+            <div class="card border-0 shadow-sm bohio-property-card property-card-horizontal">
+                <div class="row g-0">
+                    <!-- Imagen (col-md-4) -->
+                    <div class="col-md-4">
+                        <a t-attf-href="/property/#{property.id}">
+                            <img t-att-src="property.image_url or '/theme_bohio_real_estate/static/src/img/placeholder.jpg'"
+                                 class="property-card-image w-100"
+                                 t-att-alt="property.name"
+                                 style="height: 200px; object-fit: cover;"
+                                 loading="lazy"
+                                 onerror="this.src='/theme_bohio_real_estate/static/src/img/placeholder.jpg'"/>
+                        </a>
+                    </div>
+
+                    <!-- Contenido (col-md-8) -->
+                    <div class="col-md-8">
+                        <div class="card-body d-flex flex-column justify-content-between h-100">
+                            <div>
+                                <!-- Título y tipo -->
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <h5 class="card-title mb-0">
+                                        <a t-attf-href="/property/#{property.id}"
+                                           class="text-dark text-decoration-none">
+                                            <t t-esc="property.name"/>
+                                        </a>
+                                    </h5>
+                                    <span t-if="property.property_type_label or property.type_name"
+                                          class="badge bg-secondary ms-2"
+                                          t-esc="property.property_type_label or property.type_name"/>
+                                </div>
+
+                                <!-- Ubicación -->
+                                <p class="text-muted small mb-2">
+                                    <i class="bi bi-geo-alt-fill me-1" style="color: #FF1D25;"></i>
+                                    <t t-esc="property.location or (property.city_name and property.region_name and (property.city_name + ', ' + property.region_name)) or 'Sin ubicación'"/>
+                                </p>
+                            </div>
+
+                            <!-- Footer con características y precio -->
+                            <div class="d-flex justify-content-between align-items-center">
+                                <!-- Características -->
+                                <div class="small text-muted property-features">
+                                    <span t-if="property.bedrooms and property.bedrooms > 0" class="me-2">
+                                        <i class="bi bi-bed"></i> <t t-esc="int(property.bedrooms)"/>
+                                    </span>
+                                    <span t-if="property.bathrooms and property.bathrooms > 0" class="me-2">
+                                        <i class="bi bi-droplet"></i> <t t-esc="int(property.bathrooms)"/>
+                                    </span>
+                                    <span t-if="property.area and property.area > 0">
+                                        <i class="bi bi-arrows-fullscreen"></i> <t t-esc="int(property.area)"/> m²
+                                    </span>
+                                </div>
+
+                                <!-- Precio -->
+                                <h5 class="mb-0 text-nowrap ms-3" style="color: #FF1D25;">
+                                    <t t-esc="property.price_formatted or property.list_price"/>
+                                </h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- ===================================================================== -->
+    <!-- TEMPLATE: Empty State (sin propiedades)                             -->
+    <!-- ===================================================================== -->
+    <template id="property_empty_state_unified" name="Property Empty State">
+        <div class="col-12">
+            <div class="text-center py-5">
+                <i class="bi bi-house-fill text-muted mb-3" style="font-size: 3rem;"></i>
+                <h5 class="text-muted">No hay propiedades disponibles</h5>
+                <p class="text-muted mb-0">Intenta ajustar los filtros de búsqueda</p>
+            </div>
+        </div>
+    </template>
+
+    <!-- ===================================================================== -->
+    <!-- TEMPLATE: Loading State (cargando propiedades)                      -->
+    <!-- ===================================================================== -->
+    <template id="property_loading_state_unified" name="Property Loading State">
+        <div class="col-12">
+            <div class="text-center py-5">
+                <div class="spinner-border text-danger mb-3" role="status" style="width: 3rem; height: 3rem;">
+                    <span class="visually-hidden">Cargando...</span>
+                </div>
+                <p class="text-muted mb-0">Cargando propiedades...</p>
+            </div>
+        </div>
+    </template>
+
+    <!-- ===================================================================== -->
+    <!-- TEMPLATE: Property List Wrapper (para JavaScript)                   -->
+    <!-- ===================================================================== -->
+    <template id="property_list_unified" name="Property List Unified">
+        <div class="row" id="propertyResults">
+            <t t-foreach="properties" t-as="property">
+                <t t-call="theme_bohio_real_estate.property_card_unified">
+                    <t t-set="property" t-value="property"/>
+                    <t t-set="col_class" t-value="col_class or 'col-xl-2 col-lg-3 col-md-4 col-sm-6'"/>
+                    <t t-set="show_parking" t-value="show_parking or False"/>
+                </t>
+            </t>
+        </div>
+    </template>
+
+</odoo>

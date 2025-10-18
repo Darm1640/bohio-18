@@ -760,7 +760,7 @@ class BohioPortal(CustomerPortal):
         return request.render('bohio_real_estate.mybohio_tenant_contract_detail', values)
 
     @http.route('/mybohio/tenant/payments', type='http', auth='user', website=True)
-    def mybohio_tenant_payments(self, page=1, **kw):
+    def mybohio_tenant_payments(self, page=1, contract_id=False, date_from=False, date_to=False, **kw):
         """Pagos realizados (como arrendatario)"""
         partner = request.env.user.partner_id
         role_info = self._get_user_role(partner)
@@ -770,31 +770,72 @@ class BohioPortal(CustomerPortal):
 
         Payment = request.env['account.payment'].sudo()
 
-        # Pagos realizados por el arrendatario
-        payment_count = Payment.search_count([
+        # Dominio base para filtros
+        domain = [
             ('partner_id', '=', partner.id),
             ('payment_type', '=', 'outbound'),
             ('state', '=', 'posted')
-        ])
+        ]
+
+        # Aplicar filtros opcionales
+        if contract_id:
+            contract_id = int(contract_id)
+            domain.append(('contract_ids', 'in', [contract_id]))
+
+        if date_from:
+            domain.append(('date', '>=', date_from))
+
+        if date_to:
+            domain.append(('date', '<=', date_to))
+
+        # Contar pagos filtrados
+        payment_count = Payment.search_count(domain)
 
         pager = portal_pager(
             url='/mybohio/tenant/payments',
+            url_args={'contract_id': contract_id, 'date_from': date_from, 'date_to': date_to},
             total=payment_count,
             page=page,
             step=20
         )
 
-        payments = Payment.search([
+        payments = Payment.search(domain, order='date desc', limit=20, offset=pager['offset'])
+
+        # Calcular métricas globales (sin filtros, para los cards superiores)
+        all_payments = Payment.search([
             ('partner_id', '=', partner.id),
             ('payment_type', '=', 'outbound'),
             ('state', '=', 'posted')
-        ], order='date desc', limit=20, offset=pager['offset'])
+        ])
+
+        total_paid = sum(all_payments.mapped('amount')) or 0.0
+        payments_count = len(all_payments)
+
+        # Facturas pendientes del arrendatario
+        pending_invoices = request.env['account.move'].sudo().search([
+            ('partner_id', '=', partner.id),
+            ('move_type', '=', 'out_invoice'),
+            ('state', '=', 'posted'),
+            ('payment_state', 'in', ['not_paid', 'partial']),
+            ('destinatario', '=', 'arrendatario')
+        ])
+        pending_amount = sum(pending_invoices.mapped('amount_residual')) or 0.0
+
+        # Contratos para el filtro
+        contracts = role_info['tenant_contracts']
 
         values = {
             'page_name': 'mybohio_tenant_payments',
             'role_info': role_info,
             'payments': payments,
             'pager': pager,
+            'total_paid': total_paid,
+            'pending_amount': pending_amount,
+            'payments_count': payments_count,
+            'contracts': contracts,
+            'contract_id': contract_id,
+            'date_from': date_from,
+            'date_to': date_to,
         }
 
         return request.render('bohio_real_estate.mybohio_tenant_payments', values)

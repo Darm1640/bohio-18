@@ -1,0 +1,633 @@
+// =============================================================================
+// BOHIO REAL ESTATE - PROJECT CARDS (CONSOLIDATED)
+// =============================================================================
+// Archivo consolidado de estilos para tarjetas de proyectos
+// Incluye: Cards de proyectos (listado), Cards de tipos de unidad (detalle)
+//
+// EXTRAE ESTILOS DE:
+// - theme_bohio_real_estate/static/src/scss/pages.scss (sección proyectos)
+// - theme_bohio_real_estate/static/src/css/proyecto_detalle.css
+//
+// NOTA: No usar @import en Odoo 18 - las variables y mixins se cargan en __manifest__.py
+// =============================================================================
+
+// -----------------------------------------------------------------------------
+// VARIABLES ESPECÍFICAS DE PROJECT CARDS
+// -----------------------------------------------------------------------------
+
+$project-card-image-height: 250px;
+$project-card-image-height-md: 200px;
+$project-card-min-height: 300px;
+
+$project-type-card-image-height: 300px;
+$project-type-card-bg: #1a1a1a;
+$project-type-card-border: #333333;
+
+$project-card-hover-lift: -5px;
+$project-type-card-hover-lift: -10px;
+$project-card-transition: all 0.3s ease;
+$project-type-card-transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+
+// -----------------------------------------------------------------------------
+// PROJECT CARD - LISTADO DE PROYECTOS
+// -----------------------------------------------------------------------------
+
+// Card de proyecto (layout horizontal 50/50)
+.project-card,
+.bohio-project-card {
+    transition: $project-card-transition;
+    border-radius: $border-radius-lg;
+    overflow: hidden;
+    border: none;
+
+    &:hover {
+        transform: translateY($project-card-hover-lift);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+
+        .proyecto-image img {
+            transform: scale(1.05);
+        }
+    }
+
+    // Imagen del proyecto
+    .proyecto-image {
+        position: relative;
+        height: 100%;
+        min-height: $project-card-image-height;
+        overflow: hidden;
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform $transition-base;
+        }
+
+        // Badge de estado (construcción, planos, entregado)
+        .badge {
+            position: absolute;
+            top: 0;
+            left: 0;
+            margin: $spacer-md;
+            z-index: 10;
+            font-weight: $font-weight-medium;
+            padding: 0.5rem 1rem;
+            box-shadow: $shadow-md;
+
+            // Estado: En Construcción
+            &.bg-warning {
+                background-color: $color-warning !important;
+                color: $bg-dark;
+            }
+
+            // Estado: En Planos
+            &.bg-info {
+                background-color: $color-info !important;
+            }
+
+            // Estado: Entregado
+            &.bg-success {
+                background-color: $color-success !important;
+            }
+        }
+    }
+
+    // Cuerpo de la tarjeta
+    .card-body {
+        padding: $spacer-xl;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+
+        // Título del proyecto
+        h3, h5 {
+            font-family: $font-family-bohio-primary; // Arista Pro
+            font-weight: $font-weight-bold;
+            color: $bohio-red-primary;
+            margin-bottom: $spacer-sm;
+        }
+
+        // Ubicación
+        .text-muted {
+            small {
+                i {
+                    color: $bohio-red-primary;
+                }
+            }
+        }
+
+        // Stats del proyecto (unidades, disponibles)
+        .proyecto-stats {
+            .row {
+                font-size: $font-size-sm;
+
+                i {
+                    color: $text-muted;
+                }
+            }
+        }
+
+        // Botones de acción
+        .btn-danger {
+            background-color: $bohio-red-primary;
+            border: none;
+            font-weight: $font-weight-semibold;
+            transition: all $transition-base;
+
+            &:hover {
+                background-color: $bohio-red-dark;
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba($bohio-red-primary-rgb, 0.3);
+            }
+        }
+
+        .btn-outline-danger {
+            border-color: $bohio-red-primary;
+            color: $bohio-red-primary;
+            font-weight: $font-weight-semibold;
+            transition: all $transition-base;
+
+            &:hover {
+                background-color: $bohio-red-primary;
+                border-color: $bohio-red-primary;
+                color: $text-white;
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba($bohio-red-primary-rgb, 0.3);
+            }
+        }
+    }
+}
+
+// Efecto hover lift general
+.hover-lift {
+    transition: transform $transition-base, box-shadow $transition-base;
+
+    &:hover {
+        transform: translateY($project-card-hover-lift);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    }
+}
+
+// Botones de filtro de proyectos
+.filter-btn {
+    transition: all $transition-base;
+    border-radius: $border-radius;
+    padding: $spacer-sm $spacer-md;
+    border: 1px solid transparent;
+
+    &.active {
+        background: $bohio-red-secondary;
+        color: $text-white;
+        border-color: $bohio-red-secondary;
+    }
+
+    &:hover {
+        background: $bohio-red-secondary;
+        color: $text-white;
+        border-color: $bohio-red-secondary;
+    }
+}
+
+// -----------------------------------------------------------------------------
+// PROPERTY TYPE CARD - DETALLE DE PROYECTO (Tipos de Unidades)
+// -----------------------------------------------------------------------------
+
+.property-type-card {
+    cursor: pointer;
+    transition: $project-type-card-transition;
+    background-color: $project-type-card-bg;
+    border: 1px solid $project-type-card-border;
+    border-radius: $border-radius-lg;
+    overflow: hidden;
+    will-change: transform;
+
+    &:hover {
+        transform: translateY($project-type-card-hover-lift);
+        box-shadow: 0 20px 60px rgba($bohio-red-primary-rgb, 0.3);
+        border-color: $bohio-red-primary;
+
+        .property-img {
+            transform: scale(1.1);
+        }
+
+        .btn {
+            background: $bohio-red-primary;
+            color: $text-white;
+            transform: scale(1.05);
+        }
+    }
+
+    // Contenedor de imagen/plano
+    .property-img-container {
+        position: relative;
+        height: $project-type-card-image-height;
+        overflow: hidden;
+
+        .property-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+            will-change: transform;
+        }
+
+        // Badge de tipo (Tipo A, Tipo B, etc.)
+        .badge {
+            position: absolute;
+            top: $spacer-md;
+            left: $spacer-md;
+            background-color: $bohio-red-primary;
+            color: $text-white;
+            font-size: $font-size-sm;
+            font-weight: $font-weight-bold;
+            padding: 0.5rem 1rem;
+            border-radius: $border-radius;
+            z-index: 10;
+        }
+
+        // Overlay con área en la base
+        .overlay-area {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: $spacer-md;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+            color: $text-white;
+            font-size: $font-size-lg;
+            font-weight: $font-weight-semibold;
+        }
+    }
+
+    // Contenido de la card
+    .card-body {
+        padding: $spacer-xl;
+
+        // Título del tipo de unidad
+        h4, h5 {
+            font-family: $font-family-bohio-primary; // Arista Pro
+            font-weight: $font-weight-bold;
+            color: $text-white;
+            margin-bottom: $spacer-md;
+        }
+
+        // Características (habitaciones, baños, etc.)
+        .property-features {
+            margin-bottom: $spacer-md;
+
+            .feature-item {
+                display: inline-flex;
+                align-items: center;
+                margin-right: $spacer-md;
+                color: $text-white-50;
+                font-size: $font-size-sm;
+
+                i {
+                    color: $bohio-red-light;
+                    margin-right: $spacer-xs;
+                }
+            }
+        }
+
+        // Precio
+        .price {
+            font-family: $font-family-bohio-primary; // Arista Pro
+            font-weight: $font-weight-bold;
+            margin-bottom: $spacer-md;
+
+            // Precio de venta (blanco)
+            &.price-sale {
+                color: $text-white;
+                font-size: $font-size-2xl;
+            }
+
+            // Precio de arriendo (rojo)
+            &.price-rent {
+                color: $bohio-red-primary;
+                font-size: $font-size-2xl;
+            }
+        }
+
+        // Botón de acción
+        .btn {
+            transition: all $transition-base;
+            font-weight: $font-weight-semibold;
+            border-width: 2px;
+
+            &.btn-outline-danger {
+                border-color: $bohio-red-primary;
+                color: $bohio-red-primary;
+
+                &:hover {
+                    background-color: $bohio-red-primary;
+                    color: $text-white;
+                }
+            }
+        }
+    }
+
+    // Estado de foco (accesibilidad)
+    &:focus-within {
+        outline: 3px solid $bohio-red-primary;
+        outline-offset: 2px;
+    }
+}
+
+// Loading skeleton para imágenes
+.property-img {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+
+    &[src] {
+        background: none;
+        animation: none;
+    }
+}
+
+@keyframes loading {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+// -----------------------------------------------------------------------------
+// ANIMACIONES
+// -----------------------------------------------------------------------------
+
+// Animación fade in up
+.fade-in-up {
+    animation: fadeInUp 1s ease-out;
+    will-change: opacity, transform;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+// Animación fade in right
+.fade-in-right {
+    animation: fadeInRight 1s ease-out 0.3s both;
+    will-change: opacity, transform;
+}
+
+@keyframes fadeInRight {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+// Animación float
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+// Animación marker bounce (para mapas)
+.custom-marker-proyecto {
+    animation: markerBounce 0.6s ease-out;
+}
+
+@keyframes markerBounce {
+    0% {
+        transform: translateY(-100px);
+        opacity: 0;
+    }
+    50% {
+        transform: translateY(10px);
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+// -----------------------------------------------------------------------------
+// LEAFLET POPUP (Mapas de Proyectos)
+// -----------------------------------------------------------------------------
+
+.bohio-proyecto-popup {
+    .leaflet-popup-content-wrapper {
+        border-radius: $border-radius-lg;
+        padding: 0;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .leaflet-popup-content {
+        margin: $spacer-md;
+        font-family: $font-family-bohio-secondary; // Ciutadella
+    }
+
+    .leaflet-popup-tip {
+        background: $bg-white;
+    }
+}
+
+// Hover en marcadores de mapa
+.leaflet-marker-icon:hover {
+    filter: brightness(1.1);
+    transform: scale(1.1);
+    transition: all $transition-base;
+}
+
+// -----------------------------------------------------------------------------
+// RESPONSIVE
+// -----------------------------------------------------------------------------
+
+// Tablet (< 992px)
+@media (max-width: $breakpoint-lg) {
+    .project-card,
+    .bohio-project-card {
+        .proyecto-image {
+            min-height: $project-card-image-height-md;
+        }
+
+        .card-body {
+            padding: $spacer-md;
+        }
+    }
+
+    .property-type-card {
+        .property-img-container {
+            height: 250px;
+        }
+
+        .card-body {
+            padding: $spacer-md;
+        }
+    }
+}
+
+// Mobile (< 768px)
+@media (max-width: $breakpoint-md) {
+    .project-card,
+    .bohio-project-card {
+        .proyecto-image {
+            min-height: 200px;
+        }
+
+        .card-body {
+            h3, h5 {
+                font-size: $font-size-lg;
+            }
+        }
+    }
+
+    .property-type-card {
+        .property-img-container {
+            height: 200px;
+        }
+
+        .card-body {
+            .price {
+                font-size: $font-size-xl;
+            }
+        }
+    }
+
+    // Hero de proyecto
+    .hero-proyecto {
+        min-height: auto;
+        padding-top: 80px;
+        padding-bottom: 50px;
+    }
+
+    .display-2 {
+        font-size: $font-size-3xl;
+    }
+
+    .display-4 {
+        font-size: $font-size-2xl;
+    }
+
+    [id^="map-proyecto-"] {
+        height: 300px;
+    }
+}
+
+// Mobile pequeño (< 576px)
+@media (max-width: $breakpoint-sm) {
+    .project-card,
+    .bohio-project-card {
+        .row {
+            flex-direction: column;
+        }
+
+        .proyecto-image {
+            min-height: 180px;
+        }
+
+        .card-body {
+            padding: $spacer-sm;
+
+            .btn {
+                font-size: $font-size-sm;
+            }
+        }
+    }
+}
+
+// -----------------------------------------------------------------------------
+// DARK MODE (Opcional - si se implementa en el futuro)
+// -----------------------------------------------------------------------------
+
+@media (prefers-color-scheme: dark) {
+    .bohio-proyecto-popup {
+        .leaflet-popup-content-wrapper {
+            background: $project-type-card-bg;
+            color: $text-white;
+        }
+
+        .leaflet-popup-tip {
+            background: $project-type-card-bg;
+        }
+    }
+
+    .project-card,
+    .bohio-project-card {
+        background-color: $bg-dark;
+
+        .card-body {
+            h3, h5 {
+                color: $bohio-red-light;
+            }
+
+            .text-muted {
+                color: $text-secondary;
+            }
+        }
+    }
+}
+
+// -----------------------------------------------------------------------------
+// PRINT STYLES
+// -----------------------------------------------------------------------------
+
+@media print {
+    .hero-proyecto,
+    [id^="map-proyecto-"],
+    .btn {
+        display: none;
+    }
+
+    .property-type-card,
+    .project-card {
+        page-break-inside: avoid;
+        box-shadow: none;
+        border: 1px solid #ddd;
+    }
+}
+
+// -----------------------------------------------------------------------------
+// ACCESSIBILITY
+// -----------------------------------------------------------------------------
+
+.btn:focus {
+    outline: 2px solid $bohio-red-primary;
+    outline-offset: 2px;
+}
+
+// Smooth scroll
+* {
+    scroll-behavior: smooth;
+}
+
+// -----------------------------------------------------------------------------
+// SCROLLBAR PERSONALIZADO
+// -----------------------------------------------------------------------------
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: $bg-light;
+}
+
+::-webkit-scrollbar-thumb {
+    background: $bohio-red-primary;
+    border-radius: $border-radius-sm;
+
+    &:hover {
+        background: $bohio-red-dark;
+    }
+}

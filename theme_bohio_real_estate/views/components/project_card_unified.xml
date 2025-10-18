@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ========================================================================= -->
+    <!-- PROJECT CARD UNIFIED - Template Consolidado para Tarjetas de Proyectos  -->
+    <!-- ========================================================================= -->
+    <!-- Versión: 18.0.3.0.4                                                      -->
+    <!-- Fecha: 2025-10-18                                                        -->
+    <!-- Descripción: Templates unificados para proyectos inmobiliarios          -->
+    <!--                                                                           -->
+    <!-- REEMPLAZA:                                                                -->
+    <!-- - crearCardProyecto() JavaScript en proyectos_page.xml                   -->
+    <!-- - Property Type Cards inline en proyecto_detalle.xml                     -->
+    <!--                                                                           -->
+    <!-- PARÁMETROS PROJECT CARD:                                                  -->
+    <!-- - project (required): Objeto con datos del proyecto                      -->
+    <!-- - col_class (optional): Clases responsive (default: 'col-lg-6')         -->
+    <!--                                                                           -->
+    <!-- PARÁMETROS PROPERTY TYPE CARD:                                            -->
+    <!-- - property_type (required): Objeto con datos del tipo de unidad         -->
+    <!-- - col_class (optional): Clases responsive (default: 'col-lg-4')         -->
+    <!-- ========================================================================= -->
+
+    <!-- ===================================================================== -->
+    <!-- TEMPLATE PRINCIPAL: Project Card (Listado de Proyectos)             -->
+    <!-- ===================================================================== -->
+    <template id="project_card_unified" name="Project Card Unified">
+        <!-- Wrapper con clases responsive flexibles -->
+        <div t-attf-class="#{col_class or 'col-lg-6'} mb-4">
+            <div class="card border-0 shadow-sm hover-lift h-100 project-card bohio-project-card">
+                <div class="row g-0">
+                    <!-- Imagen del proyecto (col-md-5) -->
+                    <div class="col-md-5">
+                        <div class="proyecto-image position-relative" style="height: 100%; min-height: 250px; overflow: hidden;">
+                            <img t-att-src="project.image_url or '/theme_bohio_real_estate/static/src/img/banner1.jpg'"
+                                 t-att-alt="project.name"
+                                 class="w-100 h-100"
+                                 style="object-fit: cover;"/>
+
+                            <!-- Badge de estado (construcción, planos, entregado) -->
+                            <span t-attf-class="badge position-absolute top-0 start-0 m-3 #{_get_estado_badge_class(project.estado)}">
+                                <t t-esc="_get_estado_texto(project.estado)"/>
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Contenido del proyecto (col-md-7) -->
+                    <div class="col-md-7">
+                        <div class="card-body p-4 d-flex flex-column h-100">
+                            <!-- Título del proyecto -->
+                            <h3 class="h5 fw-bold mb-2" style="color: #FF1D25;">
+                                <t t-esc="project.name"/>
+                            </h3>
+
+                            <!-- Ubicación -->
+                            <p class="text-muted small mb-3">
+                                <i class="bi bi-geo-alt-fill text-danger me-1"></i>
+                                <t t-esc="project.ubicacion or project.location or 'Sin ubicación'"/>
+                            </p>
+
+                            <!-- Descripción corta -->
+                            <p class="text-muted small mb-3">
+                                <t t-esc="project.descripcion or project.description or 'Proyecto inmobiliario de alta calidad'"/>
+                            </p>
+
+                            <!-- Stats del proyecto -->
+                            <div class="proyecto-stats mb-3">
+                                <div class="row g-2 small">
+                                    <div class="col-6">
+                                        <i class="bi bi-building text-muted me-1"></i>
+                                        <span class="text-muted">
+                                            <t t-esc="project.unidades or project.total_units or 0"/> Unidades
+                                        </span>
+                                    </div>
+                                    <div class="col-6">
+                                        <i class="bi bi-house-fill text-muted me-1"></i>
+                                        <span class="text-muted">
+                                            <t t-esc="project.disponibles or project.available_units or 0"/> Disponibles
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Botones de acción -->
+                            <div class="mt-auto">
+                                <div class="d-flex flex-column gap-2">
+                                    <!-- Botón principal: Ver Proyecto Completo -->
+                                    <a t-attf-href="/proyecto/#{project.id}"
+                                       class="btn btn-danger btn-sm w-100">
+                                        <i class="bi bi-building me-1"></i>Ver Proyecto Completo
+                                    </a>
+
+                                    <!-- Botones secundarios -->
+                                    <div class="d-flex gap-2">
+                                        <a t-attf-href="/properties?project_id=#{project.id}"
+                                           class="btn btn-outline-danger btn-sm flex-fill">
+                                            <i class="bi bi-grid me-1"></i>Ver Unidades
+                                        </a>
+                                        <a t-attf-href="/contacto?proyecto=#{project.id}"
+                                           class="btn btn-outline-danger btn-sm flex-fill">
+                                            <i class="bi bi-envelope me-1"></i>Contactar
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- ===================================================================== -->
+    <!-- TEMPLATE: Property Type Card (Tipos de Unidad en Detalle Proyecto)  -->
+    <!-- ===================================================================== -->
+    <template id="property_type_card_unified" name="Property Type Card Unified">
+        <!-- Wrapper con clases responsive flexibles -->
+        <div t-attf-class="#{col_class or 'col-lg-4 col-md-6'} mb-4">
+            <div class="property-type-card h-100" style="background: #1a1a1a; border: 1px solid #333; border-radius: 0.75rem; overflow: hidden;">
+
+                <!-- Contenedor de imagen/plano -->
+                <div class="property-img-container position-relative" style="height: 300px; overflow: hidden;">
+                    <img t-att-src="property_type.image_url or property_type.image_1920 or '/theme_bohio_real_estate/static/src/img/placeholder.jpg'"
+                         t-att-alt="property_type.name"
+                         class="property-img w-100 h-100"
+                         style="object-fit: cover;"/>
+
+                    <!-- Badge de tipo (Tipo A, Tipo B, etc.) -->
+                    <span class="badge position-absolute top-0 start-0 m-3"
+                          style="background-color: #FF1D25; font-size: 0.875rem; font-weight: bold; padding: 0.5rem 1rem;">
+                        <t t-esc="property_type.tipo or property_type.type_label or property_type.name"/>
+                    </span>
+
+                    <!-- Overlay con área en la base -->
+                    <div t-if="property_type.area and property_type.area > 0"
+                         class="overlay-area position-absolute bottom-0 start-0 end-0 p-3"
+                         style="background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); color: white; font-size: 1.125rem; font-weight: 600;">
+                        <i class="bi bi-arrows-fullscreen me-1"></i>
+                        <t t-esc="int(property_type.area)"/> m²
+                    </div>
+                </div>
+
+                <!-- Contenido de la card -->
+                <div class="card-body p-4">
+                    <!-- Título del tipo de unidad -->
+                    <h4 class="mb-3" style="color: white; font-weight: bold;">
+                        <t t-esc="property_type.name"/>
+                    </h4>
+
+                    <!-- Características (habitaciones, baños, etc.) -->
+                    <div class="property-features mb-3">
+                        <div class="feature-item d-inline-flex align-items-center me-3 mb-2"
+                             t-if="property_type.bedrooms and property_type.bedrooms > 0"
+                             style="color: rgba(255,255,255,0.5); font-size: 0.875rem;">
+                            <i class="bi bi-bed me-1" style="color: #FF4D54;"></i>
+                            <t t-esc="int(property_type.bedrooms)"/> Habitaciones
+                        </div>
+                        <div class="feature-item d-inline-flex align-items-center me-3 mb-2"
+                             t-if="property_type.bathrooms and property_type.bathrooms > 0"
+                             style="color: rgba(255,255,255,0.5); font-size: 0.875rem;">
+                            <i class="bi bi-droplet me-1" style="color: #FF4D54;"></i>
+                            <t t-esc="int(property_type.bathrooms)"/> Baños
+                        </div>
+                        <div class="feature-item d-inline-flex align-items-center me-3 mb-2"
+                             t-if="property_type.garages and property_type.garages > 0"
+                             style="color: rgba(255,255,255,0.5); font-size: 0.875rem;">
+                            <i class="bi bi-car-front me-1" style="color: #FF4D54;"></i>
+                            <t t-esc="int(property_type.garages)"/> Garajes
+                        </div>
+                    </div>
+
+                    <!-- Precio -->
+                    <div class="mb-3">
+                        <!-- Precio de Venta (blanco) -->
+                        <div t-if="property_type.precio_venta and property_type.precio_venta > 0"
+                             class="price price-sale mb-2"
+                             style="color: white; font-size: 1.5rem; font-weight: bold;">
+                            Venta: <t t-esc="property_type.precio_venta_formatted or property_type.precio_venta"/>
+                        </div>
+
+                        <!-- Precio de Arriendo (rojo) -->
+                        <div t-if="property_type.precio_arriendo and property_type.precio_arriendo > 0"
+                             class="price price-rent"
+                             style="color: #FF1D25; font-size: 1.5rem; font-weight: bold;">
+                            Arriendo: <t t-esc="property_type.precio_arriendo_formatted or property_type.precio_arriendo"/>
+                        </div>
+                    </div>
+
+                    <!-- Botón de acción -->
+                    <a t-attf-href="/property/#{property_type.id}"
+                       class="btn btn-outline-danger w-100"
+                       style="border-width: 2px; font-weight: 600;">
+                        <i class="bi bi-eye me-1"></i>Ver Detalles
+                    </a>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- ===================================================================== -->
+    <!-- FUNCIONES AUXILIARES PARA BADGES DE ESTADO                          -->
+    <!-- ===================================================================== -->
+    <!-- Nota: Estas funciones se pueden implementar en Python o usar inline -->
+
+    <template id="project_estado_badge_class" name="Get Estado Badge Class">
+        <t t-set="estado_badges" t-value="{
+            'construccion': 'bg-warning text-dark',
+            'planos': 'bg-info',
+            'entregado': 'bg-success'
+        }"/>
+        <t t-esc="estado_badges.get(estado, 'bg-secondary')"/>
+    </template>
+
+    <template id="project_estado_texto" name="Get Estado Texto">
+        <t t-set="estado_textos" t-value="{
+            'construccion': 'En Construcción',
+            'planos': 'En Planos',
+            'entregado': 'Entregado'
+        }"/>
+        <t t-esc="estado_textos.get(estado, estado)"/>
+    </template>
+
+    <!-- ===================================================================== -->
+    <!-- TEMPLATE: Projects List Wrapper (para JavaScript)                   -->
+    <!-- ===================================================================== -->
+    <template id="project_list_unified" name="Project List Unified">
+        <div class="row" id="projectResults">
+            <t t-foreach="projects" t-as="project">
+                <t t-call="theme_bohio_real_estate.project_card_unified">
+                    <t t-set="project" t-value="project"/>
+                    <t t-set="col_class" t-value="col_class or 'col-lg-6'"/>
+                </t>
+            </t>
+        </div>
+    </template>
+
+    <!-- ===================================================================== -->
+    <!-- TEMPLATE: Property Types List (para página de detalle)              -->
+    <!-- ===================================================================== -->
+    <template id="property_types_list_unified" name="Property Types List Unified">
+        <div class="row" id="propertyTypesResults">
+            <t t-foreach="property_types" t-as="property_type">
+                <t t-call="theme_bohio_real_estate.property_type_card_unified">
+                    <t t-set="property_type" t-value="property_type"/>
+                    <t t-set="col_class" t-value="col_class or 'col-lg-4 col-md-6'"/>
+                </t>
+            </t>
+        </div>
+    </template>
+
+    <!-- ===================================================================== -->
+    <!-- TEMPLATE: Empty State (sin proyectos)                               -->
+    <!-- ===================================================================== -->
+    <template id="project_empty_state_unified" name="Project Empty State">
+        <div class="col-12">
+            <div class="text-center py-5">
+                <i class="bi bi-building text-muted mb-3" style="font-size: 3rem;"></i>
+                <h5 class="text-muted">No hay proyectos disponibles</h5>
+                <p class="text-muted mb-0">Pronto tendremos nuevos proyectos para ti</p>
+            </div>
+        </div>
+    </template>
+
+    <!-- ===================================================================== -->
+    <!-- TEMPLATE: Loading State (cargando proyectos)                        -->
+    <!-- ===================================================================== -->
+    <template id="project_loading_state_unified" name="Project Loading State">
+        <div class="col-12">
+            <div class="text-center py-5">
+                <div class="spinner-border text-danger mb-3" role="status" style="width: 3rem; height: 3rem;">
+                    <span class="visually-hidden">Cargando...</span>
+                </div>
+                <p class="text-muted mb-0">Cargando proyectos...</p>
+            </div>
+        </div>
+    </template>
+
+</odoo>
