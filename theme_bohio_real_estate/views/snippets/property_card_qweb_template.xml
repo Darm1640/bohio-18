@@ -37,22 +37,22 @@
 
                     <!-- Ubicación -->
                     <p class="text-muted small mb-2">
-                        <i class="bi bi-geo-alt-fill me-1"></i>
+                        <i class="bi bi-geo-alt-fill me-1" style="color: #FF1D25;"></i>
                         <t t-esc="property.location"/>
                     </p>
 
                     <!-- Características (área, habitaciones, baños) -->
                     <div class="d-flex justify-content-between mb-2 text-muted small property-features">
                         <span t-if="property.area and property.area > 0">
-                            <i class="bi bi-rulers me-1"></i>
+                            <i class="bi bi-rulers me-1" style="color: #FF1D25;"></i>
                             <t t-esc="property.area"/> m²
                         </span>
                         <span t-if="property.bedrooms and property.bedrooms > 0">
-                            <i class="bi bi-bed me-1"></i>
+                            <i class="bi bi-bed me-1" style="color: #FF1D25;"></i>
                             <t t-esc="property.bedrooms"/>
                         </span>
                         <span t-if="property.bathrooms and property.bathrooms > 0">
-                            <i class="bi bi-droplet me-1"></i>
+                            <i class="bi bi-droplet me-1" style="color: #FF1D25;"></i>
                             <t t-esc="property.bathrooms"/>
                         </span>
                     </div>
@@ -62,14 +62,15 @@
                         <small class="text-muted">
                             <t t-esc="property.price_label"/>
                         </small>
-                        <h4 class="text-danger mb-0">
+                        <h4 class="mb-0" style="color: #FF1D25;">
                             <t t-esc="property.price_formatted"/>
                         </h4>
                     </div>
 
                     <!-- Botón ver detalles -->
                     <a t-attf-href="{{property.url}}"
-                       class="btn btn-outline-danger w-100 mt-auto">
+                       class="btn w-100 mt-auto text-white"
+                       style="background-color: #FF1D25;">
                         <i class="bi bi-eye me-1"></i>Ver detalles
                     </a>
                 </div>
