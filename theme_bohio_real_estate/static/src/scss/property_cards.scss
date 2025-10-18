@@ -51,6 +51,7 @@
 
     // Título de la tarjeta
     .card-title {
+        font-family: $font-family-bohio-primary; // Arista Pro
         font-size: $font-size-lg;
         font-weight: $font-weight-semibold;
         color: $text-primary;
@@ -60,6 +61,7 @@
 
     // Precio
     h4 {
+        font-family: $font-family-bohio-primary; // Arista Pro
         font-weight: $font-weight-bold;
         font-size: $font-size-xl;
     }
