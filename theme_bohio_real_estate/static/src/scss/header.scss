@@ -39,6 +39,8 @@
         .navbar-nav {
             .nav-link {
                 color: $text-primary;
+                font-family: $font-family-bohio-secondary; // Ciutadella
+                font-weight: $font-weight-bohio-semibold;   // 600
                 font-size: $font-size-sm;
                 letter-spacing: 0.5px;
                 transition: all $transition-base;

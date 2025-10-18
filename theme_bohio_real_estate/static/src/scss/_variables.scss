@@ -204,19 +204,24 @@ $h6-font-size: $font-size-base;
 $border-color: #e5e7eb;
 
 // -----------------------------------------------------------------------------
-// TIPOGRAFÍAS CORPORATIVAS - MANUAL DE MARCA
+// TIPOGRAFÍAS CORPORATIVAS - MANUAL DE MARCA BOHIO
 // -----------------------------------------------------------------------------
+// ACTUALIZADO: 2025-10-17 - Tipografías oficiales del manual corporativo
+// Las fuentes están ubicadas en: static/src/fonts/
 
-// Tipografía Principal (Arista Pro alternativa web)
-$font-family-bohio-primary: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+// Tipografía Principal - ARISTA PRO (Títulos y Headlines)
+// Archivo: arista-pro-bold.ttf
+$font-family-bohio-primary: 'Arista Pro', -apple-system, BlinkMacSystemFont, sans-serif;
 
-// Tipografía Secundaria (Bebas Neue Pro alternativa web)
-$font-family-bohio-secondary: 'Oswald', 'Arial Narrow', sans-serif;
+// Tipografía Secundaria/Cuerpo - CIUTADELLA (Textos y descripciones)
+// Archivos: Ciutadella Light.ttf, Ciutadella SemiBold.ttf
+$font-family-bohio-secondary: 'Ciutadella', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 
-// Tipografía de Cuerpo
-$font-family-bohio-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+// Tipografía de Cuerpo (Alias para Ciutadella)
+$font-family-bohio-body: 'Ciutadella', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 
-// Pesos corporativos
-$font-weight-bohio-bold: 700;
-$font-weight-bohio-semibold: 600;
-$font-weight-bohio-regular: 400;
+// Pesos corporativos BOHIO
+$font-weight-bohio-bold: 700;        // Arista Pro Bold
+$font-weight-bohio-semibold: 600;    // Ciutadella SemiBold
+$font-weight-bohio-light: 300;       // Ciutadella Light
+$font-weight-bohio-regular: 400;     // Peso base

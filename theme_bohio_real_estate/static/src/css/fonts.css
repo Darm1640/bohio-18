@@ -1,0 +1,98 @@
+/* =============================================================================
+   BOHIO REAL ESTATE - TIPOGRAFÍAS CORPORATIVAS
+   =============================================================================
+   Tipografías oficiales del Manual de Identidad Corporativa BOHIO
+   Fecha: 2025-10-17
+*/
+
+/* -----------------------------------------------------------------------------
+   ARISTA PRO - Tipografía Principal
+   -----------------------------------------------------------------------------
+   Uso: Títulos principales, headlines, identidad de marca
+*/
+@font-face {
+    font-family: 'Arista Pro';
+    src: url('../fonts/arista-pro-bold.ttf') format('truetype');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap; /* Mejora rendimiento de carga */
+}
+
+/* -----------------------------------------------------------------------------
+   CIUTADELLA - Tipografía Secundaria/Cuerpo
+   -----------------------------------------------------------------------------
+   Uso: Cuerpo de texto, descripciones, contenido general
+*/
+
+/* Ciutadella Light - Para textos largos y cuerpos */
+@font-face {
+    font-family: 'Ciutadella';
+    src: url('../fonts/Ciutadella Light.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* Ciutadella SemiBold - Para énfasis y subtítulos */
+@font-face {
+    font-family: 'Ciutadella';
+    src: url('../fonts/Ciutadella SemiBold.ttf') format('truetype');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* -----------------------------------------------------------------------------
+   APLICACIÓN GLOBAL DE TIPOGRAFÍAS
+   -----------------------------------------------------------------------------
+*/
+
+/* Aplicar Ciutadella como fuente base del body */
+body {
+    font-family: 'Ciutadella', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+}
+
+/* Aplicar Arista Pro a todos los títulos */
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6 {
+    font-family: 'Arista Pro', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-weight: 700;
+}
+
+/* Clases auxiliares para uso específico de tipografías */
+.font-arista {
+    font-family: 'Arista Pro', sans-serif;
+    font-weight: 700;
+}
+
+.font-ciutadella {
+    font-family: 'Ciutadella', sans-serif;
+}
+
+.font-ciutadella-light {
+    font-family: 'Ciutadella', sans-serif;
+    font-weight: 300;
+}
+
+.font-ciutadella-semibold {
+    font-family: 'Ciutadella', sans-serif;
+    font-weight: 600;
+}
+
+/* Aplicar a elementos de marca BOHIO */
+.bohio-brand,
+.bohio-logo-text,
+.property-title,
+.section-title {
+    font-family: 'Arista Pro', sans-serif;
+    font-weight: 700;
+}
+
+/* Aplicar a textos de descripción y contenido */
+.property-description,
+.card-text,
+.description-text {
+    font-family: 'Ciutadella', sans-serif;
+    font-weight: 300;
+}
