@@ -137,7 +137,7 @@ $project-type-card-transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             &:hover {
                 background-color: $bohio-red-dark;
                 transform: translateY(-2px);
-                box-shadow: 0 4px 12px rgba($bohio-red-primary-rgb, 0.3);
+                box-shadow: 0 4px 12px rgba(255, 29, 37, 0.3);
             }
         }
 
@@ -152,7 +152,7 @@ $project-type-card-transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
                 border-color: $bohio-red-primary;
                 color: $text-white;
                 transform: translateY(-2px);
-                box-shadow: 0 4px 12px rgba($bohio-red-primary-rgb, 0.3);
+                box-shadow: 0 4px 12px rgba(255, 29, 37, 0.3);
             }
         }
     }
@@ -203,7 +203,7 @@ $project-type-card-transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 
     &:hover {
         transform: translateY($project-type-card-hover-lift);
-        box-shadow: 0 20px 60px rgba($bohio-red-primary-rgb, 0.3);
+        box-shadow: 0 20px 60px rgba(255, 29, 37, 0.3);
         border-color: $bohio-red-primary;
 
         .property-img {

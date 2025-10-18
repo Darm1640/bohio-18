@@ -536,6 +536,9 @@ Código
 
 
 
+                    <!-- SECCIÓN DE INSTAGRAM REMOVIDA - 2025-10-18
+                         Solicitado por el usuario para simplificar la página
+
                     <section class="bohio-social py-4 text-center bg-dark text-white">
                         <div class="container">
                             <h5 class="mb-3">Síguenos en Instagram</h5>
@@ -545,6 +548,7 @@ Código
                             </a>
                         </div>
                     </section>
+                    -->
 
 
                     <div id="compareFloatingBtn" class="compare-floating-button" style="display: none;">

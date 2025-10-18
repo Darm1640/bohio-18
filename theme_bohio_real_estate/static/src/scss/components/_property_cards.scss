@@ -32,7 +32,7 @@ $property-card-image-zoom: 1.05;
 // Carrusel
 $carousel-control-size: 50px;
 $carousel-control-size-md: 40px;
-$carousel-control-bg: rgba($bohio-red-primary-rgb, 0.8);
+$carousel-control-bg: rgba(255, 29, 37, 0.8);
 $carousel-indicator-size: 12px;
 $carousel-indicator-active-width: 30px;
 
@@ -131,7 +131,7 @@ $carousel-indicator-active-width: 30px;
             background: $bohio-red-primary;
             color: $text-white;
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba($bohio-red-primary-rgb, 0.3);
+            box-shadow: 0 4px 12px rgba(255, 29, 37, 0.3);
         }
     }
 
@@ -142,7 +142,7 @@ $carousel-indicator-active-width: 30px;
 
         &:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba($bohio-red-primary-rgb, 0.3);
+            box-shadow: 0 4px 12px rgba(255, 29, 37, 0.3);
         }
     }
 }
@@ -178,7 +178,7 @@ $carousel-indicator-active-width: 30px;
 
             &:hover {
                 opacity: 1;
-                background: rgba($bohio-red-primary-rgb, 1);
+                background: rgba(255, 29, 37, 1);
             }
 
             .carousel-control-prev-icon,

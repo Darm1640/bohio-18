@@ -220,16 +220,19 @@
 
 
     <!-- ============================================= -->
-    <!-- MEJORA 4: CONTADOR EN SHOP -->
+    <!-- MEJORA 4: CONTADOR EN SHOP - DESACTIVADO -->
     <!-- ============================================= -->
-    
+    <!-- NOTA: Este template fue desactivado porque se eliminaron los contadores
+         de la página de propiedades para simplificar la interfaz.
+         Fecha: 2025-10-18
+    -->
+
+    <!--
     <template id="shop_counter_improved" name="Shop Counter Improved" inherit_id="theme_bohio_real_estate.properties_shop">
-        <!-- Mejorar el contador de propiedades -->
         <xpath expr="//span[@id='property-count']" position="replace">
             <span id="property-count" class="fw-bold text-danger" style="font-size: 1.5rem; animation: countPulse 0.5s ease;">0</span>
         </xpath>
-        
-        <!-- Agregar estadísticas adicionales -->
+
         <xpath expr="//p[@class='text-muted mb-0 mt-2']" position="after">
             <div class="shop-stats mt-2 d-flex gap-4">
                 <small class="text-muted">
@@ -247,6 +250,7 @@
             </div>
         </xpath>
     </template>
+    -->
 
 
     <!-- ============================================= -->
