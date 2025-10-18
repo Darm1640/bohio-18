@@ -32,7 +32,7 @@
                                         <div class="row mb-3">
                                             <div class="col-6">
                                                 <small class="text-muted">Código</small><br/>
-                                                <strong t-esc="contract.default_code"/>
+                                                <strong t-esc="contract.property_code or contract.name"/>
                                             </div>
                                             <div class="col-6">
                                                 <small class="text-muted">Renta Mensual</small><br/>
