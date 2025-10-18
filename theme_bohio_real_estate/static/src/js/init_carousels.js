@@ -23,7 +23,8 @@ class PropertyCarousel {
 
     async init() {
         if (!this.container) {
-            console.warn(`[PropertyCarousel] Contenedor #${this.containerId} no encontrado`);
+            // Silenciosamente salir si el contenedor no existe en esta página
+            // Esto es normal ya que no todas las páginas tienen todos los carruseles
             return;
         }
 
@@ -171,7 +172,7 @@ class PropertyCarousel {
                                         ` : ''}
                                         ${prop.code ? `
                                             <div class="col-6">
-                                                <i class="fa fa-hashtag text-danger me-1"></i>
+                                                <i class="bi bi-hash text-danger me-1"></i>
                                                 <span class="text-muted">${prop.code}</span>
                                             </div>
                                         ` : ''}
