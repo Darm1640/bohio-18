@@ -1,0 +1,315 @@
+/* ============================================================================
+   BOHIO PROPERTY MAP ENHANCED - Estilos para Mapa con Leaflet
+   ============================================================================ */
+
+/* ============================================================================
+   MARCADORES PERSONALIZADOS
+   ============================================================================ */
+
+.custom-marker-container {
+    background: transparent !important;
+    border: none !important;
+}
+
+.custom-marker {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.marker-price {
+    font-size: 0.75rem;
+    font-weight: 600;
+    white-space: nowrap;
+    background-color: #FF1D25 !important;
+    border: 2px solid white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+}
+
+.marker-price:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(255, 29, 37, 0.5);
+}
+
+.marker-pin {
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 16px solid #FF1D25;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+/* ============================================================================
+   POPUPS DE PROPIEDADES
+   ============================================================================ */
+
+.property-popup-container .leaflet-popup-content-wrapper {
+    padding: 0;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.property-popup-container .leaflet-popup-content {
+    margin: 0;
+    padding: 0;
+    min-width: 250px !important;
+}
+
+.property-popup {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.property-popup img {
+    transition: transform 0.3s ease;
+}
+
+.property-popup img:hover {
+    transform: scale(1.05);
+}
+
+.property-popup h6 {
+    font-weight: 600;
+    color: #333;
+    font-size: 0.95rem;
+}
+
+.property-popup .btn {
+    transition: all 0.3s ease;
+}
+
+.property-popup .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(255, 29, 37, 0.3);
+}
+
+/* ============================================================================
+   CONTROLES DEL MAPA
+   ============================================================================ */
+
+.leaflet-control-layers {
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.leaflet-control-zoom {
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.leaflet-control-zoom a {
+    font-size: 18px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.leaflet-control-zoom a:hover {
+    background-color: #FF1D25;
+    color: white;
+}
+
+/* ============================================================================
+   CONTENEDOR DEL MAPA
+   ============================================================================ */
+
+#properties-map {
+    position: relative;
+    border: 1px solid #dee2e6;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Loading state del mapa */
+#properties-map.loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+#properties-map.loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50px;
+    height: 50px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #FF1D25;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    z-index: 1000;
+}
+
+@keyframes spin {
+    0% { transform: translate(-50%, -50%) rotate(0deg); }
+    100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* ============================================================================
+   CLUSTERS DE MARCADORES
+   ============================================================================ */
+
+.marker-cluster-small,
+.marker-cluster-medium,
+.marker-cluster-large {
+    background-color: rgba(255, 29, 37, 0.6);
+    border-radius: 50%;
+    border: 3px solid white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.marker-cluster-small div,
+.marker-cluster-medium div,
+.marker-cluster-large div {
+    width: 40px;
+    height: 40px;
+    margin-left: -20px;
+    margin-top: -20px;
+    background-color: #FF1D25;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.marker-cluster-medium div {
+    width: 50px;
+    height: 50px;
+    margin-left: -25px;
+    margin-top: -25px;
+    font-size: 16px;
+}
+
+.marker-cluster-large div {
+    width: 60px;
+    height: 60px;
+    margin-left: -30px;
+    margin-top: -30px;
+    font-size: 18px;
+}
+
+/* ============================================================================
+   TOOLTIP DE MARCADORES
+   ============================================================================ */
+
+.leaflet-tooltip {
+    background-color: #FF1D25;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.leaflet-tooltip::before {
+    border-top-color: #FF1D25;
+}
+
+/* ============================================================================
+   RESPONSIVE
+   ============================================================================ */
+
+@media (max-width: 768px) {
+    #properties-map {
+        height: 500px !important;
+    }
+
+    .property-popup {
+        min-width: 200px !important;
+    }
+
+    .marker-price {
+        font-size: 0.65rem;
+        padding: 0.25rem 0.5rem !important;
+    }
+
+    .custom-marker-container {
+        transform: scale(0.85);
+    }
+}
+
+/* ============================================================================
+   ANIMACIONES DE MARCADORES
+   ============================================================================ */
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.custom-marker:hover {
+    animation: bounce 0.6s ease;
+}
+
+/* ============================================================================
+   BOTONES DE ACCIÓN EN MAPA
+   ============================================================================ */
+
+.map-action-buttons {
+    position: absolute;
+    top: 10px;
+    right: 50px;
+    z-index: 1000;
+    display: flex;
+    gap: 10px;
+}
+
+.map-action-btn {
+    background: white;
+    border: 2px solid #dee2e6;
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.map-action-btn:hover {
+    background-color: #FF1D25;
+    color: white;
+    border-color: #FF1D25;
+    box-shadow: 0 4px 8px rgba(255, 29, 37, 0.3);
+}
+
+.map-action-btn i {
+    margin-right: 4px;
+}
+
+/* ============================================================================
+   FILTROS EN VISTA DE MAPA
+   ============================================================================ */
+
+.map-view-active .property-shop-sidebar {
+    position: sticky;
+    top: 20px;
+    max-height: calc(100vh - 40px);
+    overflow-y: auto;
+}
+
+/* Scrollbar personalizado para sidebar en vista mapa */
+.map-view-active .property-shop-sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.map-view-active .property-shop-sidebar::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.map-view-active .property-shop-sidebar::-webkit-scrollbar-thumb {
+    background: #FF1D25;
+    border-radius: 10px;
+}
+
+.map-view-active .property-shop-sidebar::-webkit-scrollbar-thumb:hover {
+    background: #e01a21;
+}

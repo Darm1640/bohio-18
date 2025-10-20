@@ -1115,3 +1115,68 @@ class PropertySearchController(http.Controller):
             })
         
         return data
+
+    @http.route('/shop/properties/search/code', type='json', auth='public', methods=['POST'], csrf=False)
+    def search_by_code_autocomplete(self, query='', limit=5, **kwargs):
+        """
+        Búsqueda por código de propiedad con autocompletado
+        
+        Args:
+            query: Término de búsqueda (código BOH-XXX)
+            limit: Número máximo de resultados
+            
+        Returns:
+            dict: Propiedades encontradas con datos básicos
+        """
+        try:
+            if not query or len(query) < 2:
+                return {'success': False, 'error': 'Query demasiado corta'}
+
+            Property = request.env['product.template'].sudo()
+
+            # Construir dominio de búsqueda
+            domain = [
+                ('property_type_id', '!=', False),
+                ('state', '=', 'free'),
+                '|',
+                ('default_code', 'ilike', query),
+                ('name', 'ilike', query)
+            ]
+
+            # Buscar propiedades
+            properties = Property.search(domain, limit=limit, order='default_code')
+
+            # Formatear resultados
+            results = []
+            for prop in properties:
+                results.append({
+                    'id': prop.id,
+                    'default_code': prop.default_code or '',
+                    'name': prop.name or '',
+                    'property_type': dict(prop._fields['property_type'].selection).get(prop.property_type, '') if prop.property_type else '',
+                    'city': prop.city or '',
+                    'region': prop.region_id.name if prop.region_id else '',
+                    'net_price': prop.net_price,
+                    'rental_price': prop.rental_price,
+                    'currency': prop.currency_id.symbol or prop.currency_id.name,
+                    'property_area': prop.property_area,
+                    'num_bedrooms': prop.num_bedrooms,
+                    'num_bathrooms': prop.num_bathrooms,
+                    'image_url': f'/web/image/product.template/{prop.id}/image_1920',
+                    'url': f'/property/{prop.id}'
+                })
+
+            return {
+                'success': True,
+                'properties': results,
+                'total': len(results)
+            }
+
+        except Exception as e:
+            _logger.error(f'Error en búsqueda por código: {str(e)}')
+            import traceback
+            return {
+                'success': False,
+                'error': str(e),
+                'traceback': traceback.format_exc()
+            }

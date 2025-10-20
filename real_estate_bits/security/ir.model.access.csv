@@ -43,3 +43,5 @@ access_property_document_category_user,property.document.category user,model_pro
 access_property_contract_type_user,property.contract.type user,model_property_contract_type,base.group_user,1,1,1,1
 access_property_contract_type_document_user,property.contract.type.document user,model_property_contract_type_document,base.group_user,1,1,1,1
 access_property_contract_document_checklist_user,property.contract.document.checklist user,model_property_contract_document_checklist,base.group_user,1,1,1,1
+access_property_filter_characteristics_user,property.filter.characteristics user,model_property_filter_characteristics,base.group_user,1,1,1,1
+access_property_characteristic_item_user,property.characteristic.item user,model_property_characteristic_item,base.group_user,1,1,1,1

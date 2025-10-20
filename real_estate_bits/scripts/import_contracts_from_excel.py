@@ -25,7 +25,7 @@ import pandas as pd
 import re
 from datetime import datetime
 import logging
-
+ssl_context = ssl._create_unverified_context() 
 # Configurar logging
 logging.basicConfig(
     level=logging.INFO,
@@ -38,10 +38,10 @@ logger = logging.getLogger(__name__)
 EXCEL_FILE = r'C:\Users\darm1\OneDrive\Documentos\GitHub\bohio-18\bohio_real_estate\Contratos (4).xlsx'
 
 DESTINATION = {
-    'url': 'https://darm1640-bohio-18.odoo.com',
-    'db': 'darm1640-bohio-18-main-24081960',
+    'url': 'https://104.131.70.107',
+    'db': 'bohio',
     'username': 'admin',
-    'password': 'admin'
+    'password': '123456'
 }
 
 DRY_RUN = False  # True = solo simular, False = crear contratos
@@ -215,7 +215,7 @@ class ContractImporter:
         # Buscar en Odoo por VAT
         partner_ids = self.odoo.search(
             'res.partner',
-            [('vat', '=', vat)],
+            [('vat_co', '=', vat)],
             1
         )
 

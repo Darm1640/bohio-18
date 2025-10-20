@@ -18,22 +18,30 @@
                                     <!-- Barra de búsqueda por código -->
                                     <div class="search-bar-container position-relative">
                                         <div class="input-group input-group-lg">
-                                            <span class="input-group-text bg-light">
-                                                <i class="bi bi-hash"></i>
+                                            <span class="input-group-text bg-light border-end-0">
+                                                <i class="bi bi-hash text-danger"></i>
                                             </span>
                                             <input type="text"
-                                                   class="form-control property-search-input"
-                                                   placeholder="Buscar por código de propiedad (Ej: COD-3911, COD-3997)..."
-                                                   autocomplete="off"/>
-                                            <button class="btn btn-danger" type="submit">
-                                                <i class="bi bi-search"/> Buscar
+                                                   id="propertyCodeSearch"
+                                                   name="search_code"
+                                                   class="form-control property-search-input border-start-0"
+                                                   placeholder="Buscar por código de propiedad (Ej: BOH-001, BOH-123)..."
+                                                   autocomplete="off"
+                                                   style="font-size: 1rem; color: #333; background-color: #fff; border-color: #ced4da;"/>
+                                            <button class="btn btn-danger" type="button" onclick="searchByCode()">
+                                                <i class="bi bi-search me-1"></i> Buscar
                                             </button>
                                         </div>
                                         <!-- Contenedor de autocompletado -->
-                                        <div class="autocomplete-container shadow-lg" style="display: none;"></div>
+                                        <div class="autocomplete-container shadow-lg" style="display: none; position: absolute; top: 100%; left: 0; right: 0; z-index: 1050; background: white; border-radius: 8px; max-height: 300px; overflow-y: auto;"></div>
                                     </div>
                                 </div>
                                 <div class="col-md-4 text-end">
+                                    <!-- Botón filtros móvil -->
+                                    <button class="btn btn-danger d-lg-none me-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileFiltersOffcanvas">
+                                        <i class="bi bi-funnel me-1"/> Filtros
+                                    </button>
+
                                     <!-- Botón comparar -->
                                     <button class="btn btn-outline-danger view-comparison" disabled="disabled">
                                         <i class="bi bi-balance-scale"/> Comparar
@@ -49,7 +57,28 @@
                         <div class="container-fluid px-4">
                             <!-- Área de resultados -->
                             <div class="row">
-                                <div class="col-12">
+                                <!-- Sidebar de Filtros Avanzados (Desktop) -->
+                                <div class="col-lg-3 col-md-4 mb-4 d-none d-lg-block">
+                                    <div class="property-shop-sidebar">
+                                        <div class="filters-header bg-danger text-white p-3 rounded-top">
+                                            <h5 class="mb-0">
+                                                <i class="bi bi-funnel me-2"></i>
+                                                Filtros Avanzados
+                                            </h5>
+                                        </div>
+                                        <div id="advancedFiltersShop" class="bg-white border border-top-0 rounded-bottom p-3">
+                                            <!-- Los filtros se cargarán aquí vía JavaScript -->
+                                            <div class="text-center py-4">
+                                                <div class="spinner-border spinner-border-sm text-danger" role="status">
+                                                    <span class="visually-hidden">Cargando filtros...</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Área de resultados -->
+                                <div class="col-12 col-lg-9">
                                     <!-- Tabs: Grid / Mapa -->
                                     <ul class="nav nav-tabs mb-4" role="tablist">
                                         <li class="nav-item" role="presentation">
@@ -127,6 +156,22 @@
                                 </button>
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                             </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Offcanvas de Filtros Móvil -->
+                <div class="offcanvas offcanvas-start" tabindex="-1" id="mobileFiltersOffcanvas" aria-labelledby="mobileFiltersLabel">
+                    <div class="offcanvas-header bg-danger text-white">
+                        <h5 class="offcanvas-title" id="mobileFiltersLabel">
+                            <i class="bi bi-funnel me-2"></i>
+                            Filtros Avanzados
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                    </div>
+                    <div class="offcanvas-body p-0">
+                        <div id="advancedFiltersMobile" class="p-3">
+                            <!-- Los filtros se cargarán aquí vía JavaScript (copia del desktop) -->
                         </div>
                     </div>
                 </div>

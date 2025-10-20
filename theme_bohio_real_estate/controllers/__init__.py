@@ -21,3 +21,4 @@ ELIMINADOS (fusionados):
 from . import main
 from . import property_search
 from . import property_interactions
+from . import property_filters_api

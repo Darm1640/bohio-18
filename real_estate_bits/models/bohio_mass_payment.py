@@ -18,8 +18,20 @@ class BohioMassPayment(models.Model):
 
     # FILTROS DE SELECCIÓN
     date = fields.Date('Fecha de Proceso', default=fields.Date.today, required=True, tracking=True)
-    simulation_month = fields.Date('Mes de Simulación', required=True, tracking=True,
+
+    # OPCIONES DE RANGO DE FECHAS
+    date_range_type = fields.Selection([
+        ('single_month', 'Mes Específico'),
+        ('date_range', 'Rango de Fechas'),
+        ('cutoff_date', 'Fecha de Corte')
+    ], string='Tipo de Período', default='single_month', required=True)
+
+    simulation_month = fields.Date('Mes de Simulación', tracking=True,
                                   help='Mes para el cual se simularán los pagos')
+    date_from = fields.Date('Desde', tracking=True)
+    date_to = fields.Date('Hasta', tracking=True)
+    cutoff_date = fields.Date('Fecha de Corte', tracking=True,
+                             help='Si solo hay fecha de corte, se buscarán todas las facturas pendientes hasta esta fecha')
 
     # FILTROS GEOGRÁFICOS
     region_ids = fields.Many2many('region.region', string='Regiones')
@@ -162,17 +174,52 @@ class BohioMassPayment(models.Model):
 
         return self.env['property.contract'].search(domain)
 
+    def _get_loan_lines_for_period(self, contract):
+        """Obtener loan_lines según el tipo de período configurado"""
+        if self.date_range_type == 'single_month':
+            # Mes específico
+            if not self.simulation_month:
+                raise UserError(_('Debe especificar un mes de simulación'))
+            month_start = self.simulation_month.replace(day=1)
+            month_end = month_start + relativedelta(months=1, days=-1)
+            return contract.loan_line_ids.filtered(
+                lambda l: month_start <= l.date <= month_end
+            )
+
+        elif self.date_range_type == 'date_range':
+            # Rango de fechas
+            if not self.date_from or not self.date_to:
+                raise UserError(_('Debe especificar fecha de inicio y fin para el rango'))
+            return contract.loan_line_ids.filtered(
+                lambda l: self.date_from <= l.date <= self.date_to
+            )
+
+        elif self.date_range_type == 'cutoff_date':
+            # Fecha de corte: buscar todas las facturas pendientes hasta la fecha de corte
+            if not self.cutoff_date:
+                raise UserError(_('Debe especificar una fecha de corte'))
+
+            # Buscar loan_lines pendientes hasta la fecha de corte
+            pending_lines = contract.loan_line_ids.filtered(
+                lambda l: l.date <= self.cutoff_date and l.payment_state != 'paid'
+            )
+
+            # Si no hay líneas pendientes, buscar la factura más vieja no pagada
+            if not pending_lines:
+                pending_lines = contract.loan_line_ids.filtered(
+                    lambda l: l.payment_state != 'paid'
+                ).sorted('date')[:1]  # La más antigua
+
+            return pending_lines
+
+        return self.env['loan.line']
+
     def _generate_simulation_lines(self, contract):
         """Generar líneas de simulación para un contrato"""
         lines = []
 
-        # Obtener cuotas del mes especificado
-        month_start = self.simulation_month.replace(day=1)
-        month_end = month_start + relativedelta(months=1, days=-1)
-
-        loan_lines = contract.loan_line_ids.filtered(
-            lambda l: month_start <= l.date <= month_end
-        )
+        # Obtener cuotas según el tipo de período seleccionado
+        loan_lines = self._get_loan_lines_for_period(contract)
 
         if not loan_lines:
             return lines
@@ -233,13 +280,30 @@ class BohioMassPayment(models.Model):
 
         loan_amount = 0.0
         if self.include_loans:
+            # Buscar préstamos activos del propietario vinculados a documentos contables
             advance_payments = self.env['account.move.line'].search([
                 ('partner_id', '=', partner.id),
                 ('account_id.code', 'like', '13%'),  # Cuentas de préstamos
                 ('amount_residual', '>', 0),
                 ('move_id.state', '=', 'posted')
             ])
-            loan_amount = sum(advance_payments.mapped('amount_residual')) * percentage_decimal
+
+            # Calcular total de préstamos considerando el porcentaje de participación
+            total_loan = 0.0
+            for payment_line in advance_payments:
+                # Verificar si el préstamo tiene documento origen (factura/documento)
+                move = payment_line.move_id
+                if move:
+                    # Cruzar con las cuotas (loan_lines) para validar si aplica al período
+                    loan_line_ref = self._find_related_loan_line(contract, loan_lines, move)
+                    if loan_line_ref:
+                        # El préstamo está asociado a una cuota del período
+                        total_loan += payment_line.amount_residual
+                    elif self.date_range_type == 'cutoff_date':
+                        # En modo fecha de corte, incluir todos los préstamos activos
+                        total_loan += payment_line.amount_residual
+
+            loan_amount = total_loan * percentage_decimal
 
         # Calcular intereses por mora
         interest_amount = 0.0
@@ -579,6 +643,39 @@ class BohioMassPayment(models.Model):
             domain.append(('id', 'in', self.contract_ids.ids))
 
         return domain
+
+    def _find_related_loan_line(self, contract, loan_lines, move):
+        """
+        Buscar si un documento contable (préstamo) está relacionado con alguna loan_line del período
+
+        Args:
+            contract: Contrato actual
+            loan_lines: Líneas de cuotas del período
+            move: Documento contable (account.move) del préstamo
+
+        Returns:
+            loan.line o False si no encuentra relación
+        """
+        # Verificar si el documento tiene referencia a alguna loan_line
+        for loan_line in loan_lines:
+            # Buscar por invoice_id (si la loan_line tiene factura asociada)
+            if loan_line.invoice_id and loan_line.invoice_id == move:
+                return loan_line
+
+            # Buscar por fecha y monto similar
+            if move.invoice_date and loan_line.date:
+                # Si las fechas coinciden aproximadamente (mismo mes)
+                if (move.invoice_date.month == loan_line.date.month and
+                    move.invoice_date.year == loan_line.date.year):
+                    # Y el monto es similar (con tolerancia del 5%)
+                    move_amount = abs(move.amount_total)
+                    loan_amount = abs(loan_line.amount)
+                    if loan_amount > 0:
+                        diff_percentage = abs(move_amount - loan_amount) / loan_amount * 100
+                        if diff_percentage < 5:
+                            return loan_line
+
+        return False
 
 
 class BohioMassPaymentLine(models.Model):

@@ -206,9 +206,41 @@
                         <!-- PESTAÑA 1: CONFIGURACIÓN DE FILTROS -->
                         <page string="Filtros y Configuración" name="filters">
                             <group>
-                                <group string="Fechas">
+                                <group string="Fechas y Período">
                                     <field name="date" readonly="state != 'draft'"/>
-                                    <field name="simulation_month" readonly="state != 'draft'"/>
+                                    <field name="date_range_type" widget="radio" readonly="state != 'draft'"/>
+
+                                    <!-- Campos condicionales según tipo de período -->
+                                    <field name="simulation_month"
+                                           readonly="state != 'draft'"
+                                           required="date_range_type == 'single_month'"
+                                           invisible="date_range_type != 'single_month'"/>
+
+                                    <field name="date_from"
+                                           readonly="state != 'draft'"
+                                           required="date_range_type == 'date_range'"
+                                           invisible="date_range_type != 'date_range'"/>
+
+                                    <field name="date_to"
+                                           readonly="state != 'draft'"
+                                           required="date_range_type == 'date_range'"
+                                           invisible="date_range_type != 'date_range'"/>
+
+                                    <field name="cutoff_date"
+                                           readonly="state != 'draft'"
+                                           required="date_range_type == 'cutoff_date'"
+                                           invisible="date_range_type != 'cutoff_date'"/>
+
+                                    <!-- Ayuda según tipo seleccionado -->
+                                    <div class="alert alert-info"
+                                         invisible="date_range_type != 'cutoff_date'"
+                                         role="alert">
+                                        <i class="fa fa-info-circle"/>
+                                        <small>
+                                            <strong>Fecha de Corte:</strong> Se buscarán todas las facturas pendientes hasta esta fecha.
+                                            Si no hay facturas pendientes, se buscará la más antigua.
+                                        </small>
+                                    </div>
                                 </group>
 
                                 <group string="Configuración de Pagos">

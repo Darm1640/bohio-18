@@ -1,0 +1,402 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- ========================================== -->
+        <!-- CARACTERÍSTICAS INDIVIDUALES POR CATEGORÍA -->
+        <!-- ========================================== -->
+
+        <!-- CARACTERÍSTICAS BÁSICAS -->
+        <record id="char_num_bedrooms" model="property.characteristic.item">
+            <field name="name">Número de Habitaciones</field>
+            <field name="category">basic</field>
+            <field name="field_name">num_bedrooms</field>
+            <field name="field_type">integer</field>
+            <field name="icon">bi-house-door</field>
+            <field name="sequence">10</field>
+        </record>
+
+        <record id="char_num_bathrooms" model="property.characteristic.item">
+            <field name="name">Número de Baños</field>
+            <field name="category">basic</field>
+            <field name="field_name">num_bathrooms</field>
+            <field name="field_type">integer</field>
+            <field name="icon">bi-droplet</field>
+            <field name="sequence">20</field>
+        </record>
+
+        <record id="char_property_area" model="property.characteristic.item">
+            <field name="name">Área de la Propiedad</field>
+            <field name="category">basic</field>
+            <field name="field_name">property_area</field>
+            <field name="field_type">integer</field>
+            <field name="icon">bi-arrows-fullscreen</field>
+            <field name="sequence">30</field>
+        </record>
+
+        <record id="char_stratum" model="property.characteristic.item">
+            <field name="name">Estrato</field>
+            <field name="category">basic</field>
+            <field name="field_name">stratum</field>
+            <field name="field_type">selection</field>
+            <field name="icon">bi-building</field>
+            <field name="sequence">40</field>
+        </record>
+
+        <!-- HABITACIONES Y ESPACIOS -->
+        <record id="char_living_room" model="property.characteristic.item">
+            <field name="name">Tiene Sala</field>
+            <field name="category">rooms</field>
+            <field name="field_name">living_room</field>
+            <field name="field_type">boolean</field>
+            <field name="icon">bi-chat-square-text</field>
+            <field name="sequence">10</field>
+        </record>
+
+        <record id="char_integral_kitchen" model="property.characteristic.item">
+            <field name="name">Cocina Integral</field>
+            <field name="category">rooms</field>
+            <field name="field_name">integral_kitchen</field>
+            <field name="field_type">boolean</field>
+            <field name="icon">bi-cup-hot</field>
+            <field name="sequence">20</field>
+        </record>
+
+        <record id="char_service_room" model="property.characteristic.item">
+            <field name="name">Alcoba de Servicio</field>
+            <field name="category">rooms</field>
+            <field name="field_name">service_room</field>
+            <field name="field_type">boolean</field>
+            <field name="icon">bi-door-open</field>
+            <field name="sequence">30</field>
+        </record>
+
+        <record id="char_walk_in_closet" model="property.characteristic.item">
+            <field name="name">Walk-in Closet</field>
+            <field name="category">rooms</field>
+            <field name="field_name">walk_in_closet</field>
+            <field name="field_type">boolean</field>
+            <field name="icon">bi-bag</field>
+            <field name="sequence">40</field>
+        </record>
+
+        <!-- ÁREAS EXTERIORES -->
+        <record id="char_balcony" model="property.characteristic.item">
+            <field name="name">Balcón</field>
+            <field name="category">outdoor</field>
+            <field name="field_name">balcony</field>
+            <field name="field_type">boolean</field>
+            <field name="icon">bi-box-arrow-up-right</field>
+            <field name="sequence">10</field>
+        </record>
+
+        <record id="char_terrace" model="property.characteristic.item">
+            <field name="name">Terraza</field>
+            <field name="category">outdoor</field>
+            <field name="field_name">terrace</field>
+            <field name="field_type">boolean</field>
+            <field name="icon">bi-grid-3x3</field>
+            <field name="sequence">20</field>
+        </record>
+
+        <record id="char_garden" model="property.characteristic.item">
+            <field name="name">Jardín</field>
+            <field name="category">outdoor</field>
+            <field name="field_name">garden</field>
+            <field name="field_type">boolean</field>
+            <field name="icon">bi-flower1</field>
+            <field name="sequence">30</field>
+        </record>
+
+        <record id="char_patio" model="property.characteristic.item">
+            <field name="name">Patio</field>
+            <field name="category">outdoor</field>
+            <field name="field_name">patio</field>
+            <field name="field_type">boolean</field>
+            <field name="icon">bi-house</field>
+            <field name="sequence">40</field>
+        </record>
+
+        <!-- PARQUEADERO -->
+        <record id="char_garage" model="property.characteristic.item">
+            <field name="name">Garaje</field>
+            <field name="category">parking</field>
+            <field name="field_name">garage</field>
+            <field name="field_type">boolean</field>
+            <field name="icon">bi-car-front</field>
+            <field name="sequence">10</field>
+        </record>
+
+        <record id="char_covered_parking" model="property.characteristic.item">
+            <field name="name">Parqueadero Cubierto</field>
+            <field name="category">parking</field>
+            <field name="field_name">covered_parking</field>
+            <field name="field_type">integer</field>
+            <field name="icon">bi-building-fill-lock</field>
+            <field name="sequence">20</field>
+        </record>
+
+        <record id="char_visitors_parking" model="property.characteristic.item">
+            <field name="name">Parqueadero de Visitantes</field>
+            <field name="category">parking</field>
+            <field name="field_name">visitors_parking</field>
+            <field name="field_type">boolean</field>
+            <field name="icon">bi-p-square</field>
+            <field name="sequence">30</field>
+        </record>
+
+        <!-- AMENIDADES DEL EDIFICIO -->
+        <record id="char_elevator" model="property.characteristic.item">
+            <field name="name">Ascensor</field>
+            <field name="category">amenities</field>
+            <field name="field_name">elevator</field>
+            <field name="field_type">boolean</field>
+            <field name="icon">bi-arrow-up-circle</field>
+            <field name="sequence">10</field>
+        </record>
+
+        <record id="char_doorman" model="property.characteristic.item">
+            <field name="name">Portería</field>
+            <field name="category">amenities</field>
+            <field name="field_name">doorman</field>
+            <field name="field_type">selection</field>
+            <field name="icon">bi-shield-check</field>
+            <field name="sequence">20</field>
+        </record>
+
+        <!-- ÁREAS RECREATIVAS -->
+        <record id="char_pools" model="property.characteristic.item">
+            <field name="name">Piscina</field>
+            <field name="category">recreational</field>
+            <field name="field_name">pools</field>
+            <field name="field_type">boolean</field>
+            <field name="icon">bi-droplet-fill</field>
+            <field name="sequence">10</field>
+        </record>
+
+        <record id="char_gym" model="property.characteristic.item">
+            <field name="name">Gimnasio</field>
+            <field name="category">recreational</field>
+            <field name="field_name">gym</field>
+            <field name="field_type">boolean</field>
+            <field name="icon">bi-heart-pulse</field>
+            <field name="sequence">20</field>
+        </record>
+
+        <record id="char_social_room" model="property.characteristic.item">
+            <field name="name">Salón Social</field>
+            <field name="category">recreational</field>
+            <field name="field_name">social_room</field>
+            <field name="field_type">boolean</field>
+            <field name="icon">bi-people</field>
+            <field name="sequence">30</field>
+        </record>
+
+        <record id="char_green_areas" model="property.characteristic.item">
+            <field name="name">Zonas Verdes</field>
+            <field name="category">recreational</field>
+            <field name="field_name">green_areas</field>
+            <field name="field_type">boolean</field>
+            <field name="icon">bi-tree</field>
+            <field name="sequence">40</field>
+        </record>
+
+        <record id="char_sports_area" model="property.characteristic.item">
+            <field name="name">Cancha Deportiva</field>
+            <field name="category">recreational</field>
+            <field name="field_name">sports_area</field>
+            <field name="field_type">boolean</field>
+            <field name="icon">bi-trophy</field>
+            <field name="sequence">50</field>
+        </record>
+
+        <!-- SEGURIDAD -->
+        <record id="char_security_cameras" model="property.characteristic.item">
+            <field name="name">Cámaras de Seguridad</field>
+            <field name="category">security</field>
+            <field name="field_name">security_cameras</field>
+            <field name="field_type">boolean</field>
+            <field name="icon">bi-camera-video</field>
+            <field name="sequence">10</field>
+        </record>
+
+        <record id="char_alarm" model="property.characteristic.item">
+            <field name="name">Alarma</field>
+            <field name="category">security</field>
+            <field name="field_name">alarm</field>
+            <field name="field_type">boolean</field>
+            <field name="icon">bi-bell</field>
+            <field name="sequence">20</field>
+        </record>
+
+        <!-- SERVICIOS PÚBLICOS -->
+        <record id="char_air_conditioning" model="property.characteristic.item">
+            <field name="name">Aire Acondicionado</field>
+            <field name="category">utilities</field>
+            <field name="field_name">air_conditioning</field>
+            <field name="field_type">boolean</field>
+            <field name="icon">bi-snow</field>
+            <field name="sequence">10</field>
+        </record>
+
+        <record id="char_gas_installation" model="property.characteristic.item">
+            <field name="name">Red de Gas</field>
+            <field name="category">utilities</field>
+            <field name="field_name">gas_installation</field>
+            <field name="field_type">boolean</field>
+            <field name="icon">bi-fire</field>
+            <field name="sequence">20</field>
+        </record>
+
+        <!-- CARACTERÍSTICAS ESPECIALES -->
+        <record id="char_furnished" model="property.characteristic.item">
+            <field name="name">Amoblado</field>
+            <field name="category">special</field>
+            <field name="field_name">furnished</field>
+            <field name="field_type">boolean</field>
+            <field name="icon">bi-lamp</field>
+            <field name="sequence">10</field>
+        </record>
+
+        <record id="char_jacuzzi" model="property.characteristic.item">
+            <field name="name">Jacuzzi</field>
+            <field name="category">special</field>
+            <field name="field_name">jacuzzi</field>
+            <field name="field_type">boolean</field>
+            <field name="icon">bi-droplet-half</field>
+            <field name="sequence">20</field>
+        </record>
+
+        <record id="char_sauna" model="property.characteristic.item">
+            <field name="name">Sauna</field>
+            <field name="category">special</field>
+            <field name="field_name">sauna</field>
+            <field name="field_type">boolean</field>
+            <field name="icon">bi-house-heart</field>
+            <field name="sequence">30</field>
+        </record>
+
+        <record id="char_fireplace" model="property.characteristic.item">
+            <field name="name">Chimenea</field>
+            <field name="category">special</field>
+            <field name="field_name">fireplace</field>
+            <field name="field_type">boolean</field>
+            <field name="icon">bi-fire</field>
+            <field name="sequence">40</field>
+        </record>
+
+        <!-- ========================================== -->
+        <!-- GRUPOS DE FILTROS POR TIPO DE INMUEBLE -->
+        <!-- ========================================== -->
+
+        <!-- APARTAMENTOS -->
+        <record id="filter_group_apartments" model="property.filter.characteristics">
+            <field name="name">Características de Apartamentos</field>
+            <field name="property_type">apartment</field>
+            <field name="sequence">10</field>
+            <field name="description">Filtros específicos para apartamentos urbanos</field>
+            <field name="characteristic_ids" eval="[(6, 0, [
+                ref('char_num_bedrooms'),
+                ref('char_num_bathrooms'),
+                ref('char_property_area'),
+                ref('char_stratum'),
+                ref('char_balcony'),
+                ref('char_integral_kitchen'),
+                ref('char_walk_in_closet'),
+                ref('char_garage'),
+                ref('char_elevator'),
+                ref('char_doorman'),
+                ref('char_pools'),
+                ref('char_gym'),
+                ref('char_social_room'),
+                ref('char_air_conditioning')
+            ])]"/>
+        </record>
+
+        <!-- CASAS -->
+        <record id="filter_group_houses" model="property.filter.characteristics">
+            <field name="name">Características de Casas</field>
+            <field name="property_type">house</field>
+            <field name="sequence">20</field>
+            <field name="description">Filtros específicos para casas</field>
+            <field name="characteristic_ids" eval="[(6, 0, [
+                ref('char_num_bedrooms'),
+                ref('char_num_bathrooms'),
+                ref('char_property_area'),
+                ref('char_stratum'),
+                ref('char_garden'),
+                ref('char_patio'),
+                ref('char_terrace'),
+                ref('char_integral_kitchen'),
+                ref('char_service_room'),
+                ref('char_garage'),
+                ref('char_security_cameras'),
+                ref('char_alarm'),
+                ref('char_fireplace')
+            ])]"/>
+        </record>
+
+        <!-- OFICINAS -->
+        <record id="filter_group_offices" model="property.filter.characteristics">
+            <field name="name">Características de Oficinas</field>
+            <field name="property_type">office</field>
+            <field name="sequence">30</field>
+            <field name="description">Filtros específicos para oficinas comerciales</field>
+            <field name="characteristic_ids" eval="[(6, 0, [
+                ref('char_property_area'),
+                ref('char_covered_parking'),
+                ref('char_visitors_parking'),
+                ref('char_elevator'),
+                ref('char_doorman'),
+                ref('char_air_conditioning'),
+                ref('char_security_cameras')
+            ])]"/>
+        </record>
+
+        <!-- LOCALES COMERCIALES -->
+        <record id="filter_group_locals" model="property.filter.characteristics">
+            <field name="name">Características de Locales</field>
+            <field name="property_type">local</field>
+            <field name="sequence">40</field>
+            <field name="description">Filtros para locales comerciales</field>
+            <field name="characteristic_ids" eval="[(6, 0, [
+                ref('char_property_area'),
+                ref('char_covered_parking'),
+                ref('char_visitors_parking'),
+                ref('char_security_cameras'),
+                ref('char_alarm')
+            ])]"/>
+        </record>
+
+        <!-- FINCAS -->
+        <record id="filter_group_farms" model="property.filter.characteristics">
+            <field name="name">Características de Fincas</field>
+            <field name="property_type">finca</field>
+            <field name="sequence">50</field>
+            <field name="description">Filtros para fincas y propiedades rurales</field>
+            <field name="characteristic_ids" eval="[(6, 0, [
+                ref('char_property_area'),
+                ref('char_num_bedrooms'),
+                ref('char_num_bathrooms'),
+                ref('char_pools'),
+                ref('char_jacuzzi'),
+                ref('char_green_areas'),
+                ref('char_sports_area'),
+                ref('char_security_cameras')
+            ])]"/>
+        </record>
+
+        <!-- TODOS LOS TIPOS (GENÉRICO) -->
+        <record id="filter_group_all" model="property.filter.characteristics">
+            <field name="name">Características Generales</field>
+            <field name="property_type">all</field>
+            <field name="sequence">100</field>
+            <field name="description">Características comunes para todos los tipos de inmuebles</field>
+            <field name="characteristic_ids" eval="[(6, 0, [
+                ref('char_property_area'),
+                ref('char_furnished')
+            ])]"/>
+        </record>
+
+    </data>
+</odoo>

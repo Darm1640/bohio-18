@@ -97,6 +97,8 @@
             'theme_bohio_real_estate/static/src/css/map_styles.css',
             'theme_bohio_real_estate/static/src/css/proyecto_detalle.css',
             'theme_bohio_real_estate/static/src/css/property_detail_modals.css',
+            'theme_bohio_real_estate/static/src/css/property_filters_advanced.css',
+            'theme_bohio_real_estate/static/src/css/property_map_enhanced.css',
             # SCSS - Variables y Mixins
             'theme_bohio_real_estate/static/src/scss/_variables.scss',
             'theme_bohio_real_estate/static/src/scss/_mixins.scss',
@@ -122,6 +124,7 @@
             'theme_bohio_real_estate/static/src/js/utils/template_renderer.js',
             'theme_bohio_real_estate/static/src/js/utils/geolocation.js',
             'theme_bohio_real_estate/static/src/js/utils/url_params.js',
+            'theme_bohio_real_estate/static/src/js/utils/url_sync.js',
             'theme_bohio_real_estate/static/src/js/utils/dom_helpers.js',
 
             # JavaScript - DOM Manipulation (usa utils)
@@ -148,8 +151,10 @@
             'theme_bohio_real_estate/static/src/js/page_loader.js',
             'theme_bohio_real_estate/static/src/js/homepage_autocomplete.js',
             'theme_bohio_real_estate/static/src/js/property_filters.js',
+            'theme_bohio_real_estate/static/src/js/property_filters_advanced.js',
             'theme_bohio_real_estate/static/src/js/lazy_image_loader.js',
             'theme_bohio_real_estate/static/src/js/property_shop.js',
+            'theme_bohio_real_estate/static/src/js/property_shop_enhanced.js',
             'theme_bohio_real_estate/static/src/js/proyectos.js',
             'theme_bohio_real_estate/static/src/js/proyecto_detalle.js',
             'theme_bohio_real_estate/static/src/js/property_detail_gallery.js',

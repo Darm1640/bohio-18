@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- Vista Search Avanzada con Filtros Agrupados -->
+        <record id="view_property_search_advanced" model="ir.ui.view">
+            <field name="name">product.template.property.search.advanced</field>
+            <field name="model">product.template</field>
+            <field name="priority">20</field>
+            <field name="arch" type="xml">
+                <search string="Búsqueda Avanzada de Propiedades">
+
+                    <!-- BUSCADORES PRINCIPALES -->
+                    <field name="name" string="Nombre" filter_domain="[('name', 'ilike', self)]"/>
+                    <field name="default_code" string="Código" filter_domain="[('default_code', 'ilike', self)]"/>
+                    <field name="property_type_id" string="Tipo"/>
+                    <field name="state_id" string="Departamento"/>
+                    <field name="city" string="Ciudad"/>
+                    <field name="region_id" string="Barrio"/>
+
+                    <separator/>
+
+                    <!-- FILTROS POR ESTADO -->
+                    <filter string="Disponible" name="filter_available" domain="[('state', '=', 'free')]"/>
+                    <filter string="Reservada" name="filter_reserved" domain="[('state', '=', 'reserved')]"/>
+                    <filter string="Arriendo" name="filter_rented" domain="[('state', '=', 'on_lease')]"/>
+                    <filter string="Vendida" name="filter_sold" domain="[('state', '=', 'sold')]"/>
+
+                    <separator/>
+
+                    <!-- FILTROS POR TIPO DE SERVICIO -->
+                    <filter string="En Venta" name="filter_for_sale" domain="[('type_service', 'in', ['sale', 'sale_rent'])]"/>
+                    <filter string="En Arriendo" name="filter_for_rent" domain="[('type_service', 'in', ['rent', 'sale_rent', 'vacation_rent'])]"/>
+                    <filter string="Arriendo Vacacional" name="filter_vacation" domain="[('type_service', '=', 'vacation_rent')]"/>
+
+                    <separator/>
+
+                    <!-- ========== FILTROS POR TIPO DE INMUEBLE ========== -->
+                    <group expand="0" string="Tipo de Inmueble">
+                        <filter string="Apartamentos" name="filter_apartments" domain="[('property_type', '=', 'apartment')]"/>
+                        <filter string="Casas" name="filter_houses" domain="[('property_type', '=', 'house')]"/>
+                        <filter string="Apartaestudios" name="filter_studios" domain="[('property_type', '=', 'studio')]"/>
+                        <filter string="Oficinas" name="filter_offices" domain="[('property_type', '=', 'office')]"/>
+                        <filter string="Locales" name="filter_locals" domain="[('property_type', '=', 'local')]"/>
+                        <filter string="Bodegas" name="filter_warehouses" domain="[('property_type', '=', 'bodega')]"/>
+                        <filter string="Fincas" name="filter_farms" domain="[('property_type', '=', 'finca')]"/>
+                        <filter string="Lotes" name="filter_lots" domain="[('property_type', '=', 'lot')]"/>
+                        <filter string="Lotes Campestres" name="filter_country_lots" domain="[('property_type', '=', 'country_lot')]"/>
+                        <filter string="Sobre Plano" name="filter_blueprint" domain="[('property_type', '=', 'blueprint')]"/>
+                        <filter string="Proyectos" name="filter_projects" domain="[('property_type', '=', 'project')]"/>
+                    </group>
+
+                    <separator/>
+
+                    <!-- ========== FILTROS POR RANGO DE PRECIO ========== -->
+                    <group expand="0" string="Rango de Precio (Venta)">
+                        <filter string="Menos de $50M" name="price_0_50m" domain="[('price_range', '=', '0-50m')]"/>
+                        <filter string="$50M - $100M" name="price_50_100m" domain="[('price_range', '=', '50-100m')]"/>
+                        <filter string="$100M - $200M" name="price_100_200m" domain="[('price_range', '=', '100-200m')]"/>
+                        <filter string="$200M - $300M" name="price_200_300m" domain="[('price_range', '=', '200-300m')]"/>
+                        <filter string="$300M - $500M" name="price_300_500m" domain="[('price_range', '=', '300-500m')]"/>
+                        <filter string="$500M - $1.000M" name="price_500_1000m" domain="[('price_range', '=', '500-1000m')]"/>
+                        <filter string="Más de $1.000M" name="price_1000m_plus" domain="[('price_range', '=', '1000m+')]"/>
+                    </group>
+
+                    <group expand="0" string="Rango de Precio (Arriendo)">
+                        <filter string="Menos de $500K" name="rental_0_500k" domain="[('rental_price_range', '=', '0-500k')]"/>
+                        <filter string="$500K - $1M" name="rental_500k_1m" domain="[('rental_price_range', '=', '500k-1m')]"/>
+                        <filter string="$1M - $2M" name="rental_1_2m" domain="[('rental_price_range', '=', '1-2m')]"/>
+                        <filter string="$2M - $3M" name="rental_2_3m" domain="[('rental_price_range', '=', '2-3m')]"/>
+                        <filter string="$3M - $5M" name="rental_3_5m" domain="[('rental_price_range', '=', '3-5m')]"/>
+                        <filter string="Más de $5M" name="rental_5m_plus" domain="[('rental_price_range', '=', '5m+')]"/>
+                    </group>
+
+                    <separator/>
+
+                    <!-- ========== FILTROS POR HABITACIONES ========== -->
+                    <group expand="0" string="Número de Habitaciones">
+                        <filter string="Apartaestudio" name="bedrooms_studio" domain="[('bedrooms_range', '=', 'studio')]"/>
+                        <filter string="1 Habitación" name="bedrooms_1" domain="[('bedrooms_range', '=', '1')]"/>
+                        <filter string="2 Habitaciones" name="bedrooms_2" domain="[('bedrooms_range', '=', '2')]"/>
+                        <filter string="3 Habitaciones" name="bedrooms_3" domain="[('bedrooms_range', '=', '3')]"/>
+                        <filter string="4 Habitaciones" name="bedrooms_4" domain="[('bedrooms_range', '=', '4')]"/>
+                        <filter string="5+ Habitaciones" name="bedrooms_5plus" domain="[('bedrooms_range', '=', '5+')]"/>
+                    </group>
+
+                    <!-- ========== FILTROS POR BAÑOS ========== -->
+                    <group expand="0" string="Número de Baños">
+                        <filter string="1 Baño" name="bathrooms_1" domain="[('bathrooms_range', '=', '1')]"/>
+                        <filter string="2 Baños" name="bathrooms_2" domain="[('bathrooms_range', '=', '2')]"/>
+                        <filter string="3 Baños" name="bathrooms_3" domain="[('bathrooms_range', '=', '3')]"/>
+                        <filter string="4+ Baños" name="bathrooms_4plus" domain="[('bathrooms_range', '=', '4+')]"/>
+                    </group>
+
+                    <!-- ========== FILTROS POR PARQUEADEROS ========== -->
+                    <group expand="0" string="Parqueaderos">
+                        <filter string="Sin Parqueadero" name="parking_0" domain="[('parking_range', '=', '0')]"/>
+                        <filter string="1 Parqueadero" name="parking_1" domain="[('parking_range', '=', '1')]"/>
+                        <filter string="2 Parqueaderos" name="parking_2" domain="[('parking_range', '=', '2')]"/>
+                        <filter string="3+ Parqueaderos" name="parking_3plus" domain="[('parking_range', '=', '3+')]"/>
+                    </group>
+
+                    <separator/>
+
+                    <!-- ========== FILTROS POR ÁREA ========== -->
+                    <group expand="0" string="Rango de Área">
+                        <filter string="Menos de 50 m²" name="area_0_50" domain="[('area_range', '=', '0-50')]"/>
+                        <filter string="50-80 m²" name="area_50_80" domain="[('area_range', '=', '50-80')]"/>
+                        <filter string="80-120 m²" name="area_80_120" domain="[('area_range', '=', '80-120')]"/>
+                        <filter string="120-200 m²" name="area_120_200" domain="[('area_range', '=', '120-200')]"/>
+                        <filter string="200-500 m²" name="area_200_500" domain="[('area_range', '=', '200-500')]"/>
+                        <filter string="Más de 500 m²" name="area_500plus" domain="[('area_range', '=', '500+')]"/>
+                    </group>
+
+                    <separator/>
+
+                    <!-- ========== FILTROS POR ESTRATO ========== -->
+                    <group expand="0" string="Estrato">
+                        <filter string="Estrato 1" name="stratum_1" domain="[('stratum', '=', '1')]"/>
+                        <filter string="Estrato 2" name="stratum_2" domain="[('stratum', '=', '2')]"/>
+                        <filter string="Estrato 3" name="stratum_3" domain="[('stratum', '=', '3')]"/>
+                        <filter string="Estrato 4" name="stratum_4" domain="[('stratum', '=', '4')]"/>
+                        <filter string="Estrato 5" name="stratum_5" domain="[('stratum', '=', '5')]"/>
+                        <filter string="Estrato 6" name="stratum_6" domain="[('stratum', '=', '6')]"/>
+                        <filter string="Comercial" name="stratum_commercial" domain="[('stratum', '=', 'commercial')]"/>
+                    </group>
+
+                    <separator/>
+
+                    <!-- ========== CARACTERÍSTICAS ESPECIALES ========== -->
+                    <group expand="0" string="Áreas Exteriores">
+                        <filter string="Con Áreas Exteriores" name="has_outdoor" domain="[('has_outdoor_areas', '=', True)]"/>
+                        <filter string="Con Balcón" name="has_balcony" domain="[('balcony', '=', True)]"/>
+                        <filter string="Con Terraza" name="has_terrace" domain="[('terrace', '=', True)]"/>
+                        <filter string="Con Jardín" name="has_garden" domain="[('garden', '=', True)]"/>
+                        <filter string="Con Patio" name="has_patio" domain="[('patio', '=', True)]"/>
+                    </group>
+
+                    <group expand="0" string="Amenidades del Conjunto">
+                        <filter string="Con Amenidades" name="has_amenities" domain="[('has_building_amenities', '=', True)]"/>
+                        <filter string="Con Piscina" name="has_pool" domain="[('pools', '=', True)]"/>
+                        <filter string="Con Gimnasio" name="has_gym" domain="[('gym', '=', True)]"/>
+                        <filter string="Con Salón Social" name="has_social_room" domain="[('social_room', '=', True)]"/>
+                        <filter string="Con Zonas Verdes" name="has_green_areas" domain="[('green_areas', '=', True)]"/>
+                        <filter string="Con Cancha Deportiva" name="has_sports_area" domain="[('sports_area', '=', True)]"/>
+                    </group>
+
+                    <group expand="0" string="Amenidades de Lujo">
+                        <filter string="Con Amenidades de Lujo" name="has_luxury" domain="[('has_luxury_amenities', '=', True)]"/>
+                        <filter string="Con Jacuzzi" name="has_jacuzzi" domain="[('jacuzzi', '=', True)]"/>
+                        <filter string="Con Sauna" name="has_sauna" domain="[('sauna', '=', True)]"/>
+                        <filter string="Con Turco" name="has_turkish" domain="[('turkish_bath', '=', True)]"/>
+                    </group>
+
+                    <group expand="0" string="Seguridad">
+                        <filter string="Con Seguridad Completa" name="full_security" domain="[('has_full_security', '=', True)]"/>
+                        <filter string="Con Portería 24h" name="doorman_24h" domain="[('doorman', '=', '24_hours')]"/>
+                        <filter string="Con Cámaras" name="has_cameras" domain="[('security_cameras', '=', True)]"/>
+                        <filter string="Con Alarma" name="has_alarm" domain="[('alarm', '=', True)]"/>
+                    </group>
+
+                    <group expand="0" string="Características Adicionales">
+                        <filter string="Amoblado" name="is_furnished" domain="[('furnished', '=', True)]"/>
+                        <filter string="Con Ascensor" name="has_elevator" domain="[('elevator', '=', True)]"/>
+                        <filter string="Con Aire Acondicionado" name="has_ac" domain="[('air_conditioning', '=', True)]"/>
+                        <filter string="Con Chimenea" name="has_fireplace" domain="[('fireplace', '=', True)]"/>
+                        <filter string="Con Cocina Integral" name="integral_kitchen" domain="[('integral_kitchen', '=', True)]"/>
+                        <filter string="Con Walk-in Closet" name="walk_in_closet" domain="[('walk_in_closet', '=', True)]"/>
+                    </group>
+
+                    <separator/>
+
+                    <!-- ========== AGRUPACIONES ========== -->
+                    <group expand="1" string="Agrupar Por">
+                        <filter string="Tipo de Inmueble" name="group_property_type" context="{'group_by': 'property_type'}"/>
+                        <filter string="Estado" name="group_state" context="{'group_by': 'state'}"/>
+                        <filter string="Tipo de Servicio" name="group_type_service" context="{'group_by': 'type_service'}"/>
+                        <filter string="Departamento" name="group_department" context="{'group_by': 'state_id'}"/>
+                        <filter string="Ciudad" name="group_city" context="{'group_by': 'city'}"/>
+                        <filter string="Barrio" name="group_region" context="{'group_by': 'region_id'}"/>
+                        <filter string="Estrato" name="group_stratum" context="{'group_by': 'stratum'}"/>
+                        <filter string="Rango de Precio" name="group_price_range" context="{'group_by': 'price_range'}"/>
+                        <filter string="Habitaciones" name="group_bedrooms" context="{'group_by': 'bedrooms_range'}"/>
+                        <filter string="Rango de Área" name="group_area_range" context="{'group_by': 'area_range'}"/>
+                    </group>
+
+                </search>
+            </field>
+        </record>
+
+        <!-- Acción de menú para búsqueda avanzada -->
+        <record id="action_property_search_advanced" model="ir.actions.act_window">
+            <field name="name">Búsqueda Avanzada de Propiedades</field>
+            <field name="res_model">product.template</field>
+            <field name="view_mode">list,kanban,form,graph,pivot</field>
+            <field name="domain">[('property_type_id', '!=', False)]</field>
+            <field name="context">{
+                'search_default_filter_available': 1,
+                'search_default_group_property_type': 1
+            }</field>
+            <field name="search_view_id" ref="view_property_search_advanced"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    No se encontraron propiedades con los filtros seleccionados
+                </p>
+                <p>
+                    Utilice los filtros de búsqueda avanzada para encontrar propiedades por:
+                    tipo, precio, ubicación, características y amenidades.
+                </p>
+            </field>
+        </record>
+
+        <!-- Vista de formulario con información de conversiones -->
+        <record id="view_property_form_conversions" model="ir.ui.view">
+            <field name="name">product.template.property.form.conversions</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="real_estate_bits.view_property_form"/>
+            <field name="arch" type="xml">
+
+                <!-- Mejorar sección de área con conversiones -->
+                <xpath expr="//field[@name='area_in_m2']" position="after">
+                    <field name="area_in_ft2" readonly="1" string="Área en Pies²"
+                           attrs="{'invisible': [('property_area', '=', 0)]}"/>
+                    <field name="area_in_vara2" readonly="1" string="Área en Varas²"
+                           attrs="{'invisible': [('property_area', '=', 0)]}"/>
+                    <field name="area_in_hectares" readonly="1" string="Área en Hectáreas"
+                           attrs="{'invisible': [('area_in_m2', '&lt;', 1000)]}"/>
+                </xpath>
+
+                <!-- Agregar conversión de moneda en precios -->
+                <xpath expr="//field[@name='net_price']" position="after">
+                    <field name="currency_id" invisible="1"/>
+                    <field name="usd_currency_id" invisible="1"/>
+                    <field name="net_price_usd" readonly="1"
+                           attrs="{'invisible': [('net_price', '=', 0)]}"
+                           widget="monetary"
+                           options="{'currency_field': 'usd_currency_id'}"/>
+                </xpath>
+
+                <xpath expr="//field[@name='rental_price']" position="after">
+                    <field name="rental_price_usd" readonly="1"
+                           attrs="{'invisible': [('rental_price', '=', 0)]}"
+                           widget="monetary"
+                           options="{'currency_field': 'usd_currency_id'}"/>
+                </xpath>
+
+                <!-- Mostrar rangos calculados (solo en modo debug) -->
+                <xpath expr="//notebook" position="inside">
+                    <page string="Info de Filtros (Debug)" name="filter_debug" groups="base.group_no_one">
+                        <group>
+                            <group string="Rangos Calculados">
+                                <field name="price_range" readonly="1"/>
+                                <field name="rental_price_range" readonly="1"/>
+                                <field name="bedrooms_range" readonly="1"/>
+                                <field name="bathrooms_range" readonly="1"/>
+                                <field name="parking_range" readonly="1"/>
+                                <field name="area_range" readonly="1"/>
+                            </group>
+                            <group string="Características Agrupadas">
+                                <field name="has_outdoor_areas" readonly="1"/>
+                                <field name="has_building_amenities" readonly="1"/>
+                                <field name="has_luxury_amenities" readonly="1"/>
+                                <field name="has_full_security" readonly="1"/>
+                            </group>
+                        </group>
+                    </page>
+                </xpath>
+
+            </field>
+        </record>
+
+        <!-- Menú -->
+        <menuitem
+            id="menu_property_search_advanced"
+            name="Búsqueda Avanzada"
+            parent="real_estate_bits.property_menu"
+            action="action_property_search_advanced"
+            sequence="5"/>
+
+    </data>
+</odoo>

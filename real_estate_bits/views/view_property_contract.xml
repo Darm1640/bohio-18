@@ -339,12 +339,16 @@
                                     <list create="0" delete="0">
                                         <field name="date" string="Fecha"/>
                                         <field name="name" string="Descripción"/>
-                                        <field name="amount" widget="monetary" string="Monto"/>
+                                        <field name="amount" widget="monetary" string="Canon"/>
+                                        <field name="commission_percentage" string="% Comisión"/>
+                                        <field name="commission" widget="monetary" string="Comisión"/>
                                         <field name="payment_state" widget="badge"
                                                decoration-success="payment_state == 'paid'"
                                                decoration-warning="payment_state == 'partial'"
-                                               decoration-danger="payment_state == 'not_paid'"/>
-                                        <field name="invoice_id" optional="show"/>
+                                               decoration-danger="payment_state == 'not_paid'"
+                                               string="Estado"/>
+                                        <field name="invoice_id" optional="show" string="Factura Inquilino"/>
+                                        <field name="commission_invoice_ids" widget="many2many_tags" string="Facturas Comisión" optional="show"/>
                                         <button name="create_invoice_line" type="object"
                                                 string="Facturar" icon="fa-file-text-o"
                                                 invisible="invoice_id"/>

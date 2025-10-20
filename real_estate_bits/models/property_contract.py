@@ -55,7 +55,7 @@ def days360(start_date, end_date, method_eu=True):
 
     return (
         end_day + end_month * 30 + end_year * 360 -
-        start_day - start_month * 30 - start_year * 360 + 1
+        start_day - start_month * 30 - start_year * 360
     )
 
 
@@ -900,7 +900,7 @@ Nota: Si el día no existe en el mes (ej: 31 en febrero), se usa el último día
                 )
             elif contract.prorata_computation_type == 'constant_periods':
                 # Método 360 días
-                days_360 = days360(contract.date_from, first_period_end)
+                days_360 = int(days360(contract.date_from, first_period_end))
                 prorated_amount = (contract.rental_fee / 30) * days_360
                 contract.prorate_info_first = (
                     f'Método 360 días: {days_360} días de 30 días\n'
@@ -933,7 +933,7 @@ Nota: Si el día no existe en el mes (ej: 31 en febrero), se usa el último día
                 )
             elif contract.prorata_computation_type == 'constant_periods':
                 # Método 360 días
-                days_360 = days360(last_period_start, contract.date_to)
+                days_360 = int(days360(last_period_start, contract.date_to))
                 prorated_amount = (contract.rental_fee / 30) * days_360
                 contract.prorate_info_last = (
                     f'Método 360 días: {days_360} días de 30 días\n'
@@ -1226,7 +1226,7 @@ Nota: Si el día no existe en el mes (ej: 31 en febrero), se usa el último día
 
         elif self.prorata_computation_type == 'constant_periods':
             # Cálculo basado en días 360 (30 días por mes)
-            days_in_period = days360(period_start, period_end)
+            days_in_period = int(days360(period_start, period_end))
             return (base_amount / 30) * days_in_period
 
         return base_amount

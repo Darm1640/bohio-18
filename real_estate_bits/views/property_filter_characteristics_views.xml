@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- ========== PROPERTY CHARACTERISTIC ITEM ========== -->
+
+        <!-- Vista List -->
+        <record id="view_property_characteristic_item_list" model="ir.ui.view">
+            <field name="name">property.characteristic.item.list</field>
+            <field name="model">property.characteristic.item</field>
+            <field name="arch" type="xml">
+                <list string="Características Individuales" editable="bottom">
+                    <field name="sequence" widget="handle"/>
+                    <field name="name"/>
+                    <field name="category"/>
+                    <field name="field_name"/>
+                    <field name="field_type"/>
+                    <field name="icon"/>
+                    <field name="active" widget="boolean_toggle"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Vista Form -->
+        <record id="view_property_characteristic_item_form" model="ir.ui.view">
+            <field name="name">property.characteristic.item.form</field>
+            <field name="model">property.characteristic.item</field>
+            <field name="arch" type="xml">
+                <form string="Característica">
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="toggle_active" type="object"
+                                    class="oe_stat_button" icon="fa-archive">
+                                <field name="active" widget="boolean_button"
+                                       options="{'terminology': 'archive'}"/>
+                            </button>
+                        </div>
+
+                        <group>
+                            <group>
+                                <field name="name" placeholder="ej: Tiene Piscina"/>
+                                <field name="category"/>
+                                <field name="sequence"/>
+                            </group>
+                            <group>
+                                <field name="field_name" placeholder="ej: pools"/>
+                                <field name="field_type"/>
+                                <field name="icon" placeholder="ej: fa-swimming-pool"/>
+                            </group>
+                        </group>
+
+                        <notebook>
+                            <page string="Grupos de Filtros Asociados">
+                                <field name="filter_ids">
+                                    <list>
+                                        <field name="name"/>
+                                        <field name="property_type"/>
+                                        <field name="sequence"/>
+                                    </list>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Vista Search -->
+        <record id="view_property_characteristic_item_search" model="ir.ui.view">
+            <field name="name">property.characteristic.item.search</field>
+            <field name="model">property.characteristic.item</field>
+            <field name="arch" type="xml">
+                <search string="Búsqueda de Características">
+                    <field name="name"/>
+                    <field name="field_name"/>
+                    <filter string="Activas" name="filter_active" domain="[('active', '=', True)]"/>
+                    <filter string="Inactivas" name="filter_inactive" domain="[('active', '=', False)]"/>
+                    <separator/>
+                    <group expand="1" string="Agrupar Por">
+                        <filter string="Categoría" name="group_category" context="{'group_by': 'category'}"/>
+                        <filter string="Tipo de Campo" name="group_field_type" context="{'group_by': 'field_type'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- Acción -->
+        <record id="action_property_characteristic_item" model="ir.actions.act_window">
+            <field name="name">Características Individuales</field>
+            <field name="res_model">property.characteristic.item</field>
+            <field name="view_mode">list,form</field>
+            <field name="context">{'search_default_filter_active': 1, 'search_default_group_category': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Cree una nueva característica de filtrado
+                </p>
+                <p>
+                    Las características representan campos individuales del modelo de propiedades
+                    que pueden usarse en filtros de búsqueda.
+                </p>
+            </field>
+        </record>
+
+        <!-- ========== PROPERTY FILTER CHARACTERISTICS ========== -->
+
+        <!-- Vista List -->
+        <record id="view_property_filter_characteristics_list" model="ir.ui.view">
+            <field name="name">property.filter.characteristics.list</field>
+            <field name="model">property.filter.characteristics</field>
+            <field name="arch" type="xml">
+                <list string="Grupos de Filtros por Tipo">
+                    <field name="sequence" widget="handle"/>
+                    <field name="name"/>
+                    <field name="property_type"/>
+                    <field name="active" widget="boolean_toggle"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Vista Form -->
+        <record id="view_property_filter_characteristics_form" model="ir.ui.view">
+            <field name="name">property.filter.characteristics.form</field>
+            <field name="model">property.filter.characteristics</field>
+            <field name="arch" type="xml">
+                <form string="Grupo de Filtros">
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="toggle_active" type="object"
+                                    class="oe_stat_button" icon="fa-archive">
+                                <field name="active" widget="boolean_button"
+                                       options="{'terminology': 'archive'}"/>
+                            </button>
+                        </div>
+
+                        <group>
+                            <group>
+                                <field name="name" placeholder="ej: Características de Apartamentos"/>
+                                <field name="property_type"/>
+                            </group>
+                            <group>
+                                <field name="sequence"/>
+                                <field name="description" placeholder="Descripción del grupo..."/>
+                            </group>
+                        </group>
+
+                        <notebook>
+                            <page string="Características del Grupo">
+                                <field name="characteristic_ids">
+                                    <list editable="bottom">
+                                        <field name="sequence" widget="handle"/>
+                                        <field name="name"/>
+                                        <field name="category"/>
+                                        <field name="field_name"/>
+                                        <field name="field_type"/>
+                                        <field name="icon"/>
+                                    </list>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Vista Search -->
+        <record id="view_property_filter_characteristics_search" model="ir.ui.view">
+            <field name="name">property.filter.characteristics.search</field>
+            <field name="model">property.filter.characteristics</field>
+            <field name="arch" type="xml">
+                <search string="Búsqueda de Grupos de Filtros">
+                    <field name="name"/>
+                    <field name="property_type"/>
+                    <filter string="Activos" name="filter_active" domain="[('active', '=', True)]"/>
+                    <filter string="Inactivos" name="filter_inactive" domain="[('active', '=', False)]"/>
+                    <separator/>
+                    <group expand="1" string="Agrupar Por">
+                        <filter string="Tipo de Inmueble" name="group_property_type" context="{'group_by': 'property_type'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- Acción -->
+        <record id="action_property_filter_characteristics" model="ir.actions.act_window">
+            <field name="name">Grupos de Filtros por Tipo</field>
+            <field name="res_model">property.filter.characteristics</field>
+            <field name="view_mode">list,form</field>
+            <field name="context">{'search_default_filter_active': 1, 'search_default_group_property_type': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Cree un nuevo grupo de filtros
+                </p>
+                <p>
+                    Los grupos de filtros agrupan características relevantes por tipo de inmueble
+                    para facilitar las búsquedas especializadas.
+                </p>
+            </field>
+        </record>
+
+        <!-- Menús -->
+        <menuitem
+            id="menu_property_filter_config"
+            name="Configuración de Filtros"
+            parent="real_estate_bits.property_configuration_menu"
+            sequence="20"/>
+
+        <menuitem
+            id="menu_property_characteristic_item"
+            name="Características"
+            parent="menu_property_filter_config"
+            action="action_property_characteristic_item"
+            sequence="10"/>
+
+        <menuitem
+            id="menu_property_filter_characteristics"
+            name="Grupos de Filtros"
+            parent="menu_property_filter_config"
+            action="action_property_filter_characteristics"
+            sequence="20"/>
+
+    </data>
+</odoo>
