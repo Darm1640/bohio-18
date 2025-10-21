@@ -551,10 +551,6 @@ export class AdvancedPropertyFilters {
             this.callbacks[`on${event.charAt(0).toUpperCase()}${event.slice(1)}`] = callback;
         }
     }
-}
-
-// Exportar para uso global
-window.AdvancedPropertyFilters = AdvancedPropertyFilters;
 
     /**
      * Cargar filtros específicos por tipo de propiedad
@@ -584,3 +580,7 @@ window.AdvancedPropertyFilters = AdvancedPropertyFilters;
         this.renderFilters();
         this.attachEventListeners();
     }
+}
+
+// Exportar para uso global
+window.AdvancedPropertyFilters = AdvancedPropertyFilters;
