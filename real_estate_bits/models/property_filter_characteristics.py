@@ -326,11 +326,11 @@ class PropertyTemplate(models.Model):
             else:
                 record.price_range = '1000m+'
 
-    @api.depends('rental_price')
+    @api.depends('net_rental_price')
     def _compute_rental_price_range(self):
         """Calcular rango de arriendo para filtros"""
         for record in self:
-            price = record.rental_price or 0
+            price = record.net_rental_price or 0
             if price < 500000:
                 record.rental_price_range = '0-500k'
             elif price < 1000000:
