@@ -20,6 +20,7 @@
     "data": [
         "data/ir_sequence.xml",
         "data/proyecto_torre_rialto.xml",
+        "data/property_filter_characteristics_data.xml",
         "security/ir.model.access.csv",
         "views/view_installment_template.xml",
         "views/view_project_worksite.xml",
@@ -45,6 +46,8 @@
 
         "views/property_contract_views_modern.xml",
         "views/bohio_mass_payment_views_modern.xml",
+        "views/property_filter_characteristics_views.xml",
+        "views/property_advanced_search_views.xml",
 
     ],
     "assets": {
