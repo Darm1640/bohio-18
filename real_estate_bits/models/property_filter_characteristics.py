@@ -276,7 +276,7 @@ class PropertyTemplate(models.Model):
         for record in self:
             record.usd_currency_id = usd.id
 
-    @api.depends('net_price', 'rental_price', 'currency_id')
+    @api.depends('net_price', 'net_rental_price', 'currency_id')
     def _compute_multi_currency_prices(self):
         """Convertir precios a diferentes monedas"""
         for record in self:
@@ -293,9 +293,9 @@ class PropertyTemplate(models.Model):
                     record.net_price_usd = 0.0
 
                 # Convertir precio de arriendo
-                if record.rental_price:
+                if record.net_rental_price:
                     record.rental_price_usd = record.currency_id._convert(
-                        record.rental_price,
+                        record.net_rental_price,
                         record.usd_currency_id,
                         record.company_id or self.env.company,
                         fields.Date.today()
